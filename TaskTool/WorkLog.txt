@@ -1,7 +1,12 @@
-20/10/2016 (10.7)
+20/10/2016 (3.3h)
 	Updated all Tools projects to use new path. Moved all AutoBackup projects and files to new structure and updated them all to use
 	new dependencies. Also moved all data and project related files. Everything seems to work fine, next step is checking/fixing
 	Synology build.
+	Fixed Synology build and improved its configuration! Also updated remote script to use newly created build script. Remove script
+	also consistently updates dependencies.
+Next planned work :
+	- Begin unit testing for git report parser
+	- Once done, begin unit testing of git job
 
 19/10/2016 (1h)
 	Created parser lib and moved command line to new structure. They are fully working! Now thinking on the best strategy to
