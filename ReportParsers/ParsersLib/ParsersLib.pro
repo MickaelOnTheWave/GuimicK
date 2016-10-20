@@ -4,21 +4,20 @@
 #
 #-------------------------------------------------
 
-QT       -= gui
+QT       -= core gui
 
 TARGET = ParsersLib
 TEMPLATE = lib
 
 DEFINES += PARSERSLIB_LIBRARY
 
-SOURCES += parserslib.cpp \
+SOURCES += \
     aptgetupgradeparser.cpp \
     clamavreportparser.cpp \
     gitreportparser.cpp \
     rsnapshotreportparser.cpp
 
-HEADERS += parserslib.h\
-        parserslib_global.h \
+HEADERS +=\
     abstractoutputparser.h \
     aptgetupgradeparser.h \
     clamavreportparser.h \
@@ -38,7 +37,12 @@ else {
 }
 
 # linking ToolsLib
-TOOLS_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/ToolsLib/
+contains( CONFIG, synology ) {
+	TOOLS_LIB_PATH = ./
+}
+else {
+	TOOLS_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/ToolsLib/
+}
 TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
 
