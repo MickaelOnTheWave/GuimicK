@@ -1,0 +1,116 @@
+#include "clamavjob.h"
+
+#include <sstream>
+#include "clamavreportparser.h"
+
+using namespace std;
+
+const string UPDATE_LOG_FILE = "clamavupdate.txt";
+const string SCAN_LOG_FILE = "clamavscan.txt";
+
+ClamAvJob::ClamAvJob()
+	: scanDir(""), blockOnFailingUpdate(false)
+{
+    virusDefinitionUpdateJob = new SshConsoleJob("", "freshclam.exe", "--verbose --on-update-execute=EXIT_0 --on-error-execute=EXIT_1 --on-outdated-execute=EXIT_2");
+    virusDefinitionUpdateJob->SetOutputTofile(UPDATE_LOG_FILE);
+
+    virusFullScanJob = new SshConsoleJob("", "", "");
+    virusFullScanJob->SetOutputTofile(SCAN_LOG_FILE);
+}
+
+ClamAvJob::~ClamAvJob()
+{
+	delete virusDefinitionUpdateJob;
+	delete virusFullScanJob;
+}
+
+std::string ClamAvJob::GetName()
+{
+	return "ClamAV Scan";
+}
+
+bool ClamAvJob::InitializeFromClient(Client *client)
+{
+    virusDefinitionUpdateJob->InitializeFromClient(client);
+    if (!virusFullScanJob->InitializeFromClient(client))
+        return false;
+
+	if (!client->HasProperty("avscandir"))
+		return false;
+
+	scanDir = client->GetProperty("avscandir");
+    string commandParams("--verbose --recursive ");
+    commandParams += scanDir;
+    virusFullScanJob->Initialize("clamscan.exe", commandParams);
+	blockOnFailingUpdate = (client->GetProperty("avmandatoryupdate") == "true");
+    return true;
+}
+
+bool ClamAvJob::IsInitialized()
+{
+    return true;
+}
+
+JobStatus *ClamAvJob::Run()
+{
+	JobStatus* updateStatus = virusDefinitionUpdateJob->Run();
+	updateStatus->AddFile(UPDATE_LOG_FILE);
+	if (blockOnFailingUpdate && updateStatus->GetCode() != JobStatus::OK)
+	{
+		bool blockingError = true;
+		string description;
+		int returnCode = virusDefinitionUpdateJob->GetCommandReturnCode();
+		if (returnCode == 1)
+			description = "Error while trying to update virus database.";
+		else if (returnCode == 2)
+		{
+			description = "Virus database is outdated!";
+			blockingError = false;
+		}
+		else if (returnCode == 40)
+			description = "Unknown option passed.";
+		else if (returnCode == 50)
+			description = "Can't change directory.";
+		else if (returnCode == 56)
+			description = "Config file error.";
+		else if (returnCode == 57)
+			description = "Can't create new file.";
+		else
+		{
+			description = "Unknown error. Return code : ";
+			stringstream stream;
+			stream << returnCode;
+			description += stream.str();
+		}
+		updateStatus->SetDescription(description);
+
+		if (blockingError)
+			return updateStatus;
+	}
+
+	JobStatus* scanStatus = virusFullScanJob->Run();
+	scanStatus->AddFile(SCAN_LOG_FILE);
+	if (scanStatus->GetCode() != JobStatus::OK)
+	{
+		string description("Error on virus scan. Return code : ");
+		stringstream stream;
+		stream << virusFullScanJob->GetCommandReturnCode();
+		description += stream.str();
+		scanStatus->SetDescription(description);
+		return scanStatus;
+	}
+
+	delete updateStatus;
+	delete scanStatus;
+
+	JobStatus* finalStatus = new JobStatus(JobStatus::OK);
+	finalStatus->AddFile(UPDATE_LOG_FILE);
+
+    ClamAvReportParser parser;
+    string description;
+    parser.ParseUsingFiles(SCAN_LOG_FILE, SCAN_LOG_FILE, description);
+    finalStatus->SetDescription(description);
+	finalStatus->AddFile(SCAN_LOG_FILE);
+
+	return finalStatus;
+}

@@ -1,0 +1,90 @@
+Features implemented:
+	30/09/2014 - [011] Have a working backup running
+	30/09/2014 - [012] Implement a basic command-line help and information
+	30/09/2014 - [013] Implement basic versioning visible from command-line call
+	01/10/2014 - [004] Parse backup report file to use its data accordingly
+	09/11/2014 - [001] Put all data into external conf files
+	25/01/2015 - [018] Create HTML beautiful report
+	25/01/2015 - [009] Organize code using external lib
+	11/06/2015 - [028] Make any console/SSH jobs available through configuration file.
+	05/07/2015 - [021] Include Git repository backup in maintenance script
+	25/10/2015 - [031] Include System update in maintenance script
+	11/02/2016 - [030] Create additional options for ConsoleJob to handle mini description.
+
+Features to implement:
+	[002] Remove Wake script dependency
+	[003] Use Curl lib instead of command line
+	[008] Use another time level of backup for other jobs (monly/yearly...)
+	[010] Implement all TODOs in code
+	[014] Log jobs data in a database for future report/statistics use
+	[015] Make a stat job for longer time level (yearly?)
+	[016] Create a package with binaries for easy install
+	[017] Properly handle all error cases
+	[019] Do not create intermediate files - handle all data in memory!
+	[023] Remove wakelan executable dependency
+	[024] Remove ping executable dependency
+	[025] Use libssh instead of using command line
+	[026] Support multiple clients with multiple job lists
+	[027] Manage email commands
+	[029] Split job config file into client/server files.
+	[032] Property handle encodings for strings
+	[033] Handle File backup folder data outside of rsnapshot conf file.
+	[034] Create client app to create/manage backup folder configuration.
+	[035] Console job improvement : support an external parser system.
+	[036] Console job improvement : support a chain system.
+	[037] Organize BackupAgent code and projects in tree like Tools
+
+Bugs:
+	[0001] RemoveFolder() from FileTools gives link issue. See GitCloneBackup.cpp.
+
+Abandoned features :
+	[005] Include AntiVirus scan in maintenance script
+	[006] Include Harddrive check in maintenance script
+	[007] Include Defragmentation in maintenance script
+	[020] Check/repair Screensaver modification from script
+	[022] Remove Screensaver script dependency
+
+-------------
+Release plan
+-------------
+
+v1.0 :
+	[010] Implement all TODOs in code
+	[016] Create a package with binaries for easy install
+	[023] Remove wakelan executable dependency
+	[032] Property handle encodings for strings
+
+v0.7 :
+	[026] Support multiple clients with multiple job lists
+	[017] Properly handle all error cases
+	[034] Create client app to create/manage backup folder configuration.
+
+v0.6 :
+	[019] Do not create intermediate files - handle all data in memory!
+	[033] Handle File backup folder data outside of rsnapshot conf file.
+	[029] Split job config file into client/server files.
+	[037] Organize BackupAgent code and projects in tree like Tools
+
+v0.5 :
+	[002] Remove Wake script dependency
+	[031] Include System update in maintenance script
+	[035] Console job improvement : support an external parser system.
+	[036] Console job improvement : support a chain system.
+	[030] Create additional options for ConsoleJob to handle mini description.
+
+v0.4 : 05/07/2015
+	[021] Include Git repository backup in maintenance script
+	[028] Make any console/SSH jobs available through configuration file.
+
+v0.3 : 25/01/2015
+	[018] Create HTML beautiful report
+	[009] Organize code using external lib
+
+v0.2 : 09/11/2014
+	[001] Put all data into external conf files
+
+v0.1 : 01/10/2014
+	[011] Have a working backup running
+	[012] Implement a basic command-line help and information
+	[013] Implement basic versioning visible from command-line call
+	[004] Parse backup report file to use its data accordingly

@@ -1,0 +1,914 @@
+20/10/2016 (10.7)
+	Updated all Tools projects to use new path. Moved all AutoBackup projects and files to new structure and updated them all to use
+	new dependencies. Also moved all data and project related files. Everything seems to work fine, next step is checking/fixing
+	Synology build.
+
+19/10/2016 (1h)
+	Created parser lib and moved command line to new structure. They are fully working! Now thinking on the best strategy to
+	update BackupAgent. Create new structure first? Fix lib dependency first?
+	As lib dependency is easy to do and actual state is broken, this will be the first step. Updated BackupAgent dependencies.
+	Now going for bigger structure change.
+
+16/10/2016 (0.4h)
+	A testing project has already been done using QtTest, this was easier than trying with GoogleTest! So test suites will
+	be done with QtTest from now. Before creating a test project, it should be decided what needs to be tested first, and maybe
+	organize code so that this is possible easily.
+	First, project structure is not good. As it is today, parsers should stay in a separate subproject, with their lib, executable
+	and test suite (this will probably be the first one). While we are at it, current name is bad for project, this is not a backup agent,
+	this is a task planifier!
+	Also, it would be a good idead to use the same idea os NoteReader : have a lib and a console app that uses it.
+	That way, the test project will only need to link to the lib.
+	Here is the new structure :
+	- [PROJ]
+		- ProjLib
+		- ProjExe
+		- ProjTest
+		- Parsers
+			- ParserLib
+			- ParserExe
+			- ParserTest
+
+	Starting with parsers... Created project structure.
+Next planned work :
+	- Move existing parser classes to new parser lib.
+	- Move existing ReportParser tool to new tool.
+
+25/07/2016 (0.5h)
+	Started playing around with GoogleTestFramework. It is now compiling but linking error remains. Although it would have
+	been easier to use QT testing framework, it would constrain the tests to run on platforms where QT is installed.
+Next planned work :
+	- Make the testing project run with GoogleTest
+	- Create a testing project for Backup Project
+
+12/02/2016 (1.5h)
+	BackupAgent ran successfully alone today, so problem is not with him. After investigation, the problem is
+	with router that is not seeing anymore Synology, not even as a dynamic DHCP client, so it is getting a random
+	ip (192.168.1.158 seems common). There does't seem to be a way around, either updating firmware or putting an
+	alternative one. So back to deployment even with this little problem...
+	Deployment OK, updated deployment script to also deploy reportparser. Ran and it was OK!! Also updated Git backups
+	to use the older update one - it seems that Full was not running. Added all 3 repositories to backup.
+Next planned work :
+	- Back to NoteReader for a while!
+	- On Backup, go on automated testing. Resolve which way is better : unit tests or binary ones. And start with
+	some tests on basic features. They need to run easily, be updated easily... and it would be nice to have them
+	running on target at deployment phase.
+
+11/02/2016 (2.3h)
+	Updated GitReportParser to use AbstractParser. Also moved report related code from GitReportParser main
+	file to parser code. Updated generic ReportParser to support GitParser and removed obsolete GitReportParser
+	project. Updated ReportParser to use new command line features. Removed some remaining obsolete files.
+	Now checking Tools "tools" for new command line usage... They all have been updated, except FileGenerator
+	that has a beautiful special help formatting that will first need CommandLineManager to be improved.
+	ConsoleJob updated to handle external parser!!! For now this parser is only using mini description output.
+	First test worked like a charm :-)) ReportParser needed a little change to be able to output direct data
+	without user "headers".
+	However, it needs to run on synology to be used in production. Sooo... worked on creating a synology build
+	for ReportParser. However, it looks like Synology is not accessible anymore, even on ping... faulty hardware?
+	:-(( Maybe a look for replacement should be done...
+	Anyway, no more work can be done for now.
+Next planned work :
+	- Do some basic check to see what is going on in Synology : check standard run and ethernet cable integrity.
+	- If Synology is back, do the deployment on production of Parser for console jobs and synology build of
+	report parser.
+	- Anyway, after that, next step needs to be AUTOMATED TESTING!!! There are too many features now to just
+	blindly commit and do a manual check.
+	- Once automated testing is relevant, extend parser to also generate file output.
+
+10/02/2016 (0.5h)
+	Now all command line features are in CommandLineManager. BackupAgent was updated to use new features, now
+	other projects need to be updated.
+Next planned work :
+	- Keep on previous plan, only two first features were done in this session.
+
+04/02/2016 (1.1h)
+	Cleaned ToolsLib and updated all Tools projects to use new Command line management class. Also updated
+	BackupAgent and ReportParser to use new class. Fixed ToolsLib linking bug in both projects too.
+	However, there is still work to be done on this... BackupAgent still has some command line management code
+	and command line tools could use some features that are (or should be) in management class. These are unknown
+	parameter management, usage management, maybe versioning and copyright information.
+Next planned work :
+	- Finish work on moving all command line related features from BackupAgent to CommandLineManager.
+	- Update BackupAgent and other command line tools to use new features.
+	- Update GitParser to use AbstractParser architecture and update ReportParser tool to be able it.
+	- Remove obsolete GitReportParser project.
+	- Once this all is done, back to System update parser used in real case :-)
+
+01/02/2016 (2.7h)
+	AptGet parser finished. Now going for command-line tool to use abstract parsers...
+	Created first simple command-line tool. For now it only uses AptParser. Fixed and tested AptGet parser!
+	Updated parser tool to also handle RSnapshot parser. It also is now easy to add new parsers.
+	Began work on CommandLineManager - created class with code from current command line map building. Also put
+	code from unknown parameter detection. The class seems ready to use but hasn't been yet tested.
+Next planned work :
+	- Clean ToolsLib from obsolete CommandLineMap building and use instead new class.
+	- Put all known "features" (see BackupAgent) for command line argument management into new class.
+	- Clean BackupAgent builtin command line features and use new class instead.
+	- Back to using Sytem update parser for real use case. Best way is probably to improve ConsoleJob...
+
+31/01/2016 (2.6h)
+	Investigating on apt-get command to see if there is a way of easing output for parsing. Only good way seems
+	to use return value for basic error checking.
+	Began writing parser. First write nearly done, only full description file code is to be done.
+Next planned work :
+	- Finish writing parser.
+	- Write generic command-line parser that can use any AbstractParser!
+	- Test and validate SystemUpdate parser.
+	- Improve CommandLine handler generic function to a class that also handles unknown commands (and update
+	projects accordingly!)
+
+27/01/2016 (3.6h)
+	Build for Synology working! Some work was necessary in pro file, but mainly The problem was with mkspec.
+	It was using gcc instead of g++ for linking.
+	Updated deploy script from Synology to build from Desktop and copy executable - it is a lot faster!!
+	It was impossible to deploy from Desktop : scp command doesn't work from Desktop to Synology.
+	Finished AbstractOutputParser - finally it is only an empty interface. Changed RsnapshotParser to implement
+	this interface and changed BackupJob accordingly. It all compiled and worked!
+Next planned work :
+	- Implement a parser for system update
+	- Create an external parser (can be the system update one)
+	- Change ConsoleJob to (optionally) use any external parser
+
+24/01/2016 (1h)
+	No exact answer from StackOverflow. The way to go seems to create a custom mkspec to be able to build
+	Synology on desktop. Tried to do so: toolslib built OK but backupagent gave a lot of link erros with
+	c++ std lib. And with hacking pro file... Maybe try one last time before giving up and keeping "old-school"
+	custom makefiles...
+Next planned work :
+	- Try once more to build using qmake with custom target.
+	- It it still doesn't work, give up for now and keep using manual makefiles. Back to finishing previous
+	refactoring that was left pending...
+
+26/10/2015 (0.2h)
+	Checking StackOverflow. No good solution there... No more motivation to work on that today. Leaving for
+	another time...
+Next planned work :
+	- Wait to see if there is a good solution from someone else
+	- If not, maybe consider hand parsing and changing Makefile?
+
+25/10/2015 (1.5h)
+	Changed solution : A new build mode has been aded (marvell_Release) and project files have been modified
+	to change QMAKE variables. This makes solution more readable and usable through QtCreator.
+	Successfully built ToolsLib and BackupAgent. However there is an issue with linking flags that QMake seems
+	to put from behind. Tried to figure out how to remove them, without success. Asked on StackOverflow to see
+	how to resolve that.
+Next planned work :
+	- Wait to see if there is a good solution from someone else
+	- If not, maybe consider hand parsing and changing Makefile?
+
+21/10/2015 (2.8h)
+	Tried again to find a way to cross compile project. This time it nearly worked using command line
+	qmake and make. Created a shell script to do that. Project needed some tuning : unused CurlEmailSender
+	class was removed from project as it pulled curl dependency that was not working with cross compiler.
+	BackupAgent project is compiled successfully with cross compiler but not linked - there is a hard-coded
+	dep to ToolsLib debug version.
+	Trying to find a command to reset deps from command line, without success so far. Maybe the right way to go
+	is to remove this hard coded link and to it smarter from start?
+Next planned work :
+	- Find a way to link to correct lib version in command line.
+
+15/10/2015 (1h)
+	It was decided to try to install a cross compiler!
+	First try didn't work - generic cross compiler for ARM doesn't work for Synology. After some
+	investigation, it was found a specific toolchain for Synology. This toolchain was successfully
+	installed and used on a generic cpp file. However it still doesn't work integrating in QtCreator,
+	it seems because of Qt version.
+Next planned work :
+	- Maybe try harder to make it work in Qt Creator
+	- If OK, then go on and change workflow to compile full project and deploy to Synology!
+	- If not, forget about it and go back to other tasks.
+
+11/08/2015 (0.3h)
+	Created skeleton for AbstractParser.
+Next planned work :
+	- Finish AbstractOutputParser
+	- Port existing BackupReportParser to new architecture
+	- If possible, begin work on changing ConsoleJob architecture to handle a parser.
+
+21/07/2015 (0.4h)
+	Tried to make a custom SSH console job for simple system maintenance (apt-get upgrade).
+	However it seems to not work and it is not possible to understand what happened : it returns
+	"ok" and no log is seeable. Now it is time to improve custom console jobs to capture and use
+	output!!
+	It worked :-)) Now just changed production configuration to run update and see results.
+Next planned work :
+	- Confirm that upgrade worked / at least showed the output!
+	- Update (again!) Console job to support external output parsers.
+	- Create chained job that would handle multiple jobs in one (backups in mind...)
+
+05/07/2015 (0.6h)
+	Git backup apparently ran OK. Checking again...
+	Apparently it is OK. Validating :-)
+	Problem with WindowsSoftware was configuration : it was using obsolete user
+	remotebackup instead of mickael. Repaired config file and waiting for next run!
+Next planned work :
+	- Begin System maintenance job?
+
+02/07/2015 (1.9h)
+	Got Git Clone backup to work! At last :-)
+	Tests also worked. Now configured Synology to make a git backup of NoteReader.
+	And... we must wait for result to validate!
+Next planned work :
+	- Validate Git backup job with running version
+	- If so, create proper tag on git and add other repositories to the backup!
+	- Investigate on why there is an error backing up WindowsSoftware...
+
+01/07/2015 (0.3h)
+	Configuration file organization resolved for Git Clone Job. Configuration also updated accordingly.
+	Now some compilation errors remain on Git jobs.
+Next planned work :
+	- Finish git clone implementation.
+	- If ok, check that Git pull backup is also working.
+
+30/06/2015 (0.9h)
+	Worked on Git Clone backup. Job almost created - now reworking configuration.
+	Needs some thinking about how to structure clone job. Anyzay, it is almost done.
+Next planned work :
+	- Finish git clone implementation.
+	- If ok, check that Git pull backup is also working.
+
+29/06/2015 (1.9h)
+	Created sample data for git report parsing.
+	FileGenerator improved as specified before. Now back to git report creation.
+	Created test project for report parser testing. However, it was chose to abandon this
+	report parsing as it is only meant to be used for git pull backups. Instead moving to implement
+	git cloning backups.
+	Reorganized git backups with common base class to avoid code duplication. Created Git clone backup
+	skeleton.
+Next planned work :
+	- Continue on Git clone backup implementation. Hopefully finish it :-)
+	- If ok, check that Git pull backup is also working.
+	- Check why RSnapshot windows folder is giving error on backup!
+
+22/06/2015 (1.6h)
+	Began work on Git report parsing. Reorganized Tool lib with separate class for file utilities.
+	Also created filegenerator, it will be useful for testing data backup and probably for future testing!!
+Next planned work :
+	- Improve FileGenerator : short param syntax, maybe default values? and text file option
+	- Implement report parsing
+	- If time is good, integrate report in git backup.
+
+17/06/2015 (1.9h)
+	Created test git repository for better testing. Updated build to use out-of-source building
+	and copy configuration files to build directories to enabled executing from QtCreator.
+	Tested first version of Git Backup (update only). And it worked!
+Next planned work :
+	- Improve reporting. It needs two setups, Simple one for single repositories. It will only
+	have the short description showing how many files were added, removed and modified. It can also have
+	update size. Full one for multiple repositories : short description is used for repository count (as of today)
+	and a full log with full changelog for each repository.
+	- Create Git clone backup. It will use the same logic and reporting system as Git update backup.
+
+11/06/2015 (0.4h)
+	Ok! Now feature is valitaded :-D
+	Merged branch used for Git backup. Now we are ready to continue working!!
+Next planned work :
+	- Continue on Git backup job. Think about best strategies : today it is
+	pulling an existing repository. Maybe it would be better to replace/integrate with
+	a clean clone!
+	- Git backup : do a nice reporting, as for rsnapshot backup.
+
+10/06/2015 (0.2h)
+	All was OK, as expected :-) Now only waiting for debug code removal to validate version!
+Next planned work :
+	- Check that run is OK and validate version! :-)
+	- Reintegrate Git backup branch and continue work
+
+09/06/2015 (0.2h)
+	This time it worked :-D There was only a little problem with wake job outputting a wrong file.
+	Changing Wake job to output a buffer. Also removing debug code from Curl.
+Next planned work :
+	- Check that Wake job runs OK and that debug code removal didn't affect anything.
+
+08/06/2015 (0.3h)
+	Changed Initialize() in ConsoleJob to do the command name modification with search paths. It was previously
+	in IsInitialized(), which is a mistake. Backup job ran OK but without any modifications, which is not relevant.
+	Putting little data to have a good sample tomorrow.
+Next planned work :
+	- Same as yesterday.
+
+07/06/2015 (0.5h)
+	Checked last run status. Curl didn't run because it was not using ConsoleJob. RSnapshot ran with errors,
+	but without being able to find which ones.
+	Changed Curl job to use ConsoleJob - now it should work!! And changed a little bit Backup job to include
+	error report in case of rsnapshot fatal error.
+Next planned work :
+	- Check run status.
+	- If OK, remove debug code.
+
+02/06/2015 (1.8h)
+	Changed crontab accordingly, and now testing if this resolves the issue!! It didn't work, it looks
+	like crontab is somehow cleaned and path is lost. Anyway, to avoid the issue we are going to implement
+	passing paths in conf file!
+	Manual definition of binary paths implemented, and first test passed but without full timed run. Because
+	of time, waiting for tomorrow's run to confirm.
+Next planned work :
+	- Check that run is OK. If not, fix it!!
+	- Remove debug code and which command search (too much worry...)
+
+01/06/2015 (1.3h)
+	Thinking about possible reasons for issue and its solutions :
+	1. which command is not accessible in this scope (why?)
+		-> look for it before using or use hardcoded path as alternative
+		-> pass which path to executable at start
+	2. There is something special about environment when executable is called from cron after startup
+		-> test this case (no real solution there...)
+	First trying out 2. to check for this case with test conf files. Tried calling which with absolute path,
+	without success. After searching the net, it seems the issue is crontab that does not have the full path
+	variables for executables.
+Next planned work :
+	- Fix THE issue
+
+27/05/2015 (1.3h)
+	Adicional debug information was useful : which commands return nothing !!! Extensive testing was done
+	with crontab : the problem was not reproduced in any conditions. There seems to be nothing to be done...
+	Call line was a little changed in crontab and timing too in a hope that it will resolve the mysterious
+	issue...
+Next planned work :
+	- pray for job to work or for a solution!!!
+
+26/05/2015 (0.7h)
+	Git backup job improved with detection of basic failures. Now it needs some testing before continuing!!
+	Also resolved "issues" on branching that made Synology version not taking latest modifications.
+Next planned work :
+	- Check backup status
+	- Check/investigate on email failure
+
+25/05/2015 (0.3h)
+	Local shutdown is now working! Fixed issue in conf file (not source code!) about backup failure. Also
+	added more debug information for email sending failure. Now backup should work, only email will remain.
+Next planned work :
+	- Check backup status
+	- Check/investigate on email failure
+	- If possible, continue on git backup.
+
+24/05/2015 (1.5h)
+	Last run didn't ran well :-( Checking what happened.
+	Job ran, but backup failed at initialization and email sending also failed. Server shutdown also didn't occur.
+	Local reports were available.
+	Adding debug code to email sending and backup job to understand the problem. Also fixed local shutdown job.
+	Next run should show what was wrong, and correctly shutdown server.
+	Also added rsnapshot conf file option to backup job.
+	Created first version of Git Backup.
+Next planned work :
+	- Check that local shutdown is working.
+	- Check debug informations and fix possible issues for Backup job and email sending.
+	- Continue Git backup job : report file creation. And testing!
+
+21/05/2015 (1.3h)
+	Resolved problems in Backup job. Made a run - all was ok :-)
+	Now waiting for a real run to confirm that feature is Ok.
+Next planned work :
+	- Begin work on git backup job.
+	- Think about how to create validation tests.
+
+20/05/2015 (1.7h)
+	Finished refactoring of SshJob and other related jobs. Spent some time testing and resolving bugs in Ssh job.
+	Also updated configuration to allow execution of custom SSH jobs, in the same fashion as Console jobs.
+Next planned work :
+	- Fix backup job.
+	- Begin work on git backup job.
+	- Think about how to create validation tests.
+
+18/05/2015 (1.7h)
+	Updated curl executable searching to run on different computers. Also updated mail file to work on any directory.
+	Fixed minor issue with Job duration when job was not executed. ConsoleJob refactoring complete and tested!!
+Next planned work :
+	- Refactor and test SshJob
+	- Refactor and test dependent jobs
+
+14/05/2015 (0.9h)
+	Created test job for ExternalCommand in Tools. Also updated ExternalCommand to work with internal buffers.
+	Updated configuration to handle ConsoleJob. However, tests could not be completed because curl is not found
+	on desktop machine. It needs also a little update...
+Next planned work :
+	- Update the way curl is searched to work on Desktop.
+	- Test ConsoleJob.
+	- Refactor SshJob.
+	- Test SshJob and dependent jobs too.
+
+04/05/2015 (1.2h)
+	First step in refactoring done (changing AbstractJob interface). Version commited, compiled and deployed.
+	Only now needs a run to confirm that it is ok.
+	Complete refactoring of ConsoleJob mostly done - only needs fixing in Toolbox for running external commands.
+Next planned work :
+	- Finish ConsoleJob refactoring
+	- Test final executable to ensure all refactoring is OK
+	- Update Configuration to include custom ConsoleJobs from conf file.
+	- Create first basic test procedure to verify new deployed versions meet minimum requirements on Synology.
+
+03/05/2015 (0.6h)
+	For now there was only one job to fix : ChangeScreensaver. And it isn't even used. So no test...
+	Further fixing needs refactoring of AbstractJob and ConsoleJob. Implementing a more elegant way to deal
+	with parameters and their multiple possible sources. Still needs to implement all kinds of situations of
+	ConsoleJobs : if we want to check return code, output etc...
+Next planned work :
+	- Go on refactoring AbstractJob and ConsoleJob.
+
+29/04/2015 (2.7h)
+	Backup is OK. Now included Logiciels.
+	Next chosen feature is improve conf file format in order to prepare for full console jobs configured from conf file.
+	Moved configuration file and test project to Tools. Improved ConfigurationParser to include test mode : now it can
+	use a reference file to check if output is as expected.
+	ConfigurationParser now supports parameters specified in parentesis! Good step toward full console job specified
+	from configuration file :-) Also created some test samples to illustrate feature.
+Next planned work :
+	- Update BackupAgent configuration file handling to support parameters.
+	- Create full console job specified from configuration file.
+
+09/02/2015 (1h)
+	Found out how to have short backup paths : removing the --relative option from rsync args. Tested with
+	test data and it was OK - now waiting for real data!
+	Data partition also statically mounted. Now only waiting to backup all data :-)
+Next planned work:
+	- Check that next backup path is OK. If so, put all data into backup!
+	- Choose a new feature to implement/improve
+
+25/01/2015 (4.2h)
+    Attachments are working. How including CSS into Html report. Copied one from a sample - first test is good.
+	 Testing integration in current report generation. Integration is Ok.
+	 Tools organized as a project tree and added to git. BackupAgent now correctly links to tools instead of compiling.
+	 Manual makefiles have also been updated to enable Synology compilation.
+	 Everything works - now project is in "Beta" stage :-) and can be put to sleep!
+Next planned work:
+	- Check how to leave rsnapshot creating relative paths in backups
+	- Statically mount hd to enable backup of its data
+	- Choose a new feature to implement/improve
+
+23/01/2015 (0.2h)
+    First Html report was Ok, but there was a problem with shutdown command and reports were
+    not attached. Fixed shutdown command problem. Attachments problem was not seen at first sight,
+    leaving this for next work session. Now problem was seen - it seems it was corrected but not commited.
+Next planned work :
+    - Check attachments issue fix.
+    - Include a decent CSS stylesheet into HTML report to have it "nice".
+    - Fix EmailGUI repository, and others if there are.
+    - Back to organizing projects in trees
+
+22/01/2015 (1.8h)
+    Finished first version of Html report.
+
+20/01/2015 (2.4h)
+    Reviewing git possible clients :
+    QGit : actual solution. Too basic - displays log but diff is bad and to few actions available.
+    git-cola : Seems to have more action options but no log - unusable as a standalone tool.
+    gitk : UI is ugly but seems ok for actions.
+    No suitable GUI was found. It was chosen to use gitk and git-cola as there are the official git tools
+    and "complement each other". CLI will be used for more specific actions...
+    Folder attempt was successfully reverted (using git-cola and gitk by the way).
+    Moving on to HTML report creation. Updated MIME code to handle html contents. Also updated EmailUI to
+    test for HTML content. Worked on sample code for HTML report. Updated some code to prepare for HTML report use and created
+    empty class.
+Next planned work :
+    - Finish HTML report class.
+    - Improve HTML template and make it somehow user-friendly.
+    - Fix EmailUI git repository.
+
+19/01/2015 (2.5h)
+    Last backup failed. Checking errors and modifying agent to correctly clean logs before sending.
+    Implemented report folder creation and cleaning - first run didn't work. Still implementing...
+    Fixed shutdown error. Report folder management does not work - it will have to be reverted and
+    another solution found.
+Next planned work :
+    - Check that shutdown is OK.
+    - Find a goot Git tool, if possible using KDiff3 as merge tool.
+    - Revert report folder "solution"
+    - Either implement a better report management or go for HTML report.
+
+12/01/2015 (1h)
+    First commit to include lib and EOL changes to work on Linux. Updated shutdown job to work on Linux.
+    Tested and all OK for Documents.
+Next planned work :
+    - Include all other folders to backup.
+    - Do HTML report.
+
+11/01/2015 (1.5h)
+    Configured git to be able to pull from Synology
+
+07/01/2015 (1h)
+        Configured Ubuntu to work with project. Now compilation is OK.
+Next planned work :
+        - Check / install git on Ubuntu.
+
+23/11/2014 (2.8h)
+	 Run half worked : clamAvUpdate log was sent but backup is failing and without attachments. Also, last run used version 21 instead of 22.
+	 Improved Backup job : now report is attached in error cases, and warnings are correctly reported and attached. Also removed memory leaks from
+	 Backup job statuses. Fixed bug with ClamAv job - scandir was not being properly initialized when command line call was created. Also fixed
+	 Backup job error : it was caused by faulty symlinks. Also increased backups from 51 to 200 (should work for 3 more years).
+Next planned work :
+	 - Do what was planned at last work session...
+
+16/11/2014 (2.2h)
+	 Run worked but no attachments were sent. Also, backup failed. Surprisingly, AV succeeded! After checking, attachments failed to attach probably
+	 because of file size limits : scan created a 14mb log. Modifying source code to bypass that limit...
+	 Created ClamAv report parser with project for testing. Testing is OK. Now integrated report parsing into av job. Also removed
+	 a memory leak and a bug there, reports would never be added even without file limit! Put two options for ClamAv job into
+	 configuration file - now there is not more hardwire :-) Checked AvJob parsing and all is OK. Also removed debug command line
+	 for ClamAv - no need for it.
+Next planned work :
+	 - Confirm run.
+	 - If OK, just update release plan :-)
+	 - Check if project tree issues are resolved with new Qt version. If not, choose between next two features : modularize projects
+	 of create HTML report.
+
+12/11/2014 (1.2h)
+	 Trying to create dummy project with tree structure. So far hit same problems with linking. Updated Qt and QtCreator -
+	 now needs testing to check if it resolved something. After additional thinking it appeared that the only viable long-term
+	 solution for modulating project will be dynamic linking, not static : tools will be a lib and some other projects can be
+	 libs too. The only way to not duplicate and create potential conflicts is to go dynamic.
+Next planned work :
+	 - Check if new version resolves something.
+
+09/11/2014 (0.8h)
+	 Validation is OK for configuration. Added game saves/data from MyDocuments into backup. Now only remaining data from "C:\Jeux".
+	 This will need extra configuration to take only some files/folders...
+	 Configuration file specification at command line implemented. Now looking at ClamAv.
+	 It looks like Windows installed version can't be used from Cygwin. Using cygwin version instead - all seems to work! Now waiting
+	 for next run to confirm...
+Next planned work :
+	 - Confirm run.
+	 - If Ok, see if there are aditional things to improve job (report parsing? more configuration options?).
+
+04/11/2014 (1.6h)
+	 Resolved job order issue : it was because jobs were implemented as properties. Improved parser : now it understands object
+	 declaration with parentesis, and now jobs in job list are objects. This resolved ordering issue. Also continued parser
+	 handling to manage all other properties - now everything works fine. Also integrated it with command line : command line has
+	 priority over configuration.
+Next planned work :
+	 - Implement passing custom configuration file to command line.
+	 - Checking that configuration parsing works on weekly run! And validate feature :-)
+	 - Debug clamav job and make it work.
+
+02/11/2014 (1.8h)
+	 Parser implementation complete. Integrated parser into BackupAgent, integration worked for Client, now testing for Job list.
+	 Job list worked with minor issue : job list apparently gets reordered.
+Next planned work :
+	 - Resolve job list order issue. Continue integration for self information and other minor information.
+
+29/10/2014 (2h)
+	 Began parsing implementation. For now no fixed structure, only a big "if" realm. First tests worked for basic atom
+	 separation and context detection.
+Next planned work :
+	 - Continue parsing code : implement properties parsing.
+
+28/10/2014 (0.8h)
+	 Created skeleton for configuration parser : object structure and data structure. Also created display code that will
+	 be used to test implementation. Configuration file syntax has also been defined : it will be a C-like structure as
+	 most of sample.txt file today.
+Next planned work :
+	 - Begin parsing code
+
+26/10/2014 (3.2h)
+	 Repairing faulty Cygwin - nothing ran last time. It was caused by install interruption while installing clamav.
+	 Improved Job statuses handling - now full statuses are sent instead of only codes. Removed obsoleted Job layer and
+	 improved memory management - now statuses are cleaned up after usage. Correctly working on Synology. Continuing work
+	 on configuration file...
+	 Code ready to use configuration. For now Configuration class returns static data. Improved console parameters :
+	 now unknown parameters are reported instead of being silently ignored (this prevents misnaming parameters when calling
+	 from console!).
+Next planned work :
+	 - Begin configuration parser implementation.
+
+22/10/2014 (0.5h)
+	 Trying to understand/improve ClamAV scanning. Last error did not generate valid log. Created conf file but an
+	 error remains - might be caused by trying to use Windows clamav on cygwin. Updated source with more error codes and
+	 config file. Now installing clamAv inside cygwin.
+Next planned work :
+	 - try ClamAv from cygwin, if ok remove the windows version. Also update clamAv using cygwin version.
+
+12/10/2014 (1.9h)
+	 Last run was all OK except ClamAV. Last big data block added - videos. Now only missing individual game folders.
+	 ClamAv call was changed - now awaiting for run result to check if it is ok. Also updated ClamAv to 0.98.
+	 Refactored code related to report generation. Created project and basic class structure for configuration parser.
+Next planned work :
+	 - Check ClamAv job on next run.
+	 - Decide what solution to use for error reporting in configuration. Error codes seam too weak. Use exceptions?
+	 - Create data structure to hold self information. An external enum? A property map in configuration?
+	 - Continue configuration parser implementation.
+
+07/10/2014 (1h)
+	 ClamAv still did not execute, this time on scan. Also, still no clam reports attached. The only modification that worked was
+	 time formatting. Fixed again SSH job, a value was mistaken on initialization. Attempt to debug ClamAv report "failed" : when
+	 putting traces the code worked. Removing traces again and waiting production for feedback. Added more data to backup.
+	 Now execution is back to normal - once a week. With that it is expected that less work will be made on BackupAgent.
+Next planned work :
+	 - Investigate on possible errors for ClamAv / SSH job. Add remaining data to backup.
+
+06/10/2014 (0.9h)
+	 ClamAv stopped at an error, no file was attached. First improved report time display, now it should properly contain minutes
+	 and hours with good formatting. Also increasing the amount of data backed up.
+	 Fixed some issues with ClamAv job. Now it should attach log files even in case of failure. Also return values should be
+	 fixed by now - shutdown job should not give error anymore and clamav should output correctly its error cases.
+Next planned work :
+	 - Fix possible errors with ClamAv job. If all Ok, consider parsing report or beginning HTML nice report.
+
+05/10/2014 (2.7h)
+	 Screensaver job didn't work. Testing again, no way to make it work through ssh with remotebackup. For now, leaving
+	 behind and disabling screensavers on Desktop. This will resolve for big backups.
+	 Created Ssh job and updated Shutdown job. Obsoleted scripts have been removed - now only remains wake script and screen
+	 saver script. Created first version of Clam Av job. Also included pictures in backup list.
+	 And, to finish, merged back to master!
+Next planned work :
+	 - Fix errors with new jobs if any. Then either continue on Clam Av Job, cleaning unneeded data, parsing existing report
+	 or begin putting data in external conf file.
+
+02/10/2014 (0.9h)
+	 Screensaver didn't work. Cleaned Curl from debug output / file options. Waiting for tomorrow to check that everything is
+	 still OK. Also doing tests with Screensaver changer. It works locally but not through ssh, even manually. The exe doesn't
+	 give any error message so it is impossible to check for result. Also removed several output files when job ran Ok.
+	 Spotted error in executable path in change screensaver script. Fixed and will now see it that did the fix.
+Next planned work :
+	 - Check if screensaver job is OK. If so, finish cleaning debug info and start AV job.
+
+01/10/2014 (0.5h)
+	 Fixing minor bugs detected on report presentation. Also putting agent version number on report.
+	 Screensaver job didn't work. Outputing it to separate log file. Also changed its call to absolute path -
+	 this might be the problem.
+Next planned work :
+	 - Check if screensaver job is OK. If so, start cleaning curl and screensaver job.
+
+30/09/2014 (0.6h)
+	 First working run confirmed today :-) Now putting to production version with report parsing that will close v0.1.
+	 Checked and changed screensaver on remotebackup user to verify if script is working correctly. Checked also last
+	 backup -- all data seems ok, even from Documents. Leaving everything there for now to not mess up with testing from
+	 tomorrow's run.
+Next planned work :
+	 - Check that run is still Ok, that report was successfully parsed and check if screensaver was changed as expected.
+	 If all is Ok, start cleaning unnecessary curl options and hardcoded ssh job data.
+
+29/09/2014 (1.1h)
+	 Testing all the chain - a bug was spotted on Synology shutdown. Resolved fast. The email worked, and should work
+	 as well for daily run. Maybe timing was wrong... waiting for tomorrow to see how it behaves.
+	 Compilation issue resolved - it was only because of outdated Makefile for Synology!
+Next planned work :
+	 - Confirm that everything is running ok. If so, clean out unneeded trace options from Curl. And then go for checking
+	 screensaver jobs... (necessary before running long heavy backups).
+
+28/09/2014 (0.9h)
+	 Made curl output more information, and everything in external files. It seemed to work, now must wait for tomorrow to have
+	 a confirmed working run.
+Next planned work :
+	 - Confirm run result. If Ok, clean curl options and/or fix compilation issue with backup parsing (check if manual
+	 Makefile is updated with parser).
+
+25/09/2014 (2.6h)
+	 Testing current app execution to know exactly which case is failing. Manual execution from ssh is OK.
+	 Crontab execution from Synology already on works. Crontab execution from shutdown state showed the problem.
+	 Putting traces to have an insight over the problem. Console call is OK, problem is coming out of curl command.
+	 Trying curl in silent mode, maybe the output is causing problem.
+Next planned work :
+	 - Finish resolving email issue.
+
+23/09/2014 (0.7h)
+	 Trying to fix compilation issue. Linked on hand all individual object files, without success... the only thing
+	 that improved is the git repository on Synology now being totally on sync with desktop :-(.
+	 Oh and the email issue wasn't with paths, it still doesn't work.
+Next planned work :
+	 - Fix compilation issue on Synology (how to do?...)
+
+22/09/2014 (0.4h)
+	 Commits that were causing compilation issues were removed from Synology's working copy. Changes to path names
+    were done there - not it is expected that the local Synology version will be fully working. Also merged back to
+    master the git repository for Backup project.
+Next planned work :
+    - If script ran sucessfully on Synology, correct compilation issues with ignored commits. Otherwise keep
+    investigating on what is causing the compilation issue AND the email not being sent.
+
+21/09/2014 (0.5h)
+    Committed modifications to include report parsing. Also changed temporary email file to use full path,
+    this is probably causing the agent to not send the email. However there were various compilation issues
+    that were not checked before, they have been fixed the a linkage error remails only on Synology. This needs
+    investigation... for now nothing changed.
+Next planned work :
+    - Fix compilation on Synology
+
+18/09/2014 (0.9h)
+    Backup job ran successfully today but did not send email. Investigating on email issue...
+    The issue was that the specified mail file was wrong. Fixed and tested on Synology. Now awaiting for
+    full run. Meanwhile working on integration. RSnapshot report parsing fully integrated, to deploy and test in
+    next version. Implemented basic command-line usage information and versioning. Waiting for testing on Synology.
+Next planned work :
+    - Test report parsing and command line information on Synology.
+    - Improve code organization.
+
+17/09/2014 (2.7h)
+    Wake issue resolved - wake script was tweaked to not work. Probably forgot to put it back to normal after some
+    testing. Waiting for tomorrow to check full work, meanwhile working on report parsing.
+    RSnapshot console parser implemented and fully working :-)
+Next planned work :
+    - Integrate report parsing into BackupAgent.
+    - Improve code organization, especially common code between projects.
+
+15/09/2014 (1.4h)
+    Backup didn't run today morning, no trace of a single run. Corrected run to include local shutdown and testing
+    a run now. Local shutdown worked but Wake still not working. Maybe it hasn't been tested since tool refactoring...
+    Configured Synology to run both old and new backup tool to check if old tool is still working...
+Next planned work :
+    - Resolve Wake issue.
+
+14/09/2014 (4.4h)
+    Bug fixed! It was about wrong buffer size sent to encode function. Now trying to use Tools as an external
+	 lib in BackupAgent. No success - tools have been only put in a separate folder and includes do not use
+    include path. Improved Report - now it is abstracted and used globally as an object instead of string.
+    Fixed a but in attachment file name. First test worked on Synology for backup on example folder.
+    Configured backup for documents folder on full production use. Also created a new ReleasePlan.txt file
+    containing plans for next improvements on Backup tool.
+Next planned work:
+    - If backup on real case is OK, implement RSnapshot report parsing.
+
+08/09/2014 (2.3h)
+    Finally, attachments are working!! Attachment of various types and sizes tested and working, and
+    multiple attachments also working. Only remains a strange bug with text files, it seems that the file
+    is not properly ended as there is a garbage string appended in the end.
+Next planned work:
+    - Fix remaining bug with text files
+    - Integrate with Backup
+    - Create a Tool lib that to be commonly used by UI and Backup project
+
+07/09/2014 (1.7h)
+    Attachment encoding and inclusion done for first attachment. Right now it is seen as part of
+    the body.
+Next planned work:
+    - Fix attachment formatting to be seen as proper attachment
+    - Handle more than 1 attachment
+
+31/08/2014 (3h)
+    Improved Backup job organization - now it is a job containing two console jobs. Added
+    support for simple command line options to avoid unnecessary shutdown/emails while testing.
+    Improved Console output management - now Backup job correctly outputs its report to file!
+Next planned work:
+    - Create MIME emails with attachments.
+    - Parse Backup output to create organized lists.
+
+24/08/2014 (2.3h)
+    Wake test worked from Synology. Console job updated to manage correctly return codes.
+    Shutdown job done and working. Change screensaver still needs testing. Now working on
+    BackupJob.
+Next planned work:
+    - Finish Backup Job.
+    - Test all chain.
+    - If time is OK, begin creating full MIME emails with attachments.
+
+21/08/2014 (1.7h)
+    Checked for error handling and corrected - I must use JobOutput object instead of returning
+    a dumb int. With it error works normally in desktop for Wake job. Implemented ChangeScreensaver job
+    too. Compiled and ran on Synology, however error handling is strange there.
+Next planned work :
+    - Test real wake with Synology
+    - Test Change screensaver on Synology too or check why it is not working (SSL pseudo-terminal?)
+    - If all is OK and time is good, finish remaining jobs : rsnapshot and shutdown.
+
+18/08/2014 (2.6h)
+    Installing CURL on Synology from source didn't work. Now changing implementation
+    to support calling curl from console instead of using lib. Architecture changed to
+    use Email dispatcher abstraction layer. Console curl email sending worked on desktop,
+    now testing on Synology. It worked! :-)
+    Now implementing first real job : wake job (console). First implementation seems OK,
+    needed to add setup concept. First test shows OK but should not...
+Next planned work :
+    - Debug WakeConsoleJob to understand what is going on and why isn't it failing.
+    - Test for real Wake job.
+    - Clean up code related to jobs and handle correctly errors in the toolchain.
+    - Implement other real jobs.
+
+17/08/2014 (0.7h)
+    Checked linked version of CURL, and it is not the same as stated by ipkg.
+    Downloaded and installing source version forcing SMTP and SSL support...
+Next planned work :
+    - Finish new CURL install and check that it works!
+
+14/08/2014 (0.4h)
+    Updated Synology makefile with emailsender and libcurl. It worked! :-)
+    However there is a runtime error with libcurl : it is compiled without SMTP
+    support.
+Next planned work :
+    - Check libcurl on Synology to support SMTP!
+
+12/08/2014 (0.5h)
+    Email integrated into BackupAgent. Bcc/Cc now working, they will need development. As
+    this feature is not mandatory for BackupAgent to work, it was decided to postpone it.
+    Attachments not working either because there are more important tasks to do to have
+    a working version of BackupAgent.
+Next planned work :
+    - Test integration with real life commands (wake script, rsnapshot...)
+    - Begin rsnapshot output parsing
+
+08/08/2014 (1.5h)
+    Email sending integrated and tested with EmailUI. (Nearly) everything works.
+Next planned work  :
+    - Test cc/bcc.
+    - Continue work with attachments.
+
+04/08/2014 (1.5h)
+    Created Qt interface for Email sending, with support for email content with attachments and
+    sender config.
+Next planned work :
+    - Integrate existing email sending feature into UI.
+    - Remove UI bugs/improve UI
+
+15/06/2014 (1h)
+    Removed (nearly) all static data from email, only message id missing (not relevant for now). Tried
+    to create simple UI for using sendmail, without success. Saw an example of file attachment management
+    with libcurl, copied it to code but without testing.
+Next planned work :
+    - Analyze and understand file attachment example and try to make it work.
+
+10/06/2014 (0.9h)
+    Finally got File pointer to work for email data. Now slowly replacing sample data with parameters.
+Next planned work :
+    - continue on putting dynamic data and cleaning code. Also must see how to do file attachments.
+
+05/06/2014 (1.3h)
+    Trying to clean working example. Found out that file pointer can't be used under windows, then
+    trying to create a static file ptr and use it in the payload function. Didn't work.
+    Thinking about other options - using it directly in CreateEmail func would work? If not,
+    there doesn't seem to be other options than creating static payload...
+Next planned work :
+    - Make example work with dynamic data from file.
+
+04/06/2014 (1h)
+    Testing how to use libcurl. Impossible directly from cygwin. After some search, it has been found that
+    copying libcurl windows binaries directly into QtCreator/Mingw works!
+    Compiling first examples for libcurl. First example sending email from gmail working !!
+Next planned work :
+    - Clean working code to have consistent class usable from backup agent.
+
+25/05/2014 (1.7h)
+    Test profiling in Synology OK. Now investigating smtp libs :
+    libcurl : very standard and tested lib with complete set of features. Very heavy. MIT license.
+              doesn't compile.
+    libsmtp : very small and particular. Not standard at all. Unknown licensing scheme.
+              doesn't compile - requires glibs.
+    libquickmail : seems known and used. Small. GPLv3 :-(
+              doesn't compile - requires libcurl.
+    libvmime : seems known and used. Small. GPLv3/commercial :-(
+              doesn't compile - configure doesn't even work.
+    POCO : complete set of features. Known and professional - company behind it. Unknown licensing - a kind of OpenSource.
+              doesn't compile - obscure String definition problem.
+    homemade with Boost : Very complete, "standard" solution totally free of any license :-)
+              How to make it work on Synology? No boostlib available and compile very long... leaving idea behind
+    Homemade with sockets : lowest level available, no deps, no license... will work everywhere.
+              Possible for simple SMTP but no gmail SSL authentication possible with reasonable dev time. Abandonning...
+    libcurl is available on synology, so it's worth focusing efforts there.
+Next planned work :
+    - compile and use libcurl on Desktop.
+
+18/05/2014 (1.5h)
+    Console report tested and validated on Synology. Reports and statuses now include timing information, tested and validated.
+Next planned work :
+    - Test and validate profiling in Synology.
+    - Investigate and begin testing smtp/imap lib (don't forget Synology compatibility!!).
+
+14/05/2014 (1h)
+    Console report now working as expected : generating a report based on data object with proper text formatting.
+    Code is working on Desktop but untested on Synology.
+Next planned work :
+    - Test and validate on Synology.
+    - Integrating profiling information in reports. Investigate on possible refactoring.
+    - Investigate and begin testing smtp/imap lib (don't forget Synology compatibility!!).
+    - Improve attached files management - same tmp dir for everyone?
+
+04/05/2014 (0.4h)
+    Began rework of report data. Now there is a special class for keeping report data, report class will only do
+    output formatting and protocol management. Code not working yet neither is commited - needs first to change main.cpp and
+    ConsoleReport to support new architecture.
+
+01/05/2014 (4h)
+    Simple implementation of Console job done - it executes a command and stores its output. Simple test successfull.
+    Reworked job architecture - now there is a class just for Job statuses and outputs. Also, profiledjob uses now
+    a decorator pattern - no one needs no inherit from him.
+    Created a first simple report that organizes all job data. Updated Synology makefile accordingly to keep
+    compatibility with Synology.
+Next planned work :
+    - Include more generic data system for JobStatus (PropertyMap?) and use it to track profiling information.
+    - Improve report generation : create clean data columns.
+    - Improve report data : integrate external files management.
+    - Investigate on smtp/imap lib that is easy to use, integrate, and compatible with Synology!
+
+18/04/2014 (0.7h)
+    Installed FreeMind and organized tasks data into it. From now it will be used to manage project tasks.
+    Create a simple dummy job to test the Run() feature. It worked!
+Next planned work :
+    - Create another job for calling console scripts and test.
+    - Change job architecture for returning more complex output (status, descriptions...)
+    - Check how to make unit testing, even simple.
+
+31/03/2014 (1h)
+    Installed a git repository on Synology. Successfully cloned the backupagent repository from Desktop, however pulling changes from
+    Desktop to Synology didn't work. Trying again... Pushing changes from synology worked. Leaving git at this stage - it can be used
+    for data transfer easily that way.
+    Back to creating Synology Makefile. First very simple makefile working!
+Next planned work :
+    - Create dummy jobs for testing framework.
+    - Test calling console scripts from job.
+    - Investigate on using unittest framework.
+
+24/03/2014 (1.5h)
+    Worked on checking compilation in Synology. Makefile from QtCreator doesn't work as it is, neither does an ancient makefile. However,
+    compiling by hand using g++ worked, so it is possible to write a manual Makefile for building it on Synology.
+    Also checked packages on Synology : libssh is available but not boost. I will have to link "manually" to a lib in the future to send
+    emails.
+    Reorganized sources in an src/ folder. Tried to do the same for binaries but it made the compiler complain about it. So for now
+    binaries remain in the same place.
+Next planned work :
+    - Write a makefile for compiling on Synology
+    - Create Git repository on Synology and sync it with Desktop : it is too annoying to keep copying by hand!

@@ -1,0 +1,29 @@
+#ifndef CLAMAVJOB_H
+#define CLAMAVJOB_H
+
+#include "abstractjob.h"
+#include "sshconsolejob.h"
+
+class ClamAvJob : public AbstractJob
+{
+public:
+	ClamAvJob();
+
+	~ClamAvJob();
+
+	virtual std::string GetName();
+
+	virtual bool InitializeFromClient(Client *client);
+
+    virtual bool IsInitialized(void);
+
+	virtual JobStatus* Run();
+
+protected:
+	SshConsoleJob* virusDefinitionUpdateJob;
+	SshConsoleJob* virusFullScanJob;
+	std::string scanDir;
+	bool blockOnFailingUpdate;
+};
+
+#endif // CLAMAVJOB_H
