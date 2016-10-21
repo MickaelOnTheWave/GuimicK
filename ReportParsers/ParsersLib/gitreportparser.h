@@ -20,8 +20,13 @@ public :
 class GitReportParser : public AbstractOutputParser
 {
 public:
+
+    bool ParseFile(const std::string& inputFile);
+
     bool ParseUsingFiles(const std::string& inputFile,
                          const std::string& outputFile, std::string& description);
+
+    void GetData(GitReportData& data);
 
 private:
     bool Parse(const std::string &buffer, GitReportData& reportData);
@@ -30,6 +35,11 @@ private:
     bool GetFileData(const std::string& fileName, std::string& fileContents);
 
     void WriteFileList(const std::vector<std::string>& fileList, const std::string& operation, std::ofstream& fileStream);
+
+    std::string CreateMiniDescriptionFromData();
+    void CreateFullFileDescriptionFromData(const std::string& file);
+
+    GitReportData reportData;
 };
 
 #endif // GITREPORTPARSER_H

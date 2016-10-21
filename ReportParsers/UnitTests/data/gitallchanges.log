@@ -1,0 +1,16 @@
+Mise à jour a0d6871..f3d1672
+Fast-forward
+ alternate0 |   1 +
+ alternate1 |   1 +
+ alternate2 |   1 +
+ file0      | Bin 1001 -> 1001 bytes
+ file1      | Bin 1001 -> 1001 bytes
+ file2      | Bin 1001 -> 1001 bytes
+ file3      | Bin 1001 -> 0 bytes
+ file4      | Bin 1001 -> 0 bytes
+ 8 files changed, 3 insertions(+)
+ create mode 100644 alternate0
+ create mode 100644 alternate1
+ create mode 100644 alternate2
+ delete mode 100644 file3
+ delete mode 100644 file4

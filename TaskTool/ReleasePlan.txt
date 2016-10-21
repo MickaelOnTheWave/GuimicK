@@ -10,6 +10,7 @@ Features implemented:
 	05/07/2015 - [021] Include Git repository backup in maintenance script
 	25/10/2015 - [031] Include System update in maintenance script
 	11/02/2016 - [030] Create additional options for ConsoleJob to handle mini description.
+	20/10/2016 - [037] Organize BackupAgent code and projects in tree like Tools
 
 Features to implement:
 	[002] Remove Wake script dependency
@@ -32,7 +33,6 @@ Features to implement:
 	[034] Create client app to create/manage backup folder configuration.
 	[035] Console job improvement : support an external parser system.
 	[036] Console job improvement : support a chain system.
-	[037] Organize BackupAgent code and projects in tree like Tools
 
 Bugs:
 	[0001] RemoveFolder() from FileTools gives link issue. See GitCloneBackup.cpp.
@@ -63,14 +63,14 @@ v0.6 :
 	[019] Do not create intermediate files - handle all data in memory!
 	[033] Handle File backup folder data outside of rsnapshot conf file.
 	[029] Split job config file into client/server files.
-	[037] Organize BackupAgent code and projects in tree like Tools
+	[036] Console job improvement : support a chain system.
 
 v0.5 :
 	[002] Remove Wake script dependency
 	[031] Include System update in maintenance script
 	[035] Console job improvement : support an external parser system.
-	[036] Console job improvement : support a chain system.
 	[030] Create additional options for ConsoleJob to handle mini description.
+	[037] Organize BackupAgent code and projects in tree like Tools
 
 v0.4 : 05/07/2015
 	[021] Include Git repository backup in maintenance script

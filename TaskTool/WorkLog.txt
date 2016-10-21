@@ -1,3 +1,8 @@
+21/10/2016 (1.6h)
+	Created Git report parser unit tests, and they seem now complete. Now the implementation needs to be done...
+Next planned work :
+	- Implement Git report parser
+
 20/10/2016 (3.3h)
 	Updated all Tools projects to use new path. Moved all AutoBackup projects and files to new structure and updated them all to use
 	new dependencies. Also moved all data and project related files. Everything seems to work fine, next step is checking/fixing
