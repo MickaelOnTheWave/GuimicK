@@ -1,5 +1,12 @@
-24/10/2016 (10.1)
-	Implemented Git report parser successfully!! :-)
+24/10/2016 (2.8h)
+	Implemented Git report parser successfully!! :-) Now going for Git job testing.
+	Created structure for Git job testing. Now implementing tests... stopped on a strange linker error
+	with static consts. Looking on Internet showed several similar issues but none of the workarounds work
+	for this case.
+Next planned work :
+	- Resolve static const usage issue.
+	- Finish implementing Git job test suite.
+	- Implement / fix current implementation of Git job to match test suite.
 
 21/10/2016 (1.6h)
 	Created Git report parser unit tests, and they seem now complete. Now the implementation needs to be done...
