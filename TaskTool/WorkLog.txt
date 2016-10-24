@@ -1,3 +1,6 @@
+24/10/2016 (10.1)
+	Implemented Git report parser successfully!! :-)
+
 21/10/2016 (1.6h)
 	Created Git report parser unit tests, and they seem now complete. Now the implementation needs to be done...
 Next planned work :

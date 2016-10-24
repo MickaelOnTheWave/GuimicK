@@ -20,7 +20,6 @@ bool GitReportParser::ParseFile(const string &inputFile)
     if (GetFileData(inputFile, fileContents) == false)
         return false;
 
-    GitReportData reportData;
     if (Parse(fileContents, reportData) == false)
         return false;
 
@@ -80,18 +79,21 @@ void GitReportParser::CreateFullFileDescriptionFromData(const string &file)
 
 bool GitReportParser::Parse(const std::string &buffer, GitReportData &reportData)
 {
-    // TODO : implement this parser really!!
     reportData.Clear();
 
-    if (buffer == "Already up-to-date.")
-        return true;
+    vector<string> lines;
+    TokenizeString(buffer, '\n', lines);
 
-    // 1. Look for "Fast forward" tag
-    //size_t beginPos = buffer.find(FAST_FORWARD_TAG);
+    RemoveLinesWithoutStartingWhitespaces(lines);
 
-    // 2. Each line is a file until "file changed"
+    vector<string> fileSectionLines, informationSectionLines;
+    SplitIntoSections(lines, fileSectionLines, informationSectionLines);
 
-    // 3. File change count is for all changes, insert and deletes are about data, not new or old files.
+    vector<string> fileList;
+    CreateFileList(fileSectionLines, fileList);
+
+    FillReportData(fileList, informationSectionLines, reportData);
+
     return true;
 }
 
@@ -110,4 +112,95 @@ bool GitReportParser::GetFileData(const std::string& fileName, string& fileConte
 
     inFile.close();
     return true;
+}
+
+void GitReportParser::TokenizeString(const string &input, const char separator, std::vector<string> &tokenList) const
+{
+    tokenList.clear();
+    istringstream is(input);
+    string token;
+    while (getline(is, token, separator))
+        tokenList.push_back(token);
+}
+
+void GitReportParser::RemoveLinesWithoutStartingWhitespaces(std::vector<string> &linesList)
+{
+   vector<string>::iterator it=linesList.begin();
+    while (it != linesList.end())
+    {
+        if (*it == GetLeftTrimmed(*it))
+            it = linesList.erase(it);
+        else
+            ++it;
+    }
+}
+
+void GitReportParser::SplitIntoSections(const std::vector<string> &linesList,
+                                        std::vector<string> &fileLinesList,
+                                        std::vector<string> &informationLinesList)
+{
+    std::vector<string>::const_iterator it=linesList.begin();
+    for (; it!=linesList.end(); ++it)
+    {
+        if (it->find('|') != std::string::npos)
+            fileLinesList.push_back(*it);
+        else
+            informationLinesList.push_back(*it);
+    }
+}
+
+std::string GitReportParser::GetLeftTrimmed(const std::string& input)
+{
+    size_t first = input.find_first_not_of(' ');
+    return input.substr(first);
+}
+
+std::string GitReportParser::GetRightTrimmed(const std::string& input)
+{
+    size_t last = input.find_last_not_of(' ');
+    return input.substr(0, last+1);
+}
+
+void GitReportParser::CreateFileList(const std::vector<string> &linesList, std::vector<string> &fileList)
+{
+    std::vector<string>::const_iterator it=linesList.begin();
+    for (; it!=linesList.end(); ++it)
+    {
+        size_t pos = it->find('|');
+        string rawFilename = it->substr(0, pos);
+        fileList.push_back(GetLeftTrimmed(GetRightTrimmed(rawFilename)));
+    }
+}
+
+void GitReportParser::FillReportData(const std::vector<string> &files,
+                                     const std::vector<string> &informationLines,
+                                     GitReportData &reportData)
+{
+    const string createModeString = "create mode";
+    const string deleteModeString = "delete mode";
+
+    vector<string>::const_iterator it=files.begin();
+    for (; it!=files.end(); ++it)
+    {
+        string informationLine = GetLineWithSubstring(*it, informationLines);
+        if (informationLine.find(createModeString) != string::npos)
+            reportData.addedFileList.push_back(*it);
+        else if (informationLine.find(deleteModeString) != string::npos)
+            reportData.removedFileList.push_back(*it);
+        else
+            reportData.modifiedFileList.push_back(*it);
+
+    }
+}
+
+string GitReportParser::GetLineWithSubstring(const string &stringToFind, const std::vector<string> &stringList)
+{
+    vector<string>::const_iterator it=stringList.begin();
+    for(; it!=stringList.end(); ++it)
+    {
+        if (it->find(stringToFind) != string::npos)
+            return *it;
+    }
+
+    return string("");
 }

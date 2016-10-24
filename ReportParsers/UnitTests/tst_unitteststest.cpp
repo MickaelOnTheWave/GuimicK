@@ -97,8 +97,8 @@ void GitReportParserTest::testParseFile_MixedChanges()
         QCOMPARE(QString(reportData.addedFileList[i].c_str()), QString("alternate%1").arg(i));
     for (int i=0; i<3; ++i)
         QCOMPARE(QString(reportData.modifiedFileList[i].c_str()), QString("file%1").arg(i));
-    for (int i=3; i<5; ++i)
-        QCOMPARE(QString(reportData.removedFileList[i].c_str()), QString("file%1").arg(i));
+    QCOMPARE(QString(reportData.removedFileList[0].c_str()), QString("file3"));
+    QCOMPARE(QString(reportData.removedFileList[1].c_str()), QString("file4"));
 }
 
 void GitReportParserTest::TestWrongFile(const std::string &inputFile)
