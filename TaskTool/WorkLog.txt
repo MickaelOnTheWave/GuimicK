@@ -1,3 +1,10 @@
+25/10/2016 (0.7h)
+	Got around static const issue by redefining values using defines. This is dirty, so a todo was left for
+	when there will be time to spend on todos...
+	Continued test implementation.
+Next planned work :
+	- Keep going on previous roadmap.
+
 24/10/2016 (2.8h)
 	Implemented Git report parser successfully!! :-) Now going for Git job testing.
 	Created structure for Git job testing. Now implementing tests... stopped on a strange linker error

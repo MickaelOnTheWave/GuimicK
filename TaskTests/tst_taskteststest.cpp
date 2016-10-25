@@ -14,7 +14,6 @@ public:
 private Q_SLOTS:
     void testCreate_NoSource();
     void testCreate_InvalidSource();
-    void testCreate_InvalidDestination();
     void testCreate_ExistingDestination();
     void testCreate_AllValid();
 
@@ -25,9 +24,18 @@ private Q_SLOTS:
 
 private:
     void CreateGitBackup(const QString& source, const QString& destination);
+    void CheckGitJobReturnsError(const QString& description);
+    void CheckGitJobReturnsOk(const QString& description);
+    void CheckGitJobReturn(const int expectedStatus,
+                           const unsigned long expectedReportFileCount,
+                           const QString& description);
+    void CheckFolderExistence(const QString &folder, const bool expectedExistence);
 
-    const std::string sourceRepository = "GitRepository";
-    const std::string destinationRepository = "GitDestRepository";
+    const QString sourceRepository = "GitRepository";
+    const QString destinationRepository = "GitDestRepository";
+    const QString nonexistentRepository = "blablabla";
+    const QString invalidRepository = "data/image.jpeg";
+    const QString existingFolder = "data/existingFolder";
 
     JobStatus* currentStatus;
 };
@@ -36,47 +44,50 @@ GitJobTest::GitJobTest()
 {
 }
 
-// To force GCC to include definition into object file, so that it is possible
-// to use them externally.
-const int JobStatus::NOT_EXECUTED;
-//const int JobStatus::OK;
-//const int JobStatus::OK_WITH_WARNINGS;
-//const int JobStatus::ERROR;
+// TODO : remove this and find a way to use JobStatus values outside of library
+#define JobStatus_NOT_EXECUTED      0
+#define JobStatus_OK                1
+#define JobStatus_OK_WITH_WARNINGS  2
+#define JobStatus_ERROR             3
 
 void GitJobTest::testCreate_NoSource()
 {
-    const QString destination = "destNonExistentPath";
+    const QString expectedDescription = "Source repository does not exist";
 
-    CreateGitBackup("nonexistentPath", destination);
-
-    QCOMPARE(currentStatus->GetCode(), JobStatus::ERROR);
-    QCOMPARE(currentStatus->GetDescription().c_str(), "Source repository does not exist");
-
-    std::vector<std::string> reportFiles;
-    currentStatus->GetFilenames(reportFiles);
-    QCOMPARE(reportFiles.size(), 0ul);
-
-    QCOMPARE(FileTools::FolderExists(destination.toStdString()), false);
+    CreateGitBackup(nonexistentRepository, destinationRepository);
+    CheckGitJobReturnsError(expectedDescription);
+    CheckFolderExistence(nonexistentRepository, false);
+    CheckFolderExistence(destinationRepository, false);
 }
 
 void GitJobTest::testCreate_InvalidSource()
 {
-    QFAIL("Not implemented yet");
-}
+    const QString expectedDescription = "Invalid source repository";
 
-void GitJobTest::testCreate_InvalidDestination()
-{
-    QFAIL("Not implemented yet");
+    CreateGitBackup(invalidRepository, destinationRepository);
+    CheckGitJobReturnsError(expectedDescription);
+    CheckFolderExistence(invalidRepository, false);
+    CheckFolderExistence(destinationRepository, false);
 }
 
 void GitJobTest::testCreate_ExistingDestination()
 {
-    QFAIL("Not implemented yet");
+    const QString expectedDescription = "Destination folder already exists";
+
+    CreateGitBackup(sourceRepository, existingFolder);
+    CheckGitJobReturnsError(expectedDescription);
+    CheckFolderExistence(sourceRepository, true);
+    CheckFolderExistence(existingFolder, true);
 }
 
 void GitJobTest::testCreate_AllValid()
 {
-    QFAIL("Not implemented yet");
+    const QString expectedDescription = "Destination folder already exists";
+
+    CreateGitBackup(sourceRepository, destinationRepository);
+    CheckGitJobReturnsOk(expectedDescription);
+    CheckFolderExistence(sourceRepository, true);
+    CheckFolderExistence(existingFolder, true);
 }
 
 void GitJobTest::testUpdate_Added()
@@ -102,6 +113,34 @@ void GitJobTest::testUpdate_MixedChanges()
 void GitJobTest::CreateGitBackup(const QString &source, const QString &destination)
 {
     // TODO : Run job, get its status and its report data.
+}
+
+void GitJobTest::CheckGitJobReturnsError(const QString& description)
+{
+    CheckGitJobReturn(JobStatus_ERROR, 0, description);
+}
+
+void GitJobTest::CheckGitJobReturnsOk(const QString &description)
+{
+    CheckGitJobReturn(JobStatus_OK, 1, description);
+}
+
+void GitJobTest::CheckGitJobReturn(const int expectedStatus,
+                                   const unsigned long expectedReportFileCount,
+                                   const QString &description)
+{
+    QCOMPARE(currentStatus->GetCode(), expectedStatus);
+    QCOMPARE(currentStatus->GetDescription(), description.toStdString());
+
+    std::vector<std::string> reportFiles;
+    currentStatus->GetFilenames(reportFiles);
+    QCOMPARE(reportFiles.size(), expectedReportFileCount);
+}
+
+void GitJobTest::CheckFolderExistence(const QString& folder,
+                                      const bool expectedExistence)
+{
+    QCOMPARE(FileTools::FolderExists(folder.toStdString()), expectedExistence);
 }
 
 QTEST_APPLESS_MAIN(GitJobTest)
