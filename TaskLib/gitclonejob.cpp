@@ -6,8 +6,7 @@ using namespace std;
 
 GitCloneJob::GitCloneJob(std::vector<std::pair<std::string, std::string> > *_gitRepositoryList,
                          std::string _sshUser, std::string _sshHost)
-    : GitBackupJob(),
-      sshUser(_sshUser), sshHost(_sshHost)
+    : sshUser(_sshUser), sshHost(_sshHost)
 {
     localTarget = (sshUser == "" || sshHost == "");
     if (_gitRepositoryList)
@@ -44,9 +43,6 @@ bool GitCloneJob::IsInitialized()
     return consistentTarget && AreSourcesConsistent();
 }
 
-#include <stdio.h>
-#include "dirent.h"
-
 JobStatus *GitCloneJob::Run()
 {  
     unsigned int faultyRepositories = 0;
@@ -57,23 +53,7 @@ JobStatus *GitCloneJob::Run()
     {
         string destination(it->second);
         if (FileTools::FolderExists(destination))
-        {
-           // FileTools::RemoveFolder(destination, false);
-
-            // @todo Remove this code - it is duplicate from RemoveFolder()
-            // but there is a mysterious unknown linking issue when using form filetools :-(
-            DIR *dir;
-            struct dirent *ent;
-            if ((dir = opendir (destination.c_str())) != NULL)
-            {
-                while ((ent = readdir (dir)) != NULL)
-                {
-                    remove(ent->d_name);
-                }
-                closedir (dir);
-                remove(destination.c_str());
-            }
-        }
+            FileTools::RemoveFolder(destination, false);
 
         ConsoleJob* gitCommand = new ConsoleJob("", "git", BuildGitParameters(it->first, destination));
         gitCommand->SetOutputToBuffer();
@@ -163,4 +143,9 @@ string GitCloneJob::BuildGitParameters(const std::string& source, const std::str
     params += string(" ") + destination;
 
     return params;
+}
+
+string GitCloneJob::CorrectRepositoryWord(int n)
+{
+    return (n == 1) ? "repository" : "repositories";
 }

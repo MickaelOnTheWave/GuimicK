@@ -9,7 +9,7 @@
  * The "backup" is in fact a clone of the original repository.
  * It is generated using the "git clone" command.
  */
-class GitCloneJob : public GitBackupJob
+class GitCloneJob : public AbstractJob
 {
 public:
     GitCloneJob(std::vector<std::pair<std::string, std::string> >* _gitRepositoryList,
@@ -33,6 +33,7 @@ public:
 private:
     bool AreSourcesConsistent() const;
     std::string BuildGitParameters(const std::string &source, const std::string &destination) const;
+    std::string CorrectRepositoryWord(int n);
 
     std::vector<std::pair<std::string, std::string> > gitRepositoryList;
     std::string sshUser;

@@ -11,7 +11,7 @@
  * The update is in fact a "git pull" command - so there must already
  * be a pull target configured and the repository must be valid.
  */
-class GitPullJob : public GitBackupJob
+class GitPullJob : public AbstractJob
 {
 public:
     GitPullJob(std::vector<std::string>* _gitRepositoryList);
@@ -29,6 +29,8 @@ public:
     void ClearRepositoryList(void);
 
 private:
+    std::string CorrectRepositoryWord(int n);
+
     ConsoleJob* gitCommand;
 
     std::vector<std::string> gitRepositoryList;

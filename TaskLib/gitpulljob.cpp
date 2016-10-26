@@ -119,3 +119,7 @@ void GitPullJob::ClearRepositoryList()
     gitRepositoryList.clear();
 }
 
+string GitPullJob::CorrectRepositoryWord(int n)
+{
+    return (n == 1) ? "repository" : "repositories";
+}
