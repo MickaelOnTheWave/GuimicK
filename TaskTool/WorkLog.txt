@@ -1,12 +1,16 @@
-26/10/2016 (2.9h)
+26/10/2016 (5.7h)
 	Finished test suite, at least for single repositories. Isolated both actual Git jobs to create a new independent one.
 	Created new Git generic job, properly refactored for all cases. For now, implementation is only made for cloning.
 	Beginning work on fixing git backup job. Stopped on using external command running, as current pipe implementation is broken.
-	Trying to fix it...
+	Fixed pipe issue - implementation was correct but missing messages were from stderr, not stdout. Created a switch to redirect
+	stderr to stdout.
+	Continued updating git backup implementation. Clone implementation is OK, Pull implementation is mostly OK too. Implementation
+	stopped because now there is more dirty work to do : git job needs to use a parser, and ConsoleJob doesn't know how to do that
+	except using external command. Architecture needs some updating...
 Next planned work :
-	- Try a little more fixing pipe command implementation. If it doesn't work, use file implementation.
-	- Fix Git backup implementation for single repositories.
-	- Create tests and implementation for multiple Git repositories backup.
+	- Find some fast way to implement parsing in git job
+	- Finish git testing and implementation
+	- Refactor ConsoleJob implementation (and write a new test suite?)
 
 25/10/2016 (0.7h)
 	Got around static const issue by redefining values using defines. This is dirty, so a todo was left for
