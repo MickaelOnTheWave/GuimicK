@@ -104,12 +104,9 @@ JobStatus *ConsoleJob::Run()
         status->AddFile(outputFileName);
     }
     else
-        receivedReturnCode = Tools::RunExternalCommand(fullCommand, standardOutput);
+        receivedReturnCode = Tools::RunExternalCommand(fullCommand, standardOutput, true);
 
-	// For some strange reasons, the return value is multiplied by 256. The correct should be using WEXITSTATUS() macro
-	// but it is unix specific...
-	if (receivedReturnCode%256 == 0)
-		receivedReturnCode /= 256;
+    receivedReturnCode = WEXITSTATUS(receivedReturnCode);
 
     stringstream sstream;
     if (checkReturnCode && receivedReturnCode != expectedReturnCode)

@@ -6,9 +6,13 @@
 
 #include "consolejob.h"
 
-static const std::string noSourceRepositoryError = "Source repository does not exist";
-
 using namespace std;
+
+static const string invalidSourceRepositoryError        = "Invalid source repository";
+static const string repositoryCloneOk                   = "Repository cloned successfully";
+static const string invalidDestinationRepositoryError   = "Invalid destination repository";
+static const string repositoryPullOk                    = "Repository successfully updated";
+
 
 GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &_gitRepositoryList)
  : sshUser(""), sshHost(""), isTargetLocal(true)
@@ -111,7 +115,27 @@ void GitBackupJob::RunGitRepositoryBackup(const string &source,
 
 void GitBackupJob::RunGitPull(const string &repository, std::vector<JobStatus *> &statusList) const
 {
+    char *originalDirectory = NULL;
+    int originalDirectorySize = 0;
+    originalDirectory = getcwd(originalDirectory, originalDirectorySize);
+    chdir(repository.c_str());
 
+
+    // TODO : remove this ugly file generation! See next tasks.
+    const string gitLogFile = string("../") + repository + "_repository.txt";
+    ConsoleJob* gitCommand = new ConsoleJob("", "git", "pull");
+    gitCommand->SetOutputTofile(gitLogFile);
+    JobStatus* status = gitCommand->Run();
+
+    if (gitCommand->GetCommandReturnCode() == 128)
+        status->SetDescription(invalidDestinationRepositoryError);
+    else
+        status->SetDescription(repositoryPullOk);
+
+    statusList.push_back(status);
+    delete gitCommand;
+
+    chdir(originalDirectory);
 }
 
 void GitBackupJob::RunGitClone(const string &source,
@@ -119,11 +143,11 @@ void GitBackupJob::RunGitClone(const string &source,
                                vector<JobStatus *> &statusList) const
 {
     ConsoleJob* gitCommand = new ConsoleJob("", "git", BuildGitParameters(source, destination));
-    gitCommand->SetOutputToBuffer();
-
     JobStatus* status = gitCommand->Run();
     if (gitCommand->GetCommandReturnCode() == 128)
-        status->SetDescription(noSourceRepositoryError);
+        status->SetDescription(invalidSourceRepositoryError);
+    else
+        status->SetDescription(repositoryCloneOk);
 
     statusList.push_back(status);
     delete gitCommand;
@@ -131,7 +155,7 @@ void GitBackupJob::RunGitClone(const string &source,
 
 string GitBackupJob::BuildGitParameters(const string &source, const string &destination) const
 {
-    string params("clone --mirror ");
+    string params("clone ");
     if (isTargetLocal)
         params += source;
     else
