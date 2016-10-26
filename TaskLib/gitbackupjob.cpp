@@ -4,6 +4,10 @@
 #include <filetools.h>
 #include <unistd.h>
 
+#include "consolejob.h"
+
+static const std::string noSourceRepositoryError = "Source repository does not exist";
+
 using namespace std;
 
 GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &_gitRepositoryList)
@@ -33,7 +37,12 @@ bool GitBackupJob::IsInitialized()
 
 JobStatus *GitBackupJob::Run()
 {
+    vector<JobStatus*> repositoriesStatus;
+    vector<pair<string, string> >::const_iterator it=gitRepositoryList.begin();
+    for (; it!=gitRepositoryList.end(); it++)
+        RunGitRepositoryBackup(it->first, it->second, repositoriesStatus);
 
+    return CreateGlobalStatus(repositoriesStatus);
 }
 
 void GitBackupJob::SetTargetRemote(const string &user, const string &host)
@@ -60,9 +69,9 @@ void GitBackupJob::ClearRepositoryList()
     gitRepositoryList.clear();
 }
 
-string GitBackupJob::CorrectRepositoryWord(int n)
+string GitBackupJob::GetCorrectRepositoryWord() const
 {
-    return (n == 1) ? "repository" : "repositories";
+    return (gitRepositoryList.size() == 1) ? "repository" : "repositories";
 }
 
 bool GitBackupJob::InitializeRemoteTarget(Client *client)
@@ -88,4 +97,101 @@ bool GitBackupJob::AreSourcesConsistent() const
             return false;
     }
     return true;
+}
+
+void GitBackupJob::RunGitRepositoryBackup(const string &source,
+                                          const string &destination,
+                                          vector<JobStatus*>& statusList) const
+{
+    if (FileTools::FolderExists(destination))
+        RunGitPull(destination, statusList);
+    else
+        RunGitClone(source, destination, statusList);
+}
+
+void GitBackupJob::RunGitPull(const string &repository, std::vector<JobStatus *> &statusList) const
+{
+
+}
+
+void GitBackupJob::RunGitClone(const string &source,
+                               const string &destination,
+                               vector<JobStatus *> &statusList) const
+{
+    ConsoleJob* gitCommand = new ConsoleJob("", "git", BuildGitParameters(source, destination));
+    gitCommand->SetOutputToBuffer();
+
+    JobStatus* status = gitCommand->Run();
+    if (gitCommand->GetCommandReturnCode() == 128)
+        status->SetDescription(noSourceRepositoryError);
+
+    statusList.push_back(status);
+    delete gitCommand;
+}
+
+string GitBackupJob::BuildGitParameters(const string &source, const string &destination) const
+{
+    string params("clone --mirror ");
+    if (isTargetLocal)
+        params += source;
+    else
+        params += sshUser + "@" + sshHost + ":" + source;
+
+    params += string(" ") + destination;
+    return params;
+}
+
+JobStatus *GitBackupJob::CreateGlobalStatus(const std::vector<JobStatus *> &statusList) const
+{
+    if (gitRepositoryList.size() == 1)
+        return CreateSingleRepositoryStatus(statusList.front());
+    else
+        return CreateMultiRepositoryStatus(statusList);
+}
+
+JobStatus *GitBackupJob::CreateSingleRepositoryStatus(JobStatus *status) const
+{
+    return new JobStatus(*status);
+}
+
+JobStatus *GitBackupJob::CreateMultiRepositoryStatus(const std::vector<JobStatus *> &statusList) const
+{
+    JobStatus* status = new JobStatus();
+    stringstream descriptionStream;
+    unsigned int faultyRepositories = CountFaultyRepositories(statusList);
+    if (faultyRepositories == 0)
+    {
+        status->SetCode(JobStatus::OK);
+        descriptionStream << gitRepositoryList.size();
+        descriptionStream << " Git " << GetCorrectRepositoryWord() << " successfully backed up.";
+    }
+    else if (faultyRepositories == gitRepositoryList.size())
+    {
+        status->SetCode(JobStatus::ERROR);
+        descriptionStream << gitRepositoryList.size();
+        descriptionStream << " Git " << GetCorrectRepositoryWord() << " failed to backup.";
+    }
+    else
+    {
+        status->SetCode(JobStatus::OK_WITH_WARNINGS);
+        int okRepositories = gitRepositoryList.size()-faultyRepositories;
+        descriptionStream << okRepositories;
+        descriptionStream << " Git " << GetCorrectRepositoryWord() << " backed up, ";
+        descriptionStream << faultyRepositories << " failed.";
+    }
+
+    status->SetDescription(descriptionStream.str());
+    return status;
+}
+
+unsigned int GitBackupJob::CountFaultyRepositories(const vector<JobStatus *> &statusList) const
+{
+    unsigned int faulties = 0;
+    vector<JobStatus*>::const_iterator it=statusList.begin();
+    for(; it!=statusList.end(); ++it)
+    {
+        if ((*it)->GetCode() == JobStatus::ERROR)
+            ++faulties;
+    }
+    return faulties;
 }

@@ -44,8 +44,8 @@ private:
     const QString sourceRepository = "GitRepository";
     const QString destinationRepository = "GitDestRepository";
     const QString nonexistentRepository = "blablabla";
-    const QString invalidRepository = "data/image.jpeg";
-    const QString existingFolder = "data/existingFolder";
+    const QString invalidRepository = "image.jpg";
+    const QString existingFolder = "existingFolder";
 
     const QString messageNoSource = "Source repository does not exist";
     const QString messageInvalidSource = "Invalid source repository";

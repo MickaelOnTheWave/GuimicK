@@ -47,3 +47,6 @@ TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
 INCLUDEPATH += $$TOOLS_INCLUDE_PATH
 DEPENDPATH += $$TOOLS_INCLUDE_PATH
+
+OTHER_FILES += \
+    data/image.jpg
