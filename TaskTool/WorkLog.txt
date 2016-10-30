@@ -1,6 +1,10 @@
-30/10/2016 (20.1)
+30/10/2016 (1.5h)
 	Implemented Git job parsing directly inside Git backup job - easier than expected :-) Implementation and testing for single
 	repository is now complete!!
+Next planned work :
+	- Implement last test for multiple repositories
+	- Update git implementation for multiple repositories
+	- Put to production git backup using new job
 
 26/10/2016 (5.7h)
 	Finished test suite, at least for single repositories. Isolated both actual Git jobs to create a new independent one.

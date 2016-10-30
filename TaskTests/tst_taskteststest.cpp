@@ -22,6 +22,7 @@ private Q_SLOTS:
     void testUpdate_Removed();
     void testUpdate_Changed();
     void testUpdate_MixedChanges();
+    void testUpdate_MultipleRepositories();
 
 private:
     void InitializeTestData();
@@ -175,6 +176,11 @@ void GitJobTest::testUpdate_MixedChanges()
     expectedFiles.push_front("added1");
     expectedFiles.push_front("added0");
     CheckRepositoryContent(destinationRepository, expectedFiles);
+}
+
+void GitJobTest::testUpdate_MultipleRepositories()
+{
+    QFAIL("Implement");
 }
 
 void GitJobTest::InitializeTestData()
