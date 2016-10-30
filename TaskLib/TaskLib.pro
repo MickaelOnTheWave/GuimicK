@@ -25,8 +25,6 @@ SOURCES += \
     dummyjob.cpp \
     emailreportdispatcher.cpp \
     gitbackupjob.cpp \
-    gitclonejob.cpp \
-    gitpulljob.cpp \
     htmlreportcreator.cpp \
     jobstatus.cpp \
     linuxshutdownjob.cpp \
@@ -52,8 +50,6 @@ HEADERS +=\
     dummyjob.h \
     emailreportdispatcher.h \
     gitbackupjob.h \
-    gitclonejob.h \
-    gitpulljob.h \
     htmlreportcreator.h \
     jobstatus.h \
     linuxshutdownjob.h \

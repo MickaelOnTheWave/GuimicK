@@ -7,8 +7,6 @@
 #include "linuxshutdownjob.h"
 #include "profiledjob.h"
 #include "htmlreportcreator.h"
-#include "gitclonejob.h"
-#include "gitpulljob.h"
 
 using namespace std;
 
@@ -109,15 +107,7 @@ AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
         return job;
     }
     else if (object->name == "GitBackup")
-    {
-        string type = object->GetFirstProperty("type", "param0");
-        if (type == "Update")
-            return CreateGitPullJob(object);
-        else if (type == "Full")
-            return CreateGitCloneJob(object);
-        else
-            return NULL;
-    }
+        return CreateGitBackupJob(object);
 	else
         return NULL;
 }
@@ -157,32 +147,9 @@ void Configuration::InitializeConsoleJobFromObject(ConfigurationObject *object, 
         job->SetMiniDescriptionParserCommand(parserCommand);
 }
 
-GitPullJob* Configuration::CreateGitPullJob(ConfigurationObject *object)
+GitBackupJob *Configuration::CreateGitBackupJob(ConfigurationObject *object)
 {
-    GitPullJob* job = new GitPullJob(NULL);
-    map<string, string>::iterator itProp = object->propertyList.begin();
-    map<string, string>::iterator endProp = object->propertyList.end();
-    for (; itProp != endProp; itProp++)
-    {
-        pair<string, string> currentProp = *itProp;
-
-        // Already managed before
-        if (currentProp.first == "param0")
-            continue;
-
-        // Repositories are either specified using full prop name "Repository" or
-        // are automated parameters.
-        if (currentProp.first != "Repository" && currentProp.first.find("param") != 0)
-            continue;
-
-        job->AddRepository(currentProp.second);
-    }
-    return job;
-}
-
-GitCloneJob *Configuration::CreateGitCloneJob(ConfigurationObject *object)
-{
-    GitCloneJob* job = new GitCloneJob(NULL);
+    GitBackupJob* job = new GitBackupJob();
     list<ConfigurationObject*>::iterator it = object->objectList.begin();
     list<ConfigurationObject*>::iterator end = object->objectList.end();
     for (; it != end; it++)
@@ -199,9 +166,9 @@ GitCloneJob *Configuration::CreateGitCloneJob(ConfigurationObject *object)
 
     string target(object->propertyList["target"]);
     if (target == "local")
-        job->SetLocalTarget();
+        job->SetTargetLocal();
     else
-        job->SetRemoteTarget();
+        job->SetTargetRemote();
 
     return job;
 }

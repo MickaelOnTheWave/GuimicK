@@ -12,11 +12,10 @@
 #include "clamavjob.h"
 #include "backupjob.h"
 #include "consolereport.h"
+#include "gitbackupjob.h"
 #include "SelfIdentity.h"
 
 class ConfigurationObject;
-class GitCloneJob;
-class GitPullJob;
 
 class Configuration
 {
@@ -45,8 +44,7 @@ protected:
 	AbstractJob *CreateJobFromObject(ConfigurationObject *object);
     void InitializeConsoleJobFromObject(ConfigurationObject *object, ConsoleJob* job);
 
-    GitPullJob* CreateGitPullJob(ConfigurationObject* object);
-    GitCloneJob* CreateGitCloneJob(ConfigurationObject* object);
+    GitBackupJob* CreateGitBackupJob(ConfigurationObject* object);
 
 	void CreateClient(ConfigurationObject* confObject, std::list<std::string>& errorMessages);
 	void CreateSelf(ConfigurationObject* confObject, std::list<std::string>& errorMessages);

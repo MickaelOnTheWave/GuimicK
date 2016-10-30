@@ -9,6 +9,7 @@
 class GitBackupJob : public AbstractJob
 {
 public:
+    GitBackupJob();
     GitBackupJob(const std::vector<std::pair<std::string, std::string> >& _gitRepositoryList);
     virtual ~GitBackupJob();
 

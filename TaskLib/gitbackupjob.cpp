@@ -15,6 +15,11 @@ static const string invalidDestinationRepositoryError   = "Invalid destination r
 static const string repositoryPullOk                    = "Repository successfully updated, see attached file.";
 
 
+GitBackupJob::GitBackupJob()
+ : sshUser(""), sshHost(""), isTargetLocal(true)
+{
+}
+
 GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &_gitRepositoryList)
  : sshUser(""), sshHost(""), isTargetLocal(true)
 {
