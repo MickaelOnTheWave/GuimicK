@@ -5,13 +5,14 @@
 #include <unistd.h>
 
 #include "consolejob.h"
+#include "gitreportparser.h"
 
 using namespace std;
 
 static const string invalidSourceRepositoryError        = "Invalid source repository";
 static const string repositoryCloneOk                   = "Repository cloned successfully";
 static const string invalidDestinationRepositoryError   = "Invalid destination repository";
-static const string repositoryPullOk                    = "Repository successfully updated";
+static const string repositoryPullOk                    = "Repository successfully updated, see attached file.";
 
 
 GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &_gitRepositoryList)
@@ -122,15 +123,28 @@ void GitBackupJob::RunGitPull(const string &repository, std::vector<JobStatus *>
 
 
     // TODO : remove this ugly file generation! See next tasks.
-    const string gitLogFile = string("../") + repository + "_repository.txt";
+    const string gitRawLogFile = string("../") + repository + "_repository_raw.txt";
     ConsoleJob* gitCommand = new ConsoleJob("", "git", "pull");
-    gitCommand->SetOutputTofile(gitLogFile);
+    gitCommand->SetOutputTofile(gitRawLogFile);
     JobStatus* status = gitCommand->Run();
 
     if (gitCommand->GetCommandReturnCode() == 128)
         status->SetDescription(invalidDestinationRepositoryError);
     else
-        status->SetDescription(repositoryPullOk);
+    {
+        GitReportParser parser;
+        string description;
+        const string gitParsedLogFile = string("../") + repository + "_repository.txt";
+        bool ok = parser.ParseUsingFiles(gitRawLogFile, gitParsedLogFile, description);
+        if (ok)
+        {
+            status->RemoveAllFiles();
+            status->AddFile(gitParsedLogFile);
+            status->SetDescription(description);
+        }
+        else
+            status->SetDescription(repositoryPullOk);
+    }
 
     statusList.push_back(status);
     delete gitCommand;

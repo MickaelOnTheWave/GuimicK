@@ -32,6 +32,7 @@ public:
 	void SetDescription(const std::string& _description);
 
 	void AddFile(const std::string& filename);
+    void RemoveAllFiles();
 
 	bool IsWorseThan(int otherCode) const;
 

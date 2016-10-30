@@ -37,9 +37,14 @@ bool GitReportParser::ParseUsingFiles(const string &inputFile, const string &out
     return true;
 }
 
-void GitReportParser::GetData(GitReportData &data)
+void GitReportParser::GetData(GitReportData &data) const
 {
     data = reportData;
+}
+
+string GitReportParser::GetMiniDescription() const
+{
+    return CreateMiniDescriptionFromData();
 }
 
 void GitReportParser::WriteFileList(const vector<string>& fileList, const string& operation, ofstream& fileStream)
@@ -57,7 +62,7 @@ void GitReportParser::WriteFileList(const vector<string>& fileList, const string
         fileStream << endl;
 }
 
-string GitReportParser::CreateMiniDescriptionFromData()
+string GitReportParser::CreateMiniDescriptionFromData() const
 {
     stringstream descriptionStream;
     descriptionStream << reportData.addedFileList.size() << " added, ";

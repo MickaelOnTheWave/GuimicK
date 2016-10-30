@@ -64,7 +64,12 @@ void JobStatus::SetDescription(const string &_description)
 
 void JobStatus::AddFile(const string &filename)
 {
-	filenames.push_back(filename);
+    filenames.push_back(filename);
+}
+
+void JobStatus::RemoveAllFiles()
+{
+    filenames.clear();
 }
 
 int JobStatus::GetCode() const
