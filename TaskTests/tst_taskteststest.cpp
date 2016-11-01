@@ -14,27 +14,26 @@ public:
     GitJobTest();
 
 private Q_SLOTS:
+    void init();
+    void cleanup();
+
     void testCreate_InvalidSource();
     void testCreate_AllValid();
 
-    void testUpdate_NoChanges();
-    void testUpdate_Added();
-    void testUpdate_Removed();
-    void testUpdate_Changed();
-    void testUpdate_MixedChanges();
+    void testUpdate_data();
+    void testUpdate();
     void testUpdate_MultipleRepositories();
 
 private:
-    void InitializeTestData();
     void RemoveAll(const QString &folder);
     void CreateDefaultData();
     void StartGitRepository();
 
     void RunGitBackup(const QString& source, const QString& destination);
     void CreateDefaultBackup();
-    void AddFiles(const QVector<QString>& list, const size_t size = 1000);
-    void ChangeFiles(const QVector<QString>& list);
-    void RemoveFiles(const QVector<QString>& list);
+    void AddFiles(const QStringList &list, const size_t size = 1000);
+    void ChangeFiles(const QStringList& list);
+    void RemoveFiles(const QStringList &list);
     void RunGitCommit(const QString& repository);
 
     void RunGitBackup();
@@ -46,8 +45,14 @@ private:
                            const QString& description);
     void CheckFolderExistence(const QString &folder, const bool expectedExistence);
     void CheckRepositoryContent(const QString& folder,
-                                const QVector<QString>& expectedFiles);
+                                const QStringList &expectedFiles);
     QString BuildDescriptionString(const int added, const int modified, const int deleted);
+
+    void UpdateSourceRepository(const QStringList& added,
+                                const QStringList& modified,
+                                const QStringList& removed);
+    QStringList CreatedExpectedDestinationRepositoryContent(const QStringList& added,
+                                                            const QStringList& removed);
 
     const QString sourceRepository = "GitRepository";
     const QString destinationRepository = "GitDestRepository";
@@ -58,13 +63,28 @@ private:
     const QString messageRepositoryCreationOk = "Repository cloned successfully";
     const QString messageRepositoryUpdateOk = "Repository successfully updated";
 
-    const QVector<QString> defaultRepositoryContent = {"file0", "file1", "file2", "file3"};
+    const QStringList defaultRepositoryContent = {"file0", "file1", "file2", "file3"};
 
     JobStatus* currentStatus = nullptr;
 };
 
 GitJobTest::GitJobTest()
 {
+}
+
+void GitJobTest::init()
+{
+    CreateDefaultData();
+    StartGitRepository();
+}
+
+void GitJobTest::cleanup()
+{
+    delete currentStatus;
+    currentStatus = nullptr;
+
+    RemoveAll(sourceRepository);
+    RemoveAll(destinationRepository);
 }
 
 // TODO : remove this and find a way to use JobStatus values outside of library
@@ -75,7 +95,6 @@ GitJobTest::GitJobTest()
 
 void GitJobTest::testCreate_InvalidSource()
 {
-    InitializeTestData();
     RunGitBackup(invalidRepository, destinationRepository);
     CheckGitJobReturnsError(messageInvalidSource);
     CheckFolderExistence(invalidRepository, false);
@@ -84,7 +103,6 @@ void GitJobTest::testCreate_InvalidSource()
 
 void GitJobTest::testCreate_AllValid()
 {
-    InitializeTestData();
     RunGitBackup(sourceRepository, destinationRepository);
     CheckGitJobReturn(JobStatus_OK, 0, messageRepositoryCreationOk);
     CheckFolderExistence(sourceRepository, true);
@@ -92,106 +110,46 @@ void GitJobTest::testCreate_AllValid()
     CheckRepositoryContent(destinationRepository, defaultRepositoryContent);
 }
 
-void GitJobTest::testUpdate_NoChanges()
+void GitJobTest::testUpdate_data()
 {
-    InitializeTestData();
-    CreateDefaultBackup();
-    RunGitBackup(sourceRepository, destinationRepository);
-    CheckGitJobReturnsOk(BuildDescriptionString(0,0,0));
-    CheckFolderExistence(sourceRepository, true);
-    CheckFolderExistence(destinationRepository, true);
-    CheckRepositoryContent(destinationRepository, defaultRepositoryContent);
+    QTest::addColumn<QStringList>("added");
+    QTest::addColumn<QStringList>("modified");
+    QTest::addColumn<QStringList>("removed");
+
+    QTest::newRow("No changes") << QStringList() << QStringList() << QStringList();
+    QTest::newRow("Added 3") << QStringList({"added0","added1","added2"}) << QStringList() << QStringList();
+    QTest::newRow("Modified 2") << QStringList() << QStringList({"file2","file3"}) << QStringList();
+    QTest::newRow("Removed 2") << QStringList() << QStringList() << QStringList({"file0","file1"});
+    QTest::newRow("Mixed changes") << QStringList({"myfirst add","my other add", "third add", "last add"})
+                                   << QStringList({"file0","file1"})
+                                   << QStringList({"file2"});
 }
 
-void GitJobTest::testUpdate_Added()
+void GitJobTest::testUpdate()
 {
-    InitializeTestData();
+    QFETCH(QStringList, added);
+    QFETCH(QStringList, modified);
+    QFETCH(QStringList, removed);
+
     CreateDefaultBackup();
 
-    QVector<QString> changedFiles = {"added0", "added1", "added2"};
-    AddFiles(changedFiles);
+    UpdateSourceRepository(added, modified, removed);
 
     RunGitBackup(sourceRepository, destinationRepository);
 
-    CheckGitJobReturnsOk(BuildDescriptionString(3,0,0));
-    CheckRepositoryContent(destinationRepository, defaultRepositoryContent+changedFiles);
-}
+    CheckGitJobReturnsOk(BuildDescriptionString(added.size(),
+                                                modified.size(),
+                                                removed.size() ));
 
-void GitJobTest::testUpdate_Removed()
-{
-    InitializeTestData();
-    CreateDefaultBackup();
 
-    QVector<QString> changedFiles;
-    changedFiles.push_back(defaultRepositoryContent.at(0));
-    changedFiles.push_back(defaultRepositoryContent.at(1));
-    RemoveFiles(changedFiles);
+    QStringList expectedFileList = CreatedExpectedDestinationRepositoryContent(added, removed);
 
-    RunGitBackup(sourceRepository, destinationRepository);
-
-    CheckGitJobReturnsOk(BuildDescriptionString(0,0,2));
-    QVector<QString> expectedFiles = defaultRepositoryContent;
-    expectedFiles.pop_front();
-    expectedFiles.pop_front();
-    CheckRepositoryContent(destinationRepository, expectedFiles);
-
-}
-
-void GitJobTest::testUpdate_Changed()
-{
-    InitializeTestData();
-    CreateDefaultBackup();
-
-    QVector<QString> changedFiles;
-    changedFiles.push_back(defaultRepositoryContent.at(0));
-    changedFiles.push_back(defaultRepositoryContent.at(1));
-    ChangeFiles(changedFiles);
-
-    RunGitBackup(sourceRepository, destinationRepository);
-
-    CheckGitJobReturnsOk(BuildDescriptionString(0,2,0));
-    CheckRepositoryContent(destinationRepository, defaultRepositoryContent);
-}
-
-void GitJobTest::testUpdate_MixedChanges()
-{
-    InitializeTestData();
-    CreateDefaultBackup();
-
-    QVector<QString> addedFiles = {"added0", "added1", "added2"};
-    AddFiles(addedFiles, 10000);
-
-    QVector<QString> changedFiles = {defaultRepositoryContent.back()};
-    ChangeFiles(changedFiles);
-
-    QVector<QString> removedFiles = {defaultRepositoryContent.front()};
-    RemoveFiles(removedFiles);
-
-    RunGitBackup(sourceRepository, destinationRepository);
-
-    CheckGitJobReturnsOk(BuildDescriptionString(3,1,1));
-    QVector<QString> expectedFiles = defaultRepositoryContent;
-    expectedFiles.pop_front();
-    expectedFiles.push_front("added2");
-    expectedFiles.push_front("added1");
-    expectedFiles.push_front("added0");
-    CheckRepositoryContent(destinationRepository, expectedFiles);
+    CheckRepositoryContent(destinationRepository, expectedFileList);
 }
 
 void GitJobTest::testUpdate_MultipleRepositories()
 {
     QFAIL("Implement");
-}
-
-void GitJobTest::InitializeTestData()
-{
-    delete currentStatus;
-    currentStatus = nullptr;
-
-    RemoveAll(sourceRepository);
-    RemoveAll(destinationRepository);
-    CreateDefaultData();
-    StartGitRepository();
 }
 
 void GitJobTest::RemoveAll(const QString& folder)
@@ -244,7 +202,7 @@ void GitJobTest::CreateDefaultBackup()
     Tools::RunExternalCommand(command, unusedOutput);
 }
 
-void GitJobTest::AddFiles(const QVector<QString> &list, const size_t size)
+void GitJobTest::AddFiles(const QStringList &list, const size_t size)
 {
     for (int i=0; i<list.size(); ++i)
     {
@@ -254,7 +212,7 @@ void GitJobTest::AddFiles(const QVector<QString> &list, const size_t size)
     RunGitCommit(sourceRepository);
 }
 
-void GitJobTest::ChangeFiles(const QVector<QString> &list)
+void GitJobTest::ChangeFiles(const QStringList &list)
 {
     for (int i=0; i<list.size(); ++i)
     {
@@ -265,7 +223,7 @@ void GitJobTest::ChangeFiles(const QVector<QString> &list)
     RunGitCommit(sourceRepository);
 }
 
-void GitJobTest::RemoveFiles(const QVector<QString> &list)
+void GitJobTest::RemoveFiles(const QStringList &list)
 {
     for (int i=0; i<list.size(); ++i)
     {
@@ -311,7 +269,7 @@ void GitJobTest::CheckFolderExistence(const QString& folder,
     QCOMPARE(FileTools::FolderExists(folder.toStdString()), expectedExistence);
 }
 
-void GitJobTest::CheckRepositoryContent(const QString &folder, const QVector<QString> &expectedFiles)
+void GitJobTest::CheckRepositoryContent(const QString &folder, const QStringList &expectedFiles)
 {
     QDir repositoryDir = QDir::currentPath();
     repositoryDir.cd(folder);
@@ -330,6 +288,22 @@ QString GitJobTest::BuildDescriptionString(const int added, const int modified, 
     description += QString::number(modified) + " modified and ";
     description += QString::number(deleted) + " removed.";
     return description;
+}
+
+void GitJobTest::UpdateSourceRepository(const QStringList &added, const QStringList &modified, const QStringList &removed)
+{
+    AddFiles(added, 10000);
+    ChangeFiles(modified);
+    RemoveFiles(removed);
+}
+
+QStringList GitJobTest::CreatedExpectedDestinationRepositoryContent(const QStringList &added, const QStringList &removed)
+{
+    QStringList expected = defaultRepositoryContent;
+    for (int i=0; i<removed.size(); ++i)
+        expected.removeOne(removed.at(i));
+    expected << added;
+    return expected;
 }
 
 QTEST_APPLESS_MAIN(GitJobTest)

@@ -1,3 +1,6 @@
+01/11/2016 (17.8)
+
+
 30/10/2016 (1.5h)
 	Implemented Git job parsing directly inside Git backup job - easier than expected :-) Implementation and testing for single
 	repository is now complete!!
