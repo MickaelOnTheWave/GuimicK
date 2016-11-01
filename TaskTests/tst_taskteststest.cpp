@@ -6,6 +6,8 @@
 #include <jobstatus.h>
 #include <tools.h>
 
+#include "gitrepository.h"
+
 class GitJobTest : public QObject
 {
     Q_OBJECT
@@ -25,18 +27,21 @@ private Q_SLOTS:
     void testUpdate_MultipleRepositories();
 
 private:
+    std::vector<GitRepository*> CreateMultipleRepositories();
+    void CreateInitialRepositoryData(const std::vector<GitRepository*>& repositories);
     void RemoveAll(const QString &folder);
-    void CreateDefaultData();
-    void StartGitRepository();
+    void CreateDefaultData(const std::string& repository);
+    void StartGitRepository(const std::string &repository);
 
-    void RunGitBackup(const QString& source, const QString& destination);
-    void CreateDefaultBackup();
-    void AddFiles(const QStringList &list, const size_t size = 1000);
-    void ChangeFiles(const QStringList& list);
-    void RemoveFiles(const QStringList &list);
+    void RunGitBackup(const std::string &source, const std::string &destination);
+    void CreateDefaultBackup(const std::string &source, const std::string &destination);
+    void AddFiles(const std::string &repository, const QStringList &list, const size_t size = 1000);
+    void ChangeFiles(const std::string& repository, const QStringList& list);
+    void RemoveFiles(const std::string& repository, const QStringList &list);
     void RunGitCommit(const QString& repository);
 
     void RunGitBackup();
+    void RunGitBackup(const std::vector<std::pair<std::string, std::string> >& repositoryList);
 
     void CheckGitJobReturnsError(const QString& description);
     void CheckGitJobReturnsOk(const QString& description);
@@ -44,15 +49,23 @@ private:
                            const unsigned long expectedReportFileCount,
                            const QString& description);
     void CheckFolderExistence(const QString &folder, const bool expectedExistence);
-    void CheckRepositoryContent(const QString& folder,
+    void CheckRepositoryContent(const std::string &folder,
                                 const QStringList &expectedFiles);
     QString BuildDescriptionString(const int added, const int modified, const int deleted);
+    QString BuildMultiDescriptionString(const std::vector<GitRepository*>& repositories);
 
     void UpdateSourceRepository(const QStringList& added,
                                 const QStringList& modified,
                                 const QStringList& removed);
+    void UpdateRepository(      const std::string& repository,
+                                const QStringList& added,
+                                const QStringList& modified,
+                                const QStringList& removed);
     QStringList CreatedExpectedDestinationRepositoryContent(const QStringList& added,
                                                             const QStringList& removed);
+    const std::vector<std::pair<std::string, std::string> > CreateRepositoryListForBackup(
+            const std::vector<GitRepository*>& repositories
+    );
 
     const QString sourceRepository = "GitRepository";
     const QString destinationRepository = "GitDestRepository";
@@ -74,8 +87,8 @@ GitJobTest::GitJobTest()
 
 void GitJobTest::init()
 {
-    CreateDefaultData();
-    StartGitRepository();
+    CreateDefaultData(sourceRepository.toStdString());
+    StartGitRepository(sourceRepository.toStdString());
 }
 
 void GitJobTest::cleanup()
@@ -95,7 +108,7 @@ void GitJobTest::cleanup()
 
 void GitJobTest::testCreate_InvalidSource()
 {
-    RunGitBackup(invalidRepository, destinationRepository);
+    RunGitBackup(invalidRepository.toStdString(), destinationRepository.toStdString());
     CheckGitJobReturnsError(messageInvalidSource);
     CheckFolderExistence(invalidRepository, false);
     CheckFolderExistence(destinationRepository, false);
@@ -103,11 +116,11 @@ void GitJobTest::testCreate_InvalidSource()
 
 void GitJobTest::testCreate_AllValid()
 {
-    RunGitBackup(sourceRepository, destinationRepository);
+    RunGitBackup(sourceRepository.toStdString(), destinationRepository.toStdString());
     CheckGitJobReturn(JobStatus_OK, 0, messageRepositoryCreationOk);
     CheckFolderExistence(sourceRepository, true);
     CheckFolderExistence(destinationRepository, true);
-    CheckRepositoryContent(destinationRepository, defaultRepositoryContent);
+    CheckRepositoryContent(destinationRepository.toStdString(), defaultRepositoryContent);
 }
 
 void GitJobTest::testUpdate_data()
@@ -131,25 +144,94 @@ void GitJobTest::testUpdate()
     QFETCH(QStringList, modified);
     QFETCH(QStringList, removed);
 
-    CreateDefaultBackup();
-
+    const std::string stdSource = sourceRepository.toStdString();
+    const std::string stdDestination = destinationRepository.toStdString();
+    CreateDefaultBackup(stdSource, stdDestination);
     UpdateSourceRepository(added, modified, removed);
-
-    RunGitBackup(sourceRepository, destinationRepository);
-
+    RunGitBackup(stdSource, stdDestination);
     CheckGitJobReturnsOk(BuildDescriptionString(added.size(),
                                                 modified.size(),
                                                 removed.size() ));
-
-
     QStringList expectedFileList = CreatedExpectedDestinationRepositoryContent(added, removed);
-
-    CheckRepositoryContent(destinationRepository, expectedFileList);
+    CheckRepositoryContent(stdDestination, expectedFileList);
 }
 
 void GitJobTest::testUpdate_MultipleRepositories()
 {
-    QFAIL("Implement");
+    std::vector<GitRepository*> repositories = CreateMultipleRepositories();
+    CreateInitialRepositoryData(repositories);
+
+    RunGitBackup(CreateRepositoryListForBackup(repositories));
+    CheckGitJobReturnsOk(BuildMultiDescriptionString(repositories));
+
+    for (auto it=repositories.begin(); it!=repositories.end(); ++it)
+    {
+        QStringList expectedFileList = CreatedExpectedDestinationRepositoryContent((*it)->added, (*it)->removed);
+        CheckRepositoryContent((*it)->destination, expectedFileList);
+    }
+
+    for (auto it=repositories.begin(); it!=repositories.end(); ++it)
+    {
+        RemoveAll(QString((*it)->source.c_str()));
+        RemoveAll(QString((*it)->destination.c_str()));
+        delete *it;
+    }
+    repositories.clear();
+    delete currentStatus;
+    currentStatus = nullptr;
+
+}
+
+std::vector<GitRepository*> GitJobTest::CreateMultipleRepositories()
+{
+    std::vector<GitRepository*> repositories;
+    repositories.push_back(new GitRepository(
+        "source0",
+        "dest0",
+        QStringList(),
+        QStringList(),
+        QStringList(),
+        false
+    ));
+    repositories.push_back(new GitRepository(
+        "source1",
+        "dest1",
+        QStringList(),
+        QStringList(),
+        QStringList(),
+        true
+    ));
+    repositories.push_back(new GitRepository(
+        "source2",
+        "dest2",
+        QStringList({"add0", "add1"}),
+        QStringList({"file0", "file1", "file2"}),
+        QStringList(),
+        true
+    ));
+    repositories.push_back(new GitRepository(
+        "source3",
+        "dest3",
+        QStringList(),
+        QStringList({"file0", "file1", "file3"}),
+        QStringList("file2"),
+        true
+    ));
+    return repositories;
+}
+
+void GitJobTest::CreateInitialRepositoryData(const std::vector<GitRepository*>& repositories)
+{
+    for (auto it=repositories.begin(); it!=repositories.end(); ++it)
+    {
+            CreateDefaultData((*it)->source);
+            StartGitRepository((*it)->source);
+            if ((*it)->mustAlreadyExist)
+            {
+                CreateDefaultBackup((*it)->source, (*it)->destination);
+                UpdateRepository((*it)->source, (*it)->added, (*it)->modified, (*it)->removed);
+            }
+    }
 }
 
 void GitJobTest::RemoveAll(const QString& folder)
@@ -161,74 +243,77 @@ void GitJobTest::RemoveAll(const QString& folder)
     Tools::RunExternalCommand(removeAllCommand, unusedOutput);
 }
 
-void GitJobTest::CreateDefaultData()
+void GitJobTest::CreateDefaultData(const std::string& repository)
 {
-    std::string stdSourceRepository = sourceRepository.toStdString();
-    FileTools::CreateFolder(stdSourceRepository);
+    FileTools::CreateFolder(repository);
     for (int i=0; i<defaultRepositoryContent.size(); ++i)
     {
-        std::string filename = stdSourceRepository + "/" +
+        std::string filename = repository + "/" +
                                defaultRepositoryContent.at(i).toStdString();
         FileTools::CreateFile(filename, 1000, true);
     }
 }
 
-void GitJobTest::StartGitRepository()
+void GitJobTest::StartGitRepository(const std::string& repository)
 {
-    std::string stdSourceRepository = sourceRepository.toStdString();
     std::string gitCreationCommand("git init ");
-    gitCreationCommand += stdSourceRepository + " && cd " + stdSourceRepository + " && ";
+    gitCreationCommand += repository + " && cd " + repository + " && ";
     gitCreationCommand += "git add -A && git commit -m \"initial data\"";
 
     std::string unusedOutput;
     Tools::RunExternalCommand(gitCreationCommand, unusedOutput);
 }
 
-void GitJobTest::RunGitBackup(const QString &source, const QString &destination)
+void GitJobTest::RunGitBackup(const std::string &source, const std::string &destination)
 {
     std::vector<std::pair<std::string, std::string> > repositoryList;
-    repositoryList.push_back(make_pair(source.toStdString(), destination.toStdString()));
+    repositoryList.push_back(make_pair(source, destination));
     GitBackupJob job(repositoryList);
     currentStatus = job.Run();
 }
 
-void GitJobTest::CreateDefaultBackup()
+void GitJobTest::RunGitBackup(const std::vector<std::pair<std::string, std::string> >& repositoryList)
 {
-    std::string stdSourceRepository = sourceRepository.toStdString();
+    GitBackupJob job(repositoryList);
+    currentStatus = job.Run();
+}
+
+void GitJobTest::CreateDefaultBackup(const std::string& source, const std::string& destination)
+{
     std::string command("git clone ");
-    command += sourceRepository.toStdString() + " " + destinationRepository.toStdString();
+    command += source + " " + destination;
     command += " 2>&1 > /dev/null";
     std::string unusedOutput;
     Tools::RunExternalCommand(command, unusedOutput);
 }
 
-void GitJobTest::AddFiles(const QStringList &list, const size_t size)
+void GitJobTest::AddFiles(const std::string& repository, const QStringList &list, const size_t size)
 {
     for (int i=0; i<list.size(); ++i)
     {
-        QString fullname = sourceRepository + "/" + list.at(i);
-        Q_ASSERT(FileTools::CreateFile(fullname.toStdString(), size, true));
+        std::string fullname = repository + "/" + list.at(i).toStdString();
+        Q_ASSERT(FileTools::CreateFile(fullname, size, true));
     }
     RunGitCommit(sourceRepository);
 }
 
-void GitJobTest::ChangeFiles(const QStringList &list)
+void GitJobTest::ChangeFiles(const std::string& repository, const QStringList &list)
 {
     for (int i=0; i<list.size(); ++i)
     {
-        QString fullname = sourceRepository + "/" + list.at(i);
-        std::remove(fullname.toUtf8());
-        Q_ASSERT(FileTools::CreateFile(fullname.toStdString(), 4000, true));
+        std::string fullname = repository + "/" + list.at(i).toStdString();
+        std::remove(fullname.c_str());
+        Q_ASSERT(FileTools::CreateFile(fullname, 4000, true));
     }
     RunGitCommit(sourceRepository);
 }
 
-void GitJobTest::RemoveFiles(const QStringList &list)
+void GitJobTest::RemoveFiles(const std::string& repository, const QStringList &list)
 {
     for (int i=0; i<list.size(); ++i)
     {
-        QString fullname = sourceRepository + "/" + list.at(i);
-        std::remove(fullname.toUtf8());
+        std::string fullname = repository + "/" + list.at(i).toStdString();
+        std::remove(fullname.c_str());
     }
     RunGitCommit(sourceRepository);
 }
@@ -269,10 +354,10 @@ void GitJobTest::CheckFolderExistence(const QString& folder,
     QCOMPARE(FileTools::FolderExists(folder.toStdString()), expectedExistence);
 }
 
-void GitJobTest::CheckRepositoryContent(const QString &folder, const QStringList &expectedFiles)
+void GitJobTest::CheckRepositoryContent(const std::string &folder, const QStringList &expectedFiles)
 {
     QDir repositoryDir = QDir::currentPath();
-    repositoryDir.cd(folder);
+    repositoryDir.cd(folder.c_str());
     QStringList filesInRepository = repositoryDir.entryList();
     QCOMPARE(filesInRepository.size(), expectedFiles.size()+2);
     Q_ASSERT(filesInRepository.contains("."));
@@ -290,11 +375,21 @@ QString GitJobTest::BuildDescriptionString(const int added, const int modified, 
     return description;
 }
 
+QString GitJobTest::BuildMultiDescriptionString(const std::vector<GitRepository *> &repositories)
+{
+    return QString::number(repositories.size()) + " Git repositories successfully backed up.";
+}
+
 void GitJobTest::UpdateSourceRepository(const QStringList &added, const QStringList &modified, const QStringList &removed)
 {
-    AddFiles(added, 10000);
-    ChangeFiles(modified);
-    RemoveFiles(removed);
+    UpdateRepository(sourceRepository.toStdString(), added, modified, removed);
+}
+
+void GitJobTest::UpdateRepository(const std::string &repository, const QStringList &added, const QStringList &modified, const QStringList &removed)
+{
+    AddFiles(repository, added, 10000);
+    ChangeFiles(repository, modified);
+    RemoveFiles(repository, removed);
 }
 
 QStringList GitJobTest::CreatedExpectedDestinationRepositoryContent(const QStringList &added, const QStringList &removed)
@@ -304,6 +399,16 @@ QStringList GitJobTest::CreatedExpectedDestinationRepositoryContent(const QStrin
         expected.removeOne(removed.at(i));
     expected << added;
     return expected;
+}
+
+const std::vector<std::pair<std::string, std::string> > GitJobTest::CreateRepositoryListForBackup(
+        const std::vector<GitRepository *> &repositories
+)
+{
+    std::vector<std::pair<std::string, std::string> > repositoryTargetList;
+    for (auto it=repositories.begin(); it!=repositories.end(); ++it)
+        repositoryTargetList.push_back(std::pair<std::string, std::string>((*it)->source, (*it)->destination));
+    return repositoryTargetList;
 }
 
 QTEST_APPLESS_MAIN(GitJobTest)

@@ -1,5 +1,10 @@
-01/11/2016 (17.8)
-
+01/11/2016 (3.5h)
+	Improved test structure - now using data testing instead of multiple test functions. Also using default init() and cleanup().
+	Created test for multiple repositories. Test seems good now, but implementation is not working completely : backups are not ran.
+	Also rebalanced Release plan.
+Next planned work :
+	- Fix Git backup implementation to match test.
+	- Put to production git backup using new job
 
 30/10/2016 (1.5h)
 	Implemented Git job parsing directly inside Git backup job - easier than expected :-) Implementation and testing for single
