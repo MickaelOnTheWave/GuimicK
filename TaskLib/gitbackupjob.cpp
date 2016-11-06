@@ -162,9 +162,14 @@ void GitBackupJob::RunGitClone(const string &source,
                                vector<JobStatus *> &statusList) const
 {
     ConsoleJob* gitCommand = new ConsoleJob("", "git", BuildGitParameters(source, destination));
+    const string gitLogFile = source + "_repository.txt";
+    gitCommand->SetOutputTofile(gitLogFile);
     JobStatus* status = gitCommand->Run();
     if (gitCommand->GetCommandReturnCode() == 128)
+    {
         status->SetDescription(invalidSourceRepositoryError);
+        status->RemoveAllFiles();
+    }
     else
         status->SetDescription(repositoryCloneOk);
 
@@ -180,7 +185,7 @@ string GitBackupJob::BuildGitParameters(const string &source, const string &dest
     else
         params += sshUser + "@" + sshHost + ":" + source;
 
-    params += string(" ") + destination;
+    params += string(" 2>&1 ") + destination;
     return params;
 }
 
@@ -222,6 +227,10 @@ JobStatus *GitBackupJob::CreateMultiRepositoryStatus(const std::vector<JobStatus
         descriptionStream << " Git " << GetCorrectRepositoryWord() << " backed up, ";
         descriptionStream << faultyRepositories << " failed.";
     }
+
+    std::vector<JobStatus *>::const_iterator it=statusList.begin();
+    for (; it!=statusList.end(); ++it)
+        status->AddFilesFromStatus(*it);
 
     status->SetDescription(descriptionStream.str());
     return status;

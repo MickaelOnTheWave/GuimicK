@@ -67,6 +67,15 @@ void JobStatus::AddFile(const string &filename)
     filenames.push_back(filename);
 }
 
+void JobStatus::AddFilesFromStatus(JobStatus *other)
+{
+    vector<string> files;
+    other->GetFilenames(files);
+    vector<string>::const_iterator it=files.begin();
+    for (; it!=files.end(); ++it)
+        AddFile(*it);
+}
+
 void JobStatus::RemoveAllFiles()
 {
     filenames.clear();

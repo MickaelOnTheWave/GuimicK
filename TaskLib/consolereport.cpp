@@ -69,7 +69,7 @@ void TextReportCreator::FinishReportGeneration(unsigned int nameCellSize)
     report << "\t" << "Overall" << SpacingString(nameCellSize-string("Overall").size()) << JobStatus::GetCodeDescription(generalCode);
 	report << "\t" << Tools::FormatTimeString(generalDuration) << endl;
 	report << endl;
-	report << "Backup agent version " << version << endl;
+    report << "Task Manager version " << version << endl;
 }
 
 unsigned int TextReportCreator::FindBiggestJobNameSize(ClientJobResults *data)

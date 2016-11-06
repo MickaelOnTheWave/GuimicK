@@ -1,3 +1,10 @@
+06/11/2016 (0.8h)
+	Git backup implementation finished :-)) All tests are fixed and OK. Updated reports and console with new project name.
+	Updating production backup.
+Next planned work :
+	- Check that git backup is OK before validating.
+	- Create ping command and wake job to remove wake script.
+
 01/11/2016 (3.5h)
 	Improved test structure - now using data testing instead of multiple test functions. Also using default init() and cleanup().
 	Created test for multiple repositories. Test seems good now, but implementation is not working completely : backups are not ran.

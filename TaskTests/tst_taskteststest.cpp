@@ -38,7 +38,7 @@ private:
     void AddFiles(const std::string &repository, const QStringList &list, const size_t size = 1000);
     void ChangeFiles(const std::string& repository, const QStringList& list);
     void RemoveFiles(const std::string& repository, const QStringList &list);
-    void RunGitCommit(const QString& repository);
+    void RunGitCommit(const std::string &repository);
 
     void RunGitBackup();
     void RunGitBackup(const std::vector<std::pair<std::string, std::string> >& repositoryList);
@@ -117,7 +117,7 @@ void GitJobTest::testCreate_InvalidSource()
 void GitJobTest::testCreate_AllValid()
 {
     RunGitBackup(sourceRepository.toStdString(), destinationRepository.toStdString());
-    CheckGitJobReturn(JobStatus_OK, 0, messageRepositoryCreationOk);
+    CheckGitJobReturnsOk(messageRepositoryCreationOk);
     CheckFolderExistence(sourceRepository, true);
     CheckFolderExistence(destinationRepository, true);
     CheckRepositoryContent(destinationRepository.toStdString(), defaultRepositoryContent);
@@ -162,7 +162,7 @@ void GitJobTest::testUpdate_MultipleRepositories()
     CreateInitialRepositoryData(repositories);
 
     RunGitBackup(CreateRepositoryListForBackup(repositories));
-    CheckGitJobReturnsOk(BuildMultiDescriptionString(repositories));
+    CheckGitJobReturn(JobStatus_OK, repositories.size(), BuildMultiDescriptionString(repositories));
 
     for (auto it=repositories.begin(); it!=repositories.end(); ++it)
     {
@@ -294,7 +294,7 @@ void GitJobTest::AddFiles(const std::string& repository, const QStringList &list
         std::string fullname = repository + "/" + list.at(i).toStdString();
         Q_ASSERT(FileTools::CreateFile(fullname, size, true));
     }
-    RunGitCommit(sourceRepository);
+    RunGitCommit(repository);
 }
 
 void GitJobTest::ChangeFiles(const std::string& repository, const QStringList &list)
@@ -305,7 +305,7 @@ void GitJobTest::ChangeFiles(const std::string& repository, const QStringList &l
         std::remove(fullname.c_str());
         Q_ASSERT(FileTools::CreateFile(fullname, 4000, true));
     }
-    RunGitCommit(sourceRepository);
+    RunGitCommit(repository);
 }
 
 void GitJobTest::RemoveFiles(const std::string& repository, const QStringList &list)
@@ -315,15 +315,15 @@ void GitJobTest::RemoveFiles(const std::string& repository, const QStringList &l
         std::string fullname = repository + "/" + list.at(i).toStdString();
         std::remove(fullname.c_str());
     }
-    RunGitCommit(sourceRepository);
+    RunGitCommit(repository);
 }
 
-void GitJobTest::RunGitCommit(const QString &repository)
+void GitJobTest::RunGitCommit(const std::string &repository)
 {
-    QString fullCommand = "cd " + repository + "/ ";
+    std::string fullCommand = "cd " + repository + "/ ";
     fullCommand += "&& git add -A && git commit -m \"auto\"";
     std::string output;
-    Tools::RunExternalCommand(fullCommand.toStdString(), output);
+    Tools::RunExternalCommand(fullCommand, output);
 }
 
 void GitJobTest::CheckGitJobReturnsError(const QString& description)

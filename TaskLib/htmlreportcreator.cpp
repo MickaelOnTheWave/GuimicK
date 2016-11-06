@@ -60,7 +60,7 @@ string HtmlReportCreator::Generate(WorkResultData *data, const string &versionSt
         report << "</table>" << endl;
     }
 
-    report << "<small>Backup agent version " << versionString << "</small>" << endl;
+    report << "<small>Task Manager version " << versionString << "</small>" << endl;
     report << "</body>" << endl;
     report << "</html>" << endl;
 

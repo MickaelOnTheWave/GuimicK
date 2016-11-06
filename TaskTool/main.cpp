@@ -23,7 +23,7 @@
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.47";
+static const string PROGRAM_VERSION = "0.48";
 
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
     commandLine.AddParameter("conffile",    "[CONFIGURATION FILE] Specifies which configuration file to use.");
 
     commandLine.EnableHelpCommand();
-    commandLine.EnableVersionCommand("Backup Agent", PROGRAM_VERSION, "Mickael C. Guimaraes", "2014-2016");
+    commandLine.EnableVersionCommand("Task Manager", PROGRAM_VERSION, "Mickael C. Guimaraes", "2014-2016");
 
     if (commandLine.HandleUnknownParameters())
         return NO_ERROR;
