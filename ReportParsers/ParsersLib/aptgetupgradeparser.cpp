@@ -13,6 +13,21 @@ AptGetUpgradeParser::~AptGetUpgradeParser()
 
 }
 
+bool AptGetUpgradeParser::ParseBuffer(const string &buffer)
+{
+
+}
+
+string AptGetUpgradeParser::GetMiniDescription()
+{
+
+}
+
+string AptGetUpgradeParser::GetFullDescription()
+{
+
+}
+
 bool AptGetUpgradeParser::ParseUsingFiles(const std::string &inputFile, const std::string &outputFile, std::string &description)
 {
     obsoletePackages.clear();

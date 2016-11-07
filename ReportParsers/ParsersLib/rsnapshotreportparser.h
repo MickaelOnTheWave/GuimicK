@@ -27,8 +27,12 @@ class RSnapshotReportParser : public AbstractOutputParser
 public:
     virtual ~RSnapshotReportParser();
 
-    bool ParseUsingFiles(const std::string& inputFile,
-                         const std::string& outputFile, std::string& description);
+    virtual bool ParseBuffer(const std::string& buffer);
+    virtual std::string GetMiniDescription();
+    virtual std::string GetFullDescription();
+
+//    bool ParseUsingFiles(const std::string& inputFile,
+//                         const std::string& outputFile, std::string& description);
 
     BackupReportData *GetRawData();
 
@@ -40,7 +44,6 @@ private:
 										 const std::string& wordBefore,
 										 const std::string& wordAfter);
 
-    std::string CreateShortReport();
     void CreateFullReport(const std::string& fileName);
     std::string FileListDescription(const std::list<std::string> &fileList, const std::string &operation);
 

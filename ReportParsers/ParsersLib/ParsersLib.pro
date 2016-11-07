@@ -15,7 +15,8 @@ SOURCES += \
     aptgetupgradeparser.cpp \
     clamavreportparser.cpp \
     gitreportparser.cpp \
-    rsnapshotreportparser.cpp
+    rsnapshotreportparser.cpp \
+    abstractoutputparser.cpp
 
 HEADERS +=\
     abstractoutputparser.h \

@@ -14,6 +14,8 @@ static const int PARSER_ERROR   = 1;
 static const int PARSING_ERROR  = 2;
 static const int USAGE_ERROR    = 3;
 
+AbstractOutputParser* CreateParser(const std::string& name);
+
 int main(int argc, char* argv[])
 {
     CommandLineManager commandLine(argc, argv);
@@ -45,26 +47,15 @@ int main(int argc, char* argv[])
         return USAGE_ERROR;
     }
 
-    AbstractOutputParser* parser;
-    if (parserAlgorithm == "aptupgrade")
-        parser = new AptGetUpgradeParser();
-    else if (parserAlgorithm == "clamav")
-        parser = new ClamAvReportParser();
-    else if (parserAlgorithm == "rsnapshot")
-        parser = new RSnapshotReportParser();
-    else if (parserAlgorithm == "git")
-        parser = new GitReportParser();
-    else
+    AbstractOutputParser* parser = CreateParser(parserAlgorithm);
+    if (parser == NULL)
     {
         if (!isDirectUsage)
             cout << "Error : Parser " << parserAlgorithm << "is not handled." << endl;
         return PARSER_ERROR;
     }
 
-    string miniDescription("");
-
-
-    bool result = parser->ParseUsingFiles(inputFile, outputFile, miniDescription);
+    bool result = parser->ParseFile(inputFile);
     if (result == false)
     {
         if (!isDirectUsage)
@@ -72,10 +63,25 @@ int main(int argc, char* argv[])
         return PARSING_ERROR;
     }
 
+    parser->WriteFullDescriptionToFile(outputFile);
+
     if (!isDirectUsage)
         cout << "Mini description : ";
-     cout << miniDescription << endl;
+     cout << parser->GetMiniDescription() << endl;
 
     return OK;
 }
 
+AbstractOutputParser* CreateParser(const std::string& name)
+{
+    if (name == "aptupgrade")
+        return new AptGetUpgradeParser();
+    else if (name == "clamav")
+        return new ClamAvReportParser();
+    else if (name == "rsnapshot")
+        return new RSnapshotReportParser();
+    else if (name == "git")
+        return new GitReportParser();
+    else
+        return NULL;
+}

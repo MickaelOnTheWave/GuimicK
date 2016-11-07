@@ -16,6 +16,21 @@ void ClamAvReportData::Reset()
 	statusMap.clear();
 }
 
+bool ClamAvReportParser::ParseBuffer(const string &buffer)
+{
+
+}
+
+string ClamAvReportParser::GetMiniDescription()
+{
+
+}
+
+string ClamAvReportParser::GetFullDescription()
+{
+
+}
+
 bool ClamAvReportParser::ParseUsingFiles(const string &inputFile, const string &/*outputFile*/, string &description)
 {
     ClamAvReportData reportData;

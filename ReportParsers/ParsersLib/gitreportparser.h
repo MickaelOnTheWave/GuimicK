@@ -21,23 +21,19 @@ class GitReportParser : public AbstractOutputParser
 {
 public:
 
-    bool ParseFile(const std::string& inputFile);
+    virtual bool ParseBuffer(const std::string& buffer);
+    virtual std::string GetMiniDescription();
+    virtual std::string GetFullDescription();
 
     bool ParseUsingFiles(const std::string& inputFile,
                          const std::string& outputFile, std::string& description);
 
     void GetData(GitReportData& data) const;
-    std::string GetMiniDescription() const;
 
 private:
-    bool Parse(const std::string &buffer, GitReportData& reportData);
-
-    // TODO : make this generic, for all parsers. This way thye all can work based on buffer ;-)
-    bool GetFileData(const std::string& fileName, std::string& fileContents);
 
     void WriteFileList(const std::vector<std::string>& fileList, const std::string& operation, std::ofstream& fileStream);
 
-    std::string CreateMiniDescriptionFromData() const;
     void CreateFullFileDescriptionFromData(const std::string& file);
 
     void TokenizeString(const std::string& input, const char separator, std::vector<std::string>& tokenList) const;

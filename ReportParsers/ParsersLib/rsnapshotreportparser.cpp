@@ -142,6 +142,27 @@ RSnapshotReportParser::~RSnapshotReportParser()
 {
 }
 
+bool RSnapshotReportParser::ParseBuffer(const std::string &buffer)
+{
+
+}
+
+std::string RSnapshotReportParser::GetMiniDescription()
+{
+    std::stringstream description;
+    description << reportData.addedList.size() << " added, ";
+    description << reportData.modifiedList.size() << " modified, ";
+    description << reportData.removedList.size() << " removed. ";
+    description << reportData.BytesTaken();
+    return description.str();
+}
+
+std::string RSnapshotReportParser::GetFullDescription()
+{
+
+}
+
+/*
 bool RSnapshotReportParser::ParseUsingFiles(const std::string &inputFile, const std::string &outputFile, std::string &description)
 {
     description = "";
@@ -156,7 +177,7 @@ bool RSnapshotReportParser::ParseUsingFiles(const std::string &inputFile, const 
 
     return returnVal;
     
-}
+}*/
 
 BackupReportData* RSnapshotReportParser::GetRawData()
 {
@@ -172,17 +193,6 @@ long long RSnapshotReportParser::ParseByteDataLine(const std::string &line, cons
     std::istringstream is (byteString);
 	is >> bytes;
 	return bytes;
-}
-
-
-std::string RSnapshotReportParser::CreateShortReport()
-{
-    std::stringstream description;
-    description << reportData.addedList.size() << " added, ";
-    description << reportData.modifiedList.size() << " modified, ";
-    description << reportData.removedList.size() << " removed. ";
-    description << reportData.BytesTaken();
-    return description.str();
 }
 
 void RSnapshotReportParser::CreateFullReport(const std::string &fileName)

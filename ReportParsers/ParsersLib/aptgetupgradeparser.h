@@ -12,6 +12,10 @@ public:
     AptGetUpgradeParser();
     virtual ~AptGetUpgradeParser();
 
+    virtual bool ParseBuffer(const std::string& buffer);
+    virtual std::string GetMiniDescription();
+    virtual std::string GetFullDescription();
+
     bool ParseUsingFiles(const std::string& inputFile,
                          const std::string& outputFile, std::string& description);
 

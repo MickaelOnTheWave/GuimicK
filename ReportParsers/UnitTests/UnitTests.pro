@@ -8,7 +8,7 @@ QT       += testlib
 
 QT       -= gui
 
-TARGET = tst_unitteststest
+TARGET = tst_reportparsers
 CONFIG   += console
 CONFIG   -= app_bundle
 QMAKE_CXXFLAGS += -std=c++11
@@ -16,7 +16,12 @@ QMAKE_CXXFLAGS += -std=c++11
 TEMPLATE = app
 
 
-SOURCES += tst_unitteststest.cpp
+SOURCES += \
+    main.cpp \
+    gitreportparsertest.cpp \
+    rsnapshotreportparsertest.cpp \
+    abstractoutputparsertest.cpp \
+    mockparser.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -47,3 +52,9 @@ OTHER_FILES += \
     data/gitallchanges.log \
     data/gitmod5.log \
     data/gitrm5.log
+
+HEADERS += \
+    gitreportparsertest.h \
+    rsnapshotreportparsertest.h \
+    abstractoutputparsertest.h \
+    mockparser.h

@@ -6,8 +6,15 @@
 class AbstractOutputParser
 {
 public :
-    virtual bool ParseUsingFiles(const std::string& inputFile,
-                                 const std::string& outputFile, std::string& description) = 0;
+    virtual bool ParseBuffer(const std::string& buffer) = 0;
+    bool ParseFile(const std::string& inputFile);
+
+    virtual std::string GetMiniDescription() = 0;
+    virtual std::string GetFullDescription() = 0;
+    void WriteFullDescriptionToFile(const std::string& filename);
+
+protected :
+    bool GetFileContent(const std::string& fileName, std::string& fileContents);
 };
 
 

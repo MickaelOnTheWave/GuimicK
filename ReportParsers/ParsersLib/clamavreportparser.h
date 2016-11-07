@@ -19,6 +19,11 @@ public:
 class ClamAvReportParser : public AbstractOutputParser
 {
 public:
+
+    virtual bool ParseBuffer(const std::string& buffer);
+    virtual std::string GetMiniDescription();
+    virtual std::string GetFullDescription();
+
     virtual bool ParseUsingFiles(const std::string& inputFile,
                                  const std::string& outputFile, std::string& description);
 

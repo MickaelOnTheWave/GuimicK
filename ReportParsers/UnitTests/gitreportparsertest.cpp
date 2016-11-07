@@ -1,36 +1,19 @@
-#include <QString>
-#include <QtTest>
+#include "gitreportparsertest.h"
 
-#include <string>
-
-#include <filetools.h>
-#include <gitreportparser.h>
-
-class GitReportParserTest : public QObject
-{
-    Q_OBJECT
-
-public:
-    GitReportParserTest();
-
-private Q_SLOTS:
-    void testParseFile_UnexistentFile();
-    void testParseFile_UnknownFile();
-    void testParseFile_Added5();
-    void testParseFile_Changed5();
-    void testParseFile_Removed5();
-    void testParseFile_MixedChanges();
-
-private:
-    void TestWrongFile(const std::string& inputFile);
-    void GetReportDataFromCorrectFile(const std::string& inputFile,
-                                      GitReportData& data);
-
-    const std::string defaultOutputFile = "outputfile";
-};
+#include <QTest>
 
 GitReportParserTest::GitReportParserTest()
 {
+}
+
+void GitReportParserTest::init()
+{
+    reportData.Clear();
+}
+
+void GitReportParserTest::cleanup()
+{
+    reportData.Clear();
 }
 
 void GitReportParserTest::testParseFile_UnexistentFile()
@@ -47,7 +30,6 @@ void GitReportParserTest::testParseFile_UnknownFile()
 
 void GitReportParserTest::testParseFile_Added5()
 {
-    GitReportData reportData;
     GetReportDataFromCorrectFile("gitadd5.log", reportData);
 
     QCOMPARE(reportData.addedFileList.size(), 5ul);
@@ -60,7 +42,6 @@ void GitReportParserTest::testParseFile_Added5()
 
 void GitReportParserTest::testParseFile_Changed5()
 {
-    GitReportData reportData;
     GetReportDataFromCorrectFile("gitmod5.log", reportData);
 
     QCOMPARE(reportData.addedFileList.size(), 0ul);
@@ -73,7 +54,6 @@ void GitReportParserTest::testParseFile_Changed5()
 
 void GitReportParserTest::testParseFile_Removed5()
 {
-    GitReportData reportData;
     GetReportDataFromCorrectFile("gitrm5.log", reportData);
 
     QCOMPARE(reportData.addedFileList.size(), 0ul);
@@ -86,7 +66,6 @@ void GitReportParserTest::testParseFile_Removed5()
 
 void GitReportParserTest::testParseFile_MixedChanges()
 {
-    GitReportData reportData;
     GetReportDataFromCorrectFile("gitallchanges.log", reportData);
 
     QCOMPARE(reportData.addedFileList.size(), 3ul);
@@ -124,7 +103,3 @@ void GitReportParserTest::GetReportDataFromCorrectFile(const std::string &inputF
 
     parser.GetData(data);
 }
-
-QTEST_APPLESS_MAIN(GitReportParserTest)
-
-#include "tst_unitteststest.moc"
