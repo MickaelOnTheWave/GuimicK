@@ -46,6 +46,23 @@ void BackupReportData::CreateModifiedList()
     }
 }
 
+BackupReportData &BackupReportData::operator=(const BackupReportData &other)
+{
+    bytesAdded    = other.bytesAdded;
+    bytesRemoved  = other.bytesRemoved;
+
+    addedList.clear();
+    std::copy(other.addedList.begin(), other.addedList.end(), addedList.begin());
+
+    removedList.clear();
+    std::copy(other.removedList.begin(), other.removedList.end(), removedList.begin());
+
+    modifiedList.clear();
+    std::copy(other.modifiedList.begin(), other.modifiedList.end(), modifiedList.begin());
+
+    return *this;
+}
+
 BackupReportData *BackupReportData::GetCopy()
 {
     BackupReportData* copy = new BackupReportData();
@@ -179,9 +196,9 @@ bool RSnapshotReportParser::ParseUsingFiles(const std::string &inputFile, const 
     
 }*/
 
-BackupReportData* RSnapshotReportParser::GetRawData()
+void RSnapshotReportParser::GetData(BackupReportData& report)
 {
-    return reportData.GetCopy();
+    report = reportData;
 }
 
 long long RSnapshotReportParser::ParseByteDataLine(const std::string &line, const std::string &wordBefore, const std::string &wordAfter)

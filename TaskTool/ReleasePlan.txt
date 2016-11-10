@@ -54,15 +54,17 @@ v1.0 :
 	[023] Remove wakelan executable dependency
 	[032] Property handle encodings for strings
 
-v0.7 :
-	[017] Properly handle all error cases
-	[029] Split job config file into client/server files.
+v0.8 :
 	[026] Support multiple clients with multiple job lists
 	[034] Create client app to create/manage backup folder configuration.
 
+v0.7 :
+	[017] Properly handle all error cases
+	[029] Split job config file into client/server files.
+	[033] Handle File backup folder data outside of rsnapshot conf file.
+
 v0.6 :
 	[019] Do not create intermediate files - handle all data in memory!
-	[033] Handle File backup folder data outside of rsnapshot conf file.
 	[035] Console job improvement : support an external parser system.
 	[036] Console job improvement : support a chain system.
 

@@ -26,8 +26,10 @@ private Q_SLOTS:
 
 private:
     void TestWrongFile(const std::string& inputFile);
-    void GetReportDataFromCorrectFile(const std::string& inputFile,
-                                      GitReportData& data);
+    void GetReportDataFromCorrectFile(const std::string& inputFile);
+    void CheckReportDataFileCount(unsigned long added,
+                                  unsigned long modified,
+                                  unsigned long removed);
 
     GitReportData reportData;
     const std::string defaultOutputFile = "outputfile";

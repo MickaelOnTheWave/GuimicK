@@ -12,6 +12,8 @@ public:
 	void Reset();
 	std::string BytesTaken() const;
 	void CreateModifiedList();
+
+    BackupReportData& operator=(const BackupReportData& other);
     BackupReportData* GetCopy();
 
 	long long bytesAdded;
@@ -31,10 +33,7 @@ public:
     virtual std::string GetMiniDescription();
     virtual std::string GetFullDescription();
 
-//    bool ParseUsingFiles(const std::string& inputFile,
-//                         const std::string& outputFile, std::string& description);
-
-    BackupReportData *GetRawData();
+    void GetData(BackupReportData &report);
 
 
 private:

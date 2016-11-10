@@ -122,10 +122,10 @@ JobStatus* BackupJob::Run()
 		delete reportStatus;
 
     RSnapshotReportParser parser;
-    string shortReport;
-    parser.ParseUsingFiles(BACKUP_REPORT_FILE, BACKUP_REPORT_FILE, shortReport);
+    parser.ParseFile(BACKUP_REPORT_FILE);
+    parser.WriteFullDescriptionToFile(BACKUP_REPORT_FILE);
 
-	JobStatus* status = new JobStatus(JobStatus::OK, shortReport);
+    JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
 	status->AddFile(BACKUP_REPORT_FILE);
 	return status;
 }

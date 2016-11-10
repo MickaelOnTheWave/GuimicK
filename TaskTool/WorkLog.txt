@@ -1,4 +1,29 @@
-06/11/2016 (0.8h)
+09/11/2016 (1.2h)
+	Working on RSnapshot parser test suite. Almost the full test has been finished, and in a generic way! Also made some minor
+	improvements to git parser test suite and to RSnapshot parser implementation.
+	The RSnapshot test suite was written in a data driven fashion that would also suit well to Git parsing.
+Next planned work :
+	- Finish RSnapshotParser generic test
+	- Modify RSnapshot test suite to use a full data driven approach
+	- Do the same for Git parser test suite
+	- Go on previous roadmap
+
+07/11/2016 (2.3h)
+	Production backup did not work. Creating simplified example in Synology to debug. There is at first an issue with job not
+	giving appropriate error : says it is ok when in fact clone hasn't been created. Investigating...
+	Some possible errors were spotted : temporary files were created in stupid places. Switched to buffer. However, this requires
+	some refactoring. Began refactoring of parsers. Git parser was easily refactored along with base class, however other ones
+	were not, they are replaced with dummy methods for now, awaiting for proper refactoring.
+	Also, proper refactoring involves having proper test suites. Created one for AbstractOutputParser along with its
+	implementation, and now going for RSnapshot.
+Next planned work :
+	- Create RSnapshotParser test suite
+	- Fix RSnapshotParser
+	- Do the same for AptGetUpgradeParser
+	- Do mostly the same for ClamAvParser. As it is now working, implementation doesn't have to be done.
+	- Go on debugging Git job.
+
+06/11/2016 (0.9h)
 	Git backup implementation finished :-)) All tests are fixed and OK. Updated reports and console with new project name.
 	Updating production backup.
 Next planned work :

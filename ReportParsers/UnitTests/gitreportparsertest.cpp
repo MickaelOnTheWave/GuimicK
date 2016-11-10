@@ -30,11 +30,8 @@ void GitReportParserTest::testParseFile_UnknownFile()
 
 void GitReportParserTest::testParseFile_Added5()
 {
-    GetReportDataFromCorrectFile("gitadd5.log", reportData);
-
-    QCOMPARE(reportData.addedFileList.size(), 5ul);
-    QCOMPARE(reportData.modifiedFileList.size(), 0ul);
-    QCOMPARE(reportData.removedFileList.size(), 0ul);
+    GetReportDataFromCorrectFile("gitadd5.log");
+    CheckReportDataFileCount(5,0,0);
 
     for (int i=0; i<5; ++i)
         QCOMPARE(QString(reportData.addedFileList[i].c_str()), QString("file%1").arg(i));
@@ -42,11 +39,8 @@ void GitReportParserTest::testParseFile_Added5()
 
 void GitReportParserTest::testParseFile_Changed5()
 {
-    GetReportDataFromCorrectFile("gitmod5.log", reportData);
-
-    QCOMPARE(reportData.addedFileList.size(), 0ul);
-    QCOMPARE(reportData.modifiedFileList.size(), 5ul);
-    QCOMPARE(reportData.removedFileList.size(), 0ul);
+    GetReportDataFromCorrectFile("gitmod5.log");
+    CheckReportDataFileCount(0,5,0);
 
     for (int i=0; i<5; ++i)
         QCOMPARE(QString(reportData.modifiedFileList[i].c_str()), QString("file%1").arg(i));
@@ -54,11 +48,8 @@ void GitReportParserTest::testParseFile_Changed5()
 
 void GitReportParserTest::testParseFile_Removed5()
 {
-    GetReportDataFromCorrectFile("gitrm5.log", reportData);
-
-    QCOMPARE(reportData.addedFileList.size(), 0ul);
-    QCOMPARE(reportData.modifiedFileList.size(), 0ul);
-    QCOMPARE(reportData.removedFileList.size(), 5ul);
+    GetReportDataFromCorrectFile("gitrm5.log");
+    CheckReportDataFileCount(0,0,5);
 
     for (int i=0; i<5; ++i)
         QCOMPARE(QString(reportData.removedFileList[i].c_str()), QString("file%1").arg(i));
@@ -66,11 +57,8 @@ void GitReportParserTest::testParseFile_Removed5()
 
 void GitReportParserTest::testParseFile_MixedChanges()
 {
-    GetReportDataFromCorrectFile("gitallchanges.log", reportData);
-
-    QCOMPARE(reportData.addedFileList.size(), 3ul);
-    QCOMPARE(reportData.modifiedFileList.size(), 3ul);
-    QCOMPARE(reportData.removedFileList.size(), 2ul);
+    GetReportDataFromCorrectFile("gitallchanges.log");
+    CheckReportDataFileCount(3,3,2);
 
     for (int i=0; i<3; ++i)
         QCOMPARE(QString(reportData.addedFileList[i].c_str()), QString("alternate%1").arg(i));
@@ -92,7 +80,7 @@ void GitReportParserTest::TestWrongFile(const std::string &inputFile)
     Q_ASSERT(description == "");
 }
 
-void GitReportParserTest::GetReportDataFromCorrectFile(const std::string &inputFile, GitReportData &data)
+void GitReportParserTest::GetReportDataFromCorrectFile(const std::string &inputFile)
 {
     std::remove(defaultOutputFile.c_str());
 
@@ -101,5 +89,14 @@ void GitReportParserTest::GetReportDataFromCorrectFile(const std::string &inputF
     bool returnValue = parser.ParseFile(inputFile);
     Q_ASSERT(returnValue == true);
 
-    parser.GetData(data);
+    parser.GetData(reportData);
+}
+
+void GitReportParserTest::CheckReportDataFileCount(unsigned long added,
+                                                   unsigned long modified,
+                                                   unsigned long removed)
+{
+    QCOMPARE(reportData.addedFileList.size(), added);
+    QCOMPARE(reportData.modifiedFileList.size(), modified);
+    QCOMPARE(reportData.removedFileList.size(), removed);
 }
