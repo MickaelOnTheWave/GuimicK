@@ -21,7 +21,8 @@ SOURCES += \
     gitreportparsertest.cpp \
     rsnapshotreportparsertest.cpp \
     abstractoutputparsertest.cpp \
-    mockparser.cpp
+    mockparser.cpp \
+    filebackupparserabstracttest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -57,4 +58,5 @@ HEADERS += \
     gitreportparsertest.h \
     rsnapshotreportparsertest.h \
     abstractoutputparsertest.h \
-    mockparser.h
+    mockparser.h \
+    filebackupparserabstracttest.h

@@ -6,6 +6,7 @@
 class AbstractOutputParser
 {
 public :
+    virtual ~AbstractOutputParser();
     virtual bool ParseBuffer(const std::string& buffer) = 0;
     bool ParseFile(const std::string& inputFile);
 

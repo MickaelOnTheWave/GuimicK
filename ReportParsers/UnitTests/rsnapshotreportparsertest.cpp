@@ -4,34 +4,29 @@
 
 using namespace std;
 
-RsnapshotReportParserTest::RsnapshotReportParserTest()
+void RsnapshotReportParserTest::testParse()
 {
+    QFETCH(QString,     file);
+    QFETCH(QStringList, added);
+    QFETCH(QStringList, modified);
+    QFETCH(QStringList, removed);
+
+    testParse_generic();
+    CheckReportByteData(added, modified, removed);
 }
 
-void RsnapshotReportParserTest::init()
+FileBackupReport *RsnapshotReportParserTest::CreateReport()
 {
-    report.Reset();
+    return new RsnapshotReport();
 }
 
-void RsnapshotReportParserTest::cleanup()
+AbstractFileBackupParser *RsnapshotReportParserTest::CreateParser()
 {
-    report.Reset();
+    return new RSnapshotReportParser();
 }
 
-void RsnapshotReportParserTest::testParse_InvalidFile()
+void RsnapshotReportParserTest::PopulateTestData()
 {
-    RSnapshotReportParser parser;
-    bool ok = parser.ParseFile("inexistentfile");
-    QCOMPARE(ok, false);
-}
-
-void RsnapshotReportParserTest::testParse_data()
-{
-    QTest::addColumn<QString>("file");
-    QTest::addColumn<QStringList>("added");
-    QTest::addColumn<QStringList>("modified");
-    QTest::addColumn<QStringList>("removed");
-
     QTest::newRow("No changes") << "rsnapshotnochanges.log" <<
                                    QStringList() << QStringList() << QStringList();
     QTest::newRow("Added 3") << "rsnapshot3added.log"
@@ -48,51 +43,6 @@ void RsnapshotReportParserTest::testParse_data()
                                    << QStringList({"myfirst add","my other add", "third add", "last add"})
                                    << QStringList({"file0","file1"})
                                    << QStringList({"file2"});
-
-}
-
-void RsnapshotReportParserTest::testParse()
-{
-    QFETCH(QString,     file);
-    QFETCH(QStringList, added);
-    QFETCH(QStringList, modified);
-    QFETCH(QStringList, removed);
-
-    GetReportDataFromFile(file.toStdString());
-    CheckReportDataFiles(added, modified, removed);
-    CheckReportByteData(added, modified, removed);
-}
-
-void RsnapshotReportParserTest::GetReportDataFromFile(const std::string &file)
-{
-    RSnapshotReportParser parser;
-    bool ok = parser.ParseFile(file);
-    QCOMPARE(ok, true);
-    parser.GetData(report);
-}
-
-void RsnapshotReportParserTest::CheckReportDataFiles(const QStringList &added,
-                                                     const QStringList &modified,
-                                                     const QStringList &removed)
-{
-    CheckListsAreEqual(report.addedList, added);
-    CheckListsAreEqual(report.modifiedList, modified);
-    CheckListsAreEqual(report.removedList, removed);
-}
-
-void RsnapshotReportParserTest::CheckListsAreEqual(const list<string> &actual,
-                                                   const QStringList &expected)
-{
-    QCOMPARE(actual.size(), static_cast<unsigned long>(expected.size()));
-    list<string>::const_iterator it=actual.begin();
-    for (; it!=actual.end(); ++it)
-        QCOMPARE(expected.contains(QString((*it).c_str())), true);
-}
-
-void RsnapshotReportParserTest::CheckReportByteData(long long added, long long removed)
-{
-    QCOMPARE(report.bytesAdded, added);
-    QCOMPARE(report.bytesRemoved, removed);
 }
 
 void RsnapshotReportParserTest::CheckReportByteData(const QStringList &added,
@@ -103,8 +53,9 @@ void RsnapshotReportParserTest::CheckReportByteData(const QStringList &added,
     long long bytesModified = GetFilelistByteSize(modified);
     long long bytesRemoved = GetFilelistByteSize(removed);
 
-    QCOMPARE(report.bytesAdded, bytesAdded+bytesModified);
-    QCOMPARE(report.bytesRemoved, bytesRemoved+bytesModified);
+    RsnapshotReport* typedReport = dynamic_cast<RsnapshotReport*>(report);
+    QCOMPARE(typedReport->bytesAdded, bytesAdded+bytesModified);
+    QCOMPARE(typedReport->bytesRemoved, bytesRemoved+bytesModified);
 }
 
 long long RsnapshotReportParserTest::GetFilelistByteSize(const QStringList &filelist)
@@ -113,7 +64,6 @@ long long RsnapshotReportParserTest::GetFilelistByteSize(const QStringList &file
     for (int i=0; i<filelist.size(); ++i)
         bytes += GetFileByteSize(filelist.at(i));
     return bytes;
-
 }
 
 long long RsnapshotReportParserTest::GetFileByteSize(const QString &filename)

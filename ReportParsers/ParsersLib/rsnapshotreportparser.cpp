@@ -6,16 +6,17 @@
 
 #include <tools.h>
 
-void BackupReportData::Reset()
+using namespace std;
+
+void RsnapshotReport::Clear()
 {
+    FileBackupReport::Clear();
+
 	bytesAdded = 0;
 	bytesRemoved = 0;
-	addedList.clear();
-	removedList.clear();
-	modifiedList.clear();
 }
 
-std::string BackupReportData::BytesTaken() const
+std::string RsnapshotReport::BytesTaken() const
 {
 	long long bytesTaken = (bytesAdded - bytesRemoved);
 
@@ -28,64 +29,37 @@ std::string BackupReportData::BytesTaken() const
 	return formattedQuantity;
 }
 
-void BackupReportData::CreateModifiedList()
+void RsnapshotReport::CreateModifiedList()
 {
-    std::list<std::string>::iterator addedIt=addedList.begin();
-    std::list<std::string>::iterator addedEnd=addedList.end();
+    vector<string>::iterator addedIt=added.begin();
+    vector<string>::iterator addedEnd=added.end();
 	while (addedIt != addedEnd)
 	{
-        std::list<std::string>::iterator removedIt = find(removedList.begin(), removedList.end(), *addedIt);
-		if (removedIt != removedList.end())
+        vector<string>::iterator removedIt = find(removed.begin(), removed.end(), *addedIt);
+        if (removedIt != removed.end())
 		{
-			modifiedList.push_back(*addedIt);
-			removedList.erase(removedIt);
-			addedIt = addedList.erase(addedIt);
+            modified.push_back(*addedIt);
+            removed.erase(removedIt);
+            addedIt = added.erase(addedIt);
 		}
 		else
 			addedIt++;
     }
 }
 
-BackupReportData &BackupReportData::operator=(const BackupReportData &other)
+void RsnapshotReport::operator=(const RsnapshotReport &other)
 {
+    FileBackupReport::operator =(other);
+
     bytesAdded    = other.bytesAdded;
     bytesRemoved  = other.bytesRemoved;
-
-    addedList.clear();
-    std::copy(other.addedList.begin(), other.addedList.end(), addedList.begin());
-
-    removedList.clear();
-    std::copy(other.removedList.begin(), other.removedList.end(), removedList.begin());
-
-    modifiedList.clear();
-    std::copy(other.modifiedList.begin(), other.modifiedList.end(), modifiedList.begin());
-
-    return *this;
 }
 
-BackupReportData *BackupReportData::GetCopy()
-{
-    BackupReportData* copy = new BackupReportData();
-
-    copy->bytesAdded    = bytesAdded;
-    copy->bytesRemoved  = bytesRemoved;
-
-    copy->addedList.clear();
-    std::copy(addedList.begin(), addedList.end(), copy->addedList.begin());
-
-    copy->removedList.clear();
-    std::copy(removedList.begin(), removedList.end(), copy->removedList.begin());
-
-    copy->modifiedList.clear();
-    std::copy(modifiedList.begin(), modifiedList.end(), copy->modifiedList.begin());
-
-    return copy;
-}
-
+//----------------------------------------------------------------------------
 
 bool RSnapshotReportParser::Parse(const std::string &inputFile)
 {
-	reportData.Reset();
+    reportData.Clear();
 
     std::ifstream inFile(inputFile.c_str());
 
@@ -121,9 +95,9 @@ bool RSnapshotReportParser::Parse(const std::string &inputFile)
 				fileName = backupFileName;
 
 			if (simbol == '+')
-				reportData.addedList.push_back(fileName);
+                reportData.added.push_back(fileName);
 			else // simbol == '-'
-				reportData.removedList.push_back(fileName);
+                reportData.removed.push_back(fileName);
 		}
 
 		bool foundAddedBytesString = false;
@@ -167,9 +141,9 @@ bool RSnapshotReportParser::ParseBuffer(const std::string &buffer)
 std::string RSnapshotReportParser::GetMiniDescription()
 {
     std::stringstream description;
-    description << reportData.addedList.size() << " added, ";
-    description << reportData.modifiedList.size() << " modified, ";
-    description << reportData.removedList.size() << " removed. ";
+    description << reportData.added.size() << " added, ";
+    description << reportData.modified.size() << " modified, ";
+    description << reportData.removed.size() << " removed. ";
     description << reportData.BytesTaken();
     return description.str();
 }
@@ -177,6 +151,15 @@ std::string RSnapshotReportParser::GetMiniDescription()
 std::string RSnapshotReportParser::GetFullDescription()
 {
 
+}
+
+void RSnapshotReportParser::GetReport(FileBackupReport &report)
+{
+    RsnapshotReport* typedReport = dynamic_cast<RsnapshotReport*>(&report);
+    if (typedReport == NULL)
+        return;
+
+    *typedReport = reportData;
 }
 
 /*
@@ -196,11 +179,6 @@ bool RSnapshotReportParser::ParseUsingFiles(const std::string &inputFile, const 
     
 }*/
 
-void RSnapshotReportParser::GetData(BackupReportData& report)
-{
-    report = reportData;
-}
-
 long long RSnapshotReportParser::ParseByteDataLine(const std::string &line, const std::string &wordBefore, const std::string &wordAfter)
 {
 	long long bytes = 0;
@@ -215,22 +193,23 @@ long long RSnapshotReportParser::ParseByteDataLine(const std::string &line, cons
 void RSnapshotReportParser::CreateFullReport(const std::string &fileName)
 {
     std::ofstream outFile(fileName.c_str());
-    outFile << FileListDescription(reportData.addedList, "added");
-    outFile << FileListDescription(reportData.modifiedList, "modified");
-    outFile << FileListDescription(reportData.removedList, "removed");
+    outFile << FileListDescription(reportData.added, "added");
+    outFile << FileListDescription(reportData.modified, "modified");
+    outFile << FileListDescription(reportData.removed, "removed");
     outFile << Tools::FormatByteString(reportData.bytesAdded) << " added, ";
     outFile << Tools::FormatByteString(reportData.bytesRemoved) << " removed, and overall ";
     outFile << reportData.BytesTaken() << std::endl;
     outFile.close();
 }
 
-std::string RSnapshotReportParser::FileListDescription(const std::list<std::string>& fileList, const std::string& operation)
+std::string RSnapshotReportParser::FileListDescription(const vector<string>& fileList,
+                                                       const string& operation)
 {
-    std::stringstream description;
+    stringstream description;
     description << fileList.size() << " files " << operation << std::endl;
 
-    std::list<std::string>::const_iterator it=fileList.begin();
-    std::list<std::string>::const_iterator end=fileList.end();
+    vector<string>::const_iterator it=fileList.begin();
+    vector<string>::const_iterator end=fileList.end();
     for (; it!=end; it++)
         description << "\t" << *it << std::endl;
     description << std::endl;

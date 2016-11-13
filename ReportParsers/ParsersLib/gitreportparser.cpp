@@ -6,12 +6,8 @@ using namespace std;
 
 static const string FAST_FORWARD_TAG = "\nFast-forward";
 
-void GitReportData::Clear()
-{
-    addedFileList.clear();
-    modifiedFileList.clear();
-    removedFileList.clear();
-}
+// TODO : check if there is code to be refactored here. Maybe put in AbstractFileBackupParser
+// for shared usage with other parsers?
 
 bool GitReportParser::ParseBuffer(const string &buffer)
 {
@@ -36,57 +32,42 @@ bool GitReportParser::ParseBuffer(const string &buffer)
 string GitReportParser::GetMiniDescription()
 {
     stringstream descriptionStream;
-    descriptionStream << reportData.addedFileList.size() << " added, ";
-    descriptionStream << reportData.modifiedFileList.size() << " modified and ";
-    descriptionStream << reportData.removedFileList.size() << " removed.";
+    descriptionStream << reportData.added.size() << " added, ";
+    descriptionStream << reportData.modified.size() << " modified and ";
+    descriptionStream << reportData.removed.size() << " removed.";
     return descriptionStream.str();
 }
 
 string GitReportParser::GetFullDescription()
 {
-
+    stringstream descriptionStream;
+    descriptionStream << "Data parsed and report created successfully :" << endl;
+    WriteFileList(reportData.added, "added", descriptionStream);
+    WriteFileList(reportData.modified, "modified", descriptionStream);
+    WriteFileList(reportData.removed, "removed", descriptionStream);
+    return descriptionStream.str();
 }
 
-bool GitReportParser::ParseUsingFiles(const string &inputFile, const string &outputFile, string &description)
+void GitReportParser::GetReport(FileBackupReport& report)
 {
-    // TODO : read file on one go and store all contents into string buffer.
-    if (ParseFile(inputFile) == false)
-        return false;
-
-    description = GetMiniDescription();
-    CreateFullFileDescriptionFromData(outputFile);
-    return true;
+    report = reportData;
 }
 
-void GitReportParser::GetData(GitReportData &data) const
+void GitReportParser::WriteFileList(const vector<string>& fileList,
+                                    const string& operation,
+                                    stringstream& stream)
 {
-    data = reportData;
-}
-
-void GitReportParser::WriteFileList(const vector<string>& fileList, const string& operation, ofstream& fileStream)
-{
-    fileStream << fileList.size() << " files " << operation << ".";
+    stream << fileList.size() << " files " << operation << ".";
     if (fileList.size() > 0)
     {
-        fileStream << " Full list :" << endl;
+        stream << " Full list :" << endl;
         vector<string>::const_iterator it = fileList.begin();
         vector<string>::const_iterator end = fileList.end();
         for (; it!=end; ++it)
-            fileStream << "\t" << *it << endl;
+            stream << "\t" << *it << endl;
     }
     else
-        fileStream << endl;
-}
-
-void GitReportParser::CreateFullFileDescriptionFromData(const string &file)
-{
-    // TODO handle wrong file case here
-    ofstream fileStream(file.c_str());
-    fileStream << "Data parsed and report created successfully :" << endl;
-    WriteFileList(reportData.addedFileList, "added", fileStream);
-    WriteFileList(reportData.modifiedFileList, "modified", fileStream);
-    WriteFileList(reportData.removedFileList, "removed", fileStream);
-    fileStream.close();
+        stream << endl;
 }
 
 void GitReportParser::TokenizeString(const string &input, const char separator, std::vector<string> &tokenList) const
@@ -149,7 +130,7 @@ void GitReportParser::CreateFileList(const std::vector<string> &linesList, std::
 
 void GitReportParser::FillReportData(const std::vector<string> &files,
                                      const std::vector<string> &informationLines,
-                                     GitReportData &reportData)
+                                     FileBackupReport &reportData)
 {
     const string createModeString = "create mode";
     const string deleteModeString = "delete mode";
@@ -159,11 +140,11 @@ void GitReportParser::FillReportData(const std::vector<string> &files,
     {
         string informationLine = GetLineWithSubstring(*it, informationLines);
         if (informationLine.find(createModeString) != string::npos)
-            reportData.addedFileList.push_back(*it);
+            reportData.added.push_back(*it);
         else if (informationLine.find(deleteModeString) != string::npos)
-            reportData.removedFileList.push_back(*it);
+            reportData.removed.push_back(*it);
         else
-            reportData.modifiedFileList.push_back(*it);
+            reportData.modified.push_back(*it);
 
     }
 }

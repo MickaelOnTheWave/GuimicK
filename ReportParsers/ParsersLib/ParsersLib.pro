@@ -16,14 +16,18 @@ SOURCES += \
     clamavreportparser.cpp \
     gitreportparser.cpp \
     rsnapshotreportparser.cpp \
-    abstractoutputparser.cpp
+    abstractoutputparser.cpp \
+    filebackupreport.cpp \
+    abstractfilebackupparser.cpp
 
 HEADERS +=\
     abstractoutputparser.h \
     aptgetupgradeparser.h \
     clamavreportparser.h \
     gitreportparser.h \
-    rsnapshotreportparser.h
+    rsnapshotreportparser.h \
+    filebackupreport.h \
+    abstractfilebackupparser.h
 
 unix {
     target.path = /usr/lib

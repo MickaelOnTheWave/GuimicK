@@ -1,38 +1,23 @@
 #ifndef GITREPORTPARSERTEST_H
 #define GITREPORTPARSERTEST_H
 
-#include <QObject>
+#include "filebackupparserabstracttest.h"
 
 #include <filetools.h>
 #include <gitreportparser.h>
 
-class GitReportParserTest : public QObject
+class GitReportParserTest : public FileBackupParserAbstractTest
 {
     Q_OBJECT
 
-public:
-    GitReportParserTest();
-
 private Q_SLOTS:
-    void init();
-    void cleanup();
+    void testParse();
 
-    void testParseFile_UnexistentFile();
-    void testParseFile_UnknownFile();
-    void testParseFile_Added5();
-    void testParseFile_Changed5();
-    void testParseFile_Removed5();
-    void testParseFile_MixedChanges();
+protected:
+    virtual FileBackupReport* CreateReport();
+    virtual AbstractFileBackupParser* CreateParser();
 
-private:
-    void TestWrongFile(const std::string& inputFile);
-    void GetReportDataFromCorrectFile(const std::string& inputFile);
-    void CheckReportDataFileCount(unsigned long added,
-                                  unsigned long modified,
-                                  unsigned long removed);
-
-    GitReportData reportData;
-    const std::string defaultOutputFile = "outputfile";
+    virtual void PopulateTestData();
 };
 
 #endif // GITREPORTPARSERTEST_H

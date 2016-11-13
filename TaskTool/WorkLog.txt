@@ -1,5 +1,9 @@
 13/11/2016 (9.8)
 	Finished RSnapshot test suite, with data driven approach. Now going for changes in Git test suite...
+	Refactored Git test suite using data driven test. Created new layer in test and parsers for filebackup : now part
+	of the test is done in this intermediate layer, removing code duplication between tests.
+	Fully refactored test suites : now both Git and Rsnapshot are using the same code base, only Rsnapshot has its specific
+	bytes counting tests.
 
 09/11/2016 (1.2h)
 	Working on RSnapshot parser test suite. Almost the full test has been finished, and in a generic way! Also made some minor

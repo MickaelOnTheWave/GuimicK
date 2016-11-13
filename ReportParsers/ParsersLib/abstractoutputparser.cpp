@@ -4,6 +4,10 @@
 
 using namespace std;
 
+AbstractOutputParser::~AbstractOutputParser()
+{
+}
+
 bool AbstractOutputParser::ParseFile(const string &inputFile)
 {
     string fileContents("");
