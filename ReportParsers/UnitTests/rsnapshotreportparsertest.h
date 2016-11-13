@@ -19,17 +19,10 @@ private Q_SLOTS:
     void cleanup();
 
     void testParse_InvalidFile();
-    void testParse_Added5();
-    void testParse_Changed5();
-    void testParse_Removed5();
-    void testParse_MixedChanges();
+    void testParse_data();
+    void testParse();
 
 private:
-    void testParse_All(const std::string& file,
-                       const QStringList& added,
-                       const QStringList& modified,
-                       const QStringList& removed);
-
     void GetReportDataFromFile(const std::string& file);
     void CheckReportDataFiles(const QStringList& added,
                               const QStringList& modified,
@@ -40,7 +33,7 @@ private:
                              const QStringList& modified,
                              const QStringList& removed);
     long long GetFilelistByteSize(const QStringList& filelist);
-    long long GetFileByteSize(const QString& file);
+    long long GetFileByteSize(const QString& filename);
 
 
     BackupReportData report;

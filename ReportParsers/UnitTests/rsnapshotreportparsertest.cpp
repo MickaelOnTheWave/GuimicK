@@ -6,7 +6,6 @@ using namespace std;
 
 RsnapshotReportParserTest::RsnapshotReportParserTest()
 {
-
 }
 
 void RsnapshotReportParserTest::init()
@@ -26,36 +25,40 @@ void RsnapshotReportParserTest::testParse_InvalidFile()
     QCOMPARE(ok, false);
 }
 
-void RsnapshotReportParserTest::testParse_Added5()
+void RsnapshotReportParserTest::testParse_data()
 {
-    QStringList addedFiles, modifiedList, removedList;
-    for (int i=0; i<5; ++i)
-        addedFiles.push_back(QString("file%1").arg(i));
+    QTest::addColumn<QString>("file");
+    QTest::addColumn<QStringList>("added");
+    QTest::addColumn<QStringList>("modified");
+    QTest::addColumn<QStringList>("removed");
 
-    testParse_All("rsnapshot5added.log", addedFiles, modifiedList, removedList);
+    QTest::newRow("No changes") << "rsnapshotnochanges.log" <<
+                                   QStringList() << QStringList() << QStringList();
+    QTest::newRow("Added 3") << "rsnapshot3added.log"
+                             << QStringList({"added0","added1","added2"})
+                             << QStringList() << QStringList();
+    QTest::newRow("Modified 3") << "rsnapshot3changed.log"
+                                << QStringList()
+                                << QStringList({"file0", "file1","file2"})
+                                << QStringList();
+    QTest::newRow("Removed 3") << "rsnapshot3removed.log"
+                               << QStringList() << QStringList()
+                               << QStringList({"file0", "file1","file2"});
+    QTest::newRow("Mixed changes") << "rsnapshotmixedchanges.log"
+                                   << QStringList({"myfirst add","my other add", "third add", "last add"})
+                                   << QStringList({"file0","file1"})
+                                   << QStringList({"file2"});
+
 }
 
-void RsnapshotReportParserTest::testParse_Changed5()
+void RsnapshotReportParserTest::testParse()
 {
-    QFAIL("TODO : implement this test");
-}
+    QFETCH(QString,     file);
+    QFETCH(QStringList, added);
+    QFETCH(QStringList, modified);
+    QFETCH(QStringList, removed);
 
-void RsnapshotReportParserTest::testParse_Removed5()
-{
-    QFAIL("TODO : implement this test");
-}
-
-void RsnapshotReportParserTest::testParse_MixedChanges()
-{
-    QFAIL("TODO : implement this test");
-}
-
-void RsnapshotReportParserTest::testParse_All(const std::string &file,
-                                              const QStringList &added,
-                                              const QStringList &modified,
-                                              const QStringList &removed)
-{
-    GetReportDataFromFile(file);
+    GetReportDataFromFile(file.toStdString());
     CheckReportDataFiles(added, modified, removed);
     CheckReportByteData(added, modified, removed);
 }
@@ -113,9 +116,10 @@ long long RsnapshotReportParserTest::GetFilelistByteSize(const QStringList &file
 
 }
 
-long long RsnapshotReportParserTest::GetFileByteSize(const QString &file)
+long long RsnapshotReportParserTest::GetFileByteSize(const QString &filename)
 {
-    return 0;
+    QFile file(filename);
+    return file.size();
 }
 
 

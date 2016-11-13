@@ -1,3 +1,6 @@
+13/11/2016 (9.8)
+	Finished RSnapshot test suite, with data driven approach. Now going for changes in Git test suite...
+
 09/11/2016 (1.2h)
 	Working on RSnapshot parser test suite. Almost the full test has been finished, and in a generic way! Also made some minor
 	improvements to git parser test suite and to RSnapshot parser implementation.
