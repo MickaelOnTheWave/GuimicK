@@ -1,9 +1,15 @@
-15/11/2016 (0.4h 12.9)
+15/11/2016 (2.8h)
 	Figured out how to setup and run a rsnapshot backup. Now we have 3 logs to work with!
 	Fixed implementation and test suite, and created fourth log. Now the test suite is running on Rsnapshot as it is in Git!
 	Only size specific testing has been left commented with a TODO : it is important for Rsnapshot but not for current
 	refactoring task.
-
+	Began refactoring AptGetParser. It was thought that, based on experience from Rsnapshot, refactoring the parser was easy
+	enough to be done without a test suite, however AptGet parser is proving a bit difficult. It would be good to have a check
+	after refactoring to see if everything seems OK. If it is not the case, write the test suite.
+	As ClamAv parser refactoring is straightforward (no constrain to make it work), it has been done.
+Next planned work :
+	- Finish refactoring AptGet parser. If necessary, write test suite.
+	- Go on debugging Git job.
 
 13/11/2016 (3.1h)
 	Finished RSnapshot test suite, with data driven approach. Now going for changes in Git test suite...

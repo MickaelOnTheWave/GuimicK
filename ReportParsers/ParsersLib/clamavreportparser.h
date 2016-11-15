@@ -24,11 +24,8 @@ public:
     virtual std::string GetMiniDescription();
     virtual std::string GetFullDescription();
 
-    virtual bool ParseUsingFiles(const std::string& inputFile,
-                                 const std::string& outputFile, std::string& description);
-
 private:
-    bool Parse(const std::string& file, ClamAvReportData& data);
+    ClamAvReportData reportData;
 };
 
 #endif // CLAMAVREPORTPARSER_H

@@ -107,9 +107,9 @@ JobStatus *ClamAvJob::Run()
 	finalStatus->AddFile(UPDATE_LOG_FILE);
 
     ClamAvReportParser parser;
-    string description;
-    parser.ParseUsingFiles(SCAN_LOG_FILE, SCAN_LOG_FILE, description);
-    finalStatus->SetDescription(description);
+    parser.ParseFile(SCAN_LOG_FILE);
+    parser.WriteFullDescriptionToFile(SCAN_LOG_FILE);
+    finalStatus->SetDescription(parser.GetMiniDescription());
 	finalStatus->AddFile(SCAN_LOG_FILE);
 
 	return finalStatus;
