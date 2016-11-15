@@ -34,13 +34,12 @@ public:
 
 
 private:
-    bool Parse(const std::string &inputFile);
+    void ParseLines(const std::vector<std::string>& lines);
 
     long long ParseByteDataLine(const std::string& line,
 										 const std::string& wordBefore,
 										 const std::string& wordAfter);
 
-    void CreateFullReport(const std::string& fileName);
     std::string FileListDescription(const std::vector<std::string> &fileList,
                                     const std::string &operation);
 

@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+#include "tools.h"
+
 using namespace std;
 
 static const string FAST_FORWARD_TAG = "\nFast-forward";
@@ -14,7 +16,7 @@ bool GitReportParser::ParseBuffer(const string &buffer)
     reportData.Clear();
 
     vector<string> lines;
-    TokenizeString(buffer, '\n', lines);
+    Tools::TokenizeString(buffer, '\n', lines);
 
     RemoveLinesWithoutStartingWhitespaces(lines);
 
@@ -68,15 +70,6 @@ void GitReportParser::WriteFileList(const vector<string>& fileList,
     }
     else
         stream << endl;
-}
-
-void GitReportParser::TokenizeString(const string &input, const char separator, std::vector<string> &tokenList) const
-{
-    tokenList.clear();
-    istringstream is(input);
-    string token;
-    while (getline(is, token, separator))
-        tokenList.push_back(token);
 }
 
 void GitReportParser::RemoveLinesWithoutStartingWhitespaces(std::vector<string> &linesList)

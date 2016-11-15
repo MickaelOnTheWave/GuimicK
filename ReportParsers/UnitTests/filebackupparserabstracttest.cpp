@@ -18,14 +18,6 @@ void FileBackupParserAbstractTest::cleanup()
     delete report;
 }
 
-void FileBackupParserAbstractTest::testParse_InvalidFile()
-{
-    AbstractOutputParser* parser = CreateParser();
-    bool returnValue = parser->ParseFile("inexistentFile");
-    QCOMPARE(returnValue, false);
-    delete parser;
-}
-
 void FileBackupParserAbstractTest::testParse_data()
 {
     QTest::addColumn<QString>("file");

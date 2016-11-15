@@ -20,7 +20,6 @@ private Q_SLOTS:
     void init();
     void cleanup();
 
-    void testParse_InvalidFile();
     void testParse_data();
 
 protected:

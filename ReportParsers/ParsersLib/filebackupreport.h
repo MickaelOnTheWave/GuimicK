@@ -7,6 +7,7 @@
 class FileBackupReport
 {
 public:
+    FileBackupReport();
     virtual ~FileBackupReport();
 
     virtual void Clear();

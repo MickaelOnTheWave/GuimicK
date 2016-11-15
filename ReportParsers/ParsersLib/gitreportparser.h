@@ -25,7 +25,6 @@ private:
                        const std::string& operation,
                        std::stringstream &stream);
 
-    void TokenizeString(const std::string& input, const char separator, std::vector<std::string>& tokenList) const;
     void RemoveLinesWithoutStartingWhitespaces(std::vector<std::string>& linesList);
     void SplitIntoSections(const std::vector<std::string>& linesList,
                            std::vector<std::string>& fileLinesList,

@@ -43,4 +43,5 @@ OTHER_FILES += \
     MakeSynologyBuild.sh \
     ReleasePlan.txt \
     WorkLog.txt \
-    deployNewVersion.sh
+    deployNewVersion.sh \
+    data/rsnapshot.conf

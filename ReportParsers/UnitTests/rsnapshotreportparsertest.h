@@ -27,6 +27,8 @@ private:
                              const QStringList& removed);
     long long GetFilelistByteSize(const QStringList& filelist);
     long long GetFileByteSize(const QString& filename);
+
+    QStringList AppendPrefix(const QStringList& files);
 };
 
 #endif // RSNAPSHOTREPORTPARSERTEST_H

@@ -1,5 +1,9 @@
 #include "filebackupreport.h"
 
+FileBackupReport::FileBackupReport()
+{
+}
+
 FileBackupReport::~FileBackupReport()
 {
 }

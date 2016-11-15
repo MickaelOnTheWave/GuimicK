@@ -52,7 +52,11 @@ OTHER_FILES += \
     data/gitadd5.log \
     data/gitallchanges.log \
     data/gitmod5.log \
-    data/gitrm5.log
+    data/gitrm5.log \
+    data/rsnapshot5added.log \
+    data/rsnapshot5changed.log \
+    data/rsnapshot5removed.log \
+    data/rsnapshotall.log
 
 HEADERS += \
     gitreportparsertest.h \
