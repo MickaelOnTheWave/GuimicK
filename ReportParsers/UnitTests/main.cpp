@@ -1,4 +1,5 @@
 #include "abstractoutputparsertest.h"
+#include "aptupgradeparsertest.h"
 #include "gitreportparsertest.h"
 #include "rsnapshotreportparsertest.h"
 
@@ -9,6 +10,7 @@ void PopulateTestList(std::vector<QObject*>& tests)
     tests.push_back(new AbstractOutputParserTest());
     tests.push_back(new GitReportParserTest());
     tests.push_back(new RsnapshotReportParserTest());
+    tests.push_back(new AptUpgradeParserTest());
 }
 
 void FreeTestList(std::vector<QObject*>& tests)

@@ -1,3 +1,11 @@
+16/11/2016 (1.2h)
+	Finished AptGet parser refactoring. Parsing is not working anymore... so, as decided before, next step is writing the proper
+	test suite. Test suite finished, mostly based on previous ones from file backups. Only data is remaining...
+Next planned work :
+	- Write the data part of the test suite
+	- Collect proper data for AptGet parsing
+	- Fix AptGet parser implementation to pass tests
+
 15/11/2016 (2.8h)
 	Figured out how to setup and run a rsnapshot backup. Now we have 3 logs to work with!
 	Fixed implementation and test suite, and created fourth log. Now the test suite is running on Rsnapshot as it is in Git!

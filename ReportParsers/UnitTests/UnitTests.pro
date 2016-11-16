@@ -22,7 +22,8 @@ SOURCES += \
     rsnapshotreportparsertest.cpp \
     abstractoutputparsertest.cpp \
     mockparser.cpp \
-    filebackupparserabstracttest.cpp
+    filebackupparserabstracttest.cpp \
+    aptupgradeparsertest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -63,4 +64,5 @@ HEADERS += \
     rsnapshotreportparsertest.h \
     abstractoutputparsertest.h \
     mockparser.h \
-    filebackupparserabstracttest.h
+    filebackupparserabstracttest.h \
+    aptupgradeparsertest.h
