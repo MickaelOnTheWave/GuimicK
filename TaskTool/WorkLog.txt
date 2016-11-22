@@ -1,6 +1,10 @@
-22/11/2016 (17.4)
+22/11/2016 (1h)
 	Added example data in test and copied test file to proper folder. Finished fixing parser implementation.
-	Now going back to debugging Git job...
+	Now going back to debugging Git job... Updated git job to use buffers instead of temp files. However, JobStatus
+	also needs refactoring, and maybe a deep one.
+Next planned work :
+	- Investigate on job status refactoring. How deep will it go? It is really necessary?
+	- Back to refactoring or updating solution to work with temp files.
 
 21/11/2016 (0.1h)
 	Copied code to setup columns. Going after only example available so far to add it.
