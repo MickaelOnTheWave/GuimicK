@@ -1,5 +1,6 @@
 22/11/2016 (17.4)
-	Added example data in test and copied test file to proper folder.
+	Added example data in test and copied test file to proper folder. Finished fixing parser implementation.
+	Now going back to debugging Git job...
 
 21/11/2016 (0.1h)
 	Copied code to setup columns. Going after only example available so far to add it.

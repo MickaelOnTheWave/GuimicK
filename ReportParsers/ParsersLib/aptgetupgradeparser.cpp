@@ -45,6 +45,8 @@ AptGetUpgradeParser::~AptGetUpgradeParser()
 
 bool AptGetUpgradeParser::ParseBuffer(const string &buffer)
 {
+    // TODO : find a way to make report not rely on language. So far, it can
+    // only work with english reports.
     report.Clear();
 
     vector<string> lines;
@@ -91,7 +93,10 @@ void AptGetUpgradeParser::ParseLines(const vector<string> &lines,
     for (; it!=lines.end(); ++it)
     {
         if (IsPackageListLine(*it))
+        {
             BuildPackageList(it);
+            --it;
+        }
         else if (IsSizeLine(*it))
             ParseDownloadSizeInformation(*it);
         else if (IsPackageDownloadLine(*it))
@@ -141,6 +146,8 @@ void AptGetUpgradeParser::BuildPackageList(vector<string>::const_iterator& lineI
     vector<string>* currentList = report.GetListPointerFromDescription(*lineIterator);
     if (currentList == NULL)
         return;
+
+    ++lineIterator;
 
     for (; lineIterator->find(" ") == 0; ++lineIterator)
     {
