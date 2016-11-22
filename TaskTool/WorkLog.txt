@@ -1,3 +1,9 @@
+22/11/2016 (17.4)
+	Added example data in test and copied test file to proper folder.
+
+21/11/2016 (0.1h)
+	Copied code to setup columns. Going after only example available so far to add it.
+
 16/11/2016 (1.2h)
 	Finished AptGet parser refactoring. Parsing is not working anymore... so, as decided before, next step is writing the proper
 	test suite. Test suite finished, mostly based on previous ones from file backups. Only data is remaining...

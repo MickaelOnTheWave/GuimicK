@@ -36,7 +36,27 @@ void AptUpgradeParserTest::testParse_InvalidFileDoesNotCrash()
 
 void AptUpgradeParserTest::testParse_data()
 {
-    // TODO : put sample data here
+    QTest::addColumn<QString>("file");
+    QTest::addColumn<QStringList>("obsolete");
+    QTest::addColumn<QStringList>("kept");
+    QTest::addColumn<QStringList>("upgraded");
+    QTest::addColumn<QStringList>("installed");
+    QTest::addColumn<QStringList>("removed");
+    QTest::addColumn<QString>("updateFileSize");
+
+    QTest::newRow("Example 1")
+        << "apt1.txt"
+        << QStringList()
+        << QStringList({"icedtea-7-jre-jamvm","linux-generic","linux-headers-generic",
+                        "linux-image-generic","linux-signed-generic","linux-signed-image-generic",
+                        "openjdk-7-jre","openjdk-7-jre-headless"})
+        << QStringList({"apt","apt-transport-https","apt-utils","curl","firefox",
+                        "firefox-locale-en","firefox-locale-fr","firefox-locale-pt",
+                        "libapt-inst1.5","libapt-pkg4.12","libcurl3","libcurl3-gnutls",
+                        "libcurl4-openssl-dev","libmysqlclient18","libmysqlclient18:i386",
+                        "mysql-client-core-5.5","mysql-common","mysql-server-core-5.5"})
+        << QStringList()
+        << QStringList();
 }
 
 void AptUpgradeParserTest::testParse()
