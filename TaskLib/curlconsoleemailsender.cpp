@@ -10,7 +10,7 @@ using namespace std;
 // @TODO Make proper implementation without clear password
 // @TODO Improve security handling SSL correctly without insecure option
 bool CurlConsoleEmailSender::Send(const bool isHtml, const std::string &destEmail, const std::string &cc, const std::string &bcc, const std::string &subject, const std::string &body,
-											 const std::list<std::string>& fileList)
+                                             const std::vector<std::string>& fileList)
 {
     const std::string mailFileName("mailContents.txt");
 

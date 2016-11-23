@@ -5,6 +5,9 @@
 	a single solution. As externals are already used, the two solution will be prefered.
 	Updated JobStatus to have both externalfiles and filebuffers. Updated all source code to match new methods.
 	However, some jobs and reports continue considering only external files.
+	Fixed some errors in GitJob and test suite after refactoring.
+	Now going for report generation. BackupJob will be left once file buffers are fully working.
+	Updated Report creators. Final step is email content creation...
 
 22/11/2016 (1h)
 	Added example data in test and copied test file to proper folder. Finished fixing parser implementation.

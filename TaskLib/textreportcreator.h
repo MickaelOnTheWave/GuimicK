@@ -2,11 +2,10 @@
 #define CONSOLEREPORT_H
 
 #include <ctime>
-#include <list>
 #include <sstream>
 #include <string>
 
-#include "AbstractReport.h"
+#include "abstractreportcreator.h"
 #include "jobstatus.h"
 
 class TextReportCreator : public AbstractReportCreator
@@ -15,7 +14,6 @@ public:
 	TextReportCreator();
 
 	virtual std::string Generate(WorkResultData* data, const std::string& versionString);
-	virtual void GetAssociatedFiles(std::list<std::string> &fileList);
 
 protected:
 	virtual void AddClientInformation(const std::string& clientName);
@@ -25,7 +23,6 @@ protected:
 	unsigned int FindBiggestJobNameSize(ClientJobResults* data);
 	std::string SpacingString(unsigned int spacesToFill);
 
-	std::vector<std::string> jobsFilenames;
 	std::stringstream report;
 	std::string version;
 	int generalCode;

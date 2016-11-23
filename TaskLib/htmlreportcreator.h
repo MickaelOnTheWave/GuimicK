@@ -1,7 +1,7 @@
 #ifndef HTMLREPORTCREATOR_H
 #define HTMLREPORTCREATOR_H
 
-#include "AbstractReport.h"
+#include "abstractreportcreator.h"
 
 #include <sstream>
 
@@ -13,7 +13,6 @@ public:
     virtual ~HtmlReportCreator() {}
 
     virtual std::string Generate(WorkResultData* data, const std::string& version);
-    virtual void GetAssociatedFiles(std::list<std::string>& fileList);
 
 private:
 
@@ -21,7 +20,6 @@ private:
 
     std::string GetFileContents(const std::string& file);
 
-    std::vector<std::string> jobsFilenames;
     std::stringstream report;
 };
 

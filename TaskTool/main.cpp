@@ -4,7 +4,6 @@
 #include "client.h"
 #include "clientworkmanager.h"
 #include "consolejob.h"
-#include "consolereport.h"
 #include "dummyjob.h"
 #include "curlconsoleemailsender.h"
 #include "profiledjob.h"
@@ -16,6 +15,7 @@
 #include "clamavjob.h"
 #include "configuration.h"
 #include "SelfIdentity.h"
+#include "textreportcreator.h"
 
 #include <commandlinemanager.h>
 
@@ -117,10 +117,11 @@ int main(int argc, char* argv[])
 
     if (sendReportByEmail)
     {
-        list<string> attachmentList;
-        reportCreator->GetAssociatedFiles(attachmentList);
+        vector<string> externalFiles;
+        vector<pair<string,string> > fileBuffers;
+        reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
         bool emailOk = sender.Send(configuration.IsHtmlReport(), configuration.GetMasterEmail(), "", "", "Maintenance report",
-                                            reportData, attachmentList);
+                                            reportData, externalFiles);
         if (!emailOk)
         {
             cout << "Email failed" << endl;

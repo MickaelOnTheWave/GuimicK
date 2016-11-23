@@ -11,7 +11,7 @@
 #include "changescreensaverjob.h"
 #include "clamavjob.h"
 #include "backupjob.h"
-#include "consolereport.h"
+#include "textreportcreator.h"
 #include "gitbackupjob.h"
 #include "SelfIdentity.h"
 

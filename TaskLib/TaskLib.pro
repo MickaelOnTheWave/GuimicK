@@ -19,7 +19,6 @@ SOURCES += \
     clientworkmanager.cpp \
     configuration.cpp \
     consolejob.cpp \
-    consolereport.cpp \
     consolewakejob.cpp \
     curlconsoleemailsender.cpp \
     dummyjob.cpp \
@@ -32,11 +31,12 @@ SOURCES += \
     shutdownjob.cpp \
     sleepjob.cpp \
     sshconsolejob.cpp \
-    workresultdata.cpp
+    workresultdata.cpp \
+    textreportcreator.cpp \
+    abstractreportcreator.cpp
 
 HEADERS +=\
     abstractjob.h \
-    AbstractReport.h \
     backupjob.h \
     changescreensaverjob.h \
     clamavjob.h \
@@ -44,7 +44,6 @@ HEADERS +=\
     clientworkmanager.h \
     configuration.h \
     consolejob.h \
-    consolereport.h \
     consolewakejob.h \
     curlconsoleemailsender.h \
     dummyjob.h \
@@ -59,7 +58,9 @@ HEADERS +=\
     shutdownjob.h \
     sleepjob.h \
     sshconsolejob.h \
-    workresultdata.h
+    workresultdata.h \
+    textreportcreator.h \
+    abstractreportcreator.h
 
 unix {
     target.path = /usr/lib

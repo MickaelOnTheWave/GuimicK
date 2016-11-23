@@ -2,8 +2,8 @@
 #define CURLCONSOLEEMAILSENDER_H
 
 #include "emailreportdispatcher.h"
-#include <list>
 #include <string>
+#include <vector>
 
 class CurlConsoleEmailSender : public EmailReportDispatcher
 {
@@ -15,7 +15,7 @@ public:
             const std::string& bcc,
             const std::string &subject,
             const std::string &body,
-            const std::list<std::string> &fileList
+            const std::vector<std::string> &fileList
     );
 
 protected:

@@ -1,4 +1,4 @@
-#include "consolereport.h"
+#include "textreportcreator.h"
 
 #include <tools.h>
 
@@ -48,7 +48,8 @@ void TextReportCreator::AddJobInformation(const std::string &jobName, JobStatus 
 {
 	int localCode = jobStatus->GetCode();
 	string stringOutput(jobStatus->GetDescription());
-    jobStatus->GetExternalFilenames(jobsFilenames);
+    jobStatus->GetExternalFilenames(externalFiles);
+    jobStatus->GetFileBuffers(fileBuffers);
 
 	generalDuration += jobStatus->GetDuration();
 
@@ -95,11 +96,3 @@ string TextReportCreator::SpacingString(unsigned int spacesToFill)
 	return spacingString;
 }
 
-void TextReportCreator::GetAssociatedFiles(list<string> &fileList)
-{
-	fileList.clear();
-	vector<string>::iterator it=jobsFilenames.begin();
-	vector<string>::iterator end=jobsFilenames.end();
-	for (; it!=end; it++)
-		fileList.push_back(*it);
-}

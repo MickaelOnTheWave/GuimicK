@@ -47,7 +47,8 @@ string HtmlReportCreator::Generate(WorkResultData *data, const string &versionSt
         {
             pair<string, JobStatus*> jobData = *itJob;
 
-            jobData.second->GetExternalFilenames(jobsFilenames);
+            jobData.second->GetExternalFilenames(externalFiles);
+            jobData.second->GetFileBuffers(fileBuffers);
 
             if (jobData.second->IsWorseThan(totalCode))
                 totalCode = jobData.second->GetCode();
@@ -67,14 +68,6 @@ string HtmlReportCreator::Generate(WorkResultData *data, const string &versionSt
     return report.str();
 }
 
-void HtmlReportCreator::GetAssociatedFiles(list<string> &fileList)
-{
-    fileList.clear();
-    vector<string>::iterator it=jobsFilenames.begin();
-    vector<string>::iterator end=jobsFilenames.end();
-    for (; it!=end; it++)
-        fileList.push_back(*it);
-}
 void HtmlReportCreator::AddJobData(const string &jobName, const string &jobDescription, const string &jobStatusCode, const string &jobDuration)
 {
     report << "  <tr>" << endl;
