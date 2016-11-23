@@ -18,14 +18,14 @@ JobStatus::JobStatus(int _code, const string &_description)
 
 JobStatus::~JobStatus()
 {
-	filenames.clear();
+    externalFilenames.clear();
 }
 
 void JobStatus::Reset()
 {
 	code = NOT_EXECUTED;
 	description = "";
-	filenames.clear();
+    externalFilenames.clear();
 }
 
 void JobStatus::SetCode(int _code)
@@ -62,23 +62,41 @@ void JobStatus::SetDescription(const string &_description)
 	description = _description;
 }
 
-void JobStatus::AddFile(const string &filename)
+void JobStatus::AddExternalFile(const string &filename)
 {
-    filenames.push_back(filename);
+    externalFilenames.push_back(filename);
 }
 
-void JobStatus::AddFilesFromStatus(JobStatus *other)
+void JobStatus::AddFileBuffer(const string &filename, const string &filecontents)
 {
-    vector<string> files;
-    other->GetFilenames(files);
-    vector<string>::const_iterator it=files.begin();
-    for (; it!=files.end(); ++it)
-        AddFile(*it);
+    filebuffers.push_back(make_pair<string,string>(filename, filecontents));
+
 }
 
-void JobStatus::RemoveAllFiles()
+void JobStatus::AddExternalFilesFromStatus(JobStatus *other)
 {
-    filenames.clear();
+    vector<string>::const_iterator it=other->externalFilenames.begin();
+    for (; it!=other->externalFilenames.end(); ++it)
+        AddExternalFile(*it);
+}
+
+void JobStatus::AddFileBuffersFromStatus(JobStatus *other)
+{
+    vector<pair<string,string> >::const_iterator it=other->filebuffers.begin();
+    for (; it!=other->filebuffers.end(); ++it)
+        AddFileBuffer(it->first, it->second);
+}
+
+void JobStatus::AddAllFilesFromStatus(JobStatus *other)
+{
+    AddExternalFilesFromStatus(other);
+    AddFileBuffersFromStatus(other);
+}
+
+void JobStatus::ClearAllFiles()
+{
+    externalFilenames.clear();
+    filebuffers.clear();
 }
 
 int JobStatus::GetCode() const
@@ -110,19 +128,19 @@ string JobStatus::ToString() const
 {
 	std::stringstream fullDescription;
 	fullDescription << "Code:" << code << " - Desc:" << description;
-	fullDescription << " - Files:" << filenames.size();
+    fullDescription << " - Files:" << externalFilenames.size();
 	return fullDescription.str();
 }
 
-bool JobStatus::HasFiles()
+bool JobStatus::HasExternalFiles()
 {
-	return (!filenames.empty());
+    return (!externalFilenames.empty());
 }
 
-void JobStatus::GetFilenames(vector<string> &_fileNames)
+void JobStatus::GetExternalFilenames(vector<string> &_fileNames)
 {
-	vector<string>::const_iterator it=filenames.begin();
-	vector<string>::const_iterator end=filenames.end();
+    vector<string>::const_iterator it=externalFilenames.begin();
+    vector<string>::const_iterator end=externalFilenames.end();
 	for (; it!=end; it++)
 		_fileNames.push_back(*it);
 }

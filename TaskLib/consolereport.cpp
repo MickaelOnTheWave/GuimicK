@@ -48,7 +48,7 @@ void TextReportCreator::AddJobInformation(const std::string &jobName, JobStatus 
 {
 	int localCode = jobStatus->GetCode();
 	string stringOutput(jobStatus->GetDescription());
-	jobStatus->GetFilenames(jobsFilenames);
+    jobStatus->GetExternalFilenames(jobsFilenames);
 
 	generalDuration += jobStatus->GetDuration();
 

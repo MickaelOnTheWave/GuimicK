@@ -99,8 +99,9 @@ JobStatus* BackupJob::Run()
 			description += stream.str();
 			backupStatus->SetDescription(description);
 		}
-        backupStatus->AddFile(BACKUP_ERROR_FILE);
-		backupStatus->AddFile(BACKUP_REPORT_FILE);
+        // TODO : switch to internal buffer
+        backupStatus->AddExternalFile(BACKUP_ERROR_FILE);
+        backupStatus->AddExternalFile(BACKUP_REPORT_FILE);
 		return backupStatus;
 	}
 	else
@@ -115,7 +116,7 @@ JobStatus* BackupJob::Run()
 		description += stream.str();
 		reportStatus->SetDescription(description);
 		reportStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
-		reportStatus->AddFile(BACKUP_REPORT_FILE);
+        reportStatus->AddExternalFile(BACKUP_REPORT_FILE);
 		return reportStatus;
 	}
 	else
@@ -126,7 +127,7 @@ JobStatus* BackupJob::Run()
     parser.WriteFullDescriptionToFile(BACKUP_REPORT_FILE);
 
     JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
-	status->AddFile(BACKUP_REPORT_FILE);
+    status->AddExternalFile(BACKUP_REPORT_FILE);
 	return status;
 }
 

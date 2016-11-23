@@ -344,7 +344,7 @@ void GitJobTest::CheckGitJobReturn(const int expectedStatus,
     QCOMPARE(currentStatus->GetDescription(), description.toStdString());
 
     std::vector<std::string> reportFiles;
-    currentStatus->GetFilenames(reportFiles);
+    currentStatus->GetExternalFilenames(reportFiles);
     QCOMPARE(reportFiles.size(), expectedReportFileCount);
 }
 

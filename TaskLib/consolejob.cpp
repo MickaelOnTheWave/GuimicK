@@ -98,10 +98,12 @@ JobStatus *ConsoleJob::Run()
     JobStatus* status = new JobStatus(JobStatus::OK);
     const string fullCommand = CreateFullCommand();
 
+    // TODO : add output to status when file is buffer instead of external. This might require some
+    // kind of control : attaching output may not be always the best option.
     if (outputFileName != "")
     {
         receivedReturnCode = Tools::RunExternalCommandFile(fullCommand, outputFileName);
-        status->AddFile(outputFileName);
+        status->AddExternalFile(outputFileName);
     }
     else
         receivedReturnCode = Tools::RunExternalCommand(fullCommand, standardOutput, true);

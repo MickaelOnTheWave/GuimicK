@@ -47,7 +47,7 @@ string HtmlReportCreator::Generate(WorkResultData *data, const string &versionSt
         {
             pair<string, JobStatus*> jobData = *itJob;
 
-            jobData.second->GetFilenames(jobsFilenames);
+            jobData.second->GetExternalFilenames(jobsFilenames);
 
             if (jobData.second->IsWorseThan(totalCode))
                 totalCode = jobData.second->GetCode();

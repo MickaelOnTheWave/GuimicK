@@ -126,29 +126,27 @@ void GitBackupJob::RunGitPull(const string &repository, std::vector<JobStatus *>
     originalDirectory = getcwd(originalDirectory, originalDirectorySize);
     chdir(repository.c_str());
 
-
-    // TODO : remove this ugly file generation! See next tasks.
-    const string gitRawLogFile = string("../") + repository + "_repository_raw.txt";
     ConsoleJob* gitCommand = new ConsoleJob("", "git", "pull");
-    gitCommand->SetOutputTofile(gitRawLogFile);
+    gitCommand->SetOutputToBuffer();
     JobStatus* status = gitCommand->Run();
 
     if (gitCommand->GetCommandReturnCode() == 128)
         status->SetDescription(invalidDestinationRepositoryError);
     else
     {
+        const string gitLogFile = repository + ".log";
         GitReportParser parser;
-        string description;
-        const string gitParsedLogFile = string("../") + repository + "_repository.txt";
-        bool ok = parser.ParseUsingFiles(gitRawLogFile, gitParsedLogFile, description);
+        bool ok = parser.ParseBuffer(gitCommand->GetCommandOutput());
         if (ok)
         {
-            status->RemoveAllFiles();
-            status->AddFile(gitParsedLogFile);
-            status->SetDescription(description);
+            status->AddFileBuffer(gitLogFile, parser.GetFullDescription());
+            status->SetDescription(parser.GetMiniDescription());
         }
         else
+        {
+            status->AddFileBuffer(gitLogFile, gitCommand->GetCommandOutput());
             status->SetDescription(repositoryPullOk);
+        }
     }
 
     statusList.push_back(status);
@@ -163,12 +161,12 @@ void GitBackupJob::RunGitClone(const string &source,
 {
     ConsoleJob* gitCommand = new ConsoleJob("", "git", BuildGitParameters(source, destination));
     const string gitLogFile = source + "_repository.txt";
-    gitCommand->SetOutputTofile(gitLogFile);
+    gitCommand->SetOutputToBuffer();
     JobStatus* status = gitCommand->Run();
     if (gitCommand->GetCommandReturnCode() == 128)
     {
         status->SetDescription(invalidSourceRepositoryError);
-        status->RemoveAllFiles();
+        status->ClearAllFiles();
     }
     else
         status->SetDescription(repositoryCloneOk);
@@ -230,7 +228,7 @@ JobStatus *GitBackupJob::CreateMultiRepositoryStatus(const std::vector<JobStatus
 
     std::vector<JobStatus *>::const_iterator it=statusList.begin();
     for (; it!=statusList.end(); ++it)
-        status->AddFilesFromStatus(*it);
+        status->AddAllFilesFromStatus(*it);
 
     status->SetDescription(descriptionStream.str());
     return status;

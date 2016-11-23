@@ -12,10 +12,10 @@ ClamAvJob::ClamAvJob()
 	: scanDir(""), blockOnFailingUpdate(false)
 {
     virusDefinitionUpdateJob = new SshConsoleJob("", "freshclam.exe", "--verbose --on-update-execute=EXIT_0 --on-error-execute=EXIT_1 --on-outdated-execute=EXIT_2");
-    virusDefinitionUpdateJob->SetOutputTofile(UPDATE_LOG_FILE);
+    virusDefinitionUpdateJob->SetOutputToBuffer();
 
     virusFullScanJob = new SshConsoleJob("", "", "");
-    virusFullScanJob->SetOutputTofile(SCAN_LOG_FILE);
+    virusFullScanJob->SetOutputToBuffer();
 }
 
 ClamAvJob::~ClamAvJob()
@@ -54,7 +54,7 @@ bool ClamAvJob::IsInitialized()
 JobStatus *ClamAvJob::Run()
 {
 	JobStatus* updateStatus = virusDefinitionUpdateJob->Run();
-	updateStatus->AddFile(UPDATE_LOG_FILE);
+    updateStatus->AddFileBuffer(UPDATE_LOG_FILE, virusDefinitionUpdateJob->GetCommandOutput());
 	if (blockOnFailingUpdate && updateStatus->GetCode() != JobStatus::OK)
 	{
 		bool blockingError = true;
@@ -89,7 +89,7 @@ JobStatus *ClamAvJob::Run()
 	}
 
 	JobStatus* scanStatus = virusFullScanJob->Run();
-	scanStatus->AddFile(SCAN_LOG_FILE);
+    scanStatus->AddFileBuffer(SCAN_LOG_FILE, virusFullScanJob->GetCommandOutput());
 	if (scanStatus->GetCode() != JobStatus::OK)
 	{
 		string description("Error on virus scan. Return code : ");
@@ -100,17 +100,18 @@ JobStatus *ClamAvJob::Run()
 		return scanStatus;
 	}
 
-	delete updateStatus;
-	delete scanStatus;
-
 	JobStatus* finalStatus = new JobStatus(JobStatus::OK);
-	finalStatus->AddFile(UPDATE_LOG_FILE);
+    finalStatus->AddAllFilesFromStatus(updateStatus);
 
     ClamAvReportParser parser;
-    parser.ParseFile(SCAN_LOG_FILE);
-    parser.WriteFullDescriptionToFile(SCAN_LOG_FILE);
+    bool parsingOk = parser.ParseBuffer(virusFullScanJob->GetCommandOutput());
+    if (parsingOk)
+        finalStatus->AddFileBuffer(SCAN_LOG_FILE, parser.GetFullDescription());
+    else
+        finalStatus->AddFileBuffer(SCAN_LOG_FILE, virusFullScanJob->GetCommandOutput());
     finalStatus->SetDescription(parser.GetMiniDescription());
-	finalStatus->AddFile(SCAN_LOG_FILE);
 
+    delete updateStatus;
+    delete scanStatus;
 	return finalStatus;
 }

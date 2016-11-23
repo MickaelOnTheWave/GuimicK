@@ -31,9 +31,12 @@ public:
 	std::string GetDescription() const;
 	void SetDescription(const std::string& _description);
 
-	void AddFile(const std::string& filename);
-    void AddFilesFromStatus(JobStatus* other);
-    void RemoveAllFiles();
+    void AddExternalFile(const std::string& filename);
+    void AddFileBuffer(const std::string& filename, const std::string& filecontents);
+    void AddExternalFilesFromStatus(JobStatus* other);
+    void AddFileBuffersFromStatus(JobStatus* other);
+    void AddAllFilesFromStatus(JobStatus* other);
+    void ClearAllFiles();
 
 	bool IsWorseThan(int otherCode) const;
 
@@ -46,18 +49,20 @@ public:
 	std::string ToString() const;
 
 
-	bool HasFiles();
+    bool HasExternalFiles();
 
 	/**
 		@param[out] fileNames
 	*/
-	void GetFilenames(std::vector<std::string>& _fileNames);
+    void GetExternalFilenames(std::vector<std::string>& _fileNames);
 
 protected:
 	int			code;
 	std::time_t elapsedTime;
 	std::string description;
-	std::vector<std::string> filenames;
+
+    std::vector<std::string> externalFilenames;
+    std::vector<std::pair<std::string, std::string> > filebuffers;
 };
 
 #endif // JOBSTATUS_H
