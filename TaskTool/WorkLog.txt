@@ -1,4 +1,4 @@
-23/11/2016 (17.9)
+23/11/2016 (2.7h)
 	After analyzing refactoring scope, it seems that there is some work but it is doable.
 	Will get inside refactoring other jobs (BackupJob mostly), workmanager, emailsender and jobstatus.
 	There doesn't seem be a significant advantage in having two lists (externalfiles and filebuffers) over
@@ -8,6 +8,15 @@
 	Fixed some errors in GitJob and test suite after refactoring.
 	Now going for report generation. BackupJob will be left once file buffers are fully working.
 	Updated Report creators. Final step is email content creation...
+	Tested Synology build. Nothing broken, we can move on :-) Changed version number, there are enough changes to
+	justify it.
+	Refactored Mime content creation : now it is in separate class, and most of its funcionality is separated in smaller
+	functions. Also improved some other functions with small refactorings.
+	Now, almost every refactoring opportunity has been used in Mime creation content before stepping into file code.
+Next planned work :
+	- Refactor attachment reading : it should be done at once and then buffer should be managed.
+	- Implement attachment reading from buffer : once first step is done, it should be straightforward.
+	- Change TaskLib use of email sending to buffers.
 
 22/11/2016 (1h)
 	Added example data in test and copied test file to proper folder. Finished fixing parser implementation.
