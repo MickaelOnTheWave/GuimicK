@@ -2,7 +2,8 @@
 
 #include <fstream>
 #include <stdio.h>
-#include <tools.h>
+
+#include <mimetools.h>
 #include "consolejob.h"
 
 using namespace std;
@@ -16,7 +17,7 @@ bool CurlConsoleEmailSender::Send(const bool isHtml, const std::string &destEmai
 
 	ofstream mailFile;
 	mailFile.open(mailFileName.c_str());
-    mailFile << Tools::CreateMIMEEmailContent(isHtml, displayName, emailAddress, destEmail, cc, bcc, subject, body, fileList);
+    mailFile << MimeTools::CreateEmailContent(isHtml, displayName, emailAddress, destEmail, cc, bcc, subject, body, fileList);
 	mailFile.close();
 
     string curlParams;
