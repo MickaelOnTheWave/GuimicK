@@ -55,6 +55,7 @@ public:
 		@param[out] fileNames
 	*/
     void GetExternalFilenames(std::vector<std::string>& _fileNames);
+    void GetFileBuffers(std::vector<std::pair<std::string,std::string> >& _filebuffers);
 
 protected:
 	int			code;

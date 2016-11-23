@@ -140,7 +140,13 @@ bool JobStatus::HasExternalFiles()
 void JobStatus::GetExternalFilenames(vector<string> &_fileNames)
 {
     vector<string>::const_iterator it=externalFilenames.begin();
-    vector<string>::const_iterator end=externalFilenames.end();
-	for (; it!=end; it++)
-		_fileNames.push_back(*it);
+    for (; it!=externalFilenames.end(); ++it)
+        _fileNames.push_back(*it);
+}
+
+void JobStatus::GetFileBuffers(std::vector<std::pair<string, string> > &_filebuffers)
+{
+    vector<pair<string,string> >::const_iterator it=filebuffers.begin();
+    for (; it!=filebuffers.end(); ++it)
+        _filebuffers.push_back(*it);
 }

@@ -160,16 +160,16 @@ void GitBackupJob::RunGitClone(const string &source,
                                vector<JobStatus *> &statusList) const
 {
     ConsoleJob* gitCommand = new ConsoleJob("", "git", BuildGitParameters(source, destination));
-    const string gitLogFile = source + "_repository.txt";
+    const string gitLogFile = destination + ".log";
     gitCommand->SetOutputToBuffer();
     JobStatus* status = gitCommand->Run();
     if (gitCommand->GetCommandReturnCode() == 128)
-    {
         status->SetDescription(invalidSourceRepositoryError);
-        status->ClearAllFiles();
-    }
     else
+    {
         status->SetDescription(repositoryCloneOk);
+        status->AddFileBuffer(gitLogFile, gitCommand->GetCommandOutput());
+    }
 
     statusList.push_back(status);
     delete gitCommand;
