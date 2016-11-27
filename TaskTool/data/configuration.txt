@@ -32,21 +32,23 @@ Client
 			params = "test";
 			parserCommand = "/home/mickael/Prog/TaskManager/bin/Release/ReportParsers/CommandLineTool/CommandLineTool --parser aptupgrade --input apt-upgrade.txt --direct";
 		}
-		GitBackup("Update", "/home/mickael/Testing/gitPullBackup");
 		GitBackup
 		{
-			type = "Full";
-			target = "local";
 			Repository
 			{
-				source = "/home/mickael/Testing/refRepos";
-				dest = "/home/mickael/Testing/clone1";
+				source = "/home/mickael/Testing/gitsrc";
+				dest = "/home/mickael/Testing/gitdest";
+			}
+			Repository
+			{
+				source = "/home/mickael/Testing/gitsrc2";
+				dest = "/home/mickael/Testing/gitdest2";
 			}
 		}
 	}
 }
 
 MasterEmail = "mickael.dacruz@gmail.com";
-ReportType = "text";
-SendReportByEmail = false;
+ReportType = "html";
+SendReportByEmail = true;
 ShutdownOnFinish = false;

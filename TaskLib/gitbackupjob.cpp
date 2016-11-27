@@ -134,7 +134,7 @@ void GitBackupJob::RunGitPull(const string &repository, std::vector<JobStatus *>
         status->SetDescription(invalidDestinationRepositoryError);
     else
     {
-        const string gitLogFile = repository + ".log";
+        const string gitLogFile = FileTools::GetFilenameFromUnixPath(repository) + ".txt";
         GitReportParser parser;
         bool ok = parser.ParseBuffer(gitCommand->GetCommandOutput());
         if (ok)
@@ -160,7 +160,7 @@ void GitBackupJob::RunGitClone(const string &source,
                                vector<JobStatus *> &statusList) const
 {
     ConsoleJob* gitCommand = new ConsoleJob("", "git", BuildGitParameters(source, destination));
-    const string gitLogFile = destination + ".log";
+    const string gitLogFile = FileTools::GetFilenameFromUnixPath(destination) + ".txt";
     gitCommand->SetOutputToBuffer();
     JobStatus* status = gitCommand->Run();
     if (gitCommand->GetCommandReturnCode() == 128)

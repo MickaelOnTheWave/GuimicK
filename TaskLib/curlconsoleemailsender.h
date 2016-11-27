@@ -15,7 +15,8 @@ public:
             const std::string& bcc,
             const std::string &subject,
             const std::string &body,
-            const std::vector<std::string> &fileList
+            const std::vector<std::string> &fileList,
+            const std::vector<std::pair<std::string,std::string> >& fileBuffers
     );
 
 protected:

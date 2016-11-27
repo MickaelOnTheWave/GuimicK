@@ -23,7 +23,7 @@
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.49";
+static const string PROGRAM_VERSION = "0.411";
 
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
         vector<pair<string,string> > fileBuffers;
         reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
         bool emailOk = sender.Send(configuration.IsHtmlReport(), configuration.GetMasterEmail(), "", "", "Maintenance report",
-                                            reportData, externalFiles);
+                                            reportData, externalFiles, fileBuffers);
         if (!emailOk)
         {
             cout << "Email failed" << endl;

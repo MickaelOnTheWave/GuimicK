@@ -1,8 +1,7 @@
 #include "htmlreportcreator.h"
 
 #include <tools.h>
-
-#include <fstream>
+#include <filetools.h>
 
 using namespace std;
 
@@ -19,7 +18,7 @@ string HtmlReportCreator::Generate(WorkResultData *data, const string &versionSt
     report << "<html>" << endl;
     report << "  <head>" << endl;
     report << "    <META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" << endl;
-    report << GetFileContents(CSS_FILE) << endl;
+    report << FileTools::GetTextFileContent(CSS_FILE) << endl;
     report << "  </head>" << endl;
     report << "<body>" << endl;
 
@@ -78,22 +77,4 @@ void HtmlReportCreator::AddJobData(const string &jobName, const string &jobDescr
     report << "    <td>" << jobStatusCode << "</td>" << endl;
     report << "    <td>" << jobDuration << "</td>" << endl;
     report << "  </tr>" << endl;
-}
-
-string HtmlReportCreator::GetFileContents(const string &file)
-{
-    ifstream fileStream;
-    fileStream.open(file.c_str());
-    if (!fileStream)
-        return string("");
-
-    std::string contents;
-    fileStream.seekg(0, std::ios::end);
-    contents.resize(fileStream.tellg());
-    fileStream.seekg(0, std::ios::beg);
-    fileStream.read(&contents[0], contents.size());
-
-
-    fileStream.close();
-    return contents;
 }

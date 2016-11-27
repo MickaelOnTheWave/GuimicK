@@ -18,8 +18,6 @@ private:
 
     void AddJobData(const std::string& jobName, const std::string& jobDescription, const std::string& jobStatusCode, const std::string& jobDuration);
 
-    std::string GetFileContents(const std::string& file);
-
     std::stringstream report;
 };
 
