@@ -1,3 +1,6 @@
+27/11/2016 (0.4h)
+	Continued small refactorings before big one. Created two functions in FileTools dedicated for that purpose.
+
 23/11/2016 (2.7h)
 	After analyzing refactoring scope, it seems that there is some work but it is doable.
 	Will get inside refactoring other jobs (BackupJob mostly), workmanager, emailsender and jobstatus.
