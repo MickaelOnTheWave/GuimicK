@@ -13,9 +13,6 @@ public :
     virtual std::string GetMiniDescription() = 0;
     virtual std::string GetFullDescription() = 0;
     void WriteFullDescriptionToFile(const std::string& filename);
-
-protected :
-    bool GetFileContent(const std::string& fileName, std::string& fileContents);
 };
 
 
