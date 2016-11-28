@@ -1,5 +1,29 @@
-27/11/2016 (0.4h)
+28/11/2016 (1.4h)
+	It has been chosen to create a feature test that would test the whole process of task tool :
+	reading configuration file, running the jobs, creating the report. Only email sending has been left
+	out of the test as it is hard to test and would require a lot of effort.
+	Refactored the tests for tasklib in order to support multiple test suites. Created feature test suite,
+	now data is needed.
+	Creating first data. First run is crashing : two bug spots have been revealed. And also at least two unit tests
+	are missing!
+	- Git job : it doesn't handle generic errors, only missing destination.
+	- Git parser : it crashes when having unrelated data to parse.
+Next planned work :
+	- Create a test to expose Git job bug and then fix it.
+	- Create a test to expose Git parser bug and then fix it.
+	- Go on with feature test and data creation.
+
+27/11/2016 (2.8h)
 	Continued small refactorings before big one. Created two functions in FileTools dedicated for that purpose.
+	Attachment reading code fully refactored to work with buffers. Now only minor modifications to support it from
+	user side. Updated code to use buffers from tasktool.
+	Fixed several issues that prevented Git job from working. Testing several configurations, for now it seems that
+	it works but not always. Unfortunately, there seems to be a need for another test suite...
+Next planned work :
+	- Write a full Git job + report test
+	- Check if email sending test suite is needed. If so, investigate the best way to do it.
+	- Investigate on a way to run a "master" test suite that would show an overall result for all suites
+	- Check if a tasktool configuration test suite is needed.
 
 23/11/2016 (2.7h)
 	After analyzing refactoring scope, it seems that there is some work but it is doable.

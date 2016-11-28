@@ -130,6 +130,7 @@ void GitBackupJob::RunGitPull(const string &repository, std::vector<JobStatus *>
     gitCommand->SetOutputToBuffer();
     JobStatus* status = gitCommand->Run();
 
+    // TODO : handle other errors here - when return code is different than 0.
     if (gitCommand->GetCommandReturnCode() == 128)
         status->SetDescription(invalidDestinationRepositoryError);
     else

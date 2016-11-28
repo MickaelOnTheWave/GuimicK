@@ -17,8 +17,11 @@ QMAKE_CXXFLAGS += -std=c++11
 TEMPLATE = app
 
 
-SOURCES += tst_taskteststest.cpp \
-    gitrepository.cpp
+SOURCES += \
+    gitrepository.cpp \
+    main.cpp \
+    gitjobtest.cpp \
+    taskfeaturetest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -50,7 +53,12 @@ INCLUDEPATH += $$TOOLS_INCLUDE_PATH
 DEPENDPATH += $$TOOLS_INCLUDE_PATH
 
 OTHER_FILES += \
-    data/image.jpg
+    data/image.jpg \
+    data/ex1_1repository.txt \
+    data/ex1_attach1.txt \
+    data/ex1_report.txt
 
 HEADERS += \
-    gitrepository.h
+    gitrepository.h \
+    gitjobtest.h \
+    taskfeaturetest.h
