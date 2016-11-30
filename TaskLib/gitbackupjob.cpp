@@ -12,6 +12,7 @@ using namespace std;
 static const string invalidSourceRepositoryError        = "Invalid source repository";
 static const string repositoryCloneOk                   = "Repository cloned successfully";
 static const string invalidDestinationRepositoryError   = "Invalid destination repository";
+static const string unknownError                        = "Unknown error";
 static const string repositoryPullOk                    = "Repository successfully updated, see attached file.";
 
 
@@ -130,9 +131,10 @@ void GitBackupJob::RunGitPull(const string &repository, std::vector<JobStatus *>
     gitCommand->SetOutputToBuffer();
     JobStatus* status = gitCommand->Run();
 
-    // TODO : handle other errors here - when return code is different than 0.
     if (gitCommand->GetCommandReturnCode() == 128)
         status->SetDescription(invalidDestinationRepositoryError);
+    else if (gitCommand->GetCommandReturnCode() != 0)
+        status->SetDescription(unknownError);
     else
     {
         const string gitLogFile = FileTools::GetFilenameFromUnixPath(repository) + ".txt";

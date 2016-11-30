@@ -31,10 +31,10 @@ void TaskFeatureTest::testGitBackup_data()
     QTest::addColumn<QStringList>("outputAttachmentFiles");
 
     QTest::newRow("Single repository") << QString("ex1_1repository.txt")
-                                       << QString("ex1_report.txt")
+                                       << QString("ex1_report.html")
                                        << QStringList({"ex1_attach1.txt"});
     QTest::newRow("2 repositories")    << QString("ex2_2repositories.txt")
-                                       << QString("ex2_report.txt")
+                                       << QString("ex2_report.html")
                                        << QStringList({
                                                           "ex2_attach1.txt",
                                                           "ex2_attach2.txt"
@@ -59,6 +59,7 @@ void TaskFeatureTest::testGitBackup()
     AbstractReportCreator* reportCreator = configuration.CreateReportObject();
     string reportData = reportCreator->Generate(workResult, version);
     string expectedReportData = FileTools::GetTextFileContent(outputReportFile.toStdString());
+    FileTools::WriteBufferToFile("outputReport.html", reportData);
     QCOMPARE(reportData, expectedReportData);
 
     vector<string> externalFiles;

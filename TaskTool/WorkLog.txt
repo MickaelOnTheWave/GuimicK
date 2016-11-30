@@ -1,3 +1,14 @@
+30/11/2016 (1.8h)
+	Created test to simulate error with Git job. Test removes the source before trying an update.
+	Fixed implementation - there is no more crash. Parser bug will be reported and left behind - more important
+	work to do for now. Parser bug reported.
+	Now back to feature test. Resolved config failure - configuration was missing the "local" property. "Resolved"
+	report comparison by having the correct expected result. However, for now test is dummy : no files are
+	being changed for backup.
+Next planned work :
+	- Improve feature test with real data being backed up in report.
+	- Go on checking/fixing attachment tests.
+
 28/11/2016 (1.4h)
 	It has been chosen to create a feature test that would test the whole process of task tool :
 	reading configuration file, running the jobs, creating the report. Only email sending has been left

@@ -109,6 +109,20 @@ void GitJobTest::testUpdate_MultipleRepositories()
 
 }
 
+void GitJobTest::testUpdate_InvalidSource()
+{
+    const std::string stdSource = sourceRepository.toStdString();
+    const std::string stdDestination = destinationRepository.toStdString();
+    const std::string errorInvalidTarget = "Unknown error";
+
+    CreateDefaultBackup(stdSource, stdDestination);
+    QDir dir(sourceRepository);
+    dir.removeRecursively();
+    RunGitBackup(stdSource, stdDestination);
+
+    CheckGitJobReturnsError(QString(errorInvalidTarget.c_str()));
+}
+
 std::vector<GitRepository*> GitJobTest::CreateMultipleRepositories()
 {
     std::vector<GitRepository*> repositories;
@@ -195,8 +209,7 @@ void GitJobTest::RunGitBackup(const std::string &source, const std::string &dest
 {
     std::vector<std::pair<std::string, std::string> > repositoryList;
     repositoryList.push_back(make_pair(source, destination));
-    GitBackupJob job(repositoryList);
-    currentStatus = job.Run();
+    RunGitBackup(repositoryList);
 }
 
 void GitJobTest::RunGitBackup(const std::vector<std::pair<std::string, std::string> >& repositoryList)

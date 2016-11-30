@@ -9,6 +9,7 @@ Client
 	{
 		GitBackup
 		{
+			target = local;
 			Repository
 			{
 				source = "/home/mickael/Testing/gitsrc";

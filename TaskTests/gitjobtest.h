@@ -23,6 +23,7 @@ private Q_SLOTS:
     void testUpdate_data();
     void testUpdate();
     void testUpdate_MultipleRepositories();
+    void testUpdate_InvalidSource();
 
 private:
     std::vector<GitRepository*> CreateMultipleRepositories();
@@ -31,14 +32,13 @@ private:
     void CreateDefaultData(const std::string& repository);
     void StartGitRepository(const std::string &repository);
 
-    void RunGitBackup(const std::string &source, const std::string &destination);
     void CreateDefaultBackup(const std::string &source, const std::string &destination);
     void AddFiles(const std::string &repository, const QStringList &list, const size_t size = 1000);
     void ChangeFiles(const std::string& repository, const QStringList& list);
     void RemoveFiles(const std::string& repository, const QStringList &list);
     void RunGitCommit(const std::string &repository);
 
-    void RunGitBackup();
+    void RunGitBackup(const std::string &source, const std::string &destination);
     void RunGitBackup(const std::vector<std::pair<std::string, std::string> >& repositoryList);
 
     void CheckGitJobReturnsError(const QString& description);

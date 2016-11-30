@@ -41,6 +41,9 @@ Abandoned features :
 	[020] Check/repair Screensaver modification from script
 	[022] Remove Screensaver script dependency
 
+Known bugs :
+	- Git report parser crashes when trying to parse a report coming from git asking for ssh password.
+
 -------------
 Release plan
 -------------
