@@ -21,7 +21,8 @@ SOURCES += \
     gitrepository.cpp \
     main.cpp \
     gitjobtest.cpp \
-    taskfeaturetest.cpp
+    taskfeaturetest.cpp \
+    gittools.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -62,4 +63,5 @@ OTHER_FILES += \
 HEADERS += \
     gitrepository.h \
     gitjobtest.h \
-    taskfeaturetest.h
+    taskfeaturetest.h \
+    gittools.h

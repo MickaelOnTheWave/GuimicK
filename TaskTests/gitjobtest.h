@@ -28,15 +28,7 @@ private Q_SLOTS:
 private:
     std::vector<GitRepository*> CreateMultipleRepositories();
     void CreateInitialRepositoryData(const std::vector<GitRepository*>& repositories);
-    void RemoveAll(const QString &folder);
     void CreateDefaultData(const std::string& repository);
-    void StartGitRepository(const std::string &repository);
-
-    void CreateDefaultBackup(const std::string &source, const std::string &destination);
-    void AddFiles(const std::string &repository, const QStringList &list, const size_t size = 1000);
-    void ChangeFiles(const std::string& repository, const QStringList& list);
-    void RemoveFiles(const std::string& repository, const QStringList &list);
-    void RunGitCommit(const std::string &repository);
 
     void RunGitBackup(const std::string &source, const std::string &destination);
     void RunGitBackup(const std::vector<std::pair<std::string, std::string> >& repositoryList);
@@ -46,17 +38,10 @@ private:
     void CheckGitJobReturn(const int expectedStatus,
                            const unsigned long expectedReportFileCount,
                            const QString& description);
-    void CheckFolderExistence(const QString &folder, const bool expectedExistence);
-    void CheckRepositoryContent(const std::string &folder,
-                                const QStringList &expectedFiles);
     QString BuildDescriptionString(const int added, const int modified, const int deleted);
     QString BuildMultiDescriptionString(const std::vector<GitRepository*>& repositories);
 
     void UpdateSourceRepository(const QStringList& added,
-                                const QStringList& modified,
-                                const QStringList& removed);
-    void UpdateRepository(      const std::string& repository,
-                                const QStringList& added,
                                 const QStringList& modified,
                                 const QStringList& removed);
     QStringList CreatedExpectedDestinationRepositoryContent(const QStringList& added,

@@ -1,3 +1,7 @@
+01/12/2016 (18.7-19.1 20.1)
+	It seems that the best to do now is to put all git backup helpers in a separate file, for use both in git unit test
+	and in general feature test. Moving all git related commands to newly created GitTools.
+
 30/11/2016 (1.8h)
 	Created test to simulate error with Git job. Test removes the source before trying an update.
 	Fixed implementation - there is no more crash. Parser bug will be reported and left behind - more important
