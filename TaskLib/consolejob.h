@@ -16,11 +16,14 @@
 class ConsoleJob : public AbstractJob
 {
 public:
+    ConsoleJob();
     ConsoleJob(const std::string& _commandTitle, const std::string& _commandName = "",
                const std::string& _commandParameters = "", int _expectedReturnCode = 0);
 	virtual ~ConsoleJob();
 
 	virtual std::string GetName();
+
+    virtual AbstractJob* Clone();
 
     virtual bool InitializeFromClient(Client *);
 

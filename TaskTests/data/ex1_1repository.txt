@@ -12,8 +12,8 @@ Client
 			target = local;
 			Repository
 			{
-				source = "/home/mickael/Testing/gitsrc";
-				dest = "/home/mickael/Testing/gitdest";
+				source = "ex1_src";
+				dest = "ex1_dest";
 			}
 		}
 	}

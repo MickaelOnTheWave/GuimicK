@@ -20,7 +20,7 @@ public:
 		 @param[in] jobName Job name.
 		 @note This method will only work if there is only
 		 one job with this name. In case of several jobs, none
-		 of them will be removed.
+         of them will be removed.
 		*/
 	 bool RemoveJob(const std::string& jobName);
 
@@ -32,6 +32,8 @@ public:
 	 bool RemoveAllButJobs(const std::string& jobName);
 
 	 WorkResultData* RunWorkList();
+
+     void GetJobList(std::list<AbstractJob*>& _jobs);
 
 protected:
     Client* client;

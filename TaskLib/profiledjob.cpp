@@ -14,7 +14,14 @@ ProfiledJob::~ProfiledJob()
 
 string ProfiledJob::GetName()
 {
-	return baseJob->GetName();
+    return baseJob->GetName();
+}
+
+AbstractJob *ProfiledJob::Clone()
+{
+    ProfiledJob* clone = new ProfiledJob(baseJob->Clone());
+    clone->elapsedTime = elapsedTime;
+    return clone;
 }
 
 bool ProfiledJob::InitializeFromClient(Client* job)

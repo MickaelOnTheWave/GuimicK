@@ -26,7 +26,17 @@ ClamAvJob::~ClamAvJob()
 
 std::string ClamAvJob::GetName()
 {
-	return "ClamAV Scan";
+    return "ClamAV Scan";
+}
+
+AbstractJob *ClamAvJob::Clone()
+{
+    ClamAvJob* clone = new ClamAvJob();
+    clone->virusDefinitionUpdateJob = static_cast<SshConsoleJob*>(virusDefinitionUpdateJob->Clone());
+    clone->virusFullScanJob = static_cast<SshConsoleJob*>(virusFullScanJob->Clone());
+    clone->scanDir = scanDir;
+    clone->blockOnFailingUpdate = blockOnFailingUpdate;
+    return clone;
 }
 
 bool ClamAvJob::InitializeFromClient(Client *client)

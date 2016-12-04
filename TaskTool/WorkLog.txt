@@ -1,6 +1,22 @@
-01/12/2016 (18.7-19.1 20.1)
+04/12/2016 (2.2h)
+	Improved tests. Now, instead of creating data from "scratch" using Git commands, we just copy manually created
+	data to do the backups. A lot better and fits well with feature tests.
+	Removed some memory issues from TaskManager - although there are more leaks. Finished basic tests - now data is needed
+	along with solving more memory issues.
+Next planned work :
+	- Solve memory issues with tests crashing
+	- Collect proper data for proper testing
+	- Move to 2 repositories testing and ensure everything is working as expected.
+
+01/12/2016 (1.6h)
 	It seems that the best to do now is to put all git backup helpers in a separate file, for use both in git unit test
 	and in general feature test. Moving all git related commands to newly created GitTools.
+	Now back to Feature test : refactored it for better maintenance and design. Now implementing real Git repositories
+	creation for tests.
+Next planned work :
+	- Finish Git repositories creation code
+	- Finish Attachment tests
+	- Get proper test data and run tests
 
 30/11/2016 (1.8h)
 	Created test to simulate error with Git job. Test removes the source before trying an update.

@@ -20,7 +20,7 @@ Configuration::Configuration()
 
 Configuration::~Configuration()
 {
-	delete client;
+    //delete client; // TODO : check memory here
 	delete self;
 }
 
@@ -211,7 +211,7 @@ void Configuration::CreateClient(ConfigurationObject *confObject, list<string> &
 			continue;
 		}
 
-		jobList.push_back(new ProfiledJob(parsedJob));
+        jobList.push_back(parsedJob);
 	}
 }
 
@@ -278,19 +278,31 @@ bool Configuration::GetBooleanValue(const string &strValue, list<string> &errorM
 	return false;
 }
 
-ClientWorkManager *Configuration::BuildWorkList()
+ClientWorkManager *Configuration::BuildWorkList() const
 {
 	ClientWorkManager* workManager = new ClientWorkManager(client);
 
 	list<AbstractJob*>::const_iterator it = jobList.begin();
 	list<AbstractJob*>::const_iterator end = jobList.end();
 	for (; it!=end; it++)
-		workManager->AddJob(new ProfiledJob(*it));
+        workManager->AddJob(new ProfiledJob(*it)); // TODO : check - a clone should be needed.
 
-	return workManager;
+    return workManager;
 }
 
-AbstractReportCreator *Configuration::CreateReportObject()
+ClientWorkManager *Configuration::BuildSimpleWorkList() const
+{
+    ClientWorkManager* workManager = new ClientWorkManager(client);
+
+    list<AbstractJob*>::const_iterator it = jobList.begin();
+    list<AbstractJob*>::const_iterator end = jobList.end();
+    for (; it!=end; it++)
+        workManager->AddJob((*it)->Clone());
+
+    return workManager;
+}
+
+AbstractReportCreator *Configuration::CreateReportObject() const
 {
 	if (reportType == TEXT_REPORT)
 		return new TextReportCreator();

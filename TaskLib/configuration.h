@@ -25,9 +25,11 @@ public:
 
 	bool LoadFromFile(const std::string& fileName, std::list<std::string> &errorMessages);
 
-	ClientWorkManager* BuildWorkList();
+    ClientWorkManager* BuildWorkList() const;
 
-	AbstractReportCreator* CreateReportObject();
+    ClientWorkManager* BuildSimpleWorkList() const;
+
+    AbstractReportCreator* CreateReportObject() const;
 
 	SelfIdentity* GetSelfIdentity();
 

@@ -14,6 +14,8 @@ public:
 
 	virtual std::string GetName();
 
+    virtual AbstractJob* Clone();
+
     void SetRepositoryPath(const std::string& path);
 
     void SetRsnapshotConfFile(const std::string& file);

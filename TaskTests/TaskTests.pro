@@ -58,7 +58,8 @@ OTHER_FILES += \
     data/ex1_1repository.txt \
     data/ex1_attach1.txt \
     data/ex1_report.html \
-    data/report.css
+    data/report.css \
+    data/ex1_dest.txt
 
 HEADERS += \
     gitrepository.h \

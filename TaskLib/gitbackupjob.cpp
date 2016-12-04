@@ -36,6 +36,16 @@ string GitBackupJob::GetName()
     return "Git Backup";
 }
 
+AbstractJob *GitBackupJob::Clone()
+{
+    GitBackupJob* clone = new GitBackupJob();
+    copy(gitRepositoryList.begin(), gitRepositoryList.end(), back_inserter(clone->gitRepositoryList));
+    clone->sshUser = sshUser;
+    clone->sshHost = sshHost;
+    clone->isTargetLocal = isTargetLocal;
+    return clone;
+}
+
 bool GitBackupJob::InitializeFromClient(Client *client)
 {
     return (isTargetLocal) ? true : InitializeRemoteTarget(client);
@@ -73,6 +83,11 @@ void GitBackupJob::SetTargetLocal()
 void GitBackupJob::AddRepository(const string &sourcePath, const string &destPath)
 {
     gitRepositoryList.push_back(make_pair<string, string>(sourcePath, destPath));
+}
+
+void GitBackupJob::GetRepositoryList(vector<pair<string, string> > &_gitRepositoryList)
+{
+    copy(gitRepositoryList.begin(), gitRepositoryList.end(), back_inserter(_gitRepositoryList));
 }
 
 void GitBackupJob::ClearRepositoryList()

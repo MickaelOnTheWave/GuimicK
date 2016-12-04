@@ -14,6 +14,7 @@ public:
     virtual ~GitBackupJob();
 
     virtual std::string GetName();
+    virtual AbstractJob* Clone();
     virtual bool InitializeFromClient(Client* client);
     virtual bool IsInitialized(void);
     virtual JobStatus* Run();
@@ -21,6 +22,7 @@ public:
     void SetTargetRemote(const std::string& user = "", const std::string& host = "");
     void SetTargetLocal();
     void AddRepository(const std::string& sourcePath, const std::string& destPath);
+    void GetRepositoryList(std::vector<std::pair<std::string, std::string> >& _gitRepositoryList);
     void ClearRepositoryList(void);
 
 private:

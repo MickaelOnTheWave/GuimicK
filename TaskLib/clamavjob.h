@@ -13,6 +13,8 @@ public:
 
 	virtual std::string GetName();
 
+    virtual AbstractJob* Clone();
+
 	virtual bool InitializeFromClient(Client *client);
 
     virtual bool IsInitialized(void);

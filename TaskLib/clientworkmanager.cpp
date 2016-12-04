@@ -12,7 +12,7 @@ ClientWorkManager::ClientWorkManager(Client *_client)
 ClientWorkManager::~ClientWorkManager()
 {
 	/// @todo clean work list properly, deleting all jobs.
-	delete client;
+    //delete client;
 }
 
 void ClientWorkManager::AddJob(AbstractJob *newJob)
@@ -83,5 +83,10 @@ WorkResultData *ClientWorkManager::RunWorkList()
 
 	WorkResultData* resultData = new WorkResultData();
 	resultData->AddClientData(client->GetName(), jobResults);
-	return resultData;
+    return resultData;
+}
+
+void ClientWorkManager::GetJobList(list<AbstractJob *> &_jobs)
+{
+    copy(jobList.begin(), jobList.end(), back_inserter(_jobs));
 }

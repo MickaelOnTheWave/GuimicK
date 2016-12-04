@@ -38,6 +38,16 @@ string BackupJob::GetName()
     return "Backup";
 }
 
+AbstractJob *BackupJob::Clone()
+{
+    BackupJob* clone = new BackupJob();
+    clone->backupCommand = static_cast<ConsoleJob*>(backupCommand->Clone());
+    clone->reportCommand = static_cast<ConsoleJob*>(reportCommand->Clone());
+    clone->backupRepositoryPath = backupRepositoryPath;
+    clone->rsnapshotConfFile = rsnapshotConfFile;
+    return clone;
+}
+
 void BackupJob::SetRepositoryPath(const string &path)
 {
     backupRepositoryPath = path;

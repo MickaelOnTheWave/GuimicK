@@ -12,6 +12,10 @@ static string whichCommandPath("");
 
 vector<string> ConsoleJob::appSearchPaths;
 
+ConsoleJob::ConsoleJob()
+{
+}
+
 // @TODO Check how to prevent commands from unwillingly outputting to console (ls error case for example).
 ConsoleJob::ConsoleJob(const string& _commandTitle, const string &_commandName,
                        const string &_commandParameters, int _expectedReturnCode)
@@ -26,7 +30,25 @@ ConsoleJob::~ConsoleJob()
 
 std::string ConsoleJob::GetName()
 {
-	return commandTitle;
+    return commandTitle;
+}
+
+AbstractJob *ConsoleJob::Clone()
+{
+    ConsoleJob* clone = new ConsoleJob();
+    clone->commandTitle = commandTitle;
+    clone->commandName = commandName;
+    clone->commandParameters = commandParameters;
+    clone->parserCommand = parserCommand;
+    clone->checkReturnCode = checkReturnCode;
+    clone->checkStandardOutput = checkStandardOutput;
+    clone->outputFileName = outputFileName;
+    clone->standardOutput = standardOutput;
+    clone->expectedOutput = expectedOutput;
+    clone->expectedReturnCode = expectedReturnCode;
+    clone->receivedReturnCode = receivedReturnCode;
+    copy(appSearchPaths.begin(), appSearchPaths.end(), back_inserter(clone->appSearchPaths));
+    return clone;
 }
 
 bool ConsoleJob::InitializeFromClient(Client *)

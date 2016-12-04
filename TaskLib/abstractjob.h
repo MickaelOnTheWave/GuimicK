@@ -13,6 +13,8 @@ public:
 
 	virtual std::string GetName() = 0;
 
+    virtual AbstractJob* Clone() = 0;
+
 	/**
 		Performs initial setup and gets needed data from client if
 		needed.
