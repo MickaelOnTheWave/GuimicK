@@ -1,7 +1,11 @@
-08/12/2016 (17.4)
+08/12/2016 (1.3h)
 	Fixed minor issue with text file reading. Now going for checking main report data, as job is obviously not running
 	as expected. Corrected data for testing, now the basic test is OK. It seems that there wasn't any vital memory issue
 	to fix... And that the problem with real-world test is in email sending. Going back to real world testing...
+	Did real world testing. It seems to work now :-) Waiting for launch the next day to confirm.
+Next planned work :
+	- Check that git backup effectively runs OK
+	- If it is OK, move on to remove temp files in Rsnapshot backup
 
 04/12/2016 (2.2h)
 	Improved tests. Now, instead of creating data from "scratch" using Git commands, we just copy manually created
