@@ -38,12 +38,12 @@ void TaskFeatureTest::testGitBackup_data()
     QTest::newRow("Single repository") << QString("ex1_1repository.txt")
                                        << QString("ex1_report.html")
                                        << QStringList({"ex1_dest.txt"});
-    QTest::newRow("2 repositories")    << QString("ex2_2repositories.txt")
-                                       << QString("ex2_report.html")
-                                       << QStringList({
-                                                          "ex2_attach1.txt",
-                                                          "ex2_attach2.txt"
-                                                      });
+//    QTest::newRow("2 repositories")    << QString("ex2_2repositories.txt")
+//                                       << QString("ex2_report.html")
+//                                       << QStringList({
+//                                                          "ex2_attach1.txt",
+//                                                          "ex2_attach2.txt"
+//                                                      });
 }
 
 void TaskFeatureTest::testGitBackup()
@@ -144,10 +144,11 @@ void TaskFeatureTest::CreateCopyIfPossible(const string &folder)
 void TaskFeatureTest::CheckMainReport(const string &reportContent)
 {
     QFETCH(QString, outputReportFile);
+
     string expectedReportData = FileTools::GetTextFileContent(outputReportFile.toStdString());
 
     // Used to write data to create test.
-    //FileTools::WriteBufferToFile("outputReport.html", reportData);
+    //FileTools::WriteBufferToFile("tempfile.txt", reportContent);
 
     QCOMPARE(reportContent, expectedReportData);
 }
@@ -172,8 +173,8 @@ void TaskFeatureTest::CheckAttachments(const vector<pair<string, string> >& atta
         string expectedContent = FileTools::GetTextFileContent(expectedAttachment);
 
         // Used to write data to create test.
-        string attachmentName = expectedAttachment + QString::number(i).toStdString() + ".txt";
-        FileTools::WriteBufferToFile(attachmentName, resultAttachment.second);
+        //string attachmentName = expectedAttachment + QString::number(i).toStdString() + ".txt";
+        //FileTools::WriteBufferToFile(attachmentName, resultAttachment.second);
 
         QCOMPARE(resultAttachment.second, expectedContent);
     }
