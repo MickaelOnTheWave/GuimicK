@@ -170,6 +170,10 @@ GitBackupJob *Configuration::CreateGitBackupJob(ConfigurationObject *object)
     else
         job->SetTargetRemote();
 
+    string writeLogsToFiles(object->propertyList["writeLogsToFiles"]);
+    if (writeLogsToFiles == "true")
+        job->SetWriteLogsToFiles(true);
+
     return job;
 }
 

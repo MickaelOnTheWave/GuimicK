@@ -45,4 +45,5 @@ OTHER_FILES += \
     WorkLog.txt \
     deployNewVersion.sh \
     data/rsnapshot.conf \
-    data/realconf.txt
+    data/realconf.txt \
+    data/git.txt

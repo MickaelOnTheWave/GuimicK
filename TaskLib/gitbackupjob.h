@@ -21,6 +21,7 @@ public:
 
     void SetTargetRemote(const std::string& user = "", const std::string& host = "");
     void SetTargetLocal();
+    void SetWriteLogsToFiles(bool enabled);
     void AddRepository(const std::string& sourcePath, const std::string& destPath);
     void GetRepositoryList(std::vector<std::pair<std::string, std::string> >& _gitRepositoryList);
     void ClearRepositoryList(void);
@@ -49,6 +50,7 @@ private:
     std::string sshUser;
     std::string sshHost;
     bool isTargetLocal;
+    bool writeLogsToFile;
 };
 
 #endif // GITBACKUPJOB_H

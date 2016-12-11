@@ -1,3 +1,12 @@
+11/12/2016 (1.5h)
+	Unfortunately, git backup report was not OK, neither was Rsnapshot. Fixed an issue in configuration file and added
+	a feature to write git backup logs to files. The problem is not with jobs, it is with email sending. Next step is
+	probably writing a test suite for encoding... :-(
+	Base64 encoding was copied from somewhere else, so there would be little help in testing. Besides, it was not changed
+	and worked previously. Doing a debug, no apparent issue was found.
+Next planned work:
+	- Resolve the email encoding issue
+
 08/12/2016 (1.3h)
 	Fixed minor issue with text file reading. Now going for checking main report data, as job is obviously not running
 	as expected. Corrected data for testing, now the basic test is OK. It seems that there wasn't any vital memory issue

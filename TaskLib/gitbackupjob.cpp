@@ -17,12 +17,12 @@ static const string repositoryPullOk                    = "Repository successful
 
 
 GitBackupJob::GitBackupJob()
- : sshUser(""), sshHost(""), isTargetLocal(true)
+ : sshUser(""), sshHost(""), isTargetLocal(true), writeLogsToFile(false)
 {
 }
 
 GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &_gitRepositoryList)
- : sshUser(""), sshHost(""), isTargetLocal(true)
+ : sshUser(""), sshHost(""), isTargetLocal(true), writeLogsToFile(false)
 {
     gitRepositoryList = _gitRepositoryList;
 }
@@ -78,6 +78,11 @@ void GitBackupJob::SetTargetLocal()
     sshUser = "";
     sshHost = "";
     isTargetLocal = true;
+}
+
+void GitBackupJob::SetWriteLogsToFiles(bool enabled)
+{
+    writeLogsToFile = enabled;
 }
 
 void GitBackupJob::AddRepository(const string &sourcePath, const string &destPath)
@@ -164,6 +169,12 @@ void GitBackupJob::RunGitPull(const string &repository, std::vector<JobStatus *>
         {
             status->AddFileBuffer(gitLogFile, gitCommand->GetCommandOutput());
             status->SetDescription(repositoryPullOk);
+        }
+
+        if (writeLogsToFile)
+        {
+            string fullPath = string(originalDirectory) + "/" + gitLogFile;
+            FileTools::WriteBufferToFile(fullPath, gitCommand->GetCommandOutput());
         }
     }
 
