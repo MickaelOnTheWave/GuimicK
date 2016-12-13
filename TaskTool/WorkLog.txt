@@ -1,3 +1,11 @@
+13/12/2016 (0.8h)
+	Found a way to investigate easily the issue : updated the Email UI with buffered attachment option. This way, it is
+	easy to test buffers. And the issue is reproductible with a very small file!! :-) Now investigating...
+	The issue was in buffer size : we were not including the EOS character. No clue as to why it created such an issue,
+	but anyway now it is fixed :-) Just waiting for production backup to run and confirm that it is OK.
+Next planned work:
+	- Once run confirmed, move on to remove temp files from other jobs (RSnapshot)
+
 11/12/2016 (1.5h)
 	Unfortunately, git backup report was not OK, neither was Rsnapshot. Fixed an issue in configuration file and added
 	a feature to write git backup logs to files. The problem is not with jobs, it is with email sending. Next step is
