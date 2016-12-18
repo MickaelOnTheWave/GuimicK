@@ -13,6 +13,8 @@
  * @note A job cannot check an output file contents, thus it is impossible to
  * configure it to output to a file and have a success condition based on output content.
  */
+// TODO : create a UserConsoleJob and a separate ConsoleJob. There are several features in there
+// that are only useful to user defined jobs.
 class ConsoleJob : public AbstractJob
 {
 public:

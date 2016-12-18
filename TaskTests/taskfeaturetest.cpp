@@ -138,7 +138,7 @@ void TaskFeatureTest::CreateCopyIfPossible(const string &folder)
 
     string unusedOutput;
     string copyCommand = string("cp -R ") + folder + " " + folder + BACKUP_SUFFIX;
-    Tools::RunExternalCommand(copyCommand, unusedOutput, true);
+    Tools::RunExternalCommandToBuffer(copyCommand, unusedOutput, true);
 }
 
 void TaskFeatureTest::CheckMainReport(const string &reportContent)
@@ -191,5 +191,5 @@ void TaskFeatureTest::RestoreCopyIfAvailable(const string &folder)
 
     string unusedOutput;
     string moveCommand = string("mv ") + folderBackup + " " + folder;
-    Tools::RunExternalCommand(moveCommand, unusedOutput, true);
+    Tools::RunExternalCommandToBuffer(moveCommand, unusedOutput, true);
 }

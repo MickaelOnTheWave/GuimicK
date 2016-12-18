@@ -70,7 +70,6 @@ void JobStatus::AddExternalFile(const string &filename)
 void JobStatus::AddFileBuffer(const string &filename, const string &filecontents)
 {
     filebuffers.push_back(make_pair<string,string>(filename, filecontents));
-
 }
 
 void JobStatus::AddExternalFilesFromStatus(JobStatus *other)

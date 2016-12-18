@@ -8,8 +8,7 @@
 
 using namespace std;
 
-const string BACKUP_REPORT_FILE             = "backupreport.txt";
-const string BACKUP_ERROR_FILE              = "backuperrors.txt";
+const string DEFAULT_BACKUP_FILENAME        = "FilesystemBackup.txt";
 const string DEFAULT_RSNAPSHOT_CONF_FILE    = "rsnapshot.conf";
 
 BackupJob::BackupJob(const string& _backupRepositoryPath, const string &_rsnapshotConfFile)
@@ -53,8 +52,7 @@ void BackupJob::SetRepositoryPath(const string &path)
     backupRepositoryPath = path;
 
     string reportCommandParams("-v ");
-    reportCommandParams += backupRepositoryPath + "/weekly.0 " + backupRepositoryPath + "/weekly.1 > ";
-    reportCommandParams += BACKUP_REPORT_FILE + " 2> " + BACKUP_ERROR_FILE;
+    reportCommandParams += backupRepositoryPath + "/weekly.0 " + backupRepositoryPath + "/weekly.1 2>&1";
     reportCommand->Initialize("rsnapshot-diff", reportCommandParams);
 }
 
@@ -65,6 +63,7 @@ void BackupJob::SetRsnapshotConfFile(const string &file)
     string commandParams("-c ");
     commandParams += rsnapshotConfFile + " weekly";
     backupCommand->Initialize("rsnapshot", commandParams);
+    backupCommand->SetOutputToBuffer();
 }
 
 bool BackupJob::InitializeFromClient(Client *)
@@ -109,9 +108,7 @@ JobStatus* BackupJob::Run()
 			description += stream.str();
 			backupStatus->SetDescription(description);
 		}
-        // TODO : switch to internal buffer
-        backupStatus->AddExternalFile(BACKUP_ERROR_FILE);
-        backupStatus->AddExternalFile(BACKUP_REPORT_FILE);
+        backupStatus->AddFileBuffer(DEFAULT_BACKUP_FILENAME, backupCommand->GetCommandOutput());
 		return backupStatus;
 	}
 	else
@@ -126,18 +123,17 @@ JobStatus* BackupJob::Run()
 		description += stream.str();
 		reportStatus->SetDescription(description);
 		reportStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
-        reportStatus->AddExternalFile(BACKUP_REPORT_FILE);
+        reportStatus->AddFileBuffer(DEFAULT_BACKUP_FILENAME, backupCommand->GetCommandOutput());
 		return reportStatus;
 	}
 	else
 		delete reportStatus;
 
     RSnapshotReportParser parser;
-    parser.ParseFile(BACKUP_REPORT_FILE);
-    parser.WriteFullDescriptionToFile(BACKUP_REPORT_FILE);
+    parser.ParseBuffer(backupCommand->GetCommandOutput());
 
     JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
-    status->AddExternalFile(BACKUP_REPORT_FILE);
+    status->AddFileBuffer(DEFAULT_BACKUP_FILENAME, parser.GetFullDescription());
 	return status;
 }
 

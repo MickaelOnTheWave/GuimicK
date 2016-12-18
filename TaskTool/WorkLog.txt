@@ -1,7 +1,23 @@
+18/12/2016 (1.3h)
+	Unfortunately, last run did not really succeed : there was another issue with EOS character. Thinking about a way
+	to find out where is the issue. Maybe have a check in log files? No files registered :-(
+	Tried to reproduce issue, both in production run and in a big testing commit, no way to reproduce. Having a last
+	check in code base to spot possible issues, and if not conclusive issue will be considered closed. Nothing spotted,
+	so issue is considered closed until it shows up again. Now going for Rsnapshot job... Updated Rsnapshot job to
+	use buffers. Expecting next run to check if it ran OK. However, there will probably be a need for creating a test suite
+	anyway... Now going for Update jobs.
+	Update jobs are SshConsole jobs. They require some heavier refactoring... After some trying, it has been decided
+	to go the safe path : first create a test suite for Rsnapshot as it will be surely needed after, and move on to
+	console refactoring once rsnapshot has been totally validated.
+Next planned work :
+	- Check production run output
+	- Make a clean Rsnapshot backup work using command line
+	- Once manual rsnapshot has been mastered, move on to creating its test suite
+
 13/12/2016 (0.8h)
 	Found a way to investigate easily the issue : updated the Email UI with buffered attachment option. This way, it is
 	easy to test buffers. And the issue is reproductible with a very small file!! :-) Now investigating...
-	The issue was in buffer size : we were not including the EOS character. No clue as to why it created such an issue,
+	The issue was in buffer size : we were not including the EOS character. No clue as to why it created such an issue
 	but anyway now it is fixed :-) Just waiting for production backup to run and confirm that it is OK.
 Next planned work:
 	- Once run confirmed, move on to remove temp files from other jobs (RSnapshot)

@@ -12,7 +12,7 @@ void GitTools::Init(const string& repository)
 {
     string command = string("git init ") + repository;
     string unusedOutput;
-    Tools::RunExternalCommand(command, unusedOutput);
+    Tools::RunExternalCommandToBuffer(command, unusedOutput);
 
     CommitAllChanges(repository);
 }
@@ -23,7 +23,7 @@ void GitTools::Clone(const string &source, const string &destination)
     command += source + " " + destination;
     command += " 2>&1 > /dev/null";
     std::string unusedOutput;
-    Tools::RunExternalCommand(command, unusedOutput);
+    Tools::RunExternalCommandToBuffer(command, unusedOutput);
 }
 
 void GitTools::CommitAllChanges(const string &repository)
@@ -31,7 +31,7 @@ void GitTools::CommitAllChanges(const string &repository)
     string fullCommand = "cd " + repository + "/ ";
     fullCommand += "&& git add -A && git commit -m \"auto\"";
     string output;
-    Tools::RunExternalCommand(fullCommand, output);
+    Tools::RunExternalCommandToBuffer(fullCommand, output);
 }
 
 void GitTools::Update(const std::string &repository,
@@ -61,7 +61,7 @@ void GitTools::RemoveAll(const QString &folder)
     removeAllCommand += folder.toStdString();
 
     std::string unusedOutput;
-    Tools::RunExternalCommand(removeAllCommand, unusedOutput);
+    Tools::RunExternalCommandToBuffer(removeAllCommand, unusedOutput);
 }
 
 void GitTools::CheckFolderExistence(const QString &folder, const bool expectedExistence)

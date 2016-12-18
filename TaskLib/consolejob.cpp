@@ -107,7 +107,7 @@ bool ConsoleJob::IsInitialized()
             // 2. Check if command is a global command
             string checkingCommand("which");
             checkingCommand += string(" ") + commandName;
-            int returnCode = Tools::RunExternalCommand(checkingCommand, output);
+            int returnCode = Tools::RunExternalCommandToBuffer(checkingCommand, output, true);
             commandExists = (returnCode == 0);
         }
     }
@@ -124,11 +124,11 @@ JobStatus *ConsoleJob::Run()
     // kind of control : attaching output may not be always the best option.
     if (outputFileName != "")
     {
-        receivedReturnCode = Tools::RunExternalCommandFile(fullCommand, outputFileName);
+        receivedReturnCode = Tools::RunExternalCommandToFile(fullCommand, outputFileName, true);
         status->AddExternalFile(outputFileName);
     }
     else
-        receivedReturnCode = Tools::RunExternalCommand(fullCommand, standardOutput, true);
+        receivedReturnCode = Tools::RunExternalCommandToBuffer(fullCommand, standardOutput, true);
 
     receivedReturnCode = WEXITSTATUS(receivedReturnCode);
 
@@ -153,7 +153,7 @@ JobStatus *ConsoleJob::Run()
     {
         // TODO make parserCommand smarter! To use directly output from command.
         string miniDescription("");
-        int returnValue = Tools::RunExternalCommand(parserCommand, miniDescription);
+        int returnValue = Tools::RunExternalCommandToBuffer(parserCommand, miniDescription);
         if (returnValue != -1)
             status->SetDescription(miniDescription);
         else
