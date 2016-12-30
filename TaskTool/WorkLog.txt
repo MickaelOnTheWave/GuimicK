@@ -1,4 +1,4 @@
-30/12/2016 (10.9)
+30/12/2016 (2.1h)
 	Back to project to try to resolve last Git issue with reports. Unfortunately, they were removed :-( Trying more runs
 	to reproduce bug. As Synology is being used right now for another purpose, moving to Rsnapshot manual handling.
 	Created Rsnapshot test class along with first utilities. Create first tests, for now tests are not conclusive.
@@ -7,7 +7,10 @@
 	Investigating issue : it is reproductible with test git repository, on Synology. Debugging using log files : log
 	file is ok, so issue should be in mime content creation. Issue found : it has to do with file not ending with
 	newline char. This is a non-trivial bug : reporting it in a TODO and creating a simple workaround in git report
-	creation.
+	creation. Checked workaround : it seems to work on production repositories.
+Next planned work :
+	- Continue Rsnapshot test suite creation.
+	- Once this is done, investigate Rsnapshot production errors.
 
 18/12/2016 (1.3h)
 	Unfortunately, last run did not really succeed : there was another issue with EOS character. Thinking about a way
