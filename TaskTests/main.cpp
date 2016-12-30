@@ -1,4 +1,5 @@
 #include "gitjobtest.h"
+#include "rsnapshotjobtest.h"
 #include "taskfeaturetest.h"
 
 #include <vector>
@@ -7,6 +8,7 @@
 
 void PopulateTestList(std::vector<QObject*>& tests)
 {
+    tests.push_back(new RsnapshotJobTest());
     tests.push_back(new GitJobTest());
     tests.push_back(new TaskFeatureTest());
 }

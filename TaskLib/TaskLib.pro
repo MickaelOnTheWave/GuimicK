@@ -12,7 +12,6 @@ TEMPLATE = lib
 DEFINES += TASKLIB_LIBRARY
 
 SOURCES += \
-    backupjob.cpp \
     changescreensaverjob.cpp \
     clamavjob.cpp \
     client.cpp \
@@ -33,11 +32,12 @@ SOURCES += \
     sshconsolejob.cpp \
     workresultdata.cpp \
     textreportcreator.cpp \
-    abstractreportcreator.cpp
+    abstractreportcreator.cpp \
+    userconsolejob.cpp \
+    rsnapshotbackupjob.cpp
 
 HEADERS +=\
     abstractjob.h \
-    backupjob.h \
     changescreensaverjob.h \
     clamavjob.h \
     client.h \
@@ -60,7 +60,9 @@ HEADERS +=\
     sshconsolejob.h \
     workresultdata.h \
     textreportcreator.h \
-    abstractreportcreator.h
+    abstractreportcreator.h \
+    userconsolejob.h \
+    rsnapshotbackupjob.h
 
 unix {
     target.path = /usr/lib

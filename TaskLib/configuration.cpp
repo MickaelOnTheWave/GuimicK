@@ -88,7 +88,7 @@ AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
     {
         string repositoryPath = object->GetFirstProperty("repositoryPath", "param0");
         string rsnapshotConfFile = object->GetFirstProperty("rsnapshotConfFile", "param1");
-        return new BackupJob(repositoryPath, rsnapshotConfFile);
+        return new RsnapshotBackupJob(repositoryPath, rsnapshotConfFile);
     }
 	else if (object->name == "ClamAv")
 		return new ClamAvJob();

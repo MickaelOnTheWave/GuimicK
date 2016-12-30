@@ -1,3 +1,10 @@
+30/12/2016 (10.9)
+	Back to project to try to resolve last Git issue with reports. Unfortunately, they were removed :-( Trying more runs
+	to reproduce bug. As Synology is being used right now for another purpose, moving to Rsnapshot manual handling.
+	Created Rsnapshot test class along with first utilities. Create first tests, for now tests are not conclusive.
+	Fixed mistakes in rsnapshot configuration file, now firsts tests are working :-)
+	As Synology is now available, moving back to Git job bug.
+
 18/12/2016 (1.3h)
 	Unfortunately, last run did not really succeed : there was another issue with EOS character. Thinking about a way
 	to find out where is the issue. Maybe have a check in log files? No files registered :-(

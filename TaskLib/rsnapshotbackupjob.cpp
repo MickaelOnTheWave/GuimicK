@@ -1,4 +1,4 @@
-#include "backupjob.h"
+#include "rsnapshotbackupjob.h"
 
 #include <fstream>
 #include <sstream>
@@ -11,7 +11,7 @@ using namespace std;
 const string DEFAULT_BACKUP_FILENAME        = "FilesystemBackup.txt";
 const string DEFAULT_RSNAPSHOT_CONF_FILE    = "rsnapshot.conf";
 
-BackupJob::BackupJob(const string& _backupRepositoryPath, const string &_rsnapshotConfFile)
+RsnapshotBackupJob::RsnapshotBackupJob(const string& _backupRepositoryPath, const string &_rsnapshotConfFile)
 {
     backupCommand = new ConsoleJob("", "", "");
     reportCommand = new ConsoleJob("", "", "");
@@ -26,20 +26,20 @@ BackupJob::BackupJob(const string& _backupRepositoryPath, const string &_rsnapsh
 
 }
 
-BackupJob::~BackupJob()
+RsnapshotBackupJob::~RsnapshotBackupJob()
 {
 	delete backupCommand;
 	delete reportCommand;
 }
 
-string BackupJob::GetName()
+string RsnapshotBackupJob::GetName()
 {
     return "Backup";
 }
 
-AbstractJob *BackupJob::Clone()
+AbstractJob *RsnapshotBackupJob::Clone()
 {
-    BackupJob* clone = new BackupJob();
+    RsnapshotBackupJob* clone = new RsnapshotBackupJob();
     clone->backupCommand = static_cast<ConsoleJob*>(backupCommand->Clone());
     clone->reportCommand = static_cast<ConsoleJob*>(reportCommand->Clone());
     clone->backupRepositoryPath = backupRepositoryPath;
@@ -47,7 +47,7 @@ AbstractJob *BackupJob::Clone()
     return clone;
 }
 
-void BackupJob::SetRepositoryPath(const string &path)
+void RsnapshotBackupJob::SetRepositoryPath(const string &path)
 {
     backupRepositoryPath = path;
 
@@ -56,7 +56,7 @@ void BackupJob::SetRepositoryPath(const string &path)
     reportCommand->Initialize("rsnapshot-diff", reportCommandParams);
 }
 
-void BackupJob::SetRsnapshotConfFile(const string &file)
+void RsnapshotBackupJob::SetRsnapshotConfFile(const string &file)
 {
     rsnapshotConfFile = file;
 
@@ -66,12 +66,12 @@ void BackupJob::SetRsnapshotConfFile(const string &file)
     backupCommand->SetOutputToBuffer();
 }
 
-bool BackupJob::InitializeFromClient(Client *)
+bool RsnapshotBackupJob::InitializeFromClient(Client *)
 {
     return true;
 }
 
-bool BackupJob::IsInitialized()
+bool RsnapshotBackupJob::IsInitialized()
 {
     bool ret = (backupRepositoryPath != "" &&
             backupCommand->IsInitialized() && reportCommand->IsInitialized());
@@ -88,7 +88,7 @@ bool BackupJob::IsInitialized()
     return ret;
 }
 
-JobStatus* BackupJob::Run()
+JobStatus* RsnapshotBackupJob::Run()
 {
 	JobStatus* backupStatus = backupCommand->Run();
 	if (backupStatus->GetCode() != JobStatus::OK)

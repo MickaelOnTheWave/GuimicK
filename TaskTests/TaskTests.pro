@@ -22,7 +22,8 @@ SOURCES += \
     main.cpp \
     gitjobtest.cpp \
     taskfeaturetest.cpp \
-    gittools.cpp
+    gittools.cpp \
+    rsnapshotjobtest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -59,10 +60,12 @@ OTHER_FILES += \
     data/ex1_attach1.txt \
     data/ex1_report.html \
     data/report.css \
-    data/ex1_dest.txt
+    data/ex1_dest.txt \
+    data/rsnapshot.conf
 
 HEADERS += \
     gitrepository.h \
     gitjobtest.h \
     taskfeaturetest.h \
-    gittools.h
+    gittools.h \
+    rsnapshotjobtest.h

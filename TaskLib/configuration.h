@@ -10,7 +10,7 @@
 #include "shutdownjob.h"
 #include "changescreensaverjob.h"
 #include "clamavjob.h"
-#include "backupjob.h"
+#include "rsnapshotbackupjob.h"
 #include "textreportcreator.h"
 #include "gitbackupjob.h"
 #include "SelfIdentity.h"

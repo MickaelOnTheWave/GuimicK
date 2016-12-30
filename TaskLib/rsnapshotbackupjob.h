@@ -5,12 +5,12 @@
 #include "consolejob.h"
 #include <rsnapshotreportparser.h>
 
-class BackupJob : public AbstractJob
+class RsnapshotBackupJob : public AbstractJob
 {
 public:
-    BackupJob(const std::string& _backupRepositoryPath = "",
+    RsnapshotBackupJob(const std::string& _backupRepositoryPath = "",
               const std::string& _rsnapshotConfFile = "");
-	~BackupJob();
+	~RsnapshotBackupJob();
 
 	virtual std::string GetName();
 

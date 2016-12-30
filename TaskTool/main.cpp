@@ -11,7 +11,7 @@
 #include "consolewakejob.h"
 #include "changescreensaverjob.h"
 #include "shutdownjob.h"
-#include "backupjob.h"
+#include "rsnapshotbackupjob.h"
 #include "clamavjob.h"
 #include "configuration.h"
 #include "SelfIdentity.h"
