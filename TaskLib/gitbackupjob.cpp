@@ -159,22 +159,25 @@ void GitBackupJob::RunGitPull(const string &repository, std::vector<JobStatus *>
     {
         const string gitLogFile = FileTools::GetFilenameFromUnixPath(repository) + ".txt";
         GitReportParser parser;
+        string reportContent = "";
         bool ok = parser.ParseBuffer(gitCommand->GetCommandOutput());
         if (ok)
         {
-            status->AddFileBuffer(gitLogFile, parser.GetFullDescription());
+            reportContent = parser.GetFullDescription();
             status->SetDescription(parser.GetMiniDescription());
         }
         else
         {
-            status->AddFileBuffer(gitLogFile, gitCommand->GetCommandOutput());
+            reportContent = gitCommand->GetCommandOutput();
             status->SetDescription(repositoryPullOk);
         }
+
+        status->AddFileBuffer(gitLogFile, reportContent);
 
         if (writeLogsToFile)
         {
             string fullPath = string(originalDirectory) + "/" + gitLogFile;
-            FileTools::WriteBufferToFile(fullPath, gitCommand->GetCommandOutput());
+            FileTools::WriteBufferToFile(fullPath, reportContent);
         }
     }
 

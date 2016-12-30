@@ -47,7 +47,7 @@ string GitReportParser::GetFullDescription()
     WriteFileList(reportData.added, "added", descriptionStream);
     WriteFileList(reportData.modified, "modified", descriptionStream);
     WriteFileList(reportData.removed, "removed", descriptionStream);
-    return descriptionStream.str();
+    return descriptionStream.str() + "\n";
 }
 
 void GitReportParser::GetReport(FileBackupReport& report)

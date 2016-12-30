@@ -4,6 +4,10 @@
 	Created Rsnapshot test class along with first utilities. Create first tests, for now tests are not conclusive.
 	Fixed mistakes in rsnapshot configuration file, now firsts tests are working :-)
 	As Synology is now available, moving back to Git job bug.
+	Investigating issue : it is reproductible with test git repository, on Synology. Debugging using log files : log
+	file is ok, so issue should be in mime content creation. Issue found : it has to do with file not ending with
+	newline char. This is a non-trivial bug : reporting it in a TODO and creating a simple workaround in git report
+	creation.
 
 18/12/2016 (1.3h)
 	Unfortunately, last run did not really succeed : there was another issue with EOS character. Thinking about a way
