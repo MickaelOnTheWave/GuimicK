@@ -142,6 +142,8 @@ void Configuration::InitializeConsoleJobFromObject(ConfigurationObject *object, 
 
     if (outputFile != "")
         job->SetOutputTofile(outputFile);
+    else
+        job->AttachOutputToStatus();
 
     if (parserCommand != "")
         job->SetMiniDescriptionParserCommand(parserCommand);

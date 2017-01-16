@@ -1,7 +1,16 @@
-16/01/2017 (18.1)
+16/01/2017 (1.4h)
 	Updated Release plan. Now going back to code.
 	The best solution for error management was a dedicated class that has nothing to do with report parser. Created
-	class and test suite, and fixed implementation. Now ready for integration :-)
+	class and test suite, and fixed implementation. Now ready for integration :-) Committed and deployed to Synology.
+	Now waiting for next run to confirm error management. As there is nothing to do today to finish Rsnapshot, going
+	for console job memory management.
+	Updated ConsoleJob commands : now it can be configured to automatically attach memory output to status (user case).
+	This adds to its big mess, but there is another task that implies a refactoring of this class, so this is ok for now.
+	Now, if the run is OK, all memory should be managed correctly.
+Next planned work :
+	- Confirm correct error detection in production.
+	- Free space in Synology for backups to be done.
+	- Check that Package update task has its report correctly attached (memory task).
 
 12/01/2017 (1.2h)
 	One issue happened for some time and stopped ocurring on its own : Email was not being sent due to curl

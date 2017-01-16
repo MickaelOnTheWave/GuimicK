@@ -42,6 +42,7 @@ AbstractJob *ConsoleJob::Clone()
     clone->parserCommand = parserCommand;
     clone->checkReturnCode = checkReturnCode;
     clone->checkStandardOutput = checkStandardOutput;
+    clone->attachOutputToStatus = attachOutputToStatus;
     clone->outputFileName = outputFileName;
     clone->standardOutput = standardOutput;
     clone->expectedOutput = expectedOutput;
@@ -75,6 +76,7 @@ void ConsoleJob::Initialize(const string &_commandName, const string &_commandPa
     standardOutput = "";
     expectedOutput = "";
     checkStandardOutput = false;
+    attachOutputToStatus = false;
     EnableSuccessOnReturnCode(_expectedReturnCode);
 
     if (!IsInitialized())
@@ -120,15 +122,18 @@ JobStatus *ConsoleJob::Run()
     JobStatus* status = new JobStatus(JobStatus::OK);
     const string fullCommand = CreateFullCommand();
 
-    // TODO : add output to status when file is buffer instead of external. This might require some
-    // kind of control : attaching output may not be always the best option.
     if (outputFileName != "")
     {
         receivedReturnCode = Tools::RunExternalCommandToFile(fullCommand, outputFileName, true);
         status->AddExternalFile(outputFileName);
     }
     else
+    {
         receivedReturnCode = Tools::RunExternalCommandToBuffer(fullCommand, standardOutput, true);
+        if (attachOutputToStatus)
+            status->AddFileBuffer(commandTitle + ".txt", standardOutput);
+
+    }
 
     receivedReturnCode = WEXITSTATUS(receivedReturnCode);
 
@@ -185,6 +190,11 @@ void ConsoleJob::SetOutputTofile(const string &filename)
 void ConsoleJob::SetOutputToBuffer()
 {
     outputFileName = "";
+}
+
+void ConsoleJob::AttachOutputToStatus()
+{
+    attachOutputToStatus = true;
 }
 
 void ConsoleJob::EnableSuccessOnReturnCode(int code)

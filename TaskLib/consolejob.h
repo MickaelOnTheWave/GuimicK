@@ -50,6 +50,7 @@ public:
 
     void SetOutputTofile(const std::string& filename);
     void SetOutputToBuffer(void);
+    void AttachOutputToStatus(void);
 
     void EnableSuccessOnReturnCode(int code);
     void DisableSuccessOnReturnCode();
@@ -73,6 +74,7 @@ protected:
 
     bool checkReturnCode;
     bool checkStandardOutput;
+    bool attachOutputToStatus;
 
     std::string outputFileName;
     std::string standardOutput;
