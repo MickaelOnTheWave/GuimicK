@@ -1,0 +1,269 @@
+echo 2391 > /var/run/rsnapshot.pid 
+mv /volume1/snapshots/weekly.243/ /volume1/snapshots/weekly.244/ 
+mv /volume1/snapshots/weekly.242/ /volume1/snapshots/weekly.243/ 
+mv /volume1/snapshots/weekly.241/ /volume1/snapshots/weekly.242/ 
+mv /volume1/snapshots/weekly.240/ /volume1/snapshots/weekly.241/ 
+mv /volume1/snapshots/weekly.239/ /volume1/snapshots/weekly.240/ 
+mv /volume1/snapshots/weekly.238/ /volume1/snapshots/weekly.239/ 
+mv /volume1/snapshots/weekly.237/ /volume1/snapshots/weekly.238/ 
+mv /volume1/snapshots/weekly.236/ /volume1/snapshots/weekly.237/ 
+mv /volume1/snapshots/weekly.235/ /volume1/snapshots/weekly.236/ 
+mv /volume1/snapshots/weekly.234/ /volume1/snapshots/weekly.235/ 
+mv /volume1/snapshots/weekly.233/ /volume1/snapshots/weekly.234/ 
+mv /volume1/snapshots/weekly.232/ /volume1/snapshots/weekly.233/ 
+mv /volume1/snapshots/weekly.231/ /volume1/snapshots/weekly.232/ 
+mv /volume1/snapshots/weekly.230/ /volume1/snapshots/weekly.231/ 
+mv /volume1/snapshots/weekly.229/ /volume1/snapshots/weekly.230/ 
+mv /volume1/snapshots/weekly.228/ /volume1/snapshots/weekly.229/ 
+mv /volume1/snapshots/weekly.227/ /volume1/snapshots/weekly.228/ 
+mv /volume1/snapshots/weekly.226/ /volume1/snapshots/weekly.227/ 
+mv /volume1/snapshots/weekly.225/ /volume1/snapshots/weekly.226/ 
+mv /volume1/snapshots/weekly.224/ /volume1/snapshots/weekly.225/ 
+mv /volume1/snapshots/weekly.223/ /volume1/snapshots/weekly.224/ 
+mv /volume1/snapshots/weekly.222/ /volume1/snapshots/weekly.223/ 
+mv /volume1/snapshots/weekly.221/ /volume1/snapshots/weekly.222/ 
+mv /volume1/snapshots/weekly.220/ /volume1/snapshots/weekly.221/ 
+mv /volume1/snapshots/weekly.219/ /volume1/snapshots/weekly.220/ 
+mv /volume1/snapshots/weekly.218/ /volume1/snapshots/weekly.219/ 
+mv /volume1/snapshots/weekly.217/ /volume1/snapshots/weekly.218/ 
+mv /volume1/snapshots/weekly.216/ /volume1/snapshots/weekly.217/ 
+mv /volume1/snapshots/weekly.215/ /volume1/snapshots/weekly.216/ 
+mv /volume1/snapshots/weekly.214/ /volume1/snapshots/weekly.215/ 
+mv /volume1/snapshots/weekly.203/ /volume1/snapshots/weekly.204/ 
+mv /volume1/snapshots/weekly.202/ /volume1/snapshots/weekly.203/ 
+mv /volume1/snapshots/weekly.201/ /volume1/snapshots/weekly.202/ 
+mv /volume1/snapshots/weekly.200/ /volume1/snapshots/weekly.201/ 
+mv /volume1/snapshots/weekly.199/ /volume1/snapshots/weekly.200/ 
+mv /volume1/snapshots/weekly.198/ /volume1/snapshots/weekly.199/ 
+mv /volume1/snapshots/weekly.197/ /volume1/snapshots/weekly.198/ 
+mv /volume1/snapshots/weekly.196/ /volume1/snapshots/weekly.197/ 
+mv /volume1/snapshots/weekly.195/ /volume1/snapshots/weekly.196/ 
+mv /volume1/snapshots/weekly.194/ /volume1/snapshots/weekly.195/ 
+mv /volume1/snapshots/weekly.193/ /volume1/snapshots/weekly.194/ 
+mv /volume1/snapshots/weekly.192/ /volume1/snapshots/weekly.193/ 
+mv /volume1/snapshots/weekly.191/ /volume1/snapshots/weekly.192/ 
+mv /volume1/snapshots/weekly.190/ /volume1/snapshots/weekly.191/ 
+mv /volume1/snapshots/weekly.189/ /volume1/snapshots/weekly.190/ 
+mv /volume1/snapshots/weekly.188/ /volume1/snapshots/weekly.189/ 
+mv /volume1/snapshots/weekly.187/ /volume1/snapshots/weekly.188/ 
+mv /volume1/snapshots/weekly.186/ /volume1/snapshots/weekly.187/ 
+mv /volume1/snapshots/weekly.185/ /volume1/snapshots/weekly.186/ 
+mv /volume1/snapshots/weekly.184/ /volume1/snapshots/weekly.185/ 
+mv /volume1/snapshots/weekly.183/ /volume1/snapshots/weekly.184/ 
+mv /volume1/snapshots/weekly.182/ /volume1/snapshots/weekly.183/ 
+mv /volume1/snapshots/weekly.181/ /volume1/snapshots/weekly.182/ 
+mv /volume1/snapshots/weekly.180/ /volume1/snapshots/weekly.181/ 
+mv /volume1/snapshots/weekly.179/ /volume1/snapshots/weekly.180/ 
+mv /volume1/snapshots/weekly.178/ /volume1/snapshots/weekly.179/ 
+mv /volume1/snapshots/weekly.177/ /volume1/snapshots/weekly.178/ 
+mv /volume1/snapshots/weekly.176/ /volume1/snapshots/weekly.177/ 
+mv /volume1/snapshots/weekly.175/ /volume1/snapshots/weekly.176/ 
+mv /volume1/snapshots/weekly.174/ /volume1/snapshots/weekly.175/ 
+mv /volume1/snapshots/weekly.173/ /volume1/snapshots/weekly.174/ 
+mv /volume1/snapshots/weekly.172/ /volume1/snapshots/weekly.173/ 
+mv /volume1/snapshots/weekly.171/ /volume1/snapshots/weekly.172/ 
+mv /volume1/snapshots/weekly.170/ /volume1/snapshots/weekly.171/ 
+mv /volume1/snapshots/weekly.169/ /volume1/snapshots/weekly.170/ 
+mv /volume1/snapshots/weekly.168/ /volume1/snapshots/weekly.169/ 
+mv /volume1/snapshots/weekly.167/ /volume1/snapshots/weekly.168/ 
+mv /volume1/snapshots/weekly.166/ /volume1/snapshots/weekly.167/ 
+mv /volume1/snapshots/weekly.165/ /volume1/snapshots/weekly.166/ 
+mv /volume1/snapshots/weekly.164/ /volume1/snapshots/weekly.165/ 
+mv /volume1/snapshots/weekly.163/ /volume1/snapshots/weekly.164/ 
+mv /volume1/snapshots/weekly.162/ /volume1/snapshots/weekly.163/ 
+mv /volume1/snapshots/weekly.161/ /volume1/snapshots/weekly.162/ 
+mv /volume1/snapshots/weekly.159/ /volume1/snapshots/weekly.160/ 
+mv /volume1/snapshots/weekly.158/ /volume1/snapshots/weekly.159/ 
+mv /volume1/snapshots/weekly.157/ /volume1/snapshots/weekly.158/ 
+mv /volume1/snapshots/weekly.156/ /volume1/snapshots/weekly.157/ 
+mv /volume1/snapshots/weekly.155/ /volume1/snapshots/weekly.156/ 
+mv /volume1/snapshots/weekly.154/ /volume1/snapshots/weekly.155/ 
+mv /volume1/snapshots/weekly.153/ /volume1/snapshots/weekly.154/ 
+mv /volume1/snapshots/weekly.152/ /volume1/snapshots/weekly.153/ 
+mv /volume1/snapshots/weekly.151/ /volume1/snapshots/weekly.152/ 
+mv /volume1/snapshots/weekly.150/ /volume1/snapshots/weekly.151/ 
+mv /volume1/snapshots/weekly.149/ /volume1/snapshots/weekly.150/ 
+mv /volume1/snapshots/weekly.148/ /volume1/snapshots/weekly.149/ 
+mv /volume1/snapshots/weekly.147/ /volume1/snapshots/weekly.148/ 
+mv /volume1/snapshots/weekly.146/ /volume1/snapshots/weekly.147/ 
+mv /volume1/snapshots/weekly.145/ /volume1/snapshots/weekly.146/ 
+mv /volume1/snapshots/weekly.144/ /volume1/snapshots/weekly.145/ 
+mv /volume1/snapshots/weekly.143/ /volume1/snapshots/weekly.144/ 
+mv /volume1/snapshots/weekly.142/ /volume1/snapshots/weekly.143/ 
+mv /volume1/snapshots/weekly.141/ /volume1/snapshots/weekly.142/ 
+mv /volume1/snapshots/weekly.140/ /volume1/snapshots/weekly.141/ 
+mv /volume1/snapshots/weekly.139/ /volume1/snapshots/weekly.140/ 
+mv /volume1/snapshots/weekly.138/ /volume1/snapshots/weekly.139/ 
+mv /volume1/snapshots/weekly.137/ /volume1/snapshots/weekly.138/ 
+mv /volume1/snapshots/weekly.136/ /volume1/snapshots/weekly.137/ 
+mv /volume1/snapshots/weekly.135/ /volume1/snapshots/weekly.136/ 
+mv /volume1/snapshots/weekly.134/ /volume1/snapshots/weekly.135/ 
+mv /volume1/snapshots/weekly.133/ /volume1/snapshots/weekly.134/ 
+mv /volume1/snapshots/weekly.132/ /volume1/snapshots/weekly.133/ 
+mv /volume1/snapshots/weekly.131/ /volume1/snapshots/weekly.132/ 
+mv /volume1/snapshots/weekly.130/ /volume1/snapshots/weekly.131/ 
+mv /volume1/snapshots/weekly.129/ /volume1/snapshots/weekly.130/ 
+mv /volume1/snapshots/weekly.128/ /volume1/snapshots/weekly.129/ 
+mv /volume1/snapshots/weekly.127/ /volume1/snapshots/weekly.128/ 
+mv /volume1/snapshots/weekly.126/ /volume1/snapshots/weekly.127/ 
+mv /volume1/snapshots/weekly.125/ /volume1/snapshots/weekly.126/ 
+mv /volume1/snapshots/weekly.124/ /volume1/snapshots/weekly.125/ 
+mv /volume1/snapshots/weekly.123/ /volume1/snapshots/weekly.124/ 
+mv /volume1/snapshots/weekly.122/ /volume1/snapshots/weekly.123/ 
+mv /volume1/snapshots/weekly.121/ /volume1/snapshots/weekly.122/ 
+mv /volume1/snapshots/weekly.120/ /volume1/snapshots/weekly.121/ 
+mv /volume1/snapshots/weekly.119/ /volume1/snapshots/weekly.120/ 
+mv /volume1/snapshots/weekly.118/ /volume1/snapshots/weekly.119/ 
+mv /volume1/snapshots/weekly.117/ /volume1/snapshots/weekly.118/ 
+mv /volume1/snapshots/weekly.116/ /volume1/snapshots/weekly.117/ 
+mv /volume1/snapshots/weekly.115/ /volume1/snapshots/weekly.116/ 
+mv /volume1/snapshots/weekly.114/ /volume1/snapshots/weekly.115/ 
+mv /volume1/snapshots/weekly.113/ /volume1/snapshots/weekly.114/ 
+mv /volume1/snapshots/weekly.112/ /volume1/snapshots/weekly.113/ 
+mv /volume1/snapshots/weekly.111/ /volume1/snapshots/weekly.112/ 
+mv /volume1/snapshots/weekly.110/ /volume1/snapshots/weekly.111/ 
+mv /volume1/snapshots/weekly.109/ /volume1/snapshots/weekly.110/ 
+mv /volume1/snapshots/weekly.108/ /volume1/snapshots/weekly.109/ 
+mv /volume1/snapshots/weekly.107/ /volume1/snapshots/weekly.108/ 
+mv /volume1/snapshots/weekly.106/ /volume1/snapshots/weekly.107/ 
+mv /volume1/snapshots/weekly.105/ /volume1/snapshots/weekly.106/ 
+mv /volume1/snapshots/weekly.104/ /volume1/snapshots/weekly.105/ 
+mv /volume1/snapshots/weekly.103/ /volume1/snapshots/weekly.104/ 
+mv /volume1/snapshots/weekly.102/ /volume1/snapshots/weekly.103/ 
+mv /volume1/snapshots/weekly.101/ /volume1/snapshots/weekly.102/ 
+mv /volume1/snapshots/weekly.100/ /volume1/snapshots/weekly.101/ 
+mv /volume1/snapshots/weekly.99/ /volume1/snapshots/weekly.100/ 
+mv /volume1/snapshots/weekly.98/ /volume1/snapshots/weekly.99/ 
+mv /volume1/snapshots/weekly.97/ /volume1/snapshots/weekly.98/ 
+mv /volume1/snapshots/weekly.96/ /volume1/snapshots/weekly.97/ 
+mv /volume1/snapshots/weekly.95/ /volume1/snapshots/weekly.96/ 
+mv /volume1/snapshots/weekly.94/ /volume1/snapshots/weekly.95/ 
+mv /volume1/snapshots/weekly.93/ /volume1/snapshots/weekly.94/ 
+mv /volume1/snapshots/weekly.92/ /volume1/snapshots/weekly.93/ 
+mv /volume1/snapshots/weekly.91/ /volume1/snapshots/weekly.92/ 
+mv /volume1/snapshots/weekly.90/ /volume1/snapshots/weekly.91/ 
+mv /volume1/snapshots/weekly.89/ /volume1/snapshots/weekly.90/ 
+mv /volume1/snapshots/weekly.88/ /volume1/snapshots/weekly.89/ 
+mv /volume1/snapshots/weekly.87/ /volume1/snapshots/weekly.88/ 
+mv /volume1/snapshots/weekly.86/ /volume1/snapshots/weekly.87/ 
+mv /volume1/snapshots/weekly.85/ /volume1/snapshots/weekly.86/ 
+mv /volume1/snapshots/weekly.84/ /volume1/snapshots/weekly.85/ 
+mv /volume1/snapshots/weekly.83/ /volume1/snapshots/weekly.84/ 
+mv /volume1/snapshots/weekly.82/ /volume1/snapshots/weekly.83/ 
+mv /volume1/snapshots/weekly.81/ /volume1/snapshots/weekly.82/ 
+mv /volume1/snapshots/weekly.80/ /volume1/snapshots/weekly.81/ 
+mv /volume1/snapshots/weekly.79/ /volume1/snapshots/weekly.80/ 
+mv /volume1/snapshots/weekly.78/ /volume1/snapshots/weekly.79/ 
+mv /volume1/snapshots/weekly.77/ /volume1/snapshots/weekly.78/ 
+mv /volume1/snapshots/weekly.76/ /volume1/snapshots/weekly.77/ 
+mv /volume1/snapshots/weekly.75/ /volume1/snapshots/weekly.76/ 
+mv /volume1/snapshots/weekly.74/ /volume1/snapshots/weekly.75/ 
+mv /volume1/snapshots/weekly.73/ /volume1/snapshots/weekly.74/ 
+mv /volume1/snapshots/weekly.72/ /volume1/snapshots/weekly.73/ 
+mv /volume1/snapshots/weekly.71/ /volume1/snapshots/weekly.72/ 
+mv /volume1/snapshots/weekly.70/ /volume1/snapshots/weekly.71/ 
+mv /volume1/snapshots/weekly.69/ /volume1/snapshots/weekly.70/ 
+mv /volume1/snapshots/weekly.68/ /volume1/snapshots/weekly.69/ 
+mv /volume1/snapshots/weekly.67/ /volume1/snapshots/weekly.68/ 
+mv /volume1/snapshots/weekly.66/ /volume1/snapshots/weekly.67/ 
+mv /volume1/snapshots/weekly.65/ /volume1/snapshots/weekly.66/ 
+mv /volume1/snapshots/weekly.64/ /volume1/snapshots/weekly.65/ 
+mv /volume1/snapshots/weekly.63/ /volume1/snapshots/weekly.64/ 
+mv /volume1/snapshots/weekly.62/ /volume1/snapshots/weekly.63/ 
+mv /volume1/snapshots/weekly.61/ /volume1/snapshots/weekly.62/ 
+mv /volume1/snapshots/weekly.60/ /volume1/snapshots/weekly.61/ 
+mv /volume1/snapshots/weekly.59/ /volume1/snapshots/weekly.60/ 
+mv /volume1/snapshots/weekly.58/ /volume1/snapshots/weekly.59/ 
+mv /volume1/snapshots/weekly.57/ /volume1/snapshots/weekly.58/ 
+mv /volume1/snapshots/weekly.56/ /volume1/snapshots/weekly.57/ 
+mv /volume1/snapshots/weekly.55/ /volume1/snapshots/weekly.56/ 
+mv /volume1/snapshots/weekly.54/ /volume1/snapshots/weekly.55/ 
+mv /volume1/snapshots/weekly.53/ /volume1/snapshots/weekly.54/ 
+mv /volume1/snapshots/weekly.52/ /volume1/snapshots/weekly.53/ 
+mv /volume1/snapshots/weekly.51/ /volume1/snapshots/weekly.52/ 
+mv /volume1/snapshots/weekly.50/ /volume1/snapshots/weekly.51/ 
+mv /volume1/snapshots/weekly.49/ /volume1/snapshots/weekly.50/ 
+mv /volume1/snapshots/weekly.48/ /volume1/snapshots/weekly.49/ 
+mv /volume1/snapshots/weekly.47/ /volume1/snapshots/weekly.48/ 
+mv /volume1/snapshots/weekly.46/ /volume1/snapshots/weekly.47/ 
+mv /volume1/snapshots/weekly.45/ /volume1/snapshots/weekly.46/ 
+mv /volume1/snapshots/weekly.44/ /volume1/snapshots/weekly.45/ 
+mv /volume1/snapshots/weekly.43/ /volume1/snapshots/weekly.44/ 
+mv /volume1/snapshots/weekly.42/ /volume1/snapshots/weekly.43/ 
+mv /volume1/snapshots/weekly.41/ /volume1/snapshots/weekly.42/ 
+mv /volume1/snapshots/weekly.40/ /volume1/snapshots/weekly.41/ 
+mv /volume1/snapshots/weekly.39/ /volume1/snapshots/weekly.40/ 
+mv /volume1/snapshots/weekly.36/ /volume1/snapshots/weekly.37/ 
+mv /volume1/snapshots/weekly.35/ /volume1/snapshots/weekly.36/ 
+mv /volume1/snapshots/weekly.34/ /volume1/snapshots/weekly.35/ 
+mv /volume1/snapshots/weekly.32/ /volume1/snapshots/weekly.33/ 
+mv /volume1/snapshots/weekly.31/ /volume1/snapshots/weekly.32/ 
+mv /volume1/snapshots/weekly.30/ /volume1/snapshots/weekly.31/ 
+mv /volume1/snapshots/weekly.29/ /volume1/snapshots/weekly.30/ 
+mv /volume1/snapshots/weekly.28/ /volume1/snapshots/weekly.29/ 
+mv /volume1/snapshots/weekly.27/ /volume1/snapshots/weekly.28/ 
+mv /volume1/snapshots/weekly.26/ /volume1/snapshots/weekly.27/ 
+mv /volume1/snapshots/weekly.25/ /volume1/snapshots/weekly.26/ 
+mv /volume1/snapshots/weekly.24/ /volume1/snapshots/weekly.25/ 
+mv /volume1/snapshots/weekly.23/ /volume1/snapshots/weekly.24/ 
+mv /volume1/snapshots/weekly.22/ /volume1/snapshots/weekly.23/ 
+mv /volume1/snapshots/weekly.21/ /volume1/snapshots/weekly.22/ 
+mv /volume1/snapshots/weekly.20/ /volume1/snapshots/weekly.21/ 
+mv /volume1/snapshots/weekly.19/ /volume1/snapshots/weekly.20/ 
+mv /volume1/snapshots/weekly.18/ /volume1/snapshots/weekly.19/ 
+mv /volume1/snapshots/weekly.17/ /volume1/snapshots/weekly.18/ 
+mv /volume1/snapshots/weekly.16/ /volume1/snapshots/weekly.17/ 
+mv /volume1/snapshots/weekly.15/ /volume1/snapshots/weekly.16/ 
+mv /volume1/snapshots/weekly.14/ /volume1/snapshots/weekly.15/ 
+mv /volume1/snapshots/weekly.13/ /volume1/snapshots/weekly.14/ 
+mv /volume1/snapshots/weekly.12/ /volume1/snapshots/weekly.13/ 
+mv /volume1/snapshots/weekly.11/ /volume1/snapshots/weekly.12/ 
+mv /volume1/snapshots/weekly.10/ /volume1/snapshots/weekly.11/ 
+mv /volume1/snapshots/weekly.9/ /volume1/snapshots/weekly.10/ 
+mv /volume1/snapshots/weekly.8/ /volume1/snapshots/weekly.9/ 
+mv /volume1/snapshots/weekly.7/ /volume1/snapshots/weekly.8/ 
+mv /volume1/snapshots/weekly.6/ /volume1/snapshots/weekly.7/ 
+mv /volume1/snapshots/weekly.5/ /volume1/snapshots/weekly.6/ 
+mv /volume1/snapshots/weekly.4/ /volume1/snapshots/weekly.5/ 
+mv /volume1/snapshots/weekly.3/ /volume1/snapshots/weekly.4/ 
+mv /volume1/snapshots/weekly.2/ /volume1/snapshots/weekly.3/ 
+mv /volume1/snapshots/weekly.1/ /volume1/snapshots/weekly.2/ 
+native_cp_al("/volume1/snapshots/weekly.0", "/volume1/snapshots/weekly.1") 
+/opt/bin/rsync -a --delete --numeric-ids /volume1/snapshots/weekly.0/ \
+    /volume1/snapshots/weekly.1/ 
+/opt/bin/rsync -a --delete --numeric-ids --delete-excluded \
+    --rsh=/opt/bin/ssh mickael@desktop:~/Documents/ \
+    /volume1/snapshots/weekly.0/documents/ 
+/opt/bin/rsync -a --delete --numeric-ids --delete-excluded \
+    --rsh=/opt/bin/ssh mickael@desktop:~/Pictures/ \
+    /volume1/snapshots/weekly.0/pictures/ 
+/opt/bin/rsync -a --delete --numeric-ids --delete-excluded \
+    --rsh=/opt/bin/ssh mickael@desktop:~/Music/ \
+    /volume1/snapshots/weekly.0/music/ 
+/opt/bin/rsync -a --delete --numeric-ids --delete-excluded \
+    --rsh=/opt/bin/ssh mickael@desktop:~/WindowsSoftware/ \
+    /volume1/snapshots/weekly.0/logiciels/ 
+rsync: write failed on "/volume1/snapshots/weekly.0/logiciels/Applications/Programmation/cuda_8.0.44_linux.run": No space left on device (28)
+rsync error: error in file IO (code 11) at receiver.c(322) [receiver=3.0.9]
+rsync: connection unexpectedly closed (106 bytes received so far) [generator]
+rsync error: error in rsync protocol data stream (code 12) at io.c(605) [generator=3.0.9]
+----------------------------------------------------------------------------
+rsnapshot encountered an error! The program was invoked with these options:
+/opt/bin/rsnapshot -c rsnapshot.conf weekly 
+----------------------------------------------------------------------------
+ERROR: /opt/bin/rsync returned 12 while processing mickael@desktop:~/WindowsSoftware/
+/opt/bin/rsync -a --delete --numeric-ids --delete-excluded \
+    --rsh=/opt/bin/ssh mickael@desktop:~/Videos/ \
+    /volume1/snapshots/weekly.0/videos/ 
+rsync: write failed on "/volume1/snapshots/weekly.0/videos/Films/Perfetti Sconosciuti.avi": No space left on device (28)
+rsync error: error in file IO (code 11) at receiver.c(322) [receiver=3.0.9]
+rsync: connection unexpectedly closed (1068 bytes received so far) [generator]
+rsync error: error in rsync protocol data stream (code 12) at io.c(605) [generator=3.0.9]
+ERROR: /opt/bin/rsync returned 12 while processing mickael@desktop:~/Videos/
+/opt/bin/rsync -a --delete --numeric-ids --delete-excluded \
+    --rsh=/opt/bin/ssh mickael@desktop:~/Archives/ \
+    /volume1/snapshots/weekly.0/archives/ 
+rsync: change_dir "/home/mickael/Archives" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1518) [Receiver=3.0.9]
+touch /volume1/snapshots/weekly.0/ 
+rm -f /var/run/rsnapshot.pid  

@@ -58,7 +58,8 @@ OTHER_FILES += \
     data/rsnapshot5changed.log \
     data/rsnapshot5removed.log \
     data/rsnapshotall.log \
-    data/apt1.txt
+    data/apt1.txt \
+    data/rsnapshot_nospaceerror.txt
 
 HEADERS += \
     gitreportparsertest.h \

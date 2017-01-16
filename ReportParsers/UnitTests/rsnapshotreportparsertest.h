@@ -15,6 +15,8 @@ class RsnapshotReportParserTest : public FileBackupParserAbstractTest
 private Q_SLOTS:
     void testParse();
 
+    void testParseUnrelatedFile_NoCrash();
+
 protected:
     virtual FileBackupReport* CreateReport();
     virtual AbstractFileBackupParser* CreateParser();

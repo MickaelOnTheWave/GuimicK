@@ -16,6 +16,16 @@ void RsnapshotReportParserTest::testParse()
     //CheckReportByteData(added, modified, removed);
 }
 
+void RsnapshotReportParserTest::testParseUnrelatedFile_NoCrash()
+{
+    // This file has nothing to do with rsnapshot report parser.
+    // Just checking that it does not crash it.
+    const QString file = "rsnapshot_nospaceerror.txt";
+
+    GetReportDataFromCorrectFile(file.toStdString());
+    CheckReportDataFiles(QStringList(), QStringList(), QStringList());
+}
+
 FileBackupReport *RsnapshotReportParserTest::CreateReport()
 {
     return new RsnapshotReport();
