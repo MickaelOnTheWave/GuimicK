@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     commandLine.AddParameter("conffile",    "[CONFIGURATION FILE] Specifies which configuration file to use.");
 
     commandLine.EnableHelpCommand();
-    commandLine.EnableVersionCommand("Task Manager", PROGRAM_VERSION, "Mickael C. Guimaraes", "2014-2016");
+    commandLine.EnableVersionCommand("Task Manager", PROGRAM_VERSION, "Mickael C. Guimaraes", "2014-2017");
 
     if (commandLine.HandleUnknownParameters())
         return NO_ERROR;
