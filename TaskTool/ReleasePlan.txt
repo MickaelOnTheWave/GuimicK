@@ -33,6 +33,7 @@ Features to implement:
 	[034] Create client app to create/manage backup folder configuration.
 	[035] Console job improvement : support an external parser system.
 	[036] Console job improvement : support a chain system.
+	[037] Have automated tests for all features
 
 Abandoned features :
 	[005] Include AntiVirus scan in maintenance script
@@ -50,23 +51,30 @@ Release plan
 
 v1.0 :
 	[010] Implement all TODOs in code
+	[017] Properly handle all error cases
+	[014] Log jobs data in a database for future report/statistics use
 	[016] Create a package with binaries for easy install
-	[023] Remove wakelan executable dependency
+
+v0.9 :
 	[032] Property handle encodings for strings
+	[003] Use Curl lib instead of command line
+	[023] Remove wakelan executable dependency
+	[024] Remove ping executable dependency
 
 v0.8 :
+	[029] Split job config file into client/server files.
 	[026] Support multiple clients with multiple job lists
 	[034] Create client app to create/manage backup folder configuration.
 
 v0.7 :
-	[017] Properly handle all error cases
-	[029] Split job config file into client/server files.
-	[033] Handle File backup folder data outside of rsnapshot conf file.
+	[037] Have automated tests for all features
+	[008] Use another time level of backup for other jobs (monly/yearly...)
+	[036] Console job improvement : support a chain system.
 
 v0.6 :
 	[002] Remove Wake script dependency
+	[033] Handle File backup folder data outside of rsnapshot conf file.
 	[035] Console job improvement : support an external parser system.
-	[036] Console job improvement : support a chain system.
 
 v0.5 :
 	[031] Include System update in maintenance script

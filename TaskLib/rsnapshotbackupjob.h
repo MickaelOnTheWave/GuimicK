@@ -26,7 +26,7 @@ public:
 
 	virtual JobStatus* Run();
 
-protected:
+private:
 	ConsoleJob* backupCommand;
 	ConsoleJob* reportCommand;
     std::string backupRepositoryPath;

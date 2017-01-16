@@ -4,7 +4,7 @@
 #include <sstream>
 #include <tools.h>
 
-#include <iostream>
+#include "rsnapshoterroranalyzer.h"
 
 using namespace std;
 
@@ -75,16 +75,6 @@ bool RsnapshotBackupJob::IsInitialized()
 {
     bool ret = (backupRepositoryPath != "" &&
             backupCommand->IsInitialized() && reportCommand->IsInitialized());
-
-    if (!ret)
-    {
-        cout << "Backup job initialization is failing : " << endl;
-        cout << "\tRepository path : " << backupRepositoryPath << endl;
-        cout << "\tRsnapshot conf file : " << rsnapshotConfFile << endl;
-        cout << "\tBackup command ok?" << backupCommand->IsInitialized() << endl;
-        cout << "\tReport command ok?" << reportCommand->IsInitialized() << endl;
-    }
-
     return ret;
 }
 
@@ -94,11 +84,21 @@ JobStatus* RsnapshotBackupJob::Run()
 	if (backupStatus->GetCode() != JobStatus::OK)
 	{
         if (backupCommand->GetCommandReturnCode() == 1)
-            backupStatus->SetDescription("Fatal error running RSnapshot. See attached file.");
+        {
+            RsnapshotErrorAnalyzer analyzer(backupCommand->GetCommandOutput());
+            if (analyzer.IsOutOfSpaceError())
+                backupStatus->SetDescription("Not enough disk space to perform backup");
+            else
+            {
+                backupStatus->SetDescription("Fatal error running RSnapshot. See attached file.");
+                backupStatus->AddFileBuffer(DEFAULT_BACKUP_FILENAME, backupCommand->GetCommandOutput());
+            }
+        }
         else if (backupCommand->GetCommandReturnCode() == 2)
         {
             backupStatus->SetDescription("RSnapshot executed with some warnings. See attached file.");
             backupStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
+            backupStatus->AddFileBuffer(DEFAULT_BACKUP_FILENAME, backupCommand->GetCommandOutput());
         }
 		else
 		{
@@ -107,8 +107,8 @@ JobStatus* RsnapshotBackupJob::Run()
 			stream << backupCommand->GetCommandReturnCode();
 			description += stream.str();
 			backupStatus->SetDescription(description);
+            backupStatus->AddFileBuffer(DEFAULT_BACKUP_FILENAME, backupCommand->GetCommandOutput());
 		}
-        backupStatus->AddFileBuffer(DEFAULT_BACKUP_FILENAME, backupCommand->GetCommandOutput());
 		return backupStatus;
 	}
 	else
@@ -134,6 +134,5 @@ JobStatus* RsnapshotBackupJob::Run()
 
     JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
     status->AddFileBuffer(DEFAULT_BACKUP_FILENAME, parser.GetFullDescription());
-	return status;
+    return status;
 }
-

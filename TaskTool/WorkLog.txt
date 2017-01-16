@@ -1,3 +1,20 @@
+16/01/2017 (18.1)
+	Updated Release plan. Now going back to code.
+	The best solution for error management was a dedicated class that has nothing to do with report parser. Created
+	class and test suite, and fixed implementation. Now ready for integration :-)
+
+12/01/2017 (1.2h)
+	One issue happened for some time and stopped ocurring on its own : Email was not being sent due to curl
+	authentification error. This was not reproduced with EmailUI and stopped ocurring on its own. Leaving as
+	it is. Production error was due to lack of disk space for backup. So, first step would be to reproduce it and
+	have its output recorded to create a test / change implementation to detect it.
+	Created code inside backup job : this is an isolated case and parsing has little to do with normal report. However,
+	it has been noted that it is nearly impossible to test inside backup job, it would be a lot more "normal" to have it
+	in the parser.
+Next planned work :
+	- Consider best case for putting error parsing code. Think about testing and overall code usage and organization.
+	- Check run in Synology.
+
 30/12/2016 (2.1h)
 	Back to project to try to resolve last Git issue with reports. Unfortunately, they were removed :-( Trying more runs
 	to reproduce bug. As Synology is being used right now for another purpose, moving to Rsnapshot manual handling.

@@ -23,7 +23,8 @@ SOURCES += \
     gitjobtest.cpp \
     taskfeaturetest.cpp \
     gittools.cpp \
-    rsnapshotjobtest.cpp
+    rsnapshotjobtest.cpp \
+    rsnapshoterroranalyzertest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -61,11 +62,14 @@ OTHER_FILES += \
     data/ex1_report.html \
     data/report.css \
     data/ex1_dest.txt \
-    data/rsnapshot.conf
+    data/rsnapshot.conf \
+    data/rsnapshot_nospaceerror.txt \
+    data/rsnapshotall.log
 
 HEADERS += \
     gitrepository.h \
     gitjobtest.h \
     taskfeaturetest.h \
     gittools.h \
-    rsnapshotjobtest.h
+    rsnapshotjobtest.h \
+    rsnapshoterroranalyzertest.h

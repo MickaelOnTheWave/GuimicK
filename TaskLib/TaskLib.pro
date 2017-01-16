@@ -34,7 +34,8 @@ SOURCES += \
     textreportcreator.cpp \
     abstractreportcreator.cpp \
     userconsolejob.cpp \
-    rsnapshotbackupjob.cpp
+    rsnapshotbackupjob.cpp \
+    rsnapshoterroranalyzer.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -62,7 +63,8 @@ HEADERS +=\
     textreportcreator.h \
     abstractreportcreator.h \
     userconsolejob.h \
-    rsnapshotbackupjob.h
+    rsnapshotbackupjob.h \
+    rsnapshoterroranalyzer.h
 
 unix {
     target.path = /usr/lib
