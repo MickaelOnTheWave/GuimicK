@@ -1,3 +1,10 @@
+17/01/2017 (2h)
+	Run was OK from report. Now logging in to check files and freeing memory. Removing a lot of files...
+	Freed 40 GB, which is barely ok... but there seem to be no magic to do. There are few backups now...
+	Also, began writing a ping command for later use in removing python script.
+Next planned work :
+	- Check that all backups run Ok to finish task.
+
 16/01/2017 (1.4h)
 	Updated Release plan. Now going back to code.
 	The best solution for error management was a dedicated class that has nothing to do with report parser. Created
