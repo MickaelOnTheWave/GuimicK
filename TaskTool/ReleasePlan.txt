@@ -11,6 +11,7 @@ Features implemented:
 	25/10/2015 - [031] Include System update in maintenance script
 	11/02/2016 - [030] Create additional options for ConsoleJob to handle mini description.
 	20/10/2016 - [037] Organize BackupAgent code and projects in tree like Tools
+	19/01/2017 - [019] Do not create intermediate files - handle all data in memory!
 
 Features to implement:
 	[002] Remove Wake script dependency
@@ -21,7 +22,6 @@ Features to implement:
 	[015] Make a stat job for longer time level (yearly?)
 	[016] Create a package with binaries for easy install
 	[017] Properly handle all error cases
-	[019] Do not create intermediate files - handle all data in memory!
 	[023] Remove wakelan executable dependency
 	[024] Remove ping executable dependency
 	[025] Use libssh instead of using command line
@@ -76,7 +76,7 @@ v0.6 :
 	[033] Handle File backup folder data outside of rsnapshot conf file.
 	[035] Console job improvement : support an external parser system.
 
-v0.5 :
+v0.5 : 19/01/2017
 	[031] Include System update in maintenance script
 	[030] Create additional options for ConsoleJob to handle mini description.
 	[037] Organize BackupAgent code and projects in tree like Tools
