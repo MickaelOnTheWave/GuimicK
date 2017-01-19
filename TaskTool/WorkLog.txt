@@ -1,3 +1,11 @@
+19/01/2017 (0.7h)
+	Run was OK, updating version and Release plan :-)
+	Modified Shutdown job to use newly created ping checking. This will let shutdown be done immediately
+	and do a real check for machine shutdown (and have real shutdown time available). First step to
+	remove wake script.
+Next planned work :
+	- Check Shutdown job output. If OK, move on to wake job.
+
 17/01/2017 (2h)
 	Run was OK from report. Now logging in to check files and freeing memory. Removing a lot of files...
 	Freed 40 GB, which is barely ok... but there seem to be no magic to do. There are few backups now...
