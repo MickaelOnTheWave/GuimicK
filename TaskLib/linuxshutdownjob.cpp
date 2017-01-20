@@ -23,7 +23,10 @@ std::string LinuxShutdownJob::GetName()
 
 AbstractJob *LinuxShutdownJob::Clone()
 {
-    return new LinuxShutdownJob();
+    LinuxShutdownJob* clone = new LinuxShutdownJob();
+    clone->computer = computer;
+    clone->jobTimeoutInSeconds = jobTimeoutInSeconds;
+    return clone;
 }
 
 bool LinuxShutdownJob::InitializeFromClient(Client *client)

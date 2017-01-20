@@ -6,14 +6,11 @@
 
 #include "client.h"
 #include "clientworkmanager.h"
-#include "consolewakejob.h"
-#include "shutdownjob.h"
-#include "changescreensaverjob.h"
-#include "clamavjob.h"
-#include "rsnapshotbackupjob.h"
-#include "textreportcreator.h"
-#include "gitbackupjob.h"
 #include "SelfIdentity.h"
+#include "textreportcreator.h"
+
+#include "consolejob.h"
+#include "gitbackupjob.h"
 
 class ConfigurationObject;
 

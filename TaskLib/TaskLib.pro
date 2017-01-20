@@ -35,7 +35,8 @@ SOURCES += \
     abstractreportcreator.cpp \
     userconsolejob.cpp \
     rsnapshotbackupjob.cpp \
-    rsnapshoterroranalyzer.cpp
+    rsnapshoterroranalyzer.cpp \
+    wakejob.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -64,7 +65,8 @@ HEADERS +=\
     abstractreportcreator.h \
     userconsolejob.h \
     rsnapshotbackupjob.h \
-    rsnapshoterroranalyzer.h
+    rsnapshoterroranalyzer.h \
+    wakejob.h
 
 unix {
     target.path = /usr/lib

@@ -1,3 +1,10 @@
+20/01/2017 (0.9h)
+	Shutdown job worked fine, now updating Wake job. Created new Wake job, independent from previous one.
+	It should work, the only way to test is to run it.
+Next planned work :
+	- Check Wake job run. If OK, update release plan.
+	- Write tiny "Check free space" job using ConsoleJob.
+
 19/01/2017 (0.7h)
 	Run was OK, updating version and Release plan :-)
 	Modified Shutdown job to use newly created ping checking. This will let shutdown be done immediately

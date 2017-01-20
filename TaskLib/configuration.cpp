@@ -4,9 +4,14 @@
 #include <vector>
 
 #include "configurationparser.h"
+#include "htmlreportcreator.h"
+
+#include "changescreensaverjob.h"
+#include "clamavjob.h"
 #include "linuxshutdownjob.h"
 #include "profiledjob.h"
-#include "htmlreportcreator.h"
+#include "rsnapshotbackupjob.h"
+#include "wakejob.h"
 
 using namespace std;
 
@@ -75,7 +80,7 @@ bool Configuration::LoadFromFile(const string &fileName, list<string> &errorMess
 AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
 {
 	if (object->name == "Wake")
-		return new ConsoleWakeJob();
+        return new WakeJob();
 	else if (object->name == "ChangeScreenSaver")
 	{
         int time = 600;
