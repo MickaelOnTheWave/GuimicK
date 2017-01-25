@@ -45,7 +45,9 @@ bool WakeJob::InitializeFromClient(Client *client)
 
 bool WakeJob::IsInitialized()
 {
-    return (macAddress != "" && broadcastIp != "" && expectedIp != "");
+    bool wakelanExecutableFound = (Tools::GetCommandPath("wakelan") != "");
+    bool hasMandatoryParameters = (macAddress != "" && broadcastIp != "" && expectedIp != "");
+    return wakelanExecutableFound && hasMandatoryParameters;
 }
 
 void WakeJob::SetOutputDebugInformation(const bool value)
@@ -56,7 +58,8 @@ void WakeJob::SetOutputDebugInformation(const bool value)
 JobStatus *WakeJob::Run()
 {
     const int maxRetries = 3;
-    const string wakeCommand = string("wakelan -m ") + macAddress + " -b " + broadcastIp;
+    const string wakelanExecutable = Tools::GetCommandPath("wakelan");
+    const string wakeCommand = wakelanExecutable + " -m " + macAddress + " -b " + broadcastIp;
     string debugBuffer = string("wakeCommand : <") + wakeCommand + ">\n";
 
     for (int i=0; i<maxRetries; ++i)
