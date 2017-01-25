@@ -78,38 +78,13 @@ void ConsoleJob::Initialize(const string &_commandName, const string &_commandPa
     attachOutputToStatus = false;
     EnableSuccessOnReturnCode(_expectedReturnCode);
 
-    if (!IsInitialized())
-    {
-        // 2. Check if command is found in search path collection that was provided
-        vector<string>::const_iterator it=appSearchPaths.begin();
-        vector<string>::const_iterator end=appSearchPaths.end();
-        for (; it!=end; it++)
-        {
-            string currentName = *it + "/" + commandName;
-            bool commandExists = FileTools::FileExists(currentName);
-            if (commandExists)
-            {
-                commandName = currentName;
-                break;
-            }
-        }
-    }
+    IsInitialized();
 }
 
 bool ConsoleJob::IsInitialized()
 {
-    // 1. Check if command is a valid file, considering current and full path.
-    bool commandExists = FileTools::FileExists(commandName);
-    if (!commandExists)
-    {
-        string output("");
-        // 2. Check if command is a global command
-        string checkingCommand("which");
-        checkingCommand += string(" ") + commandName;
-        int returnCode = Tools::RunExternalCommandToBuffer(checkingCommand, output, true);
-        commandExists = (returnCode == 0);
-    }
-    return (commandName != "" && commandExists);
+    commandName = Tools::GetCommandPath(commandName, appSearchPaths);
+    return (commandName != "");
 }
 
 // @TODO resolve bug where apparently output is not correctly processed with it has some special chars (like in :-) )

@@ -1,4 +1,4 @@
-25/01/2017 (16.9)
+25/01/2017 (3.5h)
 	Unfortunately, new wake job did not run. Some more tests are needed on ping function and wake...
 	Created simple console executable to test IsComputerAlive() function. A small bug was spotted and fixed.
 	Now thinking about a simple way to test wake job... It seems the best way is good-old
@@ -6,8 +6,11 @@
 	Wake job still did not work. Creating debug flags to check what is going on...
 	Multiple tests still did not work. Implemented command searching through which and now through
 	configuration-supplied search paths. Updated Toolbox to have this utility, usable in other places
-	once checked.
-
+	once checked. Worked :-)
+	Making few adjustments to improve code reuse. Now, next work on this project should be in a long time...
+	;-)
+Next planned work :
+	- Follow Release plan
 
 20/01/2017 (0.9h)
 	Shutdown job worked fine, now updating Wake job. Created new Wake job, independent from previous one.
