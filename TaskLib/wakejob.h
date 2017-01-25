@@ -23,6 +23,8 @@ public:
     virtual JobStatus* Run();
 
 private:
+
+    bool HasMandatoryParameters(void) const;
     /**
      * @return number of seconds elapsed until computer is up
      */
@@ -39,6 +41,7 @@ private:
     std::string macAddress;
     std::string broadcastIp;
     std::string expectedIp;
+    std::string wakelanPath;
     bool outputDebugInformation;
 };
 

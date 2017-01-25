@@ -48,7 +48,6 @@ AbstractJob *ConsoleJob::Clone()
     clone->expectedOutput = expectedOutput;
     clone->expectedReturnCode = expectedReturnCode;
     clone->receivedReturnCode = receivedReturnCode;
-    copy(appSearchPaths.begin(), appSearchPaths.end(), back_inserter(clone->appSearchPaths));
     return clone;
 }
 
@@ -103,15 +102,12 @@ bool ConsoleJob::IsInitialized()
     bool commandExists = FileTools::FileExists(commandName);
     if (!commandExists)
     {
-        if (!commandExists)
-        {
-            string output("");
-            // 2. Check if command is a global command
-            string checkingCommand("which");
-            checkingCommand += string(" ") + commandName;
-            int returnCode = Tools::RunExternalCommandToBuffer(checkingCommand, output, true);
-            commandExists = (returnCode == 0);
-        }
+        string output("");
+        // 2. Check if command is a global command
+        string checkingCommand("which");
+        checkingCommand += string(" ") + commandName;
+        int returnCode = Tools::RunExternalCommandToBuffer(checkingCommand, output, true);
+        commandExists = (returnCode == 0);
     }
     return (commandName != "" && commandExists);
 }

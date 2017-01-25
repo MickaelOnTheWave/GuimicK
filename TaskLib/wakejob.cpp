@@ -2,6 +2,7 @@
 
 #include <unistd.h>
 #include <sstream>
+#include "consolejob.h"
 #include "tools.h"
 
 using namespace std;
@@ -9,7 +10,8 @@ using namespace std;
 static const int DEFAULT_TIMEOUT = 120;
 
 WakeJob::WakeJob()
-    : macAddress(""), broadcastIp(""), expectedIp(""), outputDebugInformation(false)
+    : macAddress(""), broadcastIp(""), expectedIp(""),
+      wakelanPath(""), outputDebugInformation(false)
 {
 }
 
@@ -28,6 +30,8 @@ AbstractJob *WakeJob::Clone()
     cloned->macAddress = macAddress;
     cloned->broadcastIp = broadcastIp;
     cloned->expectedIp = expectedIp;
+    cloned->wakelanPath = wakelanPath;
+    cloned->outputDebugInformation = outputDebugInformation;
     return cloned;
 }
 
@@ -40,14 +44,13 @@ bool WakeJob::InitializeFromClient(Client *client)
     if (expectedIp == "")
         expectedIp = client->GetProperty("ip");
 
-    return (macAddress != "" && broadcastIp != "" && expectedIp != "");
+    wakelanPath = Tools::GetCommandPath("wakelan", ConsoleJob::appSearchPaths);
+    return IsInitialized();
 }
 
 bool WakeJob::IsInitialized()
 {
-    bool wakelanExecutableFound = (Tools::GetCommandPath("wakelan") != "");
-    bool hasMandatoryParameters = (macAddress != "" && broadcastIp != "" && expectedIp != "");
-    return wakelanExecutableFound && hasMandatoryParameters;
+    return wakelanPath != "" && HasMandatoryParameters();
 }
 
 void WakeJob::SetOutputDebugInformation(const bool value)
@@ -58,8 +61,7 @@ void WakeJob::SetOutputDebugInformation(const bool value)
 JobStatus *WakeJob::Run()
 {
     const int maxRetries = 3;
-    const string wakelanExecutable = Tools::GetCommandPath("wakelan");
-    const string wakeCommand = wakelanExecutable + " -m " + macAddress + " -b " + broadcastIp;
+    const string wakeCommand = wakelanPath + " -m " + macAddress + " -b " + broadcastIp;
     string debugBuffer = string("wakeCommand : <") + wakeCommand + ">\n";
 
     for (int i=0; i<maxRetries; ++i)
@@ -82,6 +84,11 @@ JobStatus *WakeJob::Run()
     debugBuffer += CreateValueInformationLine("maxRetries", maxRetries);
     debugBuffer += CreateValueInformationLine("timeout", DEFAULT_TIMEOUT);
     return CreateStatus(JobStatus::ERROR, "Machine still not awake", debugBuffer);
+}
+
+bool WakeJob::HasMandatoryParameters() const
+{
+    return (macAddress != "" && broadcastIp != "" && expectedIp != "");
 }
 
 int WakeJob::WaitForComputerToGoUp() const

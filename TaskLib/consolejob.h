@@ -57,8 +57,11 @@ public:
     void EnableSuccessOnOutput(const std::string& output);
     void DisableSuccessOnOutput();
 
+    // TODO : find a better place for that. This is a global feature, not
+    // necessary related to this job.
     static void AddAppSearchPath(const std::string& path);
     static void ClearAppSearchPaths();
+    static std::vector<std::string> appSearchPaths;
 
 protected:
 
@@ -82,8 +85,6 @@ protected:
 
 	int expectedReturnCode;
 	int receivedReturnCode;
-
-    static std::vector<std::string> appSearchPaths;
 };
 
 #endif // CONSOLEJOB_H

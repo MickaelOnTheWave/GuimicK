@@ -23,7 +23,7 @@
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.54";
+static const string PROGRAM_VERSION = "0.55";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
 void ShowErrors(list<string> &errorMessages);

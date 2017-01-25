@@ -4,6 +4,9 @@
 	Now thinking about a simple way to test wake job... It seems the best way is good-old
 	wait-for-synology-to-wake-me-up method...
 	Wake job still did not work. Creating debug flags to check what is going on...
+	Multiple tests still did not work. Implemented command searching through which and now through
+	configuration-supplied search paths. Updated Toolbox to have this utility, usable in other places
+	once checked.
 
 
 20/01/2017 (0.9h)
