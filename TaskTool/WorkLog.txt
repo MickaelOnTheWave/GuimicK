@@ -1,3 +1,10 @@
+25/01/2017 (16.9)
+	Unfortunately, new wake job did not run. Some more tests are needed on ping function and wake...
+	Created simple console executable to test IsComputerAlive() function. A small bug was spotted and fixed.
+	Now thinking about a simple way to test wake job... It seems the best way is good-old
+	wait-for-synology-to-wake-me-up method...
+
+
 20/01/2017 (0.9h)
 	Shutdown job worked fine, now updating Wake job. Created new Wake job, independent from previous one.
 	It should work, the only way to test is to run it.

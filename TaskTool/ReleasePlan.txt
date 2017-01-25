@@ -34,6 +34,7 @@ Features to implement:
 	[035] Console job improvement : support an external parser system.
 	[036] Console job improvement : support a chain system.
 	[037] Have automated tests for all features
+	[038] Include Free space check in production run
 
 Abandoned features :
 	[005] Include AntiVirus scan in maintenance script
@@ -73,6 +74,7 @@ v0.7 :
 
 v0.6 :
 	[002] Remove Wake script dependency
+	[038] Include Free space check in production run
 	[033] Handle File backup folder data outside of rsnapshot conf file.
 	[035] Console job improvement : support an external parser system.
 
