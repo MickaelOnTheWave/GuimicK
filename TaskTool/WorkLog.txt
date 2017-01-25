@@ -3,6 +3,7 @@
 	Created simple console executable to test IsComputerAlive() function. A small bug was spotted and fixed.
 	Now thinking about a simple way to test wake job... It seems the best way is good-old
 	wait-for-synology-to-wake-me-up method...
+	Wake job still did not work. Creating debug flags to check what is going on...
 
 
 20/01/2017 (0.9h)

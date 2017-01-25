@@ -80,7 +80,13 @@ bool Configuration::LoadFromFile(const string &fileName, list<string> &errorMess
 AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
 {
 	if (object->name == "Wake")
-        return new WakeJob();
+    {
+        WakeJob* job = new WakeJob();
+        string param = object->propertyList["param0"];
+        if (param == "showDebugInformation")
+            job->SetOutputDebugInformation(true);
+        return job;
+    }
 	else if (object->name == "ChangeScreenSaver")
 	{
         int time = 600;

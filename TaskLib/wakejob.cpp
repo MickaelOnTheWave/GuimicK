@@ -1,13 +1,15 @@
 #include "wakejob.h"
 
 #include <unistd.h>
+#include <sstream>
 #include "tools.h"
 
 using namespace std;
 
 static const int DEFAULT_TIMEOUT = 120;
 
-WakeJob::WakeJob() : macAddress(""), broadcastIp(""), expectedIp("")
+WakeJob::WakeJob()
+    : macAddress(""), broadcastIp(""), expectedIp(""), outputDebugInformation(false)
 {
 }
 
@@ -46,22 +48,37 @@ bool WakeJob::IsInitialized()
     return (macAddress != "" && broadcastIp != "" && expectedIp != "");
 }
 
+void WakeJob::SetOutputDebugInformation(const bool value)
+{
+    outputDebugInformation = value;
+}
+
 JobStatus *WakeJob::Run()
 {
     const int maxRetries = 3;
     const string wakeCommand = string("wakelan -m ") + macAddress + " -b " + broadcastIp;
+    string debugBuffer = string("wakeCommand : <") + wakeCommand + ">\n";
 
     for (int i=0; i<maxRetries; ++i)
     {
-        std::string unusedBuffer;
-        Tools::RunExternalCommandToBuffer(wakeCommand, unusedBuffer, true);
+        std::string wakeCommandOutput;
+        Tools::RunExternalCommandToBuffer(wakeCommand, wakeCommandOutput, true);
+        debugBuffer += string("output :\n") + wakeCommandOutput + "\n";
 
         int secondsToWake = WaitForComputerToGoUp();
         if (secondsToWake < DEFAULT_TIMEOUT)
-            return new JobStatus(JobStatus::OK, "");
+        {
+            debugBuffer += CreateValueInformationLine("retries", i);
+            debugBuffer += CreateValueInformationLine("maxRetries", maxRetries);
+            debugBuffer += CreateValueInformationLine("seconds counter", secondsToWake);
+            debugBuffer += CreateValueInformationLine("timeout", DEFAULT_TIMEOUT);
+            return CreateStatus(JobStatus::OK, "", debugBuffer);
+        }
     }
 
-    return new JobStatus(JobStatus::ERROR, "Machine still not awake");
+    debugBuffer += CreateValueInformationLine("maxRetries", maxRetries);
+    debugBuffer += CreateValueInformationLine("timeout", DEFAULT_TIMEOUT);
+    return CreateStatus(JobStatus::ERROR, "Machine still not awake", debugBuffer);
 }
 
 int WakeJob::WaitForComputerToGoUp() const
@@ -73,4 +90,21 @@ int WakeJob::WaitForComputerToGoUp() const
         ++secondsElapsed;
     }
     return secondsElapsed;
+}
+
+JobStatus *WakeJob::CreateStatus(const int code,
+                                 const string &description,
+                                 const string &debugInformation) const
+{
+    JobStatus* status = new JobStatus(code, description);
+    if (outputDebugInformation)
+        status->AddFileBuffer("WakeInformation.txt", debugInformation);
+    return status;
+}
+
+string WakeJob::CreateValueInformationLine(const string &label, const int value) const
+{
+    stringstream line;
+    line << label << " : " << value << endl;
+    return line.str();
 }
