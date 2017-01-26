@@ -37,7 +37,6 @@ INCLUDEPATH += $$TOOLS_INCLUDE_PATH
 DEPENDPATH += $$TOOLS_INCLUDE_PATH
 
 OTHER_FILES += \
-    data/wakeComputer.sh \
     data/configuration.txt \
     data/apt-upgrade.txt \
     MakeSynologyBuild.sh \

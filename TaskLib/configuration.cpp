@@ -8,10 +8,7 @@
 
 #include "changescreensaverjob.h"
 #include "clamavjob.h"
-#include "linuxshutdownjob.h"
 #include "profiledjob.h"
-#include "rsnapshotbackupjob.h"
-#include "wakejob.h"
 
 using namespace std;
 
@@ -80,50 +77,26 @@ bool Configuration::LoadFromFile(const string &fileName, list<string> &errorMess
 AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
 {
 	if (object->name == "Wake")
-    {
-        WakeJob* job = new WakeJob();
-        string param = object->propertyList["param0"];
-        if (param == "showDebugInformation")
-            job->SetOutputDebugInformation(true);
-        return job;
-    }
+        return CreateWakeJobFromObject(object);
 	else if (object->name == "ChangeScreenSaver")
-	{
-        int time = 600;
-        string param = object->propertyList["param0"];
-        if (param != "")
-            time = atoi(param.c_str());
-		return new ChangeScreensaverJob(time);
-	}
+        return CreateChangeScreensaverJobFromObject(object);
 	else if (object->name == "Backup")
-    {
-        string repositoryPath = object->GetFirstProperty("repositoryPath", "param0");
-        string rsnapshotConfFile = object->GetFirstProperty("rsnapshotConfFile", "param1");
-        return new RsnapshotBackupJob(repositoryPath, rsnapshotConfFile);
-    }
+        return CreateRsnapshotBackupJob(object);
 	else if (object->name == "ClamAv")
 		return new ClamAvJob();
 	else if (object->name == "Shutdown")
-        return new LinuxShutdownJob();
+        return CreateShutdownJobFromObject(object);
     else if (object->name == "Console")
-    {
-        ConsoleJob* job = new ConsoleJob("");
-        InitializeConsoleJobFromObject(object, job);
-        return job;
-    }
+        return InitializeConsoleJobFromObject(object, new ConsoleJob());
     else if (object->name == "SshConsole")
-    {
-        SshConsoleJob* job = new SshConsoleJob("");
-        InitializeConsoleJobFromObject(object, job);
-        return job;
-    }
+        return InitializeConsoleJobFromObject(object, new SshConsoleJob(""));
     else if (object->name == "GitBackup")
         return CreateGitBackupJob(object);
 	else
         return NULL;
 }
 
-void Configuration::InitializeConsoleJobFromObject(ConfigurationObject *object, ConsoleJob *job)
+ConsoleJob *Configuration::InitializeConsoleJobFromObject(ConfigurationObject *object, ConsoleJob *job) const
 {
     string title =          object->GetFirstProperty("title", "param0");
     string command =        object->GetFirstProperty("command", "param1");
@@ -158,9 +131,38 @@ void Configuration::InitializeConsoleJobFromObject(ConfigurationObject *object, 
 
     if (parserCommand != "")
         job->SetMiniDescriptionParserCommand(parserCommand);
+
+    return job;
 }
 
-GitBackupJob *Configuration::CreateGitBackupJob(ConfigurationObject *object)
+WakeJob *Configuration::CreateWakeJobFromObject(ConfigurationObject *object) const
+{
+    WakeJob* job = new WakeJob();
+    string param = object->propertyList["param0"];
+    if (param == "showDebugInformation")
+        job->SetOutputDebugInformation(true);
+    return job;
+}
+
+LinuxShutdownJob *Configuration::CreateShutdownJobFromObject(ConfigurationObject *object) const
+{
+    LinuxShutdownJob* job = new LinuxShutdownJob();
+    string param = object->propertyList["param0"];
+    if (param == "showDebugInformation")
+        job->SetOutputDebugInformation(true);
+    return job;
+}
+
+ChangeScreensaverJob *Configuration::CreateChangeScreensaverJobFromObject(ConfigurationObject *object) const
+{
+    int time = 600;
+    string param = object->propertyList["param0"];
+    if (param != "")
+        time = atoi(param.c_str());
+    return new ChangeScreensaverJob(time);
+}
+
+GitBackupJob *Configuration::CreateGitBackupJob(ConfigurationObject *object) const
 {
     GitBackupJob* job = new GitBackupJob();
     list<ConfigurationObject*>::iterator it = object->objectList.begin();
@@ -188,6 +190,13 @@ GitBackupJob *Configuration::CreateGitBackupJob(ConfigurationObject *object)
         job->SetWriteLogsToFiles(true);
 
     return job;
+}
+
+RsnapshotBackupJob *Configuration::CreateRsnapshotBackupJob(ConfigurationObject *object) const
+{
+    string repositoryPath = object->GetFirstProperty("repositoryPath", "param0");
+    string rsnapshotConfFile = object->GetFirstProperty("rsnapshotConfFile", "param1");
+    return new RsnapshotBackupJob(repositoryPath, rsnapshotConfFile);
 }
 
 void Configuration::CreateClient(ConfigurationObject *confObject, list<string> &errorMessages)

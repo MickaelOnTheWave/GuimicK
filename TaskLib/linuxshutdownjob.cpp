@@ -1,12 +1,18 @@
 #include "linuxshutdownjob.h"
 
 #include <unistd.h>
+#include <sstream>
+
+#include "jobdebuginformationmanager.h"
 #include "tools.h"
+
+using namespace std;
 
 static const int DEFAULT_TIMEOUT = 120;
 
 LinuxShutdownJob::LinuxShutdownJob()
-    : computer(""), jobTimeoutInSeconds(DEFAULT_TIMEOUT)
+    : computer(""), jobTimeoutInSeconds(DEFAULT_TIMEOUT),
+      outputDebugInformation(false)
 {
     shutdownJob = new SshConsoleJob("", "shutdown", "-h now");
 }
@@ -41,21 +47,30 @@ bool LinuxShutdownJob::IsInitialized()
     return shutdownJob->IsInitialized() && computer != "";
 }
 
+void LinuxShutdownJob::SetOutputDebugInformation(const bool value)
+{
+    outputDebugInformation = value;
+}
+
 JobStatus *LinuxShutdownJob::Run()
 {
+    JobDebugInformationManager debugInfo(GetName(), outputDebugInformation);
     JobStatus* status = shutdownJob->Run();
+    debugInfo.AddIntDataLine("Return code", shutdownJob->GetCommandReturnCode());
+    debugInfo.AddStringDataLine("Output", shutdownJob->GetCommandOutput());
     if (status->GetCode() == JobStatus::ERROR)
-        return status;
+        return debugInfo.UpdateStatus(status);
 
     int secondsToShutdown = WaitForComputerToGoDown();
-
     if (secondsToShutdown > jobTimeoutInSeconds)
     {
         status->SetCode(JobStatus::ERROR);
         status->SetDescription("Machine still running");
     }
 
-    return status;
+    debugInfo.AddIntDataLine("Seconds counter", secondsToShutdown);
+    debugInfo.AddIntDataLine("Timeout", jobTimeoutInSeconds);
+    return debugInfo.UpdateStatus(status);
 }
 
 int LinuxShutdownJob::WaitForComputerToGoDown() const
@@ -68,4 +83,12 @@ int LinuxShutdownJob::WaitForComputerToGoDown() const
     }
 
     return secondsCounter;
+}
+
+// TODO : remove duplication from wake job
+string LinuxShutdownJob::CreateValueInformationLine(const string &label, const int value) const
+{
+    stringstream line;
+    line << label << " : " << value << endl;
+    return line.str();
 }

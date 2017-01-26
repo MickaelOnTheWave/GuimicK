@@ -1,3 +1,9 @@
+26/01/2017 (16.7)
+	Work ran OK, but there was an error on shutdown job. In order to have everything polished, resolving
+	this now!
+	Implemented optional parameter to output debug information for Shutdown job. Also refactored
+	job creation in Configuration.
+
 25/01/2017 (3.5h)
 	Unfortunately, new wake job did not run. Some more tests are needed on ping function and wake...
 	Created simple console executable to test IsComputerAlive() function. A small bug was spotted and fixed.

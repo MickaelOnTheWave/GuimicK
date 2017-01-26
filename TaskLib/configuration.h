@@ -9,8 +9,12 @@
 #include "SelfIdentity.h"
 #include "textreportcreator.h"
 
+#include "changescreensaverjob.h"
 #include "consolejob.h"
 #include "gitbackupjob.h"
+#include "linuxshutdownjob.h"
+#include "rsnapshotbackupjob.h"
+#include "wakejob.h"
 
 class ConfigurationObject;
 
@@ -41,9 +45,13 @@ public:
 protected:
 
 	AbstractJob *CreateJobFromObject(ConfigurationObject *object);
-    void InitializeConsoleJobFromObject(ConfigurationObject *object, ConsoleJob* job);
 
-    GitBackupJob* CreateGitBackupJob(ConfigurationObject* object);
+    ConsoleJob *InitializeConsoleJobFromObject(ConfigurationObject *object, ConsoleJob* job) const;
+    WakeJob* CreateWakeJobFromObject(ConfigurationObject *object) const;
+    LinuxShutdownJob* CreateShutdownJobFromObject(ConfigurationObject *object) const;
+    ChangeScreensaverJob* CreateChangeScreensaverJobFromObject(ConfigurationObject* object) const;
+    GitBackupJob* CreateGitBackupJob(ConfigurationObject* object) const;
+    RsnapshotBackupJob* CreateRsnapshotBackupJob(ConfigurationObject* object) const;
 
 	void CreateClient(ConfigurationObject* confObject, std::list<std::string>& errorMessages);
 	void CreateSelf(ConfigurationObject* confObject, std::list<std::string>& errorMessages);
