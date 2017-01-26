@@ -14,6 +14,7 @@ public:
     void AddStringDataLine(const std::string& label, const std::string& data);
 
     JobStatus* UpdateStatus(JobStatus* status) const;
+    JobStatus* CreateStatus(const int code, const std::string &description) const;
 
 private:
     std::string debugFilename;

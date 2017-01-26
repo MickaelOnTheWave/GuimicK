@@ -28,10 +28,6 @@ private:
      */
     int WaitForComputerToGoDown() const;
 
-    std::string CreateValueInformationLine(
-            const std::string& label,
-            const int value) const;
-
     SshConsoleJob* shutdownJob;
     std::string computer;
     int jobTimeoutInSeconds;

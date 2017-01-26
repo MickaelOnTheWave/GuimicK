@@ -1,8 +1,13 @@
-26/01/2017 (16.7)
+26/01/2017 (1.8h)
 	Work ran OK, but there was an error on shutdown job. In order to have everything polished, resolving
 	this now!
 	Implemented optional parameter to output debug information for Shutdown job. Also refactored
-	job creation in Configuration.
+	job creation in Configuration. Created Debug information manager for use in any job.
+	Added debug information support for Console job and updated wake job to use new class.
+	Updated configuration to support console job debugging. Tested Shutdown job and it is ok :-))
+	Now, probably this will be it for a long, long time !
+Next planned work :
+	- Follow Release plan
 
 25/01/2017 (3.5h)
 	Unfortunately, new wake job did not run. Some more tests are needed on ping function and wake...

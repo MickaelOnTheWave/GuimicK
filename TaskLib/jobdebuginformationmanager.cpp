@@ -37,3 +37,8 @@ JobStatus *JobDebugInformationManager::UpdateStatus(JobStatus *status) const
         status->AddFileBuffer(debugFilename, allData);
     return status;
 }
+
+JobStatus *JobDebugInformationManager::CreateStatus(const int code, const string &description) const
+{
+    return UpdateStatus(new JobStatus(code, description));
+}

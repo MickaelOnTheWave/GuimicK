@@ -109,6 +109,9 @@ ConsoleJob *Configuration::InitializeConsoleJobFromObject(ConfigurationObject *o
     job->SetTitle(title);
     job->Initialize(command, params);
 
+    if (object->propertyList["showDebugInformation"] != "")
+        job->SetOutputDebugInformation(true);
+
     if (rawReturnCode != "")
     {
         int returnCode = 0;

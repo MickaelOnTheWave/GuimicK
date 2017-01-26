@@ -1,8 +1,9 @@
 #include "wakejob.h"
 
 #include <unistd.h>
-#include <sstream>
+
 #include "consolejob.h"
+#include "jobdebuginformationmanager.h"
 #include "tools.h"
 
 using namespace std;
@@ -60,30 +61,31 @@ void WakeJob::SetOutputDebugInformation(const bool value)
 
 JobStatus *WakeJob::Run()
 {
-    const int maxRetries = 3;
     const string wakeCommand = wakelanPath + " -m " + macAddress + " -b " + broadcastIp;
-    string debugBuffer = string("wakeCommand : <") + wakeCommand + ">\n";
+    JobDebugInformationManager debugInfo(GetName(), outputDebugInformation);
+    debugInfo.AddStringDataLine("Wake command", wakeCommand);
 
+    const int maxRetries = 3;
     for (int i=0; i<maxRetries; ++i)
     {
         std::string wakeCommandOutput;
         Tools::RunExternalCommandToBuffer(wakeCommand, wakeCommandOutput, true);
-        debugBuffer += string("output :\n") + wakeCommandOutput + "\n";
+        debugInfo.AddStringDataLine("Output", wakeCommandOutput);
 
         int secondsToWake = WaitForComputerToGoUp();
         if (secondsToWake < DEFAULT_TIMEOUT)
         {
-            debugBuffer += CreateValueInformationLine("retries", i);
-            debugBuffer += CreateValueInformationLine("maxRetries", maxRetries);
-            debugBuffer += CreateValueInformationLine("seconds counter", secondsToWake);
-            debugBuffer += CreateValueInformationLine("timeout", DEFAULT_TIMEOUT);
-            return CreateStatus(JobStatus::OK, "", debugBuffer);
+            debugInfo.AddIntDataLine("retries", i);
+            debugInfo.AddIntDataLine("maxRetries", maxRetries);
+            debugInfo.AddIntDataLine("seconds counter", secondsToWake);
+            debugInfo.AddIntDataLine("timeout", DEFAULT_TIMEOUT);
+            return debugInfo.CreateStatus(JobStatus::OK, "");
         }
     }
 
-    debugBuffer += CreateValueInformationLine("maxRetries", maxRetries);
-    debugBuffer += CreateValueInformationLine("timeout", DEFAULT_TIMEOUT);
-    return CreateStatus(JobStatus::ERROR, "Machine still not awake", debugBuffer);
+    debugInfo.AddIntDataLine("maxRetries", maxRetries);
+    debugInfo.AddIntDataLine("timeout", DEFAULT_TIMEOUT);
+    return debugInfo.CreateStatus(JobStatus::ERROR, "Machine still not awake");
 }
 
 bool WakeJob::HasMandatoryParameters() const
@@ -100,21 +102,4 @@ int WakeJob::WaitForComputerToGoUp() const
         ++secondsElapsed;
     }
     return secondsElapsed;
-}
-
-JobStatus *WakeJob::CreateStatus(const int code,
-                                 const string &description,
-                                 const string &debugInformation) const
-{
-    JobStatus* status = new JobStatus(code, description);
-    if (outputDebugInformation)
-        status->AddFileBuffer("WakeInformation.txt", debugInformation);
-    return status;
-}
-
-string WakeJob::CreateValueInformationLine(const string &label, const int value) const
-{
-    stringstream line;
-    line << label << " : " << value << endl;
-    return line.str();
 }

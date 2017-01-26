@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <sstream>
 
+#include "jobdebuginformationmanager.h"
+
 using namespace std;
 
 static string whichCommandPath("");
@@ -19,7 +21,7 @@ ConsoleJob::ConsoleJob()
 // @TODO Check how to prevent commands from unwillingly outputting to console (ls error case for example).
 ConsoleJob::ConsoleJob(const string& _commandTitle, const string &_commandName,
                        const string &_commandParameters, int _expectedReturnCode)
-    : commandTitle(_commandTitle), parserCommand("")
+    : commandTitle(_commandTitle), parserCommand(""), outputDebugInformation(false)
 {
     Initialize(_commandName, _commandParameters, _expectedReturnCode);
 }
@@ -48,6 +50,7 @@ AbstractJob *ConsoleJob::Clone()
     clone->expectedOutput = expectedOutput;
     clone->expectedReturnCode = expectedReturnCode;
     clone->receivedReturnCode = receivedReturnCode;
+    clone->outputDebugInformation = outputDebugInformation;
     return clone;
 }
 
@@ -83,15 +86,28 @@ void ConsoleJob::Initialize(const string &_commandName, const string &_commandPa
 
 bool ConsoleJob::IsInitialized()
 {
-    commandName = Tools::GetCommandPath(commandName, appSearchPaths);
+    string foundCommandFullName = Tools::GetCommandPath(commandName, appSearchPaths);
+    if (foundCommandFullName != "")
+        commandName = foundCommandFullName;
     return (commandName != "");
+}
+
+void ConsoleJob::SetOutputDebugInformation(const bool value)
+{
+    outputDebugInformation = value;
 }
 
 // @TODO resolve bug where apparently output is not correctly processed with it has some special chars (like in :-) )
 JobStatus *ConsoleJob::Run()
 {
+    JobDebugInformationManager debugInfo(GetName(), outputDebugInformation);
+
+    debugInfo.AddStringDataLine("Command", commandName);
+    debugInfo.AddStringDataLine("Parameters", commandParameters);
+
     JobStatus* status = new JobStatus(JobStatus::OK);
     const string fullCommand = CreateFullCommand();
+    debugInfo.AddStringDataLine("Full command", fullCommand);
 
     if (outputFileName != "")
     {
@@ -107,6 +123,7 @@ JobStatus *ConsoleJob::Run()
     }
 
     receivedReturnCode = WEXITSTATUS(receivedReturnCode);
+    debugInfo.AddIntDataLine("Received return code", receivedReturnCode);
 
     stringstream sstream;
     if (checkReturnCode && receivedReturnCode != expectedReturnCode)
@@ -127,6 +144,7 @@ JobStatus *ConsoleJob::Run()
 
     if (parserCommand != "" && status->GetCode() == JobStatus::OK)
     {
+        debugInfo.AddStringDataLine("Parser command", parserCommand);
         // TODO make parserCommand smarter! To use directly output from command.
         string miniDescription("");
         int returnValue = Tools::RunExternalCommandToBuffer(parserCommand, miniDescription);
@@ -138,7 +156,7 @@ JobStatus *ConsoleJob::Run()
     else
         status->SetDescription(sstream.str());
 
-    return status;
+    return debugInfo.UpdateStatus(status);
 }
 
 int ConsoleJob::GetCommandReturnCode()

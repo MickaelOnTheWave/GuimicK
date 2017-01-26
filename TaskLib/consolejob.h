@@ -38,6 +38,8 @@ public:
 
     virtual bool IsInitialized(void);
 
+    void SetOutputDebugInformation(const bool value);
+
 	virtual JobStatus* Run();
 
 	int GetCommandReturnCode();
@@ -85,6 +87,7 @@ protected:
 
 	int expectedReturnCode;
 	int receivedReturnCode;
+    bool outputDebugInformation;
 };
 
 #endif // CONSOLEJOB_H

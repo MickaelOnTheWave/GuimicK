@@ -1,7 +1,6 @@
 #include "linuxshutdownjob.h"
 
 #include <unistd.h>
-#include <sstream>
 
 #include "jobdebuginformationmanager.h"
 #include "tools.h"
@@ -50,6 +49,7 @@ bool LinuxShutdownJob::IsInitialized()
 void LinuxShutdownJob::SetOutputDebugInformation(const bool value)
 {
     outputDebugInformation = value;
+    shutdownJob->SetOutputDebugInformation(outputDebugInformation);
 }
 
 JobStatus *LinuxShutdownJob::Run()
@@ -83,12 +83,4 @@ int LinuxShutdownJob::WaitForComputerToGoDown() const
     }
 
     return secondsCounter;
-}
-
-// TODO : remove duplication from wake job
-string LinuxShutdownJob::CreateValueInformationLine(const string &label, const int value) const
-{
-    stringstream line;
-    line << label << " : " << value << endl;
-    return line.str();
 }

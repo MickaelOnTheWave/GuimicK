@@ -30,14 +30,6 @@ private:
      */
     int WaitForComputerToGoUp(void) const;
 
-    JobStatus* CreateStatus(const int code,
-                            const std::string& description,
-                            const std::string& debugInformation) const;
-
-    std::string CreateValueInformationLine(
-            const std::string& label,
-            const int value) const;
-
     std::string macAddress;
     std::string broadcastIp;
     std::string expectedIp;
