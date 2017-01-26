@@ -18,7 +18,6 @@ SOURCES += \
     clientworkmanager.cpp \
     configuration.cpp \
     consolejob.cpp \
-    consolewakejob.cpp \
     curlconsoleemailsender.cpp \
     dummyjob.cpp \
     emailreportdispatcher.cpp \
@@ -36,7 +35,8 @@ SOURCES += \
     userconsolejob.cpp \
     rsnapshotbackupjob.cpp \
     rsnapshoterroranalyzer.cpp \
-    wakejob.cpp
+    wakejob.cpp \
+    jobdebuginformationmanager.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -46,7 +46,6 @@ HEADERS +=\
     clientworkmanager.h \
     configuration.h \
     consolejob.h \
-    consolewakejob.h \
     curlconsoleemailsender.h \
     dummyjob.h \
     emailreportdispatcher.h \
@@ -66,7 +65,8 @@ HEADERS +=\
     userconsolejob.h \
     rsnapshotbackupjob.h \
     rsnapshoterroranalyzer.h \
-    wakejob.h
+    wakejob.h \
+    jobdebuginformationmanager.h
 
 unix {
     target.path = /usr/lib

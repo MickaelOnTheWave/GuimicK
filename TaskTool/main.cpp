@@ -8,7 +8,6 @@
 #include "curlconsoleemailsender.h"
 #include "profiledjob.h"
 #include "sleepjob.h"
-#include "consolewakejob.h"
 #include "changescreensaverjob.h"
 #include "shutdownjob.h"
 #include "rsnapshotbackupjob.h"
