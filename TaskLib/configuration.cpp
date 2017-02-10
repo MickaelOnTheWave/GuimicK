@@ -197,9 +197,13 @@ GitBackupJob *Configuration::CreateGitBackupJob(ConfigurationObject *object) con
 
 RsnapshotBackupJob *Configuration::CreateRsnapshotBackupJob(ConfigurationObject *object) const
 {
+    // TODO : correctly manage parameters here. Named ones.
     string repositoryPath = object->GetFirstProperty("repositoryPath", "param0");
     string rsnapshotConfFile = object->GetFirstProperty("rsnapshotConfFile", "param1");
-    return new RsnapshotBackupJob(repositoryPath, rsnapshotConfFile);
+    RsnapshotBackupJob* job = new RsnapshotBackupJob(repositoryPath, rsnapshotConfFile);
+    if (object->propertyList["showDebugInformation"] != "")
+        job->SetOutputDebugInformation(true);
+    return job;
 }
 
 void Configuration::CreateClient(ConfigurationObject *confObject, list<string> &errorMessages)

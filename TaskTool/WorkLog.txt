@@ -1,3 +1,10 @@
+09/02/2017 (0.4h)
+	Now, Rsnapshot is not detecting anymore modifications on filesystem... Creating debug option for analysis.
+	Created and updated Synology configuration. Now, only waiting...
+Next planned work :
+	- Check production run results.
+	- Depending on result, either improve debug information or fix the issue.
+
 26/01/2017 (1.8h)
 	Work ran OK, but there was an error on shutdown job. In order to have everything polished, resolving
 	this now!

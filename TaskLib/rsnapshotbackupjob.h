@@ -26,12 +26,14 @@ public:
 
 	virtual JobStatus* Run();
 
+    void SetOutputDebugInformation(const bool value);
+
 private:
 	ConsoleJob* backupCommand;
 	ConsoleJob* reportCommand;
     std::string backupRepositoryPath;
     std::string rsnapshotConfFile;
-
+    bool showDebugOutput;
 };
 
 #endif // BACKUPJOB_H

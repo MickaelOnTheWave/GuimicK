@@ -10,8 +10,10 @@ using namespace std;
 
 const string DEFAULT_BACKUP_FILENAME        = "FilesystemBackup.txt";
 const string DEFAULT_RSNAPSHOT_CONF_FILE    = "rsnapshot.conf";
+const string debugFilename                  = "RsnapshotDebug.txt";
 
 RsnapshotBackupJob::RsnapshotBackupJob(const string& _backupRepositoryPath, const string &_rsnapshotConfFile)
+    : showDebugOutput(false)
 {
     backupCommand = new ConsoleJob("", "", "");
     reportCommand = new ConsoleJob("", "", "");
@@ -80,7 +82,10 @@ bool RsnapshotBackupJob::IsInitialized()
 
 JobStatus* RsnapshotBackupJob::Run()
 {
+    stringstream debugOutput;
 	JobStatus* backupStatus = backupCommand->Run();
+    if (showDebugOutput)
+        debugOutput << "Full command output : <" << backupCommand->GetCommandOutput() << ">" << endl;
 	if (backupStatus->GetCode() != JobStatus::OK)
 	{
         if (backupCommand->GetCommandReturnCode() == 1)
@@ -115,6 +120,8 @@ JobStatus* RsnapshotBackupJob::Run()
 		delete backupStatus;
 
 	JobStatus* reportStatus = reportCommand->Run();
+    if (showDebugOutput)
+        debugOutput << "Full report output : <" << reportCommand->GetCommandOutput() << ">" << endl;
 	if (reportStatus->GetCode() != JobStatus::OK)
 	{
 		string description("Error creating rsnapshot report. Return code : ");
@@ -134,5 +141,12 @@ JobStatus* RsnapshotBackupJob::Run()
 
     JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
     status->AddFileBuffer(DEFAULT_BACKUP_FILENAME, parser.GetFullDescription());
+    if (showDebugOutput)
+        status->AddFileBuffer(debugFilename, debugOutput.str());
     return status;
+}
+
+void RsnapshotBackupJob::SetOutputDebugInformation(const bool value)
+{
+    showDebugOutput = value;
 }
