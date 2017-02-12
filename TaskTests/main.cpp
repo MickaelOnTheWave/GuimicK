@@ -3,11 +3,16 @@
 #include "rsnapshotjobtest.h"
 #include "taskfeaturetest.h"
 
+#include <iostream>
 #include <vector>
 #include <QCoreApplication>
 #include <QTest>
 
-void PopulateTestList(std::vector<QObject*>& tests)
+#include "testunitdata.h"
+
+using namespace std;
+
+void PopulateTestList(vector<QObject*>& tests)
 {
     tests.push_back(new RsnapshotErrorAnalyzerTest());
     tests.push_back(new RsnapshotJobTest());
@@ -15,24 +20,51 @@ void PopulateTestList(std::vector<QObject*>& tests)
     tests.push_back(new TaskFeatureTest());
 }
 
-void FreeTestList(std::vector<QObject*>& tests)
+void FreeTestList(vector<QObject*>& tests)
 {
     for (auto it=tests.begin(); it!=tests.end(); ++it)
         delete *it;
     tests.clear();
-
 }
 
-int main(int argc, char *argv[])
+void ShowSummarizedData(const vector<TestUnitData>& testData)
 {
-    QCoreApplication app(argc, argv);
+    const char* tab = "\t";
+    cout << "Summarized results :" << endl;
+    int totalOkTests = 0, totalFailTests = 0;
+    for (auto it=testData.begin(); it!=testData.end(); ++it)
+    {
+        cout << tab << it->GetName() << " : " << (it->GetResult() ? "ok" : "FAIL");
+        cout << " (" << it->GetTestCount() << " tests)" << endl;
+        totalOkTests += it->GetOkTestCount();
+        totalFailTests += it->GetFailTestCount();
+    }
 
-    std::vector<QObject*> tests;
+    cout << "Total : " << totalOkTests << " tests OK, " << totalFailTests << " tests failed." << endl;
+}
+
+int main()
+{
+    vector<QObject*> tests;
     PopulateTestList(tests);
 
+
+    vector<TestUnitData> testData;
+
+    const char* tempResultFile = "results.xml";
+    QStringList arguments;
+    arguments << "TaskTests" << "-xml" << "-o" << tempResultFile;
+
     for (auto it=tests.begin(); it!=tests.end(); ++it)
-        QTest::qExec(*it, argc, argv);
+    {
+        QTest::qExec(*it, arguments);
+        TestUnitData testUnit(tempResultFile);
+        testData.push_back(testUnit);
+    }
+
+    ShowSummarizedData(testData);
 
     FreeTestList(tests);
+    remove(tempResultFile);
 }
 

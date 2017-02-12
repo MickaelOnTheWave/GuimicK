@@ -1,3 +1,11 @@
+12/02/2017 (1.8h)
+	Production results showed that problem is with parser, backup is being done correctly. Before going
+	for fix, it has been decided to clean up test logic : all tests must pass and results need to be summarized.
+	Created unit test class and updated code to work with it. For now, only structure and some features are implemented.
+Next planned work :
+	- Finish implementation
+	- Move custom test runner to dedicated class in QtTools
+
 09/02/2017 (0.4h)
 	Now, Rsnapshot is not detecting anymore modifications on filesystem... Creating debug option for analysis.
 	Created and updated Synology configuration. Now, only waiting...
