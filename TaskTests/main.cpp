@@ -43,6 +43,26 @@ void ShowSummarizedData(const vector<TestUnitData>& testData)
     cout << "Total : " << totalOkTests << " tests OK, " << totalFailTests << " tests failed." << endl;
 }
 
+void ShowFullData(const vector<TestUnitData>& testData)
+{
+    const char* tab = "\t";
+    cout << "Full results :" << endl;
+    int totalOkTests = 0, totalFailTests = 0;
+    for (auto it=testData.begin(); it!=testData.end(); ++it)
+    {
+        cout << tab << it->GetName() << endl;
+        for (auto itFunc=it->FunctionsBegin(); itFunc!=it->FunctionsEnd(); ++itFunc)
+        {
+            cout << tab << tab << itFunc->first << tab << ": ";
+            cout << ((itFunc->second) ? "ok" : "fail") << endl;
+        }
+        totalOkTests += it->GetOkTestCount();
+        totalFailTests += it->GetFailTestCount();
+    }
+
+    cout << "Total : " << totalOkTests << " tests OK, " << totalFailTests << " tests failed." << endl;
+}
+
 int main()
 {
     vector<QObject*> tests;
@@ -62,7 +82,8 @@ int main()
         testData.push_back(testUnit);
     }
 
-    ShowSummarizedData(testData);
+    //ShowSummarizedData(testData);
+    ShowFullData(testData);
 
     FreeTestList(tests);
     remove(tempResultFile);

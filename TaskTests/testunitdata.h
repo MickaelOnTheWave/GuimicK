@@ -19,12 +19,20 @@ public:
 
     bool GetResult(void) const;
 
+    std::vector<std::pair<std::string, bool> >::const_iterator FunctionsBegin() const;
+    std::vector<std::pair<std::string, bool> >::const_iterator FunctionsEnd() const;
+
 private:
     void Parse(const std::string& content);
 
     size_t ParseUnitName(const std::string& content);
     void FindNextFunction(const std::string& content, size_t &position);
     void ParseFunction(const std::string& content, size_t& position);
+    bool ParseResult(const std::string& content, size_t& position);
+    std::string GetTagValue(const std::string& content, size_t& position,
+                            const std::string& tagStart);
+    std::string GetTagValue(const std::string& content, size_t& position,
+                            const std::string& tagStart, const std::string& tagEnd);
 
     std::vector<std::pair<std::string, bool> > functions;
     std::string name = "";
