@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2016-10-20T10:52:19
+# Project created by QtCreator 2017-02-13T19:17:21
 #
 #-------------------------------------------------
 
@@ -8,17 +8,31 @@ QT       += testlib
 
 QT       -= gui
 
-TARGET = tst_taskteststest
-CONFIG   += console
-CONFIG   -= app_bundle
+TARGET = TaskTestLib
+TEMPLATE = lib
+#CONFIG += staticlib
 
 QMAKE_CXXFLAGS += -std=c++11
 
-TEMPLATE = app
+SOURCES += tasktestlib.cpp \
+    gitjobtest.cpp \
+    gitrepository.cpp \
+    gittools.cpp \
+    rsnapshoterroranalyzertest.cpp \
+    rsnapshotjobtest.cpp \
+    taskfeaturetest.cpp
 
-SOURCES +=  main.cpp
-
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
+HEADERS += tasktestlib.h \
+    gitjobtest.h \
+    gitrepository.h \
+    gittools.h \
+    rsnapshoterroranalyzertest.h \
+    rsnapshotjobtest.h \
+    taskfeaturetest.h
+unix {
+    target.path = /usr/lib
+    INSTALLS += target
+}
 
 CONFIG(debug, debug|release) {
 	BUILD_TYPE = Debug
@@ -47,30 +61,3 @@ TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
 INCLUDEPATH += $$TOOLS_INCLUDE_PATH
 DEPENDPATH += $$TOOLS_INCLUDE_PATH
-
-# linking TaskTestLib
-TASKTEST_LIB_PATH = /home/mickael/Prog/TaskManager/bin/$$BUILD_TYPE/TaskTestLib
-TASKTEST_INCLUDE_PATH = /home/mickael/Prog/TaskManager/TaskTestLib/
-LIBS += -L$$TASKTEST_LIB_PATH -lTaskTestLib
-INCLUDEPATH += $$TASKTEST_INCLUDE_PATH
-DEPENDPATH += $$TASKTEST_INCLUDE_PATH
-
-OTHER_FILES += \
-    data/image.jpg \
-    data/ex1_1repository.txt \
-    data/ex1_attach1.txt \
-    data/ex1_report.html \
-    data/report.css \
-    data/ex1_dest.txt \
-    data/rsnapshot.conf \
-    data/rsnapshot_nospaceerror.txt \
-    data/rsnapshotall.log
-
-HEADERS += \
-    gitrepository.h \
-    gitjobtest.h \
-    taskfeaturetest.h \
-    gittools.h \
-    rsnapshotjobtest.h \
-    rsnapshoterroranalyzertest.h \
-    testunitdata.h

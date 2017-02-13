@@ -1,38 +1,18 @@
+#include <QTest>
+
 #include "gitjobtest.h"
 #include "rsnapshoterroranalyzertest.h"
 #include "rsnapshotjobtest.h"
 #include "taskfeaturetest.h"
 
-#include <vector>
-
-#include "qtbatchtestrunner.h"
-
 using namespace std;
 
-void PopulateTestList(vector<QObject*>& tests)
+int main(int argc, char* argv[])
 {
-    tests.push_back(new RsnapshotErrorAnalyzerTest());
-    tests.push_back(new RsnapshotJobTest());
-    tests.push_back(new GitJobTest());
-    tests.push_back(new TaskFeatureTest());
-}
+    QObject* testSuite = new RsnapshotJobTest();
 
-void FreeTestList(vector<QObject*>& tests)
-{
-    for (auto it=tests.begin(); it!=tests.end(); ++it)
-        delete *it;
-    tests.clear();
-}
+    QTest::qExec(testSuite, argc, argv);
 
-int main(int, char* argv[])
-{
-    vector<QObject*> tests;
-    PopulateTestList(tests);
-
-    QtBatchTestRunner runner(argv[0]);
-    runner.Run(tests);
-    runner.ShowFullData();
-
-    FreeTestList(tests);
+    delete testSuite;
 }
 

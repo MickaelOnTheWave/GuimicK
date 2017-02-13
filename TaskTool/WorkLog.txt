@@ -1,7 +1,13 @@
-13/02/2017 (15.7)
+13/02/2017 (4.2h)
 	Created custom Test runner class and finished implementation of current unit test result parset. All is
-	checked and runs OK.
-
+	checked and runs OK. Created dedicated test lib with all Task test classes, and created a tool for running
+	all test suites together in a single run. Now existing tool will be used for debugging (its detailed output
+	is very helpful for that, global tool should be used only for global checking).
+Next planned work :
+	- Fix existing failing tests, especially in Rsnapshot job.
+	- Once this is done, create a test for existing bug.
+	- Fix the bug!
+	- Try to integrate global test suite to deployment script.
 
 12/02/2017 (1.8h)
 	Production results showed that problem is with parser, backup is being done correctly. Before going

@@ -4,4 +4,6 @@ SUBDIRS += \
     TaskLib \
     TaskTool \
 	 TaskTests \
-	 ReportParsers
+	 ReportParsers \
+    TaskTestTool \
+    TaskTestLib
