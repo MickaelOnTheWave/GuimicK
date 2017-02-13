@@ -25,7 +25,8 @@ SOURCES += \
     gittools.cpp \
     rsnapshotjobtest.cpp \
     rsnapshoterroranalyzertest.cpp \
-    testunitdata.cpp
+    testunitdata.cpp \
+    qtbatchtestrunner.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -74,4 +75,5 @@ HEADERS += \
     gittools.h \
     rsnapshotjobtest.h \
     rsnapshoterroranalyzertest.h \
-    testunitdata.h
+    testunitdata.h \
+    qtbatchtestrunner.h

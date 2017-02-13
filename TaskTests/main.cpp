@@ -8,7 +8,7 @@
 #include <QCoreApplication>
 #include <QTest>
 
-#include "testunitdata.h"
+#include "qtbatchtestrunner.h"
 
 using namespace std;
 
@@ -27,65 +27,15 @@ void FreeTestList(vector<QObject*>& tests)
     tests.clear();
 }
 
-void ShowSummarizedData(const vector<TestUnitData>& testData)
-{
-    const char* tab = "\t";
-    cout << "Summarized results :" << endl;
-    int totalOkTests = 0, totalFailTests = 0;
-    for (auto it=testData.begin(); it!=testData.end(); ++it)
-    {
-        cout << tab << it->GetName() << " : " << (it->GetResult() ? "ok" : "FAIL");
-        cout << " (" << it->GetTestCount() << " tests)" << endl;
-        totalOkTests += it->GetOkTestCount();
-        totalFailTests += it->GetFailTestCount();
-    }
-
-    cout << "Total : " << totalOkTests << " tests OK, " << totalFailTests << " tests failed." << endl;
-}
-
-void ShowFullData(const vector<TestUnitData>& testData)
-{
-    const char* tab = "\t";
-    cout << "Full results :" << endl;
-    int totalOkTests = 0, totalFailTests = 0;
-    for (auto it=testData.begin(); it!=testData.end(); ++it)
-    {
-        cout << tab << it->GetName() << endl;
-        for (auto itFunc=it->FunctionsBegin(); itFunc!=it->FunctionsEnd(); ++itFunc)
-        {
-            cout << tab << tab << itFunc->first << tab << ": ";
-            cout << ((itFunc->second) ? "ok" : "fail") << endl;
-        }
-        totalOkTests += it->GetOkTestCount();
-        totalFailTests += it->GetFailTestCount();
-    }
-
-    cout << "Total : " << totalOkTests << " tests OK, " << totalFailTests << " tests failed." << endl;
-}
-
-int main()
+int main(int, char* argv[])
 {
     vector<QObject*> tests;
     PopulateTestList(tests);
 
-
-    vector<TestUnitData> testData;
-
-    const char* tempResultFile = "results.xml";
-    QStringList arguments;
-    arguments << "TaskTests" << "-xml" << "-o" << tempResultFile;
-
-    for (auto it=tests.begin(); it!=tests.end(); ++it)
-    {
-        QTest::qExec(*it, arguments);
-        TestUnitData testUnit(tempResultFile);
-        testData.push_back(testUnit);
-    }
-
-    //ShowSummarizedData(testData);
-    ShowFullData(testData);
+    QtBatchTestRunner runner(argv[0]);
+    runner.Run(tests);
+    runner.ShowFullData();
 
     FreeTestList(tests);
-    remove(tempResultFile);
 }
 
