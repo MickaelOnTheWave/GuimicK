@@ -67,42 +67,106 @@ void TestUnitData::PopulateFromOutputFile(const std::string &file)
 
 void TestUnitData::Parse(const string &content)
 {
-    size_t position = ParseUnitName(content);
+    ParseUnitName(content);
 
-    FindNextFunction(content, position);
-    while (position != string::npos)
+    vector<string> functionsContent;
+    FillElementList("TestFunction", content, functionsContent);
+
+    for (auto it=functionsContent.begin(); it!=functionsContent.end(); ++it)
+        ParseFunctionText(*it);
+}
+
+void TestUnitData::ParseFunctionText(const string& content)
+{
+    string functionName = ParseFunctionName(content);
+    vector<string> incidentsContent;
+    FillElementList("Incident", content, incidentsContent);
+    for (auto it=incidentsContent.begin(); it!=incidentsContent.end(); ++it)
+        ParseIncidentText(*it, functionName);
+}
+
+string TestUnitData::ParseFunctionName(const string &content)
+{
+    size_t position = 0;
+    return GetTagValue(content, position, "name=\"");
+}
+
+void TestUnitData::ParseIncidentText(const string &content, const string& functionName)
+{
+    bool incidentResult = ParseIncidentResult(content);
+    string incidentName = ParseIncidentName(content);
+    string name = functionName;
+    if (incidentName != "")
+        name += string(" - ") + incidentName;
+    functions.push_back(make_pair(name, incidentResult));
+}
+
+bool TestUnitData::ParseIncidentResult(const string &content)
+{
+    size_t position = 0;
+    string result = GetTagValue(content, position, "type=\"");
+    return (result == "pass");
+}
+
+string TestUnitData::ParseIncidentName(const string &content)
+{
+    size_t position = 0;
+    size_t startTag = GetStartingTagPosition("DataTag", content, position);
+    if (startTag == string::npos)
+        return string("");
+
+    string tagValue = GetTagValue(content, position, "<DataTag>", "</DataTag>");
+    return GetCdataValue(tagValue);
+}
+
+void TestUnitData::FillElementList(const string &elementName, const string &content, std::vector<string> &outputList)
+{
+    size_t currentPosition = 0;
+    while (true)
     {
-        ParseFunction(content, position);
-        FindNextFunction(content, position);
+        size_t startTag = GetStartingTagPosition(elementName, content, currentPosition);
+        if (startTag == string::npos)
+            break;
+
+        size_t endTag = GetEndingTagPosition(elementName, content, startTag);
+        outputList.push_back(content.substr(startTag, endTag-startTag));
+        currentPosition = endTag;
     }
 }
 
-size_t TestUnitData::ParseUnitName(const string &content)
+size_t TestUnitData::GetStartingTagPosition(const string &name,
+                                            const string &content, const size_t position)
+{
+    const string startTag = string("<") + name;
+    return content.find(startTag, position);
+}
+
+size_t TestUnitData::GetEndingTagPosition(const string& name,
+                                          const string &content, size_t &position)
+{
+    size_t oneLinerTagEndPos = content.find('>', position);
+    if (oneLinerTagEndPos == string::npos)
+        return string::npos;
+    else if (content[oneLinerTagEndPos-1] == '/')
+        return oneLinerTagEndPos-1;
+    else
+    {
+        const string fullTagEnd = string("</") + name + ">";
+        return content.find(fullTagEnd, position);
+    }
+}
+
+string TestUnitData::GetCdataValue(const string &tagValue)
+{
+    size_t position = 0;
+    return GetTagValue(tagValue, position, "CDATA[", "]");
+}
+
+size_t TestUnitData::ParseUnitName(const string& content)
 {
     size_t position = 0;
     name = GetTagValue(content, position, "<TestCase name=\"");
     return position;
-}
-
-void TestUnitData::FindNextFunction(const string &content, size_t& position)
-{
-    const string tag = "<TestFunction";
-    size_t tagPos = content.find(tag, position);
-    position = (tagPos != string::npos) ? tagPos + tag.size() : string::npos;
-}
-
-void TestUnitData::ParseFunction(const string &content, size_t &position)
-{
-    string functionName = GetTagValue(content, position, "name=\"");
-    bool functionResult = ParseResult(content, position);
-    pair<string, bool> mypair(functionName, functionResult);
-    functions.push_back(mypair);
-}
-
-bool TestUnitData::ParseResult(const string &content, size_t &position)
-{
-    string tagContent = GetTagValue(content, position, "<Incident type=\"");
-    return (tagContent == "pass");
 }
 
 string TestUnitData::GetTagValue(const string &content, size_t &position, const string &tagStart)

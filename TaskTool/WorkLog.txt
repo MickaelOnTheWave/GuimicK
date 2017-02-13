@@ -1,4 +1,6 @@
 13/02/2017 (15.7)
+	Created custom Test runner class and finished implementation of current unit test result parset. All is
+	checked and runs OK.
 
 
 12/02/2017 (1.8h)

@@ -25,10 +25,24 @@ public:
 private:
     void Parse(const std::string& content);
 
-    size_t ParseUnitName(const std::string& content);
-    void FindNextFunction(const std::string& content, size_t &position);
-    void ParseFunction(const std::string& content, size_t& position);
-    bool ParseResult(const std::string& content, size_t& position);
+    size_t ParseUnitName(const std::string &content);
+    void ParseFunctionText(const std::string& content);
+    std::string ParseFunctionName(const std::string& content);
+    void ParseIncidentText(const std::string& content, const std::string& functionName);
+    bool ParseIncidentResult(const std::string& content);
+    std::string ParseIncidentName(const std::string& content);
+
+    void FillElementList(const std::string& elementName, const std::string& content,
+                            std::vector<std::string>& outputList);
+
+
+    size_t GetStartingTagPosition(const std::string& name,
+                                  const std::string& content, const size_t position);
+    size_t GetEndingTagPosition(const std::string& name,
+                                const std::string& content, size_t& position);
+
+    std::string GetCdataValue(const std::string& tagValue);
+
     std::string GetTagValue(const std::string& content, size_t& position,
                             const std::string& tagStart);
     std::string GetTagValue(const std::string& content, size_t& position,
