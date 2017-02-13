@@ -5,6 +5,8 @@
 
 using namespace std;
 
+static const char* tab = "\t";
+
 QtBatchTestRunner::QtBatchTestRunner(const QString &_applicationName)
     : applicationName(_applicationName)
 {
@@ -29,7 +31,6 @@ void QtBatchTestRunner::Run(const std::vector<QObject *> &tests)
 
 void QtBatchTestRunner::ShowFullData() const
 {
-    const char* tab = "\t";
     cout << "Full results :" << endl;
     int totalOkTests = 0, totalFailTests = 0;
     for (auto it=lastResults.begin(); it!=lastResults.end(); ++it)
@@ -44,23 +45,30 @@ void QtBatchTestRunner::ShowFullData() const
         totalFailTests += it->GetFailTestCount();
     }
 
-    cout << "Total : " << totalOkTests << " tests OK, " << totalFailTests << " tests failed." << endl;
-
+    ShowTotalLine(totalOkTests, totalFailTests);
 }
 
 void QtBatchTestRunner::ShowSummarizedData() const
 {
-    const char* tab = "\t";
     cout << "Summarized results :" << endl;
     int totalOkTests = 0, totalFailTests = 0;
     for (auto it=lastResults.begin(); it!=lastResults.end(); ++it)
     {
         cout << tab << it->GetName() << " : " << (it->GetResult() ? "ok" : "FAIL");
         cout << " (" << it->GetTestCount() << " tests)" << endl;
+
         totalOkTests += it->GetOkTestCount();
         totalFailTests += it->GetFailTestCount();
     }
 
-    cout << "Total : " << totalOkTests << " tests OK, " << totalFailTests << " tests failed." << endl;
+    ShowTotalLine(totalOkTests, totalFailTests);
+}
 
+void QtBatchTestRunner::ShowTotalLine(const int okCount, const int failCount) const
+{
+    const int allCount = okCount + failCount;
+    const float successRatio = okCount / static_cast<float>(allCount);
+    const int successPercent = static_cast<int>(successRatio * 100.0);
+    cout << "Total : " << allCount <<  " tests, " << successPercent << "% success (";
+    cout << okCount << " succeeded, " << failCount << " failed)" << endl;
 }

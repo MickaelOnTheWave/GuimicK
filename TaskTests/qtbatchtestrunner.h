@@ -17,6 +17,8 @@ public:
     void ShowSummarizedData(void) const;
 
 private:
+    void ShowTotalLine(const int okCount, const int failCount) const;
+
     std::vector<TestUnitData> lastResults;
     QString applicationName;
 };

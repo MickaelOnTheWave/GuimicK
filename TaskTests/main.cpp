@@ -3,10 +3,7 @@
 #include "rsnapshotjobtest.h"
 #include "taskfeaturetest.h"
 
-#include <iostream>
 #include <vector>
-#include <QCoreApplication>
-#include <QTest>
 
 #include "qtbatchtestrunner.h"
 
