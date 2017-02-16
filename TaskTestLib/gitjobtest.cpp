@@ -5,6 +5,7 @@
 
 #include "filetools.h"
 #include "gitbackupjob.h"
+#include "filetestutils.h"
 #include "gittools.h"
 #include "tools.h"
 
@@ -24,8 +25,8 @@ void GitJobTest::cleanup()
     delete currentStatus;
     currentStatus = nullptr;
 
-    GitTools::RemoveAll(sourceRepository);
-    GitTools::RemoveAll(destinationRepository);
+    FileTestUtils::RemoveAll(sourceRepository);
+    FileTestUtils::RemoveAll(destinationRepository);
 }
 
 // TODO : remove this and find a way to use JobStatus values outside of library
@@ -38,17 +39,17 @@ void GitJobTest::testCreate_InvalidSource()
 {
     RunGitBackup(invalidRepository.toStdString(), destinationRepository.toStdString());
     CheckGitJobReturnsError(messageInvalidSource);
-    GitTools::CheckFolderExistence(invalidRepository, false);
-    GitTools::CheckFolderExistence(destinationRepository, false);
+    FileTestUtils::CheckFolderExistence(invalidRepository, false);
+    FileTestUtils::CheckFolderExistence(destinationRepository, false);
 }
 
 void GitJobTest::testCreate_AllValid()
 {
     RunGitBackup(sourceRepository.toStdString(), destinationRepository.toStdString());
     CheckGitJobReturnsOk(messageRepositoryCreationOk);
-    GitTools::CheckFolderExistence(sourceRepository, true);
-    GitTools::CheckFolderExistence(destinationRepository, true);
-    GitTools::CheckFolderContent(destinationRepository.toStdString(), defaultRepositoryContent);
+    FileTestUtils::CheckFolderExistence(sourceRepository, true);
+    FileTestUtils::CheckFolderExistence(destinationRepository, true);
+    FileTestUtils::CheckFolderContent(destinationRepository.toStdString(), defaultRepositoryContent);
 }
 
 void GitJobTest::testUpdate_data()
@@ -81,7 +82,7 @@ void GitJobTest::testUpdate()
                                                 modified.size(),
                                                 removed.size() ));
     QStringList expectedFileList = CreatedExpectedDestinationRepositoryContent(added, removed);
-    GitTools::CheckFolderContent(stdDestination, expectedFileList);
+    FileTestUtils::CheckFolderContent(stdDestination, expectedFileList);
 }
 
 void GitJobTest::testUpdate_MultipleRepositories()
@@ -95,13 +96,13 @@ void GitJobTest::testUpdate_MultipleRepositories()
     for (auto it=repositories.begin(); it!=repositories.end(); ++it)
     {
         QStringList expectedFileList = CreatedExpectedDestinationRepositoryContent((*it)->added, (*it)->removed);
-        GitTools::CheckFolderContent((*it)->destination, expectedFileList);
+        FileTestUtils::CheckFolderContent((*it)->destination, expectedFileList);
     }
 
     for (auto it=repositories.begin(); it!=repositories.end(); ++it)
     {
-        GitTools::RemoveAll(QString((*it)->source.c_str()));
-        GitTools::RemoveAll(QString((*it)->destination.c_str()));
+        FileTestUtils::RemoveAll(QString((*it)->source.c_str()));
+        FileTestUtils::RemoveAll(QString((*it)->destination.c_str()));
         delete *it;
     }
     repositories.clear();
@@ -178,7 +179,7 @@ void GitJobTest::CreateInitialRepositoryData(const std::vector<GitRepository*>& 
 
 void GitJobTest::CreateDefaultData(const std::string& repository)
 {
-    GitTools::CreatePopulatedFolder(repository, defaultRepositoryContent);
+    FileTestUtils::CreatePopulatedFolder(repository, defaultRepositoryContent);
 }
 
 void GitJobTest::RunGitBackup(const std::string &source, const std::string &destination)

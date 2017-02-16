@@ -19,16 +19,6 @@ public:
                                  const QStringList &modified,
                                  const QStringList &removed);
 
-    // Non-Git but useful, and for now without a proper place.
-    // TODO : put these helpers in proper place
-
-    static void CreatePopulatedFolder(const std::string &folder, const QStringList& files);
-
-    static void RemoveAll(const QString& folder);
-
-    static void CheckFolderExistence(const QString& folder, const bool expectedExistence);
-
-    static void CheckFolderContent(const std::string &folder, const QStringList &expectedFiles);
 
 private:
     static void AddProceduralFilesAndCommit(const std::string& repository,

@@ -19,19 +19,12 @@ private Q_SLOTS:
     void cleanup();
 
     void testCreate_InvalidSource();
-    void testCreate_AllValid();
 
     void testRunBackup_data();
     void testRunBackup();
 
-/*    void testUpdate_data();
-    void testUpdate();
-    void testUpdate_MultipleRepositories();
-    void testUpdate_InvalidSource();*/
-
 private:
-    void CreateDestinationFolder();
-    void RemoveDestinationFolder();
+    JobStatus* RunBackupOnDataFolder(const QString& folder);
     JobStatus* RunJob();
     void CheckStatus(JobStatus* status);
     void CheckFiles();

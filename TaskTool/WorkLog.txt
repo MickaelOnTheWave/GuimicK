@@ -1,3 +1,10 @@
+16/02/2017 (1.5h)
+	Finished writing Rsnapshot test suite. Now, data organization and population is missing...
+Next planned work :
+	- Organize test data into folders for each class (git, rsnapshot etc...).
+	- Move test data to test lib and remove duplication
+	- Create proper data samples for Rsnapshot testing
+
 15/02/2017 (1.5h)
 	Writing from scratch generic data test for rsnapshot. Nearly wrote all of it, what is missing is file checking. Also,
 	there is a lot of confusion about data : what does it belong to, duplicates...

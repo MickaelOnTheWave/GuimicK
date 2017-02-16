@@ -1,9 +1,11 @@
 #include "rsnapshotjobtest.h"
 
+#include <QDir>
 #include <QTest>
 
 #include <unistd.h>
 
+#include "filetestutils.h"
 #include "filetools.h"
 #include "rsnapshotbackupjob.h"
 #include "tools.h"
@@ -18,7 +20,7 @@ using namespace std;
 
 const string templateConfigurationFile = "rsnapshot.conf";
 const string defaultConfigurationFile = "backuptests.conf";
-const string currentDestinationFolder = "currentDest";
+const string currentSourceFolder = "currentFolderToBackup";
 
 RsnapshotJobTest::RsnapshotJobTest()
 {
@@ -27,14 +29,19 @@ RsnapshotJobTest::RsnapshotJobTest()
 
 void RsnapshotJobTest::init()
 {
-    string unusedOutput;
-    string removeCommand = string("rm ") + defaultConfigurationFile;
-    Tools::RunExternalCommandToBuffer(removeCommand, unusedOutput, true);
 }
 
 void RsnapshotJobTest::cleanup()
 {
+    string unusedOutput;
+    string removeCommand = string("rm ") + defaultConfigurationFile;
+    Tools::RunExternalCommandToBuffer(removeCommand, unusedOutput, true);
 
+    removeCommand = string("rm -Rf ") + repository;
+    Tools::RunExternalCommandToBuffer(removeCommand, unusedOutput, true);
+
+    removeCommand = string("rm -Rf ") + currentSourceFolder;
+    Tools::RunExternalCommandToBuffer(removeCommand, unusedOutput, true);
 }
 
 void RsnapshotJobTest::testCreate_InvalidSource()
@@ -52,61 +59,42 @@ void RsnapshotJobTest::testCreate_InvalidSource()
     QCOMPARE(buffers.size(), 0ul);
 }
 
-void RsnapshotJobTest::testCreate_AllValid()
-{
-
-/*
-
-    CreateConfigurationFile(folder);
-    JobStatus* status = RunRsnapshotJob();
-
-    QCOMPARE(status->GetCode(), JobStatus_OK);
-    const string expectedMessage = "X files created.";
-    QCOMPARE(status->GetDescription(), expectedMessage);
-
-    vector<pair<string,string> > buffers;
-    status->GetFileBuffers(buffers);
-    QCOMPARE(buffers.size(), 1ul);
-        QFAIL("Implementation not finished.");
-*/
-}
-
 void RsnapshotJobTest::testRunBackup_data()
 {
-    QTest::addColumn<QString>("source");
-    QTest::addColumn<QString>("destination");
+    QTest::addColumn<QString>("sourceBefore");
+    QTest::addColumn<QString>("sourceNow");
     QTest::addColumn<QString>("description");
     QTest::addColumn<QString>("report");
 
-    QTest::newRow("ex1") << "ex1_src" << "ex1_dest" << "ex1_description.txt" << "ex1_dest.txt";
+    QTest::newRow("Example") << "sourceBefore" << "sourceNow" << "miniDescription.txt" << "fullReport.txt";
 }
 
 void RsnapshotJobTest::testRunBackup()
 {
-    CreateDestinationFolder();
+    QFETCH(QString, sourceBefore);
+    QFETCH(QString, sourceNow);
 
-    JobStatus* status = RunJob();
+    CreateConfigurationFile(QString(currentSourceFolder.c_str()));
+
+    RunBackupOnDataFolder(sourceBefore);
+    JobStatus* status = RunBackupOnDataFolder(sourceNow);
     CheckStatus(status);
     CheckFiles();
-
-    RemoveDestinationFolder();
 }
 
-void RsnapshotJobTest::CreateDestinationFolder()
+JobStatus* RsnapshotJobTest::RunBackupOnDataFolder(const QString &folder)
 {
-    QFETCH(QString, destination);
-
-    string copyCommand = "cp -R ";
-    copyCommand += destination.toStdString() + " " + currentDestinationFolder;
     string unusedOutput;
-    Tools::RunExternalCommandToBuffer(copyCommand, unusedOutput);
-}
+    string command = string("rm -Rf ") + currentSourceFolder;
+    Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
 
-void RsnapshotJobTest::RemoveDestinationFolder()
-{
-    string copyCommand = string("rm -Rf ") + currentDestinationFolder;
-    string unusedOutput;
-    Tools::RunExternalCommandToBuffer(copyCommand, unusedOutput);
+    command = string("mkdir ") + currentSourceFolder;
+    Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
+
+    command = string("cp -R ") + folder.toStdString() + "/* " + currentSourceFolder;
+    Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
+
+    return RunRsnapshotJob();
 }
 
 JobStatus *RsnapshotJobTest::RunJob()
@@ -115,7 +103,6 @@ JobStatus *RsnapshotJobTest::RunJob()
 
     CreateConfigurationFile(source);
     JobStatus* status = RunRsnapshotJob();
-    remove(defaultConfigurationFile.c_str());
     return status;
 }
 
@@ -139,7 +126,15 @@ void RsnapshotJobTest::CheckStatus(JobStatus *status)
 
 void RsnapshotJobTest::CheckFiles()
 {
-    QFAIL("Implementation not finished.");
+    const string repositoryBackupLocation = repository + "/weekly.0/" + currentSourceFolder;
+
+    QFETCH(QString, sourceNow);
+    QDir repositoryDir = QDir::currentPath();
+    repositoryDir.cd(sourceNow);
+    QStringList expectedFiles = repositoryDir.entryList();
+
+    FileTestUtils::CheckFolderContent(currentSourceFolder, expectedFiles);
+    FileTestUtils::CheckFolderContent(repositoryBackupLocation, expectedFiles);
 }
 
 void RsnapshotJobTest::CreateConfigurationFile(const QString &folder)
@@ -150,7 +145,7 @@ void RsnapshotJobTest::CreateConfigurationFile(const QString &folder)
 
     contents += string("\nsnapshot_root\t") + repository + "\n";
     contents += string("\nbackup\t") + BuildFullPathOnCurrentDir(folder.toStdString());
-    contents += "/\t" + currentDestinationFolder + "\n";
+    contents += "/\t" + folder.toStdString() + "\n";
 
     FileTools::WriteBufferToFile(defaultConfigurationFile, contents);
 }

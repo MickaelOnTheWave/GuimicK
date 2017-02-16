@@ -44,44 +44,6 @@ void GitTools::Update(const std::string &repository,
     GitTools::RemoveFilesAndCommit(repository, removed);
 }
 
-void GitTools::CreatePopulatedFolder(const string &folder, const QStringList &files)
-{
-    FileTools::CreateFolder(folder);
-    for (int i=0; i<files.size(); ++i)
-    {
-        std::string filename = folder + "/" +
-                               files.at(i).toStdString();
-        FileTools::CreateFile(filename, 1000, true);
-    }
-}
-
-void GitTools::RemoveAll(const QString &folder)
-{
-    std::string removeAllCommand("rm -Rf ");
-    removeAllCommand += folder.toStdString();
-
-    std::string unusedOutput;
-    Tools::RunExternalCommandToBuffer(removeAllCommand, unusedOutput);
-}
-
-void GitTools::CheckFolderExistence(const QString &folder, const bool expectedExistence)
-{
-    QCOMPARE(FileTools::FolderExists(folder.toStdString()), expectedExistence);
-}
-
-void GitTools::CheckFolderContent(const string &folder, const QStringList &expectedFiles)
-{
-    QDir repositoryDir = QDir::currentPath();
-    repositoryDir.cd(folder.c_str());
-    QStringList filesInRepository = repositoryDir.entryList();
-    QCOMPARE(filesInRepository.size(), expectedFiles.size()+2);
-    Q_ASSERT(filesInRepository.contains("."));
-    Q_ASSERT(filesInRepository.contains(".."));
-
-    for (int i=0; i<expectedFiles.size(); ++i)
-        Q_ASSERT(filesInRepository.contains(expectedFiles.at(i)));
-}
-
 void GitTools::AddProceduralFilesAndCommit(const string &repository,
                                           const QStringList &list,
                                           const size_t size)

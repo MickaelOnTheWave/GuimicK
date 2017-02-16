@@ -7,6 +7,7 @@
 #include "clientworkmanager.h"
 #include "configuration.h"
 #include "curlconsoleemailsender.h"
+#include "filetestutils.h"
 #include "filetools.h"
 #include "gittools.h"
 #include "tools.h"
@@ -187,7 +188,7 @@ void TaskFeatureTest::RestoreCopyIfAvailable(const string &folder)
     if (dir.exists() == false)
         return;
 
-    GitTools::RemoveAll(folder.c_str());
+    FileTestUtils::RemoveAll(folder.c_str());
 
     string unusedOutput;
     string moveCommand = string("mv ") + folderBackup + " " + folder;
