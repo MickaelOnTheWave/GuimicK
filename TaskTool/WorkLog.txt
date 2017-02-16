@@ -1,3 +1,15 @@
+15/02/2017 (1.5h)
+	Writing from scratch generic data test for rsnapshot. Nearly wrote all of it, what is missing is file checking. Also,
+	there is a lot of confusion about data : what does it belong to, duplicates...
+Next planned work :
+	- (Try to) finish rsnapshot data test.
+	- Organize test data into folders for each class (git, rsnapshot etc...).
+	- Move test data to test lib and remove duplication
+	- Create proper data samples for Rsnapshot testing
+
+14/02/2017 (0.9h)
+	Fixed one failing test. Now going for missing ones...
+
 13/02/2017 (4.2h)
 	Created custom Test runner class and finished implementation of current unit test result parset. All is
 	checked and runs OK. Created dedicated test lib with all Task test classes, and created a tool for running

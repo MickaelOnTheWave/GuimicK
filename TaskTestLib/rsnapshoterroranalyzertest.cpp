@@ -23,22 +23,25 @@ void RsnapshotErrorAnalyzerTest::cleanup()
 void RsnapshotErrorAnalyzerTest::testOutput()
 {
     QFETCH(QString, outputFile);
-    QFETCH(bool, expectedResult);
+    QFETCH(bool, outOfSpaceError);
+    QFETCH(bool, invalidFolderError);
 
     const std::string file = outputFile.toStdString();
     std::string commandOutput;
     FileTools::GetTextFileContent(file, commandOutput);
 
     RsnapshotErrorAnalyzer analyzer(commandOutput);
-    bool result = analyzer.IsOutOfSpaceError();
-    QCOMPARE(result, expectedResult);
+    QCOMPARE(analyzer.IsOutOfSpaceError(), outOfSpaceError);
+    QCOMPARE(analyzer.IsInvalidFolderError(), invalidFolderError);
 }
 
 void RsnapshotErrorAnalyzerTest::testOutput_data()
 {
     QTest::addColumn<QString>("outputFile");
-    QTest::addColumn<bool>("expectedResult");
+    QTest::addColumn<bool>("outOfSpaceError");
+    QTest::addColumn<bool>("invalidFolderError");
 
-    QTest::newRow("Normal") << "rsnapshotall.log" << false;
-    QTest::newRow("Out of space") << "rsnapshot_nospaceerror.txt" << true;
+    QTest::newRow("Normal") << "rsnapshotall.log" << false << false;
+    QTest::newRow("Out of space") << "rsnapshot_nospaceerror.txt" << true << false;
+    QTest::newRow("Invalid folder") << "rsnapshot_invalidfolder.txt" << false << true;
 }

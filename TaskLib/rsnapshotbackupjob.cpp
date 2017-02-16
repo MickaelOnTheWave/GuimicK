@@ -93,6 +93,8 @@ JobStatus* RsnapshotBackupJob::Run()
             RsnapshotErrorAnalyzer analyzer(backupCommand->GetCommandOutput());
             if (analyzer.IsOutOfSpaceError())
                 backupStatus->SetDescription("Not enough disk space to perform backup");
+            else if (analyzer.IsInvalidFolderError())
+                backupStatus->SetDescription("Tried to backup invalid folder");
             else
             {
                 backupStatus->SetDescription("Fatal error running RSnapshot. See attached file.");

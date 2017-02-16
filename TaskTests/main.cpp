@@ -10,6 +10,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     QObject* testSuite = new RsnapshotJobTest();
+    //QObject* testSuite = new RsnapshotErrorAnalyzerTest();
 
     QTest::qExec(testSuite, argc, argv);
 
