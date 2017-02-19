@@ -15,6 +15,7 @@
 using namespace std;
 
 const string BACKUP_SUFFIX = "_CopyWhileTesting";
+const string suiteFolder = "../TaskFeature/";
 
 TaskFeatureTest::TaskFeatureTest()
 {
@@ -52,6 +53,8 @@ void TaskFeatureTest::testGitBackup()
     Configuration configuration;
     ReadConfiguration(configuration);
 
+    QVERIFY(configuration.HasClient());
+
     GetRepositoriesFromConfiguration(configuration, currentRepositories);
     SetupRepositoriesForBackup(currentRepositories);
 
@@ -64,7 +67,7 @@ void TaskFeatureTest::ReadConfiguration(Configuration &configuration)
     QFETCH(QString, configurationFile);
 
     list<string> errors;
-    bool confOk = configuration.LoadFromFile(configurationFile.toStdString(), errors);
+    bool confOk = configuration.LoadFromFile(suiteFolder + configurationFile.toStdString(), errors);
     QCOMPARE(confOk, true);
     QCOMPARE(errors.size(), 0ul);
 }
@@ -109,6 +112,7 @@ WorkResultData *TaskFeatureTest::RunJobList(const Configuration &configuration)
 
 void TaskFeatureTest::CheckResults(WorkResultData *results, const Configuration &configuration)
 {
+    QVERIFY(results!=nullptr);
     const string version = "AutoTest";
 
     AbstractReportCreator* reportCreator = configuration.CreateReportObject();
@@ -146,12 +150,16 @@ void TaskFeatureTest::CheckMainReport(const string &reportContent)
 {
     QFETCH(QString, outputReportFile);
 
-    string expectedReportData = FileTools::GetTextFileContent(outputReportFile.toStdString());
+    string expectedReportData = FileTools::GetTextFileContent(suiteFolder + outputReportFile.toStdString());
 
     // Used to write data to create test.
     //FileTools::WriteBufferToFile("tempfile.txt", reportContent);
 
-    QCOMPARE(reportContent, expectedReportData);
+    bool reportIsAsExpected = (reportContent == expectedReportData);
+    if (!reportIsAsExpected)
+        FileTools::WriteBufferToFile("wrongReport.html", reportContent);
+
+    QCOMPARE(reportIsAsExpected, true);
 }
 
 void TaskFeatureTest::CheckReportAttachments(vector<string> &_externalFiles,
@@ -171,7 +179,7 @@ void TaskFeatureTest::CheckAttachments(const vector<pair<string, string> >& atta
         string expectedAttachment = outputAttachmentFiles.at(i).toStdString();
         QCOMPARE(resultAttachment.first, expectedAttachment);
 
-        string expectedContent = FileTools::GetTextFileContent(expectedAttachment);
+        string expectedContent = FileTools::GetTextFileContent(suiteFolder + expectedAttachment);
 
         // Used to write data to create test.
         //string attachmentName = expectedAttachment + QString::number(i).toStdString() + ".txt";

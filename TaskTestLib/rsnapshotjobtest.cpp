@@ -21,6 +21,7 @@ using namespace std;
 const string templateConfigurationFile = "rsnapshot.conf";
 const string defaultConfigurationFile = "backuptests.conf";
 const string currentSourceFolder = "currentFolderToBackup";
+const string suiteFolder = "../Rsnapshot/";
 
 RsnapshotJobTest::RsnapshotJobTest()
 {
@@ -111,7 +112,8 @@ void RsnapshotJobTest::CheckStatus(JobStatus *status)
     QCOMPARE(status->GetCode(), JobStatus_OK);
 
     QFETCH(QString, description);
-    string expectedDescription = FileTools::GetTextFileContent(description.toStdString());
+    string descriptionFile = suiteFolder + description.toStdString();
+    string expectedDescription = FileTools::GetTextFileContent(descriptionFile);
     QCOMPARE(status->GetDescription(), expectedDescription);
 
     vector<pair<string,string> > buffers;
@@ -119,7 +121,8 @@ void RsnapshotJobTest::CheckStatus(JobStatus *status)
     QCOMPARE(buffers.size(), 1ul);
 
     QFETCH(QString, report);
-    string expectedContent = FileTools::GetTextFileContent(report.toStdString());
+    string reportFile = suiteFolder + report.toStdString();
+    string expectedContent = FileTools::GetTextFileContent(reportFile);
     string content = buffers.front().second;
     QCOMPARE(content, expectedContent);
 }
@@ -140,7 +143,7 @@ void RsnapshotJobTest::CheckFiles()
 void RsnapshotJobTest::CreateConfigurationFile(const QString &folder)
 {
     std::string contents;
-    bool ok = FileTools::GetTextFileContent(templateConfigurationFile, contents);
+    bool ok = FileTools::GetTextFileContent(suiteFolder + templateConfigurationFile, contents);
     QCOMPARE(ok, true);
 
     contents += string("\nsnapshot_root\t") + repository + "\n";

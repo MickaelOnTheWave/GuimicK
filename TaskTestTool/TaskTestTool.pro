@@ -48,13 +48,3 @@ LIBS += -L$$TASKTEST_LIB_PATH -lTaskTestLib
 INCLUDEPATH += $$TASKTEST_INCLUDE_PATH
 DEPENDPATH += $$TASKTEST_INCLUDE_PATH
 
-OTHER_FILES += \
-    data/tmpresults.xml \
-    data/ex1_report.html \
-    data/backuptests.conf \
-    data/ex1_1repository.txt \
-    data/ex1_dest.txt \
-    data/report.css \
-    data/rsnapshot_nospaceerror.txt \
-    data/rsnapshot.conf \
-    data/rsnapshotall.log

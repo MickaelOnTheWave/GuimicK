@@ -55,17 +55,6 @@ LIBS += -L$$TASKTEST_LIB_PATH -lTaskTestLib
 INCLUDEPATH += $$TASKTEST_INCLUDE_PATH
 DEPENDPATH += $$TASKTEST_INCLUDE_PATH
 
-OTHER_FILES += \
-    data/image.jpg \
-    data/ex1_1repository.txt \
-    data/ex1_attach1.txt \
-    data/ex1_report.html \
-    data/report.css \
-    data/ex1_dest.txt \
-    data/rsnapshot.conf \
-    data/rsnapshot_nospaceerror.txt \
-    data/rsnapshotall.log
-
 HEADERS += \
     gitrepository.h \
     gitjobtest.h \

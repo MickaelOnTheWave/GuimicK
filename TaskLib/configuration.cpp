@@ -369,3 +369,8 @@ bool Configuration::IsHtmlReport() const
 {
     return (reportType == HTML_REPORT);
 }
+
+bool Configuration::HasClient() const
+{
+    return (client != NULL);
+}

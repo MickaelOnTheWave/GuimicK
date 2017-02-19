@@ -9,7 +9,6 @@
 #include "gittools.h"
 #include "tools.h"
 
-
 GitJobTest::GitJobTest()
 {
 }

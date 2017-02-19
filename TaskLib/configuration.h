@@ -42,6 +42,8 @@ public:
 
     bool IsHtmlReport() const;
 
+    bool HasClient() const;
+
 protected:
 
 	AbstractJob *CreateJobFromObject(ConfigurationObject *object);

@@ -63,3 +63,10 @@ TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
 INCLUDEPATH += $$TOOLS_INCLUDE_PATH
 DEPENDPATH += $$TOOLS_INCLUDE_PATH
+
+OTHER_FILES += \
+    data/RsnapshotAnalyzer/rsnapshot_invalidfolder.txt \
+    data/RsnapshotAnalyzer/rsnapshot_nospaceerror.txt \
+    data/RsnapshotAnalyzer/rsnapshotall.log \
+    data/Rsnapshot/rsnapshot.conf \
+    data/Rsnapshot/report.css

@@ -1,3 +1,7 @@
+19/02/2017 (16.5)
+	Moved data properly and changed test suites accordingly. Now, test suites run in a folder different from where they
+	get their data.
+
 16/02/2017 (1.5h)
 	Finished writing Rsnapshot test suite. Now, data organization and population is missing...
 Next planned work :

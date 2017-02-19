@@ -1,0 +1,13 @@
+----------------------------------------------------------------------------
+rsnapshot encountered an error! The program was invoked with these options:
+/usr/bin/rsnapshot -c backuptests.conf weekly 
+----------------------------------------------------------------------------
+ERROR: backuptests.conf on line 139:
+ERROR: backup /home/mickael/Prog/TaskManager/TaskTests/data/InvalidFolder// \
+         dest/ - Source directory \
+         "/home/mickael/Prog/TaskManager/TaskTests/data/InvalidFolder//" \
+         doesn't exist 
+ERROR: ---------------------------------------------------------------------
+ERROR: Errors were found in backuptests.conf,
+ERROR: rsnapshot can not continue. If you think an entry looks right, make
+ERROR: sure you don't have spaces where only tabs should be.
