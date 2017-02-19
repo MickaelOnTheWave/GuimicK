@@ -1,6 +1,10 @@
-19/02/2017 (16.5)
+19/02/2017 (3.5h)
 	Moved data properly and changed test suites accordingly. Now, test suites run in a folder different from where they
-	get their data.
+	get their data. Finished creating data for all cases. Also, production bug was easily spotted from current tests.
+	And fixed ;-)
+Next planned work :
+	- Finish existing TaskFeature tests
+	- Go on roadmap
 
 16/02/2017 (1.5h)
 	Finished writing Rsnapshot test suite. Now, data organization and population is missing...

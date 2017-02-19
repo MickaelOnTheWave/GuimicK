@@ -139,7 +139,7 @@ JobStatus* RsnapshotBackupJob::Run()
 		delete reportStatus;
 
     RSnapshotReportParser parser;
-    parser.ParseBuffer(backupCommand->GetCommandOutput());
+    parser.ParseBuffer(reportCommand->GetCommandOutput());
 
     JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
     status->AddFileBuffer(DEFAULT_BACKUP_FILENAME, parser.GetFullDescription());

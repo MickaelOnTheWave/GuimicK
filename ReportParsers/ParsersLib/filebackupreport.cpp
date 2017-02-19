@@ -1,5 +1,7 @@
 #include "filebackupreport.h"
 
+#include <algorithm>
+
 FileBackupReport::FileBackupReport()
 {
 }
@@ -25,4 +27,11 @@ void FileBackupReport::operator=(const FileBackupReport &other)
 
     modified.clear();
     std::copy(other.modified.begin(), other.modified.end(), std::back_inserter(modified));
+}
+
+void FileBackupReport::SortData()
+{
+    std::sort(added.begin(), added.end());
+    std::sort(removed.begin(), removed.end());
+    std::sort(modified.begin(), modified.end());
 }

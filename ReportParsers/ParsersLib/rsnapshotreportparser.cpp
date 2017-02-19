@@ -72,6 +72,7 @@ bool RSnapshotReportParser::ParseBuffer(const std::string &buffer)
     ParseLines(lines);
 
     reportData.CreateModifiedList();
+    reportData.SortData();
 
     return true;
 }

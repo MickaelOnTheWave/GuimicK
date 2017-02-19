@@ -24,7 +24,7 @@ private Q_SLOTS:
     void testRunBackup();
 
 private:
-    JobStatus* RunBackupOnDataFolder(const QString& folder);
+    JobStatus* RunBackupOnDataFolder(const std::string &folder);
     JobStatus* RunJob();
     void CheckStatus(JobStatus* status);
     void CheckFiles();
@@ -33,8 +33,14 @@ private:
     JobStatus* RunRsnapshotJob();
     std::string BuildFullPathOnCurrentDir(const std::string& name);
 
-    std::string repository;
+    void CheckTextContent(const std::string& content, const QString& referenceFile);
+    void CheckFoldersHaveSameContent(const std::string& folder1, const std::string& folder2);
+    QStringList GetTestFolders();
+    std::string GetRsnapshotBackupFolder(const int number) const;
 
+    std::string repository;
+    std::string currentTestCaseName = "";
+    std::string currentTestCaseFolder = "";
 };
 
 #endif // RNAPSHOTJOBTEST_H

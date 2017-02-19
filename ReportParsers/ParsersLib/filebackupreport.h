@@ -12,6 +12,7 @@ public:
 
     virtual void Clear();
     void operator=(const FileBackupReport& other);
+    void SortData();
 
     std::vector<std::string> added;
     std::vector<std::string> modified;

@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QTest>
 
+#include <sstream>
 #include <unistd.h>
 
 #include "filetestutils.h"
@@ -30,6 +31,7 @@ RsnapshotJobTest::RsnapshotJobTest()
 
 void RsnapshotJobTest::init()
 {
+    cleanup();
 }
 
 void RsnapshotJobTest::cleanup()
@@ -67,23 +69,39 @@ void RsnapshotJobTest::testRunBackup_data()
     QTest::addColumn<QString>("description");
     QTest::addColumn<QString>("report");
 
-    QTest::newRow("Example") << "sourceBefore" << "sourceNow" << "miniDescription.txt" << "fullReport.txt";
+    QStringList testCases = GetTestFolders();
+    for (auto it=testCases.begin(); it!=testCases.end(); ++it)
+    {
+        if (*it == "." || *it == "..")
+            continue;
+
+        string stdString = it->toStdString();
+        QTest::newRow(stdString.c_str())
+                                << "sourceBefore"
+                                << "sourceNow"
+                                << "miniDescription.txt"
+                                << "fullReport.txt";
+    }
 }
 
 void RsnapshotJobTest::testRunBackup()
 {
+    currentTestCaseName = QTest::currentDataTag();
+    currentTestCaseFolder = suiteFolder + currentTestCaseName + "/";
+
     QFETCH(QString, sourceBefore);
     QFETCH(QString, sourceNow);
 
     CreateConfigurationFile(QString(currentSourceFolder.c_str()));
 
-    RunBackupOnDataFolder(sourceBefore);
-    JobStatus* status = RunBackupOnDataFolder(sourceNow);
+    RunBackupOnDataFolder(currentTestCaseFolder + sourceBefore.toStdString());
+    sleep(1);
+    JobStatus* status = RunBackupOnDataFolder(currentTestCaseFolder + sourceNow.toStdString());
     CheckStatus(status);
     CheckFiles();
 }
 
-JobStatus* RsnapshotJobTest::RunBackupOnDataFolder(const QString &folder)
+JobStatus* RsnapshotJobTest::RunBackupOnDataFolder(const string &folder)
 {
     string unusedOutput;
     string command = string("rm -Rf ") + currentSourceFolder;
@@ -92,7 +110,7 @@ JobStatus* RsnapshotJobTest::RunBackupOnDataFolder(const QString &folder)
     command = string("mkdir ") + currentSourceFolder;
     Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
 
-    command = string("cp -R ") + folder.toStdString() + "/* " + currentSourceFolder;
+    command = string("cp -R ") + folder + "/* " + currentSourceFolder;
     Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
 
     return RunRsnapshotJob();
@@ -112,32 +130,25 @@ void RsnapshotJobTest::CheckStatus(JobStatus *status)
     QCOMPARE(status->GetCode(), JobStatus_OK);
 
     QFETCH(QString, description);
-    string descriptionFile = suiteFolder + description.toStdString();
-    string expectedDescription = FileTools::GetTextFileContent(descriptionFile);
-    QCOMPARE(status->GetDescription(), expectedDescription);
+    CheckTextContent(status->GetDescription(), description);
 
     vector<pair<string,string> > buffers;
     status->GetFileBuffers(buffers);
     QCOMPARE(buffers.size(), 1ul);
 
     QFETCH(QString, report);
-    string reportFile = suiteFolder + report.toStdString();
-    string expectedContent = FileTools::GetTextFileContent(reportFile);
-    string content = buffers.front().second;
-    QCOMPARE(content, expectedContent);
+    CheckTextContent(buffers.front().second, report);
 }
 
 void RsnapshotJobTest::CheckFiles()
 {
-    const string repositoryBackupLocation = repository + "/weekly.0/" + currentSourceFolder;
+    QFETCH(QString, sourceBefore);
+    CheckFoldersHaveSameContent(GetRsnapshotBackupFolder(1), currentTestCaseFolder + sourceBefore.toStdString());
 
     QFETCH(QString, sourceNow);
-    QDir repositoryDir = QDir::currentPath();
-    repositoryDir.cd(sourceNow);
-    QStringList expectedFiles = repositoryDir.entryList();
+    CheckFoldersHaveSameContent(GetRsnapshotBackupFolder(0), currentTestCaseFolder + sourceNow.toStdString());
 
-    FileTestUtils::CheckFolderContent(currentSourceFolder, expectedFiles);
-    FileTestUtils::CheckFolderContent(repositoryBackupLocation, expectedFiles);
+    CheckFoldersHaveSameContent(GetRsnapshotBackupFolder(0), currentSourceFolder);
 }
 
 void RsnapshotJobTest::CreateConfigurationFile(const QString &folder)
@@ -148,7 +159,7 @@ void RsnapshotJobTest::CreateConfigurationFile(const QString &folder)
 
     contents += string("\nsnapshot_root\t") + repository + "\n";
     contents += string("\nbackup\t") + BuildFullPathOnCurrentDir(folder.toStdString());
-    contents += "/\t" + folder.toStdString() + "\n";
+    contents += "\t" + folder.toStdString() + "\n";
 
     FileTools::WriteBufferToFile(defaultConfigurationFile, contents);
 }
@@ -164,4 +175,41 @@ std::string RsnapshotJobTest::BuildFullPathOnCurrentDir(const std::string& name)
     char unusedBuffer[1024];
     char* currentPath = getcwd(unusedBuffer, 1024);
     return string(currentPath) + "/" + name + "/";
+}
+
+void RsnapshotJobTest::CheckTextContent(const string &content, const QString &referenceFile)
+{
+    string stdReferenceFile = currentTestCaseFolder + referenceFile.toStdString();
+    string expectedContent = FileTools::GetTextFileContent(stdReferenceFile);
+    bool isContentAsExpected = (content == expectedContent);
+    if (!isContentAsExpected)
+    {
+        const string filename = currentTestCaseName + "_" + referenceFile.toStdString();
+        FileTools::WriteBufferToFile(filename, content);
+    }
+    QCOMPARE(isContentAsExpected, true);
+}
+
+void RsnapshotJobTest::CheckFoldersHaveSameContent(const string &folder1, const string &folder2)
+{
+    QDir repositoryDir(folder1.c_str());
+    QStringList expectedFiles = repositoryDir.entryList();
+    expectedFiles.removeOne(".");
+    expectedFiles.removeOne("..");
+
+    FileTestUtils::CheckFolderContent(folder2, expectedFiles);
+}
+
+QStringList RsnapshotJobTest::GetTestFolders()
+{
+    QDir currentDir = QDir::current();
+    currentDir.cd(suiteFolder.c_str());
+    return currentDir.entryList(QDir::Dirs);
+}
+
+string RsnapshotJobTest::GetRsnapshotBackupFolder(const int number) const
+{
+    stringstream stream;
+    stream << repository << "weekly." << number << "/" << currentSourceFolder;
+    return stream.str();
 }

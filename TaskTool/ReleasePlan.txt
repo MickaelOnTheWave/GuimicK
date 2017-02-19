@@ -75,8 +75,8 @@ v0.7 :
 
 v0.6 :
 	[002] Remove Wake script dependency
-	[038] Include Free space check in production run
 	[033] Handle File backup folder data outside of rsnapshot conf file.
+	[038] Include Free space check in production run
 	[035] Console job improvement : support an external parser system.
 
 v0.5 : 19/01/2017
