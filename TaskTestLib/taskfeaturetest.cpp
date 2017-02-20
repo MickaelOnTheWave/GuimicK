@@ -14,7 +14,6 @@
 
 using namespace std;
 
-const string BACKUP_SUFFIX = "_CopyWhileTesting";
 const string suiteFolder = "../TaskFeature/";
 
 TaskFeatureTest::TaskFeatureTest()
@@ -23,43 +22,78 @@ TaskFeatureTest::TaskFeatureTest()
 
 void TaskFeatureTest::init()
 {
-    currentRepositories.clear();
+    currentTestCaseName = QTest::currentDataTag();
+    currentTestCaseFolder = suiteFolder + currentTestCaseName + "/";
+
+    CopyDataFolders();
 }
 
 void TaskFeatureTest::cleanup()
 {
-    RestoreOriginalData(currentRepositories);
+    string unusedOutput;
+    for (auto it : currentDataFolders)
+    {
+        string command = string("rm -Rf ") + it.toStdString();
+        Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
+    }
+    currentDataFolders.clear();
 }
 
-void TaskFeatureTest::testGitBackup_data()
+void TaskFeatureTest::testRun_data()
 {
     QTest::addColumn<QString>("configurationFile");
-    QTest::addColumn<QString>("outputReportFile");
-    QTest::addColumn<QStringList>("outputAttachmentFiles");
+    QTest::addColumn<QString>("reportFile");
+    QTest::addColumn<QStringList>("attachmentFiles");
 
-    QTest::newRow("Single repository") << QString("ex1_1repository.txt")
-                                       << QString("ex1_report.html")
-                                       << QStringList({"ex1_dest.txt"});
-//    QTest::newRow("2 repositories")    << QString("ex2_2repositories.txt")
-//                                       << QString("ex2_report.html")
-//                                       << QStringList({
-//                                                          "ex2_attach1.txt",
-//                                                          "ex2_attach2.txt"
-//                                                      });
+    QStringList testCases = FileTestUtils::GetFolderList(suiteFolder.c_str());
+    for (auto it=testCases.begin(); it!=testCases.end(); ++it)
+    {
+        if (*it == "." || *it == "..")
+            continue;
+
+        string stdString = it->toStdString();
+        QStringList attachments = GetAttachmentFiles(suiteFolder + "/" + stdString);
+        QTest::newRow(stdString.c_str())    << QString("configuration.txt")
+                                            << QString("report.html")
+                                            << attachments;
+    }
 }
 
-void TaskFeatureTest::testGitBackup()
+void TaskFeatureTest::testRun()
 {
     Configuration configuration;
     ReadConfiguration(configuration);
 
-    QVERIFY(configuration.HasClient());
+    ClientWorkManager * manager = configuration.BuildSimpleWorkList();
+    WorkResultData* results = manager->RunWorkList();
 
-    GetRepositoriesFromConfiguration(configuration, currentRepositories);
-    SetupRepositoriesForBackup(currentRepositories);
+    AbstractReportCreator* reportCreator = configuration.CreateReportObject();
+    string reportContents = reportCreator->Generate(results, "AutoTest");
+    CheckReport(reportContents);
 
-    WorkResultData* workResult = RunJobList(configuration);
-    CheckResults(workResult, configuration);
+    CheckAttachments(results);
+
+    delete manager;
+    delete results;
+}
+
+void TaskFeatureTest::CopyDataFolders()
+{
+    string unusedOutput;
+    currentDataFolders = FileTestUtils::GetFolderList(currentTestCaseFolder.c_str());
+    for (auto it : currentDataFolders)
+    {
+        string currentFolder = it.toStdString();
+        string command = string("cp -R ") + currentTestCaseFolder + currentFolder + " ./";
+        Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
+    }
+}
+
+QStringList TaskFeatureTest::GetAttachmentFiles(const string &folder)
+{
+    QDir currentDir = QDir::current();
+    currentDir.cd(folder.c_str());
+    return currentDir.entryList(QStringList({"attachment*.txt"}), QDir::Files);
 }
 
 void TaskFeatureTest::ReadConfiguration(Configuration &configuration)
@@ -67,138 +101,36 @@ void TaskFeatureTest::ReadConfiguration(Configuration &configuration)
     QFETCH(QString, configurationFile);
 
     list<string> errors;
-    bool confOk = configuration.LoadFromFile(suiteFolder + configurationFile.toStdString(), errors);
+    const string configurationFilePath = currentTestCaseFolder + configurationFile.toStdString();
+    bool confOk = configuration.LoadFromFile(configurationFilePath, errors);
     QCOMPARE(confOk, true);
     QCOMPARE(errors.size(), 0ul);
 }
 
-void TaskFeatureTest::GetRepositoriesFromConfiguration(const Configuration &configuration,
-                                                       vector<pair<string,string> >& repositories)
+void TaskFeatureTest::CheckReport(const string &reportContent)
 {
-    list<AbstractJob*> jobList;
-    ClientWorkManager* workList = configuration.BuildSimpleWorkList();
-    workList->GetJobList(jobList);
-    QCOMPARE(jobList.size(), 1ul);
-
-    GitBackupJob* gitJob = dynamic_cast<GitBackupJob*>(jobList.front());
-    QVERIFY(gitJob != nullptr);
-
-    gitJob->GetRepositoryList(repositories);
-    delete workList;
+    QFETCH(QString, reportFile);
+    const string referenceReportFile = currentTestCaseFolder + reportFile.toStdString();
+    string expectedContent = FileTools::GetTextFileContent(referenceReportFile);
+    bool areContentAsExpected = (reportContent == expectedContent);
+    if (areContentAsExpected == false)
+        FileTools::WriteBufferToFile(currentTestCaseName + "_" + reportFile.toStdString(),
+                                     reportContent);
+    QCOMPARE(reportContent, expectedContent);
 }
 
-void TaskFeatureTest::SetupRepositoriesForBackup(const vector<pair<string,string> >& repositories)
+void TaskFeatureTest::CheckAttachments(WorkResultData *results)
 {
-    // In order for test to be cleaned and not depend on manual restoration,
-    // we don't actually make the backup on repositories provided by configuration file.
-    // Instead, we make a copy of both source and destination and run the backup on them.
-    // This way, original data remains unchanged regardless of test runs :-)
+    QVERIFY(results->allClientsResults.size() == 1);
 
-    vector<pair<string,string> >::const_iterator it=repositories.begin();
-    for (; it!=repositories.end(); ++it)
-    {
-        CreateCopyIfPossible(it->first);
-        CreateCopyIfPossible(it->second);
-    }
-}
+    ClientJobResults* allResults = results->allClientsResults.front().second;
+    QVERIFY(allResults != nullptr);
 
-WorkResultData *TaskFeatureTest::RunJobList(const Configuration &configuration)
-{
-    ClientWorkManager* workList = configuration.BuildWorkList();
-    WorkResultData* results =  workList->RunWorkList();
-    //delete workList; // TODO : resolve leak!!
-    return results;
-}
+/*    vector<pair<string, string> > allAttachments;
+    allResults->GetAllAttachments(allAttachments);
 
-void TaskFeatureTest::CheckResults(WorkResultData *results, const Configuration &configuration)
-{
-    QVERIFY(results!=nullptr);
-    const string version = "AutoTest";
+    QFETCH(QStringList, attachmentFiles);
 
-    AbstractReportCreator* reportCreator = configuration.CreateReportObject();
-    string reportData = reportCreator->Generate(results, version);
-    CheckMainReport(reportData);
-
-    vector<string> externalFiles;
-    vector<pair<string,string> > fileBuffers;
-    reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
-    CheckReportAttachments(externalFiles, fileBuffers);
-}
-
-void TaskFeatureTest::RestoreOriginalData(const vector<pair<string, string> > &repositories)
-{
-    vector<pair<string,string> >::const_iterator it=repositories.begin();
-    for (; it!=repositories.end(); ++it)
-    {
-        RestoreCopyIfAvailable(it->first);
-        RestoreCopyIfAvailable(it->second);
-    }
-}
-
-void TaskFeatureTest::CreateCopyIfPossible(const string &folder)
-{
-    QDir originalFolder(folder.c_str());
-    if (originalFolder.exists() == false)
-        return;
-
-    string unusedOutput;
-    string copyCommand = string("cp -R ") + folder + " " + folder + BACKUP_SUFFIX;
-    Tools::RunExternalCommandToBuffer(copyCommand, unusedOutput, true);
-}
-
-void TaskFeatureTest::CheckMainReport(const string &reportContent)
-{
-    QFETCH(QString, outputReportFile);
-
-    string expectedReportData = FileTools::GetTextFileContent(suiteFolder + outputReportFile.toStdString());
-
-    // Used to write data to create test.
-    //FileTools::WriteBufferToFile("tempfile.txt", reportContent);
-
-    bool reportIsAsExpected = (reportContent == expectedReportData);
-    if (!reportIsAsExpected)
-        FileTools::WriteBufferToFile("wrongReport.html", reportContent);
-
-    QCOMPARE(reportIsAsExpected, true);
-}
-
-void TaskFeatureTest::CheckReportAttachments(vector<string> &_externalFiles,
-                                             vector<pair<string, string> > &_fileBuffers)
-{
-    CheckAttachments(_fileBuffers);
-}
-
-void TaskFeatureTest::CheckAttachments(const vector<pair<string, string> >& attachments)
-{
-    QFETCH(QStringList, outputAttachmentFiles);
-
-    QCOMPARE(attachments.size(), static_cast<unsigned long>(outputAttachmentFiles.size()));
-    for (unsigned int i=0; i<attachments.size(); ++i)
-    {
-        pair<string,string> resultAttachment = attachments[i];
-        string expectedAttachment = outputAttachmentFiles.at(i).toStdString();
-        QCOMPARE(resultAttachment.first, expectedAttachment);
-
-        string expectedContent = FileTools::GetTextFileContent(suiteFolder + expectedAttachment);
-
-        // Used to write data to create test.
-        //string attachmentName = expectedAttachment + QString::number(i).toStdString() + ".txt";
-        //FileTools::WriteBufferToFile(attachmentName, resultAttachment.second);
-
-        QCOMPARE(resultAttachment.second, expectedContent);
-    }
-}
-
-void TaskFeatureTest::RestoreCopyIfAvailable(const string &folder)
-{
-    string folderBackup = folder + BACKUP_SUFFIX;
-    QDir dir(folderBackup.c_str());
-    if (dir.exists() == false)
-        return;
-
-    FileTestUtils::RemoveAll(folder.c_str());
-
-    string unusedOutput;
-    string moveCommand = string("mv ") + folderBackup + " " + folder;
-    Tools::RunExternalCommandToBuffer(moveCommand, unusedOutput, true);
+    QCOMPARE(allAttachments.size(), attachmentFiles.size());*/
+    QFAIL("Finish implementation - comparing attachments.");
 }

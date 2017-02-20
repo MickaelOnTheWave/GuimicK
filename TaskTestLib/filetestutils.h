@@ -16,6 +16,8 @@ public:
 
     static void CheckFolderExistence(const QString& folder, const bool expectedExistence);
 
+    static QStringList GetFolderList(const QString& folder);
+
     // TODO : create a folder comparison function that compares file contents too.
 };
 

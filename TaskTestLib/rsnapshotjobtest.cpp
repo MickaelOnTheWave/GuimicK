@@ -69,12 +69,9 @@ void RsnapshotJobTest::testRunBackup_data()
     QTest::addColumn<QString>("description");
     QTest::addColumn<QString>("report");
 
-    QStringList testCases = GetTestFolders();
+    QStringList testCases = FileTestUtils::GetFolderList(suiteFolder.c_str());
     for (auto it=testCases.begin(); it!=testCases.end(); ++it)
     {
-        if (*it == "." || *it == "..")
-            continue;
-
         string stdString = it->toStdString();
         QTest::newRow(stdString.c_str())
                                 << "sourceBefore"
@@ -198,13 +195,6 @@ void RsnapshotJobTest::CheckFoldersHaveSameContent(const string &folder1, const 
     expectedFiles.removeOne("..");
 
     FileTestUtils::CheckFolderContent(folder2, expectedFiles);
-}
-
-QStringList RsnapshotJobTest::GetTestFolders()
-{
-    QDir currentDir = QDir::current();
-    currentDir.cd(suiteFolder.c_str());
-    return currentDir.entryList(QDir::Dirs);
 }
 
 string RsnapshotJobTest::GetRsnapshotBackupFolder(const int number) const

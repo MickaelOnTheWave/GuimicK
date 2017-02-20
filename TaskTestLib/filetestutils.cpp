@@ -22,6 +22,17 @@ void FileTestUtils::CheckFolderExistence(const QString &folder, const bool expec
     QCOMPARE(FileTools::FolderExists(folder.toStdString()), expectedExistence);
 }
 
+QStringList FileTestUtils::GetFolderList(const QString &folder)
+{
+    QDir currentDir = QDir::current();
+    currentDir.cd(folder);
+    QStringList folderList = currentDir.entryList(QDir::Dirs);
+    folderList.removeAll(".");
+    folderList.removeAll("..");
+    return folderList;
+
+}
+
 void FileTestUtils::CheckFolderContent(const string &folder, const QStringList &expectedFiles)
 {
     QDir repositoryDir = QDir::currentPath();

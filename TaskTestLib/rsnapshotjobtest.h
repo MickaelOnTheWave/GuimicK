@@ -35,7 +35,6 @@ private:
 
     void CheckTextContent(const std::string& content, const QString& referenceFile);
     void CheckFoldersHaveSameContent(const std::string& folder1, const std::string& folder2);
-    QStringList GetTestFolders();
     std::string GetRsnapshotBackupFolder(const int number) const;
 
     std::string repository;
