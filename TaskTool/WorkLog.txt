@@ -1,4 +1,4 @@
-26/02/2017 (14.6-17.8)
+26/02/2017 (3.2h)
 	Created proper test case. Fixed small bugs in test suite and refactored Report creators and CSS file configuration
 	for the test to be properly usable (this also was on the TODO list ;-) )
 	Made small adjustments for better code usage. Also fixed a bug in global test tool : as running folder was cleaned
