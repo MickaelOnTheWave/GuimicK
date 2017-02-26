@@ -30,7 +30,7 @@ public:
 
     ClientWorkManager* BuildSimpleWorkList() const;
 
-    AbstractReportCreator* CreateReportObject() const;
+    AbstractReportCreator* GetReportCreator(void) const;
 
 	SelfIdentity* GetSelfIdentity();
 
@@ -40,7 +40,7 @@ public:
 
 	bool GetSendReportByEmail() const;
 
-    bool IsHtmlReport() const;
+    bool IsHtmlReport(void) const;
 
     bool HasClient() const;
 
@@ -57,18 +57,18 @@ protected:
 
 	void CreateClient(ConfigurationObject* confObject, std::list<std::string>& errorMessages);
 	void CreateSelf(ConfigurationObject* confObject, std::list<std::string>& errorMessages);
+    void CreateReport(ConfigurationObject* confObject, std::list<std::string>& errorMessages);
 
-	int GetReportType(const std::string& strType) const;
+    AbstractReportCreator* CreateReportObject(const std::string& type) const;
+
 	bool GetBooleanValue(const std::string& strValue, std::list<std::string>& errorMessages) const;
 
 	Client* client;
 	SelfIdentity* self;
 	std::list<AbstractJob*> jobList;
 
-	static const int TEXT_REPORT = 0;
-	static const int HTML_REPORT = 1;
+    AbstractReportCreator* reportCreator;
 
-	int reportType;
 	std::string masterEmail;
 	bool emailReport;
 	bool shutdown;

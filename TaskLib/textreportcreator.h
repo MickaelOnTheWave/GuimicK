@@ -13,7 +13,7 @@ class TextReportCreator : public AbstractReportCreator
 public:
 	TextReportCreator();
 
-	virtual std::string Generate(WorkResultData* data, const std::string& versionString);
+    virtual void Generate(WorkResultData* data, const std::string& versionString);
 
 protected:
 	virtual void AddClientInformation(const std::string& clientName);

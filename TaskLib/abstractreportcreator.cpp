@@ -2,6 +2,21 @@
 
 using namespace std;
 
+AbstractReportCreator::AbstractReportCreator()
+    : reportContent(""), useProfiling(true)
+{
+}
+
+void AbstractReportCreator::UseProfileColumn(const bool value)
+{
+    useProfiling = value;
+}
+
+string AbstractReportCreator::GetReportContent() const
+{
+    return reportContent;
+}
+
 void AbstractReportCreator::GetAssociatedFiles(vector<string> &_externalFiles,
                                                vector<pair<string,string> >& _fileBuffers)
 {

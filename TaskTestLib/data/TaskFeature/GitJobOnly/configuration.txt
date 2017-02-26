@@ -1,0 +1,26 @@
+Client
+{
+	Name = "Testing computer";
+	JobList
+	{
+		GitBackup
+		{
+			target = local;
+			Repository
+			{
+				source = "SourceData";
+				dest = "DestinationData";
+			}
+		}
+	}
+}
+
+Report
+{
+  type = "html";
+  timed = "false";
+  css = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/report.css";
+}
+
+SendReportByEmail = false;
+ShutdownOnFinish = false;

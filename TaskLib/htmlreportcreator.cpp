@@ -5,20 +5,26 @@
 
 using namespace std;
 
-// @todo Make this configurable by config file!
-static const string CSS_FILE = "report.css";
-
 HtmlReportCreator::HtmlReportCreator()
+    : AbstractReportCreator(), cssFile("")
 {
 }
 
-string HtmlReportCreator::Generate(WorkResultData *data, const string &versionString)
+void HtmlReportCreator::SetCssFile(const string &_cssFile)
+{
+    cssFile = _cssFile;
+}
+
+void HtmlReportCreator::Generate(WorkResultData *data, const string &versionString)
 {
     report << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">" << endl;
     report << "<html>" << endl;
     report << "  <head>" << endl;
-    report << "    <META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" << endl;
-    report << FileTools::GetTextFileContent(CSS_FILE) << endl;
+    if (cssFile != "")
+    {
+        report << "    <META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" << endl;
+        report << FileTools::GetTextFileContent(cssFile) << endl;
+    }
     report << "  </head>" << endl;
     report << "<body>" << endl;
 
@@ -34,7 +40,8 @@ string HtmlReportCreator::Generate(WorkResultData *data, const string &versionSt
         report << "  <tr>" << endl;
         report << "    <th>Task</th>" << endl;
         report << "    <th>Status</th>" << endl;
-        report << "    <th>Time spent</th>" << endl;
+        if (useProfiling)
+            report << "    <th>Time spent</th>" << endl;
         report << "  </tr>" << endl;
 
         int totalCode = JobStatus::NOT_EXECUTED;
@@ -64,7 +71,7 @@ string HtmlReportCreator::Generate(WorkResultData *data, const string &versionSt
     report << "</body>" << endl;
     report << "</html>" << endl;
 
-    return report.str();
+    reportContent = report.str();
 }
 
 void HtmlReportCreator::AddJobData(const string &jobName, const string &jobDescription, const string &jobStatusCode, const string &jobDuration)
@@ -75,6 +82,7 @@ void HtmlReportCreator::AddJobData(const string &jobName, const string &jobDescr
     report << "      <div class=comment>" << jobDescription << "</div>" << endl;
     report << "    </td>" << endl;
     report << "    <td>" << jobStatusCode << "</td>" << endl;
-    report << "    <td>" << jobDuration << "</td>" << endl;
+    if (useProfiling)
+        report << "    <td>" << jobDuration << "</td>" << endl;
     report << "  </tr>" << endl;
 }

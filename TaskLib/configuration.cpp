@@ -13,9 +13,8 @@
 using namespace std;
 
 Configuration::Configuration()
-	: client(NULL), self(NULL), masterEmail("")
+    : client(NULL), self(NULL), reportCreator(NULL), masterEmail("")
 {
-	reportType = TEXT_REPORT;
 	emailReport = true;
 	shutdown = true;
 }
@@ -45,6 +44,8 @@ bool Configuration::LoadFromFile(const string &fileName, list<string> &errorMess
 			CreateClient(currentObject, errorMessages);
 		else if (currentObject->name == "Agent")
 			CreateSelf(currentObject, errorMessages);
+        else if (currentObject->name == "Report")
+            CreateReport(currentObject, errorMessages);
 		else
 			errorMessages.push_back("Warning : unknown object present in configuration file");
 	}
@@ -63,8 +64,6 @@ bool Configuration::LoadFromFile(const string &fileName, list<string> &errorMess
 		pair<string, string> currentProp = *itProp;
 		if (currentProp.first == "MasterEmail")
 			masterEmail = currentProp.second;
-		else if (currentProp.first == "ReportType")
-			reportType = GetReportType(currentProp.second);
 		else if (currentProp.first == "SendReportByEmail")
 			emailReport = GetBooleanValue(currentProp.second, errorMessages);
 		else if (currentProp.first == "ShutdownOnFinish")
@@ -288,14 +287,21 @@ void Configuration::CreateSelf(ConfigurationObject *confObject, list<string> &er
     }
 }
 
-int Configuration::GetReportType(const string &strType) const
+void Configuration::CreateReport(ConfigurationObject *confObject, std::list<string> &)
 {
-	if (strType == "text")
-		return TEXT_REPORT;
-	else if (strType == "html")
-		return HTML_REPORT;
-	else
-		return TEXT_REPORT;
+    string reportType = confObject->GetFirstProperty("type", "param0");
+    reportCreator = CreateReportObject(reportType);
+
+    string useProfiling = confObject->GetFirstProperty("timed", "param1");
+    reportCreator->UseProfileColumn(useProfiling != "false");
+
+    string cssFile = confObject->propertyList["css"];
+    if (cssFile != "")
+    {
+        HtmlReportCreator* htmlReportCreator = dynamic_cast<HtmlReportCreator*>(reportCreator);
+        if (htmlReportCreator)
+            htmlReportCreator->SetCssFile(cssFile);
+    }
 }
 
 bool Configuration::GetBooleanValue(const string &strValue, list<string> &errorMessages) const
@@ -335,11 +341,16 @@ ClientWorkManager *Configuration::BuildSimpleWorkList() const
     return workManager;
 }
 
-AbstractReportCreator *Configuration::CreateReportObject() const
+AbstractReportCreator *Configuration::GetReportCreator() const
 {
-	if (reportType == TEXT_REPORT)
+    return reportCreator;
+}
+
+AbstractReportCreator *Configuration::CreateReportObject(const string& type) const
+{
+    if (type == "text")
 		return new TextReportCreator();
-	else if (reportType == HTML_REPORT)
+    else if (type == "html")
         return new HtmlReportCreator();
 	else
 		return new TextReportCreator();
@@ -367,7 +378,7 @@ bool Configuration::GetSendReportByEmail() const
 
 bool Configuration::IsHtmlReport() const
 {
-    return (reportType == HTML_REPORT);
+    return (dynamic_cast<HtmlReportCreator*>(reportCreator));
 }
 
 bool Configuration::HasClient() const

@@ -22,7 +22,7 @@
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.59";
+static const string PROGRAM_VERSION = "0.510";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
 void ShowErrors(list<string> &errorMessages);
@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
     SelfIdentity* selfIdentity = configuration.GetSelfIdentity();
 
     ClientWorkManager* workList = configuration.BuildWorkList();
-    AbstractReportCreator* reportCreator = configuration.CreateReportObject();
+    AbstractReportCreator* reportCreator = configuration.GetReportCreator();
 
     // Use configuration and consider command line as priority when specified
     bool sendReportByEmail = configuration.GetSendReportByEmail();
@@ -99,7 +99,8 @@ int main(int argc, char* argv[])
 
     WorkResultData* workResult = workList->RunWorkList();
 
-    string reportData = reportCreator->Generate(workResult, PROGRAM_VERSION);
+    reportCreator->Generate(workResult, PROGRAM_VERSION);
+    string reportData = reportCreator->GetReportContent();
     delete workResult;
 
     CurlConsoleEmailSender sender;

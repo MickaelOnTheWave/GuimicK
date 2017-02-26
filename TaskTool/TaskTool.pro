@@ -45,4 +45,5 @@ OTHER_FILES += \
     deployNewVersion.sh \
     data/rsnapshot.conf \
     data/realconf.txt \
-    data/git.txt
+    data/git.txt \
+    data/report.css

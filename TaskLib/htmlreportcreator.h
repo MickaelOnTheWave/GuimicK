@@ -12,13 +12,16 @@ public:
 
     virtual ~HtmlReportCreator() {}
 
-    virtual std::string Generate(WorkResultData* data, const std::string& version);
+    void SetCssFile(const std::string& _cssFile);
+
+    virtual void Generate(WorkResultData* data, const std::string& version);
 
 private:
 
     void AddJobData(const std::string& jobName, const std::string& jobDescription, const std::string& jobStatusCode, const std::string& jobDuration);
 
     std::stringstream report;
+    std::string cssFile;
 };
 
 #endif // HTMLREPORTCREATOR_H

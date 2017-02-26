@@ -69,4 +69,8 @@ OTHER_FILES += \
     data/RsnapshotAnalyzer/rsnapshot_nospaceerror.txt \
     data/RsnapshotAnalyzer/rsnapshotall.log \
     data/Rsnapshot/rsnapshot.conf \
-    data/Rsnapshot/report.css
+    data/Rsnapshot/report.css \
+    data/TaskFeature/report.css \
+    data/TaskFeature/GitJobOnly/report.html \
+    data/TaskFeature/GitJobOnly/attachment1.txt \
+    data/TaskFeature/GitJobOnly/configuration.txt

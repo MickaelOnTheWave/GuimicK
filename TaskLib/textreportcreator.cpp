@@ -5,12 +5,13 @@
 using namespace std;
 
 TextReportCreator::TextReportCreator()
-	: report(""), version(""), generalCode(JobStatus::NOT_EXECUTED),
+    : AbstractReportCreator(),
+      report(""), version(""), generalCode(JobStatus::NOT_EXECUTED),
 	  generalDuration(0)
 {
 }
 
-std::string TextReportCreator::Generate(WorkResultData *data, const string &versionString)
+void TextReportCreator::Generate(WorkResultData *data, const string &versionString)
 {
 	report.str("");
 	version = versionString;
@@ -34,7 +35,7 @@ std::string TextReportCreator::Generate(WorkResultData *data, const string &vers
 
 		FinishReportGeneration(nameCellSize);
 	}
-	return report.str();
+    reportContent = report.str();
 }
 
 void TextReportCreator::AddClientInformation(const std::string &clientName)
@@ -57,7 +58,8 @@ void TextReportCreator::AddJobInformation(const std::string &jobName, JobStatus 
 		generalCode = localCode;
 
     report << "\t" << jobName << SpacingString(nameCellSize-jobName.size()) << jobStatus->GetCodeDescription();
-	report << "\t" << Tools::FormatTimeString(jobStatus->GetDuration()) << endl;
+    if (useProfiling)
+        report << "\t" << Tools::FormatTimeString(jobStatus->GetDuration()) << endl;
 
 	if (stringOutput != "")
 		report << "\t\t" << stringOutput << endl;
@@ -68,7 +70,8 @@ void TextReportCreator::FinishReportGeneration(unsigned int nameCellSize)
 {
 	report << endl;
     report << "\t" << "Overall" << SpacingString(nameCellSize-string("Overall").size()) << JobStatus::GetCodeDescription(generalCode);
-	report << "\t" << Tools::FormatTimeString(generalDuration) << endl;
+    if (useProfiling)
+        report << "\t" << Tools::FormatTimeString(generalDuration) << endl;
 	report << endl;
     report << "Task Manager version " << version << endl;
 }

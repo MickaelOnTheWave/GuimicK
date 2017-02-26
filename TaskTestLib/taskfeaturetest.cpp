@@ -15,6 +15,7 @@
 using namespace std;
 
 const string suiteFolder = "../TaskFeature/";
+const string errorFolder = "../errors/";
 
 TaskFeatureTest::TaskFeatureTest()
 {
@@ -31,12 +32,7 @@ void TaskFeatureTest::init()
 void TaskFeatureTest::cleanup()
 {
     string unusedOutput;
-    for (auto it : currentDataFolders)
-    {
-        string command = string("rm -Rf ") + it.toStdString();
-        Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
-    }
-    currentDataFolders.clear();
+    Tools::RunExternalCommandToBuffer("rm -Rf *", unusedOutput, true);
 }
 
 void TaskFeatureTest::testRun_data()
@@ -67,9 +63,9 @@ void TaskFeatureTest::testRun()
     ClientWorkManager * manager = configuration.BuildSimpleWorkList();
     WorkResultData* results = manager->RunWorkList();
 
-    AbstractReportCreator* reportCreator = configuration.CreateReportObject();
-    string reportContents = reportCreator->Generate(results, "AutoTest");
-    CheckReport(reportContents);
+    AbstractReportCreator* reportCreator = configuration.GetReportCreator();
+    reportCreator->Generate(results, "AutoTest");
+    CheckReport(reportCreator->GetReportContent());
 
     CheckAttachments(results);
 
@@ -114,7 +110,7 @@ void TaskFeatureTest::CheckReport(const string &reportContent)
     string expectedContent = FileTools::GetTextFileContent(referenceReportFile);
     bool areContentAsExpected = (reportContent == expectedContent);
     if (areContentAsExpected == false)
-        FileTools::WriteBufferToFile(currentTestCaseName + "_" + reportFile.toStdString(),
+        FileTools::WriteBufferToFile(errorFolder + currentTestCaseName + "_" + reportFile.toStdString(),
                                      reportContent);
     QCOMPARE(reportContent, expectedContent);
 }
@@ -137,7 +133,7 @@ void TaskFeatureTest::GetAttachmentContents(const QStringList &fileList, std::ve
 {
     for (auto it : fileList)
     {
-        string content = FileTools::GetTextFileContent(it.toStdString());
+        string content = FileTools::GetTextFileContent(currentTestCaseFolder + it.toStdString());
         contentList.push_back(content);
     }
 }
@@ -148,11 +144,20 @@ void TaskFeatureTest::CheckAttachmentContentsAreEqual(const std::vector<string> 
 
     auto it=contents.begin();
     auto itExp=expectedContents.begin();
+    int counter = 1;
     while (it!=contents.end() && itExp!=expectedContents.end())
     {
+        bool isAsExpected = (*it == *itExp);
+        if (isAsExpected == false)
+        {
+            stringstream name;
+            name << "attachment" << counter << ".txt";
+            FileTools::WriteBufferToFile(errorFolder + currentTestCaseName + "_" + name.str(), *it);
+        }
         QCOMPARE(*it, *itExp);
 
         ++it;
         ++itExp;
+        ++counter;
     }
 }
