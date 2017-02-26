@@ -2,7 +2,6 @@
 #define CONSOLEREPORT_H
 
 #include <ctime>
-#include <sstream>
 #include <string>
 
 #include "abstractreportcreator.h"
@@ -23,7 +22,6 @@ protected:
 	unsigned int FindBiggestJobNameSize(ClientJobResults* data);
 	std::string SpacingString(unsigned int spacesToFill);
 
-	std::stringstream report;
 	std::string version;
 	int generalCode;
 	std::time_t generalDuration;

@@ -6,7 +6,7 @@ using namespace std;
 
 TextReportCreator::TextReportCreator()
     : AbstractReportCreator(),
-      report(""), version(""), generalCode(JobStatus::NOT_EXECUTED),
+      version(""), generalCode(JobStatus::NOT_EXECUTED),
 	  generalDuration(0)
 {
 }
@@ -35,7 +35,6 @@ void TextReportCreator::Generate(WorkResultData *data, const string &versionStri
 
 		FinishReportGeneration(nameCellSize);
 	}
-    reportContent = report.str();
 }
 
 void TextReportCreator::AddClientInformation(const std::string &clientName)

@@ -3,7 +3,7 @@
 using namespace std;
 
 AbstractReportCreator::AbstractReportCreator()
-    : reportContent(""), useProfiling(true)
+    : report(""), useProfiling(true)
 {
 }
 
@@ -14,7 +14,7 @@ void AbstractReportCreator::UseProfileColumn(const bool value)
 
 string AbstractReportCreator::GetReportContent() const
 {
-    return reportContent;
+    return report.str();
 }
 
 void AbstractReportCreator::GetAssociatedFiles(vector<string> &_externalFiles,

@@ -3,8 +3,6 @@
 
 #include "abstractreportcreator.h"
 
-#include <sstream>
-
 class HtmlReportCreator : public AbstractReportCreator
 {
 public:
@@ -20,7 +18,6 @@ private:
 
     void AddJobData(const std::string& jobName, const std::string& jobDescription, const std::string& jobStatusCode, const std::string& jobDuration);
 
-    std::stringstream report;
     std::string cssFile;
 };
 

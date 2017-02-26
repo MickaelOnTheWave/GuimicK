@@ -76,7 +76,7 @@ void TaskFeatureTest::testRun()
 void TaskFeatureTest::CopyDataFolders()
 {
     string unusedOutput;
-    currentDataFolders = FileTestUtils::GetFolderList(currentTestCaseFolder.c_str());
+    QStringList currentDataFolders = FileTestUtils::GetFolderList(currentTestCaseFolder.c_str());
     for (auto it : currentDataFolders)
     {
         string currentFolder = it.toStdString();

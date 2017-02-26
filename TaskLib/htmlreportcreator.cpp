@@ -17,6 +17,7 @@ void HtmlReportCreator::SetCssFile(const string &_cssFile)
 
 void HtmlReportCreator::Generate(WorkResultData *data, const string &versionString)
 {
+    report.str("");
     report << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">" << endl;
     report << "<html>" << endl;
     report << "  <head>" << endl;
@@ -70,8 +71,6 @@ void HtmlReportCreator::Generate(WorkResultData *data, const string &versionStri
     report << "<small>Task Manager version " << versionString << "</small>" << endl;
     report << "</body>" << endl;
     report << "</html>" << endl;
-
-    reportContent = report.str();
 }
 
 void HtmlReportCreator::AddJobData(const string &jobName, const string &jobDescription, const string &jobStatusCode, const string &jobDuration)
