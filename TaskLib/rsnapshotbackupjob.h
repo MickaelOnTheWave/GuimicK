@@ -18,7 +18,7 @@ public:
 
     void SetRepositoryPath(const std::string& path);
 
-    void SetRsnapshotConfFile(const std::string& file);
+    void SeConfigurationFile(const std::string& file);
 
     virtual bool InitializeFromClient(Client*);
 
@@ -32,7 +32,7 @@ private:
 	ConsoleJob* backupCommand;
 	ConsoleJob* reportCommand;
     std::string backupRepositoryPath;
-    std::string rsnapshotConfFile;
+    std::string configurationFile;
     bool showDebugOutput;
 };
 

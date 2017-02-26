@@ -1,8 +1,13 @@
-26/02/2017 (14.6-)
+26/02/2017 (14.6-17.8)
 	Created proper test case. Fixed small bugs in test suite and refactored Report creators and CSS file configuration
 	for the test to be properly usable (this also was on the TODO list ;-) )
 	Made small adjustments for better code usage. Also fixed a bug in global test tool : as running folder was cleaned
 	after some tests, test suite results were not available anymore.
+	Began work on Rsnapshot job. Created Smart creator that creates the job based on folders to backup. Implementation
+	is done but not tested yet.
+Next planned work :
+	- Update Rsnapshot job tests to use SmartCreator.
+	- Once this is done, update main tool to use it too.
 
 25/02/2017 (0.5h)
 	Finished implementation.

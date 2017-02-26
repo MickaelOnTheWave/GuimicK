@@ -22,9 +22,9 @@ RsnapshotBackupJob::RsnapshotBackupJob(const string& _backupRepositoryPath, cons
         SetRepositoryPath(_backupRepositoryPath);
 
     if (_rsnapshotConfFile != "")
-        SetRsnapshotConfFile(_rsnapshotConfFile);
+        SeConfigurationFile(_rsnapshotConfFile);
     else
-        SetRsnapshotConfFile(DEFAULT_RSNAPSHOT_CONF_FILE);
+        SeConfigurationFile(DEFAULT_RSNAPSHOT_CONF_FILE);
 
 }
 
@@ -45,7 +45,7 @@ AbstractJob *RsnapshotBackupJob::Clone()
     clone->backupCommand = static_cast<ConsoleJob*>(backupCommand->Clone());
     clone->reportCommand = static_cast<ConsoleJob*>(reportCommand->Clone());
     clone->backupRepositoryPath = backupRepositoryPath;
-    clone->rsnapshotConfFile = rsnapshotConfFile;
+    clone->configurationFile = configurationFile;
     return clone;
 }
 
@@ -58,12 +58,12 @@ void RsnapshotBackupJob::SetRepositoryPath(const string &path)
     reportCommand->Initialize("rsnapshot-diff", reportCommandParams);
 }
 
-void RsnapshotBackupJob::SetRsnapshotConfFile(const string &file)
+void RsnapshotBackupJob::SeConfigurationFile(const string &file)
 {
-    rsnapshotConfFile = file;
+    configurationFile = file;
 
     string commandParams("-c ");
-    commandParams += rsnapshotConfFile + " weekly";
+    commandParams += configurationFile + " weekly";
     backupCommand->Initialize("rsnapshot", commandParams);
     backupCommand->SetOutputToBuffer();
 }

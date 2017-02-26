@@ -19,7 +19,11 @@ Client
 	JobList
 	{
 		Wake();
-		Backup("/volume1/snapshots", "rsnapshot.conf");
+		Backup
+		{
+			param0 = "/volume1/snapshots";
+			param1 = "rsnapshot.conf";
+		}
 		GitBackup
 		{
 			Repository
@@ -30,12 +34,27 @@ Client
 			Repository
 			{
 				source = "~/Prog/TaskManager";
-				Repository = "/volume1/repositories/TaskManager";
+				dest = "/volume1/repositories/TaskManager";
 			}
 			Repository
 			{
 				source = "~/Prog/Tools";
-				Repository = "/volume1/repositories/Tools";
+				dest = "/volume1/repositories/Tools";
+			}
+			Repository
+			{
+				source = "~/Prog/QtTools";
+				dest = "/volume1/repositories/QtTools";
+			}
+			Repository
+			{
+				source = "~/Prog/WorklogAnalyzer";
+				dest = "/volume1/repositories/WorklogAnalyzer";
+			}
+			Repository
+			{
+				source = "~/Prog/homescripts";
+				dest = "/volume1/repositories/homescripts";
 			}
 		}
 		SshConsole
@@ -44,24 +63,18 @@ Client
 			command = "sudo";
 			params = "apt-get update";
 			returnCode = 0;
-			//showCommandOutput = true;
-			outputFileName = "packagelistupdate.txt";
-		}
-		SshConsole
-		{
-			title = "System Update";
-			command = "sudo";
-			params = "apt-get upgrade --quiet --assume-yes";
-			returnCode = 0;
-			outputFileName = "systemupdate.txt";
-			parserCommand = "./reportparser --parser aptupgrade --direct --input systemupdate.txt";
 		}
 		Shutdown();
 
 	}
 }
 
+Report
+{
+	type = "html";
+	css = "report.css";
+}
+
 MasterEmail = "mickael.dacruz@gmail.com";
-ReportType = "html";
 SendReportByEmail = true;
 ShutdownOnFinish = true;

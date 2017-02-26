@@ -36,7 +36,8 @@ SOURCES += \
     rsnapshotbackupjob.cpp \
     rsnapshoterroranalyzer.cpp \
     wakejob.cpp \
-    jobdebuginformationmanager.cpp
+    jobdebuginformationmanager.cpp \
+    rsnapshotsmartcreator.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -66,7 +67,8 @@ HEADERS +=\
     rsnapshotbackupjob.h \
     rsnapshoterroranalyzer.h \
     wakejob.h \
-    jobdebuginformationmanager.h
+    jobdebuginformationmanager.h \
+    rsnapshotsmartcreator.h
 
 unix {
     target.path = /usr/lib
