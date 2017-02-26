@@ -35,7 +35,6 @@ private:
 
     std::string currentTestCaseName = "";
     std::string currentTestCaseFolder = "";
-    QStringList currentDataFolders;
 };
 
 #endif // TASKFEATURETEST_H

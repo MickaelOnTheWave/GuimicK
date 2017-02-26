@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
     GetAllTests(tests);
 
     QtBatchTestRunner runner(argv[0]);
+    runner.SetTempResultFile("../errors/result.xml");
     runner.Run(tests);
 
     if (commandLine.HasParameter("silent") == false)
