@@ -121,16 +121,38 @@ void TaskFeatureTest::CheckReport(const string &reportContent)
 
 void TaskFeatureTest::CheckAttachments(WorkResultData *results)
 {
-    QVERIFY(results->allClientsResults.size() == 1);
+    QVERIFY(results->GetClientCount() == 1);
 
-    ClientJobResults* allResults = results->allClientsResults.front().second;
-    QVERIFY(allResults != nullptr);
-
-/*    vector<pair<string, string> > allAttachments;
-    allResults->GetAllAttachments(allAttachments);
+    vector<string> resultAttachmentContents;
+    results->GetAttachmentContents(resultAttachmentContents);
 
     QFETCH(QStringList, attachmentFiles);
+    vector<string> expectedAttachmentContents;
+    GetAttachmentContents(attachmentFiles, expectedAttachmentContents);
 
-    QCOMPARE(allAttachments.size(), attachmentFiles.size());*/
-    QFAIL("Finish implementation - comparing attachments.");
+    CheckAttachmentContentsAreEqual(resultAttachmentContents, expectedAttachmentContents);
+}
+
+void TaskFeatureTest::GetAttachmentContents(const QStringList &fileList, std::vector<string> &contentList)
+{
+    for (auto it : fileList)
+    {
+        string content = FileTools::GetTextFileContent(it.toStdString());
+        contentList.push_back(content);
+    }
+}
+
+void TaskFeatureTest::CheckAttachmentContentsAreEqual(const std::vector<string> &contents, const std::vector<string> &expectedContents)
+{
+    QVERIFY(contents.size() == expectedContents.size());
+
+    auto it=contents.begin();
+    auto itExp=expectedContents.begin();
+    while (it!=contents.end() && itExp!=expectedContents.end())
+    {
+        QCOMPARE(*it, *itExp);
+
+        ++it;
+        ++itExp;
+    }
 }

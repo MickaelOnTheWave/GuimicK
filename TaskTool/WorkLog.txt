@@ -1,3 +1,10 @@
+25/02/2017 (0.5h)
+	Finished implementation.
+Next planned work :
+	- Create proper test case (that passes!!)
+	- Resolve, if necessary, css issue.
+	- Go on roadmap.
+
 20/02/2017 (1.6h)
 	Removed debug information from production run. Bug was effectively fixed in production run. Going for remaining
 	test suite. All was rewritten from scratch - the initial idea was too confuse and code too specific for one case.

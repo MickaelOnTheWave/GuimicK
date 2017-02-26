@@ -20,7 +20,15 @@ public:
 
 	void AddClientData(const std::string &clientName, ClientJobResults* clientData);
 
+    size_t GetClientCount(void) const;
+
+    void GetAttachmentContents(std::vector<std::string>& attachments) const;
+
 	std::vector<std::pair<std::string, ClientJobResults*> > allClientsResults;
+
+private:
+    void GetBufferAttachments(JobStatus* status, std::vector<std::string>& attachments) const;
+    void GetFileAttachments(JobStatus* status, std::vector<std::string>& attachments) const;
 };
 
 #endif // WORKRESULTDATA_H

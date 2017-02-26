@@ -28,6 +28,11 @@ private:
     void CheckReport(const std::string& reportContent);
     void CheckAttachments(WorkResultData* results);
 
+    void GetAttachmentContents(const QStringList& fileList,
+                               std::vector<std::string>& contentList);
+    void CheckAttachmentContentsAreEqual(const std::vector<std::string>& contents,
+                                         const std::vector<std::string>& expectedContents);
+
     std::string currentTestCaseName = "";
     std::string currentTestCaseFolder = "";
     QStringList currentDataFolders;
