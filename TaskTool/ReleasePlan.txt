@@ -46,6 +46,8 @@ Abandoned features :
 
 Known bugs :
 	- Git report parser crashes when trying to parse a report coming from git asking for ssh password.
+	- Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
+	- Rsnapshot tests need to wait before doing backup. Maybe pending file operations need to be flushed before?
 
 -------------
 Release plan

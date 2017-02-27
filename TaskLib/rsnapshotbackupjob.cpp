@@ -2,9 +2,10 @@
 
 #include <fstream>
 #include <sstream>
-#include <tools.h>
+#include <unistd.h>
 
 #include "rsnapshoterroranalyzer.h"
+#include "tools.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ const string DEFAULT_RSNAPSHOT_CONF_FILE    = "rsnapshot.conf";
 const string debugFilename                  = "RsnapshotDebug.txt";
 
 RsnapshotBackupJob::RsnapshotBackupJob(const string& _backupRepositoryPath, const string &_rsnapshotConfFile)
-    : showDebugOutput(false)
+    : showDebugOutput(false), waitAfterRun(false)
 {
     backupCommand = new ConsoleJob("", "", "");
     reportCommand = new ConsoleJob("", "", "");
@@ -46,6 +47,8 @@ AbstractJob *RsnapshotBackupJob::Clone()
     clone->reportCommand = static_cast<ConsoleJob*>(reportCommand->Clone());
     clone->backupRepositoryPath = backupRepositoryPath;
     clone->configurationFile = configurationFile;
+    clone->showDebugOutput = showDebugOutput;
+    clone->waitAfterRun = waitAfterRun;
     return clone;
 }
 
@@ -82,6 +85,9 @@ bool RsnapshotBackupJob::IsInitialized()
 
 JobStatus* RsnapshotBackupJob::Run()
 {
+    if (waitAfterRun)
+        sleep(1);
+
     stringstream debugOutput;
 	JobStatus* backupStatus = backupCommand->Run();
     if (showDebugOutput)
@@ -145,10 +151,16 @@ JobStatus* RsnapshotBackupJob::Run()
     status->AddFileBuffer(DEFAULT_BACKUP_FILENAME, parser.GetFullDescription());
     if (showDebugOutput)
         status->AddFileBuffer(debugFilename, debugOutput.str());
+
     return status;
 }
 
 void RsnapshotBackupJob::SetOutputDebugInformation(const bool value)
 {
     showDebugOutput = value;
+}
+
+void RsnapshotBackupJob::SetWaitAfterRun(const bool value)
+{
+    waitAfterRun = value;
 }

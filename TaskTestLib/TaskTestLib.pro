@@ -73,4 +73,12 @@ OTHER_FILES += \
     data/TaskFeature/report.css \
     data/TaskFeature/GitJobOnly/report.html \
     data/TaskFeature/GitJobOnly/attachment1.txt \
-    data/TaskFeature/GitJobOnly/configuration.txt
+    data/TaskFeature/GitJobOnly/configuration.txt \
+    data/TaskFeature/RsnapshotNewConf/report.html \
+    data/TaskFeature/RsnapshotNewConf/attachment1.txt \
+    data/TaskFeature/RsnapshotNewConf/configuration.txt \
+    data/TaskFeature/RsnapshotNewConf/rsnapshot.conf \
+    data/TaskFeature/RsnapshotOldConf/report.html \
+    data/TaskFeature/RsnapshotOldConf/attachment1.txt \
+    data/TaskFeature/RsnapshotOldConf/configuration.txt \
+    data/TaskFeature/RsnapshotOldConf/rsnapshot.conf

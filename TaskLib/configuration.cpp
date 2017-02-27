@@ -207,6 +207,8 @@ RsnapshotBackupJob *Configuration::CreateRsnapshotBackupJob(ConfigurationObject 
 
     if (object->propertyList["showDebugInformation"] != "")
         job->SetOutputDebugInformation(true);
+    if (object->propertyList["waitAfterRun"] != "")
+        job->SetWaitAfterRun(true);
     return job;
 }
 

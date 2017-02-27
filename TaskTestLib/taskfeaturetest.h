@@ -32,6 +32,7 @@ private:
                                std::vector<std::string>& contentList);
     void CheckAttachmentContentsAreEqual(const std::vector<std::string>& contents,
                                          const std::vector<std::string>& expectedContents);
+    void WriteAttachment(const std::string& content, const int number);
 
     std::string currentTestCaseName = "";
     std::string currentTestCaseFolder = "";

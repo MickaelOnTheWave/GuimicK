@@ -140,7 +140,12 @@ void TaskFeatureTest::GetAttachmentContents(const QStringList &fileList, std::ve
 
 void TaskFeatureTest::CheckAttachmentContentsAreEqual(const std::vector<string> &contents, const std::vector<string> &expectedContents)
 {
-    QVERIFY(contents.size() == expectedContents.size());
+    if (contents.size() != expectedContents.size())
+    {
+        for (unsigned int i=0; i<contents.size(); ++i)
+            WriteAttachment(contents.at(i), i+1);
+        QFAIL("Wrong number of attachments");
+    }
 
     auto it=contents.begin();
     auto itExp=expectedContents.begin();
@@ -149,15 +154,19 @@ void TaskFeatureTest::CheckAttachmentContentsAreEqual(const std::vector<string> 
     {
         bool isAsExpected = (*it == *itExp);
         if (isAsExpected == false)
-        {
-            stringstream name;
-            name << "attachment" << counter << ".txt";
-            FileTools::WriteBufferToFile(errorFolder + currentTestCaseName + "_" + name.str(), *it);
-        }
+            WriteAttachment(*it, counter);
+
         QCOMPARE(*it, *itExp);
 
         ++it;
         ++itExp;
         ++counter;
     }
+}
+
+void TaskFeatureTest::WriteAttachment(const string &content, const int number)
+{
+    stringstream name;
+    name << "attachment" << number << ".txt";
+    FileTools::WriteBufferToFile(errorFolder + currentTestCaseName + "_" + name.str(), content);
 }

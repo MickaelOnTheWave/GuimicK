@@ -1,0 +1,28 @@
+Client
+{
+	Name = "Testing computer";
+	JobList
+	{
+		RsnapshotBackup
+		{
+			repository = "/home/mickael/Prog/TaskManager/TaskTestLib/data/running/rsnapshotRoot";
+			templateConfigurationFile = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/RsnapshotNewConf/rsnapshot.conf";
+			waitAfterRun = true;
+			Folder
+			{
+				source = "SourceData";
+				dest = "tag";
+			}
+		}
+	}
+}
+
+Report
+{
+	type = "html";
+	timed = "false";
+	css = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/report.css";
+}
+
+SendReportByEmail = false;
+ShutdownOnFinish = false;
