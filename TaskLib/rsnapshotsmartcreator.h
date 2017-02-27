@@ -19,7 +19,6 @@ private:
     void BuildConfigurationFile(void) const;
     std::string GetTemplateConfiguration(void) const;
     void AppendBackupData(std::string& configurationData) const;
-    std::string BuildFullPathOnCurrentDir(const std::string& name) const;
 
     std::vector<std::pair<std::string, std::string> > dataToBackup;
     std::string repository;

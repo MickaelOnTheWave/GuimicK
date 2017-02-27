@@ -9,6 +9,7 @@
 #include "filetestutils.h"
 #include "filetools.h"
 #include "rsnapshotbackupjob.h"
+#include "rsnapshotsmartcreator.h"
 #include "tools.h"
 
 using namespace std;
@@ -26,7 +27,7 @@ const string suiteFolder = "../Rsnapshot/";
 
 RsnapshotJobTest::RsnapshotJobTest()
 {
-    repository = BuildFullPathOnCurrentDir("rsnapshotroot");
+    repository = FileTools::BuildFullPath("rsnapshotroot");
 }
 
 void RsnapshotJobTest::init()
@@ -49,8 +50,6 @@ void RsnapshotJobTest::cleanup()
 
 void RsnapshotJobTest::testCreate_InvalidSource()
 {
-    const QString invalidFolder = "InvalidFolder";
-    CreateConfigurationFile(invalidFolder);
     JobStatus* status = RunRsnapshotJob();
 
     QCOMPARE(status->GetCode(), JobStatus_ERROR);
@@ -89,8 +88,6 @@ void RsnapshotJobTest::testRunBackup()
     QFETCH(QString, sourceBefore);
     QFETCH(QString, sourceNow);
 
-    CreateConfigurationFile(QString(currentSourceFolder.c_str()));
-
     RunBackupOnDataFolder(currentTestCaseFolder + sourceBefore.toStdString());
     sleep(1);
     JobStatus* status = RunBackupOnDataFolder(currentTestCaseFolder + sourceNow.toStdString());
@@ -111,15 +108,6 @@ JobStatus* RsnapshotJobTest::RunBackupOnDataFolder(const string &folder)
     Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
 
     return RunRsnapshotJob();
-}
-
-JobStatus *RsnapshotJobTest::RunJob()
-{
-    QFETCH(QString, source);
-
-    CreateConfigurationFile(source);
-    JobStatus* status = RunRsnapshotJob();
-    return status;
 }
 
 void RsnapshotJobTest::CheckStatus(JobStatus *status)
@@ -148,30 +136,16 @@ void RsnapshotJobTest::CheckFiles()
     CheckFoldersHaveSameContent(GetRsnapshotBackupFolder(0), currentSourceFolder);
 }
 
-void RsnapshotJobTest::CreateConfigurationFile(const QString &folder)
-{
-    std::string contents;
-    bool ok = FileTools::GetTextFileContent(suiteFolder + templateConfigurationFile, contents);
-    QCOMPARE(ok, true);
-
-    contents += string("\nsnapshot_root\t") + repository + "\n";
-    contents += string("\nbackup\t") + BuildFullPathOnCurrentDir(folder.toStdString());
-    contents += "\t" + folder.toStdString() + "\n";
-
-    FileTools::WriteBufferToFile(defaultConfigurationFile, contents);
-}
-
 JobStatus *RsnapshotJobTest::RunRsnapshotJob()
 {
-    RsnapshotBackupJob job(repository, defaultConfigurationFile);
-    return job.Run();
-}
+    RsnapshotSmartCreator creator(repository);
+    creator.SetTemplateConfigurationFile(suiteFolder + templateConfigurationFile);
+    creator.AddFolderToBackup(currentSourceFolder, currentSourceFolder);
 
-std::string RsnapshotJobTest::BuildFullPathOnCurrentDir(const std::string& name)
-{
-    char unusedBuffer[1024];
-    char* currentPath = getcwd(unusedBuffer, 1024);
-    return string(currentPath) + "/" + name + "/";
+    RsnapshotBackupJob* job = creator.CreateConfiguredJob();
+    JobStatus* status = job->Run();
+    delete job;
+    return status;
 }
 
 void RsnapshotJobTest::CheckTextContent(const string &content, const QString &referenceFile)

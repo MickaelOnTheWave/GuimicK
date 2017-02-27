@@ -65,14 +65,7 @@ void RsnapshotSmartCreator::AppendBackupData(string &configurationData) const
     vector<pair<string,string> >::const_iterator it=dataToBackup.begin();
     for (; it!=dataToBackup.end(); ++it)
     {
-        configurationData += string("\nbackup\t") + BuildFullPathOnCurrentDir(it->first);
+        configurationData += string("\nbackup\t") + FileTools::BuildFullPath(it->first);
         configurationData += "\t" + it->second + "\n";
     }
-}
-
-std::string RsnapshotSmartCreator::BuildFullPathOnCurrentDir(const std::string& name) const
-{
-    char unusedBuffer[1024];
-    char* currentPath = getcwd(unusedBuffer, 1024);
-    return string(currentPath) + "/" + name + "/";
 }

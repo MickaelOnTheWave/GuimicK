@@ -25,13 +25,10 @@ private Q_SLOTS:
 
 private:
     JobStatus* RunBackupOnDataFolder(const std::string &folder);
-    JobStatus* RunJob();
     void CheckStatus(JobStatus* status);
     void CheckFiles();
 
-    void CreateConfigurationFile(const QString& folder);
     JobStatus* RunRsnapshotJob();
-    std::string BuildFullPathOnCurrentDir(const std::string& name);
 
     void CheckTextContent(const std::string& content, const QString& referenceFile);
     void CheckFoldersHaveSameContent(const std::string& folder1, const std::string& folder2);
