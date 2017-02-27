@@ -1,6 +1,8 @@
 27/02/2017 (18-)
 	Created Feature test for testing both old and new way to setup Rsnapshot job. Refactored a bit Rsnapshot job to allow
 	for escaping test bug.
+	Now going for Free space checking job. Found proper command and created job to run it. Also created Parser structure.
+	Both are compiling and job is mostly done, now going for test suite.
 
 27/02/2017 (1.3h)
 	Updated rsnapshot test suite and removed obsolete code from it. Updated configuration - now waiting for production

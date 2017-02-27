@@ -37,7 +37,9 @@ SOURCES += \
     rsnapshoterroranalyzer.cpp \
     wakejob.cpp \
     jobdebuginformationmanager.cpp \
-    rsnapshotsmartcreator.cpp
+    rsnapshotsmartcreator.cpp \
+    linuxfreespacecheckjob.cpp \
+    dfcommandparser.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -68,7 +70,9 @@ HEADERS +=\
     rsnapshoterroranalyzer.h \
     wakejob.h \
     jobdebuginformationmanager.h \
-    rsnapshotsmartcreator.h
+    rsnapshotsmartcreator.h \
+    linuxfreespacecheckjob.h \
+    dfcommandparser.h
 
 unix {
     target.path = /usr/lib
