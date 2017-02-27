@@ -1,5 +1,9 @@
-27/02/2017 (13.9)
-	Updated rsnapshot test suite and removed obsolete code from it.
+27/02/2017 (1.3h)
+	Updated rsnapshot test suite and removed obsolete code from it. Updated configuration - now waiting for production
+	run to confirm that feature is complete!
+Next planned work :
+	- Check that rsnapshot backup is running as expected.
+	- Go on roadmap
 
 26/02/2017 (3.2h)
 	Created proper test case. Fixed small bugs in test suite and refactored Report creators and CSS file configuration
