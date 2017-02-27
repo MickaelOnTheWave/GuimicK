@@ -54,6 +54,8 @@ protected:
     ChangeScreensaverJob* CreateChangeScreensaverJobFromObject(ConfigurationObject* object) const;
     GitBackupJob* CreateGitBackupJob(ConfigurationObject* object) const;
     RsnapshotBackupJob* CreateRsnapshotBackupJob(ConfigurationObject* object) const;
+    RsnapshotBackupJob* CreateRsnapshotBackupJobFromCreator(ConfigurationObject *object,
+                                                            const std::string& repository) const;
 
 	void CreateClient(ConfigurationObject* confObject, std::list<std::string>& errorMessages);
 	void CreateSelf(ConfigurationObject* confObject, std::list<std::string>& errorMessages);

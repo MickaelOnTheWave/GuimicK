@@ -19,10 +19,44 @@ Client
 	JobList
 	{
 		Wake();
-		Backup
+		RsnapshotBackup
 		{
-			param0 = "/volume1/snapshots";
-			param1 = "rsnapshot.conf";
+			repository = "/volume1/snapshots";
+			Folder
+			{
+				source = "mickael@desktop:~/Documents/";
+				dest = "documents/";
+			}
+			Folder
+			{
+				source = "mickael@desktop:~/Pictures/";
+				dest = "pictures/";
+			}
+			Folder
+			{
+				source = "mickael@desktop:~/Music/";
+				dest = "music/";
+			}
+			Folder
+			{
+				source = "mickael@desktop:~/WindowsSoftware/";
+				dest = "logiciels/";
+			}
+			Folder
+			{
+				source = "mickael@desktop:~/mygames/";
+				dest = "mygames/";
+			}
+			Folder
+			{
+				source = "mickael@desktop:~/Videos/";
+				dest = "videos/";
+			}
+			Folder
+			{
+				source = "mickael@desktop:/mnt/datadrive/Archives/";
+				dest = "archives/";
+			}
 		}
 		GitBackup
 		{
@@ -65,7 +99,6 @@ Client
 			returnCode = 0;
 		}
 		Shutdown();
-
 	}
 }
 

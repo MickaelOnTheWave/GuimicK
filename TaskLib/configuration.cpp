@@ -9,6 +9,7 @@
 #include "changescreensaverjob.h"
 #include "clamavjob.h"
 #include "profiledjob.h"
+#include "rsnapshotsmartcreator.h"
 
 using namespace std;
 
@@ -79,7 +80,7 @@ AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
         return CreateWakeJobFromObject(object);
 	else if (object->name == "ChangeScreenSaver")
         return CreateChangeScreensaverJobFromObject(object);
-	else if (object->name == "Backup")
+    else if (object->name == "RsnapshotBackup")
         return CreateRsnapshotBackupJob(object);
 	else if (object->name == "ClamAv")
 		return new ClamAvJob();
@@ -168,8 +169,7 @@ GitBackupJob *Configuration::CreateGitBackupJob(ConfigurationObject *object) con
 {
     GitBackupJob* job = new GitBackupJob();
     list<ConfigurationObject*>::iterator it = object->objectList.begin();
-    list<ConfigurationObject*>::iterator end = object->objectList.end();
-    for (; it != end; it++)
+    for (; it != object->objectList.end(); it++)
     {
         ConfigurationObject* currentObj = *it;
 
@@ -196,13 +196,42 @@ GitBackupJob *Configuration::CreateGitBackupJob(ConfigurationObject *object) con
 
 RsnapshotBackupJob *Configuration::CreateRsnapshotBackupJob(ConfigurationObject *object) const
 {
-    // TODO : correctly manage parameters here. Named ones.
-    string repositoryPath = object->GetFirstProperty("repositoryPath", "param0");
-    string rsnapshotConfFile = object->GetFirstProperty("rsnapshotConfFile", "param1");
-    RsnapshotBackupJob* job = new RsnapshotBackupJob(repositoryPath, rsnapshotConfFile);
+    string repository = object->GetFirstProperty("repository", "param0");
+    string configurationFile = object->GetFirstProperty("fullConfigurationFile", "param1");
+
+    RsnapshotBackupJob* job = NULL;
+    if (configurationFile != "")
+        job = new RsnapshotBackupJob(repository, configurationFile);
+    else
+        job = CreateRsnapshotBackupJobFromCreator(object, repository);
+
     if (object->propertyList["showDebugInformation"] != "")
         job->SetOutputDebugInformation(true);
     return job;
+}
+
+RsnapshotBackupJob *Configuration::CreateRsnapshotBackupJobFromCreator(ConfigurationObject *object,
+                                                                       const string &repository) const
+{
+    RsnapshotSmartCreator creator(repository);
+
+    string templateFile = object->propertyList["templateConfigurationFile"];
+    creator.SetTemplateConfigurationFile(templateFile);
+
+    list<ConfigurationObject*>::iterator it = object->objectList.begin();
+    for (; it != object->objectList.end(); it++)
+    {
+        ConfigurationObject* currentObj = *it;
+
+        if (currentObj->name != "Folder")
+            continue;
+
+        string source(currentObj->propertyList["source"]);
+        string dest(currentObj->propertyList["dest"]);
+        creator.AddFolderToBackup(source, dest);
+    }
+
+    return creator.CreateConfiguredJob();
 }
 
 void Configuration::CreateClient(ConfigurationObject *confObject, list<string> &errorMessages)
