@@ -24,7 +24,7 @@ void DfCommandParserTest::cleanup()
 
 }
 
-void DfCommandParserTest::testParse_data()
+void DfCommandParserTest::testRawData_data()
 {
     QTest::addColumn<QString>("file");
     QTest::addColumn<QStringList>("driveNames");
@@ -50,14 +50,10 @@ void DfCommandParserTest::testParse_data()
         << QStringList({"78%", "18%", "81%", "1%"});
 }
 
-void DfCommandParserTest::testParse()
+void DfCommandParserTest::testRawData()
 {
-    QFETCH(QString, file);
-    string content = FileTools::GetTextFileContent(suiteFolder + file.toStdString());
-
     DfCommandParser parser;
-    bool ok = parser.ParseBuffer(content);
-    QCOMPARE(ok, true);
+    CheckAndParse(parser);
 
     vector<Drive> drives;
     parser.GetDrives(drives);
@@ -76,6 +72,49 @@ void DfCommandParserTest::testParse()
 
     QFETCH(QStringList, occupationRatios);
     CheckDataIsTheSame(drives, occupationRatios,  [] (const Drive& d) { return d.ratio; } );
+
+}
+
+void DfCommandParserTest::testDescriptions_data()
+{
+    QTest::addColumn<QString>("file");
+    QTest::addColumn<QString>("miniDescription");
+    QTest::addColumn<QString>("fullDescription");
+
+    QTest::newRow("One drive")
+        << "oneDrive.txt"
+        << QString("50 Gb available (78% used)")
+        << QString("");
+
+    QTest::newRow("Multiple drives")
+        << "allDrives.txt"
+        << QString("4 drives checked, see report")
+        << QString("/dev/sda2 : 230 Gb total, 50 Gb available (78% used)\n"
+                   "/dev/sda1 : 37 Mb total, 31 Mb available (18% used)\n"
+                   "/dev/sdb1 : 334 Gb total, 67 Gb available (81% used)\n"
+                   "/dev/sdc2 : 962 Gb total, 913 Gb available (1% used)\n"
+                   );
+}
+
+void DfCommandParserTest::testDescriptions()
+{
+    DfCommandParser parser;
+    CheckAndParse(parser);
+
+    QFETCH(QString, miniDescription);
+    QCOMPARE(QString::fromStdString(parser.GetMiniDescription()), miniDescription);
+
+    QFETCH(QString, fullDescription);
+    QCOMPARE(QString::fromStdString(parser.GetFullDescription()), fullDescription);
+}
+
+void DfCommandParserTest::CheckAndParse(DfCommandParser &parser)
+{
+    QFETCH(QString, file);
+    string content = FileTools::GetTextFileContent(suiteFolder + file.toStdString());
+
+    bool ok = parser.ParseBuffer(content);
+    QCOMPARE(ok, true);
 }
 
 void DfCommandParserTest::CheckDataIsTheSame(const vector<Drive> &data,

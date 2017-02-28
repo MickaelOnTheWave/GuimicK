@@ -39,6 +39,10 @@ private:
                                   std::vector<std::string>& tokens) const;
     bool IsDesirableDriveName(const std::string& name) const;
 
+    std::string CreateResumedMiniDescription(const Drive& drive) const;
+    std::string CreateDriveListDescription() const;
+    std::string CreateFullDescription() const;
+
     std::vector<Drive> driveList;
 };
 

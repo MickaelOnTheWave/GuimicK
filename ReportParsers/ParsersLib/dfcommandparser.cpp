@@ -1,5 +1,6 @@
 #include "dfcommandparser.h"
 
+#include <sstream>
 #include "tools.h"
 
 using namespace std;
@@ -17,6 +18,8 @@ Drive::Drive(const std::vector<string> &properties)
     freeSpace = CreateFormattedSize(properties[3]);
     ratio = properties[4];
 }
+
+
 
 string Drive::CreateFormattedSize(const string &rawSize) const
 {
@@ -49,12 +52,18 @@ bool DfCommandParser::ParseBuffer(const string& buffer)
 
 string DfCommandParser::GetMiniDescription()
 {
-    return "mini description";
+    if (driveList.size() == 1)
+        return CreateResumedMiniDescription(driveList.front());
+    else
+        return CreateDriveListDescription();
 }
 
 string DfCommandParser::GetFullDescription()
 {
-    return "full description";
+    if (driveList.size() < 2)
+        return "";
+    else
+        return CreateFullDescription();
 }
 
 void DfCommandParser::GetDrives(std::vector<Drive> &drives) const
@@ -103,5 +112,30 @@ void DfCommandParser::TokenizeUsingWhitespaces(const string &buffer,
 bool DfCommandParser::IsDesirableDriveName(const string &name) const
 {
     return (name.length() > 0 && name[0] == '/');
+}
+
+string DfCommandParser::CreateResumedMiniDescription(const Drive &drive) const
+{
+    return drive.freeSpace + " available (" + drive.ratio + " used)";
+}
+
+string DfCommandParser::CreateDriveListDescription() const
+{
+    stringstream stream;
+    stream << driveList.size() << " drives checked, see report";
+    return stream.str();
+}
+
+string DfCommandParser::CreateFullDescription() const
+{
+    stringstream stream;
+    vector<Drive>::const_iterator it = driveList.begin();
+    for (;it != driveList.end(); ++it)
+    {
+        stream << it->name << " : " << it->totalSpace << " total, ";
+        stream << CreateResumedMiniDescription(*it) << endl;
+    }
+
+    return stream.str();
 }
 
