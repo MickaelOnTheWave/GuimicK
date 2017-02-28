@@ -1,3 +1,7 @@
+28/02/2017 (13.1)
+	Production run failed. It seems that job is not configured well for remote targets...
+	Fixed issue, but no test was created for that : too hard to test remote targets.
+
 27/02/2017 (2.1h)
 	Created Feature test for testing both old and new way to setup Rsnapshot job. Refactored a bit Rsnapshot job to allow
 	for escaping test bug.

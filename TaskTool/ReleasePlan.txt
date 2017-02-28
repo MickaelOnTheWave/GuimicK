@@ -30,12 +30,16 @@ Features to implement:
 	[029] Split job config file into client/server files.
 	[032] Property handle encodings for strings
 	[033] Handle File backup folder data outside of rsnapshot conf file.
-	[034] Create client app to create/manage backup folder configuration.
+	[034] Create Qt client app to create/manage backup folder configuration.
 	[035] Console job improvement : support an external parser system.
 	[036] Console job improvement : support a chain system.
 	[037] Have automated tests for all features
 	[038] Include Free space check in production run
 	[039] Create a Git-based File backup job
+	[040] Use a zip lib to organize attachments in archives
+	[041] Create a simple copy-based File backup job
+	[042] Create a copy-zip-based File backup job
+	[043] Create an archive differential File backup job
 
 Abandoned features :
 	[005] Include AntiVirus scan in maintenance script
@@ -56,7 +60,6 @@ Release plan
 v1.0 :
 	[010] Implement all TODOs in code
 	[017] Properly handle all error cases
-	[014] Log jobs data in a database for future report/statistics use
 	[016] Create a package with binaries for easy install
 
 v0.9 :
@@ -68,12 +71,13 @@ v0.9 :
 v0.8 :
 	[029] Split job config file into client/server files.
 	[026] Support multiple clients with multiple job lists
-	[034] Create client app to create/manage backup folder configuration.
+	[034] Create Qt client app to create/manage backup folder configuration.
 
 v0.7 :
 	[037] Have automated tests for all features
 	[039] Create a Git-based File backup job
-	[036] Console job improvement : support a chain system.
+	[041] Create a simple copy-based File backup job
+	[042] Create a copy-zip-based File backup job
 
 v0.6 :
 	[002] Remove Wake script dependency

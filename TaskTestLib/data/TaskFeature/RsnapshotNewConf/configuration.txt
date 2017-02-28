@@ -10,7 +10,7 @@ Client
 			waitAfterRun = true;
 			Folder
 			{
-				source = "SourceData";
+				source = "/home/mickael/Prog/TaskManager/TaskTestLib/data/running/SourceData";
 				dest = "tag";
 			}
 		}

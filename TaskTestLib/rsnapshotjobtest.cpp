@@ -140,7 +140,7 @@ JobStatus *RsnapshotJobTest::RunRsnapshotJob()
 {
     RsnapshotSmartCreator creator(repository);
     creator.SetTemplateConfigurationFile(suiteFolder + templateConfigurationFile);
-    creator.AddFolderToBackup(currentSourceFolder, currentSourceFolder);
+    creator.AddFolderToBackup(FileTools::BuildFullPath(currentSourceFolder), currentSourceFolder);
 
     RsnapshotBackupJob* job = creator.CreateConfiguredJob();
     JobStatus* status = job->Run();

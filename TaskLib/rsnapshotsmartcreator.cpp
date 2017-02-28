@@ -65,7 +65,7 @@ void RsnapshotSmartCreator::AppendBackupData(string &configurationData) const
     vector<pair<string,string> >::const_iterator it=dataToBackup.begin();
     for (; it!=dataToBackup.end(); ++it)
     {
-        configurationData += string("\nbackup\t") + FileTools::BuildFullPath(it->first);
+        configurationData += string("\nbackup\t") + it->first;
         configurationData += "\t" + it->second + "\n";
     }
 }
