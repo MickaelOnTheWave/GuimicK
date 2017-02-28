@@ -70,7 +70,8 @@ JobStatus *LinuxFreeSpaceCheckJob::Run()
             reportContent = job->GetCommandOutput();
         }
 
-        status->AddFileBuffer("FreeSpaceCheck.txt", reportContent);
+        if (reportContent != "")
+            status->AddFileBuffer("FreeSpaceCheck.txt", reportContent);
     }
 
     delete job;

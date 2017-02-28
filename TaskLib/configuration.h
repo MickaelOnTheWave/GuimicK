@@ -12,6 +12,7 @@
 #include "changescreensaverjob.h"
 #include "consolejob.h"
 #include "gitbackupjob.h"
+#include "linuxfreespacecheckjob.h"
 #include "linuxshutdownjob.h"
 #include "rsnapshotbackupjob.h"
 #include "wakejob.h"
@@ -54,6 +55,8 @@ protected:
     ChangeScreensaverJob* CreateChangeScreensaverJobFromObject(ConfigurationObject* object) const;
     GitBackupJob* CreateGitBackupJob(ConfigurationObject* object) const;
     RsnapshotBackupJob* CreateRsnapshotBackupJob(ConfigurationObject* object) const;
+    LinuxFreeSpaceCheckJob* CreateDiskSpaceCheckJob(ConfigurationObject* object) const;
+
     RsnapshotBackupJob* CreateRsnapshotBackupJobFromCreator(ConfigurationObject *object,
                                                             const std::string& repository) const;
 

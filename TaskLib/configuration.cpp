@@ -92,6 +92,8 @@ AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
         return InitializeConsoleJobFromObject(object, new SshConsoleJob(""));
     else if (object->name == "GitBackup")
         return CreateGitBackupJob(object);
+    else if (object->name == "DiskSpaceCheck")
+        return CreateDiskSpaceCheckJob(object);
 	else
         return NULL;
 }
@@ -209,6 +211,18 @@ RsnapshotBackupJob *Configuration::CreateRsnapshotBackupJob(ConfigurationObject 
         job->SetOutputDebugInformation(true);
     if (object->propertyList["waitAfterRun"] != "")
         job->SetWaitAfterRun(true);
+    return job;
+}
+
+LinuxFreeSpaceCheckJob *Configuration::CreateDiskSpaceCheckJob(ConfigurationObject *object) const
+{
+    const string drive = object->GetFirstProperty("drive", "param0");
+    const string localTarget = object->GetFirstProperty("localTarget", "param1");
+
+    LinuxFreeSpaceCheckJob* job = new LinuxFreeSpaceCheckJob(drive);
+    if (localTarget == "false")
+        job->SetTargetToRemote(true);
+
     return job;
 }
 
