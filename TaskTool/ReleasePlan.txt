@@ -52,6 +52,7 @@ Known bugs :
 	- Git report parser crashes when trying to parse a report coming from git asking for ssh password.
 	- Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
 	- Rsnapshot tests need to wait before doing backup. Maybe pending file operations need to be flushed before?
+	- Rsnapshot job created from SmartCreator leaves configuration file behind. Change its design to clean everything (and check while writing to not overwrite an existing one!!)
 
 -------------
 Release plan
@@ -61,6 +62,7 @@ v1.0 :
 	[010] Implement all TODOs in code
 	[017] Properly handle all error cases
 	[016] Create a package with binaries for easy install
+	[040] Use a zip lib to organize attachments in archives
 
 v0.9 :
 	[032] Property handle encodings for strings

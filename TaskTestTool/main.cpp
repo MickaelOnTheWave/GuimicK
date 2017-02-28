@@ -20,7 +20,6 @@ int main(int argc, char* argv[])
     else if (commandLine.HandleHelpCommand())
         return DID_NOT_RAN;
 
-
     vector<QObject*> tests;
     GetAllTests(tests);
 
