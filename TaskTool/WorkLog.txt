@@ -2,7 +2,8 @@
 	Production run failed. It seems that job is not configured well for remote targets...
 	Fixed issue, but no test was created for that : too hard to test remote targets.
 	Now going for free space job...
-	Finished parser test suite. Now going for parser implementation.
+	Finished parser test suite. Now going for parser implementation. Parser fully implemented!
+	Now going for command test suite.
 
 27/02/2017 (2.1h)
 	Created Feature test for testing both old and new way to setup Rsnapshot job. Refactored a bit Rsnapshot job to allow

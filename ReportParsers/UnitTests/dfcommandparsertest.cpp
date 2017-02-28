@@ -8,6 +8,8 @@
 
 using namespace std;
 
+const string suiteFolder = "DfCommand/";
+
 DfCommandParserTest::DfCommandParserTest()
 {
 }
@@ -34,9 +36,9 @@ void DfCommandParserTest::testParse_data()
     QTest::newRow("One drive")
         << "oneDrive.txt"
         << QStringList({"/dev/sda2"})
-        << QStringList({"230G"})
-        << QStringList({"168G"})
-        << QStringList({"50G"})
+        << QStringList({"230 Gb"})
+        << QStringList({"168 Gb"})
+        << QStringList({"50 Gb"})
         << QStringList({"78%"});
 
     QTest::newRow("Multiple drives")
@@ -51,7 +53,7 @@ void DfCommandParserTest::testParse_data()
 void DfCommandParserTest::testParse()
 {
     QFETCH(QString, file);
-    string content = FileTools::GetTextFileContent(file.toStdString());
+    string content = FileTools::GetTextFileContent(suiteFolder + file.toStdString());
 
     DfCommandParser parser;
     bool ok = parser.ParseBuffer(content);
