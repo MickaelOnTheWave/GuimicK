@@ -18,7 +18,8 @@ SOURCES += \
     rsnapshotreportparser.cpp \
     abstractoutputparser.cpp \
     filebackupreport.cpp \
-    abstractfilebackupparser.cpp
+    abstractfilebackupparser.cpp \
+    dfcommandparser.cpp
 
 HEADERS +=\
     abstractoutputparser.h \
@@ -27,7 +28,8 @@ HEADERS +=\
     gitreportparser.h \
     rsnapshotreportparser.h \
     filebackupreport.h \
-    abstractfilebackupparser.h
+    abstractfilebackupparser.h \
+    dfcommandparser.h
 
 unix {
     target.path = /usr/lib

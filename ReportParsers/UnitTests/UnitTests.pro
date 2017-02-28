@@ -23,7 +23,8 @@ SOURCES += \
     abstractoutputparsertest.cpp \
     mockparser.cpp \
     filebackupparserabstracttest.cpp \
-    aptupgradeparsertest.cpp
+    aptupgradeparsertest.cpp \
+    dfcommandparsertest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -59,7 +60,9 @@ OTHER_FILES += \
     data/rsnapshot5removed.log \
     data/rsnapshotall.log \
     data/apt1.txt \
-    data/rsnapshot_nospaceerror.txt
+    data/rsnapshot_nospaceerror.txt \
+    data/DfCommand/allDrives.txt \
+    data/DfCommand/oneDrive.txt
 
 HEADERS += \
     gitreportparsertest.h \
@@ -67,4 +70,5 @@ HEADERS += \
     abstractoutputparsertest.h \
     mockparser.h \
     filebackupparserabstracttest.h \
-    aptupgradeparsertest.h
+    aptupgradeparsertest.h \
+    dfcommandparsertest.h
