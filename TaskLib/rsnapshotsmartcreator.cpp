@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const string defaultConfigurationFile = "configuration.txt";
+const string defaultConfigurationFile = "rsnapshotConfigurationFile.conf";
 
 static const string defaultTemplateConfiguration =
         "config_version	1.2\n"
