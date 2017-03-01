@@ -23,16 +23,21 @@ private Q_SLOTS:
     void testRunBackup_data();
     void testRunBackup();
 
+    void testSmartCreator_TempFileIsCleaned();
+    void testSmartCreator_TempFileDoesNotOverwrite();
+
 private:
     JobStatus* RunBackupOnDataFolder(const std::string &folder);
     void CheckStatus(JobStatus* status);
     void CheckFiles();
 
-    JobStatus* RunRsnapshotJob();
+    JobStatus* RunRsnapshotJob(const std::string& tempConfigurationFile = "");
 
     void CheckTextContent(const std::string& content, const QString& referenceFile);
     void CheckFoldersHaveSameContent(const std::string& folder1, const std::string& folder2);
     std::string GetRsnapshotBackupFolder(const int number) const;
+
+    unsigned int GetFileNumberInCurrentFolder();
 
     std::string repository;
     std::string currentTestCaseName = "";

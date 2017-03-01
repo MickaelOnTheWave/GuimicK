@@ -21,7 +21,6 @@ using namespace std;
 #define JobStatus_ERROR             3
 
 const string templateConfigurationFile = "rsnapshot.conf";
-const string defaultConfigurationFile = "backuptests.conf";
 const string currentSourceFolder = "currentFolderToBackup";
 const string suiteFolder = "../Rsnapshot/";
 
@@ -38,14 +37,7 @@ void RsnapshotJobTest::init()
 void RsnapshotJobTest::cleanup()
 {
     string unusedOutput;
-    string removeCommand = string("rm ") + defaultConfigurationFile;
-    Tools::RunExternalCommandToBuffer(removeCommand, unusedOutput, true);
-
-    removeCommand = string("rm -Rf ") + repository;
-    Tools::RunExternalCommandToBuffer(removeCommand, unusedOutput, true);
-
-    removeCommand = string("rm -Rf ") + currentSourceFolder;
-    Tools::RunExternalCommandToBuffer(removeCommand, unusedOutput, true);
+    Tools::RunExternalCommandToBuffer("rm -Rf *", unusedOutput, true);
 }
 
 void RsnapshotJobTest::testCreate_InvalidSource()
@@ -95,6 +87,37 @@ void RsnapshotJobTest::testRunBackup()
     CheckFiles();
 }
 
+void RsnapshotJobTest::testSmartCreator_TempFileIsCleaned()
+{
+    unsigned int beforeFileCount = GetFileNumberInCurrentFolder();
+    QCOMPARE(beforeFileCount, 0u);
+
+    JobStatus* status = RunRsnapshotJob();
+    delete status;
+
+    unsigned int afterFileCount = GetFileNumberInCurrentFolder();
+    QCOMPARE(afterFileCount, beforeFileCount);
+}
+
+void RsnapshotJobTest::testSmartCreator_TempFileDoesNotOverwrite()
+{
+    const string dummyContent = "First line\nAnd second line of data\n";
+    const string existingFileName = "existingFile.txt";
+    FileTools::WriteBufferToFile(existingFileName, dummyContent);
+
+    unsigned int beforeFileCount = GetFileNumberInCurrentFolder();
+    QCOMPARE(beforeFileCount, 1u);
+
+    JobStatus* status = RunRsnapshotJob(existingFileName);
+    delete status;
+
+    unsigned int afterFileCount = GetFileNumberInCurrentFolder();
+    QCOMPARE(afterFileCount, beforeFileCount);
+
+    const string fileContent = FileTools::GetTextFileContent(existingFileName);
+    QCOMPARE(fileContent, dummyContent);
+}
+
 JobStatus* RsnapshotJobTest::RunBackupOnDataFolder(const string &folder)
 {
     string unusedOutput;
@@ -136,11 +159,13 @@ void RsnapshotJobTest::CheckFiles()
     CheckFoldersHaveSameContent(GetRsnapshotBackupFolder(0), currentSourceFolder);
 }
 
-JobStatus *RsnapshotJobTest::RunRsnapshotJob()
+JobStatus *RsnapshotJobTest::RunRsnapshotJob(const string &tempConfigurationFile)
 {
     RsnapshotSmartCreator creator(repository);
     creator.SetTemplateConfigurationFile(suiteFolder + templateConfigurationFile);
     creator.AddFolderToBackup(FileTools::BuildFullPath(currentSourceFolder), currentSourceFolder);
+    if (tempConfigurationFile != "")
+        creator.SetGeneratedConfigurationFile(tempConfigurationFile);
 
     RsnapshotBackupJob* job = creator.CreateConfiguredJob();
     JobStatus* status = job->Run();
@@ -176,4 +201,14 @@ string RsnapshotJobTest::GetRsnapshotBackupFolder(const int number) const
     stringstream stream;
     stream << repository << "weekly." << number << "/" << currentSourceFolder;
     return stream.str();
+}
+
+unsigned int RsnapshotJobTest::GetFileNumberInCurrentFolder()
+{
+    QDir currentDir = QDir::current();
+    QStringList folderList = currentDir.entryList();
+
+    folderList.removeAll(".");
+    folderList.removeAll("..");
+    return folderList.size();
 }

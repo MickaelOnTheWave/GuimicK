@@ -38,7 +38,8 @@ SOURCES += \
     wakejob.cpp \
     jobdebuginformationmanager.cpp \
     rsnapshotsmartcreator.cpp \
-    linuxfreespacecheckjob.cpp
+    linuxfreespacecheckjob.cpp \
+    rsnapshotsmartbackupjob.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -70,7 +71,8 @@ HEADERS +=\
     wakejob.h \
     jobdebuginformationmanager.h \
     rsnapshotsmartcreator.h \
-    linuxfreespacecheckjob.h
+    linuxfreespacecheckjob.h \
+    rsnapshotsmartbackupjob.h
 
 unix {
     target.path = /usr/lib

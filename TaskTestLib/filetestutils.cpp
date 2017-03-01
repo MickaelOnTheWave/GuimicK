@@ -30,7 +30,6 @@ QStringList FileTestUtils::GetFolderList(const QString &folder)
     folderList.removeAll(".");
     folderList.removeAll("..");
     return folderList;
-
 }
 
 void FileTestUtils::CheckFolderContent(const string &folder, const QStringList &expectedFiles)

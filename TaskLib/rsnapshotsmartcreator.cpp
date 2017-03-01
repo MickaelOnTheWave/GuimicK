@@ -1,7 +1,10 @@
 #include "rsnapshotsmartcreator.h"
 
+#include <sstream>
 #include <unistd.h>
+
 #include "filetools.h"
+#include "rsnapshotsmartbackupjob.h"
 
 using namespace std;
 
@@ -22,7 +25,8 @@ static const string defaultTemplateConfiguration =
         "rsync_long_args	--delete --numeric-ids --delete-excluded\n";
 
 RsnapshotSmartCreator::RsnapshotSmartCreator(const string& repositoryPath)
-    : repository(repositoryPath), templateFile("")
+    : repository(repositoryPath), templateFile(""),
+      configurationFile(defaultConfigurationFile)
 {
 }
 
@@ -31,23 +35,29 @@ void RsnapshotSmartCreator::SetTemplateConfigurationFile(const string &file)
     templateFile = file;
 }
 
+void RsnapshotSmartCreator::SetGeneratedConfigurationFile(const string &file)
+{
+    configurationFile = file;
+}
+
 void RsnapshotSmartCreator::AddFolderToBackup(const string &folder,
                                               const string &destination)
 {
     dataToBackup.push_back(make_pair(folder, destination));
 }
 
-RsnapshotBackupJob *RsnapshotSmartCreator::CreateConfiguredJob() const
+RsnapshotBackupJob *RsnapshotSmartCreator::CreateConfiguredJob()
 {
     BuildConfigurationFile();
-    return new RsnapshotBackupJob(repository, defaultConfigurationFile);
+    return new RsnapshotSmartBackupJob(repository, configurationFile);
 }
 
-void RsnapshotSmartCreator::BuildConfigurationFile() const
+void RsnapshotSmartCreator::BuildConfigurationFile()
 {
     string configurationContent = GetTemplateConfiguration();
     AppendBackupData(configurationContent);
-    FileTools::WriteBufferToFile(defaultConfigurationFile, configurationContent);
+    CheckAndFixConfigurationFile();
+    FileTools::WriteBufferToFile(configurationFile, configurationContent);
 }
 
 string RsnapshotSmartCreator::GetTemplateConfiguration() const
@@ -68,4 +78,18 @@ void RsnapshotSmartCreator::AppendBackupData(string &configurationData) const
         configurationData += string("\nbackup\t") + it->first;
         configurationData += "\t" + it->second + "\n";
     }
+}
+
+void RsnapshotSmartCreator::CheckAndFixConfigurationFile()
+{
+    string newConfigurationFile = configurationFile;
+    int counter = 0;
+    while (FileTools::FileExists(newConfigurationFile))
+    {
+        stringstream stream;
+        stream << configurationFile << counter++;
+        newConfigurationFile = stream.str();
+    }
+
+    configurationFile = newConfigurationFile;
 }
