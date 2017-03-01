@@ -1,3 +1,12 @@
+01/03/2017 (1.3h)
+	Checking production Output... Free space job is confirmed, there was an error on Rsnapshot. After checking, this is
+	due to wrong configuration (unexisting folder put to backup). However, for quality reasons, waiting for next run
+	to confirm feature on Release Plan. Going for bug...
+	Created two tests for checking two possible bug situations. Fixed bug for both cases.
+Next planned work :
+	- Confirm Rsnapshot backup job and update release plan
+	- Start work on ConsoleJob refactoring, probably beginning with test suite
+
 28/02/2017 (3.8h)
 	Production run failed. It seems that job is not configured well for remote targets...
 	Fixed issue, but no test was created for that : too hard to test remote targets.

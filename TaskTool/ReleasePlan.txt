@@ -13,6 +13,7 @@ Features implemented:
 	20/10/2016 - [037] Organize BackupAgent code and projects in tree like Tools
 	19/01/2017 - [019] Do not create intermediate files - handle all data in memory!
 	25/01/2017 - [002] Remove Wake script dependency
+	01/03/2017 - [038] Include Free space check in production run
 
 Features to implement:
 	[003] Use Curl lib instead of command line
@@ -34,7 +35,6 @@ Features to implement:
 	[035] Console job improvement : support an external parser system.
 	[036] Console job improvement : support a chain system.
 	[037] Have automated tests for all features
-	[038] Include Free space check in production run
 	[039] Create a Git-based File backup job
 	[040] Use a zip lib to organize attachments in archives
 	[041] Create a simple copy-based File backup job

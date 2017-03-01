@@ -44,11 +44,6 @@ Client
 			}
 			Folder
 			{
-				source = "mickael@desktop:~/mygames/";
-				dest = "mygames/";
-			}
-			Folder
-			{
 				source = "mickael@desktop:~/Videos/";
 				dest = "videos/";
 			}
