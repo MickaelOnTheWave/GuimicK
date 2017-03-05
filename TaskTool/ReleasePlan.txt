@@ -14,6 +14,7 @@ Features implemented:
 	19/01/2017 - [019] Do not create intermediate files - handle all data in memory!
 	25/01/2017 - [002] Remove Wake script dependency
 	01/03/2017 - [038] Include Free space check in production run
+	02/03/2017 - [033] Handle File backup folder data outside of rsnapshot conf file.
 
 Features to implement:
 	[003] Use Curl lib instead of command line
@@ -30,7 +31,6 @@ Features to implement:
 	[027] Manage email commands
 	[029] Split job config file into client/server files.
 	[032] Property handle encodings for strings
-	[033] Handle File backup folder data outside of rsnapshot conf file.
 	[034] Create Qt client app to create/manage backup folder configuration.
 	[035] Console job improvement : support an external parser system.
 	[036] Console job improvement : support a chain system.

@@ -1,3 +1,11 @@
+05/03/2017 (2.4h)
+	Rsnapshot backup job confirmed. Release plan updated. Now going for Console job, starting with its test suite.
+	Did a good test suite, all main features are tested except external parser. As parsing will be refactored, it
+	might not be useful to test it right now.
+Next planned work:
+	- Begin ConsoleJob refactoring : SshConsoleJob should use composition instead of inheritance
+	- ConsoleJob refactoring : what belongs to UserConsoleJob and to ConsoleJob
+
 01/03/2017 (1.3h)
 	Checking production Output... Free space job is confirmed, there was an error on Rsnapshot. After checking, this is
 	due to wrong configuration (unexisting folder put to backup). However, for quality reasons, waiting for next run
