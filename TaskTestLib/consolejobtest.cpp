@@ -31,7 +31,7 @@ void ConsoleJobTest::cleanup()
 
 void ConsoleJobTest::testRun_InvalidCommand()
 {
-    job = new ConsoleJob("", "nonexistentcommand", "");
+    job = new ConsoleJob("", "nonexistentcommand");
 
     status = job->Run();
     QCOMPARE(status->GetCode(), JobStatus_ERROR);
@@ -39,7 +39,7 @@ void ConsoleJobTest::testRun_InvalidCommand()
 
 void ConsoleJobTest::testRun_CheckReturnCode()
 {
-    job = new ConsoleJob("", "ls", "");
+    job = new ConsoleJob("", "ls");
 
     job->EnableSuccessOnReturnCode(0);
     RunAndCheckNoAttachments(JobStatus_OK, "");
@@ -51,7 +51,7 @@ void ConsoleJobTest::testRun_CheckReturnCode()
 void ConsoleJobTest::testRun_CheckOutput()
 {
     FileTools::WriteBufferToFile("testFile", "test content");
-    job = new ConsoleJob("", "ls", "");
+    job = new ConsoleJob("", "ls");
 
     job->EnableSuccessOnOutput("testFile");
     RunAndCheckNoAttachments(JobStatus_OK, "testFile");
@@ -63,7 +63,7 @@ void ConsoleJobTest::testRun_CheckOutput()
 void ConsoleJobTest::testRun_CheckAttachment()
 {
     FileTools::WriteBufferToFile("testFile", "test content");
-    job = new ConsoleJob("", "ls", "");
+    job = new ConsoleJob("", "ls");
 
     RunAndCheckNoAttachments(JobStatus_OK, "");
 
@@ -74,7 +74,7 @@ void ConsoleJobTest::testRun_CheckAttachment()
 void ConsoleJobTest::testRun_OutputToFile()
 {
     FileTools::WriteBufferToFile("testFile", "test content");
-    job = new ConsoleJob("", "ls testFile", "");
+    job = new ConsoleJob("", "ls testFile");
     job->SetOutputTofile("outputFile");
 
     RunAndCheck(JobStatus_OK, "");

@@ -102,14 +102,13 @@ ConsoleJob *Configuration::InitializeConsoleJobFromObject(ConfigurationObject *o
 {
     string title =          object->GetFirstProperty("title", "param0");
     string command =        object->GetFirstProperty("command", "param1");
-    string params =         object->GetFirstProperty("params", "param2");
-    string rawReturnCode =  object->GetFirstProperty("returnCode","param3");
+    string rawReturnCode =  object->GetFirstProperty("returnCode","param2");
     string expectedOutput = object->propertyList["expectedOutput"];
     string outputFile     = object->propertyList["outputFileName"];
     string parserCommand  = object->propertyList["parserCommand"];
 
     job->SetTitle(title);
-    job->Initialize(command, params);
+    job->Initialize(command);
 
     if (object->propertyList["showDebugInformation"] != "")
         job->SetOutputDebugInformation(true);

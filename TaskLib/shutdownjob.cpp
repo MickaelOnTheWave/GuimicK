@@ -1,6 +1,6 @@
 #include "shutdownjob.h"
 
-ShutdownJob::ShutdownJob()
-    : SshConsoleJob("Shutdown", "shutdown.exe", "-f -s")
+WindowsShutdownJob::WindowsShutdownJob()
+    : SshConsoleJob("Shutdown", "shutdown.exe -f -s")
 {
 }

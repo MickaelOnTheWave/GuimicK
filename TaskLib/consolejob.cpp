@@ -19,11 +19,10 @@ ConsoleJob::ConsoleJob()
 }
 
 // @TODO Check how to prevent commands from unwillingly outputting to console (ls error case for example).
-ConsoleJob::ConsoleJob(const string& _commandTitle, const string &_commandName,
-                       const string &_commandParameters, int _expectedReturnCode)
+ConsoleJob::ConsoleJob(const string& _commandTitle, const string &_command, int _expectedReturnCode)
     : commandTitle(_commandTitle), parserCommand(""), outputDebugInformation(false)
 {
-    Initialize(_commandName, _commandParameters, _expectedReturnCode);
+    Initialize(_command, _expectedReturnCode);
 }
 
 ConsoleJob::~ConsoleJob()
@@ -39,8 +38,7 @@ AbstractJob *ConsoleJob::Clone()
 {
     ConsoleJob* clone = new ConsoleJob();
     clone->commandTitle = commandTitle;
-    clone->commandName = commandName;
-    clone->commandParameters = commandParameters;
+    clone->command = command;
     clone->parserCommand = parserCommand;
     clone->checkReturnCode = checkReturnCode;
     clone->checkStandardOutput = checkStandardOutput;
@@ -69,10 +67,9 @@ void ConsoleJob::SetMiniDescriptionParserCommand(const string &parser)
     parserCommand = parser;
 }
 
-void ConsoleJob::Initialize(const string &_commandName, const string &_commandParameters, int _expectedReturnCode)
+void ConsoleJob::Initialize(const string &_commandName, int _expectedReturnCode)
 {
-    commandName = _commandName;
-    commandParameters = _commandParameters;
+    command = _commandName;
     outputFileName = "";
     receivedReturnCode = -1;
     standardOutput = "";
@@ -86,10 +83,10 @@ void ConsoleJob::Initialize(const string &_commandName, const string &_commandPa
 
 bool ConsoleJob::IsInitialized()
 {
-    string foundCommandFullName = Tools::GetCommandPath(commandName, appSearchPaths);
+    string foundCommandFullName = Tools::GetCommandPath(command, appSearchPaths);
     if (foundCommandFullName != "")
-        commandName = foundCommandFullName;
-    return (commandName != "");
+        command = foundCommandFullName;
+    return (command != "");
 }
 
 void ConsoleJob::SetOutputDebugInformation(const bool value)
@@ -102,8 +99,7 @@ JobStatus *ConsoleJob::Run()
 {
     JobDebugInformationManager debugInfo(GetName(), outputDebugInformation);
 
-    debugInfo.AddStringDataLine("Command", commandName);
-    debugInfo.AddStringDataLine("Parameters", commandParameters);
+    debugInfo.AddStringDataLine("Command", command);
 
     JobStatus* status = new JobStatus(JobStatus::OK);
     const string fullCommand = CreateFullCommand();
@@ -223,6 +219,6 @@ void ConsoleJob::ClearAppSearchPaths()
 
 string ConsoleJob::CreateFullCommand()
 {
-    return commandName + " " + commandParameters;
+    return command;
 }
 

@@ -19,8 +19,8 @@ class ConsoleJob : public AbstractJob
 {
 public:
     ConsoleJob();
-    ConsoleJob(const std::string& _commandTitle, const std::string& _commandName = "",
-               const std::string& _commandParameters = "", int _expectedReturnCode = 0);
+    ConsoleJob(const std::string& _commandTitle, const std::string& _command = "",
+               int _expectedReturnCode = 0);
 	virtual ~ConsoleJob();
 
 	virtual std::string GetName();
@@ -33,8 +33,8 @@ public:
 
     void SetMiniDescriptionParserCommand(const std::string& parser);
 
-    virtual void Initialize(const std::string& _commandName,
-                            const std::string& _commandParameters = "", int _expectedReturnCode = 0);
+    virtual void Initialize(const std::string& _command,
+                            int _expectedReturnCode = 0);
 
     virtual bool IsInitialized(void);
 
@@ -73,8 +73,7 @@ protected:
     */
     std::string commandTitle;
 
-	std::string commandName;
-    std::string commandParameters;
+    std::string command;
     std::string parserCommand;
 
     bool checkReturnCode;

@@ -11,10 +11,10 @@ const string SCAN_LOG_FILE = "clamavscan.txt";
 ClamAvJob::ClamAvJob()
 	: scanDir(""), blockOnFailingUpdate(false)
 {
-    virusDefinitionUpdateJob = new SshConsoleJob("", "freshclam.exe", "--verbose --on-update-execute=EXIT_0 --on-error-execute=EXIT_1 --on-outdated-execute=EXIT_2");
+    virusDefinitionUpdateJob = new SshConsoleJob("", "freshclam.exe --verbose --on-update-execute=EXIT_0 --on-error-execute=EXIT_1 --on-outdated-execute=EXIT_2");
     virusDefinitionUpdateJob->SetOutputToBuffer();
 
-    virusFullScanJob = new SshConsoleJob("", "", "");
+    virusFullScanJob = new SshConsoleJob("", "");
     virusFullScanJob->SetOutputToBuffer();
 }
 
@@ -49,9 +49,9 @@ bool ClamAvJob::InitializeFromClient(Client *client)
 		return false;
 
 	scanDir = client->GetProperty("avscandir");
-    string commandParams("--verbose --recursive ");
-    commandParams += scanDir;
-    virusFullScanJob->Initialize("clamscan.exe", commandParams);
+    string command("clamscan.exe --verbose --recursive ");
+    command += scanDir;
+    virusFullScanJob->Initialize(command);
 	blockOnFailingUpdate = (client->GetProperty("avmandatoryupdate") == "true");
     return true;
 }

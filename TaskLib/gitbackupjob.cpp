@@ -147,7 +147,7 @@ void GitBackupJob::RunGitPull(const string &repository, std::vector<JobStatus *>
     originalDirectory = getcwd(originalDirectory, originalDirectorySize);
     chdir(repository.c_str());
 
-    ConsoleJob* gitCommand = new ConsoleJob("", "git", "pull");
+    ConsoleJob* gitCommand = new ConsoleJob("", "git pull");
     gitCommand->SetOutputToBuffer();
     JobStatus* status = gitCommand->Run();
 
@@ -191,7 +191,7 @@ void GitBackupJob::RunGitClone(const string &source,
                                const string &destination,
                                vector<JobStatus *> &statusList) const
 {
-    ConsoleJob* gitCommand = new ConsoleJob("", "git", BuildGitParameters(source, destination));
+    ConsoleJob* gitCommand = new ConsoleJob("", string("git ") + BuildGitParameters(source, destination));
     const string gitLogFile = FileTools::GetFilenameFromUnixPath(destination) + ".txt";
     gitCommand->SetOutputToBuffer();
     JobStatus* status = gitCommand->Run();

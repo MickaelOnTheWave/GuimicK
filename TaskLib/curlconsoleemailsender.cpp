@@ -22,16 +22,16 @@ bool CurlConsoleEmailSender::Send(const bool isHtml,
     mailFile << MimeTools::CreateEmailContent(isHtml, displayName, emailAddress, destEmail, cc, bcc, subject, body, fileList, fileBuffers);
 	mailFile.close();
 
-    string curlParams;
-    curlParams += " --url \"" + GetSmtpUrl() + "\" --ssl-reqd ";
-    curlParams += "--mail-from \"" + emailAddress + "\" ";
-    curlParams += "--mail-rcpt \"" + destEmail + "\" ";
-    curlParams += "--upload-file " + mailFileName + " ";
-    curlParams += "--user \"" + emailAddress + ":" + password + "\" ";
-    curlParams += "--insecure ";
-    curlParams += "--silent --show-error";
+    string curlCommand("curl ");
+    curlCommand += " --url \"" + GetSmtpUrl() + "\" --ssl-reqd ";
+    curlCommand += "--mail-from \"" + emailAddress + "\" ";
+    curlCommand += "--mail-rcpt \"" + destEmail + "\" ";
+    curlCommand += "--upload-file " + mailFileName + " ";
+    curlCommand += "--user \"" + emailAddress + ":" + password + "\" ";
+    curlCommand += "--insecure ";
+    curlCommand += "--silent --show-error";
 
-    ConsoleJob curl("Curl", "curl", curlParams);
+    ConsoleJob curl("Curl", curlCommand);
     curl.SetOutputTofile("EmailSent.txt");
 
     JobStatus* status = curl.Run();

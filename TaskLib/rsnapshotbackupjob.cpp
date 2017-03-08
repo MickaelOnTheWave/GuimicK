@@ -16,8 +16,8 @@ const string debugFilename                  = "RsnapshotDebug.txt";
 RsnapshotBackupJob::RsnapshotBackupJob(const string& _backupRepositoryPath, const string &_rsnapshotConfFile)
     : showDebugOutput(false), waitAfterRun(false)
 {
-    backupCommand = new ConsoleJob("", "", "");
-    reportCommand = new ConsoleJob("", "", "");
+    backupCommand = new ConsoleJob("", "");
+    reportCommand = new ConsoleJob("", "");
 
     if (_backupRepositoryPath != "")
         SetRepositoryPath(_backupRepositoryPath);
@@ -56,18 +56,18 @@ void RsnapshotBackupJob::SetRepositoryPath(const string &path)
 {
     backupRepositoryPath = path;
 
-    string reportCommandParams("-v ");
-    reportCommandParams += backupRepositoryPath + "/weekly.0 " + backupRepositoryPath + "/weekly.1 2>&1";
-    reportCommand->Initialize("rsnapshot-diff", reportCommandParams);
+    string command("rsnapshot-diff -v ");
+    command += backupRepositoryPath + "/weekly.0 " + backupRepositoryPath + "/weekly.1 2>&1";
+    reportCommand->Initialize(command);
 }
 
 void RsnapshotBackupJob::SeConfigurationFile(const string &file)
 {
     configurationFile = file;
 
-    string commandParams("-c ");
-    commandParams += configurationFile + " weekly";
-    backupCommand->Initialize("rsnapshot", commandParams);
+    string command("rsnapshot -c ");
+    command += configurationFile + " weekly";
+    backupCommand->Initialize(command);
     backupCommand->SetOutputToBuffer();
 }
 

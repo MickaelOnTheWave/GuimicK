@@ -3,10 +3,10 @@
 
 #include "sshconsolejob.h"
 
-class ShutdownJob : public SshConsoleJob
+class WindowsShutdownJob : public SshConsoleJob
 {
 public:
-	ShutdownJob();
+    WindowsShutdownJob();
 };
 
 #endif // SHUTDOWNJOB_H

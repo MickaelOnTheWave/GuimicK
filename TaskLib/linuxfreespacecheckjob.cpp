@@ -90,11 +90,12 @@ bool LinuxFreeSpaceCheckJob::IsRemoteTargetConsistent() const
 
 ConsoleJob *LinuxFreeSpaceCheckJob::CreateJobInstance() const
 {
+    const string dfCommand = string("df -h ") + drive;
     if (isTargetLocal)
-        return new ConsoleJob("", "df -h", drive);
+        return new ConsoleJob("", dfCommand);
     else
     {
-        SshConsoleJob* job = new SshConsoleJob("", "df -h", drive);
+        SshConsoleJob* job = new SshConsoleJob("", dfCommand);
         job->SetTarget(sshUser, sshHost);
         return job;
     }

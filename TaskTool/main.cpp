@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
 
     if (localShutdown)
     {
-        ConsoleJob finalShutdown("Local Shutdown", "/sbin/poweroff", "");
+        ConsoleJob finalShutdown("Local Shutdown", "/sbin/poweroff");
         JobStatus* status = finalShutdown.Run();
         if (status->GetCode() != JobStatus::OK)
             cout << "Local shutdown failed : " << status->GetDescription() << endl;

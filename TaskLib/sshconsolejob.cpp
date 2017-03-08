@@ -4,9 +4,9 @@
 
 using namespace std;
 
-SshConsoleJob::SshConsoleJob(const std::string& _commandTitle, const std::string& _commandName,
-                             const std::string &_commandParameters, int _expectedReturnCode)
-    : ConsoleJob(_commandTitle, _commandName, _commandParameters, _expectedReturnCode),
+SshConsoleJob::SshConsoleJob(const std::string& _commandTitle, const std::string& _command,
+                             int _expectedReturnCode)
+    : ConsoleJob(_commandTitle, _command, _expectedReturnCode),
       user(""), host("")
 {
 }
