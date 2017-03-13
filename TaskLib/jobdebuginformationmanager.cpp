@@ -11,6 +11,23 @@ JobDebugInformationManager::JobDebugInformationManager(const string &jobName,
     debugFilename = jobName + "DebugInformation.txt";
 }
 
+JobDebugInformationManager::JobDebugInformationManager(const JobDebugInformationManager &other)
+{
+    debugFilename = other.debugFilename;
+    usingDebug = other.usingDebug;
+    allData = other.allData;
+}
+
+void JobDebugInformationManager::Reset()
+{
+    allData = "";
+}
+
+void JobDebugInformationManager::SetUse(const bool value)
+{
+    usingDebug = value;
+}
+
 void JobDebugInformationManager::AddIntDataLine(const string &label, const int data)
 {
     if (usingDebug == false)

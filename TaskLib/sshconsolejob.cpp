@@ -6,7 +6,7 @@ using namespace std;
 
 SshConsoleJob::SshConsoleJob(const std::string& _commandTitle, const std::string& _command,
                              int _expectedReturnCode)
-    : ConsoleJob(_commandTitle, _command, _expectedReturnCode),
+    : UserConsoleJob(_commandTitle, _command, _expectedReturnCode),
       user(""), host("")
 {
 }
@@ -25,7 +25,7 @@ bool SshConsoleJob::InitializeFromClient(Client *client)
     if (host == "")
         host = client->GetProperty("ip");
 
-    return (user != "" && host != "");
+    return IsInitialized();
 }
 
 bool SshConsoleJob::IsInitialized()
@@ -35,12 +35,12 @@ bool SshConsoleJob::IsInitialized()
 
 JobStatus *SshConsoleJob::Run()
 {
-    return ConsoleJob::Run();
-}
+    string remoteCommand = command;
+    command = string("ssh ") + user + "@" + host + " \"" + remoteCommand + "\"";
 
-string SshConsoleJob::CreateFullCommand()
-{
-    string localCommand = ConsoleJob::CreateFullCommand();
-    return string("ssh ") + user + "@" + host + " \"" + localCommand + "\"";
+    JobStatus* status = ConsoleJob::Run();
+
+    command = remoteCommand;
+    return status;
 }
 

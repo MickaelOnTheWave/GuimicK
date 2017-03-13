@@ -13,14 +13,11 @@
  * @note A job cannot check an output file contents, thus it is impossible to
  * configure it to output to a file and have a success condition based on output content.
  */
-// TODO : create a UserConsoleJob and a separate ConsoleJob. There are several features in there
-// that are only useful to user defined jobs.
 class ConsoleJob : public AbstractJob
 {
 public:
-    ConsoleJob();
-    ConsoleJob(const std::string& _commandTitle, const std::string& _command = "",
-               int _expectedReturnCode = 0);
+    ConsoleJob(const std::string& _command = "", int _expectedReturnCode = 0);
+    ConsoleJob(const ConsoleJob& other);
 	virtual ~ConsoleJob();
 
 	virtual std::string GetName();
@@ -29,18 +26,13 @@ public:
 
     virtual bool InitializeFromClient(Client *);
 
-    void SetTitle(const std::string& _title);
-
-    void SetMiniDescriptionParserCommand(const std::string& parser);
-
-    virtual void Initialize(const std::string& _command,
-                            int _expectedReturnCode = 0);
-
     virtual bool IsInitialized(void);
 
-    void SetOutputDebugInformation(const bool value);
-
 	virtual JobStatus* Run();
+
+    void SetExpectedReturnCode(const int value);
+
+    void SetCommand(const std::string& command);
 
 	int GetCommandReturnCode();
 
@@ -50,14 +42,6 @@ public:
      */
     std::string GetCommandOutput() const;
 
-    void SetOutputTofile(const std::string& filename);
-    void SetOutputToBuffer(void);
-    void AttachOutputToStatus(void);
-
-    void EnableSuccessOnReturnCode(int code);
-    void DisableSuccessOnReturnCode();
-    void EnableSuccessOnOutput(const std::string& output);
-    void DisableSuccessOnOutput();
 
     // TODO : find a better place for that. This is a global feature, not
     // necessary related to this job.
@@ -67,26 +51,14 @@ public:
 
 protected:
 
-    virtual std::string CreateFullCommand(void);
-    /**
-        This is used only for having a beautiful name on reports
-    */
-    std::string commandTitle;
+    virtual bool RunCommand();
+    virtual JobStatus* CreateSuccessStatus();
+    virtual JobStatus* CreateErrorStatus();
 
     std::string command;
-    std::string parserCommand;
-
-    bool checkReturnCode;
-    bool checkStandardOutput;
-    bool attachOutputToStatus;
-
-    std::string outputFileName;
-    std::string standardOutput;
-    std::string expectedOutput;
-
-	int expectedReturnCode;
-	int receivedReturnCode;
-    bool outputDebugInformation;
+    std::string commandOutput;
+    int expectedReturnCode;
+    int receivedReturnCode;
 };
 
 #endif // CONSOLEJOB_H

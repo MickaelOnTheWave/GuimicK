@@ -5,10 +5,9 @@
 using namespace std;
 
 ChangeScreensaverJob::ChangeScreensaverJob(int _timeOut)
-	: ConsoleJob("", "Change Screen Saver"),
+    : UserConsoleJob("Change Screen Saver", ""),
 	  sshUser(""), clientIp(""), timeOut(_timeOut)
 {
-    outputFileName = "screensaver.log";
 }
 
 bool ChangeScreensaverJob::InitializeFromClient(Client *client)
@@ -24,7 +23,7 @@ bool ChangeScreensaverJob::InitializeFromClient(Client *client)
 	stringstream strTimeout;
 	strTimeout << timeOut;
 
-	commandName = "sh changeComputerScreensaver.sh -u remotebackup -h desktop -t 3600";
+    command = "sh changeComputerScreensaver.sh -u remotebackup -h desktop -t 3600";
 	/*commandName += " -u " + sshUser;
 	commandName += " -h " + clientIp;
 	commandName += " -t " + strTimeout.str();*/

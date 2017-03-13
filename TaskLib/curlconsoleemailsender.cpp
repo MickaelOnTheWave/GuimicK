@@ -3,8 +3,9 @@
 #include <fstream>
 #include <stdio.h>
 
-#include <mimetools.h>
 #include "consolejob.h"
+#include "filetools.h"
+#include "mimetools.h"
 
 using namespace std;
 
@@ -31,15 +32,10 @@ bool CurlConsoleEmailSender::Send(const bool isHtml,
     curlCommand += "--insecure ";
     curlCommand += "--silent --show-error";
 
-    ConsoleJob curl("Curl", curlCommand);
-    curl.SetOutputTofile("EmailSent.txt");
-
+    ConsoleJob curl(curlCommand);
     JobStatus* status = curl.Run();
-    if (status->GetCode() == JobStatus::OK)
-	{
-		remove("EmailSent.txt");
-		remove(mailFileName.c_str());
-	}
+    if (status->GetCode() != JobStatus::OK)
+        FileTools::WriteBufferToFile("SentEmail.txt", curl.GetCommandOutput());
 
     return (status->GetCode() == JobStatus::OK);
 }

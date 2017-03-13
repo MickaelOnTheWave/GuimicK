@@ -92,7 +92,7 @@ ConsoleJob *LinuxFreeSpaceCheckJob::CreateJobInstance() const
 {
     const string dfCommand = string("df -h ") + drive;
     if (isTargetLocal)
-        return new ConsoleJob("", dfCommand);
+        return new ConsoleJob(dfCommand);
     else
     {
         SshConsoleJob* job = new SshConsoleJob("", dfCommand);

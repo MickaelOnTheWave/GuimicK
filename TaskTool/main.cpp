@@ -22,7 +22,7 @@
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.513";
+static const string PROGRAM_VERSION = "0.514";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
 void ShowErrors(list<string> &errorMessages);
@@ -134,7 +134,7 @@ int main(int argc, char* argv[])
 
     if (localShutdown)
     {
-        ConsoleJob finalShutdown("Local Shutdown", "/sbin/poweroff");
+        ConsoleJob finalShutdown("/sbin/poweroff");
         JobStatus* status = finalShutdown.Run();
         if (status->GetCode() != JobStatus::OK)
             cout << "Local shutdown failed : " << status->GetDescription() << endl;

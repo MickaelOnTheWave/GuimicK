@@ -1,5 +1,19 @@
-08/03/2017 (16.7)
+12/03/2017 (1.4h)
+	Going for Console job test suites. Refactored both test suites, now all is OK and running.
+Next planned work:
+	- Add parser class support for ConsoleJob, with proper updates in test suite.
+	- Improve external parser support for UserConsoleJob for full buffer use. With test suite.
+	- Check how to properly refactor SshConsoleJob. Is Composition really the best choice?
+
+08/03/2017 (2.8h)
 	Removed "parameter" parameter from ConsoleJob - it was not useful.
+	Refactored all existing features to have proper separation between ConsoleJob and UserConsoleJob. Both class
+	are now compiling and should execute as before.
+Next planned work:
+	- Refactor Console job test suite. Now there should be two test suites, one for each class.
+	- Add parser class support for ConsoleJob, with proper updates in test suite.
+	- Improve external parser support for UserConsoleJob for full buffer use. With test suite.
+	- Check how to properly refactor SshConsoleJob. Is Composition really the best choice?
 
 05/03/2017 (2.4h)
 	Rsnapshot backup job confirmed. Release plan updated. Now going for Console job, starting with its test suite.

@@ -1,9 +1,9 @@
 #ifndef SSHCONSOLEJOB_H
 #define SSHCONSOLEJOB_H
 
-#include "consolejob.h"
+#include "userconsolejob.h"
 
-class SshConsoleJob : public ConsoleJob
+class SshConsoleJob : public UserConsoleJob
 {
 public:
     SshConsoleJob(const std::string& _commandTitle, const std::string& _command = "",
@@ -17,9 +17,7 @@ public:
 
 	virtual JobStatus* Run();
 
-protected:
-    virtual std::string CreateFullCommand(void);
-
+private:
 	std::string user;
 	std::string host;
 };

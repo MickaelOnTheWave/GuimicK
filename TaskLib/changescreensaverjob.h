@@ -3,9 +3,9 @@
 
 #include <string>
 
-#include "consolejob.h"
+#include "userconsolejob.h"
 
-class ChangeScreensaverJob : public ConsoleJob
+class ChangeScreensaverJob : public UserConsoleJob
 {
 public:
 	ChangeScreensaverJob(int _timeOut);

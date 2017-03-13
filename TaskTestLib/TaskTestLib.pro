@@ -22,7 +22,8 @@ SOURCES += tasktestlib.cpp \
     rsnapshotjobtest.cpp \
     taskfeaturetest.cpp \
     filetestutils.cpp \
-    consolejobtest.cpp
+    consolejobtest.cpp \
+    userconsolejobtest.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
@@ -32,7 +33,8 @@ HEADERS += tasktestlib.h \
     rsnapshotjobtest.h \
     taskfeaturetest.h \
     filetestutils.h \
-    consolejobtest.h
+    consolejobtest.h \
+    userconsolejobtest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

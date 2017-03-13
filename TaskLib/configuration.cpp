@@ -10,6 +10,7 @@
 #include "clamavjob.h"
 #include "profiledjob.h"
 #include "rsnapshotsmartcreator.h"
+#include "userconsolejob.h"
 
 using namespace std;
 
@@ -87,7 +88,7 @@ AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
 	else if (object->name == "Shutdown")
         return CreateShutdownJobFromObject(object);
     else if (object->name == "Console")
-        return InitializeConsoleJobFromObject(object, new ConsoleJob());
+        return InitializeConsoleJobFromObject(object, new UserConsoleJob());
     else if (object->name == "SshConsole")
         return InitializeConsoleJobFromObject(object, new SshConsoleJob(""));
     else if (object->name == "GitBackup")
@@ -98,7 +99,7 @@ AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
         return NULL;
 }
 
-ConsoleJob *Configuration::InitializeConsoleJobFromObject(ConfigurationObject *object, ConsoleJob *job) const
+ConsoleJob *Configuration::InitializeConsoleJobFromObject(ConfigurationObject *object, UserConsoleJob *job) const
 {
     string title =          object->GetFirstProperty("title", "param0");
     string command =        object->GetFirstProperty("command", "param1");
@@ -131,7 +132,7 @@ ConsoleJob *Configuration::InitializeConsoleJobFromObject(ConfigurationObject *o
     if (outputFile != "")
         job->SetOutputTofile(outputFile);
     else
-        job->AttachOutputToStatus();
+        job->SetAttachOutput(true);
 
     if (parserCommand != "")
         job->SetMiniDescriptionParserCommand(parserCommand);

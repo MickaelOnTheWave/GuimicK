@@ -4,12 +4,7 @@
 
 #include "filetools.h"
 #include "tools.h"
-
-// TODO : remove this and find a way to use JobStatus values outside of library
-#define JobStatus_NOT_EXECUTED      0
-#define JobStatus_OK                1
-#define JobStatus_OK_WITH_WARNINGS  2
-#define JobStatus_ERROR             3
+#include "userconsolejob.h"
 
 using namespace std;
 
@@ -29,59 +24,42 @@ void ConsoleJobTest::cleanup()
     delete status;
 }
 
-void ConsoleJobTest::testRun_InvalidCommand()
+void ConsoleJobTest::testRunOk()
 {
-    job = new ConsoleJob("", "nonexistentcommand");
+    job = CreateDefaultJob();
+    RunAndCheckNoAttachments(JobStatus_OK,
+                             GetExpectedOkDescription());
 
-    status = job->Run();
-    QCOMPARE(status->GetCode(), JobStatus_ERROR);
+    job->SetExpectedReturnCode(1);
+    RunAndCheckNoAttachments(JobStatus_ERROR,
+                             GetExpectedErrorDescription(1, 0));
 }
 
-void ConsoleJobTest::testRun_CheckReturnCode()
+void ConsoleJobTest::testRunError()
 {
-    job = new ConsoleJob("", "ls");
-
-    job->EnableSuccessOnReturnCode(0);
-    RunAndCheckNoAttachments(JobStatus_OK, "");
-
-    job->EnableSuccessOnReturnCode(1);
-    RunAndCheckNoAttachments(JobStatus_ERROR, "Return value : 0 - expected : 1\n");
+    job = CreateDefaultJob("ls nonexistingfolder");
+    RunAndCheckNoAttachments(JobStatus_ERROR,
+                             GetExpectedErrorDescription(0, 2));
 }
 
-void ConsoleJobTest::testRun_CheckOutput()
+string ConsoleJobTest::GetExpectedOkDescription()
 {
-    FileTools::WriteBufferToFile("testFile", "test content");
-    job = new ConsoleJob("", "ls");
-
-    job->EnableSuccessOnOutput("testFile");
-    RunAndCheckNoAttachments(JobStatus_OK, "testFile");
-
-    job->EnableSuccessOnOutput("Output is not that");
-    RunAndCheckNoAttachments(JobStatus_ERROR, "Received <testFile> - expected <Output is not that>\n");
+    return string("");
 }
 
-void ConsoleJobTest::testRun_CheckAttachment()
+string ConsoleJobTest::GetExpectedErrorDescription(const int, const int)
 {
-    FileTools::WriteBufferToFile("testFile", "test content");
-    job = new ConsoleJob("", "ls");
-
-    RunAndCheckNoAttachments(JobStatus_OK, "");
-
-    job->AttachOutputToStatus();
-    RunAndCheckWithAttachment(JobStatus_OK, "");
+    return string("");
 }
 
-void ConsoleJobTest::testRun_OutputToFile()
+ConsoleJob *ConsoleJobTest::CreateDefaultJob(void)
 {
-    FileTools::WriteBufferToFile("testFile", "test content");
-    job = new ConsoleJob("", "ls testFile");
-    job->SetOutputTofile("outputFile");
+    return CreateDefaultJob("ls");
+}
 
-    RunAndCheck(JobStatus_OK, "");
-    CheckAttachmentCount(1, 0);
-
-    string content = FileTools::GetTextFileContent("outputFile");
-    QCOMPARE(content.c_str(), "testFile\n");
+ConsoleJob *ConsoleJobTest::CreateDefaultJob(const string &command)
+{
+    return new ConsoleJob(command);
 }
 
 void ConsoleJobTest::RunAndCheckNoAttachments(const int expectedCode,
@@ -89,17 +67,6 @@ void ConsoleJobTest::RunAndCheckNoAttachments(const int expectedCode,
 {
     RunAndCheck(expectedCode, expectedDescription);
     CheckAttachmentCount(0, 0);
-}
-
-void ConsoleJobTest::RunAndCheckWithAttachment(const int expectedCode,
-                                               const std::string& expectedDescription)
-{
-    RunAndCheck(expectedCode, expectedDescription);
-    CheckAttachmentCount(0, 1);
-
-    vector<pair<string,string> > buffers;
-    status->GetFileBuffers(buffers);
-    QCOMPARE(buffers.front().second.c_str(), "testFile");
 }
 
 void ConsoleJobTest::RunAndCheck(const int expectedCode,

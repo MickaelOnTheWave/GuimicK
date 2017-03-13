@@ -5,6 +5,7 @@
 #include "rsnapshoterroranalyzertest.h"
 #include "rsnapshotjobtest.h"
 #include "taskfeaturetest.h"
+#include "userconsolejobtest.h"
 
 void GetAllTests(std::vector<QObject*>& tests)
 {
@@ -13,6 +14,7 @@ void GetAllTests(std::vector<QObject*>& tests)
     tests.push_back(new GitJobTest());
     tests.push_back(new TaskFeatureTest());
     tests.push_back(new ConsoleJobTest());
+    tests.push_back(new UserConsoleJobTest());
 }
 
 void FreeTests(std::vector<QObject*>& tests)
