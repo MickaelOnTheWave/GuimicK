@@ -40,10 +40,10 @@ void UserConsoleJobTest::testRun_CheckOutput()
     FileTools::WriteBufferToFile("testFile", "test content");
     job = ConsoleJobTest::CreateDefaultJob();
 
-    GetJob()->EnableSuccessOnOutput("testFile");
+    GetJob()->SetExpectedOutput("testFile");
     RunAndCheckNoAttachments(JobStatus_OK, "");
 
-    GetJob()->EnableSuccessOnOutput("Output is not that");
+    GetJob()->SetExpectedOutput("Output is not that");
     RunAndCheckNoAttachments(JobStatus_ERROR, "Received <testFile> - expected <Output is not that>\n");
 }
 
@@ -69,6 +69,21 @@ void UserConsoleJobTest::testRun_OutputToFile()
 
     std::string content = FileTools::GetTextFileContent("outputFile");
     QCOMPARE(content.c_str(), "testFile\n");
+}
+
+void UserConsoleJobTest::testConfiguration_CheckConditions()
+{
+    job = ConsoleJobTest::CreateDefaultJob();
+    CheckJobConditions(0, "");
+
+    GetJob()->SetExpectedReturnCode(2);
+    CheckJobConditions(2, "");
+
+    GetJob()->SetExpectedOutput("blabla");
+    CheckJobConditions(-1, "blabla");
+
+    GetJob()->SetExpectedReturnCode(3);
+    CheckJobConditions(3, "");
 }
 
 string UserConsoleJobTest::GetExpectedErrorDescription(const int expectedCode,
@@ -99,4 +114,11 @@ void UserConsoleJobTest::RunAndCheckOneAttachment(const int expectedCode,
     vector<pair<string,string> > buffers;
     status->GetFileBuffers(buffers);
     QCOMPARE(buffers.front().second.c_str(), expectedAttachmentContent.c_str());
+}
+
+void UserConsoleJobTest::CheckJobConditions(const int expectedCode,
+                                            const string &expectedOutput)
+{
+    QCOMPARE(GetJob()->GetExpectedReturnCode(), expectedCode);
+    QCOMPARE(GetJob()->GetExpectedOutput().c_str(), expectedOutput.c_str());
 }

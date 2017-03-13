@@ -30,7 +30,8 @@ public:
 
 	virtual JobStatus* Run();
 
-    void SetExpectedReturnCode(const int value);
+    int GetExpectedReturnCode() const;
+    virtual void SetExpectedReturnCode(const int value);
 
     void SetCommand(const std::string& command);
 

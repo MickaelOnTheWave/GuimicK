@@ -16,6 +16,11 @@ Features implemented:
 	01/03/2017 - [038] Include Free space check in production run
 	02/03/2017 - [033] Handle File backup folder data outside of rsnapshot conf file.
 
+Fixed bugs :
+	13/03/2017 - [004]
+
+Bugs to fix : [001] [002] [003] [005]
+
 Features to implement:
 	[003] Use Curl lib instead of command line
 	[008] Use another time level of backup for other jobs (monly/yearly...)
@@ -48,11 +53,12 @@ Abandoned features :
 	[020] Check/repair Screensaver modification from script
 	[022] Remove Screensaver script dependency
 
-Known bugs :
-	- Git report parser crashes when trying to parse a report coming from git asking for ssh password.
-	- Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
-	- Rsnapshot tests need to wait before doing backup. Maybe pending file operations need to be flushed before?
-	- Rsnapshot job created from SmartCreator leaves configuration file behind. Change its design to clean everything (and check while writing to not overwrite an existing one!!)
+Bug database :
+	[001] Git report parser crashes when trying to parse a report coming from git asking for ssh password.
+	[002] Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
+	[003] Rsnapshot tests need to wait before doing backup. Maybe pending file operations need to be flushed before?
+	[004] Rsnapshot job created from SmartCreator leaves configuration file behind. Change its design to clean everything (and check while writing to not overwrite an existing one!!)
+	[005] Some bad configurations make app crash. See confbackuponly.txt in Synology.
 
 -------------
 Release plan

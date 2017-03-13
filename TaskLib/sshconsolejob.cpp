@@ -11,6 +11,18 @@ SshConsoleJob::SshConsoleJob(const std::string& _commandTitle, const std::string
 {
 }
 
+SshConsoleJob::SshConsoleJob(const SshConsoleJob &other)
+    : UserConsoleJob(other)
+{
+    user = other.user;
+    host = other.host;
+}
+
+AbstractJob *SshConsoleJob::Clone()
+{
+    return new SshConsoleJob(*this);
+}
+
 void SshConsoleJob::SetTarget(const string &_user, const string &_host)
 {
     user = _user;

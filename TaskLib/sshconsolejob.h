@@ -8,6 +8,9 @@ class SshConsoleJob : public UserConsoleJob
 public:
     SshConsoleJob(const std::string& _commandTitle, const std::string& _command = "",
                     int _expectedReturnCode = 0);
+    SshConsoleJob(const SshConsoleJob& other);
+
+    virtual AbstractJob* Clone();
 
     void SetTarget(const std::string& _user, const std::string& _host);
 

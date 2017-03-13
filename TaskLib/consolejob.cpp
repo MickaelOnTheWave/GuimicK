@@ -59,6 +59,11 @@ JobStatus *ConsoleJob::Run()
         return CreateErrorStatus();
 }
 
+int ConsoleJob::GetExpectedReturnCode() const
+{
+    return expectedReturnCode;
+}
+
 void ConsoleJob::SetExpectedReturnCode(const int value)
 {
     expectedReturnCode = value;

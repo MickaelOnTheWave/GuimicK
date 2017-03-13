@@ -1,3 +1,10 @@
+13/03/2017 (19)
+	Production backup failed with update. Checking what happened...
+	One big issue was found : production configuration is wrong! There is no more params parameter. Updating it.
+	Creating test cases to check these scenarii. Other conceptual mistakes were found about return code and
+	output checking. Creating test cases for them too...
+	Created test and fixed issue with success conditions.
+
 12/03/2017 (1.4h)
 	Going for Console job test suites. Refactored both test suites, now all is OK and running.
 Next planned work:

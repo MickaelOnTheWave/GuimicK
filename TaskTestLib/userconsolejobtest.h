@@ -17,6 +17,7 @@ private Q_SLOTS:
     void testRun_CheckOutput();
     void testRun_CheckAttachment();
     void testRun_OutputToFile();
+    void testConfiguration_CheckConditions();
 
 protected:
     virtual std::string GetExpectedErrorDescription(const int expectedCode,
@@ -28,6 +29,9 @@ protected:
     void RunAndCheckOneAttachment(const int expectedCode,
                                   const std::string& expectedDescription,
                                   const std::string& expectedAttachmentContent);
+
+    void CheckJobConditions(const int expectedCode,
+                            const std::string& expectedOutput);
 
 };
 

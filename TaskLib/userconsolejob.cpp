@@ -55,9 +55,9 @@ void UserConsoleJob::Initialize(const string &_command, int _expectedReturnCode)
     receivedReturnCode = -1;
     commandOutput = "";
     expectedOutput = "";
+    checkReturnCode = true;
     checkStandardOutput = false;
     attachOutputToStatus = false;
-    EnableSuccessOnReturnCode(_expectedReturnCode);
 
     IsInitialized();
 }
@@ -94,6 +94,15 @@ void UserConsoleJob::SetOutputToBuffer()
     outputFileName = "";
 }
 
+void UserConsoleJob::SetExpectedReturnCode(const int value)
+{
+    ConsoleJob::SetExpectedReturnCode(value);
+
+    expectedOutput = "";
+    checkReturnCode = true;
+    checkStandardOutput = false;
+}
+/*
 void UserConsoleJob::EnableSuccessOnReturnCode(int code)
 {
     expectedReturnCode = code;
@@ -117,6 +126,20 @@ void UserConsoleJob::DisableSuccessOnOutput()
 {
     expectedOutput = "";
     checkStandardOutput = false;
+}
+*/
+string UserConsoleJob::GetExpectedOutput() const
+{
+    return expectedOutput;
+}
+
+void UserConsoleJob::SetExpectedOutput(const string &value)
+{
+    expectedOutput = value;
+
+    expectedReturnCode = -1;
+    checkStandardOutput = true;
+    checkReturnCode = false;
 }
 
 // @TODO resolve bug where apparently output is not correctly processed with it has some special chars (like in :-) )

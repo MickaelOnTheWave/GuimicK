@@ -119,15 +119,11 @@ ConsoleJob *Configuration::InitializeConsoleJobFromObject(ConfigurationObject *o
         int returnCode = 0;
         stringstream ss(rawReturnCode);
         ss >> returnCode;
-        job->EnableSuccessOnReturnCode(returnCode);
+        job->SetExpectedReturnCode(returnCode);
     }
-    else
-        job->DisableSuccessOnReturnCode();
 
     if (expectedOutput != "")
-        job->EnableSuccessOnOutput(expectedOutput);
-    else
-        job->DisableSuccessOnOutput();
+        job->SetExpectedOutput(expectedOutput);
 
     if (outputFile != "")
         job->SetOutputTofile(outputFile);

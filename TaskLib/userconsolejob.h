@@ -31,10 +31,10 @@ public:
     void SetOutputTofile(const std::string& filename);
     void SetOutputToBuffer(void);
 
-    void EnableSuccessOnReturnCode(int code);
-    void DisableSuccessOnReturnCode();
-    void EnableSuccessOnOutput(const std::string& output);
-    void DisableSuccessOnOutput();
+    virtual void SetExpectedReturnCode(const int value);
+
+    std::string GetExpectedOutput() const;
+    void SetExpectedOutput(const std::string& value);
 
 protected:
     virtual bool RunCommand();
