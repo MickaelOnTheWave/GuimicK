@@ -1,3 +1,8 @@
+14/03/2017 (18.5)
+	Production backup failed again :-( Problem might be in SshConsoleJob.
+	Problem seems to be in console job for email sending : command was never search in bin paths as it is not
+	being initialized in job list. Fixed that.
+
 13/03/2017 (2.2h)
 	Production backup failed with update. Checking what happened...
 	One big issue was found : production configuration is wrong! There is no more params parameter. Updating it.

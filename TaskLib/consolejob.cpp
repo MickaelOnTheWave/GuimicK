@@ -13,6 +13,9 @@ ConsoleJob::ConsoleJob(const string &_command, int _expectedReturnCode)
     : command(_command), commandOutput(""),
       expectedReturnCode(_expectedReturnCode), receivedReturnCode(-1)
 {
+    string foundCommandFullName = Tools::GetCommandPath(command, appSearchPaths);
+    if (foundCommandFullName != "")
+        command = foundCommandFullName;
 }
 
 ConsoleJob::ConsoleJob(const ConsoleJob &other)
@@ -44,9 +47,6 @@ bool ConsoleJob::InitializeFromClient(Client *)
 
 bool ConsoleJob::IsInitialized()
 {
-    string foundCommandFullName = Tools::GetCommandPath(command, appSearchPaths);
-    if (foundCommandFullName != "")
-        command = foundCommandFullName;
     return (command != "");
 }
 
