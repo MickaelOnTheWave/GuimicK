@@ -1,0 +1,23 @@
+Client
+{
+	Name = "Testing computer";
+	JobList
+	{
+		Console
+		{
+			title = "Simple command - parsing through files";
+			command = "cat folder/output.txt > file.txt";
+			parserCommand = "./folder/CommandLineTool --direct --parser git --input file.txt";
+		}
+	}
+}
+
+Report
+{
+	type = "html";
+	timed = "false";
+	css = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/report.css";
+}
+
+SendReportByEmail = false;
+ShutdownOnFinish = false;

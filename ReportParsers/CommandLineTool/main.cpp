@@ -4,6 +4,7 @@
 #include <abstractoutputparser.h>
 #include <aptgetupgradeparser.h>
 #include <clamavreportparser.h>
+#include <dfcommandparser.h>
 #include <gitreportparser.h>
 #include <rsnapshotreportparser.h>
 
@@ -24,6 +25,8 @@ int main(int argc, char* argv[])
     commandLine.AddParameter("output", "[OUTPUT_FILE]");
     commandLine.AddParameter("parser", "[PARSER]");
     commandLine.AddParameter("direct", "Outputs raw data without \"headers\". For automated usage.");
+    commandLine.AddParameter("inputbuffer", "Uses input directly from command line instead of file. "
+                             "Must be between \"\".");
 
     bool isDirectUsage = commandLine.HasParameter("direct");
 
@@ -37,10 +40,12 @@ int main(int argc, char* argv[])
     }
 
     const string inputFile(commandLine.GetParameterValue("input"));
+    const string inputBuffer(commandLine.GetParameterValue("inputbuffer"));
     const string outputFile(commandLine.GetParameterValue("output"));
     const string parserAlgorithm(commandLine.GetParameterValue("parser"));
+    const bool isInputValid = (inputFile != "" || inputBuffer != "");
 
-    if (inputFile== "" || parserAlgorithm == "")
+    if (isInputValid == false || parserAlgorithm == "")
     {
         if (!isDirectUsage)
             commandLine.ShowUsageInformation();
@@ -55,7 +60,13 @@ int main(int argc, char* argv[])
         return PARSER_ERROR;
     }
 
-    bool result = parser->ParseFile(inputFile);
+
+    bool result = false;
+    if (inputFile != "")
+        result = parser->ParseFile(inputFile);
+    else
+        result = parser->ParseBuffer(inputBuffer);
+
     if (result == false)
     {
         if (!isDirectUsage)
@@ -82,6 +93,8 @@ AbstractOutputParser* CreateParser(const std::string& name)
         return new RSnapshotReportParser();
     else if (name == "git")
         return new GitReportParser();
+    else if (name == "df")
+        return new DfCommandParser();
     else
         return NULL;
 }

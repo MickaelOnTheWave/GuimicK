@@ -1,0 +1,22 @@
+Client
+{
+	Name = "Testing computer";
+	JobList
+	{
+		Console
+		{
+			title = "Simple console command";
+			command = "ls folder";
+		}
+	}
+}
+
+Report
+{
+	type = "html";
+	timed = "false";
+	css = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/report.css";
+}
+
+SendReportByEmail = false;
+ShutdownOnFinish = false;

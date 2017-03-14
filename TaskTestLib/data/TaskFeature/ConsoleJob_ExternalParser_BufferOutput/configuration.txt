@@ -1,0 +1,24 @@
+Client
+{
+	Name = "Testing computer";
+	JobList
+	{
+		Console
+		{
+			title = "Simple command - parsing through buffer";
+			command = "cat folder/output.txt";
+			parserCommand = "./folder/CommandLineTool --direct --parser git --inputbuffer";
+			parserUsesBuffer = true;
+		}
+	}
+}
+
+Report
+{
+	type = "html";
+	timed = "false";
+	css = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/report.css";
+}
+
+SendReportByEmail = false;
+ShutdownOnFinish = false;

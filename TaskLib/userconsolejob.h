@@ -30,6 +30,7 @@ public:
 
     void SetOutputTofile(const std::string& filename);
     void SetOutputToBuffer(void);
+    void SetParsingUsingBuffer(const bool value);
 
     virtual void SetExpectedReturnCode(const int value);
 
@@ -51,14 +52,16 @@ protected:
     void FinalizeStatusCreation();
 
 private:
+    std::string CreateParserCommand() const;
+
     std::string commandTitle;
     std::string parserCommand;
 
     JobStatus* currentStatus;
 
     bool attachOutputToStatus;
-
     bool successConditionOnStandardOutput;
+    bool useParserWithBuffer;
     std::string outputFileName;
     std::string expectedOutput;
 

@@ -9,6 +9,8 @@ QT       -= core gui
 TARGET = ParsersLib
 TEMPLATE = lib
 
+CONFIG += shared_and_static build_all
+
 DEFINES += PARSERSLIB_LIBRARY
 
 SOURCES += \

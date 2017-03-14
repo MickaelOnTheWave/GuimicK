@@ -1,9 +1,20 @@
-14/03/2017 (18.5)
+14/03/2017 (1.9h)
 	Production backup failed again :-( Problem might be in SshConsoleJob.
 	Problem seems to be in console job for email sending : command was never search in bin paths as it is not
 	being initialized in job list. Fixed that. There might be a lot of other issues as all jobs seem to fail.
 	Found another possible error that is causing job errors in list - in an untestable area. Fixing it.
 	Going for parser (while waiting for current issues of console job to be identified and resolved).
+	While beginning implementation, it was found that having a generic parser feature inside Console job is
+	not a good idea at all. Parsing results vary between jobs, and there is too little common funcionality to
+	enable it to be usable. Better as it is. So now going for external parser in UserConsoleJob.
+	Created feature test for external parsing. Updated job and parse tool to support buffers. Test is OK and
+	implementation too! Nearly finished last feature of version 0.6 :-)
+Next planned work :
+	- Check that production run is OK
+	- Check SshConsoleJob test possibility - will it work remoting to sel?
+	- Check SshConsoleJob refactoring - is it relevant?
+	- Check if parsing feature can be added to UserConsoleJob test suite
+	- Move to version 0.6
 
 13/03/2017 (2.2h)
 	Production backup failed with update. Checking what happened...

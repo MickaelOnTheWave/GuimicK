@@ -61,6 +61,7 @@ void UserConsoleJob::Initialize(const string &_command, int _expectedReturnCode)
     expectedOutput = "";
     successConditionOnStandardOutput = false;
     attachOutputToStatus = false;
+    useParserWithBuffer = false;
 
     IsInitialized();
 }
@@ -73,6 +74,7 @@ void UserConsoleJob::SetTitle(const std::string &title)
 void UserConsoleJob::SetMiniDescriptionParserCommand(const string &parser)
 {
     parserCommand = parser;
+    attachOutputToStatus = false;
 }
 
 void UserConsoleJob::SetAttachOutput(const bool value)
@@ -95,6 +97,11 @@ void UserConsoleJob::SetOutputTofile(const string &filename)
 void UserConsoleJob::SetOutputToBuffer()
 {
     outputFileName = "";
+}
+
+void UserConsoleJob::SetParsingUsingBuffer(const bool value)
+{
+    useParserWithBuffer = value;
 }
 
 void UserConsoleJob::SetExpectedReturnCode(const int value)
@@ -169,7 +176,7 @@ void UserConsoleJob::RunCommandOnFile()
 void UserConsoleJob::RunCommandOnBuffer()
 {
     ConsoleJob::RunCommand();
-    if (attachOutputToStatus)
+    if (attachOutputToStatus && commandOutput != "")
         currentStatus->AddFileBuffer(commandTitle + ".txt", commandOutput);
 }
 
@@ -185,9 +192,8 @@ void UserConsoleJob::FillStatusFromParsing()
 {
     debugInfo.AddStringDataLine("Parser command", parserCommand);
 
-    // TODO make parserCommand smarter! To use directly output from command.
     string miniDescription("");
-    int returnValue = Tools::RunExternalCommandToBuffer(parserCommand, miniDescription);
+    int returnValue = Tools::RunExternalCommandToBuffer(CreateParserCommand(), miniDescription, true);
     if (returnValue != -1)
     {
         currentStatus->SetCode(JobStatus::OK);
@@ -221,4 +227,12 @@ void UserConsoleJob::FillErrorStatusFromReturnCode()
 void UserConsoleJob::FinalizeStatusCreation()
 {
     currentStatus = debugInfo.UpdateStatus(currentStatus);
+}
+
+string UserConsoleJob::CreateParserCommand() const
+{
+    if (useParserWithBuffer)
+        return parserCommand + " \"" + commandOutput + "\"";
+    else
+        return parserCommand;
 }

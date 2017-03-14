@@ -85,4 +85,14 @@ OTHER_FILES += \
     data/TaskFeature/RsnapshotOldConf/report.html \
     data/TaskFeature/RsnapshotOldConf/attachment1.txt \
     data/TaskFeature/RsnapshotOldConf/configuration.txt \
-    data/TaskFeature/RsnapshotOldConf/rsnapshot.conf
+    data/TaskFeature/RsnapshotOldConf/rsnapshot.conf \
+    data/TaskFeature/ConsoleJob_NewWay/report.html \
+    data/TaskFeature/ConsoleJob_NewWay/attachment1.txt \
+    data/TaskFeature/ConsoleJob_NewWay/configuration.txt \
+    data/TaskFeature/ConsoleJob_OldWrongWay/report.html \
+    data/TaskFeature/ConsoleJob_OldWrongWay/attachment1.txt \
+    data/TaskFeature/ConsoleJob_OldWrongWay/configuration.txt \
+    data/TaskFeature/ConsoleJob_ExternalParser_BufferOutput/report.html \
+    data/TaskFeature/ConsoleJob_ExternalParser_BufferOutput/configuration.txt \
+    data/TaskFeature/ConsoleJob_ExternalParser_FileOutput/report.html \
+    data/TaskFeature/ConsoleJob_ExternalParser_FileOutput/configuration.txt
