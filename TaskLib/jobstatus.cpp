@@ -16,9 +16,19 @@ JobStatus::JobStatus(int _code, const string &_description)
 {
 }
 
+JobStatus::JobStatus(const JobStatus &other)
+{
+    code = other.code;
+    description = other.description;
+    elapsedTime = other.elapsedTime;
+    copy(other.externalFilenames.begin(), other.externalFilenames.end(), back_inserter(externalFilenames));
+    copy(other.filebuffers.begin(), other.filebuffers.end(), back_inserter(filebuffers));
+}
+
 JobStatus::~JobStatus()
 {
     externalFilenames.clear();
+    filebuffers.clear();
 }
 
 void JobStatus::Reset()
@@ -26,6 +36,7 @@ void JobStatus::Reset()
 	code = NOT_EXECUTED;
 	description = "";
     externalFilenames.clear();
+    filebuffers.clear();
 }
 
 void JobStatus::SetCode(int _code)

@@ -16,12 +16,15 @@ private Q_SLOTS:
     void testRun_CheckReturnCode();
     void testRun_CheckOutput();
     void testRun_CheckAttachment();
-    void testRun_OutputToFile();
+    void testRun_OutputToFile_ReturnCode();
+    void testRun_OutputToFile_OutputDoesNotWork();
     void testConfiguration_CheckConditions();
 
 protected:
     virtual std::string GetExpectedErrorDescription(const int expectedCode,
                                                     const int receivedCode);
+    std::string GetExpectedErrorDescription(const std::string& expected,
+                                            const std::string& received);
 
     virtual ConsoleJob* CreateDefaultJob(const std::string& command);
     UserConsoleJob* GetJob(void);

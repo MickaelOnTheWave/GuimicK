@@ -3,7 +3,8 @@
 	One big issue was found : production configuration is wrong! There is no more params parameter. Updating it.
 	Creating test cases to check these scenarii. Other conceptual mistakes were found about return code and
 	output checking. Creating test cases for them too...
-	Created test and fixed issue with success conditions.
+	Created test and fixed issue with success conditions. Also created test for file output and output checking.
+	Finalized feature tests for console job - with old wrong way testing.
 
 12/03/2017 (1.4h)
 	Going for Console job test suites. Refactored both test suites, now all is OK and running.

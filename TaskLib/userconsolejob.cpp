@@ -25,10 +25,14 @@ UserConsoleJob::UserConsoleJob(const UserConsoleJob &other)
     commandTitle = other.commandTitle;
     attachOutputToStatus = other.attachOutputToStatus;
     parserCommand = other.parserCommand;
-    checkReturnCode = other.checkReturnCode;
-    checkStandardOutput = other.checkStandardOutput;
+    successConditionOnStandardOutput = other.successConditionOnStandardOutput;
     outputFileName = other.outputFileName;
     expectedOutput = other.expectedOutput;
+
+    if (other.currentStatus)
+        currentStatus = new JobStatus(*other.currentStatus);
+    else
+        currentStatus = NULL;
 }
 
 UserConsoleJob::~UserConsoleJob()
@@ -55,8 +59,7 @@ void UserConsoleJob::Initialize(const string &_command, int _expectedReturnCode)
     receivedReturnCode = -1;
     commandOutput = "";
     expectedOutput = "";
-    checkReturnCode = true;
-    checkStandardOutput = false;
+    successConditionOnStandardOutput = false;
     attachOutputToStatus = false;
 
     IsInitialized();
@@ -86,7 +89,7 @@ void UserConsoleJob::SetOutputTofile(const string &filename)
 {
     outputFileName = filename;
     expectedOutput = "";
-    checkStandardOutput = false;
+    successConditionOnStandardOutput = false;
 }
 
 void UserConsoleJob::SetOutputToBuffer()
@@ -99,35 +102,9 @@ void UserConsoleJob::SetExpectedReturnCode(const int value)
     ConsoleJob::SetExpectedReturnCode(value);
 
     expectedOutput = "";
-    checkReturnCode = true;
-    checkStandardOutput = false;
-}
-/*
-void UserConsoleJob::EnableSuccessOnReturnCode(int code)
-{
-    expectedReturnCode = code;
-    checkReturnCode = true;
+    successConditionOnStandardOutput = false;
 }
 
-void UserConsoleJob::DisableSuccessOnReturnCode()
-{
-    expectedReturnCode = -1;
-    checkReturnCode = false;
-}
-
-void UserConsoleJob::EnableSuccessOnOutput(const string &output)
-{
-    outputFileName = "";
-    expectedOutput = output;
-    checkStandardOutput = true;
-}
-
-void UserConsoleJob::DisableSuccessOnOutput()
-{
-    expectedOutput = "";
-    checkStandardOutput = false;
-}
-*/
 string UserConsoleJob::GetExpectedOutput() const
 {
     return expectedOutput;
@@ -138,8 +115,7 @@ void UserConsoleJob::SetExpectedOutput(const string &value)
     expectedOutput = value;
 
     expectedReturnCode = -1;
-    checkStandardOutput = true;
-    checkReturnCode = false;
+    successConditionOnStandardOutput = true;
 }
 
 // @TODO resolve bug where apparently output is not correctly processed with it has some special chars (like in :-) )
@@ -174,7 +150,7 @@ JobStatus *UserConsoleJob::CreateSuccessStatus()
 
 JobStatus *UserConsoleJob::CreateErrorStatus()
 {
-    if (IsCheckingOutput())
+    if (successConditionOnStandardOutput)
         FillErrorStatusFromOutput();
     else
         FillErrorStatusFromReturnCode();
@@ -199,15 +175,10 @@ void UserConsoleJob::RunCommandOnBuffer()
 
 bool UserConsoleJob::IsRunOk()
 {
-    if (IsCheckingOutput())
+    if (successConditionOnStandardOutput)
         return commandOutput == expectedOutput;
     else
         return receivedReturnCode == expectedReturnCode;
-}
-
-bool UserConsoleJob::IsCheckingOutput()
-{
-    return checkStandardOutput;
 }
 
 void UserConsoleJob::FillStatusFromParsing()

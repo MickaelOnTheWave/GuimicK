@@ -15,6 +15,7 @@ public:
 
 	JobStatus();
 	JobStatus(int _code, const std::string& _description = "");
+    JobStatus(const JobStatus& other);
 	~JobStatus();
 
 	void Reset();

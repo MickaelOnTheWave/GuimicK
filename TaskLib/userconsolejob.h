@@ -44,7 +44,6 @@ protected:
     void RunCommandOnFile();
     void RunCommandOnBuffer();
     bool IsRunOk();
-    bool IsCheckingOutput();
 
     void FillStatusFromParsing();
     void FillErrorStatusFromOutput();
@@ -59,8 +58,7 @@ private:
 
     bool attachOutputToStatus;
 
-    bool checkReturnCode;
-    bool checkStandardOutput;
+    bool successConditionOnStandardOutput;
     std::string outputFileName;
     std::string expectedOutput;
 

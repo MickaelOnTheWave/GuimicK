@@ -22,6 +22,7 @@ void ConsoleJobTest::cleanup()
 {
     delete job;
     delete status;
+    status = nullptr;
 }
 
 void ConsoleJobTest::testRunOk()

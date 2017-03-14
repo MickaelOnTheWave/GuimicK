@@ -44,7 +44,7 @@ void UserConsoleJobTest::testRun_CheckOutput()
     RunAndCheckNoAttachments(JobStatus_OK, "");
 
     GetJob()->SetExpectedOutput("Output is not that");
-    RunAndCheckNoAttachments(JobStatus_ERROR, "Received <testFile> - expected <Output is not that>\n");
+    RunAndCheckNoAttachments(JobStatus_ERROR, GetExpectedErrorDescription("Output is not that", "testFile"));
 }
 
 void UserConsoleJobTest::testRun_CheckAttachment()
@@ -58,7 +58,7 @@ void UserConsoleJobTest::testRun_CheckAttachment()
     RunAndCheckOneAttachment(JobStatus_OK, "", "testFile");
 }
 
-void UserConsoleJobTest::testRun_OutputToFile()
+void UserConsoleJobTest::testRun_OutputToFile_ReturnCode()
 {
     FileTools::WriteBufferToFile("testFile", "test content");
     job = CreateDefaultJob("ls testFile");
@@ -67,8 +67,28 @@ void UserConsoleJobTest::testRun_OutputToFile()
     RunAndCheck(JobStatus_OK, "");
     CheckAttachmentCount(1, 0);
 
-    std::string content = FileTools::GetTextFileContent("outputFile");
+    string content = FileTools::GetTextFileContent("outputFile");
     QCOMPARE(content.c_str(), "testFile\n");
+}
+
+void UserConsoleJobTest::testRun_OutputToFile_OutputDoesNotWork()
+{
+    const string testFileName = "testFile";
+    const string testFileContent = "test content";
+    const string outputFileName = "output";
+
+    FileTools::WriteBufferToFile(testFileName, testFileContent);
+    job = CreateDefaultJob(string("cat ") + testFileName);
+    GetJob()->SetOutputTofile(outputFileName);
+
+    GetJob()->SetExpectedOutput(testFileContent);
+    RunAndCheck(JobStatus_ERROR, GetExpectedErrorDescription(testFileContent, ""));
+    CheckAttachmentCount(1, 0);
+
+    const string wrongContent = "wrong content";
+    GetJob()->SetExpectedOutput(wrongContent);
+    RunAndCheck(JobStatus_ERROR, GetExpectedErrorDescription(wrongContent, ""));
+    CheckAttachmentCount(1, 0);
 }
 
 void UserConsoleJobTest::testConfiguration_CheckConditions()
@@ -91,6 +111,13 @@ string UserConsoleJobTest::GetExpectedErrorDescription(const int expectedCode,
 {
     stringstream stream;
     stream << "Return value : " << receivedCode << " - expected : " << expectedCode << endl;
+    return stream.str();
+}
+
+string UserConsoleJobTest::GetExpectedErrorDescription(const string &expected, const string &received)
+{
+    stringstream stream;
+    stream << "Received <" << received << "> - expected <" << expected << ">" << endl;
     return stream.str();
 }
 
