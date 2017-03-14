@@ -27,7 +27,7 @@ public:
 
 	bool LoadFromFile(const std::string& fileName, std::list<std::string> &errorMessages);
 
-    ClientWorkManager* BuildWorkList() const;
+    ClientWorkManager* BuildTimedWorkList() const;
 
     ClientWorkManager* BuildSimpleWorkList() const;
 

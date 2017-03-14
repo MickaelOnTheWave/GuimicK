@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 
     SelfIdentity* selfIdentity = configuration.GetSelfIdentity();
 
-    ClientWorkManager* workList = configuration.BuildWorkList();
+    ClientWorkManager* workList = configuration.BuildTimedWorkList();
     AbstractReportCreator* reportCreator = configuration.GetReportCreator();
 
     // Use configuration and consider command line as priority when specified

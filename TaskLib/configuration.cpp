@@ -358,14 +358,14 @@ bool Configuration::GetBooleanValue(const string &strValue, list<string> &errorM
 	return false;
 }
 
-ClientWorkManager *Configuration::BuildWorkList() const
+ClientWorkManager *Configuration::BuildTimedWorkList() const
 {
 	ClientWorkManager* workManager = new ClientWorkManager(client);
 
 	list<AbstractJob*>::const_iterator it = jobList.begin();
 	list<AbstractJob*>::const_iterator end = jobList.end();
 	for (; it!=end; it++)
-        workManager->AddJob(new ProfiledJob(*it)); // TODO : check - a clone should be needed.
+        workManager->AddJob(new ProfiledJob((*it)->Clone()));
 
     return workManager;
 }
