@@ -27,7 +27,7 @@ public:
 
 private:
     bool IsRemoteTargetConsistent() const;
-    ConsoleJob* CreateJobInstance() const;
+    AbstractConsoleJob *CreateJobInstance() const;
 
     std::string drive;
     bool isTargetLocal;

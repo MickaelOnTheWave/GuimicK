@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "abstractjob.h"
+#include "AbstractConsoleJob.h"
 
 /**
  * @brief Generic job ran from a console command.
@@ -13,7 +13,7 @@
  * @note A job cannot check an output file contents, thus it is impossible to
  * configure it to output to a file and have a success condition based on output content.
  */
-class ConsoleJob : public AbstractJob
+class ConsoleJob : public AbstractConsoleJob
 {
 public:
     ConsoleJob(const std::string& _command = "", int _expectedReturnCode = 0);
@@ -30,18 +30,14 @@ public:
 
 	virtual JobStatus* Run();
 
-    int GetExpectedReturnCode() const;
+    virtual int GetExpectedReturnCode() const;
     virtual void SetExpectedReturnCode(const int value);
 
-    void SetCommand(const std::string& command);
+    virtual std::string GetCommand() const;
+    virtual void SetCommand(const std::string& command);
 
-	int GetCommandReturnCode();
-
-    /**
-     * @return Output content if command was configured to run using string buffer,
-     * and output file name if it was configured to use an external file to store output.
-     */
-    std::string GetCommandOutput() const;
+    virtual int GetCommandReturnCode();
+    virtual std::string GetCommandOutput() const;
 
 
     // TODO : find a better place for that. This is a global feature, not

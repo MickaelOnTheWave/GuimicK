@@ -50,7 +50,7 @@ bool LinuxFreeSpaceCheckJob::IsInitialized()
 
 JobStatus *LinuxFreeSpaceCheckJob::Run()
 {
-    ConsoleJob* job = CreateJobInstance();
+    AbstractConsoleJob* job = CreateJobInstance();
 
     JobStatus* status = job->Run();
     if (status->GetCode() == JobStatus::OK)
@@ -88,16 +88,16 @@ bool LinuxFreeSpaceCheckJob::IsRemoteTargetConsistent() const
     return (sshUser != "" && sshHost != "");
 }
 
-ConsoleJob *LinuxFreeSpaceCheckJob::CreateJobInstance() const
+AbstractConsoleJob *LinuxFreeSpaceCheckJob::CreateJobInstance() const
 {
-    const string dfCommand = string("df -h ") + drive;
+    ConsoleJob* dfJob = new ConsoleJob(string("df -h ") + drive);
     if (isTargetLocal)
-        return new ConsoleJob(dfCommand);
+        return dfJob;
     else
     {
-        SshConsoleJob* job = new SshConsoleJob("", dfCommand);
-        job->SetTarget(sshUser, sshHost);
-        return job;
+        SshConsoleJob* sshJob = new SshConsoleJob("", dfJob);
+        sshJob->SetTarget(sshUser, sshHost);
+        return sshJob;
     }
 }
 

@@ -2,7 +2,7 @@
 #define CLAMAVJOB_H
 
 #include "abstractjob.h"
-#include "sshconsolejob.h"
+#include "userconsolejob.h"
 
 class ClamAvJob : public AbstractJob
 {
@@ -22,8 +22,8 @@ public:
 	virtual JobStatus* Run();
 
 protected:
-	SshConsoleJob* virusDefinitionUpdateJob;
-	SshConsoleJob* virusFullScanJob;
+    UserConsoleJob* virusDefinitionUpdateJob;
+    UserConsoleJob* virusFullScanJob;
 	std::string scanDir;
 	bool blockOnFailingUpdate;
 };

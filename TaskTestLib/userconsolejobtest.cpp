@@ -131,18 +131,6 @@ UserConsoleJob *UserConsoleJobTest::GetJob()
     return dynamic_cast<UserConsoleJob*>(job);
 }
 
-void UserConsoleJobTest::RunAndCheckOneAttachment(const int expectedCode,
-                                              const string &expectedDescription,
-                                              const string &expectedAttachmentContent)
-{
-    RunAndCheck(expectedCode, expectedDescription);
-    CheckAttachmentCount(0, 1);
-
-    vector<pair<string,string> > buffers;
-    status->GetFileBuffers(buffers);
-    QCOMPARE(buffers.front().second.c_str(), expectedAttachmentContent.c_str());
-}
-
 void UserConsoleJobTest::CheckJobConditions(const int expectedCode,
                                             const string &expectedOutput)
 {

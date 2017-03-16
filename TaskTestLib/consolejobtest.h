@@ -30,17 +30,21 @@ protected:
     virtual std::string GetExpectedErrorDescription(const int expectedCode,
                                                     const int receivedCode);
 
-    virtual ConsoleJob* CreateDefaultJob(void);
-    virtual ConsoleJob* CreateDefaultJob(const std::string& command);
+    virtual AbstractConsoleJob* CreateDefaultJob(void);
+    virtual AbstractConsoleJob* CreateDefaultJob(const std::string& command);
 
     void RunAndCheckNoAttachments(const int expectedCode,
                                   const std::string& expectedDescription);
+    void RunAndCheckOneAttachment(const int expectedCode,
+                                  const std::string &expectedDescription,
+                                  const std::string &expectedAttachmentContent);
+
     void RunAndCheck(const int expectedCode,
                      const std::string& expectedDescription);
     void CheckAttachmentCount(const unsigned long fileCount,
                               const unsigned long bufferCount);
 
-    ConsoleJob* job = nullptr;
+    AbstractConsoleJob* job = nullptr;
     JobStatus* status = nullptr;
 };
 

@@ -69,6 +69,11 @@ void ConsoleJob::SetExpectedReturnCode(const int value)
     expectedReturnCode = value;
 }
 
+string ConsoleJob::GetCommand() const
+{
+    return command;
+}
+
 void ConsoleJob::SetCommand(const string &_command)
 {
     command = _command;

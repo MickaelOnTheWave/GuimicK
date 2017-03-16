@@ -11,11 +11,8 @@ const string SCAN_LOG_FILE = "clamavscan.txt";
 ClamAvJob::ClamAvJob()
 	: scanDir(""), blockOnFailingUpdate(false)
 {
-    virusDefinitionUpdateJob = new SshConsoleJob("", "freshclam.exe --verbose --on-update-execute=EXIT_0 --on-error-execute=EXIT_1 --on-outdated-execute=EXIT_2");
-    virusDefinitionUpdateJob->SetOutputToBuffer();
-
-    virusFullScanJob = new SshConsoleJob("", "");
-    virusFullScanJob->SetOutputToBuffer();
+    virusDefinitionUpdateJob = new UserConsoleJob("", "freshclam.exe --verbose --on-update-execute=EXIT_0 --on-error-execute=EXIT_1 --on-outdated-execute=EXIT_2");
+    virusFullScanJob = new UserConsoleJob("", "");
 }
 
 ClamAvJob::~ClamAvJob()
@@ -32,8 +29,8 @@ std::string ClamAvJob::GetName()
 AbstractJob *ClamAvJob::Clone()
 {
     ClamAvJob* clone = new ClamAvJob();
-    clone->virusDefinitionUpdateJob = static_cast<SshConsoleJob*>(virusDefinitionUpdateJob->Clone());
-    clone->virusFullScanJob = static_cast<SshConsoleJob*>(virusFullScanJob->Clone());
+    clone->virusDefinitionUpdateJob = static_cast<UserConsoleJob*>(virusDefinitionUpdateJob->Clone());
+    clone->virusFullScanJob = static_cast<UserConsoleJob*>(virusFullScanJob->Clone());
     clone->scanDir = scanDir;
     clone->blockOnFailingUpdate = blockOnFailingUpdate;
     return clone;

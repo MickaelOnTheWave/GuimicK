@@ -1,21 +1,41 @@
 #include "sshconsolejob.h"
 
 #include <sstream>
+#include "tools.h"
 
 using namespace std;
 
-SshConsoleJob::SshConsoleJob(const std::string& _commandTitle, const std::string& _command,
-                             int _expectedReturnCode)
-    : UserConsoleJob(_commandTitle, _command, _expectedReturnCode),
-      user(""), host("")
+const string noTargetError = "No target specified";
+const string invalidTargetError = "Invalid target specified";
+
+SshConsoleJob::SshConsoleJob(const string& _title, ConsoleJob *_job)
+    : title(_title), user(""), host("")
 {
+    remoteJob = _job;
+}
+
+SshConsoleJob::SshConsoleJob(const string &_title, const string &_command)
+    : title(_title), user(""), host("")
+{
+    remoteJob = new ConsoleJob(_command);
 }
 
 SshConsoleJob::SshConsoleJob(const SshConsoleJob &other)
-    : UserConsoleJob(other)
 {
+    title = other.title;
     user = other.user;
     host = other.host;
+    remoteJob = static_cast<ConsoleJob*>(other.remoteJob->Clone());
+}
+
+SshConsoleJob::~SshConsoleJob()
+{
+    delete remoteJob;
+}
+
+string SshConsoleJob::GetName()
+{
+    return title;
 }
 
 AbstractJob *SshConsoleJob::Clone()
@@ -47,12 +67,48 @@ bool SshConsoleJob::IsInitialized()
 
 JobStatus *SshConsoleJob::Run()
 {
-    string remoteCommand = command;
-    command = string("ssh ") + user + "@" + host + " \"" + remoteCommand + "\"";
+    if (IsInitialized() == false)
+        return new JobStatus(JobStatus::ERROR, noTargetError);
+    else if (Tools::IsComputerAlive(host) == false)
+        return new JobStatus(JobStatus::ERROR, invalidTargetError);
 
-    JobStatus* status = ConsoleJob::Run();
+    string oldCommandName = remoteJob->GetCommand();
+    string newCommandName = string("ssh ") + user + "@" + host + " \"" + oldCommandName + "\"";
+    remoteJob->SetCommand(newCommandName);
 
-    command = remoteCommand;
+    JobStatus* status = remoteJob->Run();
+
+    remoteJob->SetCommand(oldCommandName);
     return status;
+}
+
+int SshConsoleJob::GetExpectedReturnCode() const
+{
+    return remoteJob->GetExpectedReturnCode();
+}
+
+void SshConsoleJob::SetExpectedReturnCode(const int value)
+{
+    remoteJob->SetExpectedReturnCode(value);
+}
+
+string SshConsoleJob::GetCommand() const
+{
+    return remoteJob->GetCommand();
+}
+
+void SshConsoleJob::SetCommand(const string &command)
+{
+    remoteJob->SetCommand(command);
+}
+
+int SshConsoleJob::GetCommandReturnCode()
+{
+    return remoteJob->GetCommandReturnCode();
+}
+
+string SshConsoleJob::GetCommandOutput() const
+{
+    return remoteJob->GetCommandOutput();
 }
 

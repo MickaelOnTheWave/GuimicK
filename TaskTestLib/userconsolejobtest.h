@@ -26,12 +26,8 @@ protected:
     std::string GetExpectedErrorDescription(const std::string& expected,
                                             const std::string& received);
 
-    virtual ConsoleJob* CreateDefaultJob(const std::string& command);
+    virtual ConsoleJob* CreateDefaultJob(const std::string& command) override;
     UserConsoleJob* GetJob(void);
-
-    void RunAndCheckOneAttachment(const int expectedCode,
-                                  const std::string& expectedDescription,
-                                  const std::string& expectedAttachmentContent);
 
     void CheckJobConditions(const int expectedCode,
                             const std::string& expectedOutput);

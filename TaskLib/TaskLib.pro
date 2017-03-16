@@ -72,7 +72,8 @@ HEADERS +=\
     jobdebuginformationmanager.h \
     rsnapshotsmartcreator.h \
     linuxfreespacecheckjob.h \
-    rsnapshotsmartbackupjob.h
+    rsnapshotsmartbackupjob.h \
+    AbstractConsoleJob.h
 
 unix {
     target.path = /usr/lib

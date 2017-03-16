@@ -88,9 +88,9 @@ AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
 	else if (object->name == "Shutdown")
         return CreateShutdownJobFromObject(object);
     else if (object->name == "Console")
-        return InitializeConsoleJobFromObject(object, new UserConsoleJob());
+        return InitializeUserConsoleJobFromObject(object);
     else if (object->name == "SshConsole")
-        return InitializeConsoleJobFromObject(object, new SshConsoleJob(""));
+        return InitializeSshConsoleJobFromObject(object);
     else if (object->name == "GitBackup")
         return CreateGitBackupJob(object);
     else if (object->name == "DiskSpaceCheck")
@@ -99,7 +99,7 @@ AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
         return NULL;
 }
 
-ConsoleJob *Configuration::InitializeConsoleJobFromObject(ConfigurationObject *object, UserConsoleJob *job) const
+UserConsoleJob *Configuration::InitializeUserConsoleJobFromObject(ConfigurationObject *object) const
 {
     string title =          object->GetFirstProperty("title", "param0");
     string command =        object->GetFirstProperty("command", "param1");
@@ -108,6 +108,7 @@ ConsoleJob *Configuration::InitializeConsoleJobFromObject(ConfigurationObject *o
     string outputFile     = object->propertyList["outputFileName"];
     string parserCommand  = object->propertyList["parserCommand"];
 
+    UserConsoleJob* job = new UserConsoleJob();
     job->SetTitle(title);
     job->Initialize(command);
 
@@ -134,6 +135,12 @@ ConsoleJob *Configuration::InitializeConsoleJobFromObject(ConfigurationObject *o
         job->SetMiniDescriptionParserCommand(parserCommand);
 
     return job;
+}
+
+SshConsoleJob *Configuration::InitializeSshConsoleJobFromObject(ConfigurationObject *object) const
+{
+    UserConsoleJob* remoteJob = InitializeUserConsoleJobFromObject(object);
+    return new SshConsoleJob(remoteJob->GetName(), remoteJob);
 }
 
 WakeJob *Configuration::CreateWakeJobFromObject(ConfigurationObject *object) const

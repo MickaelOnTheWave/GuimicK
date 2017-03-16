@@ -49,15 +49,21 @@ bool LinuxShutdownJob::IsInitialized()
 void LinuxShutdownJob::SetOutputDebugInformation(const bool value)
 {
     outputDebugInformation = value;
-    shutdownJob->SetOutputDebugInformation(outputDebugInformation);
+
+    // TODO : reactivate this when [044] is implemented
+    //shutdownJob->SetOutputDebugInformation(outputDebugInformation);
 }
 
 JobStatus *LinuxShutdownJob::Run()
 {
     JobDebugInformationManager debugInfo(GetName(), outputDebugInformation);
     JobStatus* status = shutdownJob->Run();
-    debugInfo.AddIntDataLine("Return code", shutdownJob->GetCommandReturnCode());
-    debugInfo.AddStringDataLine("Output", shutdownJob->GetCommandOutput());
+
+    // TODO : reactivate this when [044] is implemented
+    //debugInfo.AddIntDataLine("Return code", shutdownJob->GetCommandReturnCode());
+    //debugInfo.AddStringDataLine("Output", shutdownJob->GetCommandOutput());
+
+
     if (status->GetCode() == JobStatus::ERROR)
         return debugInfo.UpdateStatus(status);
 

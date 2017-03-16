@@ -53,12 +53,12 @@ string ConsoleJobTest::GetExpectedErrorDescription(const int, const int)
     return string("");
 }
 
-ConsoleJob *ConsoleJobTest::CreateDefaultJob(void)
+AbstractConsoleJob *ConsoleJobTest::CreateDefaultJob(void)
 {
     return CreateDefaultJob("ls");
 }
 
-ConsoleJob *ConsoleJobTest::CreateDefaultJob(const string &command)
+AbstractConsoleJob *ConsoleJobTest::CreateDefaultJob(const string &command)
 {
     return new ConsoleJob(command);
 }
@@ -68,6 +68,18 @@ void ConsoleJobTest::RunAndCheckNoAttachments(const int expectedCode,
 {
     RunAndCheck(expectedCode, expectedDescription);
     CheckAttachmentCount(0, 0);
+}
+
+void ConsoleJobTest::RunAndCheckOneAttachment(const int expectedCode,
+                                              const string &expectedDescription,
+                                              const string &expectedAttachmentContent)
+{
+    RunAndCheck(expectedCode, expectedDescription);
+    CheckAttachmentCount(0, 1);
+
+    vector<pair<string,string> > buffers;
+    status->GetFileBuffers(buffers);
+    QCOMPARE(buffers.front().second.c_str(), expectedAttachmentContent.c_str());
 }
 
 void ConsoleJobTest::RunAndCheck(const int expectedCode,

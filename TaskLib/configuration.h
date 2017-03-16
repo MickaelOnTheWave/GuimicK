@@ -49,7 +49,8 @@ protected:
 
 	AbstractJob *CreateJobFromObject(ConfigurationObject *object);
 
-    ConsoleJob *InitializeConsoleJobFromObject(ConfigurationObject *object, UserConsoleJob *job) const;
+    UserConsoleJob *InitializeUserConsoleJobFromObject(ConfigurationObject *object) const;
+    SshConsoleJob *InitializeSshConsoleJobFromObject(ConfigurationObject *object) const;
     WakeJob* CreateWakeJobFromObject(ConfigurationObject *object) const;
     LinuxShutdownJob* CreateShutdownJobFromObject(ConfigurationObject *object) const;
     ChangeScreensaverJob* CreateChangeScreensaverJobFromObject(ConfigurationObject* object) const;

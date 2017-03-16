@@ -1,11 +1,6 @@
 #include "tasktestlib.h"
 
-#include "consolejobtest.h"
-#include "gitjobtest.h"
-#include "rsnapshoterroranalyzertest.h"
-#include "rsnapshotjobtest.h"
-#include "taskfeaturetest.h"
-#include "userconsolejobtest.h"
+#include "tasktestsuites.h"
 
 void GetAllTests(std::vector<QObject*>& tests)
 {
@@ -15,6 +10,7 @@ void GetAllTests(std::vector<QObject*>& tests)
     tests.push_back(new TaskFeatureTest());
     tests.push_back(new ConsoleJobTest());
     tests.push_back(new UserConsoleJobTest());
+    tests.push_back(new SshConsoleJobTest());
 }
 
 void FreeTests(std::vector<QObject*>& tests)

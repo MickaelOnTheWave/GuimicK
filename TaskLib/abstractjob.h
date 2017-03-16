@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "jobstatus.h"
 #include "client.h"
+#include "jobstatus.h"
 
 class AbstractJob
 {
