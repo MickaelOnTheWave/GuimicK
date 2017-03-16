@@ -1,6 +1,7 @@
 #include "jobdebuginformationmanager.h"
 
 #include <sstream>
+#include "filetools.h"
 
 using namespace std;
 
@@ -58,4 +59,9 @@ JobStatus *JobDebugInformationManager::UpdateStatus(JobStatus *status) const
 JobStatus *JobDebugInformationManager::CreateStatus(const int code, const string &description) const
 {
     return UpdateStatus(new JobStatus(code, description));
+}
+
+void JobDebugInformationManager::WriteToFile() const
+{
+    FileTools::WriteBufferToFile(debugFilename, allData);
 }

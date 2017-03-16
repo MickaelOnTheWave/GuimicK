@@ -22,7 +22,7 @@
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.516";
+static const string PROGRAM_VERSION = "0.517";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
 void ShowErrors(list<string> &errorMessages);
@@ -104,6 +104,7 @@ int main(int argc, char* argv[])
     delete workResult;
 
     CurlConsoleEmailSender sender;
+    sender.SetOutputDebugInformationOnFailure(true);
     sender.SetSenderData(
                 selfIdentity->name,
                 selfIdentity->email,

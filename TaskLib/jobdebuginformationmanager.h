@@ -19,6 +19,7 @@ public:
 
     JobStatus* UpdateStatus(JobStatus* status) const;
     JobStatus* CreateStatus(const int code, const std::string &description) const;
+    void WriteToFile() const;
 
 private:
     std::string debugFilename;

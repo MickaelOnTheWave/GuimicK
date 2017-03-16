@@ -8,6 +8,7 @@
 class CurlConsoleEmailSender : public EmailReportDispatcher
 {
 public:
+    CurlConsoleEmailSender();
 
     bool Send(const bool isHtml,
             const std::string& destEmail,
@@ -19,8 +20,10 @@ public:
             const std::vector<std::pair<std::string,std::string> >& fileBuffers
     );
 
-protected:
+    void SetOutputDebugInformationOnFailure(const bool value);
 
+protected:
+    bool outputDebugInformation;
 };
 
 #endif // CURLCONSOLEEMAILSENDER_H
