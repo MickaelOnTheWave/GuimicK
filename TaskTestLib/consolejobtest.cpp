@@ -43,6 +43,27 @@ void ConsoleJobTest::testRunError()
                              GetExpectedErrorDescription(0, 2));
 }
 
+void ConsoleJobTest::testCommandWithParameter()
+{
+    const string fileContent = "my super content";
+    const string filename = "myfile.txt";
+    FileTools::WriteBufferToFile(filename, fileContent);
+
+    const string fullFilename = FileTools::GetCurrentFullPath() + "/" + filename;
+    const string catCommand = string("cat ") + fullFilename;
+
+    job = CreateDefaultJob(catCommand);
+    RunAndCheckNoAttachments(JobStatus_OK,
+                             GetExpectedOkDescription());
+    QCOMPARE(job->GetCommandOutput().c_str(), fileContent.c_str());
+
+    delete job;
+    job = CreateDefaultJob("cat", fullFilename);
+    RunAndCheckNoAttachments(JobStatus_OK,
+                             GetExpectedOkDescription());
+    QCOMPARE(job->GetCommandOutput().c_str(), fileContent.c_str());
+}
+
 string ConsoleJobTest::GetExpectedOkDescription()
 {
     return string("");
@@ -58,9 +79,9 @@ AbstractConsoleJob *ConsoleJobTest::CreateDefaultJob(void)
     return CreateDefaultJob("ls");
 }
 
-AbstractConsoleJob *ConsoleJobTest::CreateDefaultJob(const string &command)
+AbstractConsoleJob *ConsoleJobTest::CreateDefaultJob(const string &command, const string &params)
 {
-    return new ConsoleJob(command);
+    return new ConsoleJob(command, params);
 }
 
 void ConsoleJobTest::RunAndCheckNoAttachments(const int expectedCode,

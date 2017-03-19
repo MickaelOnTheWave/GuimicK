@@ -121,9 +121,9 @@ string UserConsoleJobTest::GetExpectedErrorDescription(const string &expected, c
     return stream.str();
 }
 
-ConsoleJob *UserConsoleJobTest::CreateDefaultJob(const std::string &command)
+ConsoleJob *UserConsoleJobTest::CreateDefaultJob(const std::string &command, const string &params)
 {
-    return new UserConsoleJob("dummyName", command);
+    return new UserConsoleJob("dummyName", command, params);
 }
 
 UserConsoleJob *UserConsoleJobTest::GetJob()

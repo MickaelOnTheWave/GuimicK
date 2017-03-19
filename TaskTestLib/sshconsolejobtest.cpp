@@ -38,9 +38,10 @@ void SshConsoleJobTest::testRun_CheckResultingCommand()
     RunAndCheckOneAttachment(JobStatus_OK, "", contentToWrite);
 }
 
-AbstractConsoleJob *SshConsoleJobTest::CreateDefaultJob(const std::string &command)
+AbstractConsoleJob *SshConsoleJobTest::CreateDefaultJob(const std::string &command,
+                                                        const string& params)
 {
-    SshConsoleJob* localJob = new SshConsoleJob("", command);
+    SshConsoleJob* localJob = new SshConsoleJob("", command + " " + params);
     localJob->SetTarget("mickael", "Desktop");
     return localJob;
 }

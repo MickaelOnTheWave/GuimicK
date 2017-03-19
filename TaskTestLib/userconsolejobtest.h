@@ -26,7 +26,8 @@ protected:
     std::string GetExpectedErrorDescription(const std::string& expected,
                                             const std::string& received);
 
-    virtual ConsoleJob* CreateDefaultJob(const std::string& command) override;
+    virtual ConsoleJob* CreateDefaultJob(const std::string& command,
+                                         const std::string& params = "") override;
     UserConsoleJob* GetJob(void);
 
     void CheckJobConditions(const int expectedCode,

@@ -1,6 +1,6 @@
-19/03/2017 (10)
+19/03/2017 (0.5h 19.7)
 	Problem was probably found : command and params need to be separated in console command in order to search for
-	command in bin paths.
+	command in bin paths. Created new test to check command and params behaviour.
 
 16/03/2017 (2.6h)
 	Production run still failed with same problem. Changing strategy : outputting debug information instead of

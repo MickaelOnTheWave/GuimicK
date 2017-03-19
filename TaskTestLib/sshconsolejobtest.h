@@ -18,7 +18,8 @@ private Q_SLOTS:
     void testRun_CheckResultingCommand();
 
 protected:
-    virtual AbstractConsoleJob* CreateDefaultJob(const std::string& command) override;
+    virtual AbstractConsoleJob* CreateDefaultJob(const std::string& command,
+                                                 const std::string & params) override;
 
     SshConsoleJob* GetJob();
 

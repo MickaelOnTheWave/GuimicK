@@ -24,6 +24,7 @@ private Q_SLOTS:
 
     void testRunOk();
     void testRunError();
+    void testCommandWithParameter();
 
 protected:
     virtual std::string GetExpectedOkDescription();
@@ -31,7 +32,8 @@ protected:
                                                     const int receivedCode);
 
     virtual AbstractConsoleJob* CreateDefaultJob(void);
-    virtual AbstractConsoleJob* CreateDefaultJob(const std::string& command);
+    virtual AbstractConsoleJob* CreateDefaultJob(const std::string& command,
+                                                 const std::string& params = "");
 
     void RunAndCheckNoAttachments(const int expectedCode,
                                   const std::string& expectedDescription);
