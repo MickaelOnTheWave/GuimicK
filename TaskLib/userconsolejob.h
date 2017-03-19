@@ -9,8 +9,9 @@ class UserConsoleJob : public ConsoleJob
 {
 public:
     UserConsoleJob();
-    UserConsoleJob(const std::string& _commandTitle, const std::string& _command = "",
-               int _expectedReturnCode = 0);
+    UserConsoleJob(const std::string& _commandTitle,
+                   const std::string& _command = "", const std::string& _params = "",
+                   int _expectedReturnCode = 0);
     UserConsoleJob(const UserConsoleJob& other);
     virtual ~UserConsoleJob();
 

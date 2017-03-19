@@ -1,6 +1,18 @@
-16/03/2017 (16)
+19/03/2017 (10)
+	Problem was probably found : command and params need to be separated in console command in order to search for
+	command in bin paths.
+
+16/03/2017 (2.6h)
 	Production run still failed with same problem. Changing strategy : outputting debug information instead of
-	trying to blind-fix the issue.
+	trying to blind-fix the issue. Added debug information option to Email sender and activated it. Also changed
+	production configuration to output debug information about rsnapshot backup.
+	Refactored Console jobs and Ssh console job : there is now an AbstractConsoleJob layer from which
+	SshConsoleJob inherits. Also, it uses composition. Created test suite - all is working now. Test suite
+	worked remoting to self, there was only a little setup needed : public key authentication to self.
+Next planned work :
+	- Check debugging output from production run and fix its issues.
+	- Check actual modifications into production
+	- Move to version 0.6
 
 14/03/2017 (1.9h)
 	Production backup failed again :-( Problem might be in SshConsoleJob.

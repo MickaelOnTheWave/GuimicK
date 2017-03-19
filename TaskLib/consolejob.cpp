@@ -9,8 +9,9 @@ using namespace std;
 static string whichCommandPath("");
 std::vector<std::string> ConsoleJob::appSearchPaths;
 
-ConsoleJob::ConsoleJob(const string &_command, int _expectedReturnCode)
-    : command(_command), commandOutput(""),
+ConsoleJob::ConsoleJob(const string &_command,
+                       const string &_params, int _expectedReturnCode)
+    : command(_command), commandParams(_params), commandOutput(""),
       expectedReturnCode(_expectedReturnCode), receivedReturnCode(-1)
 {
     string foundCommandFullName = Tools::GetCommandPath(command, appSearchPaths);
@@ -21,6 +22,7 @@ ConsoleJob::ConsoleJob(const string &_command, int _expectedReturnCode)
 ConsoleJob::ConsoleJob(const ConsoleJob &other)
 {
     command = other.command;
+    commandParams = other.commandParams;
     commandOutput = other.commandOutput;
     expectedReturnCode = other.expectedReturnCode;
     receivedReturnCode = other.receivedReturnCode;
@@ -101,7 +103,8 @@ void ConsoleJob::ClearAppSearchPaths()
 
 bool ConsoleJob::RunCommand()
 {
-    int rawCode = Tools::RunExternalCommandToBuffer(command, commandOutput, true);
+    string commandToRun = command + " " + commandParams;
+    int rawCode = Tools::RunExternalCommandToBuffer(commandToRun, commandOutput, true);
     receivedReturnCode = WEXITSTATUS(rawCode);
     return (receivedReturnCode == expectedReturnCode);
 }

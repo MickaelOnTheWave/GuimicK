@@ -12,8 +12,9 @@ UserConsoleJob::UserConsoleJob()
 }
 
 UserConsoleJob::UserConsoleJob(const std::string &_commandTitle,
-                               const std::string &_command, int _expectedReturnCode)
-    : ConsoleJob(_command, _expectedReturnCode), commandTitle(_commandTitle),
+                               const std::string &_command, const std::string& _params,
+                               int _expectedReturnCode)
+    : ConsoleJob(_command, _params, _expectedReturnCode), commandTitle(_commandTitle),
       debugInfo(_commandTitle, false)
 {
     Initialize(_command, _expectedReturnCode);

@@ -16,7 +16,8 @@
 class ConsoleJob : public AbstractConsoleJob
 {
 public:
-    ConsoleJob(const std::string& _command = "", int _expectedReturnCode = 0);
+    ConsoleJob(const std::string& _command = "",
+               const std::string& _params = "", int _expectedReturnCode = 0);
     ConsoleJob(const ConsoleJob& other);
 	virtual ~ConsoleJob();
 
@@ -53,6 +54,7 @@ protected:
     virtual JobStatus* CreateErrorStatus();
 
     std::string command;
+    std::string commandParams;
     std::string commandOutput;
     int expectedReturnCode;
     int receivedReturnCode;

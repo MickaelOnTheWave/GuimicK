@@ -17,7 +17,6 @@ Features implemented:
 	02/03/2017 - [033] Handle File backup folder data outside of rsnapshot conf file.
 
 Fixed bugs :
-	13/03/2017 - [004]
 
 Bugs to fix : [001] [002] [003] [005]
 
@@ -45,6 +44,7 @@ Features to implement:
 	[041] Create a simple copy-based File backup job
 	[042] Create a copy-zip-based File backup job
 	[043] Create an archive differential File backup job
+	[044] Add generic debugging option for all jobs
 
 Abandoned features :
 	[005] Include AntiVirus scan in maintenance script
