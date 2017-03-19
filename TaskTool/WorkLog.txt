@@ -1,6 +1,10 @@
-19/03/2017 (0.5h 19.7)
+19/03/2017 (1.1h)
 	Problem was probably found : command and params need to be separated in console command in order to search for
 	command in bin paths. Created new test to check command and params behaviour.
+Next planned work:
+	- Confirm that production run is OK
+	- Move to version 0.6
+	- Integrate existing test suites into main test tool
 
 16/03/2017 (2.6h)
 	Production run still failed with same problem. Changing strategy : outputting debug information instead of
