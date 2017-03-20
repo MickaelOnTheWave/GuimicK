@@ -1,4 +1,4 @@
-20/03/2017 (18.7)
+20/03/2017 (1.9h)
 	Production run still did not succeed. But although console job now supports parameters, all commands were not
 	updated accordingly. Doing that now... done! Now waiting once more for production run to confirm results...
 	Now going for existing test suites integration. Separated parser tests in separate library. However, there is
@@ -8,6 +8,13 @@
 	Full refactoring was not needed - only for parser test suites was OK, and as long as constructor has the same
 	parameters, changing type was not necessary either. Parsers test suites integrated - now checking what is there
 	in tools.
+	The only test suite in Tools is for Point2D class, with a benchmark in it. It is not stable enough to be considered
+	for integration, and has no use in TaskManager.
+Next planned work:
+	- Check production run to move to 0.6.
+	- Integrate test suites from QtTools
+	- Disable Point2D test suites and create a test lib for new tests.
+	- Create test suites in Tools for Configuration, FileTools, CommandLineManager
 
 19/03/2017 (1.1h)
 	Problem was probably found : command and params need to be separated in console command in order to search for
