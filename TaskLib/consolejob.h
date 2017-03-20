@@ -37,6 +37,8 @@ public:
     virtual std::string GetCommand() const;
     virtual void SetCommand(const std::string& command);
 
+    virtual void SetCommandParameters(const std::string& parameters);
+
     virtual int GetCommandReturnCode();
     virtual std::string GetCommandOutput() const;
 

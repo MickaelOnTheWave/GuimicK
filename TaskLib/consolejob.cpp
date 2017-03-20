@@ -81,6 +81,11 @@ void ConsoleJob::SetCommand(const string &_command)
     command = _command;
 }
 
+void ConsoleJob::SetCommandParameters(const string &parameters)
+{
+    commandParams = parameters;
+}
+
 int ConsoleJob::GetCommandReturnCode()
 {
     return receivedReturnCode;

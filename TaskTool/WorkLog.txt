@@ -1,3 +1,7 @@
+20/03/2017 (18.7)
+	Production run still did not succeed. But although console job now supports parameters, all commands were not
+	updated accordingly. Doing that now... done! Now waiting once more for production run to confirm results...
+
 19/03/2017 (1.1h)
 	Problem was probably found : command and params need to be separated in console command in order to search for
 	command in bin paths. Created new test to check command and params behaviour.
