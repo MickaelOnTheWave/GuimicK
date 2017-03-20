@@ -4,7 +4,6 @@
 #include <QObject>
 #include <vector>
 
-void GetAllTests(std::vector<QObject*>& tests);
-void FreeTests(std::vector<QObject*>& tests);
+void GetTaskLibTests(std::vector<QObject*>& tests);
 
 #endif // TASKTESTLIB_H

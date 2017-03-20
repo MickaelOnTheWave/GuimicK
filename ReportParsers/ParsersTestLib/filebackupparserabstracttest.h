@@ -1,20 +1,20 @@
 #ifndef FILEBACKUPPARSERABSTRACTTEST_H
 #define FILEBACKUPPARSERABSTRACTTEST_H
 
-#include <QObject>
-#include <QStringList>
+#include "qttestsuite.h"
 
+#include <QStringList>
 #include <string>
 #include <vector>
 
 #include "abstractfilebackupparser.h"
 #include "filebackupreport.h"
 
-class FileBackupParserAbstractTest : public QObject
+class FileBackupParserAbstractTest : public QtTestSuite
 {
     Q_OBJECT
 public:
-    FileBackupParserAbstractTest();
+    FileBackupParserAbstractTest(const std::string& dataPrefix);
 
 private Q_SLOTS:
     void init();

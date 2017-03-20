@@ -8,9 +8,8 @@
 
 using namespace std;
 
-const string suiteFolder = "DfCommand/";
-
-DfCommandParserTest::DfCommandParserTest()
+DfCommandParserTest::DfCommandParserTest(const string &dataPath)
+    : QtTestSuite(dataPath + "DfCommand/")
 {
 }
 
@@ -111,7 +110,7 @@ void DfCommandParserTest::testDescriptions()
 void DfCommandParserTest::CheckAndParse(DfCommandParser &parser)
 {
     QFETCH(QString, file);
-    string content = FileTools::GetTextFileContent(suiteFolder + file.toStdString());
+    string content = FileTools::GetTextFileContent(GetDataFolder() + file.toStdString());
 
     bool ok = parser.ParseBuffer(content);
     QCOMPARE(ok, true);

@@ -1,4 +1,5 @@
 #include "commandlinemanager.h"
+#include "parserstestlib.h"
 #include "qtbatchtestrunner.h"
 #include "tasktestlib.h"
 
@@ -21,7 +22,8 @@ int main(int argc, char* argv[])
         return DID_NOT_RAN;
 
     vector<QObject*> tests;
-    GetAllTests(tests);
+    GetTaskLibTests(tests);
+    GetParserLibTests(tests, "/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/");
 
     QtBatchTestRunner runner(argv[0]);
     runner.SetTempResultFile("../errors/result.xml");

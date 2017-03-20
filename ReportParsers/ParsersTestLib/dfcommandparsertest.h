@@ -1,16 +1,16 @@
 #ifndef DFCOMMANDPARSERTEST_H
 #define DFCOMMANDPARSERTEST_H
 
-#include <QObject>
+#include "qttestsuite.h"
 
 #include "dfcommandparser.h"
 
-class DfCommandParserTest : public QObject
+class DfCommandParserTest : public QtTestSuite
 {
     Q_OBJECT
 
 public:
-    DfCommandParserTest();
+    DfCommandParserTest(const std::string& dataPath = "");
 
 private Q_SLOTS:
     void init();

@@ -1,16 +1,17 @@
 #ifndef ABSTRACTOUTPUTPARSERTEST_H
 #define ABSTRACTOUTPUTPARSERTEST_H
 
-#include <QObject>
+#include "qttestsuite.h"
+
 #include <QString>
 #include <QtTest>
 
-class AbstractOutputParserTest : public QObject
+class AbstractOutputParserTest : public QtTestSuite
 {
     Q_OBJECT
 
 public:
-    AbstractOutputParserTest();
+    AbstractOutputParserTest(const std::string& dataPrefix);
 
 private Q_SLOTS:
     void test_ParseFile_InvalidFile();

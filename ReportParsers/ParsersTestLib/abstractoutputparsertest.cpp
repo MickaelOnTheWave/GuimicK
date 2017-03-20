@@ -2,7 +2,8 @@
 
 #include "mockparser.h"
 
-AbstractOutputParserTest::AbstractOutputParserTest()
+AbstractOutputParserTest::AbstractOutputParserTest(const std::string &dataPrefix)
+    : QtTestSuite(dataPrefix)
 {
 
 }
@@ -10,14 +11,14 @@ AbstractOutputParserTest::AbstractOutputParserTest()
 void AbstractOutputParserTest::test_ParseFile_InvalidFile()
 {
     MockParser parser;
-    bool result = parser.ParseFile("nonexistentfile");
+    bool result = parser.ParseFile(GetDataFolder() + "nonexistentfile");
     QCOMPARE(result, false);
 }
 
 void AbstractOutputParserTest::test_ParseFile_Ok()
 {
     MockParser parser;
-    bool result = parser.ParseFile("dummyDataFile");
+    bool result = parser.ParseFile(GetDataFolder() + "dummyDataFile");
     QCOMPARE(result, true);
     QCOMPARE(QString(parser.GetFileContent().c_str()), QString("multi\nline\ncontent\n"));
 }

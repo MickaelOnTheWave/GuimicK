@@ -48,3 +48,10 @@ LIBS += -L$$TASKTEST_LIB_PATH -lTaskTestLib
 INCLUDEPATH += $$TASKTEST_INCLUDE_PATH
 DEPENDPATH += $$TASKTEST_INCLUDE_PATH
 
+# linking ParsersTestLib
+PARSERS_TEST_LIB_PATH = /home/mickael/Prog/TaskManager/bin/$$BUILD_TYPE/ReportParsers/ParsersTestLib/
+PARSERS_TEST_INCLUDE_PATH = /home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/
+unix:!macx: LIBS += -L$$PARSERS_TEST_LIB_PATH -lParsersTestLib
+INCLUDEPATH += $$PARSERS_TEST_INCLUDE_PATH
+DEPENDPATH += $$PARSERS_TEST_INCLUDE_PATH
+

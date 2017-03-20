@@ -6,7 +6,8 @@
 
 using namespace std;
 
-AptUpgradeParserTest::AptUpgradeParserTest()
+AptUpgradeParserTest::AptUpgradeParserTest(const string &dataPrefix)
+    : QtTestSuite(dataPrefix)
 {
 }
 
@@ -74,7 +75,7 @@ void AptUpgradeParserTest::testParse()
     QFETCH(QStringList, removed);
     QFETCH(QString,     updateFileSize);
 
-    GetReportFromFile(file);
+    GetReportFromFile(QString(GetDataFolder().c_str()) + file);
     CheckReportData(obsolete, kept, upgraded, installed, removed, updateFileSize);
 }
 

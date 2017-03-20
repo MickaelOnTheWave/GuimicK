@@ -1,6 +1,13 @@
 20/03/2017 (18.7)
 	Production run still did not succeed. But although console job now supports parameters, all commands were not
 	updated accordingly. Doing that now... done! Now waiting once more for production run to confirm results...
+	Now going for existing test suites integration. Separated parser tests in separate library. However, there is
+	a big problem : data. Each test module has its own data path... How to merge that?
+	Created a QtTestSuite class in QtTools that has a data path prefix. Each test suite must inherit it, and is
+	responsible for accessing data using this path.
+	Full refactoring was not needed - only for parser test suites was OK, and as long as constructor has the same
+	parameters, changing type was not necessary either. Parsers test suites integrated - now checking what is there
+	in tools.
 
 19/03/2017 (1.1h)
 	Problem was probably found : command and params need to be separated in console command in order to search for

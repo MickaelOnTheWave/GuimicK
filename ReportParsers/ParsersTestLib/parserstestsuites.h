@@ -1,0 +1,10 @@
+#ifndef PARSERSTESTSUITES_H
+#define PARSERSTESTSUITES_H
+
+#include "abstractoutputparsertest.h"
+#include "aptupgradeparsertest.h"
+#include "gitreportparsertest.h"
+#include "dfcommandparsertest.h"
+#include "rsnapshotreportparsertest.h"
+
+#endif // PARSERSTESTSUITES_H

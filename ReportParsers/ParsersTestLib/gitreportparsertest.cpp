@@ -4,6 +4,11 @@
 
 using namespace std;
 
+GitReportParserTest::GitReportParserTest(const string &dataPrefix)
+    : FileBackupParserAbstractTest(dataPrefix)
+{
+}
+
 void GitReportParserTest::testParse()
 {
     testParse_generic();

@@ -10,6 +10,9 @@ class GitReportParserTest : public FileBackupParserAbstractTest
 {
     Q_OBJECT
 
+public :
+    GitReportParserTest(const std::string& dataPrefix);
+
 private Q_SLOTS:
     void testParse();
 

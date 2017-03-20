@@ -4,7 +4,8 @@
 
 using namespace std;
 
-FileBackupParserAbstractTest::FileBackupParserAbstractTest()
+FileBackupParserAbstractTest::FileBackupParserAbstractTest(const string &dataPrefix)
+    : QtTestSuite(dataPrefix)
 {
 }
 
@@ -35,7 +36,7 @@ void FileBackupParserAbstractTest::testParse_generic()
     QFETCH(QStringList, modified);
     QFETCH(QStringList, removed);
 
-    GetReportDataFromCorrectFile(file.toStdString());
+    GetReportDataFromCorrectFile(GetDataFolder() + file.toStdString());
     CheckReportDataFiles(added, modified, removed);
 }
 

@@ -1,17 +1,16 @@
 #ifndef APTUPGRADEPARSERTEST_H
 #define APTUPGRADEPARSERTEST_H
 
-#include <QObject>
+#include "qttestsuite.h"
 
 #include "aptgetupgradeparser.h"
 
-class AptUpgradeParserTest : public QObject
+class AptUpgradeParserTest : public QtTestSuite
 {
     Q_OBJECT
 
 public:
-    AptUpgradeParserTest();
-
+    AptUpgradeParserTest(const std::string& dataPrefix);
 
 private Q_SLOTS:
     void init();

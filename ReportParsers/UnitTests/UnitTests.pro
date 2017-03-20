@@ -17,14 +17,7 @@ TEMPLATE = app
 
 
 SOURCES += \
-    main.cpp \
-    gitreportparsertest.cpp \
-    rsnapshotreportparsertest.cpp \
-    abstractoutputparsertest.cpp \
-    mockparser.cpp \
-    filebackupparserabstracttest.cpp \
-    aptupgradeparsertest.cpp \
-    dfcommandparsertest.cpp
+	 main.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -33,6 +26,13 @@ CONFIG(debug, debug|release) {
 else {
 	BUILD_TYPE = Release
 }
+
+# linking ParsersTestLib
+PARSERS_TEST_LIB_PATH = /home/mickael/Prog/TaskManager/bin/$$BUILD_TYPE/ReportParsers/ParsersTestLib/
+PARSERS_TEST_INCLUDE_PATH = /home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/
+unix:!macx: LIBS += -L$$PARSERS_TEST_LIB_PATH -lParsersTestLib
+INCLUDEPATH += $$PARSERS_TEST_INCLUDE_PATH
+DEPENDPATH += $$PARSERS_TEST_INCLUDE_PATH
 
 # linking ParsersLib
 PARSERS_LIB_PATH = /home/mickael/Prog/TaskManager/bin/$$BUILD_TYPE/ReportParsers/ParsersLib/
@@ -46,29 +46,14 @@ TOOLS_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/ToolsLib/
 TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
 
+# linking QtToolsLib
+QTTOOLS_LIB_PATH = /home/mickael/Prog/QtTools/bin/$$BUILD_TYPE/QtTools
+QTTOOLS_INCLUDE_PATH = /home/mickael/Prog/QtTools/QtTools/
+LIBS += -L$$QTTOOLS_LIB_PATH -lQtTools
+INCLUDEPATH += $$QTTOOLS_INCLUDE_PATH
+DEPENDPATH += $$QTTOOLS_INCLUDE_PATH
+
 INCLUDEPATH += $$TOOLS_INCLUDE_PATH
 DEPENDPATH += $$TOOLS_INCLUDE_PATH
 
-OTHER_FILES += \
-    data/image.jpeg \
-    data/gitadd5.log \
-    data/gitallchanges.log \
-    data/gitmod5.log \
-    data/gitrm5.log \
-    data/rsnapshot5added.log \
-    data/rsnapshot5changed.log \
-    data/rsnapshot5removed.log \
-    data/rsnapshotall.log \
-    data/apt1.txt \
-    data/rsnapshot_nospaceerror.txt \
-    data/DfCommand/allDrives.txt \
-    data/DfCommand/oneDrive.txt
-
-HEADERS += \
-    gitreportparsertest.h \
-    rsnapshotreportparsertest.h \
-    abstractoutputparsertest.h \
-    mockparser.h \
-    filebackupparserabstracttest.h \
-    aptupgradeparsertest.h \
-    dfcommandparsertest.h
+HEADERS +=

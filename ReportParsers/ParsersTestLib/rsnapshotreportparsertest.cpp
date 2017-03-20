@@ -4,6 +4,11 @@
 
 using namespace std;
 
+RsnapshotReportParserTest::RsnapshotReportParserTest(const string &dataPrefix)
+    : FileBackupParserAbstractTest(dataPrefix)
+{
+}
+
 void RsnapshotReportParserTest::testParse()
 {
     QFETCH(QString,     file);
@@ -22,7 +27,7 @@ void RsnapshotReportParserTest::testParseUnrelatedFile_NoCrash()
     // Just checking that it does not crash it.
     const QString file = "rsnapshot_nospaceerror.txt";
 
-    GetReportDataFromCorrectFile(file.toStdString());
+    GetReportDataFromCorrectFile(GetDataFolder() + file.toStdString());
     CheckReportDataFiles(QStringList(), QStringList(), QStringList());
 }
 
