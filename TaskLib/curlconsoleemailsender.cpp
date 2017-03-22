@@ -31,7 +31,7 @@ bool CurlConsoleEmailSender::Send(const bool isHtml,
     mailFile << MimeTools::CreateEmailContent(isHtml, displayName, emailAddress, destEmail, cc, bcc, subject, body, fileList, fileBuffers);
 	mailFile.close();
 
-    string curlParams("curl ");
+    string curlParams;
     curlParams += " --url \"" + GetSmtpUrl() + "\" --ssl-reqd ";
     curlParams += "--mail-from \"" + emailAddress + "\" ";
     curlParams += "--mail-rcpt \"" + destEmail + "\" ";
