@@ -1,6 +1,8 @@
 #include "commandlinemanager.h"
-#include "parserstestlib.h"
 #include "qtbatchtestrunner.h"
+
+#include "parserstestlib.h"
+#include "qttoolstestlib.h"
 #include "tasktestlib.h"
 
 using namespace std;
@@ -24,6 +26,7 @@ int main(int argc, char* argv[])
     vector<QObject*> tests;
     GetTaskLibTests(tests);
     GetParserLibTests(tests, "/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/");
+    GetQtToolsLibTests(tests);
 
     QtBatchTestRunner runner(argv[0]);
     runner.SetTempResultFile("../errors/result.xml");

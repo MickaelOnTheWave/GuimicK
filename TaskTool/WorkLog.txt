@@ -1,7 +1,8 @@
 22/03/2017 (19.6)
 	Production run still failing. Email was sent, but it was empty. Investigating...
 	The bug was reproduced with small run from Synology. The issue was the params containing curl name, in
-	emailsender class. Fixed.
+	emailsender class. Fixed. Going back to test suites...
+	Refactored QtTools test suite and integrated it into Task test tool.
 
 20/03/2017 (1.9h)
 	Production run still did not succeed. But although console job now supports parameters, all commands were not
