@@ -61,3 +61,10 @@ QTTOOLS_TEST_INCLUDE_PATH = /home/mickael/Prog/QtTools/QtToolsTestLib/
 unix:!macx: LIBS += -L$$QTTOOLS_TEST_LIB_PATH -lQtToolsTestLib
 INCLUDEPATH += $$QTTOOLS_TEST_INCLUDE_PATH
 DEPENDPATH += $$QTTOOLS_TEST_INCLUDE_PATH
+
+# linking ToolsTestLib
+TOOLS_TEST_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/ToolsTestLib
+TOOLS_TEST_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsTestLib/
+LIBS += -L$$TOOLS_TEST_LIB_PATH -lToolsTestLib
+INCLUDEPATH += $$TOOLS_TEST_INCLUDE_PATH
+DEPENDPATH += $$TOOLS_TEST_INCLUDE_PATH

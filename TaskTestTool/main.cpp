@@ -4,6 +4,7 @@
 #include "parserstestlib.h"
 #include "qttoolstestlib.h"
 #include "tasktestlib.h"
+#include "toolstestlib.h"
 
 using namespace std;
 
@@ -27,6 +28,7 @@ int main(int argc, char* argv[])
     GetTaskLibTests(tests);
     GetParserLibTests(tests, "/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/");
     GetQtToolsLibTests(tests);
+    GetToolsLibTests(tests);
 
     QtBatchTestRunner runner(argv[0]);
     runner.SetTempResultFile("../errors/result.xml");
