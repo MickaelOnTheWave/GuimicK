@@ -1,3 +1,6 @@
+23/03/2017 (20.7)
+	Production run worked this time :-) Moving to 0.6...
+
 22/03/2017 (1.8h)
 	Production run still failing. Email was sent, but it was empty. Investigating...
 	The bug was reproduced with small run from Synology. The issue was the params containing curl name, in
