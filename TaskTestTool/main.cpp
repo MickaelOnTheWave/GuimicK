@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
     GetTaskLibTests(tests);
     GetParserLibTests(tests, "/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/");
     GetQtToolsLibTests(tests);
-    GetToolsLibTests(tests);
+    GetToolsLibTests(tests, "/home/mickael/Prog/Tools/ToolsTestLib/data/");
 
     QtBatchTestRunner runner(argv[0]);
     runner.SetTempResultFile("../errors/result.xml");

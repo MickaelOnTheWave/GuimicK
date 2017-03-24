@@ -23,6 +23,9 @@ Bugs to fix : [001] [002] [003] [005]
 
 Features to implement:
 	[003] Use Curl lib instead of command line
+	[005] Include AntiVirus scan job
+	[006] Include Harddrive check job
+	[007] Include Defragmentation job
 	[008] Use another time level of backup for other jobs (monly/yearly...)
 	[010] Implement all TODOs in code
 	[014] Log jobs data in a database for future report/statistics use
@@ -45,11 +48,10 @@ Features to implement:
 	[042] Create a copy-zip-based File backup job
 	[043] Create an archive differential File backup job
 	[044] Add generic debugging option for all jobs
+	[045] Make Windows client work with (nearly) all features
+	[046] Include a Windows update job
 
 Abandoned features :
-	[005] Include AntiVirus scan in maintenance script
-	[006] Include Harddrive check in maintenance script
-	[007] Include Defragmentation in maintenance script
 	[020] Check/repair Screensaver modification from script
 	[022] Remove Screensaver script dependency
 
@@ -63,6 +65,13 @@ Bug database :
 -------------
 Release plan
 -------------
+
+v1.1 :
+	[045] Make Windows client work with (nearly) all features
+	[005] Include AntiVirus scan job
+	[006] Include Harddrive check job
+	[007] Include Defragmentation job
+	[046] Include a Windows update job
 
 v1.0 :
 	[010] Implement all TODOs in code
