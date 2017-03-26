@@ -21,7 +21,6 @@ SOURCES += tasktestlib.cpp \
     rsnapshoterroranalyzertest.cpp \
     rsnapshotjobtest.cpp \
     taskfeaturetest.cpp \
-    filetestutils.cpp \
     consolejobtest.cpp \
     userconsolejobtest.cpp \
     sshconsolejobtest.cpp
@@ -70,6 +69,13 @@ TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
 INCLUDEPATH += $$TOOLS_INCLUDE_PATH
 DEPENDPATH += $$TOOLS_INCLUDE_PATH
+
+# linking QtTools
+QTTOOLS_LIB_PATH = /home/mickael/Prog/QtTools/bin/$$BUILD_TYPE/QtTools/
+QTTOOLS_INCLUDE_PATH = /home/mickael/Prog/QtTools/QtTools
+LIBS += -L$$QTTOOLS_LIB_PATH -lQtTools
+INCLUDEPATH += $$QTTOOLS_INCLUDE_PATH
+DEPENDPATH += $$QTTOOLS_INCLUDE_PATH
 
 OTHER_FILES += \
     data/RsnapshotAnalyzer/rsnapshot_invalidfolder.txt \

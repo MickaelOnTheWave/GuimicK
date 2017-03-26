@@ -19,8 +19,6 @@ Features implemented:
 
 Fixed bugs :
 
-Bugs to fix : [001] [002] [003] [005]
-
 Features to implement:
 	[003] Use Curl lib instead of command line
 	[005] Include AntiVirus scan job
@@ -61,6 +59,7 @@ Bug database :
 	[003] Rsnapshot tests need to wait before doing backup. Maybe pending file operations need to be flushed before?
 	[004] Rsnapshot job created from SmartCreator leaves configuration file behind. Change its design to clean everything (and check while writing to not overwrite an existing one!!)
 	[005] Some bad configurations make app crash. See confbackuponly.txt in Synology.
+	[006] Occasionally a test in TaskFeature test will fail. Reproduce issue, check what it is and fix it!!
 
 -------------
 Release plan

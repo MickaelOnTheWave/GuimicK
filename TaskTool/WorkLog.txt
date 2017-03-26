@@ -1,3 +1,13 @@
+26/03/2017 (3.5h)
+	Finished test suite and fixed Configuration parser implementation to fix minor issues seen in tests.
+	Updated parser tool to remove duplication. Now going for next (important) class to test : FileTools.
+	Finished its test suite and fixed implementation.
+	Command line manager doesn't seem really relevant for testing : no recorded bug, possible bugs easy
+	to find and fix... so it won't be tested for now.
+Next planned work :
+	- Go on testing classes from TaskLib : ClientWorkManager, TaskConfiguration.
+	- Check if there are other classes relevant enough to have a dedicated test suite at the moment.
+
 23/03/2017 (1.2h)
 	Production run worked this time :-) Moving to 0.6...
 	Back to ConfigurationParser. Finished test suite, and moved existing samples to it.
