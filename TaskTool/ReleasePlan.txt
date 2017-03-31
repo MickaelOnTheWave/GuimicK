@@ -48,6 +48,7 @@ Features to implement:
 	[044] Add generic debugging option for all jobs
 	[045] Make Windows client work with (nearly) all features
 	[046] Include a Windows update job
+	[047] Have a Restore option in backup jobs
 
 Abandoned features :
 	[020] Check/repair Screensaver modification from script
@@ -60,6 +61,7 @@ Bug database :
 	[004] Rsnapshot job created from SmartCreator leaves configuration file behind. Change its design to clean everything (and check while writing to not overwrite an existing one!!)
 	[005] Some bad configurations make app crash. See confbackuponly.txt in Synology.
 	[006] Occasionally a test in TaskFeature test will fail. Reproduce issue, check what it is and fix it!!
+		- Issue happens more on Release, with other failures in Git test suites. Resolve all of them.
 
 -------------
 Release plan
@@ -88,6 +90,7 @@ v0.8 :
 	[029] Split job config file into client/server files.
 	[026] Support multiple clients with multiple job lists
 	[034] Create Qt client app to create/manage backup folder configuration.
+	[047] Have a Restore option in backup jobs
 
 v0.7 :
 	[037] Have automated tests for all features

@@ -1,3 +1,10 @@
+30/03/2017 (2.7h)
+	Finished full ClientWorkManager test suite. Fixed minor bugs in it.
+Next planned work :
+	- Create test suite for TaskConfiguration
+	- Check if other test suites should be created
+	- Resolve failures in test suites - Release mode
+
 26/03/2017 (3.5h)
 	Finished test suite and fixed Configuration parser implementation to fix minor issues seen in tests.
 	Updated parser tool to remove duplication. Now going for next (important) class to test : FileTools.

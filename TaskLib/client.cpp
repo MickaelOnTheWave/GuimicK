@@ -5,6 +5,11 @@ Client::Client(const std::string &_name)
 {
 }
 
+Client::~Client()
+{
+    propertyMap.clear();
+}
+
 std::string Client::GetName() const
 {
 	return name;

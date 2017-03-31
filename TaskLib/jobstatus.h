@@ -24,6 +24,7 @@ public:
 	void SetCode(int _code);
 
     static std::string GetCodeDescription(int _code);
+    static int GetCodeFromDescription(const std::string& _description);
     std::string GetCodeDescription() const;
 
 	std::time_t GetDuration() const;

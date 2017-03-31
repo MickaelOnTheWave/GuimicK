@@ -23,7 +23,8 @@ SOURCES += tasktestlib.cpp \
     taskfeaturetest.cpp \
     consolejobtest.cpp \
     userconsolejobtest.cpp \
-    sshconsolejobtest.cpp
+    sshconsolejobtest.cpp \
+    clientworkmanagertest.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
@@ -36,7 +37,8 @@ HEADERS += tasktestlib.h \
     consolejobtest.h \
     userconsolejobtest.h \
     sshconsolejobtest.h \
-    tasktestsuites.h
+    tasktestsuites.h \
+    clientworkmanagertest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

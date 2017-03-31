@@ -44,6 +44,7 @@ void JobStatus::SetCode(int _code)
     code = _code;
 }
 
+// TODO : use a static map instead of these if/else chains
 string JobStatus::GetCodeDescription(int _code)
 {
     if (_code == JobStatus::NOT_EXECUTED)
@@ -56,6 +57,20 @@ string JobStatus::GetCodeDescription(int _code)
         return "Executed with minor errors";
     else
         return "Unknown status code";
+}
+
+int JobStatus::GetCodeFromDescription(const string &_description)
+{
+    if (_description == "Not executed")
+        return JobStatus::NOT_EXECUTED;
+    else if (_description == "Ok")
+        return JobStatus::OK;
+    else if (_description == "Error")
+        return JobStatus::ERROR;
+    else if (_description == "Executed with minor errors")
+        return JobStatus::OK_WITH_WARNINGS;
+    else
+        return JobStatus::NOT_EXECUTED;
 }
 
 string JobStatus::GetCodeDescription() const

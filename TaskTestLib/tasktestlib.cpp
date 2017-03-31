@@ -12,6 +12,7 @@ void GetTaskLibTests(std::vector<QObject*>& tests)
     tests.push_back(new ConsoleJobTest());
     tests.push_back(new UserConsoleJobTest());
     tests.push_back(new SshConsoleJobTest());
+    tests.push_back(new ClientWorkManagerTest());
 }
 
 

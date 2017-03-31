@@ -11,8 +11,12 @@ ClientWorkManager::ClientWorkManager(Client *_client)
 
 ClientWorkManager::~ClientWorkManager()
 {
-	/// @todo clean work list properly, deleting all jobs.
-    //delete client;
+    delete client;
+
+    list<AbstractJob*>::iterator it=jobList.begin();
+    for (; it!=jobList.end(); ++it)
+        delete (*it);
+    jobList.clear();
 }
 
 void ClientWorkManager::AddJob(AbstractJob *newJob)
@@ -46,15 +50,16 @@ bool ClientWorkManager::RemoveJob(const string &jobName)
 bool ClientWorkManager::RemoveAllButJobs(const string &jobName)
 {
 	list<AbstractJob*>::iterator it=jobList.begin();
-	list<AbstractJob*>::iterator end=jobList.end();
 	unsigned int removedJobs = 0;
-	for (; it!=end; it++)
+    while (it!=jobList.end())
 	{
 		if ((*it)->GetName() != jobName)
 		{
 			it = jobList.erase(it);
 			removedJobs++;
 		}
+        else
+            ++it;
 	}
 
 	return (removedJobs > 0);

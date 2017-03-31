@@ -7,8 +7,8 @@
 class Client
 {
 public:
-
 	Client(const std::string& _name = "");
+    ~Client();
 
 	 std::string GetName() const;
 	 void SetName(const std::string _name);
