@@ -3,20 +3,10 @@
 
 #include "client.h"
 #include "clientworkmanager.h"
-#include "consolejob.h"
-#include "dummyjob.h"
-#include "curlconsoleemailsender.h"
-#include "profiledjob.h"
-#include "sleepjob.h"
-#include "changescreensaverjob.h"
-#include "shutdownjob.h"
-#include "rsnapshotbackupjob.h"
-#include "clamavjob.h"
+#include "commandlinemanager.h"
 #include "configuration.h"
+#include "curlconsoleemailsender.h"
 #include "SelfIdentity.h"
-#include "textreportcreator.h"
-
-#include <commandlinemanager.h>
 
 #include <fstream>
 
