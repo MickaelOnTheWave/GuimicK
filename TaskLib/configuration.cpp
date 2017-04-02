@@ -5,12 +5,17 @@
 
 #include "configurationparser.h"
 #include "htmlreportcreator.h"
-
-#include "changescreensaverjob.h"
-#include "clamavjob.h"
 #include "profiledjob.h"
-#include "rsnapshotsmartcreator.h"
-#include "userconsolejob.h"
+
+#include "changescreensaverjobconfiguration.h"
+#include "clamavjobconfiguration.h"
+#include "diskspacecheckjobconfiguration.h"
+#include "gitbackupjobconfiguration.h"
+#include "rsnapshotbackupjobconfiguration.h"
+#include "shutdownjobconfiguration.h"
+#include "sshconsolejobconfiguration.h"
+#include "userconsolejobconfiguration.h"
+#include "wakejobconfiguration.h"
 
 using namespace std;
 
@@ -19,12 +24,19 @@ Configuration::Configuration()
 {
 	emailReport = true;
 	shutdown = true;
+
+    FillSupportedJobsList();
 }
 
 Configuration::~Configuration()
 {
     delete client;
 	delete self;
+
+    vector<AbstractJobConfiguration*>::iterator it=supportedJobs.begin();
+    for (; it!=supportedJobs.end(); ++it)
+        delete *it;
+    supportedJobs.clear();
 }
 
 bool Configuration::LoadFromFile(const string &fileName, std::vector<string> &errorMessages)
@@ -43,182 +55,19 @@ bool Configuration::LoadFromFile(const string &fileName, std::vector<string> &er
     return IsConfigurationConsistent(errorMessages);
 }
 
-AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
+AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object,
+                                                std::vector<string> &errorMessages)
 {
-	if (object->name == "Wake")
-        return CreateWakeJobFromObject(object);
-	else if (object->name == "ChangeScreenSaver")
-        return CreateChangeScreensaverJobFromObject(object);
-    else if (object->name == "RsnapshotBackup")
-        return CreateRsnapshotBackupJob(object);
-	else if (object->name == "ClamAv")
-		return new ClamAvJob();
-	else if (object->name == "Shutdown")
-        return CreateShutdownJobFromObject(object);
-    else if (object->name == "Console")
-        return InitializeUserConsoleJobFromObject(object);
-    else if (object->name == "SshConsole")
-        return InitializeSshConsoleJobFromObject(object);
-    else if (object->name == "GitBackup")
-        return CreateGitBackupJob(object);
-    else if (object->name == "DiskSpaceCheck")
-        return CreateDiskSpaceCheckJob(object);
-	else
+    AbstractJobConfiguration* relatedConfiguration = GetJobConfiguration(object->name);
+    if (relatedConfiguration == NULL)
+    {
+        string errorMessage = "Warning : unknown job \"";
+        errorMessage += object->name + "\". Ignoring...";
+        errorMessages.push_back(errorMessage);
         return NULL;
-}
-
-UserConsoleJob *Configuration::InitializeUserConsoleJobFromObject(ConfigurationObject *object) const
-{
-    string title =          object->GetFirstProperty("title", "param0");
-    string command =        object->GetFirstProperty("command", "param1");
-    string rawReturnCode =  object->GetFirstProperty("returnCode","param2");
-    string expectedOutput = object->propertyList["expectedOutput"];
-    string outputFile     = object->propertyList["outputFileName"];
-    string parserCommand  = object->propertyList["parserCommand"];
-
-    UserConsoleJob* job = new UserConsoleJob();
-    job->SetTitle(title);
-    job->Initialize(command);
-
-    if (object->propertyList["showDebugInformation"] != "")
-        job->SetOutputDebugInformation(true);
-
-    if (rawReturnCode != "")
-    {
-        int returnCode = 0;
-        stringstream ss(rawReturnCode);
-        ss >> returnCode;
-        job->SetExpectedReturnCode(returnCode);
     }
-
-    if (expectedOutput != "")
-        job->SetExpectedOutput(expectedOutput);
-
-    if (outputFile != "")
-        job->SetOutputTofile(outputFile);
     else
-        job->SetAttachOutput(true);
-
-    if (parserCommand != "")
-        job->SetMiniDescriptionParserCommand(parserCommand);
-
-    return job;
-}
-
-SshConsoleJob *Configuration::InitializeSshConsoleJobFromObject(ConfigurationObject *object) const
-{
-    UserConsoleJob* remoteJob = InitializeUserConsoleJobFromObject(object);
-    return new SshConsoleJob(remoteJob->GetName(), remoteJob);
-}
-
-WakeJob *Configuration::CreateWakeJobFromObject(ConfigurationObject *object) const
-{
-    WakeJob* job = new WakeJob();
-    string param = object->propertyList["param0"];
-    if (param == "showDebugInformation")
-        job->SetOutputDebugInformation(true);
-    return job;
-}
-
-LinuxShutdownJob *Configuration::CreateShutdownJobFromObject(ConfigurationObject *object) const
-{
-    LinuxShutdownJob* job = new LinuxShutdownJob();
-    string param = object->propertyList["param0"];
-    if (param == "showDebugInformation")
-        job->SetOutputDebugInformation(true);
-    return job;
-}
-
-ChangeScreensaverJob *Configuration::CreateChangeScreensaverJobFromObject(ConfigurationObject *object) const
-{
-    int time = 600;
-    string param = object->propertyList["param0"];
-    if (param != "")
-        time = atoi(param.c_str());
-    return new ChangeScreensaverJob(time);
-}
-
-GitBackupJob *Configuration::CreateGitBackupJob(ConfigurationObject *object) const
-{
-    GitBackupJob* job = new GitBackupJob();
-    list<ConfigurationObject*>::iterator it = object->objectList.begin();
-    for (; it != object->objectList.end(); it++)
-    {
-        ConfigurationObject* currentObj = *it;
-
-        if (currentObj->name != "Repository")
-            continue;
-
-        string source(currentObj->propertyList["source"]);
-        string dest(currentObj->propertyList["dest"]);
-        job->AddRepository(source, dest);
-    }
-
-    string target(object->propertyList["target"]);
-    if (target == "local")
-        job->SetTargetLocal();
-    else
-        job->SetTargetRemote();
-
-    string writeLogsToFiles(object->propertyList["writeLogsToFiles"]);
-    if (writeLogsToFiles == "true")
-        job->SetWriteLogsToFiles(true);
-
-    return job;
-}
-
-RsnapshotBackupJob *Configuration::CreateRsnapshotBackupJob(ConfigurationObject *object) const
-{
-    string repository = object->GetFirstProperty("repository", "param0");
-    string configurationFile = object->GetFirstProperty("fullConfigurationFile", "param1");
-
-    RsnapshotBackupJob* job = NULL;
-    if (configurationFile != "")
-        job = new RsnapshotBackupJob(repository, configurationFile);
-    else
-        job = CreateRsnapshotBackupJobFromCreator(object, repository);
-
-    if (object->propertyList["showDebugInformation"] != "")
-        job->SetOutputDebugInformation(true);
-    if (object->propertyList["waitAfterRun"] != "")
-        job->SetWaitAfterRun(true);
-    return job;
-}
-
-LinuxFreeSpaceCheckJob *Configuration::CreateDiskSpaceCheckJob(ConfigurationObject *object) const
-{
-    const string drive = object->GetFirstProperty("drive", "param0");
-    const string localTarget = object->GetFirstProperty("localTarget", "param1");
-
-    LinuxFreeSpaceCheckJob* job = new LinuxFreeSpaceCheckJob(drive);
-    if (localTarget == "false")
-        job->SetTargetToRemote(true);
-
-    return job;
-}
-
-RsnapshotBackupJob *Configuration::CreateRsnapshotBackupJobFromCreator(ConfigurationObject *object,
-                                                                       const string &repository) const
-{
-    RsnapshotSmartCreator creator(repository);
-
-    string templateFile = object->propertyList["templateConfigurationFile"];
-    creator.SetTemplateConfigurationFile(templateFile);
-
-    list<ConfigurationObject*>::iterator it = object->objectList.begin();
-    for (; it != object->objectList.end(); it++)
-    {
-        ConfigurationObject* currentObj = *it;
-
-        if (currentObj->name != "Folder")
-            continue;
-
-        string source(currentObj->propertyList["source"]);
-        string dest(currentObj->propertyList["dest"]);
-        creator.AddFolderToBackup(source, dest);
-    }
-
-    return creator.CreateConfiguredJob();
+        return relatedConfiguration->CreateConfiguredJob(object, errorMessages);
 }
 
 void Configuration::CreateClient(ConfigurationObject *confObject, vector<string> &errorMessages)
@@ -252,16 +101,9 @@ void Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
 	list<ConfigurationObject*>::iterator endJobs = jobListObj->objectList.end();
 	for (; itJobs != endJobs; itJobs++)
 	{
-		AbstractJob* parsedJob = CreateJobFromObject(*itJobs);
-		if (parsedJob == NULL)
-		{
-            string errorMessage = "Warning : unknown job \"";
-            errorMessage += (*itJobs)->name + "\". Ignoring...";
-            errorMessages.push_back(errorMessage);
-			continue;
-		}
-
-        jobList.push_back(parsedJob);
+        AbstractJob* parsedJob = CreateJobFromObject(*itJobs, errorMessages);
+        if (parsedJob)
+            jobList.push_back(parsedJob);
 	}
 
     if (jobList.empty())
@@ -342,7 +184,18 @@ bool Configuration::GetBooleanValue(const string &strValue, vector<string> &erro
 	std::string error("Warning : ");
     error += strValue + " is not a valid boolean value. Defaulting to false";
 	errorMessages.push_back(error);
-	return false;
+    return false;
+}
+
+AbstractJobConfiguration *Configuration::GetJobConfiguration(const string &jobTab)
+{
+    vector<AbstractJobConfiguration*>::iterator it = supportedJobs.begin();
+    for (; it != supportedJobs.end(); ++it)
+    {
+        if ((*it)->GetTagName() == jobTab)
+            return *it;
+    }
+    return NULL;
 }
 
 ClientWorkManager *Configuration::BuildTimedWorkList() const
@@ -412,6 +265,19 @@ bool Configuration::IsReportHtml() const
 bool Configuration::HasClient() const
 {
     return (client != NULL);
+}
+
+void Configuration::FillSupportedJobsList()
+{
+    supportedJobs.push_back(new WakeJobConfiguration);
+    supportedJobs.push_back(new ChangeScreensaverJobConfiguration);
+    supportedJobs.push_back(new RsnapshotBackupJobConfiguration);
+    supportedJobs.push_back(new ClamAvJobConfiguration);
+    supportedJobs.push_back(new ShutdownJobConfiguration);
+    supportedJobs.push_back(new UserConsoleJobConfiguration);
+    supportedJobs.push_back(new SshConsoleJobConfiguration);
+    supportedJobs.push_back(new GitBackupJobConfiguration);
+    supportedJobs.push_back(new DiskSpaceCheckJobConfiguration);
 }
 
 void Configuration::FillRootObjects(const list<ConfigurationObject *> &objectList,

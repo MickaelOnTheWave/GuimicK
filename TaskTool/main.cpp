@@ -4,6 +4,7 @@
 #include "client.h"
 #include "clientworkmanager.h"
 #include "commandlinemanager.h"
+#include "consolejob.h"
 #include "configuration.h"
 #include "curlconsoleemailsender.h"
 #include "SelfIdentity.h"

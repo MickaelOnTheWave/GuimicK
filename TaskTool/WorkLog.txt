@@ -1,5 +1,12 @@
-02/04/2017 (15.1)
-	Updated TaskFeature tests to have a valid configuration.
+02/04/2017 (2.8h)
+	Updated TaskFeature tests to have a valid configuration. Refactored configuration - now each job has a
+	dedicated configuration class. It is responsible for handling configuration parameters and creating
+	properly its job.
+Next planned work :
+	- Fix failing tests after refactor
+	- Create configuration object for SelfIdentity class
+	- Add tests in test suite for each job configuration
+	- Finish test suite
 
 02/04/2017 (3.7h)
 	Created Configuration test suite. Improved configuration error detection and reporting. Fixed bugs

@@ -1,0 +1,81 @@
+#include "abstractjobconfiguration.h"
+
+#include <algorithm>
+
+using namespace std;
+
+AbstractJobConfiguration::AbstractJobConfiguration(const std::string &tag)
+    : jobTag(tag)
+{
+}
+
+AbstractJobConfiguration::~AbstractJobConfiguration()
+{
+}
+
+std::string AbstractJobConfiguration::GetTagName() const
+{
+    return jobTag;
+}
+
+AbstractJob *AbstractJobConfiguration::CreateConfiguredJob(
+                            ConfigurationObject *confObject,
+                            std::vector<std::string> &errorMessages)
+{
+    CheckKnownProperties(confObject, errorMessages);
+    CheckKnownSubObjects(confObject, errorMessages);
+
+    return CreateConfiguredJobAfterCheck(confObject, errorMessages);
+}
+
+void AbstractJobConfiguration::FillKnownProperties(vector<string> &)
+{
+}
+
+void AbstractJobConfiguration::FillKnownSubObjects(vector<string>&)
+{
+}
+
+void AbstractJobConfiguration::CheckKnownProperties(ConfigurationObject *confObject,
+                                                    vector<string> &errorMessages)
+{
+    vector<string> knownProperties;
+    FillKnownProperties(knownProperties);
+
+    map<string, string>::iterator itProperty = confObject->propertyList.begin();
+    for (; itProperty!=confObject->propertyList.end(); ++itProperty)
+    {
+        if (HasValue(knownProperties, itProperty->first) == false)
+            errorMessages.push_back(BuildErrorMessage("property", itProperty->first));
+    }
+}
+
+void AbstractJobConfiguration::CheckKnownSubObjects(ConfigurationObject *confObject,
+                                                    std::vector<std::string> &errorMessages)
+{
+    vector<string> knownObjects;
+    FillKnownSubObjects(knownObjects);
+
+    list<ConfigurationObject*>::iterator it = confObject->objectList.begin();
+    for (; it!=confObject->objectList.end(); ++it)
+    {
+        if (HasValue(knownObjects, (*it)->name) == false)
+            errorMessages.push_back(BuildErrorMessage("sub object", (*it)->name));
+    }
+}
+
+bool AbstractJobConfiguration::HasValue(const std::vector<string> &collection,
+                                        const string &value) const
+{
+    vector<string>::const_iterator it = find(collection.begin(), collection.end(), value);
+    return (it != collection.end());
+}
+
+string AbstractJobConfiguration::BuildErrorMessage(const string &objectType,
+                                                   const string &objectName)
+{
+    string message = "Warning : ";
+    message += objectType + " \"" + objectName + "\" is not handled by job \"";
+    message += jobTag + "\"";
+    return message;
+}

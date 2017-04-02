@@ -4,18 +4,11 @@
 #include <vector>
 #include <string>
 
+#include "abstractjobconfiguration.h"
 #include "client.h"
 #include "clientworkmanager.h"
 #include "SelfIdentity.h"
 #include "textreportcreator.h"
-
-#include "changescreensaverjob.h"
-#include "consolejob.h"
-#include "gitbackupjob.h"
-#include "linuxfreespacecheckjob.h"
-#include "linuxshutdownjob.h"
-#include "rsnapshotbackupjob.h"
-#include "wakejob.h"
 
 class ConfigurationObject;
 
@@ -45,7 +38,8 @@ public:
 
     bool HasClient() const;
 
-protected:
+private:
+    void FillSupportedJobsList();
 
     void FillRootObjects(const std::list<ConfigurationObject*>& objectList,
                          std::vector<std::string> &errorMessages);
@@ -54,19 +48,8 @@ protected:
     bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
     bool IsEmailDataComplete() const;
 
-	AbstractJob *CreateJobFromObject(ConfigurationObject *object);
-
-    UserConsoleJob *InitializeUserConsoleJobFromObject(ConfigurationObject *object) const;
-    SshConsoleJob *InitializeSshConsoleJobFromObject(ConfigurationObject *object) const;
-    WakeJob* CreateWakeJobFromObject(ConfigurationObject *object) const;
-    LinuxShutdownJob* CreateShutdownJobFromObject(ConfigurationObject *object) const;
-    ChangeScreensaverJob* CreateChangeScreensaverJobFromObject(ConfigurationObject* object) const;
-    GitBackupJob* CreateGitBackupJob(ConfigurationObject* object) const;
-    RsnapshotBackupJob* CreateRsnapshotBackupJob(ConfigurationObject* object) const;
-    LinuxFreeSpaceCheckJob* CreateDiskSpaceCheckJob(ConfigurationObject* object) const;
-
-    RsnapshotBackupJob* CreateRsnapshotBackupJobFromCreator(ConfigurationObject *object,
-                                                            const std::string& repository) const;
+    AbstractJob *CreateJobFromObject(ConfigurationObject *object,
+                                     std::vector<std::string> &errorMessages);
 
     void CreateClient(ConfigurationObject* confObject, std::vector<std::string> &errorMessages);
     void CreateSelf(ConfigurationObject* confObject, std::vector<std::string>& errorMessages);
@@ -76,9 +59,12 @@ protected:
 
     bool GetBooleanValue(const std::string& strValue, std::vector<std::string>& errorMessages) const;
 
+    AbstractJobConfiguration* GetJobConfiguration(const std::string& jobTab);
+
 	Client* client;
 	SelfIdentity* self;
-	std::list<AbstractJob*> jobList;
+    std::list<AbstractJob*> jobList;
+    std::vector<AbstractJobConfiguration*> supportedJobs;
 
     AbstractReportCreator* reportCreator;
 

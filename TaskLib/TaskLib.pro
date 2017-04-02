@@ -39,7 +39,17 @@ SOURCES += \
     jobdebuginformationmanager.cpp \
     rsnapshotsmartcreator.cpp \
     linuxfreespacecheckjob.cpp \
-    rsnapshotsmartbackupjob.cpp
+    rsnapshotsmartbackupjob.cpp \
+    abstractjobconfiguration.cpp \
+    wakejobconfiguration.cpp \
+    changescreensaverjobconfiguration.cpp \
+    rsnapshotbackupjobconfiguration.cpp \
+    clamavjobconfiguration.cpp \
+    shutdownjobconfiguration.cpp \
+    userconsolejobconfiguration.cpp \
+    sshconsolejobconfiguration.cpp \
+    gitbackupjobconfiguration.cpp \
+    diskspacecheckjobconfiguration.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -73,7 +83,17 @@ HEADERS +=\
     rsnapshotsmartcreator.h \
     linuxfreespacecheckjob.h \
     rsnapshotsmartbackupjob.h \
-    AbstractConsoleJob.h
+    AbstractConsoleJob.h \
+    abstractjobconfiguration.h \
+    wakejobconfiguration.h \
+    changescreensaverjobconfiguration.h \
+    rsnapshotbackupjobconfiguration.h \
+    clamavjobconfiguration.h \
+    shutdownjobconfiguration.h \
+    userconsolejobconfiguration.h \
+    sshconsolejobconfiguration.h \
+    gitbackupjobconfiguration.h \
+    diskspacecheckjobconfiguration.h
 
 unix {
     target.path = /usr/lib
