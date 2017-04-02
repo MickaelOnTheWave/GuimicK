@@ -1,4 +1,13 @@
-02/04/2017 (9.6)
+02/04/2017 (3.7h)
+	Created Configuration test suite. Improved configuration error detection and reporting. Fixed bugs
+	in test utils and improved code reuse in tools. Updated all tools and executables accordingly. Also
+	remove a long standing memory leak.
+Next planned work :
+	- Refactor job configurations - each job should know what properties configure it.
+	- Test job configurations in depth : each job tested for its known and supported features.
+	- Updated TaskFeature tests to new configuration.
+	- Check for additional testing in configuration : report object, Client...
+	- Check if additional test suites are relevant for other Task features
 
 30/03/2017 (2.7h)
 	Finished full ClientWorkManager test suite. Fixed minor bugs in it.
