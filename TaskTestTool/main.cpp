@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
         return DID_NOT_RAN;
 
     vector<QObject*> tests;
-    GetTaskLibTests(tests);
+    GetTaskLibTests(tests, "/home/mickael/Prog/TaskManager/TaskTestLib/data/");
     GetParserLibTests(tests, "/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/");
     GetQtToolsLibTests(tests);
     GetToolsLibTests(tests, "/home/mickael/Prog/Tools/ToolsTestLib/data/");

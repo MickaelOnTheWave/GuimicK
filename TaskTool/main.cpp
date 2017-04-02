@@ -15,10 +15,12 @@ using namespace std;
 static const string PROGRAM_VERSION = "0.62";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
-void ShowErrors(list<string> &errorMessages);
+void ShowErrors(vector<string> &errorMessages);
 
 int main(int argc, char* argv[])
 {
+    // TODO : clean this code. Main should be a lot smaller.
+
     const int NO_ERROR              = 0;
     const int CONFIGURATION_ERROR   = 1;
 
@@ -54,7 +56,7 @@ int main(int argc, char* argv[])
     }
 
     Configuration configuration;
-    list<string> errors;
+    vector<string> errors;
     bool configurationIsUsable = configuration.LoadFromFile(configurationFile, errors);
     ShowErrors(errors);
     if (configurationIsUsable == false)
@@ -110,7 +112,7 @@ int main(int argc, char* argv[])
         vector<string> externalFiles;
         vector<pair<string,string> > fileBuffers;
         reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
-        bool emailOk = sender.Send(configuration.IsHtmlReport(), configuration.GetMasterEmail(), "", "", "Maintenance report",
+        bool emailOk = sender.Send(configuration.IsReportHtml(), configuration.GetMasterEmail(), "", "", "Maintenance report",
                                             reportData, externalFiles, fileBuffers);
         if (!emailOk)
         {
@@ -134,14 +136,13 @@ int main(int argc, char* argv[])
     return NO_ERROR;
 }
 
-void ShowErrors(list<string>& errorMessages)
+void ShowErrors(vector<string>& errorMessages)
 {
     if (errorMessages.size() == 0)
         return;
 
-    list<string>::const_iterator it=errorMessages.begin();
-    list<string>::const_iterator end=errorMessages.end();
-    for (; it!=end; it++)
+    vector<string>::const_iterator it=errorMessages.begin();
+    for (; it!=errorMessages.end(); it++)
         cout << *it << endl;
     cout << endl;
 }

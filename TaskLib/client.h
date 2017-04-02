@@ -8,7 +8,10 @@ class Client
 {
 public:
 	Client(const std::string& _name = "");
+    Client(const Client& other);
     ~Client();
+
+    Client* Clone() const;
 
 	 std::string GetName() const;
 	 void SetName(const std::string _name);

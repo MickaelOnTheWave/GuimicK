@@ -2,6 +2,7 @@
 #define TASKTESTSUITES_H
 
 #include "clientworkmanagertest.h"
+#include "configurationtest.h"
 #include "consolejobtest.h"
 #include "gitjobtest.h"
 #include "rsnapshoterroranalyzertest.h"

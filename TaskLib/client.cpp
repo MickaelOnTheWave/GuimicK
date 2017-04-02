@@ -5,9 +5,19 @@ Client::Client(const std::string &_name)
 {
 }
 
+Client::Client(const Client &other)
+    : name(other.name), propertyMap(other.propertyMap)
+{
+}
+
 Client::~Client()
 {
     propertyMap.clear();
+}
+
+Client *Client::Clone() const
+{
+    return new Client(*this);
 }
 
 std::string Client::GetName() const

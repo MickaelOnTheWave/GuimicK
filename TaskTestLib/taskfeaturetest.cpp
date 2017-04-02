@@ -96,7 +96,7 @@ void TaskFeatureTest::ReadConfiguration(Configuration &configuration)
 {
     QFETCH(QString, configurationFile);
 
-    list<string> errors;
+    vector<string> errors;
     const string configurationFilePath = currentTestCaseFolder + configurationFile.toStdString();
     bool confOk = configuration.LoadFromFile(configurationFilePath, errors);
     QCOMPARE(confOk, true);

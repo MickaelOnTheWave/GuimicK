@@ -23,11 +23,11 @@ Configuration::Configuration()
 
 Configuration::~Configuration()
 {
-    //delete client; // TODO : check memory here
+    delete client;
 	delete self;
 }
 
-bool Configuration::LoadFromFile(const string &fileName, list<string> &errorMessages)
+bool Configuration::LoadFromFile(const string &fileName, std::vector<string> &errorMessages)
 {
 	errorMessages.clear();
 	jobList.clear();
@@ -37,42 +37,10 @@ bool Configuration::LoadFromFile(const string &fileName, list<string> &errorMess
 	if (!result)
 		return false;
 
-	list<ConfigurationObject*>::iterator it = parser.objectList.begin();
-	list<ConfigurationObject*>::iterator end = parser.objectList.end();
-	for (; it!=end; it++)
-	{
-		ConfigurationObject* currentObject = *it;
-		if (currentObject->name == "Client")
-			CreateClient(currentObject, errorMessages);
-		else if (currentObject->name == "Agent")
-			CreateSelf(currentObject, errorMessages);
-        else if (currentObject->name == "Report")
-            CreateReport(currentObject, errorMessages);
-		else
-			errorMessages.push_back("Warning : unknown object present in configuration file");
-	}
+    FillRootObjects(parser.objectList, errorMessages);
+    FillGlobalProperties(parser.anonymousObject, errorMessages);
 
-	ConfigurationObject* globalProperties = parser.anonymousObject;
-	if (!globalProperties)
-	{
-		errorMessages.push_back("Warning : no global properties defined!");
-		return true;
-	}
-
-	map<string, string>::iterator itProp = globalProperties->propertyList.begin();
-	map<string, string>::iterator endProp = globalProperties->propertyList.end();
-	for (; itProp != endProp; itProp++)
-	{
-		pair<string, string> currentProp = *itProp;
-		if (currentProp.first == "MasterEmail")
-			masterEmail = currentProp.second;
-		else if (currentProp.first == "SendReportByEmail")
-			emailReport = GetBooleanValue(currentProp.second, errorMessages);
-		else if (currentProp.first == "ShutdownOnFinish")
-			shutdown = GetBooleanValue(currentProp.second, errorMessages);
-	}
-
-	return true;
+    return IsConfigurationConsistent(errorMessages);
 }
 
 AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object)
@@ -253,7 +221,7 @@ RsnapshotBackupJob *Configuration::CreateRsnapshotBackupJobFromCreator(Configura
     return creator.CreateConfiguredJob();
 }
 
-void Configuration::CreateClient(ConfigurationObject *confObject, list<string> &errorMessages)
+void Configuration::CreateClient(ConfigurationObject *confObject, vector<string> &errorMessages)
 {
 	if (client == NULL)
 		client = new Client();
@@ -287,15 +255,20 @@ void Configuration::CreateClient(ConfigurationObject *confObject, list<string> &
 		AbstractJob* parsedJob = CreateJobFromObject(*itJobs);
 		if (parsedJob == NULL)
 		{
-			errorMessages.push_back("Warning : unknown job. Ignoring...");
+            string errorMessage = "Warning : unknown job \"";
+            errorMessage += (*itJobs)->name + "\". Ignoring...";
+            errorMessages.push_back(errorMessage);
 			continue;
 		}
 
         jobList.push_back(parsedJob);
 	}
+
+    if (jobList.empty())
+        errorMessages.push_back("Warning : client has an empty job list");
 }
 
-void Configuration::CreateSelf(ConfigurationObject *confObject, list<string> &errorMessages)
+void Configuration::CreateSelf(ConfigurationObject *confObject, vector<string> &errorMessages)
 {
 	if (self == NULL)
 		self = new SelfIdentity();
@@ -319,7 +292,7 @@ void Configuration::CreateSelf(ConfigurationObject *confObject, list<string> &er
 		else if (currentProp.first == "UseSSL")
 			self->emailUseSsl = GetBooleanValue(currentProp.second, errorMessages);
 		else
-			errorMessages.push_back("Warning : unknown property in self configuration.");
+            errorMessages.push_back("Warning : unknown property in Agent configuration");
 	}
 
     ConfigurationObject* pathsObject = confObject->GetObject("DefaultBinPaths");
@@ -335,10 +308,17 @@ void Configuration::CreateSelf(ConfigurationObject *confObject, list<string> &er
     }
 }
 
-void Configuration::CreateReport(ConfigurationObject *confObject, std::list<string> &)
+void Configuration::CreateReport(ConfigurationObject *confObject, vector<string> &errorMessages)
 {
     string reportType = confObject->GetFirstProperty("type", "param0");
     reportCreator = CreateReportObject(reportType);
+    if (reportCreator == NULL)
+    {
+        reportCreator = new TextReportCreator();
+        string message = "Warning : unsupported \"";
+        message += reportType + "\" report type. Defaulting to text";
+        errorMessages.push_back(message);
+    }
 
     string useProfiling = confObject->GetFirstProperty("timed", "param1");
     reportCreator->UseProfileColumn(useProfiling != "false");
@@ -352,7 +332,7 @@ void Configuration::CreateReport(ConfigurationObject *confObject, std::list<stri
     }
 }
 
-bool Configuration::GetBooleanValue(const string &strValue, list<string> &errorMessages) const
+bool Configuration::GetBooleanValue(const string &strValue, vector<string> &errorMessages) const
 {
 	if (strValue == "true")
 		return true;
@@ -360,7 +340,7 @@ bool Configuration::GetBooleanValue(const string &strValue, list<string> &errorM
 		return false;
 
 	std::string error("Warning : ");
-	error += strValue + " is not a valid boolean value. Defaulting to false.";
+    error += strValue + " is not a valid boolean value. Defaulting to false";
 	errorMessages.push_back(error);
 	return false;
 }
@@ -379,7 +359,7 @@ ClientWorkManager *Configuration::BuildTimedWorkList() const
 
 ClientWorkManager *Configuration::BuildSimpleWorkList() const
 {
-    ClientWorkManager* workManager = new ClientWorkManager(client);
+    ClientWorkManager* workManager = new ClientWorkManager(client->Clone());
 
     list<AbstractJob*>::const_iterator it = jobList.begin();
     list<AbstractJob*>::const_iterator end = jobList.end();
@@ -401,7 +381,7 @@ AbstractReportCreator *Configuration::CreateReportObject(const string& type) con
     else if (type == "html")
         return new HtmlReportCreator();
 	else
-		return new TextReportCreator();
+        return NULL;
 }
 
 SelfIdentity *Configuration::GetSelfIdentity()
@@ -424,7 +404,7 @@ bool Configuration::GetSendReportByEmail() const
     return emailReport;
 }
 
-bool Configuration::IsHtmlReport() const
+bool Configuration::IsReportHtml() const
 {
     return (dynamic_cast<HtmlReportCreator*>(reportCreator));
 }
@@ -432,4 +412,88 @@ bool Configuration::IsHtmlReport() const
 bool Configuration::HasClient() const
 {
     return (client != NULL);
+}
+
+void Configuration::FillRootObjects(const list<ConfigurationObject *> &objectList,
+                                    vector<string> &errorMessages)
+{
+    list<ConfigurationObject*>::const_iterator it = objectList.begin();
+    list<ConfigurationObject*>::const_iterator end = objectList.end();
+    for (; it!=end; it++)
+    {
+        ConfigurationObject* currentObject = *it;
+        if (currentObject->name == "Client")
+            CreateClient(currentObject, errorMessages);
+        else if (currentObject->name == "Agent")
+            CreateSelf(currentObject, errorMessages);
+        else if (currentObject->name == "Report")
+            CreateReport(currentObject, errorMessages);
+        else
+        {
+            string message = "Warning : unknown object \"";
+            message += currentObject->name + "\"";
+            errorMessages.push_back(message);
+        }
+    }
+}
+
+void Configuration::FillGlobalProperties(ConfigurationObject *object,
+                                         vector<string> &errorMessages)
+{
+    if (!object)
+    {
+        errorMessages.push_back("Warning : no global properties defined!");
+        return;
+    }
+
+    map<string, string>::iterator itProp = object->propertyList.begin();
+    map<string, string>::iterator endProp = object->propertyList.end();
+    for (; itProp != endProp; itProp++)
+    {
+        pair<string, string> currentProp = *itProp;
+        if (currentProp.first == "MasterEmail")
+            masterEmail = currentProp.second;
+        else if (currentProp.first == "SendReportByEmail")
+            emailReport = GetBooleanValue(currentProp.second, errorMessages);
+        else if (currentProp.first == "ShutdownOnFinish")
+            shutdown = GetBooleanValue(currentProp.second, errorMessages);
+        else
+        {
+            string message = "Warning : unknown property \"";
+            message += currentProp.first + "\"";
+            errorMessages.push_back(message);
+        }
+    }
+}
+
+bool Configuration::IsConfigurationConsistent(vector<string> &errorMessages)
+{
+    if (self == NULL)
+    {
+        errorMessages.push_back("Error : missing Agent configuration");
+        return false;
+    }
+    else if (client == NULL)
+    {
+        errorMessages.push_back("Error : missing Client");
+        return false;
+    }
+    else if (reportCreator == NULL)
+    {
+        reportCreator = new TextReportCreator();
+        errorMessages.push_back("Warning : missing Report configuration. Defaulting to text");
+        return true;
+    }
+    else if (emailReport && !IsEmailDataComplete())
+    {
+        errorMessages.push_back("Error : missing data for email sending");
+        return false;
+    }
+    else
+        return true;
+}
+
+bool Configuration::IsEmailDataComplete() const
+{
+    return (self->HasValidEmailData() && masterEmail != "");
 }

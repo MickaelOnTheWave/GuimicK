@@ -88,9 +88,9 @@ v0.9 :
 
 v0.8 :
 	[029] Split job config file into client/server files.
-	[026] Support multiple clients with multiple job lists
 	[034] Create Qt client app to create/manage backup folder configuration.
 	[047] Have a Restore option in backup jobs
+	[026] Support multiple clients with multiple job lists
 
 v0.7 :
 	[037] Have automated tests for all features

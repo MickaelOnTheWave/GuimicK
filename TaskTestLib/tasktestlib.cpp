@@ -2,9 +2,8 @@
 
 #include "tasktestsuites.h"
 
-void GetTaskLibTests(std::vector<QObject*>& tests)
+void GetTaskLibTests(std::vector<QObject*>& tests, const std::string& dataPrefix)
 {
-    // TODO : if necessary, add data path option as for Parsers test suites.
     tests.push_back(new RsnapshotErrorAnalyzerTest());
     tests.push_back(new RsnapshotJobTest());
     tests.push_back(new GitJobTest());
@@ -13,6 +12,7 @@ void GetTaskLibTests(std::vector<QObject*>& tests)
     tests.push_back(new UserConsoleJobTest());
     tests.push_back(new SshConsoleJobTest());
     tests.push_back(new ClientWorkManagerTest());
+    tests.push_back(new ConfigurationTest(dataPrefix));
 }
 
 

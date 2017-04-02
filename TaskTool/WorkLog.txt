@@ -1,3 +1,5 @@
+02/04/2017 (9.6)
+
 30/03/2017 (2.7h)
 	Finished full ClientWorkManager test suite. Fixed minor bugs in it.
 Next planned work :

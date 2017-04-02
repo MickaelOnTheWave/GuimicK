@@ -1,7 +1,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#include <list>
+#include <vector>
 #include <string>
 
 #include "client.h"
@@ -25,7 +25,7 @@ public:
 	Configuration();
 	virtual ~Configuration();
 
-	bool LoadFromFile(const std::string& fileName, std::list<std::string> &errorMessages);
+    bool LoadFromFile(const std::string& fileName, std::vector<std::string> &errorMessages);
 
     ClientWorkManager* BuildTimedWorkList() const;
 
@@ -41,11 +41,18 @@ public:
 
 	bool GetSendReportByEmail() const;
 
-    bool IsHtmlReport(void) const;
+    bool IsReportHtml(void) const;
 
     bool HasClient() const;
 
 protected:
+
+    void FillRootObjects(const std::list<ConfigurationObject*>& objectList,
+                         std::vector<std::string> &errorMessages);
+    void FillGlobalProperties(ConfigurationObject* object,
+                         std::vector<std::string> &errorMessages);
+    bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
+    bool IsEmailDataComplete() const;
 
 	AbstractJob *CreateJobFromObject(ConfigurationObject *object);
 
@@ -61,13 +68,13 @@ protected:
     RsnapshotBackupJob* CreateRsnapshotBackupJobFromCreator(ConfigurationObject *object,
                                                             const std::string& repository) const;
 
-	void CreateClient(ConfigurationObject* confObject, std::list<std::string>& errorMessages);
-	void CreateSelf(ConfigurationObject* confObject, std::list<std::string>& errorMessages);
-    void CreateReport(ConfigurationObject* confObject, std::list<std::string>& errorMessages);
+    void CreateClient(ConfigurationObject* confObject, std::vector<std::string> &errorMessages);
+    void CreateSelf(ConfigurationObject* confObject, std::vector<std::string>& errorMessages);
+    void CreateReport(ConfigurationObject* confObject, std::vector<std::string>& errorMessages);
 
     AbstractReportCreator* CreateReportObject(const std::string& type) const;
 
-	bool GetBooleanValue(const std::string& strValue, std::list<std::string>& errorMessages) const;
+    bool GetBooleanValue(const std::string& strValue, std::vector<std::string>& errorMessages) const;
 
 	Client* client;
 	SelfIdentity* self;
