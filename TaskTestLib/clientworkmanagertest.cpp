@@ -89,15 +89,15 @@ void ClientWorkManagerTest::testRunWorkList_data()
 
     QTest::newRow("Empty list") << QStringList() << QStringList() << QStringList() << QStringList();
     QTest::newRow("Simple list") << QStringList({"Job 1","Job 2", "Job 3", "Job 4"})
-                                   << QStringList({"Ok","Ok with minor errors", "Error", "Not executed"})
+                                   << QStringList({"Ok","Executed with minor errors", "Error", "Not executed"})
                                    << QStringList({"first description", "second description",
                                                    "third description", "last description"})
                                    << QStringList({"", "", "", ""});
 
     QTest::newRow("Mixed list") << QStringList({"Simple job 1","Simple Job 2", "Warning job",
                                                 "Error job", "No init job"})
-                                   << QStringList({"Ok","Ok","Ok with minor errors", "Error", "Not executed"})
-                                   << QStringList({"", "", "", "", ""})
+                                   << QStringList({"Ok","Ok","Executed with minor errors", "Error", "Not executed"})
+                                   << QStringList({"", "", "", "", "Initialization failed"})
                                    << QStringList({"", "", "", "", "fail"});
 }
 

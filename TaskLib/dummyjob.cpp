@@ -31,7 +31,7 @@ JobStatus *DummyJob::Run()
 {
 	JobStatus* status = new JobStatus();
 
-	status->SetCode(JobStatus::OK);
+    status->SetCode(statusCode);
     status->SetDescription(statusDescription);
     return status;
 }
