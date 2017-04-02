@@ -1,3 +1,6 @@
+02/04/2017 (15.1)
+	Updated TaskFeature tests to have a valid configuration.
+
 02/04/2017 (3.7h)
 	Created Configuration test suite. Improved configuration error detection and reporting. Fixed bugs
 	in test utils and improved code reuse in tools. Updated all tools and executables accordingly. Also

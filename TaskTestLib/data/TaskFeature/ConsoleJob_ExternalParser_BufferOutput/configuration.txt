@@ -1,3 +1,13 @@
+Agent
+{
+	 Name = "Testing Agent";
+	 Email = "invalid.email@provider.com";
+	 Password = "itisabadhabittostoreaclearpassword";
+	 SmtpAddress = "smtp.provider.com";
+	 SmtpPort = 123;
+	 UseSSL = true;
+}
+
 Client
 {
 	Name = "Testing computer";
