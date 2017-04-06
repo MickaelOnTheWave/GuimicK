@@ -2,24 +2,17 @@
 #define SELFIDENTITY_H
 
 #include <string>
+#include <vector>
+
+#include "configurationobject.h"
 
 class SelfIdentity
 {
 public:
+    SelfIdentity();
+    SelfIdentity(ConfigurationObject *confObject, std::vector<std::string> &errorMessages);
 
-    bool HasValidEmailData() const
-    {
-        if (email == "")
-            return false;
-        else if (emailPassword == "")
-            return false;
-        else if (emailSmtpPort == -1)
-            return false;
-        else if (emailSmtpServer == "")
-            return false;
-        else
-            return true;
-    }
+    bool HasValidEmailData() const;
 
 	std::string name;
 	std::string email;
@@ -27,6 +20,9 @@ public:
 	std::string emailSmtpServer;
 	bool emailUseSsl;
 	int emailSmtpPort;
+
+private:
+    std::string BuildUnhandledPropertyMessage(const std::string& property) const;
 };
 
 #endif // SELFIDENTITY_H

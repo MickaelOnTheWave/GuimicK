@@ -49,7 +49,8 @@ SOURCES += \
     userconsolejobconfiguration.cpp \
     sshconsolejobconfiguration.cpp \
     gitbackupjobconfiguration.cpp \
-    diskspacecheckjobconfiguration.cpp
+    diskspacecheckjobconfiguration.cpp \
+    SelfIdentity.cpp
 
 HEADERS +=\
     abstractjob.h \

@@ -1,6 +1,5 @@
 #include "configuration.h"
 
-#include <stdlib.h>
 #include <vector>
 
 #include "configurationparser.h"
@@ -112,31 +111,15 @@ void Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
 
 void Configuration::CreateSelf(ConfigurationObject *confObject, vector<string> &errorMessages)
 {
-	if (self == NULL)
-		self = new SelfIdentity();
+    if (self != NULL)
+    {
+        errorMessages.push_back("Warning : redefining SelfIdentity object");
+        delete self;
+    }
 
-	map<string, string>::iterator itProp = confObject->propertyList.begin();
-	map<string, string>::iterator endProp = confObject->propertyList.end();
-	for (; itProp != endProp; itProp++)
-	{
-		pair<string, string> currentProp = *itProp;
+    self = new SelfIdentity(confObject, errorMessages);
 
-		if (currentProp.first == "Name")
-			self->name = currentProp.second;
-		else if (currentProp.first == "Email")
-			self->email = currentProp.second;
-		else if (currentProp.first == "Password")
-			self->emailPassword = currentProp.second;
-		else if (currentProp.first == "SmtpAddress")
-			self->emailSmtpServer = currentProp.second;
-		else if (currentProp.first == "SmtpPort")
-			self->emailSmtpPort = atoi(currentProp.second.c_str());
-		else if (currentProp.first == "UseSSL")
-			self->emailUseSsl = GetBooleanValue(currentProp.second, errorMessages);
-		else
-            errorMessages.push_back("Warning : unknown property in Agent configuration");
-	}
-
+    // TODO : think about the proper place for that
     ConfigurationObject* pathsObject = confObject->GetObject("DefaultBinPaths");
     if (pathsObject)
     {

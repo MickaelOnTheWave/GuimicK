@@ -1,6 +1,6 @@
 06/04/2017 (19.7)
 	Fixed failing tests. Most adjustments were needed in test cases - one was obsolete and the other needed
-	updating.
+	updating. Changed SelfIdentity class to handle its configuration.
 
 
 02/04/2017 (2.8h)

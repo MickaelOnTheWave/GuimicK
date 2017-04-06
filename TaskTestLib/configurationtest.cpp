@@ -75,7 +75,7 @@ void ConfigurationTest::LoadWarningExamples()
     QTest::newRow("Unknown property in self identity")
                             << "self - unknown property.txt"
                             << true
-                            << QStringList({"Warning : unknown property in Agent configuration"});
+                            << QStringList({"Warning : unhandled property unknownProperty for Agent configuration"});
     QTest::newRow("Client without job list")
                             << "no job list.txt"
                             << true
