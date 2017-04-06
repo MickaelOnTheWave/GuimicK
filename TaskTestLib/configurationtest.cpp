@@ -46,6 +46,42 @@ void ConfigurationTest::testLoadFromFile()
     TestUtils::CheckListsAreEqual(expectedErrors, errors);
 }
 
+void ConfigurationTest::testLoadFromFile_Agent_data()
+{
+
+}
+
+void ConfigurationTest::testLoadFromFile_Agent()
+{
+    //CheckSelfIdentity();
+    QFAIL("TODO : implement");
+}
+
+void ConfigurationTest::testLoadFromFile_Client_data()
+{
+
+}
+
+void ConfigurationTest::testLoadFromFile_Client()
+{
+    QFAIL("TODO : implement");
+}
+
+void ConfigurationTest::testLoadFromFile_Jobs_data()
+{
+
+}
+
+void ConfigurationTest::testLoadFromFile_Jobs()
+{
+    QFAIL("TODO : implement");
+}
+
+void ConfigurationTest::testBuildSimpleWorkList()
+{
+    QFAIL("TODO : implement");
+}
+
 void ConfigurationTest::LoadErrorExamples()
 {
     QTest::newRow("Inexistent file")
@@ -113,13 +149,6 @@ void ConfigurationTest::LoadWarningExamples()
 void ConfigurationTest::LoadValidExamples()
 {
     QTest::newRow("All Valid") << "valid.txt" << true << QStringList();
-}
-
-void ConfigurationTest::TestLoadedData()
-{
-    CheckSelfIdentity();
-
-    QFAIL("TODO : finish");
 }
 
 void ConfigurationTest::CheckSelfIdentity()

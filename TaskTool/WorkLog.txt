@@ -1,7 +1,11 @@
-06/04/2017 (19.7)
+06/04/2017 (1.1h)
 	Fixed failing tests. Most adjustments were needed in test cases - one was obsolete and the other needed
-	updating. Changed SelfIdentity class to handle its configuration.
-
+	updating. Changed SelfIdentity class to handle its configuration. Also created all tests that are still
+	missing from configuration - so that they fail in global test running and make clear that test suite is
+	not complete.
+Next planned work :
+	- Complete missing tests from Configuration test suite
+	- Check if other main classes are still not tested. If so, just do it!
 
 02/04/2017 (2.8h)
 	Updated TaskFeature tests to have a valid configuration. Refactored configuration - now each job has a
