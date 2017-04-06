@@ -1,3 +1,8 @@
+06/04/2017 (19.7)
+	Fixed failing tests. Most adjustments were needed in test cases - one was obsolete and the other needed
+	updating.
+
+
 02/04/2017 (2.8h)
 	Updated TaskFeature tests to have a valid configuration. Refactored configuration - now each job has a
 	dedicated configuration class. It is responsible for handling configuration parameters and creating

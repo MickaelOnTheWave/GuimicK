@@ -22,9 +22,10 @@ AbstractJob *UserConsoleJobConfiguration::CreateConfiguredJobAfterCheck(
     string title =          confObject->GetFirstProperty("title", "param0");
     string command =        confObject->GetFirstProperty("command", "param1");
     string rawReturnCode =  confObject->GetFirstProperty("returnCode","param2");
-    string expectedOutput = confObject->propertyList["expectedOutput"];
-    string outputFile     = confObject->propertyList["outputFileName"];
-    string parserCommand  = confObject->propertyList["parserCommand"];
+    string expectedOutput = confObject->GetProperty("expectedOutput");
+    string outputFile     = confObject->GetProperty("outputFileName");
+    string parserCommand  = confObject->GetProperty("parserCommand");
+    string parserUsingBuffer = confObject->GetProperty("parserUsesBuffer");
 
     UserConsoleJob* job = new UserConsoleJob();
     job->SetTitle(title);
@@ -52,6 +53,9 @@ AbstractJob *UserConsoleJobConfiguration::CreateConfiguredJobAfterCheck(
     if (parserCommand != "")
         job->SetMiniDescriptionParserCommand(parserCommand);
 
+    if (parserUsingBuffer == "true")
+        job->SetParsingUsingBuffer(true);
+
     return job;
 }
 
@@ -64,4 +68,5 @@ void UserConsoleJobConfiguration::FillKnownProperties(std::vector<string> &prope
     properties.push_back("outputFileName");
     properties.push_back("parserCommand");
     properties.push_back("showDebugInformation");
+    properties.push_back("parserUsesBuffer");
 }

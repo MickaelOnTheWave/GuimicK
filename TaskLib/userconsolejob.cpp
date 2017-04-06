@@ -29,6 +29,7 @@ UserConsoleJob::UserConsoleJob(const UserConsoleJob &other)
     successConditionOnStandardOutput = other.successConditionOnStandardOutput;
     outputFileName = other.outputFileName;
     expectedOutput = other.expectedOutput;
+    useParserWithBuffer = other.useParserWithBuffer;
 
     if (other.currentStatus)
         currentStatus = new JobStatus(*other.currentStatus);
