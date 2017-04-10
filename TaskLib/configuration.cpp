@@ -23,6 +23,7 @@ Configuration::Configuration()
 {
 	emailReport = true;
 	shutdown = true;
+    hasFatalError = false;
 
     FillSupportedJobsList();
 }
@@ -42,6 +43,7 @@ bool Configuration::LoadFromFile(const string &fileName, std::vector<string> &er
 {
 	errorMessages.clear();
 	jobList.clear();
+    hasFatalError = false;
 
 	ConfigurationParser parser;
 	bool result = parser.ParseFile(fileName, errorMessages);
@@ -69,32 +71,37 @@ AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object,
         return relatedConfiguration->CreateConfiguredJob(object, errorMessages);
 }
 
-void Configuration::CreateClient(ConfigurationObject *confObject, vector<string> &errorMessages)
+bool Configuration::CreateClient(ConfigurationObject *confObject, vector<string> &errorMessages)
 {
-	if (client == NULL)
-		client = new Client();
+    if (client != NULL)
+    {
+        errorMessages.push_back("Warning : only one client is supported for now. "
+                                "Redefining default client");
+        delete client;
+    }
 
-	client->SetName(confObject->propertyList["Name"]);
+    client = new Client();
 
-	map<string, string>::iterator itProp = confObject->propertyList.begin();
-	map<string, string>::iterator endProp = confObject->propertyList.end();
-	for (; itProp != endProp; itProp++)
-	{
-		pair<string, string> currentProp = *itProp;
+    // TODO : either put all this into client or into a separate client config class.
 
-		// Name already handled
-		if (currentProp.first == "Name")
-			continue;
+    const string clientName = confObject->GetProperty("Name");
+    if (clientName == "")
+    {
+        errorMessages.push_back("Error : Client without name");
+        return false;
+    }
+    client->SetName(clientName);
 
-		client->AddProperty(currentProp.first, currentProp.second);
-	}
+    bool ok = AreClientPropertiesConsistent(confObject, errorMessages);
+    if (ok == false)
+        return false;
 
-	ConfigurationObject* jobListObj = confObject->GetObject("JobList");
-	if (jobListObj == NULL)
-	{
-		errorMessages.push_back("Warning : client without job list");
-		return;
-	}
+    ConfigurationObject* jobListObj = confObject->GetObject("JobList");
+    if (jobListObj == NULL)
+    {
+        errorMessages.push_back("Warning : client without job list");
+        return true;
+    }
 
 	list<ConfigurationObject*>::iterator itJobs = jobListObj->objectList.begin();
 	list<ConfigurationObject*>::iterator endJobs = jobListObj->objectList.end();
@@ -107,9 +114,11 @@ void Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
 
     if (jobList.empty())
         errorMessages.push_back("Warning : client has an empty job list");
+
+    return true;
 }
 
-void Configuration::CreateSelf(ConfigurationObject *confObject, vector<string> &errorMessages)
+void Configuration::CreateAgent(ConfigurationObject *confObject, vector<string> &errorMessages)
 {
     if (self != NULL)
     {
@@ -181,6 +190,36 @@ AbstractJobConfiguration *Configuration::GetJobConfiguration(const string &jobTa
     return NULL;
 }
 
+bool Configuration::AreClientPropertiesConsistent(ConfigurationObject *object,
+                                                  std::vector<string> &errorMessages)
+{
+    map<string, string>::iterator itProp = object->propertyList.begin();
+    map<string, string>::iterator endProp = object->propertyList.end();
+    for (; itProp != endProp; itProp++)
+    {
+        pair<string, string> currentProp = *itProp;
+
+        // Name already handled
+        if (currentProp.first == "Name")
+            continue;
+
+        client->AddProperty(currentProp.first, currentProp.second);
+    }
+
+    if (client->GetProperty("ip") == "")
+    {
+        errorMessages.push_back("Error : Client without IP address");
+        return false;
+    }
+    else if (client->GetProperty("sshuser") == "")
+    {
+        errorMessages.push_back("Error : Client without Ssh user");
+        return false;
+    }
+    else
+        return true;
+}
+
 ClientWorkManager *Configuration::BuildTimedWorkList() const
 {
 	ClientWorkManager* workManager = new ClientWorkManager(client);
@@ -220,9 +259,14 @@ AbstractReportCreator *Configuration::CreateReportObject(const string& type) con
         return NULL;
 }
 
-SelfIdentity *Configuration::GetSelfIdentity()
+SelfIdentity *Configuration::GetAgent()
 {
-	return self;
+    return self;
+}
+
+Client *Configuration::GetClient()
+{
+    return client;
 }
 
 string Configuration::GetMasterEmail() const
@@ -270,11 +314,12 @@ void Configuration::FillRootObjects(const list<ConfigurationObject *> &objectLis
     list<ConfigurationObject*>::const_iterator end = objectList.end();
     for (; it!=end; it++)
     {
+        bool returnValue = true;
         ConfigurationObject* currentObject = *it;
         if (currentObject->name == "Client")
-            CreateClient(currentObject, errorMessages);
+            returnValue = CreateClient(currentObject, errorMessages);
         else if (currentObject->name == "Agent")
-            CreateSelf(currentObject, errorMessages);
+            CreateAgent(currentObject, errorMessages);
         else if (currentObject->name == "Report")
             CreateReport(currentObject, errorMessages);
         else
@@ -283,6 +328,9 @@ void Configuration::FillRootObjects(const list<ConfigurationObject *> &objectLis
             message += currentObject->name + "\"";
             errorMessages.push_back(message);
         }
+
+        if (returnValue == false)
+            hasFatalError = true;
     }
 }
 
@@ -317,7 +365,9 @@ void Configuration::FillGlobalProperties(ConfigurationObject *object,
 
 bool Configuration::IsConfigurationConsistent(vector<string> &errorMessages)
 {
-    if (self == NULL)
+    if (hasFatalError)
+        return false;
+    else if (self == NULL)
     {
         errorMessages.push_back("Error : missing Agent configuration");
         return false;

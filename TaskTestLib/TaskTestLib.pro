@@ -108,4 +108,5 @@ OTHER_FILES += \
     data/TaskFeature/ConsoleJob_ExternalParser_BufferOutput/report.html \
     data/TaskFeature/ConsoleJob_ExternalParser_BufferOutput/configuration.txt \
     data/TaskFeature/ConsoleJob_ExternalParser_FileOutput/report.html \
-    data/TaskFeature/ConsoleJob_ExternalParser_FileOutput/configuration.txt
+    data/TaskFeature/ConsoleJob_ExternalParser_FileOutput/configuration.txt \
+    data/Configuration/valid.txt

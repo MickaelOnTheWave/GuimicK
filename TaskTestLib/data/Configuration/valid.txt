@@ -1,0 +1,36 @@
+Agent
+{
+	 Name = "Testing Agent";
+	 Email = "invalid.email@provider.com";
+	 Password = "itisabadhabittostoreaclearpassword";
+	 SmtpAddress = "smtp.provider.com";
+	 SmtpPort = 123;
+	 UseSSL = true;
+}
+
+Client
+{
+	 Name = "Machine to manage";
+	 mac = "00:11:22:33:44:55";
+	 ip = "10.11.12.13";
+	 broadcast = "10.11.12.255";
+	 sshuser = "userusedforremotetasks";
+	 JobList
+	 {
+		  Wake();
+		  RsnapshotBackup();
+		  ClamAv();
+		  ChangeScreenSaver();
+		  Shutdown();
+	 }
+}
+
+Report
+{
+	 type = "html";
+	 css = "report.css";
+}
+
+MasterEmail = "master@provider.com";
+SendReportByEmail = true;
+ShutdownOnFinish = true;

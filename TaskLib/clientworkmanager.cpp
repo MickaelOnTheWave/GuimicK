@@ -91,7 +91,7 @@ WorkResultData *ClientWorkManager::RunWorkList()
     return resultData;
 }
 
-void ClientWorkManager::GetJobList(list<AbstractJob *> &_jobs)
+void ClientWorkManager::GetJobList(vector<AbstractJob *> &_jobs)
 {
     copy(jobList.begin(), jobList.end(), back_inserter(_jobs));
 }

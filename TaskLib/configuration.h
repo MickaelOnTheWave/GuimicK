@@ -26,7 +26,8 @@ public:
 
     AbstractReportCreator* GetReportCreator(void) const;
 
-	SelfIdentity* GetSelfIdentity();
+    SelfIdentity* GetAgent();
+    Client* GetClient();
 
 	std::string GetMasterEmail() const;
 
@@ -51,8 +52,8 @@ private:
     AbstractJob *CreateJobFromObject(ConfigurationObject *object,
                                      std::vector<std::string> &errorMessages);
 
-    void CreateClient(ConfigurationObject* confObject, std::vector<std::string> &errorMessages);
-    void CreateSelf(ConfigurationObject* confObject, std::vector<std::string>& errorMessages);
+    bool CreateClient(ConfigurationObject* confObject, std::vector<std::string> &errorMessages);
+    void CreateAgent(ConfigurationObject* confObject, std::vector<std::string>& errorMessages);
     void CreateReport(ConfigurationObject* confObject, std::vector<std::string>& errorMessages);
 
     AbstractReportCreator* CreateReportObject(const std::string& type) const;
@@ -60,6 +61,9 @@ private:
     bool GetBooleanValue(const std::string& strValue, std::vector<std::string>& errorMessages) const;
 
     AbstractJobConfiguration* GetJobConfiguration(const std::string& jobTab);
+
+    bool AreClientPropertiesConsistent(ConfigurationObject* object,
+                                       std::vector<std::string> &errorMessages);
 
 	Client* client;
 	SelfIdentity* self;
@@ -71,6 +75,7 @@ private:
 	std::string masterEmail;
 	bool emailReport;
 	bool shutdown;
+    bool hasFatalError;
 };
 
 #endif // CONFIGURATION_H

@@ -7,7 +7,7 @@
 class Client
 {
 public:
-	Client(const std::string& _name = "");
+    Client(const std::string& _name = "");
     Client(const Client& other);
     ~Client();
 

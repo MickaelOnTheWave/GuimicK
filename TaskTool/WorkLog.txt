@@ -1,3 +1,8 @@
+10/04/2017 (17.1)
+	Done all missing tests for Configuration test suite. There are still some pending work :
+	creating configuration tests for each job configuration and refactoring client configuration.
+	It should probably have a dedicated configuration class.
+
 06/04/2017 (1.1h)
 	Fixed failing tests. Most adjustments were needed in test cases - one was obsolete and the other needed
 	updating. Changed SelfIdentity class to handle its configuration. Also created all tests that are still

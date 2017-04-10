@@ -33,7 +33,7 @@ public:
 
 	 WorkResultData* RunWorkList();
 
-     void GetJobList(std::list<AbstractJob*>& _jobs);
+     void GetJobList(std::vector<AbstractJob *> &_jobs);
 
 protected:
     Client* client;

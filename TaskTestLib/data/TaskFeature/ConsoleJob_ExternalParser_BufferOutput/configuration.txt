@@ -11,6 +11,8 @@ Agent
 Client
 {
 	Name = "Testing computer";
+	ip = "10.11.12.13";
+	sshuser = "user";
 	JobList
 	{
 		Console

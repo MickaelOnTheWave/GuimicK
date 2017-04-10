@@ -12,7 +12,7 @@ ChangeScreensaverJobConfiguration::ChangeScreensaverJobConfiguration()
 
 AbstractJob *ChangeScreensaverJobConfiguration::CreateConfiguredJobAfterCheck(
                                                     ConfigurationObject *confObject,
-                                                    vector<string> &errorMessages)
+                                                    vector<string> &)
 {
     int time = 600;
     string param = confObject->propertyList["param0"];

@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
     }
 
 
-    SelfIdentity* selfIdentity = configuration.GetSelfIdentity();
+    SelfIdentity* selfIdentity = configuration.GetAgent();
 
     ClientWorkManager* workList = configuration.BuildTimedWorkList();
     AbstractReportCreator* reportCreator = configuration.GetReportCreator();

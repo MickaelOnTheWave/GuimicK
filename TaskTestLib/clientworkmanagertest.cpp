@@ -115,7 +115,7 @@ void ClientWorkManagerTest::testRunWorkList()
 
 void ClientWorkManagerTest::CheckJobList(const QStringList &expectedList)
 {
-    std::list<AbstractJob*> jobList;
+    std::vector<AbstractJob*> jobList;
     manager->GetJobList(jobList);
 
     const bool isSameSize = (expectedList.size() == static_cast<int>(jobList.size()));

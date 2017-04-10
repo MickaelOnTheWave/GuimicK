@@ -15,24 +15,24 @@ private Q_SLOTS:
     void init();
     void cleanup();
 
-    void testLoadFromFile_data();
-    void testLoadFromFile();
+    void testLoadFromFile_Errors_data();
+    void testLoadFromFile_Errors();
 
-    void testLoadFromFile_Agent_data();
-    void testLoadFromFile_Agent();
-    void testLoadFromFile_Client_data();
-    void testLoadFromFile_Client();
-    void testLoadFromFile_Jobs_data();
-    void testLoadFromFile_Jobs();
+    void testLoadFromFile_Agent_Valid();
+    void testLoadFromFile_Client_Valid();
 
     void testBuildSimpleWorkList();
 
 private:
-    void LoadErrorExamples();
-    void LoadWarningExamples();
+    void LoadRootErrorExamples();
+    void LoadRootWarningExamples();
+    void LoadAgentExamples();
+    void LoadClientExamples();
+    void LoadJobsExamples();
     void LoadValidExamples();
 
-    void CheckSelfIdentity();
+    void LoadFromFile(const QString& file, const bool expectedResult,
+                      const QStringList& expectedErrors);
 
     Configuration* configuration;
 };
