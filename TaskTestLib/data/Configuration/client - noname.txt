@@ -1,0 +1,35 @@
+Agent
+{
+	 Name = "Testing Agent";
+	 Email = "invalid.email@provider.com";
+	 Password = "itisabadhabittostoreaclearpassword";
+	 SmtpAddress = "smtp.provider.com";
+	 SmtpPort = 123;
+	 UseSSL = true;
+}
+
+Client
+{
+	 mac = "00:16:e6:5c:4c:ee";
+	 ip = "192.168.1.192";
+	 broadcast = "192.168.1.255";
+	 sshuser = "remotebackup";
+	 JobList
+	 {
+		  Wake();
+		  RsnapshotBackup();
+		  ClamAv();
+		  ChangeScreenSaver();
+		  Shutdown();
+	 }
+}
+
+Report
+{
+	 type = "html";
+	 css = "report.css";
+}
+
+MasterEmail = "mickael.dacruz@gmail.com";
+SendReportByEmail = true;
+ShutdownOnFinish = true;

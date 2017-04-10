@@ -1,0 +1,19 @@
+Agent
+{
+	 Name = "Cristiana Araujo";
+	 Email = "cristiana.araujo.ai@gmail.com";
+	 Password = "neverrecordaclearpassword";
+	 SmtpAddress = "smtp.gmail.com";
+	 SmtpPort = 587;
+	 UseSSL = true;
+}
+
+Report
+{
+	 type = "html";
+	 css = "report.css";
+}
+
+MasterEmail = "mickael.dacruz@gmail.com";
+SendReportByEmail = true;
+ShutdownOnFinish = true;

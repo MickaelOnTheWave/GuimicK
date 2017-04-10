@@ -187,6 +187,7 @@ void ConfigurationTest::LoadJobsExamples()
 void ConfigurationTest::LoadValidExamples()
 {
     QTest::newRow("All Valid") << "valid.txt" << true << QStringList();
+    QTest::newRow("Production configuration") << "realconf.txt" << true << QStringList();
 }
 
 void ConfigurationTest::LoadFromFile(const QString &file, const bool expectedResult,

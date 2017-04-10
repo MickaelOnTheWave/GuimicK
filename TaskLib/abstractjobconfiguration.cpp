@@ -1,6 +1,7 @@
 #include "abstractjobconfiguration.h"
 
 #include <algorithm>
+#include <sstream>
 
 using namespace std;
 
@@ -41,6 +42,7 @@ void AbstractJobConfiguration::CheckKnownProperties(ConfigurationObject *confObj
 {
     vector<string> knownProperties;
     FillKnownProperties(knownProperties);
+    FillNumberedProperties(knownProperties);
 
     map<string, string>::iterator itProperty = confObject->propertyList.begin();
     for (; itProperty!=confObject->propertyList.end(); ++itProperty)
@@ -61,6 +63,18 @@ void AbstractJobConfiguration::CheckKnownSubObjects(ConfigurationObject *confObj
     {
         if (HasValue(knownObjects, (*it)->name) == false)
             errorMessages.push_back(BuildErrorMessage("sub object", (*it)->name));
+    }
+}
+
+void AbstractJobConfiguration::FillNumberedProperties(std::vector<string> &objects)
+{
+    unsigned int supportedPropertiesCount = objects.size();
+
+    for (unsigned int i=0; i<supportedPropertiesCount; ++i)
+    {
+        stringstream numberedProperty;
+        numberedProperty << "param" << i;
+        objects.push_back(numberedProperty.str());
     }
 }
 

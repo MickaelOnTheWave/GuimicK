@@ -109,4 +109,31 @@ OTHER_FILES += \
     data/TaskFeature/ConsoleJob_ExternalParser_BufferOutput/configuration.txt \
     data/TaskFeature/ConsoleJob_ExternalParser_FileOutput/report.html \
     data/TaskFeature/ConsoleJob_ExternalParser_FileOutput/configuration.txt \
-    data/Configuration/valid.txt
+    data/Configuration/valid.txt \
+    data/Configuration/realconf.txt \
+    data/Configuration/root - invalid.jpg \
+    data/Configuration/agent - nopassword.txt \
+    data/Configuration/agent - unknown property.txt \
+    data/Configuration/client - empty job list.txt \
+    data/Configuration/client - noip.txt \
+    data/Configuration/client - no job list.txt \
+    data/Configuration/client - noname.txt \
+    data/Configuration/client - nossh.txt \
+    data/Configuration/client - oneonly.txt \
+    data/Configuration/job - unknown.txt \
+    data/Configuration/root - invalid boolean value.txt \
+    data/Configuration/root - noagent.txt \
+    data/Configuration/root - noclient.txt \
+    data/Configuration/root - unknown object.txt \
+    data/Configuration/root - unknown property.txt \
+    data/Configuration/root - unspecified report.txt \
+    data/Configuration/root - unsupported report.txt \
+    data/Configuration/agent - nopassword.txt \
+    data/Configuration/agent - unknown property.txt \
+    data/Configuration/client - empty job list.txt \
+    data/Configuration/client - noip.txt \
+    data/Configuration/client - no job list.txt \
+    data/Configuration/client - noname.txt \
+    data/Configuration/client - nossh.txt \
+    data/Configuration/client - oneonly.txt \
+    data/Configuration/job - unknown.txt

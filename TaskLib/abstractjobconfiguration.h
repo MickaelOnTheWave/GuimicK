@@ -29,6 +29,7 @@ private:
                               std::vector<std::string> &errorMessages);
     void CheckKnownSubObjects(ConfigurationObject *confObject,
                               std::vector<std::string> &errorMessages);
+    void FillNumberedProperties(std::vector<std::string>& objects);
 
     bool HasValue(const std::vector<std::string>& collection,
                   const std::string& value) const;

@@ -49,6 +49,7 @@ Features to implement:
 	[045] Make Windows client work with (nearly) all features
 	[046] Include a Windows update job
 	[047] Have a Restore option in backup jobs
+	[048] Create configuration checking tool/feature
 
 Abandoned features :
 	[020] Check/repair Screensaver modification from script

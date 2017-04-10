@@ -1,7 +1,14 @@
-10/04/2017 (17.1)
+10/04/2017 (3.3h)
 	Done all missing tests for Configuration test suite. There are still some pending work :
 	creating configuration tests for each job configuration and refactoring client configuration.
-	It should probably have a dedicated configuration class.
+	It should probably have a dedicated configuration class. Gave up on creating job configuration
+	individual tests - this would be a big work for little added value. The other easiest way would
+	be only testing adds in a string list. A specific test case was created for checking production
+	configuration. This is a very simple and effective way of checking if production run will have
+	detectable problems. Other configurations can be added easily. Also leaving Client refactoring behind.
+Next planned work :
+	- Check if run was OK. If so, update release plan
+	- Follow roadmap
 
 06/04/2017 (1.1h)
 	Fixed failing tests. Most adjustments were needed in test cases - one was obsolete and the other needed
