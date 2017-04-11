@@ -1,3 +1,10 @@
+11/04/2017 (2.3h)
+	Production run was OK - Updated Release plan. Created structure for GitFsBackupJob and its test suite.
+	Created abstract test suite for fs backup jobs and refactored Rsnapshot test suite to use abstract
+	test suite. Rsnapshot test suite runs as before.
+Next planned work :
+	- Implement GitFs test suite and create/use test samples
+
 10/04/2017 (3.3h)
 	Done all missing tests for Configuration test suite. There are still some pending work :
 	creating configuration tests for each job configuration and refactoring client configuration.

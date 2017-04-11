@@ -1,47 +1,42 @@
 #ifndef RNAPSHOTJOBTEST_H
 #define RNAPSHOTJOBTEST_H
 
-#include <QObject>
+#include "abstractfsbackupjobtest.h"
 
 #include <string>
 
 #include "jobstatus.h"
 
-class RsnapshotJobTest : public QObject
+class RsnapshotJobTest : public AbstractFsBackupJobTest
 {
     Q_OBJECT
 
 public:
-    RsnapshotJobTest();
+    RsnapshotJobTest(const std::string& dataPrefix);
+    virtual ~RsnapshotJobTest();
 
 private Q_SLOTS:
-    void init();
-    void cleanup();
 
     void testCreate_InvalidSource();
 
     void testRunBackup_data();
-    void testRunBackup();
 
     void testSmartCreator_TempFileIsCleaned();
     void testSmartCreator_TempFileDoesNotOverwrite();
 
-private:
-    JobStatus* RunBackupOnDataFolder(const std::string &folder);
-    void CheckStatus(JobStatus* status);
-    void CheckFiles();
+protected:
+    virtual void ProcessingBetweenBackups();
+    virtual void CheckBackedUpDataIsOk();
+    virtual JobStatus* RunBackupJob();
 
+private:
     JobStatus* RunRsnapshotJob(const std::string& tempConfigurationFile = "");
 
-    void CheckTextContent(const std::string& content, const QString& referenceFile);
-    void CheckFoldersHaveSameContent(const std::string& folder1, const std::string& folder2);
     std::string GetRsnapshotBackupFolder(const int number) const;
 
     unsigned int GetFileNumberInCurrentFolder();
 
     std::string repository;
-    std::string currentTestCaseName = "";
-    std::string currentTestCaseFolder = "";
 };
 
 #endif // RNAPSHOTJOBTEST_H

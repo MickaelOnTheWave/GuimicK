@@ -50,7 +50,8 @@ SOURCES += \
     sshconsolejobconfiguration.cpp \
     gitbackupjobconfiguration.cpp \
     diskspacecheckjobconfiguration.cpp \
-    SelfIdentity.cpp
+    SelfIdentity.cpp \
+    gitfsbackupjob.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -94,7 +95,8 @@ HEADERS +=\
     userconsolejobconfiguration.h \
     sshconsolejobconfiguration.h \
     gitbackupjobconfiguration.h \
-    diskspacecheckjobconfiguration.h
+    diskspacecheckjobconfiguration.h \
+    gitfsbackupjob.h
 
 unix {
     target.path = /usr/lib

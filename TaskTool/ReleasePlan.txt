@@ -16,8 +16,7 @@ Features implemented:
 	01/03/2017 - [038] Include Free space check in production run
 	02/03/2017 - [033] Handle File backup folder data outside of rsnapshot conf file.
 	23/03/2017 - [035] Console job improvement : support an external parser system.
-
-Fixed bugs :
+	11/04/2017 - [037] Have automated tests for all features
 
 Features to implement:
 	[003] Use Curl lib instead of command line
@@ -39,7 +38,6 @@ Features to implement:
 	[032] Property handle encodings for strings
 	[034] Create Qt client app to create/manage backup folder configuration.
 	[036] Console job improvement : support a chain system.
-	[037] Have automated tests for all features
 	[039] Create a Git-based File backup job
 	[040] Use a zip lib to organize attachments in archives
 	[041] Create a simple copy-based File backup job
@@ -55,7 +53,9 @@ Abandoned features :
 	[020] Check/repair Screensaver modification from script
 	[022] Remove Screensaver script dependency
 
-Bug database :
+Fixed bugs :
+
+Pending bugs :
 	[001] Git report parser crashes when trying to parse a report coming from git asking for ssh password.
 	[002] Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
 	[003] Rsnapshot tests need to wait before doing backup. Maybe pending file operations need to be flushed before?
