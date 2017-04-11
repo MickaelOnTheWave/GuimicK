@@ -25,6 +25,8 @@ int main(int argc, char* argv[])
         return DID_NOT_RAN;
 
     vector<QObject*> tests;
+    tests.reserve(50); // Some mysterious bug seems to happen if vector needs to be redimensioned
+
     GetTaskLibTests(tests, "/home/mickael/Prog/TaskManager/TaskTestLib/data/");
     GetParserLibTests(tests, "/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/");
     GetQtToolsLibTests(tests);
