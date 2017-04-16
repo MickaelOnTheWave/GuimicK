@@ -34,3 +34,8 @@ JobStatus *GitFsBackupJob::Run()
 {
     return new JobStatus();
 }
+
+void GitFsBackupJob::AddFolder(const string &folder, const string &repository)
+{
+
+}

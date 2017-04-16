@@ -18,6 +18,9 @@ protected:
     virtual void CheckBackedUpDataIsOk();
     virtual JobStatus* RunBackupJob();
 
+private:
+    bool Restore(const std::string& repository, const std::string& destination);
+
 };
 
 #endif // GITFSBACKUPJOBTEST_H

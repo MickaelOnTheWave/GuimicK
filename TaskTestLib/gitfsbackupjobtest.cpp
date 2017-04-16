@@ -2,11 +2,15 @@
 
 #include <QTest>
 
+#include "filetestutils.h"
+#include "filetools.h"
 #include "gitfsbackupjob.h"
 
 using namespace std;
 
 const string suitePrefix = "GitFsBackup/";
+const string repository = "repository/";
+const string restoredBackup = "restore/";
 
 GitFsBackupJobTest::GitFsBackupJobTest(const std::string &dataPrefix)
     : AbstractFsBackupJobTest(dataPrefix + suitePrefix)
@@ -24,10 +28,24 @@ void GitFsBackupJobTest::testRunBackup_data()
 
 JobStatus *GitFsBackupJobTest::RunBackupJob()
 {
-    return nullptr;
+    GitFsBackupJob* job = new GitFsBackupJob();
+    job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), repository);
+    JobStatus* status = job->Run();
+
+    delete job;
+    return status;
 }
 
 void GitFsBackupJobTest::CheckBackedUpDataIsOk()
 {
-    QFAIL("TODO : implement");
+    bool ok = Restore(repository, restoredBackup);
+    QCOMPARE(ok, true);
+
+    FileTestUtils::CheckFoldersHaveSameContent(restoredBackup, currentSourceFolder);
 }
+
+bool GitFsBackupJobTest::Restore(const string &repository, const string &destination)
+{
+    return false;
+}
+

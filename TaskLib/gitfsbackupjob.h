@@ -14,6 +14,8 @@ public:
     virtual bool InitializeFromClient(Client* client);
     virtual bool IsInitialized(void);
     virtual JobStatus* Run();
+
+    void AddFolder(const std::string& folder, const std::string& repository);
 };
 
 #endif // GITFSBACKUPJOB_H

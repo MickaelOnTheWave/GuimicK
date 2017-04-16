@@ -1,3 +1,6 @@
+16/04/2017 (17.2)
+
+
 11/04/2017 (2.3h)
 	Production run was OK - Updated Release plan. Created structure for GitFsBackupJob and its test suite.
 	Created abstract test suite for fs backup jobs and refactored Rsnapshot test suite to use abstract
