@@ -1,5 +1,11 @@
-16/04/2017 (17.2)
-
+16/04/2017 (1.7h)
+	Nearly finished test suite implementation. Did most of job implementation - now the job roughly works.
+	It only needs the final polishing! Also, test suite needs some adjustment : do error messages need to
+	be the same for every fs backup implementation?
+Next planned work:
+	- Resolve error message issue
+	- Finish job implementation
+	- Finish test suite implementation
 
 11/04/2017 (2.3h)
 	Production run was OK - Updated Release plan. Created structure for GitFsBackupJob and its test suite.
