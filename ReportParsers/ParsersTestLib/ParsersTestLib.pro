@@ -51,7 +51,11 @@ OTHER_FILES += \
     data/rsnapshot5removed.log \
     data/rsnapshotall.log \
     data/DfCommand/allDrives.txt \
-    data/DfCommand/oneDrive.txt
+    data/DfCommand/oneDrive.txt \
+    data/GitPull/gitadd5.log \
+    data/GitPull/gitallchanges.log \
+    data/GitPull/gitmod5.log \
+    data/GitPull/gitrm5.log
 
 CONFIG(debug, debug|release) {
 	BUILD_TYPE = Debug

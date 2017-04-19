@@ -4,8 +4,10 @@
 
 using namespace std;
 
+const string suiteFolder = "GitPull/";
+
 GitReportParserTest::GitReportParserTest(const string &dataPrefix)
-    : FileBackupParserAbstractTest(dataPrefix)
+    : FileBackupParserAbstractTest(dataPrefix + suiteFolder)
 {
 }
 
