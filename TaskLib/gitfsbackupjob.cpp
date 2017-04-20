@@ -1,7 +1,9 @@
 #include "gitfsbackupjob.h"
 
 #include <unistd.h>
+
 #include "filetools.h"
+#include "gitcommitreportparser.h"
 #include "tools.h"
 
 using namespace std;
@@ -11,6 +13,7 @@ const string errorCleaning = "Failed cleaning old data";
 const string errorCopyingData = "Data was not properly copied";
 const string errorAddingData = "Git add failed";
 const string errorCommitingData = "Git commit failed";
+const int emptyDirError = 256;
 
 // TODO : remove duplication from GitBackupJob
 GitFsBackupJob::GitFsBackupJob()
@@ -73,11 +76,20 @@ JobStatus* GitFsBackupJob::RunRepositoryBackup( const string &source,
     if (status->GetCode() == JobStatus::OK)
         CopyData(source, destination, status);
 
-    if (status->GetCode() == JobStatus::OK)
-        AddData(destination, status);
+    string originalDirectory = FileTools::GetCurrentFullPath();
+    chdir(destination.c_str());
 
     if (status->GetCode() == JobStatus::OK)
-        CommitData(destination, status);
+        AddData(status);
+
+    string commitId("");
+    if (status->GetCode() == JobStatus::OK)
+        commitId = CommitData(status);
+
+    if (status->GetCode() == JobStatus::OK)
+        CreateReport(commitId, status);
+
+    chdir(originalDirectory.c_str());
 
     return status;
 }
@@ -124,7 +136,7 @@ void GitFsBackupJob::CopyData(const string &source, const string &destination,
     string unusedOutput;
     const string command = string("cp -R ") + source + "* " + destination;
     int returnValue = Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
-    if (returnValue == 0)
+    if (returnValue == 0 || returnValue == emptyDirError)
         status->SetCode(JobStatus::OK);
     else
     {
@@ -133,11 +145,8 @@ void GitFsBackupJob::CopyData(const string &source, const string &destination,
     }
 }
 
-void GitFsBackupJob::AddData(const string &destination, JobStatus *status)
+void GitFsBackupJob::AddData(JobStatus *status)
 {
-    string originalDirectory = FileTools::GetCurrentFullPath();
-    chdir(destination.c_str());
-
     string unusedOutput;
     int returnValue = Tools::RunExternalCommandToBuffer("git add -A", unusedOutput, true);
     if (returnValue == 0)
@@ -147,25 +156,49 @@ void GitFsBackupJob::AddData(const string &destination, JobStatus *status)
         status->SetCode(JobStatus::ERROR);
         status->SetDescription(errorAddingData);
     }
-
-    chdir(originalDirectory.c_str());
 }
 
-void GitFsBackupJob::CommitData(const string &destination, JobStatus *status)
+string GitFsBackupJob::CommitData(JobStatus *status)
 {
-    string originalDirectory = FileTools::GetCurrentFullPath();
-    chdir(destination.c_str());
-
-    string unusedOutput;
+    string commandOutput;
     string command = string("git commit -m \"Automated backup\"");
-    int returnValue = Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
+    int returnValue = Tools::RunExternalCommandToBuffer(command, commandOutput, true);
     if (returnValue == 0)
-        status->SetCode(JobStatus::OK);
+        return GetCommitId(commandOutput);
     else
     {
         status->SetCode(JobStatus::ERROR);
         status->SetDescription(errorCommitingData);
+        return string("");
+    }
+}
+
+void GitFsBackupJob::CreateReport(const string& commitId, JobStatus *status)
+{
+    string commandOutput;
+    string command = string("git diff-tree --no-commit-id --name-status -r ");
+    command += commitId;
+    int returnValue = Tools::RunExternalCommandToBuffer(command, commandOutput, true);
+    if (returnValue == 0)
+    {
+        GitCommitReportParser parser;
+        bool ok = parser.ParseBuffer(commandOutput);
+        if (ok)
+        {
+            status->SetCode(JobStatus::OK);
+            status->SetDescription(parser.GetMiniDescription());
+            status->AddFileBuffer("FsBackup.txt", parser.GetFullDescription());
+            return;
+        }
     }
 
-    chdir(originalDirectory.c_str());
+    status->SetCode(JobStatus::OK_WITH_WARNINGS);
+    status->SetDescription("Parsing failed");
+}
+
+string GitFsBackupJob::GetCommitId(const string &output)
+{
+    string commitString = output.substr(0, output.find_first_of(']'));
+    size_t posStartId = commitString.find_last_of(' ');
+    return commitString.substr(posStartId+1, commitString.size()-1);
 }

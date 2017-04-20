@@ -55,7 +55,30 @@ void RsnapshotReport::operator=(const RsnapshotReport &other)
     bytesRemoved  = other.bytesRemoved;
 }
 
+string RsnapshotReport::GetMiniDescription() const
+{
+    stringstream description;
+    description << FileBackupReport::GetMiniDescription() << ". ";
+    description << BytesTaken();
+    return description.str();
+}
+
+string RsnapshotReport::GetFullDescription() const
+{
+    stringstream description;
+    description << FileBackupReport::GetFullDescription();
+    description << Tools::FormatByteString(bytesAdded) << " added, ";
+    description << Tools::FormatByteString(bytesRemoved) << " removed, and overall ";
+    description << BytesTaken() << std::endl;
+    return description.str();
+}
+
 //----------------------------------------------------------------------------
+
+RSnapshotReportParser::RSnapshotReportParser()
+    : AbstractFileBackupParser(new RsnapshotReport())
+{
+}
 
 RSnapshotReportParser::~RSnapshotReportParser()
 {
@@ -63,7 +86,7 @@ RSnapshotReportParser::~RSnapshotReportParser()
 
 bool RSnapshotReportParser::ParseBuffer(const std::string &buffer)
 {
-    reportData.Clear();
+    reportData->Clear();
 
     vector<string> lines;
     Tools::TokenizeString(buffer, '\n', lines);
@@ -71,32 +94,10 @@ bool RSnapshotReportParser::ParseBuffer(const std::string &buffer)
     // TODO : refactor inside this (very messy) method and here too.
     ParseLines(lines);
 
-    reportData.CreateModifiedList();
-    reportData.SortData();
+    GetTypedReport()->CreateModifiedList();
+    reportData->SortData();
 
     return true;
-}
-
-std::string RSnapshotReportParser::GetMiniDescription()
-{
-    std::stringstream description;
-    description << reportData.added.size() << " added, ";
-    description << reportData.modified.size() << " modified, ";
-    description << reportData.removed.size() << " removed. ";
-    description << reportData.BytesTaken();
-    return description.str();
-}
-
-std::string RSnapshotReportParser::GetFullDescription()
-{
-    stringstream description;
-    description << FileListDescription(reportData.added, "added");
-    description << FileListDescription(reportData.modified, "modified");
-    description << FileListDescription(reportData.removed, "removed");
-    description << Tools::FormatByteString(reportData.bytesAdded) << " added, ";
-    description << Tools::FormatByteString(reportData.bytesRemoved) << " removed, and overall ";
-    description << reportData.BytesTaken() << std::endl;
-    return description.str();
 }
 
 void RSnapshotReportParser::GetReport(FileBackupReport &report)
@@ -105,7 +106,7 @@ void RSnapshotReportParser::GetReport(FileBackupReport &report)
     if (typedReport == NULL)
         return;
 
-    *typedReport = reportData;
+    *typedReport = *GetTypedReport();
 }
 
 void RSnapshotReportParser::ParseLines(const std::vector<string> &lines)
@@ -137,9 +138,9 @@ void RSnapshotReportParser::ParseLines(const std::vector<string> &lines)
                     fileName = backupFileName;
 
                 if (simbol == '+')
-                    reportData.added.push_back(fileName);
+                    reportData->AddAsAdded(fileName);
                 else // simbol == '-'
-                    reportData.removed.push_back(fileName);
+                    reportData->AddAsRemoved(fileName);
             }
         }
         ++it;
@@ -152,14 +153,14 @@ void RSnapshotReportParser::ParseLines(const std::vector<string> &lines)
         if (!foundAddedBytesString &&
              it->find("added") != std::string::npos && it->find("taking") != std::string::npos)
         {
-            reportData.bytesAdded = ParseByteDataLine(*it, "taking", "bytes");
+            GetTypedReport()->bytesAdded = ParseByteDataLine(*it, "taking", "bytes");
             foundAddedBytesString = true;
         }
 
         if (!foundRemovedBytesString &&
              it->find("removed") != std::string::npos && it->find("saving") != std::string::npos)
         {
-            reportData.bytesRemoved = ParseByteDataLine(*it, "saving", "bytes");
+            GetTypedReport()->bytesRemoved = ParseByteDataLine(*it, "saving", "bytes");
             foundRemovedBytesString = true;
         }
         ++it;
@@ -174,20 +175,11 @@ long long RSnapshotReportParser::ParseByteDataLine(const std::string &line, cons
     std::string byteString(line.substr(initPos, endPos));
     std::istringstream is (byteString);
 	is >> bytes;
-	return bytes;
+    return bytes;
 }
 
-std::string RSnapshotReportParser::FileListDescription(const vector<string>& fileList,
-                                                       const string& operation)
+RsnapshotReport *RSnapshotReportParser::GetTypedReport()
 {
-    stringstream description;
-    description << fileList.size() << " files " << operation << std::endl;
-
-    vector<string>::const_iterator it=fileList.begin();
-    vector<string>::const_iterator end=fileList.end();
-    for (; it!=end; it++)
-        description << "\t" << *it << std::endl;
-    description << std::endl;
-
-    return description.str();
+    return static_cast<RsnapshotReport*>(reportData);
 }
+

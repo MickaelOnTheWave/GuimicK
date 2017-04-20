@@ -7,8 +7,16 @@
 class AbstractFileBackupParser : public AbstractOutputParser
 {
 public:
+    AbstractFileBackupParser(FileBackupReport* _report);
     virtual ~AbstractFileBackupParser();
-    virtual void GetReport(FileBackupReport& report) = 0;
+
+    virtual std::string GetMiniDescription();
+    virtual std::string GetFullDescription();
+
+    virtual void GetReport(FileBackupReport& reportData) = 0;
+
+protected:
+    FileBackupReport* reportData;
 };
 
 #endif // ABSTRACTFILEBACKUPPARSER_H

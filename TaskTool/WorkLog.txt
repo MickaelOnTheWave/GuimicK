@@ -1,3 +1,25 @@
+19/04/2017 (2.7h)
+	Improved existing data organization for parser test suites. Now going after proper data samples for
+	git fs parser. While looking for samples, it was found that actual way of doing is not good enough :
+	git commit gives only partial information. Refactoring git fs job and parser to use diff-tree command
+	to have proper info. This left the parsing much easier.
+	Also, used the opportunity to refactor file report and their parsers, now they properly share information
+	and only reimplement what is necessary. Fixed existing implementations to use new architecture.
+Next planned work :
+	- Get test samples for parser (think about no change example, and single change example)
+	- Create parser test suite
+	- Go back to Git Fs job testing and implementation
+
+17/04/2017 (0.8h)
+	Messages should be the same for all FS backup jobs, so what is needed is a proper output parser for
+	Git FS backup job. Creating structure for one. Output structure is similar to Git repository job, however
+	the existing parser doesn't work with it. Writing a new one.
+Next planned work:
+	- Implement output parser for Git Fs backup job
+	- Write test suite for it
+	- Refactor both git parsers - maybe there can be only one for both cases?
+	- Check (probably for later) possible refactorings with Rsnapshot parser and messages
+
 16/04/2017 (1.7h)
 	Nearly finished test suite implementation. Did most of job implementation - now the job roughly works.
 	It only needs the final polishing! Also, test suite needs some adjustment : do error messages need to

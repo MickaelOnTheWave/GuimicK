@@ -6,14 +6,21 @@
 
 using namespace std;
 
-static const string FAST_FORWARD_TAG = "\nFast-forward";
-
 // TODO : check if there is code to be refactored here. Maybe put in AbstractFileBackupParser
 // for shared usage with other parsers?
 
+GitReportParser::GitReportParser()
+    : AbstractFileBackupParser(new FileBackupReport())
+{
+}
+
+GitReportParser::~GitReportParser()
+{
+}
+
 bool GitReportParser::ParseBuffer(const string &buffer)
 {
-    reportData.Clear();
+    reportData->Clear();
 
     vector<string> lines;
     Tools::TokenizeString(buffer, '\n', lines);
@@ -26,33 +33,22 @@ bool GitReportParser::ParseBuffer(const string &buffer)
     vector<string> fileList;
     CreateFileList(fileSectionLines, fileList);
 
-    FillReportData(fileList, informationSectionLines, reportData);
+    FillReportData(fileList, informationSectionLines, *reportData);
 
     return true;
-}
-
-string GitReportParser::GetMiniDescription()
-{
-    stringstream descriptionStream;
-    descriptionStream << reportData.added.size() << " added, ";
-    descriptionStream << reportData.modified.size() << " modified and ";
-    descriptionStream << reportData.removed.size() << " removed.";
-    return descriptionStream.str();
 }
 
 string GitReportParser::GetFullDescription()
 {
     stringstream descriptionStream;
     descriptionStream << "Data parsed and report created successfully :" << endl;
-    WriteFileList(reportData.added, "added", descriptionStream);
-    WriteFileList(reportData.modified, "modified", descriptionStream);
-    WriteFileList(reportData.removed, "removed", descriptionStream);
+    descriptionStream << reportData->GetFullDescription();
     return descriptionStream.str() + "\n";
 }
 
 void GitReportParser::GetReport(FileBackupReport& report)
 {
-    report = reportData;
+    report = *reportData;
 }
 
 void GitReportParser::WriteFileList(const vector<string>& fileList,
@@ -133,11 +129,11 @@ void GitReportParser::FillReportData(const std::vector<string> &files,
     {
         string informationLine = GetLineWithSubstring(*it, informationLines);
         if (informationLine.find(createModeString) != string::npos)
-            reportData.added.push_back(*it);
+            reportData.AddAsAdded(*it);
         else if (informationLine.find(deleteModeString) != string::npos)
-            reportData.removed.push_back(*it);
+            reportData.AddAsRemoved(*it);
         else
-            reportData.modified.push_back(*it);
+            reportData.AddAsModified(*it);
 
     }
 }

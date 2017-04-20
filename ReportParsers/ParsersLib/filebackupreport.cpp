@@ -1,6 +1,9 @@
 #include "filebackupreport.h"
 
 #include <algorithm>
+#include <sstream>
+
+using namespace std;
 
 FileBackupReport::FileBackupReport()
 {
@@ -34,4 +37,52 @@ void FileBackupReport::SortData()
     std::sort(added.begin(), added.end());
     std::sort(removed.begin(), removed.end());
     std::sort(modified.begin(), modified.end());
+}
+
+std::string FileBackupReport::GetMiniDescription() const
+{
+    stringstream description;
+    description << added.size() << " added, ";
+    description << modified.size() << " modified, ";
+    description << removed.size() << " removed";
+    return description.str();
+}
+
+std::string FileBackupReport::GetFullDescription() const
+{
+    stringstream description;
+    description << FileListDescription(added, "added");
+    description << FileListDescription(modified, "modified");
+    description << FileListDescription(removed, "removed");
+    return description.str();
+}
+
+void FileBackupReport::AddAsAdded(const string &file)
+{
+    added.push_back(file);
+}
+
+void FileBackupReport::AddAsModified(const string &file)
+{
+    modified.push_back(file);
+}
+
+void FileBackupReport::AddAsRemoved(const string &file)
+{
+    removed.push_back(file);
+}
+
+string FileBackupReport::FileListDescription(const std::vector<string> &fileList,
+                                             const string &operation) const
+{
+    stringstream description;
+    description << fileList.size() << " files " << operation << std::endl;
+
+    vector<string>::const_iterator it=fileList.begin();
+    vector<string>::const_iterator end=fileList.end();
+    for (; it!=end; it++)
+        description << "\t" << *it << std::endl;
+    description << std::endl;
+
+    return description.str();
 }

@@ -219,8 +219,8 @@ void GitJobTest::CheckGitJobReturn(const int expectedStatus,
 QString GitJobTest::BuildDescriptionString(const int added, const int modified, const int deleted)
 {
     QString description = QString::number(added) + " added, ";
-    description += QString::number(modified) + " modified and ";
-    description += QString::number(deleted) + " removed.";
+    description += QString::number(modified) + " modified, ";
+    description += QString::number(deleted) + " removed";
     return description;
 }
 

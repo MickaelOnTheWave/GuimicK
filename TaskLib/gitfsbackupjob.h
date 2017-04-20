@@ -25,8 +25,11 @@ private:
     void CleanDestination(const std::string& destination, JobStatus* status);
     void CopyData(const std::string& source, const std::string& destination,
                        JobStatus* status);
-    void AddData(const std::string& destination, JobStatus* status);
-    void CommitData(const std::string& destination, JobStatus* status);
+    void AddData(JobStatus* status);
+    std::string CommitData(JobStatus* status);
+    void CreateReport(const std::string &commitId, JobStatus* status);
+
+    std::string GetCommitId(const std::string& output);
 
     std::vector<std::pair<std::string, std::string> > repositoryList;
 };

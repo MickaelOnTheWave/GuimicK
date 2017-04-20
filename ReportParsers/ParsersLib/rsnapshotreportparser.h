@@ -17,6 +17,10 @@ public:
 
     void operator=(const RsnapshotReport& other);
 
+    virtual std::string GetMiniDescription() const;
+    virtual std::string GetFullDescription() const;
+
+
 	long long bytesAdded;
 	long long bytesRemoved;
 };
@@ -24,13 +28,12 @@ public:
 class RSnapshotReportParser : public AbstractFileBackupParser
 {
 public:
+    RSnapshotReportParser();
     virtual ~RSnapshotReportParser();
 
     virtual bool ParseBuffer(const std::string& buffer);
-    virtual std::string GetMiniDescription();
-    virtual std::string GetFullDescription();
 
-    virtual void GetReport(FileBackupReport& report);
+    virtual void GetReport(FileBackupReport& reportData);
 
 
 private:
@@ -40,12 +43,7 @@ private:
 										 const std::string& wordBefore,
 										 const std::string& wordAfter);
 
-    std::string FileListDescription(const std::vector<std::string> &fileList,
-                                    const std::string &operation);
-
-
-    RsnapshotReport reportData;
-
+    RsnapshotReport* GetTypedReport();
 };
 
 #endif // RSNAPSHOTREPORTPARSER_H
