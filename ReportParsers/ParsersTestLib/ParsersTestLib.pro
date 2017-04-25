@@ -20,7 +20,8 @@ SOURCES += parserstestlib.cpp \
     dfcommandparsertest.cpp \
     filebackupparserabstracttest.cpp \
     gitreportparsertest.cpp \
-    mockparser.cpp
+    mockparser.cpp \
+    gitcommitreportparsertest.cpp
 
 HEADERS += parserstestlib.h \
     rsnapshotreportparsertest.h \
@@ -30,7 +31,8 @@ HEADERS += parserstestlib.h \
     filebackupparserabstracttest.h \
     gitreportparsertest.h \
     mockparser.h \
-    parserstestsuites.h
+    parserstestsuites.h \
+    gitcommitreportparsertest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

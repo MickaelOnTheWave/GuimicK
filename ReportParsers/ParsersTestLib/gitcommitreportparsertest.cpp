@@ -1,34 +1,36 @@
-#include "gitreportparsertest.h"
+#include "gitcommitreportparsertest.h"
 
 #include <QTest>
-#include "gitreportparser.h"
+#include "gitcommitreportparser.h"
 
 using namespace std;
 
-const string suiteFolder = "GitPull/";
+const string suiteFolder = "GitCommit/";
 
-GitReportParserTest::GitReportParserTest(const string &dataPrefix)
+GitCommitReportParserTest::GitCommitReportParserTest(const std::string &dataPrefix)
     : FileBackupParserAbstractTest(dataPrefix + suiteFolder)
 {
 }
 
-void GitReportParserTest::testParse()
+void GitCommitReportParserTest::testParse()
 {
     testParse_generic();
 }
 
-FileBackupReport *GitReportParserTest::CreateReport()
+FileBackupReport *GitCommitReportParserTest::CreateReport()
 {
     return new FileBackupReport();
 }
 
-AbstractFileBackupParser *GitReportParserTest::CreateParser()
+AbstractFileBackupParser *GitCommitReportParserTest::CreateParser()
 {
-    return new GitReportParser();
+    return new GitCommitReportParser();
 }
 
-void GitReportParserTest::PopulateTestData()
+void GitCommitReportParserTest::PopulateTestData()
 {
+    // TODO : create proper data
+
     QStringList fileListWith5;
     for (int i=0; i<5; ++i)
         fileListWith5 << QString("file%1").arg(i);
@@ -40,5 +42,4 @@ void GitReportParserTest::PopulateTestData()
                                    << QStringList({"alternate0","alternate1","alternate2"})
                                    << QStringList({"file0","file1","file2"})
                                    << QStringList({"file3","file4"});
-
 }

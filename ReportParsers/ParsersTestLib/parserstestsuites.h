@@ -3,6 +3,7 @@
 
 #include "abstractoutputparsertest.h"
 #include "aptupgradeparsertest.h"
+#include "gitcommitreportparsertest.h"
 #include "gitreportparsertest.h"
 #include "dfcommandparsertest.h"
 #include "rsnapshotreportparsertest.h"

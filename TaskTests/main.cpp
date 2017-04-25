@@ -1,5 +1,6 @@
 #include <QTest>
 
+#include "parserstestsuites.h"
 #include "tasktestsuites.h"
 #include "toolstestsuites.h"
 
@@ -7,7 +8,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    QObject* testSuite = new RsnapshotJobTest("/home/mickael/Prog/TaskManager/TaskTestLib/data/");
+    //QObject* testSuite = new RsnapshotJobTest("/home/mickael/Prog/TaskManager/TaskTestLib/data/");
     //QObject* testSuite = new RsnapshotErrorAnalyzerTest();
     //QObject* testSuite = new TaskFeatureTest();
     //QObject* testSuite = new ConsoleJobTest();
@@ -19,8 +20,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ClientWorkManagerTest();
     //QObject* testSuite = new ConfigurationTest("/home/mickael/Prog/TaskManager/TaskTestLib/data/");
     //QObject* testSuite = new GitFsBackupJobTest("/home/mickael/Prog/TaskManager/TaskTestLib/data/");
-
-
+    QObject* testSuite = new GitCommitReportParserTest("/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/");
 
     QTest::qExec(testSuite, argc, argv);
 

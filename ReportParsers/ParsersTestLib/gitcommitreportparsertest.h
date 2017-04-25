@@ -1,14 +1,14 @@
-#ifndef GITREPORTPARSERTEST_H
-#define GITREPORTPARSERTEST_H
+#ifndef GITCOMMITREPORTPARSERTEST_H
+#define GITCOMMITREPORTPARSERTEST_H
 
 #include "filebackupparserabstracttest.h"
 
-class GitReportParserTest : public FileBackupParserAbstractTest
+class GitCommitReportParserTest : public FileBackupParserAbstractTest
 {
     Q_OBJECT
 
 public :
-    GitReportParserTest(const std::string& dataPrefix);
+    GitCommitReportParserTest(const std::string& dataPrefix);
 
 private Q_SLOTS:
     void testParse();
@@ -18,6 +18,7 @@ protected:
     virtual AbstractFileBackupParser* CreateParser();
 
     virtual void PopulateTestData();
+
 };
 
-#endif // GITREPORTPARSERTEST_H
+#endif // GITCOMMITREPORTPARSERTEST_H
