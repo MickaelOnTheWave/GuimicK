@@ -1,3 +1,8 @@
+24/04/2017 (20.7)
+	Created two new test cases : only one modification and no modification. Did it in FS jobs, not in
+	parsers. Updated Rsnapshot accordingly, changed test data organization to avoid duplication and filed
+	bug with Rsnapshot not correctly ignoring unmodified files (maybe due to use of symbolic links?).
+
 19/04/2017 (2.7h)
 	Improved existing data organization for parser test suites. Now going after proper data samples for
 	git fs parser. While looking for samples, it was found that actual way of doing is not good enough :

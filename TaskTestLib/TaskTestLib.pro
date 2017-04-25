@@ -140,4 +140,4 @@ OTHER_FILES += \
     data/Configuration/client - noname.txt \
     data/Configuration/client - nossh.txt \
     data/Configuration/client - oneonly.txt \
-    data/Configuration/job - unknown.txt
+	 data/Configuration/job - unknown.txt

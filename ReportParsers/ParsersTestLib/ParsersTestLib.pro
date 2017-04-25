@@ -55,7 +55,9 @@ OTHER_FILES += \
     data/GitPull/gitadd5.log \
     data/GitPull/gitallchanges.log \
     data/GitPull/gitmod5.log \
-    data/GitPull/gitrm5.log
+    data/GitPull/gitrm5.log \
+    data/GitCommit/added5.txt \
+    data/GitCommit/removed5.txt
 
 CONFIG(debug, debug|release) {
 	BUILD_TYPE = Debug
