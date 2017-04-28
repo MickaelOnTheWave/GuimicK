@@ -38,14 +38,6 @@ JobStatus *GitFsBackupJobTest::RunBackupJob()
 
 void GitFsBackupJobTest::CheckBackedUpDataIsOk()
 {
-    bool ok = Restore(repository, restoredBackup);
-    QCOMPARE(ok, true);
-
-    FileTestUtils::CheckFoldersHaveSameContent(restoredBackup, currentSourceFolder);
-}
-
-bool GitFsBackupJobTest::Restore(const string &repository, const string &destination)
-{
-    return false;
+    FileTestUtils::CheckFoldersHaveSameContent(repository, currentSourceFolder);
 }
 

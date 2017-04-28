@@ -19,8 +19,8 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new FileToolsTest("/home/mickael/Prog/Tools/ToolsTestLib/data/");
     //QObject* testSuite = new ClientWorkManagerTest();
     //QObject* testSuite = new ConfigurationTest("/home/mickael/Prog/TaskManager/TaskTestLib/data/");
-    //QObject* testSuite = new GitFsBackupJobTest("/home/mickael/Prog/TaskManager/TaskTestLib/data/");
-    QObject* testSuite = new GitCommitReportParserTest("/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/");
+    QObject* testSuite = new GitFsBackupJobTest("/home/mickael/Prog/TaskManager/TaskTestLib/data/");
+    //QObject* testSuite = new GitCommitReportParserTest("/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/");
 
     QTest::qExec(testSuite, argc, argv);
 

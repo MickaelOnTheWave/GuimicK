@@ -29,17 +29,18 @@ AbstractFileBackupParser *GitCommitReportParserTest::CreateParser()
 
 void GitCommitReportParserTest::PopulateTestData()
 {
-    // TODO : create proper data
+    const QStringList fullFileList = {
+        "6232100495809.sav",
+        "GamerProfile.xml",
+        "TODOs",
+        "TODOs (2016)",
+        "ex1_description.txt"
+    };
 
-    QStringList fileListWith5;
-    for (int i=0; i<5; ++i)
-        fileListWith5 << QString("file%1").arg(i);
-
-    QTest::newRow("Added 5") << "gitadd5.log" << fileListWith5 << QStringList() << QStringList();
-    QTest::newRow("Changed 5") << "gitmod5.log" << QStringList() << fileListWith5 << QStringList();
-    QTest::newRow("Removed 5") << "gitrm5.log" << QStringList() << QStringList() << fileListWith5;
-    QTest::newRow("Mixed changes") << "gitallchanges.log"
-                                   << QStringList({"alternate0","alternate1","alternate2"})
-                                   << QStringList({"file0","file1","file2"})
-                                   << QStringList({"file3","file4"});
+    QTest::newRow("Modified 5") << "modified5.txt" << QStringList() << fullFileList << QStringList();
+    QTest::newRow("Removed 5") << "removed5.txt" << QStringList() << QStringList() << fullFileList;
+    QTest::newRow("All changes") << "allchanges.txt"
+                                 << QStringList{"HomepageEsperancajpg"}
+                                 << QStringList{"GamerProfile.xml", "ex1_description.txt"}
+                                 << QStringList{"TODOs", "TODOs (2016)"};
 }

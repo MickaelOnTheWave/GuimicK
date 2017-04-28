@@ -1,3 +1,10 @@
+25/04/2017 (0.9h)
+	Added data to Git commit parser test suite. Also updated Git Fs backup test suite with proper data.
+Next planned work :
+	- Try to add tests using remote backup. Applicable to other backup jobs.
+	- Implement copying for remote targets
+	- Update roadmap
+
 24/04/2017 (1.6h)
 	Created two new test cases : only one modification and no modification. Did it in FS jobs, not in
 	parsers. Updated Rsnapshot accordingly, changed test data organization to avoid duplication and filed
