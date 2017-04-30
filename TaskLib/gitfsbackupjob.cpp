@@ -1,5 +1,6 @@
 #include "gitfsbackupjob.h"
 
+#include <stdlib.h>
 #include <unistd.h>
 
 #include "filetools.h"
@@ -17,11 +18,14 @@ const int emptyDirError = 256;
 
 // TODO : remove duplication from GitBackupJob
 GitFsBackupJob::GitFsBackupJob()
+    : sshUser(""), sshHost(""), isTargetLocal(true)
 {
 }
 
 GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
-    : repositoryList(other.repositoryList)
+    : repositoryList(other.repositoryList),
+      sshUser(other.sshUser), sshHost(other.sshHost),
+      isTargetLocal(other.isTargetLocal)
 {
 }
 
@@ -35,14 +39,22 @@ AbstractJob *GitFsBackupJob::Clone()
     return new GitFsBackupJob(*this);
 }
 
-bool GitFsBackupJob::InitializeFromClient(Client *)
+bool GitFsBackupJob::InitializeFromClient(Client *client)
 {
+    if (!IsValidRemoteTarget())
+    {
+        sshUser = client->GetProperty("sshuser");
+        sshHost = client->GetProperty("ip");
+        if (IsValidRemoteTarget())
+            isTargetLocal = false;
+    }
+
     return IsInitialized();
 }
 
 bool GitFsBackupJob::IsInitialized()
 {
-    return false;
+    return (isTargetLocal || IsValidRemoteTarget());
 }
 
 JobStatus *GitFsBackupJob::Run()
@@ -56,6 +68,18 @@ JobStatus *GitFsBackupJob::Run()
     }
 
     return CreateGlobalStatus(statuses);
+}
+
+void GitFsBackupJob::SetTargetRemote(const string &user, const string &host)
+{
+    isTargetLocal = false;
+    sshUser = user;
+    sshHost = host;
+}
+
+void GitFsBackupJob::SetTargetLocal()
+{
+    isTargetLocal = true;
 }
 
 void GitFsBackupJob::AddFolder(const string &folder, const string &repository)
@@ -133,9 +157,7 @@ void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *stat
 void GitFsBackupJob::CopyData(const string &source, const string &destination,
                               JobStatus *status)
 {
-    string unusedOutput;
-    const string command = string("cp -R ") + source + "* " + destination;
-    int returnValue = Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
+    int returnValue = RunCopyCommand(source, destination);
     if (returnValue == 0 || returnValue == emptyDirError)
         status->SetCode(JobStatus::OK);
     else
@@ -174,6 +196,73 @@ string GitFsBackupJob::CommitData(JobStatus *status)
 }
 
 void GitFsBackupJob::CreateReport(const string& commitId, JobStatus *status)
+{
+    int revisionCount = GetRevisionCount();
+    if (revisionCount < 2)
+        CreateInitialReport(status);
+    else
+        CreateDifferentialReport(commitId, status);
+}
+
+int GitFsBackupJob::RunCopyCommand(const string &source, const string &destination)
+{
+    string unusedOutput;
+    string command;
+    if (isTargetLocal)
+        command = "cp -R ";
+    else
+        command = string("scp -r ") + sshUser + "@" + sshHost + ":";
+    command += source + "* " + destination;
+
+    return Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
+}
+
+bool GitFsBackupJob::IsValidRemoteTarget() const
+{
+    return sshUser != "" && sshHost != "";
+}
+
+int GitFsBackupJob::GetRevisionCount() const
+{
+    string output;
+    const string command = "git rev-list --all --count";
+    int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
+    if (returnValue == 0)
+    {
+        return atoi(output.c_str());
+    }
+    else
+        return -1;
+
+}
+
+void GitFsBackupJob::CreateInitialReport(JobStatus *status)
+{
+    string output;
+    int returnValue = Tools::RunExternalCommandToBuffer("ls", output, true);
+    if (returnValue != 0)
+    {
+        status->SetCode(JobStatus::OK_WITH_WARNINGS);
+        status->SetDescription("Report creation failed");
+        status->AddFileBuffer("GitFsBackup.txt", output);
+    }
+    else
+    {
+        vector<string> fileList;
+        Tools::TokenizeString(output, '\n', fileList);
+        FileBackupReport report;
+
+        vector<string>::const_iterator it = fileList.begin();
+        for(; it!=fileList.end(); ++it)
+            report.AddAsAdded(*it);
+
+        status->SetCode(JobStatus::OK);
+        status->SetDescription(report.GetMiniDescription());
+        status->AddFileBuffer("FsBackup.txt", report.GetFullDescription());
+    }
+}
+
+void GitFsBackupJob::CreateDifferentialReport(const string &commitId, JobStatus *status)
 {
     string commandOutput;
     string command = string("git diff-tree --no-commit-id --name-status -r ");

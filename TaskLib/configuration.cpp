@@ -10,6 +10,7 @@
 #include "clamavjobconfiguration.h"
 #include "diskspacecheckjobconfiguration.h"
 #include "gitbackupjobconfiguration.h"
+#include "gitfsbackupjobconfiguration.h"
 #include "rsnapshotbackupjobconfiguration.h"
 #include "shutdownjobconfiguration.h"
 #include "sshconsolejobconfiguration.h"
@@ -305,6 +306,7 @@ void Configuration::FillSupportedJobsList()
     supportedJobs.push_back(new SshConsoleJobConfiguration);
     supportedJobs.push_back(new GitBackupJobConfiguration);
     supportedJobs.push_back(new DiskSpaceCheckJobConfiguration);
+    supportedJobs.push_back(new GitFsBackupJobConfiguration);
 }
 
 void Configuration::FillRootObjects(const list<ConfigurationObject *> &objectList,

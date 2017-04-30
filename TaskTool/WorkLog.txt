@@ -1,3 +1,12 @@
+30/04/2017 (14.9)
+	Created remote copying implementation and remote tests for GitFs job. Didn't create for other jobs
+	as this would be more work and is not needed for now. Next step is creating configuration class -
+	and its test suite! Created configuration class and a remote test case in TaskFeature. Everything is
+	working.
+Next planned work :
+	- Check production run. If ok, update roadmap
+	- Go on roadmap
+
 25/04/2017 (0.9h)
 	Added data to Git commit parser test suite. Also updated Git Fs backup test suite with proper data.
 Next planned work :
