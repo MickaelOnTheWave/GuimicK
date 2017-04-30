@@ -1,4 +1,4 @@
-30/04/2017 (14.9)
+30/04/2017 (2.6h)
 	Created remote copying implementation and remote tests for GitFs job. Didn't create for other jobs
 	as this would be more work and is not needed for now. Next step is creating configuration class -
 	and its test suite! Created configuration class and a remote test case in TaskFeature. Everything is

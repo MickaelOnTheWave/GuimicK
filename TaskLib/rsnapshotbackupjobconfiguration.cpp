@@ -22,7 +22,7 @@ AbstractJob *RsnapshotBackupJobConfiguration::CreateConfiguredJobAfterCheck(
     else
         job = CreateRsnapshotBackupJobFromCreator(confObject, repository);
 
-    if (confObject->propertyList["showDebugInformation"] != "")
+    if (confObject->propertyList["showDebugInformation"] == "true")
         job->SetOutputDebugInformation(true);
     if (confObject->propertyList["waitAfterRun"] != "")
         job->SetWaitAfterRun(true);
