@@ -1,34 +1,24 @@
 #ifndef GITBACKUPJOB_H
 #define GITBACKUPJOB_H
 
-#include "abstractjob.h"
+#include "abstractbackupjob.h"
 
-/**
- * @brief Base class for git based backups
- */
-class GitBackupJob : public AbstractJob
+class GitBackupJob : public AbstractBackupJob
 {
 public:
     GitBackupJob();
-    GitBackupJob(const std::vector<std::pair<std::string, std::string> >& _gitRepositoryList);
+    GitBackupJob(const GitBackupJob& other);
+    GitBackupJob(const std::vector<std::pair<std::string, std::string> >& repositoryList);
     virtual ~GitBackupJob();
 
     virtual std::string GetName();
     virtual AbstractJob* Clone();
-    virtual bool InitializeFromClient(Client* client);
-    virtual bool IsInitialized(void);
     virtual JobStatus* Run();
 
-    void SetTargetRemote(const std::string& user = "", const std::string& host = "");
-    void SetTargetLocal();
     void SetWriteLogsToFiles(bool enabled);
-    void AddRepository(const std::string& sourcePath, const std::string& destPath);
-    void GetRepositoryList(std::vector<std::pair<std::string, std::string> >& _gitRepositoryList);
-    void ClearRepositoryList(void);
 
 private:
     bool InitializeRemoteTarget(Client* client);
-    bool IsRemoteTargetConsistent();
     bool AreSourcesConsistent() const;
     void RunGitRepositoryBackup(const std::string &source,
                                 const std::string &destination,
@@ -46,10 +36,6 @@ private:
     unsigned int CountFaultyRepositories(const std::vector<JobStatus*>& statusList) const;
     std::string GetCorrectRepositoryWord() const;
 
-    std::vector<std::pair<std::string, std::string> > gitRepositoryList;
-    std::string sshUser;
-    std::string sshHost;
-    bool isTargetLocal;
     bool writeLogsToFile;
 };
 

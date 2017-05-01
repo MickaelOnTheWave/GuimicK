@@ -17,14 +17,21 @@ static const string repositoryPullOk                    = "Repository successful
 
 
 GitBackupJob::GitBackupJob()
- : sshUser(""), sshHost(""), isTargetLocal(true), writeLogsToFile(false)
+ : AbstractBackupJob(), writeLogsToFile(false)
 {
 }
 
-GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &_gitRepositoryList)
- : sshUser(""), sshHost(""), isTargetLocal(true), writeLogsToFile(false)
+GitBackupJob::GitBackupJob(const GitBackupJob &other)
+    : AbstractBackupJob(other),
+      writeLogsToFile(other.writeLogsToFile)
 {
-    gitRepositoryList = _gitRepositoryList;
+
+}
+
+GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &repositoryList)
+ : AbstractBackupJob(), writeLogsToFile(false)
+{
+    folderList = repositoryList;
 }
 
 GitBackupJob::~GitBackupJob()
@@ -38,46 +45,17 @@ string GitBackupJob::GetName()
 
 AbstractJob *GitBackupJob::Clone()
 {
-    GitBackupJob* clone = new GitBackupJob();
-    copy(gitRepositoryList.begin(), gitRepositoryList.end(), back_inserter(clone->gitRepositoryList));
-    clone->sshUser = sshUser;
-    clone->sshHost = sshHost;
-    clone->isTargetLocal = isTargetLocal;
-    return clone;
-}
-
-bool GitBackupJob::InitializeFromClient(Client *client)
-{
-    return (isTargetLocal) ? true : InitializeRemoteTarget(client);
-}
-
-bool GitBackupJob::IsInitialized()
-{
-    return (isTargetLocal) ? AreSourcesConsistent() : IsRemoteTargetConsistent();
+    return new GitBackupJob(*this);
 }
 
 JobStatus *GitBackupJob::Run()
 {
     vector<JobStatus*> repositoriesStatus;
-    vector<pair<string, string> >::const_iterator it=gitRepositoryList.begin();
-    for (; it!=gitRepositoryList.end(); it++)
+    vector<pair<string, string> >::const_iterator it=folderList.begin();
+    for (; it!=folderList.end(); it++)
         RunGitRepositoryBackup(it->first, it->second, repositoriesStatus);
 
     return CreateGlobalStatus(repositoriesStatus);
-}
-
-void GitBackupJob::SetTargetRemote(const string &user, const string &host)
-{
-    sshUser = user;
-    sshHost = host;
-    isTargetLocal = false;
-}
-
-void GitBackupJob::SetTargetLocal()
-{
-    sshUser = "";
-    sshHost = "";
-    isTargetLocal = true;
 }
 
 void GitBackupJob::SetWriteLogsToFiles(bool enabled)
@@ -85,44 +63,15 @@ void GitBackupJob::SetWriteLogsToFiles(bool enabled)
     writeLogsToFile = enabled;
 }
 
-void GitBackupJob::AddRepository(const string &sourcePath, const string &destPath)
-{
-    gitRepositoryList.push_back(make_pair<string, string>(sourcePath, destPath));
-}
-
-void GitBackupJob::GetRepositoryList(vector<pair<string, string> > &_gitRepositoryList)
-{
-    copy(gitRepositoryList.begin(), gitRepositoryList.end(), back_inserter(_gitRepositoryList));
-}
-
-void GitBackupJob::ClearRepositoryList()
-{
-    gitRepositoryList.clear();
-}
-
 string GitBackupJob::GetCorrectRepositoryWord() const
 {
-    return (gitRepositoryList.size() == 1) ? "repository" : "repositories";
-}
-
-bool GitBackupJob::InitializeRemoteTarget(Client *client)
-{
-    if (sshUser == "")
-        sshUser = client->GetProperty("sshuser");
-    if (sshHost == "")
-        sshHost = client->GetProperty("ip");
-    return IsRemoteTargetConsistent();
-}
-
-bool GitBackupJob::IsRemoteTargetConsistent()
-{
-    return (sshUser != "" && sshHost != "");
+    return (folderList.size() == 1) ? "repository" : "repositories";
 }
 
 bool GitBackupJob::AreSourcesConsistent() const
 {
-    vector<pair<string, string> >::const_iterator it=gitRepositoryList.begin();
-    for (; it!=gitRepositoryList.end(); it++)
+    vector<pair<string, string> >::const_iterator it=folderList.begin();
+    for (; it!=folderList.end(); it++)
     {
         if (!FileTools::FolderExists(it->first))
             return false;
@@ -217,7 +166,7 @@ string GitBackupJob::BuildGitParameters(const string &source, const string &dest
 
 JobStatus *GitBackupJob::CreateGlobalStatus(const std::vector<JobStatus *> &statusList) const
 {
-    if (gitRepositoryList.size() == 1)
+    if (folderList.size() == 1)
         return CreateSingleRepositoryStatus(statusList.front());
     else
         return CreateMultiRepositoryStatus(statusList);
@@ -236,19 +185,19 @@ JobStatus *GitBackupJob::CreateMultiRepositoryStatus(const std::vector<JobStatus
     if (faultyRepositories == 0)
     {
         status->SetCode(JobStatus::OK);
-        descriptionStream << gitRepositoryList.size();
+        descriptionStream << folderList.size();
         descriptionStream << " Git " << GetCorrectRepositoryWord() << " successfully backed up.";
     }
-    else if (faultyRepositories == gitRepositoryList.size())
+    else if (faultyRepositories == folderList.size())
     {
         status->SetCode(JobStatus::ERROR);
-        descriptionStream << gitRepositoryList.size();
+        descriptionStream << folderList.size();
         descriptionStream << " Git " << GetCorrectRepositoryWord() << " failed to backup.";
     }
     else
     {
         status->SetCode(JobStatus::OK_WITH_WARNINGS);
-        int okRepositories = gitRepositoryList.size()-faultyRepositories;
+        int okRepositories = folderList.size()-faultyRepositories;
         descriptionStream << okRepositories;
         descriptionStream << " Git " << GetCorrectRepositoryWord() << " backed up, ";
         descriptionStream << faultyRepositories << " failed.";

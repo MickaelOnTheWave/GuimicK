@@ -16,7 +16,6 @@ const string errorAddingData = "Git add failed";
 const string errorCommitingData = "Git commit failed";
 const int emptyDirError = 256;
 
-// TODO : remove duplication from GitBackupJob
 GitFsBackupJob::GitFsBackupJob()
     : AbstractBackupJob()
 {

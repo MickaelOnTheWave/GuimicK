@@ -1,9 +1,12 @@
-01/05/2017 (0.2h - 13)
+01/05/2017 (1.5h)
 	Production run did not succeed. Checking why. Probably due to incorrect configuration file. Fixed
 	configuration and waiting for next run to confirm result. Going for next task...
 	There will be even more code duplication creating a new Fs backup job. First creating AbstractBackup
 	job to keep all backup code in one place. Now refactoring existing jobs to new architecture...
-	Refactored GitFsBackupJob.
+	Refactored GitFsBackupJob. Also refactored GitBackupJob.
+Next planned work :
+	- Check production run and update roadmap
+	- Begin Copy Fs backup job implementation
 
 30/04/2017 (2.6h)
 	Created remote copying implementation and remote tests for GitFs job. Didn't create for other jobs

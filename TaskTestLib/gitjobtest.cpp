@@ -191,6 +191,7 @@ void GitJobTest::RunGitBackup(const std::string &source, const std::string &dest
 void GitJobTest::RunGitBackup(const std::vector<std::pair<std::string, std::string> >& repositoryList)
 {
     GitBackupJob job(repositoryList);
+    job.SetTargetLocal();
     currentStatus = job.Run();
 }
 

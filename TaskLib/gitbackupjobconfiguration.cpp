@@ -23,7 +23,7 @@ AbstractJob *GitBackupJobConfiguration::CreateConfiguredJobAfterCheck(
 
         string source(currentObj->propertyList["source"]);
         string dest(currentObj->propertyList["dest"]);
-        job->AddRepository(source, dest);
+        job->AddFolder(source, dest);
     }
 
     string target(confObject->propertyList["target"]);
