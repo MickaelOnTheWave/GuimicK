@@ -59,6 +59,8 @@ JobStatus *GitFsBackupJobTest::RunBackupJob()
     job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), repository);
     if (remote)
         job->SetTargetRemote(sshUser, sshHost);
+    else
+        job->SetTargetLocal();
 
     JobStatus* status = job->Run();
 
