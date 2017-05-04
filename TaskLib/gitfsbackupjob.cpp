@@ -17,12 +17,16 @@ const string errorCommitingData = "Git commit failed";
 const int emptyDirError = 256;
 
 GitFsBackupJob::GitFsBackupJob()
-    : AbstractBackupJob()
+    : AbstractBackupJob(), debugManager("GitFsBackup", false),
+      usingDebugInformation(false),
+      joinRepositoriesReports(true)
 {
 }
 
 GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
-    : AbstractBackupJob(other)
+    : AbstractBackupJob(other), debugManager(other.debugManager),
+      usingDebugInformation(other.usingDebugInformation),
+      joinRepositoriesReports(other.joinRepositoriesReports)
 {
 }
 
@@ -38,6 +42,7 @@ AbstractJob *GitFsBackupJob::Clone()
 
 JobStatus *GitFsBackupJob::Run()
 {
+    debugManager.SetUse(usingDebugInformation);
     vector<JobStatus*> statuses;
     vector<pair<string, string> >::const_iterator it=folderList.begin();
     for (; it!=folderList.end(); it++)
@@ -46,7 +51,17 @@ JobStatus *GitFsBackupJob::Run()
         statuses.push_back(repositoryStatus);
     }
 
-    return CreateGlobalStatus(statuses);
+    return debugManager.UpdateStatus(CreateGlobalStatus(statuses));
+}
+
+void GitFsBackupJob::SetOutputDebugInformation(const bool value)
+{
+    usingDebugInformation = value;
+}
+
+void GitFsBackupJob::SetJoinAllBackups(const bool value)
+{
+    joinRepositoriesReports = value;
 }
 
 JobStatus* GitFsBackupJob::RunRepositoryBackup( const string &source,
@@ -90,9 +105,12 @@ JobStatus *GitFsBackupJob::CreateGlobalStatus(std::vector<JobStatus *> &statuses
 
 void GitFsBackupJob::CreateGitRepository(const string &path, JobStatus *status)
 {
-    string unusedOutput;
+    string output;
     const string command = string("git init ") + path;
-    int returnValue = Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
+    int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
+    debugManager.AddStringDataLine("Create repository command", command);
+    debugManager.AddStringDataLine("Create repository output", output);
+    debugManager.AddIntDataLine("Create repository value", returnValue);
     if (returnValue == 0)
         status->SetCode(JobStatus::OK);
     else
@@ -104,9 +122,12 @@ void GitFsBackupJob::CreateGitRepository(const string &path, JobStatus *status)
 
 void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *status)
 {
-    string unusedOutput;
+    string output;
     const string command = string("rm -Rf ") + destination + "*";
-    int returnValue = Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
+    int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
+    debugManager.AddStringDataLine("Clean command", command);
+    debugManager.AddStringDataLine("Clean output", output);
+    debugManager.AddIntDataLine("Clean value", returnValue);
     if (returnValue == 0)
         status->SetCode(JobStatus::OK);
     else
@@ -131,8 +152,10 @@ void GitFsBackupJob::CopyData(const string &source, const string &destination,
 
 void GitFsBackupJob::AddData(JobStatus *status)
 {
-    string unusedOutput;
-    int returnValue = Tools::RunExternalCommandToBuffer("git add -A", unusedOutput, true);
+    string output;
+    int returnValue = Tools::RunExternalCommandToBuffer("git add -A", output, true);
+    debugManager.AddStringDataLine("Add output", output);
+    debugManager.AddIntDataLine("Add value", returnValue);
     if (returnValue == 0)
         status->SetCode(JobStatus::OK);
     else
@@ -144,11 +167,13 @@ void GitFsBackupJob::AddData(JobStatus *status)
 
 string GitFsBackupJob::CommitData(JobStatus *status)
 {
-    string commandOutput;
+    string output;
     string command = string("git commit -m \"Automated backup\"");
-    int returnValue = Tools::RunExternalCommandToBuffer(command, commandOutput, true);
+    int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
+    debugManager.AddStringDataLine("Commit output", output);
+    debugManager.AddIntDataLine("Commit value", returnValue);
     if (returnValue == 0)
-        return GetCommitId(commandOutput);
+        return GetCommitId(output);
     else
     {
         status->SetCode(JobStatus::ERROR);
@@ -168,7 +193,7 @@ void GitFsBackupJob::CreateReport(const string& commitId, JobStatus *status)
 
 int GitFsBackupJob::RunCopyCommand(const string &source, const string &destination)
 {
-    string unusedOutput;
+    string output;
     string command;
     if (isTargetLocal)
         command = "cp -R ";
@@ -176,7 +201,12 @@ int GitFsBackupJob::RunCopyCommand(const string &source, const string &destinati
         command = string("scp -r ") + sshUser + "@" + sshHost + ":";
     command += source + "* " + destination;
 
-    return Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
+    const int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
+    debugManager.AddStringDataLine("Copy command", command);
+    debugManager.AddStringDataLine("Copy output", output);
+    debugManager.AddIntDataLine("Copy value", returnValue);
+
+    return returnValue;
 }
 
 int GitFsBackupJob::GetRevisionCount() const

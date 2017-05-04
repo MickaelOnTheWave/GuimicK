@@ -15,7 +15,6 @@ static const string invalidDestinationRepositoryError   = "Invalid destination r
 static const string unknownError                        = "Unknown error";
 static const string repositoryPullOk                    = "Repository successfully updated, see attached file.";
 
-
 GitBackupJob::GitBackupJob()
  : AbstractBackupJob(), writeLogsToFile(false)
 {

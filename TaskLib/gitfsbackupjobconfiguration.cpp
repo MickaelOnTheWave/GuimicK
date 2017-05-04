@@ -3,6 +3,9 @@
 
 using namespace std;
 
+const string targetProperty = "target";
+const string debugProperty = "showDebugInformation";
+
 GitFsBackupJobConfiguration::GitFsBackupJobConfiguration()
     : AbstractJobConfiguration("GitFsBackup")
 {
@@ -33,18 +36,21 @@ AbstractJob *GitFsBackupJobConfiguration::CreateConfiguredJobAfterCheck(
         }
     }
 
-    string target(confObject->propertyList["target"]);
+    string target(confObject->GetProperty(targetProperty));
     if (target == "local")
         job->SetTargetLocal();
     else
         job->SetTargetRemote();
+
+    job->SetOutputDebugInformation(confObject->GetProperty(debugProperty) == "true");
 
     return job;
 }
 
 void GitFsBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &properties)
 {
-    properties.push_back("target");
+    properties.push_back(targetProperty);
+    properties.push_back(debugProperty);
 }
 
 void GitFsBackupJobConfiguration::FillKnownSubObjects(std::vector<std::string> &objects)

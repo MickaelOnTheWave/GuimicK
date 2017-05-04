@@ -1,3 +1,14 @@
+03/05/2017 (1.7h)
+	Production run still failed. Now debugging commands and more testing are needed.
+	Added debug information to Git FS backup job with its configuration command.
+	Created test in TaskFeature, but it is not possible this way (information varies in debug
+	output due to commit hash).
+Next planned work :
+	- Finish test for checking that debug output produces non-empty debug file
+	- Implement multi-repository reporting and join reports feature
+	- Add tests for new reporting features
+	- Find and Fix issue in production run
+
 01/05/2017 (1.5h)
 	Production run did not succeed. Checking why. Probably due to incorrect configuration file. Fixed
 	configuration and waiting for next run to confirm result. Going for next task...

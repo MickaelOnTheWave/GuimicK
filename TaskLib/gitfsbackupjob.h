@@ -3,6 +3,8 @@
 
 #include "abstractbackupjob.h"
 
+#include "jobdebuginformationmanager.h"
+
 class GitFsBackupJob : public AbstractBackupJob
 {
 public:
@@ -12,6 +14,9 @@ public:
     virtual std::string GetName();
     virtual AbstractJob* Clone();
     virtual JobStatus* Run();
+
+    void SetOutputDebugInformation(const bool value);
+    void SetJoinAllBackups(const bool value);
 
 private:
     JobStatus *RunRepositoryBackup( const std::string& source,
@@ -32,6 +37,10 @@ private:
     void CreateDifferentialReport(const std::string &commitId, JobStatus* status);
 
     std::string GetCommitId(const std::string& output);
+
+    JobDebugInformationManager debugManager;
+    bool usingDebugInformation;
+    bool joinRepositoriesReports;
 };
 
 #endif // GITFSBACKUPJOB_H

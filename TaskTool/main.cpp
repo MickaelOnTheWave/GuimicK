@@ -13,7 +13,7 @@
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.65";
+static const string PROGRAM_VERSION = "0.66";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
 void ShowErrors(vector<string> &errorMessages);
