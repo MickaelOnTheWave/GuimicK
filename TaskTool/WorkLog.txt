@@ -1,3 +1,9 @@
+07/05/2017 (14.6)
+	Production run failed again. Issue is probably because commands are not respecting command/parameter
+	separation. But before fixing this, it is interesting to create automated tests for that and prepare
+	job for error when command does not exist.
+	For now, changed implementation to use consolejob instead of row RunExternalCommand.
+
 03/05/2017 (1.7h)
 	Production run still failed. Now debugging commands and more testing are needed.
 	Added debug information to Git FS backup job with its configuration command.

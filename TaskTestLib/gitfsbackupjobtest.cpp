@@ -30,6 +30,11 @@ void GitFsBackupJobTest::testRunBackup_data()
     LoadCustomDataSamples(true);
 }
 
+void GitFsBackupJobTest::testRunBackupWithDebug()
+{
+    QFAIL("TODO : implement");
+}
+
 void GitFsBackupJobTest::LoadCustomDataSamples(const bool isRemote)
 {
     QTest::addColumn<QString>("sourceBefore");

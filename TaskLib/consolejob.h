@@ -31,6 +31,8 @@ public:
 
 	virtual JobStatus* Run();
 
+    void RunWithoutStatus();
+
     virtual int GetExpectedReturnCode() const;
     virtual void SetExpectedReturnCode(const int value);
 

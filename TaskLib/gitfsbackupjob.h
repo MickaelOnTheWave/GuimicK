@@ -38,6 +38,8 @@ private:
 
     std::string GetCommitId(const std::string& output);
 
+    bool IsGitInstalled() const;
+
     JobDebugInformationManager debugManager;
     bool usingDebugInformation;
     bool joinRepositoriesReports;
