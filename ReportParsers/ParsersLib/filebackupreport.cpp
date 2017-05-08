@@ -72,6 +72,13 @@ void FileBackupReport::AddAsRemoved(const string &file)
     removed.push_back(file);
 }
 
+void FileBackupReport::Add(const FileBackupReport &otherReport)
+{
+    copy(otherReport.added.begin(), otherReport.added.end(), back_inserter(added));
+    copy(otherReport.modified.begin(), otherReport.modified.end(), back_inserter(modified));
+    copy(otherReport.removed.begin(), otherReport.removed.end(), back_inserter(removed));
+}
+
 string FileBackupReport::FileListDescription(const std::vector<string> &fileList,
                                              const string &operation) const
 {

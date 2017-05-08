@@ -1,8 +1,12 @@
-07/05/2017 (14.6)
+07/05/2017 (6h)
 	Production run failed again. Issue is probably because commands are not respecting command/parameter
 	separation. But before fixing this, it is interesting to create automated tests for that and prepare
 	job for error when command does not exist.
-	For now, changed implementation to use consolejob instead of row RunExternalCommand.
+	For now, changed implementation to use consolejob instead of raw RunExternalCommand. Implemented
+	part of the new reporting logic and created a test for one of those cases.
+Next planned work :
+	- Create test for more cases
+	- Finish implementation
 
 03/05/2017 (1.7h)
 	Production run still failed. Now debugging commands and more testing are needed.

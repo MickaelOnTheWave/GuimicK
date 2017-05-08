@@ -5,6 +5,7 @@ using namespace std;
 
 const string targetProperty = "target";
 const string debugProperty = "showDebugInformation";
+const string joinReportsProperty = "joinReports";
 
 GitFsBackupJobConfiguration::GitFsBackupJobConfiguration()
     : AbstractJobConfiguration("GitFsBackup")
@@ -42,6 +43,7 @@ AbstractJob *GitFsBackupJobConfiguration::CreateConfiguredJobAfterCheck(
     else
         job->SetTargetRemote();
 
+    job->SetJoinAllBackups(confObject->GetProperty(joinReportsProperty) != "false");
     job->SetOutputDebugInformation(confObject->GetProperty(debugProperty) == "true");
 
     return job;
@@ -51,6 +53,7 @@ void GitFsBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &
 {
     properties.push_back(targetProperty);
     properties.push_back(debugProperty);
+    properties.push_back(joinReportsProperty);
 }
 
 void GitFsBackupJobConfiguration::FillKnownSubObjects(std::vector<std::string> &objects)

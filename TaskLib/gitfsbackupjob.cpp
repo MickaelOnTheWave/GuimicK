@@ -48,15 +48,12 @@ JobStatus *GitFsBackupJob::Run()
         return new JobStatus(JobStatus::ERROR, errorGitNotInstalled);
 
     debugManager.SetUse(usingDebugInformation);
-    vector<JobStatus*> statuses;
+    vector<pair<JobStatus*, FileBackupReport*> > results;
     vector<pair<string, string> >::const_iterator it=folderList.begin();
     for (; it!=folderList.end(); it++)
-    {
-        JobStatus* repositoryStatus = RunRepositoryBackup(it->first, it->second);
-        statuses.push_back(repositoryStatus);
-    }
+        results.push_back(RunRepositoryBackup(it->first, it->second));
 
-    return debugManager.UpdateStatus(CreateGlobalStatus(statuses));
+    return debugManager.UpdateStatus(CreateGlobalStatus(results));
 }
 
 void GitFsBackupJob::SetOutputDebugInformation(const bool value)
@@ -69,8 +66,9 @@ void GitFsBackupJob::SetJoinAllBackups(const bool value)
     joinRepositoriesReports = value;
 }
 
-JobStatus* GitFsBackupJob::RunRepositoryBackup( const string &source,
-                                                const string &destination)
+pair<JobStatus*, FileBackupReport*> GitFsBackupJob::RunRepositoryBackup(
+                                            const string &source,
+                                            const string &destination)
 {
     JobStatus* status = new JobStatus(JobStatus::OK);
     if (FileTools::FolderExists(destination) == false)
@@ -92,20 +90,28 @@ JobStatus* GitFsBackupJob::RunRepositoryBackup( const string &source,
     if (status->GetCode() == JobStatus::OK)
         commitId = CommitData(status);
 
+    FileBackupReport* report = new FileBackupReport();
     if (status->GetCode() == JobStatus::OK)
-        CreateReport(commitId, status);
+        CreateReport(commitId, status, *report);
 
     chdir(originalDirectory.c_str());
 
-    return status;
+    return make_pair(status, report);
 }
 
-JobStatus *GitFsBackupJob::CreateGlobalStatus(std::vector<JobStatus *> &statuses)
+JobStatus *GitFsBackupJob::CreateGlobalStatus(const std::vector<pair<JobStatus*, FileBackupReport*> > &statuses)
 {
     if (statuses.size() == 1)
-        return new JobStatus(*statuses.front());
+        return CreateSingleStatus(statuses);
     else
-        return new JobStatus(JobStatus::OK_WITH_WARNINGS, "Multiple backups. Create proper message.");
+    {
+        if (AreAllStatusesEqual(statuses, JobStatus::OK))
+            return CreateMultiStatus(statuses);
+        if (AreAllStatusesEqual(statuses, JobStatus::ERROR))
+            return new JobStatus(JobStatus::OK, "Global fucking ERROR");
+        else
+            return new JobStatus(JobStatus::OK_WITH_WARNINGS, "WTF??");
+    }
 }
 
 void GitFsBackupJob::CreateGitRepository(const string &path, JobStatus *status)
@@ -186,13 +192,14 @@ string GitFsBackupJob::CommitData(JobStatus *status)
     }
 }
 
-void GitFsBackupJob::CreateReport(const string& commitId, JobStatus *status)
+void GitFsBackupJob::CreateReport(const string& commitId, JobStatus *status,
+                                  FileBackupReport& report)
 {
     int revisionCount = GetRevisionCount();
     if (revisionCount < 2)
-        CreateInitialReport(status);
+        CreateInitialReport(status, report);
     else
-        CreateDifferentialReport(commitId, status);
+        CreateDifferentialReport(commitId, status, report);
 }
 
 int GitFsBackupJob::RunCopyCommand(const string &source, const string &destination)
@@ -222,33 +229,29 @@ int GitFsBackupJob::GetRevisionCount() const
     return (commandJob.GetCommandReturnCode() == 0) ? atoi(commandJob.GetCommandOutput().c_str()) : -1;
 }
 
-void GitFsBackupJob::CreateInitialReport(JobStatus *status)
+void GitFsBackupJob::CreateInitialReport(JobStatus *status, FileBackupReport &report)
 {
     ConsoleJob commandJob("ls");
     commandJob.RunWithoutStatus();
     if (commandJob.GetCommandReturnCode() != 0)
     {
         status->SetCode(JobStatus::OK_WITH_WARNINGS);
-        status->SetDescription("Report creation failed");
-        status->AddFileBuffer("GitFsBackup.txt", commandJob.GetCommandOutput());
+        status->AddFileBuffer("output", commandJob.GetCommandOutput());
     }
     else
     {
         vector<string> fileList;
         Tools::TokenizeString(commandJob.GetCommandOutput(), '\n', fileList);
-        FileBackupReport report;
 
         vector<string>::const_iterator it = fileList.begin();
         for(; it!=fileList.end(); ++it)
             report.AddAsAdded(*it);
-
         status->SetCode(JobStatus::OK);
-        status->SetDescription(report.GetMiniDescription());
-        status->AddFileBuffer("FsBackup.txt", report.GetFullDescription());
     }
 }
 
-void GitFsBackupJob::CreateDifferentialReport(const string &commitId, JobStatus *status)
+void GitFsBackupJob::CreateDifferentialReport(const string &commitId, JobStatus *status,
+                                              FileBackupReport& report)
 {
     const string params = string("diff-tree --no-commit-id --name-status -r ") + commitId;
     ConsoleJob commandJob("git", params);
@@ -260,14 +263,12 @@ void GitFsBackupJob::CreateDifferentialReport(const string &commitId, JobStatus 
         if (ok)
         {
             status->SetCode(JobStatus::OK);
-            status->SetDescription(parser.GetMiniDescription());
-            status->AddFileBuffer("FsBackup.txt", parser.GetFullDescription());
+            parser.GetReport(report);
             return;
         }
     }
 
     status->SetCode(JobStatus::OK_WITH_WARNINGS);
-    status->SetDescription("Parsing failed");
 }
 
 string GitFsBackupJob::GetCommitId(const string &output)
@@ -282,4 +283,75 @@ bool GitFsBackupJob::IsGitInstalled() const
     ConsoleJob checkGitCommand("git", "--version");
     checkGitCommand.RunWithoutStatus();
     return (checkGitCommand.GetCommandReturnCode() == 0);
+}
+
+bool GitFsBackupJob::AreAllStatusesEqual(const vector<pair<JobStatus*, FileBackupReport*> > &statuses,
+                                         const int expectedCode)
+{
+    bool areAllOk = true;
+    vector<pair<JobStatus*, FileBackupReport*> >::const_iterator it = statuses.begin();
+    for (; it != statuses.end(); ++it)
+    {
+        if (it->first->GetCode() != expectedCode)
+        {
+            areAllOk = false;
+            break;
+        }
+    }
+
+    return areAllOk;
+}
+
+JobStatus *GitFsBackupJob::CreateSingleStatus(
+                const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
+{
+    JobStatus* status = new JobStatus(statuses.front().first->GetCode());
+    status->SetDescription(statuses.front().second->GetMiniDescription());
+    status->AddFileBuffer("GitFsBackup.txt", statuses.front().second->GetFullDescription());
+    return status;
+}
+
+JobStatus *GitFsBackupJob::CreateMultiStatus(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
+{
+    JobStatus* status = new JobStatus(JobStatus::OK);
+
+    if (joinRepositoriesReports)
+    {
+        FileBackupReport globalReport;
+        vector<pair<JobStatus *, FileBackupReport *> >::const_iterator it = statuses.begin();
+        for (; it!=statuses.end(); ++it)
+            globalReport.Add(*it->second);
+
+        status->SetDescription(globalReport.GetMiniDescription());
+        status->AddFileBuffer("GitFsBackup.txt", globalReport.GetFullDescription());
+    }
+    else
+    {
+        string fullDescriptions("");
+        FileBackupReport globalReport;
+        vector<pair<JobStatus *, FileBackupReport *> >::const_iterator it = statuses.begin();
+        for (; it!=statuses.end(); ++it)
+        {
+            globalReport.Add(*it->second);
+
+            fullDescriptions += BuildRepositoryHeader();
+            fullDescriptions += it->second->GetFullDescription();
+        }
+        fullDescriptions += BuildFooter();
+
+        status->SetDescription(globalReport.GetMiniDescription());
+        status->AddFileBuffer("GitFsBackup.txt", fullDescriptions);
+    }
+
+    return status;
+}
+
+string GitFsBackupJob::BuildRepositoryHeader()
+{
+    return string("--- Repository ---");
+}
+
+string GitFsBackupJob::BuildFooter()
+{
+    return string("------------------");
 }

@@ -21,6 +21,8 @@ public:
     void AddAsModified(const std::string& file);
     void AddAsRemoved(const std::string& file);
 
+    void Add(const FileBackupReport& otherReport);
+
 // TODO : make that protected
 public:
     std::vector<std::string> added;
