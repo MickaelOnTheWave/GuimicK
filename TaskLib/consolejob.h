@@ -31,6 +31,8 @@ public:
 
 	virtual JobStatus* Run();
 
+    static void Run(const std::string& command, const std::string& params);
+
     void RunWithoutStatus();
 
     virtual int GetExpectedReturnCode() const;
@@ -40,6 +42,7 @@ public:
     virtual void SetCommand(const std::string& command);
 
     virtual void SetCommandParameters(const std::string& parameters);
+    std::string GetCommandParameters() const;
 
     virtual int GetCommandReturnCode();
     virtual std::string GetCommandOutput() const;

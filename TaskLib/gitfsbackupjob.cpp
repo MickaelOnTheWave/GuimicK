@@ -17,7 +17,9 @@ const string errorCopyingData = "Data was not properly copied";
 const string errorAddingData = "Git add failed";
 const string errorCommitingData = "Git commit failed";
 const string errorGitNotInstalled = "Git not installed";
+
 const int emptyDirError = 1;
+const int gitCommitUtf8WarningCode = 137;
 
 GitFsBackupJob::GitFsBackupJob()
     : AbstractBackupJob(), debugManager("GitFsBackup", false),
@@ -102,6 +104,7 @@ pair<JobStatus*, FileBackupReport*> GitFsBackupJob::RunRepositoryBackup(
 
 JobStatus *GitFsBackupJob::CreateGlobalStatus(const std::vector<pair<JobStatus*, FileBackupReport*> > &statuses)
 {
+    debugManager.AddIntDataLine("Statuses to handle", statuses.size());
     if (statuses.size() == 1)
         return CreateSingleStatus(statuses);
     else
@@ -179,11 +182,15 @@ void GitFsBackupJob::AddData(JobStatus *status)
 
 string GitFsBackupJob::CommitData(JobStatus *status)
 {
+    SetGitUserToFixUtf8Warning();
+
     ConsoleJob commandJob("git", "commit -m \"Automated backup\"");
     commandJob.RunWithoutStatus();
+    debugManager.AddStringDataLine("Commit params", commandJob.GetCommandParameters());
     debugManager.AddStringDataLine("Commit output", commandJob.GetCommandOutput());
     debugManager.AddIntDataLine("Commit value", commandJob.GetCommandReturnCode());
-    if (commandJob.GetCommandReturnCode() == 0)
+    if (commandJob.GetCommandReturnCode() == 0 ||
+        commandJob.GetCommandReturnCode() == gitCommitUtf8WarningCode)
         return GetCommitId(commandJob.GetCommandOutput());
     else
     {
@@ -225,10 +232,14 @@ int GitFsBackupJob::RunCopyCommand(const string &source, const string &destinati
 
 void GitFsBackupJob::FixCRLFIssue()
 {
-    ConsoleJob command1("git", "config --global core.autocrlf false");
-    command1.RunWithoutStatus();
-    ConsoleJob command2("git", "config --global core.safecrlf false");
-    command2.RunWithoutStatus();
+    ConsoleJob::Run("git", "config core.autocrlf false");
+    ConsoleJob::Run("git", "config core.safecrlf false");
+}
+
+void GitFsBackupJob::SetGitUserToFixUtf8Warning()
+{
+    ConsoleJob::Run("git", "config user.name \"TaskManager\"");
+    ConsoleJob::Run("git", "config user.email task@manager.com");
 }
 
 int GitFsBackupJob::GetRevisionCount() const
@@ -240,6 +251,7 @@ int GitFsBackupJob::GetRevisionCount() const
 
 void GitFsBackupJob::CreateInitialReport(JobStatus *status, FileBackupReport &report)
 {
+    debugManager.AddStringDataLine("Creating Initial Report", "");
     ConsoleJob commandJob("ls");
     commandJob.RunWithoutStatus();
     if (commandJob.GetCommandReturnCode() != 0)
@@ -262,6 +274,7 @@ void GitFsBackupJob::CreateInitialReport(JobStatus *status, FileBackupReport &re
 void GitFsBackupJob::CreateDifferentialReport(const string &commitId, JobStatus *status,
                                               FileBackupReport& report)
 {
+    debugManager.AddStringDataLine("Creating Differential Report", "");
     const string params = string("diff-tree --no-commit-id --name-status -r ") + commitId;
     ConsoleJob commandJob("git", params);
     commandJob.RunWithoutStatus();
@@ -314,6 +327,7 @@ bool GitFsBackupJob::AreAllStatusesEqual(const vector<pair<JobStatus*, FileBacku
 JobStatus *GitFsBackupJob::CreateSingleStatus(
                 const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
 {
+    debugManager.AddStringDataLine("Creating Single status", "");
     JobStatus* status = new JobStatus(statuses.front().first->GetCode());
     status->SetDescription(statuses.front().second->GetMiniDescription());
     status->AddFileBuffer("GitFsBackup.txt", statuses.front().second->GetFullDescription());
@@ -335,6 +349,7 @@ JobStatus *GitFsBackupJob::CreateAllOkStatus(const std::vector<std::pair<JobStat
 
 JobStatus *GitFsBackupJob::CreateMixedStatus(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
 {
+    debugManager.AddStringDataLine("Creating Mixed status", "");
     JobStatus* status = new JobStatus(JobStatus::ERROR);
     status->SetDescription(CreateFoldersMiniDescription(statuses));
     status->AddFileBuffer("GitFsBackup.txt", CreateStatusesDescription(statuses));
@@ -343,6 +358,7 @@ JobStatus *GitFsBackupJob::CreateMixedStatus(const std::vector<std::pair<JobStat
 
 JobStatus *GitFsBackupJob::CreateJoinedStatus(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
 {
+    debugManager.AddStringDataLine("Creating Joined status", "");
     JobStatus* status = new JobStatus(JobStatus::OK);
     FileBackupReport globalReport;
     vector<pair<string,string> >::const_iterator itDestination = folderList.begin();
@@ -357,6 +373,7 @@ JobStatus *GitFsBackupJob::CreateJoinedStatus(const std::vector<std::pair<JobSta
 
 JobStatus *GitFsBackupJob::CreateSeparatedStatus(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
 {
+    debugManager.AddStringDataLine("Creating Separated status", "");
     JobStatus* status = new JobStatus(JobStatus::OK);
     FileBackupReport globalReport;
     vector<pair<JobStatus *, FileBackupReport *> >::const_iterator it = statuses.begin();

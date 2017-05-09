@@ -61,6 +61,12 @@ JobStatus *ConsoleJob::Run()
         return CreateErrorStatus();
 }
 
+void ConsoleJob::Run(const string &command, const string &params)
+{
+    ConsoleJob job(command, params);
+    job.RunCommand();
+}
+
 void ConsoleJob::RunWithoutStatus()
 {
     RunCommand();
@@ -89,6 +95,11 @@ void ConsoleJob::SetCommand(const string &_command)
 void ConsoleJob::SetCommandParameters(const string &parameters)
 {
     commandParams = parameters;
+}
+
+string ConsoleJob::GetCommandParameters() const
+{
+    return commandParams;
 }
 
 int ConsoleJob::GetCommandReturnCode()

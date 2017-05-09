@@ -35,6 +35,7 @@ private:
     int RunCopyCommand(const std::string& source, const std::string& destination);
 
     void FixCRLFIssue();
+    void SetGitUserToFixUtf8Warning();
 
     int GetRevisionCount() const;
     void CreateInitialReport(JobStatus* status, FileBackupReport& report);
