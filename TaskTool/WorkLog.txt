@@ -1,3 +1,12 @@
+08/05/2017 (1.4h)
+	Production run failed once more. This time, the issue is tricky, has to do with git configuration.
+	First finish tests and implementation and then look for it. Finished tests and implementation,
+	most cases are now tested. Only need fixing production issue with CLRF.
+	Found a fix on internet, implemented it in solution.
+Next planned work :
+	- Check production run. If Ok, update release plan
+	- Move to Copy Fs backup job
+
 07/05/2017 (6h)
 	Production run failed again. Issue is probably because commands are not respecting command/parameter
 	separation. But before fixing this, it is interesting to create automated tests for that and prepare

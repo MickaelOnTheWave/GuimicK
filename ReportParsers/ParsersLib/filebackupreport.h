@@ -22,6 +22,7 @@ public:
     void AddAsRemoved(const std::string& file);
 
     void Add(const FileBackupReport& otherReport);
+    void AddWithPrefix(const FileBackupReport& otherReport, const std::string& prefix);
 
 // TODO : make that protected
 public:
@@ -32,6 +33,9 @@ public:
 private:
     std::string FileListDescription(const std::vector<std::string> &fileList,
                                     const std::string &operation) const;
+    void CopyPrefixed(std::vector<std::string>& destination,
+                      const std::vector<std::string> &source,
+                      const std::string& prefix);
 };
 
 #endif // FILEBACKUPREPORT_H

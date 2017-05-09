@@ -34,6 +34,8 @@ private:
 
     int RunCopyCommand(const std::string& source, const std::string& destination);
 
+    void FixCRLFIssue();
+
     int GetRevisionCount() const;
     void CreateInitialReport(JobStatus* status, FileBackupReport& report);
     void CreateDifferentialReport(const std::string &commitId, JobStatus* status,
@@ -42,13 +44,25 @@ private:
     std::string GetCommitId(const std::string& output);
 
     bool IsGitInstalled() const;
+
+    // TODO : refactor this list of pairs into dedicated object, with its methods.
     bool AreAllStatusesEqual(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses,
                              const int expectedCode);
 
-    JobStatus* CreateSingleStatus(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses);
-    JobStatus* CreateMultiStatus(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses);
+    JobStatus* CreateSingleStatus(const std::vector<std::pair<JobStatus *,
+                                  FileBackupReport *> > &statuses);
+    JobStatus* CreateAllOkStatus(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
+    JobStatus* CreateMixedStatus(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
 
-    std::string BuildRepositoryHeader();
+    JobStatus* CreateJoinedStatus(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
+    JobStatus* CreateSeparatedStatus(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
+
+    std::string CreateStatusesDescription(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
+    std::string CreateFoldersMiniDescription(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
+
+    int ComputeSuccessCount(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses) const;
+
+    std::string BuildRepositoryHeader(const std::string &name);
     std::string BuildFooter();
 
     JobDebugInformationManager debugManager;

@@ -79,6 +79,13 @@ void FileBackupReport::Add(const FileBackupReport &otherReport)
     copy(otherReport.removed.begin(), otherReport.removed.end(), back_inserter(removed));
 }
 
+void FileBackupReport::AddWithPrefix(const FileBackupReport &otherReport, const string &prefix)
+{
+    CopyPrefixed(added, otherReport.added, prefix);
+    CopyPrefixed(modified, otherReport.modified, prefix);
+    CopyPrefixed(removed, otherReport.removed, prefix);
+}
+
 string FileBackupReport::FileListDescription(const std::vector<string> &fileList,
                                              const string &operation) const
 {
@@ -92,4 +99,15 @@ string FileBackupReport::FileListDescription(const std::vector<string> &fileList
     description << std::endl;
 
     return description.str();
+}
+
+void FileBackupReport::CopyPrefixed(std::vector<string> &destination,
+                                    const std::vector<string> &source, const string &prefix)
+{
+    vector<string> prefixedSource(source);
+    vector<string>::iterator it = prefixedSource.begin();
+    for (; it!=prefixedSource.end(); ++it)
+        *it = prefix + *it;
+
+    copy(prefixedSource.begin(), prefixedSource.end(), back_inserter(destination));
 }
