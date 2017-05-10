@@ -66,6 +66,8 @@ private:
     std::string BuildRepositoryHeader(const std::string &name);
     std::string BuildFooter();
 
+    bool IsCommitCodeOk(const int code) const;
+
     JobDebugInformationManager debugManager;
     bool usingDebugInformation;
     bool joinRepositoriesReports;

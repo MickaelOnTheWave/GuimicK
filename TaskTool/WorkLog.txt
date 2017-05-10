@@ -1,3 +1,13 @@
+10/05/2017 (0.7h)
+	Still failing. Now another warning message (nothing to commit). Adding it to ignored list.
+	Also created structure for CopyFs test suite and backup job. Some possible refactoring emerged
+	from this early implementation.
+Next planned work :
+	- Check once more production run and if possible, update release plan
+	- Fix failing test. Is there a way to check for invalid source? Should this error be abandoned?
+	- Try to refactor Rsnapshot test suite. Can it use local/remote examples?
+	- Check other refactoring oportunities, like checking backup job and creating it
+
 09/05/2017 (0.5h)
 	Still failing. This time with commit message encoding error... Adding more debug data and looking
 	for a possible fix for it. Now before commit, user name and email are set. This was reported as a

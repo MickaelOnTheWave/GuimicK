@@ -27,7 +27,8 @@ SOURCES += tasktestlib.cpp \
     clientworkmanagertest.cpp \
     configurationtest.cpp \
     gitfsbackupjobtest.cpp \
-    abstractfsbackupjobtest.cpp
+    abstractfsbackupjobtest.cpp \
+    copyfsbackupjobtest.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
@@ -44,7 +45,8 @@ HEADERS += tasktestlib.h \
     clientworkmanagertest.h \
     configurationtest.h \
     gitfsbackupjobtest.h \
-    abstractfsbackupjobtest.h
+    abstractfsbackupjobtest.h \
+    copyfsbackupjobtest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

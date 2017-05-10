@@ -19,6 +19,7 @@ const string errorCommitingData = "Git commit failed";
 const string errorGitNotInstalled = "Git not installed";
 
 const int emptyDirError = 1;
+const int gitNothingToCommitWarningCode = 1;
 const int gitCommitUtf8WarningCode = 137;
 
 GitFsBackupJob::GitFsBackupJob()
@@ -189,8 +190,7 @@ string GitFsBackupJob::CommitData(JobStatus *status)
     debugManager.AddStringDataLine("Commit params", commandJob.GetCommandParameters());
     debugManager.AddStringDataLine("Commit output", commandJob.GetCommandOutput());
     debugManager.AddIntDataLine("Commit value", commandJob.GetCommandReturnCode());
-    if (commandJob.GetCommandReturnCode() == 0 ||
-        commandJob.GetCommandReturnCode() == gitCommitUtf8WarningCode)
+    if (IsCommitCodeOk(commandJob.GetCommandReturnCode()))
         return GetCommitId(commandJob.GetCommandOutput());
     else
     {
@@ -437,4 +437,10 @@ string GitFsBackupJob::BuildRepositoryHeader(const string& name)
 string GitFsBackupJob::BuildFooter()
 {
     return string("------------------\n");
+}
+
+bool GitFsBackupJob::IsCommitCodeOk(const int code) const
+{
+    return (code == 0 || code == gitCommitUtf8WarningCode ||
+            code == gitNothingToCommitWarningCode);
 }

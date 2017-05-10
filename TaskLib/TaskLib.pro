@@ -53,7 +53,8 @@ SOURCES += \
     SelfIdentity.cpp \
     gitfsbackupjob.cpp \
     gitfsbackupjobconfiguration.cpp \
-    abstractbackupjob.cpp
+    abstractbackupjob.cpp \
+    copyfsbackupjob.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -100,7 +101,8 @@ HEADERS +=\
     diskspacecheckjobconfiguration.h \
     gitfsbackupjob.h \
     gitfsbackupjobconfiguration.h \
-    abstractbackupjob.h
+    abstractbackupjob.h \
+    copyfsbackupjob.h
 
 unix {
     target.path = /usr/lib
