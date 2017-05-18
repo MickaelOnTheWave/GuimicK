@@ -1,8 +1,14 @@
-18/05/2017 (18.3)
+18/05/2017 (1.5h)
 	Production run worked :-) Updated release plan.
 	Condition for invalid source is still not detectable. For this, a dedicated command should be created.
 	Too much for now, going to copy job.
-	Refactored test data, now abstractfs suite uses remote switch for loading data.
+	Refactored test data, now abstractfs suite uses remote switch for loading data. CopyFs test suite
+	is now ready! Next step is job implementation.
+	Moving on implementation. Copying a lot of code from GitFsBackup, especially related to structure
+	like iterating through folder list.
+Next planned work :
+	- Consider other Rsnapshot job : maybe it could use the same repository structure?
+	- Once refactoring is done (if applicable), finish implementation
 
 17/05/2017 (0.6h)
 	Production run works but gives weird resume - detecting modifications when there is not. Creating

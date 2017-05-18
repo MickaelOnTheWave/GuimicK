@@ -24,14 +24,12 @@ const int gitCommitUtf8WarningCode = 137;
 
 GitFsBackupJob::GitFsBackupJob()
     : AbstractBackupJob(), debugManager("GitFsBackup", false),
-      usingDebugInformation(false),
       joinRepositoriesReports(true)
 {
 }
 
 GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
     : AbstractBackupJob(other), debugManager(other.debugManager),
-      usingDebugInformation(other.usingDebugInformation),
       joinRepositoriesReports(other.joinRepositoriesReports)
 {
 }
@@ -51,7 +49,6 @@ JobStatus *GitFsBackupJob::Run()
     if (IsGitInstalled() == false)
         return new JobStatus(JobStatus::ERROR, errorGitNotInstalled);
 
-    debugManager.SetUse(usingDebugInformation);
     vector<pair<JobStatus*, FileBackupReport*> > results;
     vector<pair<string, string> >::const_iterator it=folderList.begin();
     for (; it!=folderList.end(); it++)
@@ -62,7 +59,7 @@ JobStatus *GitFsBackupJob::Run()
 
 void GitFsBackupJob::SetOutputDebugInformation(const bool value)
 {
-    usingDebugInformation = value;
+    debugManager.SetUse(value);
 }
 
 void GitFsBackupJob::SetJoinAllBackups(const bool value)

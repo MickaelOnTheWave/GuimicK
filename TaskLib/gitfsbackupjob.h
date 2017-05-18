@@ -70,7 +70,6 @@ private:
     bool IsCommitCodeOk(const int code) const;
 
     JobDebugInformationManager debugManager;
-    bool usingDebugInformation;
     bool joinRepositoriesReports;
 };
 
