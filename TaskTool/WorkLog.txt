@@ -1,3 +1,13 @@
+17/05/2017 (0.6h)
+	Production run works but gives weird resume - detecting modifications when there is not. Creating
+	a test to try to figure out this issue. Found a simple way : run a git status to check if there
+	are modifications to commit. If not, nothing left to do :-) And no more need to check for error
+	codes in case of no modifications.
+Next planned work :
+	- Check for production run and update release plan
+	- Add previous fail test for invalid source
+	- Go on Copy job
+
 10/05/2017 (0.7h)
 	Still failing. Now another warning message (nothing to commit). Adding it to ignored list.
 	Also created structure for CopyFs test suite and backup job. Some possible refactoring emerged

@@ -87,16 +87,19 @@ pair<JobStatus*, FileBackupReport*> GitFsBackupJob::RunRepositoryBackup(
     string originalDirectory = FileTools::GetCurrentFullPath();
     chdir(destination.c_str());
 
-    if (status->GetCode() == JobStatus::OK)
-        AddData(status);
-
-    string commitId("");
-    if (status->GetCode() == JobStatus::OK)
-        commitId = CommitData(status);
-
     FileBackupReport* report = new FileBackupReport();
-    if (status->GetCode() == JobStatus::OK)
-        CreateReport(commitId, status, *report);
+    if (HasChangesInRepository())
+    {
+        if (status->GetCode() == JobStatus::OK)
+            AddData(status);
+
+        string commitId("");
+        if (status->GetCode() == JobStatus::OK)
+            commitId = CommitData(status);
+
+        if (status->GetCode() == JobStatus::OK)
+            CreateReport(commitId, status, *report);
+    }
 
     chdir(originalDirectory.c_str());
 
@@ -198,6 +201,13 @@ string GitFsBackupJob::CommitData(JobStatus *status)
         status->SetDescription(errorCommitingData);
         return string("");
     }
+}
+
+bool GitFsBackupJob::HasChangesInRepository() const
+{
+    ConsoleJob commandJob("git", "status --porcelain");
+    commandJob.RunWithoutStatus();
+    return (commandJob.GetCommandOutput() != "");
 }
 
 void GitFsBackupJob::CreateReport(const string& commitId, JobStatus *status,
@@ -441,6 +451,5 @@ string GitFsBackupJob::BuildFooter()
 
 bool GitFsBackupJob::IsCommitCodeOk(const int code) const
 {
-    return (code == 0 || code == gitCommitUtf8WarningCode ||
-            code == gitNothingToCommitWarningCode);
+    return (code == 0 || code == gitCommitUtf8WarningCode);
 }

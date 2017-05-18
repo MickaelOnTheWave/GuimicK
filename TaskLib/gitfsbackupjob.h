@@ -30,6 +30,7 @@ private:
                        JobStatus* status);
     void AddData(JobStatus* status);
     std::string CommitData(JobStatus* status);
+    bool HasChangesInRepository() const;
     void CreateReport(const std::string &commitId, JobStatus* status, FileBackupReport &report);
 
     int RunCopyCommand(const std::string& source, const std::string& destination);
