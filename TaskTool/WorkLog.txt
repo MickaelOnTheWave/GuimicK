@@ -1,3 +1,9 @@
+18/05/2017 (18.3)
+	Production run worked :-) Updated release plan.
+	Condition for invalid source is still not detectable. For this, a dedicated command should be created.
+	Too much for now, going to copy job.
+	Refactored test data, now abstractfs suite uses remote switch for loading data.
+
 17/05/2017 (0.6h)
 	Production run works but gives weird resume - detecting modifications when there is not. Creating
 	a test to try to figure out this issue. Found a simple way : run a git status to check if there

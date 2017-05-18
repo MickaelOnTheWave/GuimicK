@@ -38,7 +38,7 @@ void AbstractFsBackupJobTest::cleanup()
 
 void AbstractFsBackupJobTest::testRunBackup_data()
 {
-    LoadExternalDataSamples();
+    LoadExternalDataSamples(false);
 }
 
 void AbstractFsBackupJobTest::testRunBackup()
@@ -64,12 +64,13 @@ void AbstractFsBackupJobTest::ProcessingBetweenBackups()
 {
 }
 
-void AbstractFsBackupJobTest::LoadExternalDataSamples()
+void AbstractFsBackupJobTest::LoadExternalDataSamples(const bool isRemote)
 {
     QTest::addColumn<QString>("sourceBefore");
     QTest::addColumn<QString>("sourceNow");
     QTest::addColumn<QString>("description");
     QTest::addColumn<QString>("report");
+    QTest::addColumn<bool>("remote");
 
     QStringList testCases = FileTestUtils::GetFolderList(GetDataFolder().c_str());
     for (auto it=testCases.begin(); it!=testCases.end(); ++it)
@@ -79,7 +80,8 @@ void AbstractFsBackupJobTest::LoadExternalDataSamples()
                                 << "sourceBefore"
                                 << "sourceNow"
                                 << "miniDescription.txt"
-                                << "fullReport.txt";
+                                << "fullReport.txt"
+                                << isRemote;
     }
 }
 

@@ -12,8 +12,10 @@ const string repository = "repository/";
 const string sshUser = "mickael";
 const string sshHost = "192.168.1.101";
 
+const string suitePrefix = "CopyFsBackup/";
+
 CopyFsBackupJobTest::CopyFsBackupJobTest(const std::string &dataPrefix)
- : AbstractFsBackupJobTest(dataPrefix)
+ : AbstractFsBackupJobTest(dataPrefix + suitePrefix)
 {
 
 }
@@ -24,7 +26,8 @@ CopyFsBackupJobTest::~CopyFsBackupJobTest()
 
 void CopyFsBackupJobTest::testRunBackup_data()
 {
-    LoadExternalDataSamples();
+    LoadExternalDataSamples(false);
+    LoadExternalDataSamples(true);
 }
 
 void CopyFsBackupJobTest::CheckBackedUpDataIsOk()

@@ -7,6 +7,7 @@ class CopyFsBackupJobTest : public AbstractFsBackupJobTest
 {
     Q_OBJECT
 
+public:
     CopyFsBackupJobTest(const std::string& dataPrefix);
     virtual ~CopyFsBackupJobTest();
 

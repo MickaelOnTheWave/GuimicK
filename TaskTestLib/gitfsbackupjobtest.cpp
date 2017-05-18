@@ -26,29 +26,8 @@ GitFsBackupJobTest::~GitFsBackupJobTest()
 
 void GitFsBackupJobTest::testRunBackup_data()
 {
-    LoadCustomDataSamples(false);
-    LoadCustomDataSamples(true);
-}
-
-void GitFsBackupJobTest::LoadCustomDataSamples(const bool isRemote)
-{
-    QTest::addColumn<QString>("sourceBefore");
-    QTest::addColumn<QString>("sourceNow");
-    QTest::addColumn<QString>("description");
-    QTest::addColumn<QString>("report");
-    QTest::addColumn<bool>("remote");
-
-    QStringList testCases = FileTestUtils::GetFolderList(GetDataFolder().c_str());
-    for (auto it=testCases.begin(); it!=testCases.end(); ++it)
-    {
-        string stdString = it->toStdString();
-        QTest::newRow(stdString.c_str())
-                                << "sourceBefore"
-                                << "sourceNow"
-                                << "miniDescription.txt"
-                                << "fullReport.txt"
-                                << isRemote;
-    }
+    LoadExternalDataSamples(false);
+    LoadExternalDataSamples(true);
 }
 
 JobStatus *GitFsBackupJobTest::RunBackupJob()

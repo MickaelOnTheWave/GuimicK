@@ -17,6 +17,7 @@ Features implemented:
 	02/03/2017 - [033] Handle File backup folder data outside of rsnapshot conf file.
 	23/03/2017 - [035] Console job improvement : support an external parser system.
 	11/04/2017 - [037] Have automated tests for all features
+	18/05/2017 - [039] Create a Git-based File backup job
 
 Features to implement:
 	[003] Use Curl lib instead of command line
@@ -38,7 +39,6 @@ Features to implement:
 	[032] Property handle encodings for strings
 	[034] Create Qt client app to create/manage backup folder configuration.
 	[036] Console job improvement : support a chain system.
-	[039] Create a Git-based File backup job
 	[040] Use a zip lib to organize attachments in archives
 	[041] Create a simple copy-based File backup job
 	[042] Create a copy-zip-based File backup job

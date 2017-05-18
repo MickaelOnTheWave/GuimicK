@@ -48,7 +48,7 @@ void RsnapshotJobTest::testCreate_InvalidSource()
 
 void RsnapshotJobTest::testRunBackup_data()
 {
-    LoadExternalDataSamples();
+    LoadExternalDataSamples(false);
 }
 
 void RsnapshotJobTest::testSmartCreator_TempFileIsCleaned()

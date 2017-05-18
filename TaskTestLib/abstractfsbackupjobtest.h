@@ -23,7 +23,7 @@ protected:
     virtual void CheckBackedUpDataIsOk() = 0;
     virtual JobStatus* RunBackupJob() = 0;
 
-    void LoadExternalDataSamples();
+    void LoadExternalDataSamples(const bool isRemote);
 
     const std::string currentSourceFolder = "currentFolderToBackup";
     std::string currentTestCaseFolder = "";

@@ -4,6 +4,7 @@
 #include "clientworkmanagertest.h"
 #include "configurationtest.h"
 #include "consolejobtest.h"
+#include "copyfsbackupjobtest.h"
 #include "gitfsbackupjobtest.h"
 #include "gitjobtest.h"
 #include "rsnapshoterroranalyzertest.h"

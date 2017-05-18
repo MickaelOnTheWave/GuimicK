@@ -222,6 +222,9 @@ void GitFsBackupJob::CreateReport(const string& commitId, JobStatus *status,
 
 int GitFsBackupJob::RunCopyCommand(const string &source, const string &destination)
 {
+    // @TODO : check for invalid source and return an error code for this case
+    // (different than emptyDirError!)
+
     const string command = (isTargetLocal ? "cp" : "scp");
     string params;
     if (isTargetLocal)

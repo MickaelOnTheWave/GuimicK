@@ -15,8 +15,6 @@ private Q_SLOTS:
     void testRunBackup_data();
 
 protected:
-    void LoadCustomDataSamples(const bool isRemote);
-
     virtual void CheckBackedUpDataIsOk();
     virtual JobStatus* RunBackupJob();
 };
