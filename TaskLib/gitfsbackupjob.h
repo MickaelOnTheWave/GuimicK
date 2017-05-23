@@ -20,10 +20,11 @@ public:
     void SetJoinAllBackups(const bool value);
 
 private:
-    std::pair<JobStatus *, FileBackupReport *> RunRepositoryBackup(
-                                    const std::string& source,
-                                    const std::string& destination);
-    JobStatus* CreateGlobalStatus(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses);
+    void RunRepositoryBackup(const std::string& source,
+                             const std::string& destination,
+                             ResultCollection &results);
+    virtual JobStatus* CreateGlobalStatus(const ResultCollection& statuses);
+
     void CreateGitRepository(const std::string& path, JobStatus* status);
     void CleanDestination(const std::string& destination, JobStatus* status);
     void CopyData(const std::string& source, const std::string& destination,
@@ -69,7 +70,6 @@ private:
 
     bool IsCommitCodeOk(const int code) const;
 
-    JobDebugInformationManager debugManager;
     bool joinRepositoriesReports;
 };
 

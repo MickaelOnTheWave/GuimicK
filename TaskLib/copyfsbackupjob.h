@@ -13,7 +13,6 @@ public:
 
     virtual std::string GetName();
     virtual AbstractJob* Clone();
-    virtual JobStatus* Run();
 
     /**
      * @return command return code.
@@ -22,12 +21,11 @@ public:
                          const std::string &destination);
 
 protected:
-    std::pair<JobStatus*, FileBackupReport*> RunRepositoryBackup(
-                                   const std::string& source,
-                                   const std::string& destination);
+    virtual void RunRepositoryBackup(const std::string& source,
+                                    const std::string& destination,
+                                     ResultCollection& results);
+    virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
 private:
-    JobDebugInformationManager debugManager;
-    bool usingDebugInformation;
 };
 
 #endif // COPYFSBACKUPJOB_H

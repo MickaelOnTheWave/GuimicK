@@ -3,14 +3,19 @@
 
 #include "abstractjob.h"
 
+#include "filebackupreport.h"
+#include "jobdebuginformationmanager.h"
+
 class AbstractBackupJob : public AbstractJob
 {
 public:
-    AbstractBackupJob();
+    AbstractBackupJob(const std::string& debugFileName);
     AbstractBackupJob(const AbstractBackupJob& other);
 
     virtual bool InitializeFromClient(Client* client);
     virtual bool IsInitialized(void);
+
+    virtual JobStatus* Run();
 
     void SetTargetRemote(const std::string& user = "", const std::string& host = "");
     void SetTargetLocal();
@@ -21,12 +26,21 @@ public:
     void ClearFolderList(void);
 
 protected:
+    typedef std::pair<JobStatus*, FileBackupReport*> ResultEntry;
+    typedef std::vector<ResultEntry> ResultCollection;
+
+    virtual void RunRepositoryBackup(const std::string& source,
+                                     const std::string& destination,
+                                     ResultCollection& results) = 0;
+    virtual JobStatus* CreateGlobalStatus(const ResultCollection& results) = 0;
+
     std::string repository;
     std::vector<std::pair<std::string, std::string> > folderList;
 
     std::string sshUser;
     std::string sshHost;
     bool isTargetLocal;
+    JobDebugInformationManager debugManager;
 
 private:
     bool IsRemoteTargetConsistent() const;

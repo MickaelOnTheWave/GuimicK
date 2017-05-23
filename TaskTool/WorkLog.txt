@@ -1,3 +1,11 @@
+23/05/2017 (17.5)
+	Rsnapshot job was build without backup structure as it relies on Rsnapshot configuration. Its
+	Smart Creator is closer from a "real" backup job, but still is too specialized to be considered
+	for refactoring. Better leaving as it is.
+	Refactored AbstractBackupJob to contain main repository loop. All existing backup jobs have been
+	updated accordingly.
+
+
 18/05/2017 (1.5h)
 	Production run worked :-) Updated release plan.
 	Condition for invalid source is still not detectable. For this, a dedicated command should be created.

@@ -2,8 +2,9 @@
 
 using namespace std;
 
-AbstractBackupJob::AbstractBackupJob()
-    : repository(""), sshUser(""), sshHost(""), isTargetLocal(false)
+AbstractBackupJob::AbstractBackupJob(const string &debugFileName)
+    : repository(""), sshUser(""), sshHost(""),
+      isTargetLocal(false), debugManager(debugFileName, false)
 {
 }
 
@@ -11,7 +12,8 @@ AbstractBackupJob::AbstractBackupJob(const AbstractBackupJob &other)
     : repository(other.repository),
       folderList(other.folderList),
       sshUser(other.sshUser), sshHost(other.sshHost),
-      isTargetLocal(other.isTargetLocal)
+      isTargetLocal(other.isTargetLocal),
+      debugManager(other.debugManager)
 {
 }
 
@@ -29,6 +31,16 @@ bool AbstractBackupJob::InitializeFromClient(Client *client)
 bool AbstractBackupJob::IsInitialized()
 {
     return (isTargetLocal || IsRemoteTargetConsistent());
+}
+
+JobStatus *AbstractBackupJob::Run()
+{
+    vector<pair<JobStatus*, FileBackupReport*> > results;
+    vector<pair<string, string> >::const_iterator it=folderList.begin();
+    for (; it!=folderList.end(); it++)
+        RunRepositoryBackup(it->first, it->second, results);
+
+    return debugManager.UpdateStatus(CreateGlobalStatus(results));
 }
 
 void AbstractBackupJob::SetTargetRemote(const std::string &user, const std::string &host)

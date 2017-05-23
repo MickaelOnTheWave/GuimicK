@@ -4,14 +4,12 @@
 
 using namespace std;
 
-CopyFsBackupJob::CopyFsBackupJob() : AbstractBackupJob(),
-    debugManager("CopyFsBackup", false)
+CopyFsBackupJob::CopyFsBackupJob() : AbstractBackupJob("CopyFsBackup")
 {
 }
 
 CopyFsBackupJob::CopyFsBackupJob(const CopyFsBackupJob &other)
-    : AbstractBackupJob(other),
-      debugManager(other.debugManager)
+    : AbstractBackupJob(other)
 {
 }
 
@@ -23,17 +21,6 @@ std::string CopyFsBackupJob::GetName()
 AbstractJob *CopyFsBackupJob::Clone()
 {
     return new CopyFsBackupJob(*this);
-}
-
-JobStatus *CopyFsBackupJob::Run()
-{
-    vector<pair<JobStatus*, FileBackupReport*> > results;
-    vector<pair<string, string> >::const_iterator it=folderList.begin();
-    for (; it!=folderList.end(); it++)
-        results.push_back(RunRepositoryBackup(it->first, it->second));
-
-    //return debugManager.UpdateStatus(CreateGlobalStatus(results));
-    return new JobStatus(JobStatus::ERROR, "Implementation not ready");
 }
 
 int CopyFsBackupJob::RunOnParameters(const string &source, const string &destination)
@@ -56,9 +43,14 @@ int CopyFsBackupJob::RunOnParameters(const string &source, const string &destina
     return commandJob.GetCommandReturnCode();
 }
 
-pair<JobStatus*, FileBackupReport*> CopyFsBackupJob::RunRepositoryBackup(
-        const string &source,
-        const string &destination)
+void CopyFsBackupJob::RunRepositoryBackup(const string &source,
+                                          const string &destination,
+                                          ResultCollection &results)
 {
-    return pair<JobStatus*, FileBackupReport*>(NULL, NULL);
+    //return pair<JobStatus*, FileBackupReport*>(NULL, NULL);
+}
+
+JobStatus *CopyFsBackupJob::CreateGlobalStatus(const AbstractBackupJob::ResultCollection &results)
+{
+    return new JobStatus(JobStatus::ERROR, "Still not implemented");
 }

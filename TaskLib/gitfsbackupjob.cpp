@@ -23,13 +23,13 @@ const int gitNothingToCommitWarningCode = 1;
 const int gitCommitUtf8WarningCode = 137;
 
 GitFsBackupJob::GitFsBackupJob()
-    : AbstractBackupJob(), debugManager("GitFsBackup", false),
+    : AbstractBackupJob("GitFsBackup"),
       joinRepositoriesReports(true)
 {
 }
 
 GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
-    : AbstractBackupJob(other), debugManager(other.debugManager),
+    : AbstractBackupJob(other),
       joinRepositoriesReports(other.joinRepositoriesReports)
 {
 }
@@ -48,13 +48,8 @@ JobStatus *GitFsBackupJob::Run()
 {
     if (IsGitInstalled() == false)
         return new JobStatus(JobStatus::ERROR, errorGitNotInstalled);
-
-    vector<pair<JobStatus*, FileBackupReport*> > results;
-    vector<pair<string, string> >::const_iterator it=folderList.begin();
-    for (; it!=folderList.end(); it++)
-        results.push_back(RunRepositoryBackup(it->first, it->second));
-
-    return debugManager.UpdateStatus(CreateGlobalStatus(results));
+    else
+        return AbstractBackupJob::Run();
 }
 
 void GitFsBackupJob::SetOutputDebugInformation(const bool value)
@@ -67,9 +62,9 @@ void GitFsBackupJob::SetJoinAllBackups(const bool value)
     joinRepositoriesReports = value;
 }
 
-pair<JobStatus*, FileBackupReport*> GitFsBackupJob::RunRepositoryBackup(
-                                            const string &source,
-                                            const string &destination)
+void GitFsBackupJob::RunRepositoryBackup(const string &source,
+                                         const string &destination,
+                                         ResultCollection& results)
 {
     JobStatus* status = new JobStatus(JobStatus::OK);
     if (FileTools::FolderExists(destination) == false)
@@ -100,10 +95,10 @@ pair<JobStatus*, FileBackupReport*> GitFsBackupJob::RunRepositoryBackup(
 
     chdir(originalDirectory.c_str());
 
-    return make_pair(status, report);
+    results.push_back(make_pair(status, report));
 }
 
-JobStatus *GitFsBackupJob::CreateGlobalStatus(const std::vector<pair<JobStatus*, FileBackupReport*> > &statuses)
+JobStatus *GitFsBackupJob::CreateGlobalStatus(const ResultCollection& statuses)
 {
     debugManager.AddIntDataLine("Statuses to handle", statuses.size());
     if (statuses.size() == 1)
