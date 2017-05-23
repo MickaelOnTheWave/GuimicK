@@ -23,15 +23,15 @@ const int gitNothingToCommitWarningCode = 1;
 const int gitCommitUtf8WarningCode = 137;
 
 GitFsBackupJob::GitFsBackupJob()
-    : AbstractBackupJob("GitFsBackup"),
-      joinRepositoriesReports(true)
+    : AbstractBackupJob("GitFsBackup")
 {
+    statusManager.SetDebugManager(&debugManager);
 }
 
 GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
-    : AbstractBackupJob(other),
-      joinRepositoriesReports(other.joinRepositoriesReports)
+    : AbstractBackupJob(other), statusManager(other.statusManager)
 {
+    statusManager.SetDebugManager(&debugManager);
 }
 
 std::string GitFsBackupJob::GetName()
@@ -59,7 +59,7 @@ void GitFsBackupJob::SetOutputDebugInformation(const bool value)
 
 void GitFsBackupJob::SetJoinAllBackups(const bool value)
 {
-    joinRepositoriesReports = value;
+    statusManager.SetJoinReports(value);
 }
 
 void GitFsBackupJob::RunRepositoryBackup(const string &source,
@@ -98,18 +98,9 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
     results.push_back(make_pair(status, report));
 }
 
-JobStatus *GitFsBackupJob::CreateGlobalStatus(const ResultCollection& statuses)
+JobStatus *GitFsBackupJob::CreateGlobalStatus(const ResultCollection& results)
 {
-    debugManager.AddIntDataLine("Statuses to handle", statuses.size());
-    if (statuses.size() == 1)
-        return CreateSingleStatus(statuses);
-    else
-    {
-        if (AreAllStatusesEqual(statuses, JobStatus::OK))
-            return CreateAllOkStatus(statuses);
-        else
-            return CreateMixedStatus(statuses);
-    }
+    return statusManager.CreateGlobalStatus(results, folderList);
 }
 
 void GitFsBackupJob::CreateGitRepository(const string &path, JobStatus *status)
@@ -310,138 +301,6 @@ bool GitFsBackupJob::IsGitInstalled() const
     ConsoleJob checkGitCommand("git", "--version");
     checkGitCommand.RunWithoutStatus();
     return (checkGitCommand.GetCommandReturnCode() == 0);
-}
-
-bool GitFsBackupJob::AreAllStatusesEqual(const vector<pair<JobStatus*, FileBackupReport*> > &statuses,
-                                         const int expectedCode)
-{
-    bool areAllOk = true;
-    vector<pair<JobStatus*, FileBackupReport*> >::const_iterator it = statuses.begin();
-    for (; it != statuses.end(); ++it)
-    {
-        if (it->first->GetCode() != expectedCode)
-        {
-            areAllOk = false;
-            break;
-        }
-    }
-
-    return areAllOk;
-}
-
-JobStatus *GitFsBackupJob::CreateSingleStatus(
-                const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
-{
-    debugManager.AddStringDataLine("Creating Single status", "");
-    JobStatus* status = new JobStatus(statuses.front().first->GetCode());
-    status->SetDescription(statuses.front().second->GetMiniDescription());
-    status->AddFileBuffer("GitFsBackup.txt", statuses.front().second->GetFullDescription());
-    return status;
-}
-
-JobStatus *GitFsBackupJob::CreateAllOkStatus(const std::vector<std::pair<JobStatus *,
-                                             FileBackupReport *> > &statuses)
-{
-    JobStatus* status = new JobStatus(JobStatus::OK);
-
-    if (joinRepositoriesReports)
-        return CreateJoinedStatus(statuses);
-    else
-        return CreateSeparatedStatus(statuses);
-
-    return status;
-}
-
-JobStatus *GitFsBackupJob::CreateMixedStatus(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
-{
-    debugManager.AddStringDataLine("Creating Mixed status", "");
-    JobStatus* status = new JobStatus(JobStatus::ERROR);
-    status->SetDescription(CreateFoldersMiniDescription(statuses));
-    status->AddFileBuffer("GitFsBackup.txt", CreateStatusesDescription(statuses));
-    return status;
-}
-
-JobStatus *GitFsBackupJob::CreateJoinedStatus(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
-{
-    debugManager.AddStringDataLine("Creating Joined status", "");
-    JobStatus* status = new JobStatus(JobStatus::OK);
-    FileBackupReport globalReport;
-    vector<pair<string,string> >::const_iterator itDestination = folderList.begin();
-    vector<pair<JobStatus *, FileBackupReport *> >::const_iterator it = statuses.begin();
-    for (; it!=statuses.end(); ++it, ++itDestination)
-        globalReport.AddWithPrefix(*it->second, itDestination->second);
-
-    status->SetDescription(globalReport.GetMiniDescription());
-    status->AddFileBuffer("GitFsBackup.txt", globalReport.GetFullDescription());
-    return status;
-}
-
-JobStatus *GitFsBackupJob::CreateSeparatedStatus(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
-{
-    debugManager.AddStringDataLine("Creating Separated status", "");
-    JobStatus* status = new JobStatus(JobStatus::OK);
-    FileBackupReport globalReport;
-    vector<pair<JobStatus *, FileBackupReport *> >::const_iterator it = statuses.begin();
-    for (; it!=statuses.end(); ++it)
-        globalReport.Add(*it->second);
-
-    status->SetDescription(globalReport.GetMiniDescription());
-    status->AddFileBuffer("GitFsBackup.txt", CreateStatusesDescription(statuses));
-    return status;
-}
-
-string GitFsBackupJob::CreateStatusesDescription(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
-{
-    string fullDescription("");
-    vector<pair<string,string> >::const_iterator itDestination = folderList.begin();
-    vector<pair<JobStatus *, FileBackupReport *> >::const_iterator it = statuses.begin();
-    for (; it!=statuses.end(); ++it, ++itDestination)
-    {
-        fullDescription += BuildRepositoryHeader(itDestination->second);
-        fullDescription += it->second->GetFullDescription();
-    }
-    fullDescription += BuildFooter();
-    return fullDescription;
-}
-
-string GitFsBackupJob::CreateFoldersMiniDescription(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses)
-{
-    const int successCount = ComputeSuccessCount(statuses);
-    const int failureCount = statuses.size() - successCount;
-
-    stringstream miniDescription;
-    if (successCount > 0)
-    {
-        miniDescription << successCount << " succeeded";
-        miniDescription << ((failureCount > 0) ? ", " : ".");
-    }
-
-    if (failureCount > 0)
-        miniDescription << failureCount << "failed.";
-
-    return miniDescription.str();
-}
-
-int GitFsBackupJob::ComputeSuccessCount(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses) const
-{
-    int count = 0;
-    vector<pair<JobStatus *, FileBackupReport *> >::const_iterator it = statuses.begin();
-    for (; it!=statuses.end(); ++it)
-    {
-        if (it->first->GetCode() == JobStatus::OK)
-            ++count;
-    }
-    return count;
-}
-
-string GitFsBackupJob::BuildRepositoryHeader(const string& name)
-{
-    return string("--- ") + name + " ---\n";
-}
-
-string GitFsBackupJob::BuildFooter()
-{
-    return string("------------------\n");
 }
 
 bool GitFsBackupJob::IsCommitCodeOk(const int code) const

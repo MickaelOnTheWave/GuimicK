@@ -17,6 +17,7 @@ public:
     virtual std::string GetMiniDescription() const;
     virtual std::string GetFullDescription() const;
 
+    void AddAsAdded(const std::vector<std::string>& files);
     void AddAsAdded(const std::string& file);
     void AddAsModified(const std::string& file);
     void AddAsRemoved(const std::string& file);

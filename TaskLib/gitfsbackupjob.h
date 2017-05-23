@@ -2,7 +2,7 @@
 #define GITFSBACKUPJOB_H
 
 #include "abstractbackupjob.h"
-
+#include "backupstatusmanager.h"
 #include "filebackupreport.h"
 #include "jobdebuginformationmanager.h"
 
@@ -23,7 +23,7 @@ private:
     void RunRepositoryBackup(const std::string& source,
                              const std::string& destination,
                              ResultCollection &results);
-    virtual JobStatus* CreateGlobalStatus(const ResultCollection& statuses);
+    virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
 
     void CreateGitRepository(const std::string& path, JobStatus* status);
     void CleanDestination(const std::string& destination, JobStatus* status);
@@ -48,29 +48,9 @@ private:
 
     bool IsGitInstalled() const;
 
-    // TODO : refactor this list of pairs into dedicated object, with its methods.
-    bool AreAllStatusesEqual(const std::vector<std::pair<JobStatus *, FileBackupReport *> > &statuses,
-                             const int expectedCode);
-
-    JobStatus* CreateSingleStatus(const std::vector<std::pair<JobStatus *,
-                                  FileBackupReport *> > &statuses);
-    JobStatus* CreateAllOkStatus(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
-    JobStatus* CreateMixedStatus(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
-
-    JobStatus* CreateJoinedStatus(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
-    JobStatus* CreateSeparatedStatus(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
-
-    std::string CreateStatusesDescription(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
-    std::string CreateFoldersMiniDescription(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses);
-
-    int ComputeSuccessCount(const std::vector<std::pair<JobStatus*,FileBackupReport*> > &statuses) const;
-
-    std::string BuildRepositoryHeader(const std::string &name);
-    std::string BuildFooter();
-
     bool IsCommitCodeOk(const int code) const;
 
-    bool joinRepositoriesReports;
+    BackupStatusManager statusManager;
 };
 
 #endif // GITFSBACKUPJOB_H

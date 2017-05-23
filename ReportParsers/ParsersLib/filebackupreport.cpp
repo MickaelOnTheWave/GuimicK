@@ -57,6 +57,11 @@ std::string FileBackupReport::GetFullDescription() const
     return description.str();
 }
 
+void FileBackupReport::AddAsAdded(const std::vector<string> &files)
+{
+    copy(files.begin(), files.end(), back_inserter(added));
+}
+
 void FileBackupReport::AddAsAdded(const string &file)
 {
     added.push_back(file);

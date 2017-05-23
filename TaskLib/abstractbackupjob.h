@@ -9,6 +9,10 @@
 class AbstractBackupJob : public AbstractJob
 {
 public:
+    typedef std::pair<JobStatus*, FileBackupReport*> ResultEntry;
+    typedef std::vector<ResultEntry> ResultCollection;
+    typedef std::vector<std::pair<std::string, std::string> > BackupCollection;
+
     AbstractBackupJob(const std::string& debugFileName);
     AbstractBackupJob(const AbstractBackupJob& other);
 
@@ -26,16 +30,13 @@ public:
     void ClearFolderList(void);
 
 protected:
-    typedef std::pair<JobStatus*, FileBackupReport*> ResultEntry;
-    typedef std::vector<ResultEntry> ResultCollection;
-
     virtual void RunRepositoryBackup(const std::string& source,
                                      const std::string& destination,
                                      ResultCollection& results) = 0;
     virtual JobStatus* CreateGlobalStatus(const ResultCollection& results) = 0;
 
     std::string repository;
-    std::vector<std::pair<std::string, std::string> > folderList;
+    BackupCollection folderList;
 
     std::string sshUser;
     std::string sshHost;
