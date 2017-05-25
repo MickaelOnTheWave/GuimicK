@@ -97,7 +97,7 @@ void CopyFsBackupJob::CreateReport(const string &destination, AbstractBackupJob:
     if (lsCommand.GetCommandReturnCode() == 0)
     {
         vector<string> fileList;
-        Tools::TokenizeString(lsCommand.GetCommandOutput(), '\t', fileList);
+        Tools::TokenizeString(lsCommand.GetCommandOutput(), '\n', fileList);
 
         report->AddAsAdded(fileList);
         status->SetCode(JobStatus::OK);

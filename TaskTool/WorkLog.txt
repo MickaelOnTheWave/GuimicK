@@ -1,3 +1,5 @@
+25/05/2017 (19.5)
+
 23/05/2017 (2.4h)
 	Rsnapshot job was build without backup structure as it relies on Rsnapshot configuration. Its
 	Smart Creator is closer from a "real" backup job, but still is too specialized to be considered
