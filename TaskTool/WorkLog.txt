@@ -1,4 +1,14 @@
-25/05/2017 (19.5)
+25/05/2017 (1.5h)
+	Done with CopyFs implementation - test is ok too. Now going for GitFs refactoring. GitFs refactored to
+	use CopyFs in background. Now going for implementing Rsync in CopyFs backup job. Rsync copying is already
+	working!
+Next planned work :
+	- Implement and Rsync reporting
+	- Implement and Rsync remote targets
+	- Create tests for Rsync copying
+	- Update architecture to smartly choose between rsync and raw copy
+	- Test copy command switching
+	- Finish all test cases : for rsync and raw copy
 
 23/05/2017 (2.4h)
 	Rsnapshot job was build without backup structure as it relies on Rsnapshot configuration. Its

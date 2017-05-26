@@ -31,9 +31,20 @@ protected:
     virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
 
 private:
-    void PrepareCopyCommand(const std::string &source, const std::string &destination,
-                            ConsoleJob& commandJob);
-    void CreateReport(const std::string& destination, ResultCollection& results);
+    void RunRawCopy(const std::string& source,
+                    const std::string& destination,
+                    ResultCollection& results);
+    void RunRsyncCopy(  const std::string& source,
+                        const std::string& destination,
+                        ResultCollection& results);
+
+    void PrepareRawCopyCommand(const std::string &source, const std::string &destination,
+                               ConsoleJob& commandJob);
+    void PrepareRsyncCommand(const std::string &source, const std::string &destination,
+                             ConsoleJob& commandJob);
+
+    void CreateRawCopyReport(const std::string& destination, ResultCollection& results);
+    void CreateRsyncReport(const std::string &output, ResultCollection& results);
     void CreateCopyErrorReport(const std::string &message, ResultCollection& results);
 
     BackupStatusManager statusManager;

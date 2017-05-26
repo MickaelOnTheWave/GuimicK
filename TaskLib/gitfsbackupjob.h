@@ -34,8 +34,6 @@ private:
     bool HasChangesInRepository() const;
     void CreateReport(const std::string &commitId, JobStatus* status, FileBackupReport &report);
 
-    int RunCopyCommand(const std::string& source, const std::string& destination);
-
     void FixCRLFIssue();
     void SetGitUserToFixUtf8Warning();
 

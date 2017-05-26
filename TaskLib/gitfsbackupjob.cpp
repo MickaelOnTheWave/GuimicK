@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "consolejob.h"
+#include "copyfsbackupjob.h"
 #include "filetools.h"
 #include "gitcommitreportparser.h"
 #include "tools.h"
@@ -139,8 +140,15 @@ void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *stat
 
 void GitFsBackupJob::CopyData(const string &source, const string &destination,
                               JobStatus *status)
-{
-    int returnValue = RunCopyCommand(source, destination);
+{   
+    CopyFsBackupJob copyJob;
+
+    if (isTargetLocal)
+        copyJob.SetTargetLocal();
+    else
+        copyJob.SetTargetRemote(sshUser, sshHost);
+
+    int returnValue = copyJob.RunOnParameters(source, destination);
     if (returnValue == 0 || returnValue == emptyDirError)
         status->SetCode(JobStatus::OK);
     else
@@ -201,29 +209,6 @@ void GitFsBackupJob::CreateReport(const string& commitId, JobStatus *status,
         CreateInitialReport(status, report);
     else
         CreateDifferentialReport(commitId, status, report);
-}
-
-int GitFsBackupJob::RunCopyCommand(const string &source, const string &destination)
-{
-    // @TODO : check for invalid source and return an error code for this case
-    // (different than emptyDirError!)
-
-    const string command = (isTargetLocal ? "cp" : "scp");
-    string params;
-    if (isTargetLocal)
-        params = "-R ";
-    else
-        params = string("-r ") + sshUser + "@" + sshHost + ":";
-    params += source + "* " + destination;
-
-    ConsoleJob commandJob(command, params);
-    commandJob.RunWithoutStatus();
-
-    debugManager.AddStringDataLine("Copy command", command + " " + params);
-    debugManager.AddStringDataLine("Copy output", commandJob.GetCommandOutput());
-    debugManager.AddIntDataLine("Copy value", commandJob.GetCommandReturnCode());
-
-    return commandJob.GetCommandReturnCode();
 }
 
 void GitFsBackupJob::FixCRLFIssue()

@@ -35,7 +35,7 @@ AbstractJob *CopyFsBackupJob::Clone()
 int CopyFsBackupJob::RunOnParameters(const string &source, const string &destination)
 {
     ConsoleJob commandJob;
-    PrepareCopyCommand(source, destination, commandJob);
+    PrepareRawCopyCommand(source, destination, commandJob);
 
     commandJob.RunWithoutStatus();
 
@@ -58,14 +58,8 @@ void CopyFsBackupJob::RunRepositoryBackup(const string &source,
     if (FileTools::FolderExists(destination) == false)
         FileTools::CreateFolder(destination);
 
-    ConsoleJob copyCommand;
-    PrepareCopyCommand(source, destination, copyCommand);
-    JobStatus* status = copyCommand.Run();
-
-    if (status->GetCode() == JobStatus::OK)
-        CreateReport(destination, results);
-    else
-        CreateCopyErrorReport(copyCommand.GetCommandOutput(), results);
+    RunRawCopy(source, destination, results);
+    //RunRsyncCopy(source, destination, results);
 }
 
 JobStatus *CopyFsBackupJob::CreateGlobalStatus(const AbstractBackupJob::ResultCollection &results)
@@ -73,7 +67,34 @@ JobStatus *CopyFsBackupJob::CreateGlobalStatus(const AbstractBackupJob::ResultCo
     return statusManager.CreateGlobalStatus(results, folderList);
 }
 
-void CopyFsBackupJob::PrepareCopyCommand(const string &source, const string &destination, ConsoleJob &commandJob)
+void CopyFsBackupJob::RunRawCopy(const string &source, const string &destination,
+                                 AbstractBackupJob::ResultCollection &results)
+{
+    ConsoleJob copyCommand;
+    PrepareRawCopyCommand(source, destination, copyCommand);
+    JobStatus* status = copyCommand.Run();
+
+    if (status->GetCode() == JobStatus::OK)
+        CreateRawCopyReport(destination, results);
+    else
+        CreateCopyErrorReport(copyCommand.GetCommandOutput(), results);
+}
+
+void CopyFsBackupJob::RunRsyncCopy(const string &source, const string &destination,
+                                   AbstractBackupJob::ResultCollection &results)
+{
+    ConsoleJob copyCommand;
+    PrepareRsyncCommand(source, destination, copyCommand);
+    JobStatus* status = copyCommand.Run();
+
+    if (status->GetCode() == JobStatus::OK)
+        CreateRsyncReport(copyCommand.GetCommandOutput(), results);
+    else
+        CreateCopyErrorReport(copyCommand.GetCommandOutput(), results);
+}
+
+void CopyFsBackupJob::PrepareRawCopyCommand(const string &source, const string &destination,
+                                            ConsoleJob &commandJob)
 {
     const string command = (isTargetLocal ? "cp" : "scp");
     string params;
@@ -87,7 +108,20 @@ void CopyFsBackupJob::PrepareCopyCommand(const string &source, const string &des
     commandJob.SetCommandParameters(params);
 }
 
-void CopyFsBackupJob::CreateReport(const string &destination, AbstractBackupJob::ResultCollection &results)
+void CopyFsBackupJob::PrepareRsyncCommand(const string &source, const string &destination,
+                                          ConsoleJob &commandJob)
+{
+    commandJob.SetCommand("rsync");
+    string params;
+    if (isTargetLocal)
+        params = "-avzh --delete ";
+
+    params += source + " " + destination.substr(0, destination.size()-1);
+
+    commandJob.SetCommandParameters(params);
+}
+
+void CopyFsBackupJob::CreateRawCopyReport(const string &destination, AbstractBackupJob::ResultCollection &results)
 {
     FileBackupReport* report = new FileBackupReport();
     JobStatus* status = new JobStatus();
@@ -112,6 +146,11 @@ void CopyFsBackupJob::CreateReport(const string &destination, AbstractBackupJob:
     }
 
     results.push_back(make_pair(status, report));
+}
+
+void CopyFsBackupJob::CreateRsyncReport(const string &output, AbstractBackupJob::ResultCollection &results)
+{
+
 }
 
 void CopyFsBackupJob::CreateCopyErrorReport(const std::string& message, AbstractBackupJob::ResultCollection &results)
