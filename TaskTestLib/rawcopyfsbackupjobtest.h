@@ -1,10 +1,19 @@
 #ifndef RAWCOPYFSBACKUPJOBTEST_H
 #define RAWCOPYFSBACKUPJOBTEST_H
 
+#include "abstractcopyfsbackupjobtest.h"
+
 class RawCopyFsBackupJobTest : public AbstractCopyFsBackupJobTest
 {
+    Q_OBJECT
+
 public:
-    RawCopyFsBackupJobTest();
+    RawCopyFsBackupJobTest(const std::string& dataPrefix);
+    virtual ~RawCopyFsBackupJobTest();
+
+protected:
+    virtual AbstractCopyFsBackupJob* CreateCopyJob();
+
 };
 
 #endif // RAWCOPYFSBACKUPJOBTEST_H

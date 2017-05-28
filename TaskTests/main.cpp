@@ -8,6 +8,7 @@ using namespace std;
 
 const string taskLibDir = "/home/mickael/Prog/TaskManager/TaskTestLib/data/";
 const string parsersDir = "/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/";
+const string toolsLibDir = "/home/mickael/Prog/Tools/ToolsTestLib/data/";
 
 int main(int argc, char* argv[])
 {
@@ -18,13 +19,14 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new GitJobTest();
     //QObject* testSuite = new UserConsoleJobTest();
     //QObject* testSuite = new SshConsoleJobTest();
-    //QObject* testSuite = new ConfigurationParserTest("/home/mickael/Prog/Tools/ToolsTestLib/data/");
-    //QObject* testSuite = new FileToolsTest("/home/mickael/Prog/Tools/ToolsTestLib/data/");
+    //QObject* testSuite = new ConfigurationParserTest(toolsLibDir);
+    //QObject* testSuite = new FileToolsTest(toolsLibDir);
     //QObject* testSuite = new ClientWorkManagerTest();
     //QObject* testSuite = new ConfigurationTest(taskLibDir);
     //QObject* testSuite = new GitFsBackupJobTest(taskLibDir);
     //QObject* testSuite = new GitCommitReportParserTest(parsersDir);
-    QObject* testSuite = new CopyFsBackupJobTest(taskLibDir);
+    //QObject* testSuite = new RawCopyFsBackupJobTest(taskLibDir);
+    QObject* testSuite = new RsyncCopyFsBackupJobTest(taskLibDir);
 
     QTest::qExec(testSuite, argc, argv);
 

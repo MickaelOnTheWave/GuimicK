@@ -1,10 +1,11 @@
 #ifndef COPYJOBCHOOSER_H
 #define COPYJOBCHOOSER_H
 
-class CopyJobChooser
+#include "abstractcopyfsbackupjob.h"
+
+namespace CopyJobChooser
 {
-public:
-    CopyJobChooser();
+    AbstractCopyFsBackupJob* GetBestAvailable();
 };
 
 #endif // COPYJOBCHOOSER_H

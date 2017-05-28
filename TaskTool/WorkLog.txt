@@ -1,10 +1,18 @@
+28/05/2017 (2.1h)
+	Began refactoring of CopyFsBackupJob, created Abstract layer between copy and rsync implementation.
+	Changed architecture according to new layer and created Copy chooser to choose between Rsync and Cp
+	according to availability. Also changed test suites to test both raw copy and Rsync.
+Next planned work :
+	- Implement Rsync reporting. There is a document for reference inside the job
+	- Go on with previous plan
+
 25/05/2017 (1.5h)
 	Done with CopyFs implementation - test is ok too. Now going for GitFs refactoring. GitFs refactored to
 	use CopyFs in background. Now going for implementing Rsync in CopyFs backup job. Rsync copying is already
 	working!
 Next planned work :
-	- Implement and Rsync reporting
-	- Implement and Rsync remote targets
+	- Implement Rsync reporting
+	- Implement Rsync remote targets
 	- Create tests for Rsync copying
 	- Update architecture to smartly choose between rsync and raw copy
 	- Test copy command switching

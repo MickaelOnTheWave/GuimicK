@@ -1,8 +1,7 @@
-#include "copyfsbackupjobtest.h"
+#include "abstractcopyfsbackupjobtest.h"
 
 #include <QTest>
 
-#include "copyfsbackupjob.h"
 #include "filetestutils.h"
 #include "filetools.h"
 
@@ -12,40 +11,40 @@ const string repository = "repository/";
 const string sshUser = "mickael";
 const string sshHost = "192.168.1.101";
 
-const string suitePrefix = "CopyFsBackup/";
-
-CopyFsBackupJobTest::CopyFsBackupJobTest(const std::string &dataPrefix)
- : AbstractFsBackupJobTest(dataPrefix + suitePrefix)
+AbstractCopyFsBackupJobTest::AbstractCopyFsBackupJobTest(const std::string &dataPrefix)
+ : AbstractFsBackupJobTest(dataPrefix)
 {
 
 }
 
-CopyFsBackupJobTest::~CopyFsBackupJobTest()
+AbstractCopyFsBackupJobTest::~AbstractCopyFsBackupJobTest()
 {
 }
 
-void CopyFsBackupJobTest::testRunBackup_data()
+void AbstractCopyFsBackupJobTest::testRunBackup_data()
 {
     LoadExternalDataSamples(false);
     LoadExternalDataSamples(true);
 }
 
-void CopyFsBackupJobTest::CheckBackedUpDataIsOk()
+void AbstractCopyFsBackupJobTest::CheckBackedUpDataIsOk()
 {
     FileTestUtils::CheckFoldersHaveSameContent(repository, currentSourceFolder);
 }
 
-JobStatus *CopyFsBackupJobTest::RunBackupJob()
+JobStatus *AbstractCopyFsBackupJobTest::RunBackupJob()
 {
     QFETCH(bool, remote);
 
-    CopyFsBackupJob job;
-    job.AddFolder(FileTools::BuildFullPath(currentSourceFolder), repository);
+    AbstractCopyFsBackupJob* job = CreateCopyJob();
+    job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), repository);
     if (remote)
-        job.SetTargetRemote(sshUser, sshHost);
+        job->SetTargetRemote(sshUser, sshHost);
     else
-        job.SetTargetLocal();
+        job->SetTargetLocal();
 
-    JobStatus* status = job.Run();
+    JobStatus* status = job->Run();
+
+    delete job;
     return status;
 }

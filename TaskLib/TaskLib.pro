@@ -54,8 +54,11 @@ SOURCES += \
     gitfsbackupjob.cpp \
     gitfsbackupjobconfiguration.cpp \
     abstractbackupjob.cpp \
-    copyfsbackupjob.cpp \
-    backupstatusmanager.cpp
+    backupstatusmanager.cpp \
+    abstractcopyfsbackupjob.cpp \
+    rsynccopyfsbackupjob.cpp \
+    rawcopyfsbackupjob.cpp \
+    copyjobchooser.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -103,8 +106,11 @@ HEADERS +=\
     gitfsbackupjob.h \
     gitfsbackupjobconfiguration.h \
     abstractbackupjob.h \
-    copyfsbackupjob.h \
-    backupstatusmanager.h
+    backupstatusmanager.h \
+    abstractcopyfsbackupjob.h \
+    rsynccopyfsbackupjob.h \
+    rawcopyfsbackupjob.h \
+    copyjobchooser.h
 
 unix {
     target.path = /usr/lib

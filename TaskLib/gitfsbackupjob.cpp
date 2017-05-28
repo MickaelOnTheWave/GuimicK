@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include "consolejob.h"
-#include "copyfsbackupjob.h"
+#include "copyjobchooser.h"
 #include "filetools.h"
 #include "gitcommitreportparser.h"
 #include "tools.h"
@@ -141,14 +141,14 @@ void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *stat
 void GitFsBackupJob::CopyData(const string &source, const string &destination,
                               JobStatus *status)
 {   
-    CopyFsBackupJob copyJob;
+    AbstractCopyFsBackupJob* copyJob = CopyJobChooser::GetBestAvailable();
 
     if (isTargetLocal)
-        copyJob.SetTargetLocal();
+        copyJob->SetTargetLocal();
     else
-        copyJob.SetTargetRemote(sshUser, sshHost);
+        copyJob->SetTargetRemote(sshUser, sshHost);
 
-    int returnValue = copyJob.RunOnParameters(source, destination);
+    int returnValue = copyJob->RunOnParameters(source, destination);
     if (returnValue == 0 || returnValue == emptyDirError)
         status->SetCode(JobStatus::OK);
     else
@@ -156,6 +156,8 @@ void GitFsBackupJob::CopyData(const string &source, const string &destination,
         status->SetCode(JobStatus::ERROR);
         status->SetDescription(errorCopyingData);
     }
+
+    delete copyJob;
 }
 
 void GitFsBackupJob::AddData(JobStatus *status)
