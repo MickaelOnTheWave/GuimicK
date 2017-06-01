@@ -7,5 +7,6 @@
 #include "gitreportparsertest.h"
 #include "dfcommandparsertest.h"
 #include "rsnapshotreportparsertest.h"
+#include "rsynccommandparsertest.h"
 
 #endif // PARSERSTESTSUITES_H

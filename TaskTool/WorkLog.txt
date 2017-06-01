@@ -1,3 +1,12 @@
+31/05/2017 (1.8h)
+	Updated Release plan - some features are not really mandatory for v1.0. Now going for Rsync parser.
+	Implemented Rsync parser and its full test suite, with test cases. All are working as expected.
+Next planned work :
+	- Finish Rsync copy job implementation
+	- Finish Rsync copy job test suite
+	- Create proper test cases for Rsync copying
+	- Test (and implement) remote Rsync copying
+
 28/05/2017 (2.1h)
 	Began refactoring of CopyFsBackupJob, created Abstract layer between copy and rsync implementation.
 	Changed architecture according to new layer and created Copy chooser to choose between Rsync and Cp

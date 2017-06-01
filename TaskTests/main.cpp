@@ -26,7 +26,8 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new GitFsBackupJobTest(taskLibDir);
     //QObject* testSuite = new GitCommitReportParserTest(parsersDir);
     //QObject* testSuite = new RawCopyFsBackupJobTest(taskLibDir);
-    QObject* testSuite = new RsyncCopyFsBackupJobTest(taskLibDir);
+    //QObject* testSuite = new RsyncCopyFsBackupJobTest(taskLibDir);
+    QObject* testSuite = new RsyncCommandParserTest(parsersDir);
 
     QTest::qExec(testSuite, argc, argv);
 

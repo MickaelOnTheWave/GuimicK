@@ -9,4 +9,5 @@ void GetParserLibTests(std::vector<QObject*>& tests, const std::string &dataPath
     tests.push_back(new AptUpgradeParserTest(dataPathPrefix));
     tests.push_back(new DfCommandParserTest(dataPathPrefix));
     tests.push_back(new GitCommitReportParserTest(dataPathPrefix));
+    tests.push_back(new RsyncCommandParserTest(dataPathPrefix));
 }

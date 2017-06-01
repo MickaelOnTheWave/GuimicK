@@ -48,7 +48,7 @@ void RsyncCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
     commandJob.SetCommand("rsync");
     string params;
     if (isTargetLocal)
-        params = "-avzh --delete ";
+        params = "-avzhi --delete ";
 
     params += source + " " + destination.substr(0, destination.size()-1);
 
