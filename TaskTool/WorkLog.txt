@@ -1,3 +1,10 @@
+01/06/2017 (0.6h)
+	Finished Rsync copy job implementation, even remote one!
+Next planned work:
+	- Finish Rsync copy job test suite
+	- Create proper test cases for Rsync copying
+	- Check why there are still failing tests
+
 31/05/2017 (1.8h)
 	Updated Release plan - some features are not really mandatory for v1.0. Now going for Rsync parser.
 	Implemented Rsync parser and its full test suite, with test cases. All are working as expected.

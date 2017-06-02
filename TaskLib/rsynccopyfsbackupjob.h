@@ -22,8 +22,11 @@ protected:
                                     const std::string &destination,
                                     ConsoleJob& commandJob);
 
-    virtual void CreateReport(const std::string& destination,
+    virtual void CreateReport(const std::string&,
                               const std::string& output, ResultCollection& results);
+
+private:
+    std::string BuildSource(const std::string& originalSource) const;
 
 };
 

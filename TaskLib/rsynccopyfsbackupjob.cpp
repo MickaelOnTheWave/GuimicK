@@ -1,5 +1,6 @@
 #include "rsynccopyfsbackupjob.h"
 
+#include "rsynccommandparser.h"
 #include "tools.h"
 
 using namespace std;
@@ -46,25 +47,41 @@ void RsyncCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
                                               ConsoleJob &commandJob)
 {
     commandJob.SetCommand("rsync");
-    string params;
-    if (isTargetLocal)
-        params = "-avzhi --delete ";
-
-    params += source + " " + destination.substr(0, destination.size()-1);
-
+    string params = "-avzhi --delete ";
+    params += BuildSource(source) + " " + destination.substr(0, destination.size()-1);
     commandJob.SetCommandParameters(params);
 }
 
-void RsyncCopyFsBackupJob::CreateReport(const std::string &destination,
+void RsyncCopyFsBackupJob::CreateReport(const std::string &,
                                         const std::string &output,
                                         AbstractBackupJob::ResultCollection &results)
 {
-    // see http://web.archive.org/web/20160904174444/http://andreafrancia.it/2010/03/understanding-the-output-of-rsync-itemize-changes.html
+    JobStatus* status = new JobStatus(JobStatus::OK);
+    FileBackupReport* report = new FileBackupReport();
 
-    // Basically :
-    // run rsync with -i
-    // Check for lines starting with *, c or >
-    // if tag is *deleting -> to delete list
-    // if tag is >f+++++ or cd++++ -> to add list
-    // else to modified list
+    RsyncCommandParser parser;
+    bool result = parser.ParseBuffer(output);
+    if (result)
+    {
+        status->SetDescription(parser.GetMiniDescription());
+        status->AddFileBuffer("RsyncCopy.txt", parser.GetFullDescription());
+        parser.GetReport(*report);
+        results.push_back(make_pair(status, report));
+    }
+    else
+    {
+        status->SetCode(JobStatus::OK_WITH_WARNINGS);
+        status->SetDescription("Report parsing failed");
+        results.push_back(make_pair(status, new FileBackupReport()));
+    }
+}
+
+string RsyncCopyFsBackupJob::BuildSource(const string &originalSource) const
+{
+    string finalSource;
+    if (isTargetLocal)
+        finalSource = originalSource;
+    else
+        finalSource = sshUser + "@" + sshHost + ":" + originalSource;
+    return finalSource;
 }
