@@ -1,0 +1,25 @@
+<GamerProfile>
+	<SoundProfile MusicEnabled="1" MasterVolume="100" />
+	<RenderProfile MultiSampleMode="16" AlphaToCoverage="1" ResolutionX="1920" ResolutionY="1080" Quality="ultrahigh" Fullscreen="1" Maximized="0" ForceWidescreen="0" WidescreenFOV="1" AspectRatio="0" VSync="0" RefreshRate="60" DisableMip0Loading="0" MaxDriverBufferedFrames="0" Platform="d3d9" ShowFPS="0" ClustersZPassMaxLOD="1" Brightness="1" Contrast="1" GammaRamp="1" GammaRampR="1" GammaRampG="1" GammaRampB="1" AllowAsynchShaderLoading="1">
+		<CustomQuality>
+			<quality ResolutionX="800" ResolutionY="600" EnvironmentQuality="high" AntiPortalQuality="high" PostFxQuality="high" TextureQuality="high" TextureResolutionQuality="ultrahigh" WaterQuality="high" DepthPassQuality="veryhigh" VegetationQuality="veryhigh" TerrainQuality="veryhigh" GeometryQuality="veryhigh" AmbientQuality="high" ShadowQuality="veryhigh" Hdr="1" HdrFP32="0" Bloom="1" id="custom" />
+			<quality ResolutionX="800" ResolutionY="600" EnvironmentQuality="high" AntiPortalQuality="high" PostFxQuality="high" TextureQuality="high" TextureResolutionQuality="high" WaterQuality="high" DepthPassQuality="high" VegetationQuality="high" TerrainQuality="high" GeometryQuality="high" AmbientQuality="high" ShadowQuality="high" Hdr="1" HdrFP32="1" Bloom="1" id="customd3d10" />
+		</CustomQuality>
+	</RenderProfile>
+	<NetworkProfile CustomMapMaxUploadRateOnline="10240" OnlineEnginePort="9000" OnlineServicePort="9001" FileTransferHostPort="9002" FileTransferClientPort="9003" LanBroadcastPort="9004" ScanFreePorts="1" ScanPortRange="1000" ScanPortStart="9000" SessionProvider="" DetectPublicAddress="1" MaxUploadOnline="768">
+		<Accounts>
+			<Account Name="novaeHyper" Pass="31A20ABAC0FCBC67601486820EB48C56" OnlineKey="111C4FC24F68D6A2431A7DED163A5EC693B37CDC72E0D064" Type="0" />
+		</Accounts>
+	</NetworkProfile>
+	<GameProfile Sensitivity="1.1" Invert_y="0" UseMouseSmooth="1" Smoothness="1" Smoothness_Ironsight="1" HelpCrosshair="0" UseCompassMiniMap="1" UseRoadSignHilight="1" UseSubtitles="1" UseAmbx="0" Autosave="1" Machete="0" DifficultyLevel="1" ClanTag="">
+		<FireConfig QualitySetting="VeryHigh" />
+	</GameProfile>
+	<RealTreeProfile Quality="VeryHigh">
+		<CustomQuality />
+	</RealTreeProfile>
+	<EngineProfile>
+		<PhysicConfig QualitySetting="VeryHigh" />
+		<QcConfig GatherFPS="1" GatherAICnt="1" IsQcTester="0" />
+		<InputConfig />
+	</EngineProfile>
+</GamerProfile>
