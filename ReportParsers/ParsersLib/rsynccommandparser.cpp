@@ -57,7 +57,7 @@ void RsyncCommandParser::FillReport(const RawFileChangeList &changeList)
         else if ((it->first.find(">f++") == 0) ||
                  (it->first.find("cd++") == 0) )
             reportData->AddAsAdded(it->second);
-        else
+        else if (IsTimeChangeOnly(it->first) == false)
             reportData->AddAsModified(it->second);
     }
 }
@@ -65,4 +65,10 @@ void RsyncCommandParser::FillReport(const RawFileChangeList &changeList)
 bool RsyncCommandParser::IsFileStatusChar(const char charToTest) const
 {
     return (charToTest == '*' || charToTest == 'c' || charToTest == '>');
+}
+
+bool RsyncCommandParser::IsTimeChangeOnly(const string &changeString) const
+{
+    const char noChangeChar = '.';
+    return (changeString[2] == noChangeChar && changeString[3] == noChangeChar);
 }

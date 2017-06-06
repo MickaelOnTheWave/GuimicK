@@ -19,6 +19,7 @@ private:
                         RawFileChangeList& changeList);
     void FillReport(const RawFileChangeList &changeList);
     bool IsFileStatusChar(const char charToTest) const;
+    bool IsTimeChangeOnly(const std::string& changeString) const;
 };
 
 #endif // RSYNCCOMMANDPARSER_H
