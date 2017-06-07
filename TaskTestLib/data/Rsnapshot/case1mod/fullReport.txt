@@ -1,0 +1,8 @@
+0 files added
+
+1 files modified
+	/currentFolderToBackup/file.txt
+
+0 files removed
+
+107.00 bytes added, 36.00 bytes removed, and overall 71.00 bytes taken

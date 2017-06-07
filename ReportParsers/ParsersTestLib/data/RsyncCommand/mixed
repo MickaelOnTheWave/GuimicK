@@ -1,0 +1,14 @@
+sending incremental file list
+*deleting   yoohoo
+*deleting   yiiiii
+*deleting   wooo
+*deleting   New Folder/joie_bureau.gif
+*deleting   New Folder/elections1.gif
+.d..t...... ./
+>f+++++++++ On ne change pas
+>f.st...... onemorefilenow
+.d..t...... New Folder/
+cd+++++++++ empty folder/
+
+sent 1.44K bytes  received 152 bytes  3.19K bytes/sec
+total size is 299.23K  speedup is 187.49

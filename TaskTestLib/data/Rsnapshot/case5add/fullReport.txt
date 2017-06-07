@@ -1,0 +1,12 @@
+5 files added
+	/currentFolderToBackup/6232100495809.sav
+	/currentFolderToBackup/GamerProfile.xml
+	/currentFolderToBackup/TODOs
+	/currentFolderToBackup/TODOs (2016)
+	/currentFolderToBackup/ex1_description.txt
+
+0 files modified
+
+0 files removed
+
+1.79 Mb added, 0.00 bytes removed, and overall 1.79 Mb taken

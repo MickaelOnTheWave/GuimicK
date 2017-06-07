@@ -18,6 +18,7 @@ public:
 
     void SetOutputDebugInformation(const bool value);
     void SetJoinAllBackups(const bool value);
+    void SetForceRawCopyUse(const bool value);
 
 private:
     void RunRepositoryBackup(const std::string& source,
@@ -49,6 +50,7 @@ private:
     bool IsCommitCodeOk(const int code) const;
 
     BackupStatusManager statusManager;
+    bool forceRawCopy;
 };
 
 #endif // GITFSBACKUPJOB_H

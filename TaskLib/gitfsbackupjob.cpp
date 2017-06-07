@@ -8,6 +8,7 @@
 #include "copyjobchooser.h"
 #include "filetools.h"
 #include "gitcommitreportparser.h"
+#include "rawcopyfsbackupjob.h"
 #include "tools.h"
 
 using namespace std;
@@ -24,13 +25,15 @@ const int gitNothingToCommitWarningCode = 1;
 const int gitCommitUtf8WarningCode = 137;
 
 GitFsBackupJob::GitFsBackupJob()
-    : AbstractBackupJob("GitFsBackup")
+    : AbstractBackupJob("GitFsBackup"),
+      forceRawCopy(false)
 {
     statusManager.SetDebugManager(&debugManager);
 }
 
 GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
-    : AbstractBackupJob(other), statusManager(other.statusManager)
+    : AbstractBackupJob(other), statusManager(other.statusManager),
+      forceRawCopy(other.forceRawCopy)
 {
     statusManager.SetDebugManager(&debugManager);
 }
@@ -61,6 +64,11 @@ void GitFsBackupJob::SetOutputDebugInformation(const bool value)
 void GitFsBackupJob::SetJoinAllBackups(const bool value)
 {
     statusManager.SetJoinReports(value);
+}
+
+void GitFsBackupJob::SetForceRawCopyUse(const bool value)
+{
+    forceRawCopy = value;
 }
 
 void GitFsBackupJob::RunRepositoryBackup(const string &source,
@@ -141,7 +149,8 @@ void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *stat
 void GitFsBackupJob::CopyData(const string &source, const string &destination,
                               JobStatus *status)
 {   
-    AbstractCopyFsBackupJob* copyJob = CopyJobChooser::GetBestAvailable();
+    AbstractCopyFsBackupJob* copyJob = (forceRawCopy) ? new RawCopyFsBackupJob()
+                                                      : CopyJobChooser::GetBestAvailable();
 
     if (isTargetLocal)
         copyJob->SetTargetLocal();
@@ -164,7 +173,7 @@ void GitFsBackupJob::AddData(JobStatus *status)
 {
     FixCRLFIssue();
 
-    ConsoleJob commandJob("git", "add -A");
+    ConsoleJob commandJob("git", "add -A :/");
     commandJob.RunWithoutStatus();
     debugManager.AddStringDataLine("Add output", commandJob.GetCommandOutput());
     debugManager.AddIntDataLine("Add value", commandJob.GetCommandReturnCode());

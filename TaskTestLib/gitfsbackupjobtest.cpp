@@ -35,6 +35,7 @@ JobStatus *GitFsBackupJobTest::RunBackupJob()
     QFETCH(bool, remote);
 
     GitFsBackupJob* job = new GitFsBackupJob();
+    job->SetForceRawCopyUse(true);
     job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), repository);
     if (remote)
         job->SetTargetRemote(sshUser, sshHost);

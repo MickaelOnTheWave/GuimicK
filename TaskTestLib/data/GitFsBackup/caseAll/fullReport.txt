@@ -1,0 +1,11 @@
+1 files added
+	HomepageEsperancajpg
+
+2 files modified
+	GamerProfile.xml
+	ex1_description.txt
+
+2 files removed
+	TODOs
+	TODOs (2016)
+

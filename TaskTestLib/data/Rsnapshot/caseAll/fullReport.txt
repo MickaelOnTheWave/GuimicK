@@ -1,0 +1,13 @@
+1 files added
+	/currentFolderToBackup/HomepageEsperancajpg
+
+3 files modified
+	/currentFolderToBackup/6232100495809.sav
+	/currentFolderToBackup/GamerProfile.xml
+	/currentFolderToBackup/ex1_description.txt
+
+2 files removed
+	/currentFolderToBackup/TODOs
+	/currentFolderToBackup/TODOs (2016)
+
+2.55 Mb added, 1.79 Mb removed, and overall 786.15 Kb taken
