@@ -42,12 +42,17 @@ bool RsyncCopyFsBackupJob::IsInitialized()
     return AbstractCopyFsBackupJob::IsInitialized() && IsAvailable();
 }
 
+void RsyncCopyFsBackupJob::AddToExclusions(const string &item)
+{
+    itemsToExclude.push_back(item);
+}
+
 void RsyncCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
                                               const std::string &destination,
                                               ConsoleJob &commandJob)
 {
     commandJob.SetCommand("rsync");
-    string params = "-avzhi --delete ";
+    string params = "-avzhi --delete " + BuildExclusions();
     params += BuildSource(source) + " " + destination.substr(0, destination.size()-1);
     commandJob.SetCommandParameters(params);
 }
@@ -84,4 +89,17 @@ string RsyncCopyFsBackupJob::BuildSource(const string &originalSource) const
     else
         finalSource = sshUser + "@" + sshHost + ":" + originalSource;
     return finalSource;
+}
+
+string RsyncCopyFsBackupJob::BuildExclusions() const
+{
+    if (itemsToExclude.size() == 0)
+        return string("");
+
+    string parameter("");
+    vector<string>::const_iterator it=itemsToExclude.begin();
+    for (; it!=itemsToExclude.end(); ++it)
+        parameter += string("--exclude '") + *it + "'";
+
+    return parameter;
 }

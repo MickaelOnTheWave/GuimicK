@@ -2,12 +2,14 @@
 
 #include "tasktestsuites.h"
 
-void GetTaskLibTests(std::vector<QObject*>& tests, const std::string& dataPrefix)
+void GetTaskLibTests(std::vector<QObject*>& tests,
+                     const std::string& dataPrefix,
+                     const std::string& errorPrefix)
 {
     tests.push_back(new RsnapshotErrorAnalyzerTest());
     tests.push_back(new RsnapshotJobTest(dataPrefix));
     tests.push_back(new GitJobTest());
-    tests.push_back(new TaskFeatureTest());
+    tests.push_back(new TaskFeatureTest(dataPrefix, errorPrefix));
     tests.push_back(new ConsoleJobTest());
     tests.push_back(new UserConsoleJobTest());
     tests.push_back(new SshConsoleJobTest());

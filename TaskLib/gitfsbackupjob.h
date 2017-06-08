@@ -2,6 +2,7 @@
 #define GITFSBACKUPJOB_H
 
 #include "abstractbackupjob.h"
+#include "abstractcopyfsbackupjob.h"
 #include "backupstatusmanager.h"
 #include "filebackupreport.h"
 #include "jobdebuginformationmanager.h"
@@ -48,6 +49,10 @@ private:
     bool IsGitInstalled() const;
 
     bool IsCommitCodeOk(const int code) const;
+
+    AbstractCopyFsBackupJob* PrepareCopy(const std::string& destination, JobStatus* status);
+    void RunCopy(AbstractCopyFsBackupJob* copyJob,
+                 const std::string& source, const std::string& destination, JobStatus* status);
 
     BackupStatusManager statusManager;
     bool forceRawCopy;

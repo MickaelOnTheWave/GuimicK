@@ -11,7 +11,7 @@ class TaskFeatureTest : public QObject
     Q_OBJECT
 
 public:
-    TaskFeatureTest();
+    TaskFeatureTest(const std::string& _dataFolder, const std::string& _errorFolder);
 
 private Q_SLOTS:
     void init();
@@ -36,6 +36,9 @@ private:
 
     std::string currentTestCaseName = "";
     std::string currentTestCaseFolder = "";
+
+    const std::string suiteFolder;
+    const std::string errorFolder;
 };
 
 #endif // TASKFEATURETEST_H

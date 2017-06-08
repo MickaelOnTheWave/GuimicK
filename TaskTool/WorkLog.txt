@@ -1,3 +1,14 @@
+07/06/2017 (2h)
+	Changed TaskFeatureTests suite to have input data and error folders. It now runs on /tmp.
+	Improved GitFsBackup job to clean destination only when using raw copy : rsync copy does not
+	need cleaning (and it is wise to not do so!).
+	Also fixed bug in copy algorithms for git fs : cleaning removed .git folders and rsync copy
+	also overwrote them.
+Next planned work :
+	- Fix remaining failures in TaskFeatureTests with Rsnapshot
+	- Update all test suites to use /tmp and have an error folder input
+	- Update release plan
+
 06/06/2017 (1.1h)
 	Resolved Rsync random bug : this was due to rsync file time change detection being parsed as a
 	modification. Fixed that : time changes only are now discarded. Now checking failures with GitFs

@@ -17,6 +17,8 @@ public:
 
     virtual bool IsInitialized(void);
 
+    void AddToExclusions(const std::string& item);
+
 protected:
     virtual void PrepareCopyCommand(const std::string &source,
                                     const std::string &destination,
@@ -27,7 +29,9 @@ protected:
 
 private:
     std::string BuildSource(const std::string& originalSource) const;
+    std::string BuildExclusions() const;
 
+    std::vector<std::string> itemsToExclude;
 };
 
 #endif // RSYNCCOPYFSBACKUPJOB_H

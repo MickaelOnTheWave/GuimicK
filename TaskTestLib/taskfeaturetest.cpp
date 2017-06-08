@@ -14,10 +14,11 @@
 
 using namespace std;
 
-const string suiteFolder = "../TaskFeature/";
-const string errorFolder = "../errors/";
+const string suiteTag = "TaskFeature/";
 
-TaskFeatureTest::TaskFeatureTest()
+TaskFeatureTest::TaskFeatureTest(const std::string& _dataFolder,
+                                 const std::string& _errorFolder)
+    : suiteFolder(_dataFolder + suiteTag), errorFolder(_errorFolder)
 {
 }
 

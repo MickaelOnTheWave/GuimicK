@@ -4,6 +4,8 @@
 #include <QObject>
 #include <vector>
 
-void GetTaskLibTests(std::vector<QObject*>& tests, const std::string &dataPrefix);
+void GetTaskLibTests(std::vector<QObject*>& tests,
+                     const std::string &dataPrefix,
+                     const std::string& errorPrefix);
 
 #endif // TASKTESTLIB_H

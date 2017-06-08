@@ -9,6 +9,7 @@
 #include "filetools.h"
 #include "gitcommitreportparser.h"
 #include "rawcopyfsbackupjob.h"
+#include "rsynccopyfsbackupjob.h"
 #include "tools.h"
 
 using namespace std;
@@ -80,9 +81,6 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
         CreateGitRepository(destination, status);
 
     if (status->GetCode() == JobStatus::OK)
-        CleanDestination(destination, status);
-
-    if (status->GetCode() == JobStatus::OK)
         CopyData(source, destination, status);
 
     string originalDirectory = FileTools::GetCurrentFullPath();
@@ -114,6 +112,9 @@ JobStatus *GitFsBackupJob::CreateGlobalStatus(const ResultCollection& results)
 
 void GitFsBackupJob::CreateGitRepository(const string &path, JobStatus *status)
 {
+    SetGitUserToFixUtf8Warning();
+    FixCRLFIssue();
+
     const string params = string("init ") + path;
     ConsoleJob commandJob("git", params);
     commandJob.RunWithoutStatus();
@@ -131,8 +132,9 @@ void GitFsBackupJob::CreateGitRepository(const string &path, JobStatus *status)
 
 void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *status)
 {
-    const string params = string("-Rf ") + destination + "*";
-    ConsoleJob commandJob("rm", params);
+    string params = destination + " -mindepth 1 -path \"" + destination + ".git\" ";
+    params += "-prune -o -print0 | xargs -0 rm -Rf";
+    ConsoleJob commandJob("find", params);
     commandJob.RunWithoutStatus();
     debugManager.AddStringDataLine("Clean params", params);
     debugManager.AddStringDataLine("Clean output", commandJob.GetCommandOutput());
@@ -148,31 +150,15 @@ void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *stat
 
 void GitFsBackupJob::CopyData(const string &source, const string &destination,
                               JobStatus *status)
-{   
-    AbstractCopyFsBackupJob* copyJob = (forceRawCopy) ? new RawCopyFsBackupJob()
-                                                      : CopyJobChooser::GetBestAvailable();
-
-    if (isTargetLocal)
-        copyJob->SetTargetLocal();
-    else
-        copyJob->SetTargetRemote(sshUser, sshHost);
-
-    int returnValue = copyJob->RunOnParameters(source, destination);
-    if (returnValue == 0 || returnValue == emptyDirError)
-        status->SetCode(JobStatus::OK);
-    else
-    {
-        status->SetCode(JobStatus::ERROR);
-        status->SetDescription(errorCopyingData);
-    }
-
+{
+    AbstractCopyFsBackupJob* copyJob = PrepareCopy(destination, status);
+    if (status->GetCode() == JobStatus::OK)
+        RunCopy(copyJob, source, destination, status);
     delete copyJob;
 }
 
 void GitFsBackupJob::AddData(JobStatus *status)
 {
-    FixCRLFIssue();
-
     ConsoleJob commandJob("git", "add -A :/");
     commandJob.RunWithoutStatus();
     debugManager.AddStringDataLine("Add output", commandJob.GetCommandOutput());
@@ -188,8 +174,6 @@ void GitFsBackupJob::AddData(JobStatus *status)
 
 string GitFsBackupJob::CommitData(JobStatus *status)
 {
-    SetGitUserToFixUtf8Warning();
-
     ConsoleJob commandJob("git", "commit -m \"Automated backup\"");
     commandJob.RunWithoutStatus();
     debugManager.AddStringDataLine("Commit params", commandJob.GetCommandParameters());
@@ -224,14 +208,14 @@ void GitFsBackupJob::CreateReport(const string& commitId, JobStatus *status,
 
 void GitFsBackupJob::FixCRLFIssue()
 {
-    ConsoleJob::Run("git", "config core.autocrlf false");
-    ConsoleJob::Run("git", "config core.safecrlf false");
+    ConsoleJob::Run("git", "config --local core.autocrlf false");
+    ConsoleJob::Run("git", "config --local core.safecrlf false");
 }
 
 void GitFsBackupJob::SetGitUserToFixUtf8Warning()
 {
-    ConsoleJob::Run("git", "config user.name \"TaskManager\"");
-    ConsoleJob::Run("git", "config user.email task@manager.com");
+    ConsoleJob::Run("git", "config --local user.name \"TaskManager\"");
+    ConsoleJob::Run("git", "config --local user.email task@manager.com");
 }
 
 int GitFsBackupJob::GetRevisionCount() const
@@ -302,4 +286,42 @@ bool GitFsBackupJob::IsGitInstalled() const
 bool GitFsBackupJob::IsCommitCodeOk(const int code) const
 {
     return (code == 0 || code == gitCommitUtf8WarningCode);
+}
+
+AbstractCopyFsBackupJob *GitFsBackupJob::PrepareCopy(const string &destination, JobStatus *status)
+{
+    const bool usingRawCopy = (forceRawCopy || RsyncCopyFsBackupJob::IsAvailable());
+
+    AbstractCopyFsBackupJob* copyJob;
+    if (usingRawCopy)
+        copyJob = new RawCopyFsBackupJob();
+    else
+        copyJob = new RsyncCopyFsBackupJob();
+
+    if (usingRawCopy)
+        CleanDestination(destination, status);
+    else
+    {
+        RsyncCopyFsBackupJob* castJob = static_cast<RsyncCopyFsBackupJob*>(copyJob);
+        castJob->AddToExclusions(".git/");
+    }
+    return copyJob;
+}
+
+void GitFsBackupJob::RunCopy(AbstractCopyFsBackupJob *copyJob, const string &source,
+                             const string &destination, JobStatus *status)
+{
+    if (isTargetLocal)
+        copyJob->SetTargetLocal();
+    else
+        copyJob->SetTargetRemote(sshUser, sshHost);
+
+    int returnValue = copyJob->RunOnParameters(source, destination);
+    if (returnValue == 0 || returnValue == emptyDirError)
+        status->SetCode(JobStatus::OK);
+    else
+    {
+        status->SetCode(JobStatus::ERROR);
+        status->SetDescription(errorCopyingData);
+    }
 }
