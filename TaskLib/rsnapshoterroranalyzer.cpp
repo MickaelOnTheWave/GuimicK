@@ -8,18 +8,15 @@
 using namespace std;
 
 RsnapshotErrorAnalyzer::RsnapshotErrorAnalyzer(const std::string &output)
-    : commandOutput(output)
 {
+    Tools::TokenizeString(output, '\n', outputLines);
 }
 
 bool RsnapshotErrorAnalyzer::IsOutOfSpaceError(void) const
 {
     const string rsyncErrorLineStart = "rsync: write failed";
-    vector<string> lines;
-    Tools::TokenizeString(commandOutput, '\n', lines);
-
-    vector<string>::const_iterator it = lines.begin();
-    for (; it != lines.end(); ++it)
+    vector<string>::const_iterator it = outputLines.begin();
+    for (; it != outputLines.end(); ++it)
     {
         if (it->find(rsyncErrorLineStart) == 0)
         {
@@ -34,11 +31,7 @@ bool RsnapshotErrorAnalyzer::IsOutOfSpaceError(void) const
 
 bool RsnapshotErrorAnalyzer::IsInvalidFolderError() const
 {
-    const string errorLineStart = "ERROR: ";
-    vector<string> lines;
-    Tools::TokenizeString(commandOutput, '\n', lines);
-
-    string backupErrorLine = GetBackupErrorLine(lines);
+    string backupErrorLine = GetBackupErrorLine(outputLines);
     return IsInvalidFolderLine(backupErrorLine);
 }
 
@@ -79,7 +72,18 @@ string RsnapshotErrorAnalyzer::GetBackupErrorLine(const std::vector<string> &lin
 
 bool RsnapshotErrorAnalyzer::IsInvalidFolderLine(const string &line) const
 {
-    bool sourceDir = (line.find("Source directory") != string::npos);
-    bool doesntExist = (line.find("doesn't exist") != string::npos);
-    return sourceDir && doesntExist;
+    vector<string> wordsToFind;
+    wordsToFind.push_back("Source");
+    wordsToFind.push_back("directory");
+    wordsToFind.push_back("doesn't");
+    wordsToFind.push_back("exist");
+
+    vector<string>::const_iterator it = wordsToFind.begin();
+    for (; it!=wordsToFind.end(); ++it)
+    {
+        if (line.find(*it) == string::npos)
+            return false;
+    }
+
+    return true;
 }

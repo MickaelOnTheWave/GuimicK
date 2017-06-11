@@ -19,7 +19,7 @@ private:
     std::string GetBackupErrorLine(const std::vector<std::string>& lines) const;
     bool IsInvalidFolderLine(const std::string& line) const;
 
-    std::string commandOutput;
+    std::vector<std::string> outputLines;
 };
 
 #endif // RSNAPSHOTERRORANALYZER_H

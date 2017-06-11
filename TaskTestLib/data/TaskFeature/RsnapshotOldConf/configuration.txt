@@ -17,7 +17,7 @@ Client
 	{
 		RsnapshotBackup
 		{
-		  repository = "/home/mickael/Prog/TaskManager/TaskTestLib/data/running/rsnapshotRoot";
+		  repository = "/tmp/TaskManagerTestSuites/rsnapshotRoot";
 		  fullConfigurationFile = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/RsnapshotOldConf/rsnapshot.conf";
 		  waitAfterRun = true;
 		}

@@ -6,9 +6,10 @@
 #include "rsnapshoterroranalyzer.h"
 #include "filetools.h"
 
-const std::string suiteFolder = "../RsnapshotAnalyzer/";
+const std::string suiteFolder = "RsnapshotAnalyzer/";
 
-RsnapshotErrorAnalyzerTest::RsnapshotErrorAnalyzerTest()
+RsnapshotErrorAnalyzerTest::RsnapshotErrorAnalyzerTest(const std::string& dataFolderPrefix) :
+    QtTestSuite(dataFolderPrefix + suiteFolder)
 {
 }
 
@@ -28,7 +29,7 @@ void RsnapshotErrorAnalyzerTest::testOutput()
     QFETCH(bool, outOfSpaceError);
     QFETCH(bool, invalidFolderError);
 
-    const std::string file = suiteFolder + outputFile.toStdString();
+    const std::string file = GetDataFolder() + outputFile.toStdString();
     QCOMPARE(FileTools::FileExists(file), true);
 
     std::string commandOutput;

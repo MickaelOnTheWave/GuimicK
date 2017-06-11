@@ -1,13 +1,13 @@
 #ifndef RSNAPSHOTERRORANALYZERTEST_H
 #define RSNAPSHOTERRORANALYZERTEST_H
 
-#include <QObject>
+#include "qttestsuite.h"
 
-class RsnapshotErrorAnalyzerTest : public QObject
+class RsnapshotErrorAnalyzerTest : public QtTestSuite
 {
     Q_OBJECT
 public:
-     RsnapshotErrorAnalyzerTest();
+     RsnapshotErrorAnalyzerTest(const std::string& dataFolderPrefix);
 
 private Q_SLOTS:
     void init();

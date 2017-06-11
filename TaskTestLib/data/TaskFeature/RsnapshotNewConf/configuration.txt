@@ -17,12 +17,12 @@ Client
 	{
 		RsnapshotBackup
 		{
-			repository = "/home/mickael/Prog/TaskManager/TaskTestLib/data/running/rsnapshotRoot";
+			repository = "/tmp/TaskManagerTestSuites/rsnapshotRoot";
 			templateConfigurationFile = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/RsnapshotNewConf/rsnapshot.conf";
 			waitAfterRun = true;
 			Folder
 			{
-				source = "/home/mickael/Prog/TaskManager/TaskTestLib/data/running/SourceData";
+				source = "/tmp/TaskManagerTestSuites/SourceData";
 				dest = "tag";
 			}
 		}

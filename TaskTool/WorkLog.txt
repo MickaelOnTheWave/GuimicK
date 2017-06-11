@@ -1,3 +1,9 @@
+11/06/2017 (1.6h)
+	Fixed remaining failures. Now all test suites work with /tmp running path. Also, global test suite
+	now also runs in /tmp. Updated release plan.
+Next planned work:
+	- Move to next feature in ReleasePlan - copy-zip based backup.
+
 07/06/2017 (2h)
 	Changed TaskFeatureTests suite to have input data and error folders. It now runs on /tmp.
 	Improved GitFsBackup job to clean destination only when using raw copy : rsync copy does not
