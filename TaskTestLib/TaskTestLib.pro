@@ -30,7 +30,8 @@ SOURCES += tasktestlib.cpp \
     abstractfsbackupjobtest.cpp \
     abstractcopyfsbackupjobtest.cpp \
     rawcopyfsbackupjobtest.cpp \
-    rsynccopyfsbackupjobtest.cpp
+    rsynccopyfsbackupjobtest.cpp \
+    zipandcopyfsbackupjobtest.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
@@ -50,7 +51,8 @@ HEADERS += tasktestlib.h \
     abstractfsbackupjobtest.h \
     abstractcopyfsbackupjobtest.h \
     rawcopyfsbackupjobtest.h \
-    rsynccopyfsbackupjobtest.h
+    rsynccopyfsbackupjobtest.h \
+    zipandcopyfsbackupjobtest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

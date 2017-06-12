@@ -58,7 +58,8 @@ SOURCES += \
     abstractcopyfsbackupjob.cpp \
     rsynccopyfsbackupjob.cpp \
     rawcopyfsbackupjob.cpp \
-    copyjobchooser.cpp
+    copyjobchooser.cpp \
+    zipandcopyfsbackupjob.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -110,7 +111,8 @@ HEADERS +=\
     abstractcopyfsbackupjob.h \
     rsynccopyfsbackupjob.h \
     rawcopyfsbackupjob.h \
-    copyjobchooser.h
+    copyjobchooser.h \
+    zipandcopyfsbackupjob.h
 
 unix {
     target.path = /usr/lib
