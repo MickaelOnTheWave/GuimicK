@@ -134,6 +134,8 @@ void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *stat
 {
     string params = destination + " -mindepth 1 -path \"" + destination + ".git\" ";
     params += "-prune -o -print0 | xargs -0 rm -Rf";
+
+    // @warning This doesn't work in BusyBox (synology system), as find command is too simple there.
     ConsoleJob commandJob("find", params);
     commandJob.RunWithoutStatus();
     debugManager.AddStringDataLine("Clean params", params);
@@ -291,6 +293,15 @@ bool GitFsBackupJob::IsCommitCodeOk(const int code) const
 AbstractCopyFsBackupJob *GitFsBackupJob::PrepareCopy(const string &destination, JobStatus *status)
 {
     const bool usingRawCopy = (forceRawCopy || RsyncCopyFsBackupJob::IsAvailable());
+
+    if (debugManager.IsUsed())
+    {
+        string rsyncPath = Tools::GetCommandPath("rsync", ConsoleJob::appSearchPaths);
+        debugManager.AddStringDataLine("Rsync path", rsyncPath);
+    }
+
+    debugManager.AddBoolDataLine("Force Raw copy", forceRawCopy);
+    debugManager.AddBoolDataLine("Using Raw copy", usingRawCopy);
 
     AbstractCopyFsBackupJob* copyJob;
     if (usingRawCopy)

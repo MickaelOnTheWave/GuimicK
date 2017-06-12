@@ -1,3 +1,11 @@
+12/06/2017 (19.1)
+	Production run failed - some bug in Git Fs backup job. Checking reporting...
+	Unfortunately, the smart find command won't work in BusyBox (Synology system) because BusyBox
+	only has "fake" linux commands that do not support full use. Thus, find command can't be used
+	as in full distribution. As it would take some time to find out an alternative in BusyBox, leaving
+	it that way for now and focusing on finding out why rsync didn't got used for copying. Adding more
+	informations to debug..
+
 11/06/2017 (1.6h)
 	Fixed remaining failures. Now all test suites work with /tmp running path. Also, global test suite
 	now also runs in /tmp. Updated release plan.

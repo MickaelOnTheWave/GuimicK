@@ -24,29 +24,29 @@ void JobDebugInformationManager::Reset()
     allData = "";
 }
 
+bool JobDebugInformationManager::IsUsed() const
+{
+    return usingDebug;
+}
+
 void JobDebugInformationManager::SetUse(const bool value)
 {
     usingDebug = value;
 }
 
+void JobDebugInformationManager::AddBoolDataLine(const string &label, const bool value)
+{
+    AddDataLine<bool>(label, value);
+}
+
 void JobDebugInformationManager::AddIntDataLine(const string &label, const int data)
 {
-    if (usingDebug == false)
-        return;
-
-    stringstream line;
-    line << label << " : " << data << endl;
-    allData += line.str();
+    AddDataLine<int>(label, data);
 }
 
 void JobDebugInformationManager::AddStringDataLine(const string &label, const string &data)
 {
-    if (usingDebug == false)
-        return;
-
-    stringstream line;
-    line << label << " : <" << data << ">" << endl;
-    allData += line.str();
+    AddDataLine<string>(label, data);
 }
 
 JobStatus *JobDebugInformationManager::UpdateStatus(JobStatus *status) const

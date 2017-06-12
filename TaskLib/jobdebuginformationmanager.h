@@ -1,6 +1,7 @@
 #ifndef JOBDEBUGINFORMATIONMANAGER_H
 #define JOBDEBUGINFORMATIONMANAGER_H
 
+#include <sstream>
 #include <string>
 
 #include "jobstatus.h"
@@ -12,8 +13,22 @@ public:
     JobDebugInformationManager(const JobDebugInformationManager& other);
 
     void Reset();
+    bool IsUsed() const;
     void SetUse(const bool value);
 
+    template <class T>
+    void AddDataLine(const std::string& label, const T& data)
+    {
+        if (usingDebug == false)
+            return;
+
+        std::stringstream line;
+        line << label << " : " << data << std::endl;
+        allData += line.str();
+    }
+
+    // TODO : once checked, remove these and only use template one.
+    void AddBoolDataLine(const std::string& label, const bool value);
     void AddIntDataLine(const std::string& label, const int data);
     void AddStringDataLine(const std::string& label, const std::string& data);
 
