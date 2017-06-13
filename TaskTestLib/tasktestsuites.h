@@ -13,5 +13,6 @@
 #include "sshconsolejobtest.h"
 #include "taskfeaturetest.h"
 #include "userconsolejobtest.h"
+#include "zipandcopyfsbackupjobtest.h"
 
 #endif // TASKTESTSUITES_H

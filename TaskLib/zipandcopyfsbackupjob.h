@@ -12,6 +12,9 @@ public:
     virtual std::string GetName();
     virtual AbstractJob* Clone();
 
+    static bool Restore(const std::string& backupFile,
+                        const std::string& destination);
+
 protected:
     virtual void RunRepositoryBackup(const std::string& source,
                                      const std::string& destination,

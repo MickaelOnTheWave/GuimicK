@@ -1,6 +1,8 @@
 #include "zipandcopyfsbackupjobtest.h"
 
 #include <QTest>
+#include "filetestutils.h"
+#include "filetools.h"
 #include "zipandcopyfsbackupjob.h"
 
 using namespace std;
@@ -8,6 +10,8 @@ using namespace std;
 const string suitePrefix = "ZipAndCopyFsBackup/";
 const string sshUser = "mickael";
 const string sshHost = "192.168.1.101";
+const string repository = "repository";
+const string restoredFolder = "restore";
 
 
 ZipAndCopyFsBackupJobTest::ZipAndCopyFsBackupJobTest(const std::string &dataPrefix)
@@ -27,7 +31,10 @@ void ZipAndCopyFsBackupJobTest::testRunBackup_data()
 
 void ZipAndCopyFsBackupJobTest::CheckBackedUpDataIsOk()
 {
-    QFAIL("To Implement");
+    bool ok = ZipAndCopyFsBackupJob::Restore(repository, restoredFolder);
+    QCOMPARE(ok, true);
+
+    FileTestUtils::CheckFoldersHaveSameContent(currentSourceFolder, restoredFolder);
 }
 
 JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob()
@@ -35,7 +42,7 @@ JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob()
     QFETCH(bool, remote);
 
     ZipAndCopyFsBackupJob* job = new ZipAndCopyFsBackupJob();
-    //job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), repository);
+    job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), repository);
     if (remote)
         job->SetTargetRemote(sshUser, sshHost);
     else

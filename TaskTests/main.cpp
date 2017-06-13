@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
         FileTools::CreateFolder(testingFolder);
     chdir(testingFolder.c_str());
 
-    QObject* testSuite = new RsnapshotJobTest(taskLibDir);
+    //QObject* testSuite = new RsnapshotJobTest(taskLibDir);
     //QObject* testSuite = new RsnapshotErrorAnalyzerTest(taskLibDir);
     //QObject* testSuite = new TaskFeatureTest(taskLibDir, errorDir);
     //QObject* testSuite = new ConsoleJobTest();
@@ -32,11 +32,12 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new FileToolsTest(toolsLibDir);
     //QObject* testSuite = new ClientWorkManagerTest();
     //QObject* testSuite = new ConfigurationTest(taskLibDir);
-    //QObject* testSuite = new GitFsBackupJobTest(taskLibDir);
+    QObject* testSuite = new GitFsBackupJobTest(taskLibDir);
     //QObject* testSuite = new GitCommitReportParserTest(parsersDir);
     //QObject* testSuite = new RawCopyFsBackupJobTest(taskLibDir);
     //QObject* testSuite = new RsyncCopyFsBackupJobTest(taskLibDir);
     //QObject* testSuite = new RsyncCommandParserTest(parsersDir);
+    //QObject* testSuite = new ZipAndCopyFsBackupJobTest(taskLibDir);
 
     QTest::qExec(testSuite, argc, argv);
 
