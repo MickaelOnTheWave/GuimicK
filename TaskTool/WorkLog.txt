@@ -1,6 +1,6 @@
 13/06/2017 (19.2)
 	Production run failed again. Now the cause was probably found (and fixed!). Creating a new version
-	and waiting for next run to confirm.
+	and waiting for next run to confirm. Fixed another but in Rsync commands.
 
 12/06/2017 (1h)
 	Production run failed - some bug in Git Fs backup job. Checking reporting...

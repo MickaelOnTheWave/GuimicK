@@ -52,7 +52,7 @@ void RsyncCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
                                               ConsoleJob &commandJob)
 {
     commandJob.SetCommand("rsync");
-    string params = "-avzhi --delete " + BuildExclusions();
+    string params = "-avzhi --delete " + BuildExclusions() + " ";
     params += BuildSource(source) + " " + destination.substr(0, destination.size()-1);
     commandJob.SetCommandParameters(params);
 }
