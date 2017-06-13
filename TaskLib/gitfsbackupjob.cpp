@@ -292,12 +292,14 @@ bool GitFsBackupJob::IsCommitCodeOk(const int code) const
 
 AbstractCopyFsBackupJob *GitFsBackupJob::PrepareCopy(const string &destination, JobStatus *status)
 {
-    const bool usingRawCopy = (forceRawCopy || RsyncCopyFsBackupJob::IsAvailable());
+    bool usingRawCopy = (forceRawCopy || !RsyncCopyFsBackupJob::IsAvailable());
 
     if (debugManager.IsUsed())
     {
         string rsyncPath = Tools::GetCommandPath("rsync", ConsoleJob::appSearchPaths);
         debugManager.AddStringDataLine("Rsync path", rsyncPath);
+        const bool manualCondition = (rsyncPath != "");
+        debugManager.AddBoolDataLine("Manual condition", manualCondition);
     }
 
     debugManager.AddBoolDataLine("Force Raw copy", forceRawCopy);
