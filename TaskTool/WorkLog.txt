@@ -1,3 +1,10 @@
+18/06/2017 (0.3h)
+	Production run is not updating GitFs backup properly. Checking why... Rsync apparently did not run.
+	Adding debug information to check why. Also refactored debug manager to remove obsolete methods.
+Next planned work :
+	- Check production backup output
+	- Fix the issue
+
 13/06/2017 (1h)
 	Production run failed again. Now the cause was probably found (and fixed!). Creating a new version
 	and waiting for next run to confirm. Fixed another but in Rsync commands.

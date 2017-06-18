@@ -34,7 +34,7 @@ JobStatus *BackupStatusManager::CreateGlobalStatus(
     backupCollection = &backups;
 
     if (debugManager)
-        debugManager->AddIntDataLine("Statuses to handle", resultCollection->size());
+        debugManager->AddDataLine<int>("Statuses to handle", resultCollection->size());
     if (resultCollection->size() == 1)
         return CreateSingleStatus();
     else
@@ -48,7 +48,7 @@ JobStatus *BackupStatusManager::CreateGlobalStatus(
 
 JobStatus *BackupStatusManager::CreateSingleStatus()
 {
-    debugManager->AddStringDataLine("Creating Single status", "");
+    debugManager->AddTagLine("Creating Single status");
     const AbstractBackupJob::ResultEntry& result = resultCollection->front();
 
     JobStatus* status = new JobStatus(result.first->GetCode());
@@ -72,7 +72,7 @@ JobStatus *BackupStatusManager::CreateAllOkStatus()
 JobStatus *BackupStatusManager::CreateMixedStatus()
 {
     if (debugManager)
-        debugManager->AddStringDataLine("Creating Mixed status", "");
+        debugManager->AddTagLine("Creating Mixed status");
 
     JobStatus* status = new JobStatus(JobStatus::ERROR);
     status->SetDescription(CreateFoldersMiniDescription());
@@ -83,7 +83,7 @@ JobStatus *BackupStatusManager::CreateMixedStatus()
 JobStatus *BackupStatusManager::CreateJoinedStatus()
 {
     if (debugManager)
-        debugManager->AddStringDataLine("Creating Joined status", "");
+        debugManager->AddTagLine("Creating Joined status");
 
     JobStatus* status = new JobStatus(JobStatus::OK);
     FileBackupReport globalReport;
@@ -100,7 +100,7 @@ JobStatus *BackupStatusManager::CreateJoinedStatus()
 JobStatus *BackupStatusManager::CreateSeparatedStatus()
 {
     if (debugManager)
-        debugManager->AddStringDataLine("Creating Separated status", "");
+        debugManager->AddTagLine("Creating Separated status");
 
     JobStatus* status = new JobStatus(JobStatus::OK);
     FileBackupReport globalReport;

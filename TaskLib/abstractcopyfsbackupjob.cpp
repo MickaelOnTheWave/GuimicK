@@ -34,9 +34,9 @@ int AbstractCopyFsBackupJob::RunOnParameters(const string &source, const string 
 
     commandJob.RunWithoutStatus();
 
-    debugManager.AddStringDataLine("Copy command", commandJob.GetCommand() + " " + commandJob.GetCommandParameters());
-    debugManager.AddStringDataLine("Copy output", commandJob.GetCommandOutput());
-    debugManager.AddIntDataLine("Copy value", commandJob.GetCommandReturnCode());
+    debugManager.AddDataLine<string>("Copy command", commandJob.GetCommand() + " " + commandJob.GetCommandParameters());
+    debugManager.AddDataLine<string>("Copy output", commandJob.GetCommandOutput());
+    debugManager.AddDataLine<int>("Copy value", commandJob.GetCommandReturnCode());
 
     return commandJob.GetCommandReturnCode();
 }

@@ -132,7 +132,7 @@ bool UserConsoleJob::RunCommand()
 {
     debugInfo.Reset();
 
-    debugInfo.AddStringDataLine("Command", command);
+    debugInfo.AddDataLine<string>("Command", command);
 
     delete currentStatus;
     currentStatus = new JobStatus();
@@ -141,7 +141,7 @@ bool UserConsoleJob::RunCommand()
     else
         RunCommandOnBuffer();
 
-    debugInfo.AddIntDataLine("Received return code", receivedReturnCode);
+    debugInfo.AddDataLine<int>("Received return code", receivedReturnCode);
 
     return IsRunOk();
 }
@@ -192,7 +192,7 @@ bool UserConsoleJob::IsRunOk()
 
 void UserConsoleJob::FillStatusFromParsing()
 {
-    debugInfo.AddStringDataLine("Parser command", parserCommand);
+    debugInfo.AddDataLine<string>("Parser command", parserCommand);
 
     string miniDescription("");
     int returnValue = Tools::RunExternalCommandToBuffer(CreateParserCommand(), miniDescription, true);

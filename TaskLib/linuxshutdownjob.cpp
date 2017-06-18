@@ -74,8 +74,8 @@ JobStatus *LinuxShutdownJob::Run()
         status->SetDescription("Machine still running");
     }
 
-    debugInfo.AddIntDataLine("Seconds counter", secondsToShutdown);
-    debugInfo.AddIntDataLine("Timeout", jobTimeoutInSeconds);
+    debugInfo.AddDataLine<int>("Seconds counter", secondsToShutdown);
+    debugInfo.AddDataLine<int>("Timeout", jobTimeoutInSeconds);
     return debugInfo.UpdateStatus(status);
 }
 

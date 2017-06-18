@@ -34,19 +34,14 @@ void JobDebugInformationManager::SetUse(const bool value)
     usingDebug = value;
 }
 
-void JobDebugInformationManager::AddBoolDataLine(const string &label, const bool value)
+void JobDebugInformationManager::AddTagLine(const string &tag)
 {
-    AddDataLine<bool>(label, value);
-}
+    if (usingDebug == false)
+        return;
 
-void JobDebugInformationManager::AddIntDataLine(const string &label, const int data)
-{
-    AddDataLine<int>(label, data);
-}
-
-void JobDebugInformationManager::AddStringDataLine(const string &label, const string &data)
-{
-    AddDataLine<string>(label, data);
+    std::stringstream line;
+    line << tag << std::endl;
+    allData += line.str();
 }
 
 JobStatus *JobDebugInformationManager::UpdateStatus(JobStatus *status) const

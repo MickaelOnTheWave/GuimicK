@@ -63,28 +63,28 @@ JobStatus *WakeJob::Run()
 {
     const string wakeCommand = wakelanPath + " -m " + macAddress + " -b " + broadcastIp;
     JobDebugInformationManager debugInfo(GetName(), outputDebugInformation);
-    debugInfo.AddStringDataLine("Wake command", wakeCommand);
+    debugInfo.AddDataLine<string>("Wake command", wakeCommand);
 
     const int maxRetries = 3;
     for (int i=0; i<maxRetries; ++i)
     {
         std::string wakeCommandOutput;
         Tools::RunExternalCommandToBuffer(wakeCommand, wakeCommandOutput, true);
-        debugInfo.AddStringDataLine("Output", wakeCommandOutput);
+        debugInfo.AddDataLine<string>("Output", wakeCommandOutput);
 
         int secondsToWake = WaitForComputerToGoUp();
         if (secondsToWake < DEFAULT_TIMEOUT)
         {
-            debugInfo.AddIntDataLine("retries", i);
-            debugInfo.AddIntDataLine("maxRetries", maxRetries);
-            debugInfo.AddIntDataLine("seconds counter", secondsToWake);
-            debugInfo.AddIntDataLine("timeout", DEFAULT_TIMEOUT);
+            debugInfo.AddDataLine<int>("retries", i);
+            debugInfo.AddDataLine<int>("maxRetries", maxRetries);
+            debugInfo.AddDataLine<int>("seconds counter", secondsToWake);
+            debugInfo.AddDataLine<int>("timeout", DEFAULT_TIMEOUT);
             return debugInfo.CreateStatus(JobStatus::OK, "");
         }
     }
 
-    debugInfo.AddIntDataLine("maxRetries", maxRetries);
-    debugInfo.AddIntDataLine("timeout", DEFAULT_TIMEOUT);
+    debugInfo.AddDataLine<int>("maxRetries", maxRetries);
+    debugInfo.AddDataLine<int>("timeout", DEFAULT_TIMEOUT);
     return debugInfo.CreateStatus(JobStatus::ERROR, "Machine still not awake");
 }
 

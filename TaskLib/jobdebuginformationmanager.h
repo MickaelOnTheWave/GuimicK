@@ -16,6 +16,8 @@ public:
     bool IsUsed() const;
     void SetUse(const bool value);
 
+    void AddTagLine(const std::string& tag);
+
     template <class T>
     void AddDataLine(const std::string& label, const T& data)
     {
@@ -26,11 +28,6 @@ public:
         line << label << " : " << data << std::endl;
         allData += line.str();
     }
-
-    // TODO : once checked, remove these and only use template one.
-    void AddBoolDataLine(const std::string& label, const bool value);
-    void AddIntDataLine(const std::string& label, const int data);
-    void AddStringDataLine(const std::string& label, const std::string& data);
 
     JobStatus* UpdateStatus(JobStatus* status) const;
     JobStatus* CreateStatus(const int code, const std::string &description) const;

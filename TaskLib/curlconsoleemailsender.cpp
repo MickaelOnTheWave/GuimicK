@@ -40,13 +40,13 @@ bool CurlConsoleEmailSender::Send(const bool isHtml,
     curlParams += "--insecure ";
     curlParams += "--silent --show-error";
 
-    debugInfo.AddStringDataLine("Params", curlParams);
+    debugInfo.AddDataLine<string>("Params", curlParams);
     ConsoleJob curl("curl", curlParams);
     JobStatus* status = curl.Run();
     if (status->GetCode() != JobStatus::OK)
     {
-        debugInfo.AddIntDataLine("Return code", curl.GetCommandReturnCode());
-        debugInfo.AddStringDataLine("Output", curl.GetCommandOutput());
+        debugInfo.AddDataLine<int>("Return code", curl.GetCommandReturnCode());
+        debugInfo.AddDataLine<string>("Output", curl.GetCommandOutput());
         debugInfo.WriteToFile();
     }
     else
