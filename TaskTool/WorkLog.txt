@@ -1,3 +1,6 @@
+22/06/2017 (19.3)
+	As expected, the problem is that no changes were detected. Investigating...
+
 18/06/2017 (0.3h)
 	Production run is not updating GitFs backup properly. Checking why... Rsync apparently did not run.
 	Adding debug information to check why. Also refactored debug manager to remove obsolete methods.

@@ -83,14 +83,14 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
     if (status->GetCode() == JobStatus::OK)
         CopyData(source, destination, status);
 
-    string originalDirectory = FileTools::GetCurrentFullPath();
-    chdir(destination.c_str());
-
     FileBackupReport* report = new FileBackupReport();
     const bool hasChanges = HasChangesInRepository();
     debugManager.AddDataLine<bool>("Changes detected", hasChanges);
     if (hasChanges)
     {
+        string originalDirectory = FileTools::GetCurrentFullPath();
+        chdir(destination.c_str());
+
         if (status->GetCode() == JobStatus::OK)
             AddData(status);
 
@@ -100,9 +100,9 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
 
         if (status->GetCode() == JobStatus::OK)
             CreateReport(commitId, status, *report);
-    }
 
-    chdir(originalDirectory.c_str());
+        chdir(originalDirectory.c_str());
+    }
 
     results.push_back(make_pair(status, report));
 }
@@ -315,9 +315,9 @@ AbstractCopyFsBackupJob *GitFsBackupJob::PrepareCopy(const string &destination, 
 
     AbstractCopyFsBackupJob* copyJob;
     if (usingRawCopy)
-        copyJob = new RawCopyFsBackupJob();
+        copyJob = new RawCopyFsBackupJob("CopyInGitFsDebugInformation.txt");
     else
-        copyJob = new RsyncCopyFsBackupJob();
+        copyJob = new RsyncCopyFsBackupJob("RsyncInGitFsDebugInformation.txt");
 
     if (usingRawCopy)
         CleanDestination(destination, status);
