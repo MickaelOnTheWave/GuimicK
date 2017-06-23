@@ -4,8 +4,9 @@ using namespace std;
 
 AbstractBackupJob::AbstractBackupJob(const string &debugFileName)
     : repository(""), sshUser(""), sshHost(""),
-      isTargetLocal(false), debugManager(debugFileName, false)
+      isTargetLocal(false)
 {
+    debugManager = new JobDebugInformationManager(debugFileName, false);
 }
 
 AbstractBackupJob::AbstractBackupJob(const AbstractBackupJob &other)
@@ -13,8 +14,14 @@ AbstractBackupJob::AbstractBackupJob(const AbstractBackupJob &other)
       folderList(other.folderList),
       sshUser(other.sshUser), sshHost(other.sshHost),
       isTargetLocal(other.isTargetLocal),
-      debugManager(other.debugManager)
+      debugManager(new JobDebugInformationManager(*other.debugManager))
 {
+}
+
+AbstractBackupJob::~AbstractBackupJob()
+{
+    if (isDebugManagerParent == false)
+        delete debugManager;
 }
 
 bool AbstractBackupJob::InitializeFromClient(Client *client)
@@ -40,7 +47,7 @@ JobStatus *AbstractBackupJob::Run()
     for (; it!=folderList.end(); it++)
         RunRepositoryBackup(it->first, it->second, results);
 
-    return debugManager.UpdateStatus(CreateGlobalStatus(results));
+    return debugManager->UpdateStatus(CreateGlobalStatus(results));
 }
 
 void AbstractBackupJob::SetTargetRemote(const std::string &user, const std::string &host)
@@ -75,6 +82,13 @@ void AbstractBackupJob::GetFolderList(std::vector<std::pair<string, string> > &f
 void AbstractBackupJob::ClearFolderList()
 {
     folderList.clear();
+}
+
+void AbstractBackupJob::SetParentDebugManager(JobDebugInformationManager *manager)
+{
+    isDebugManagerParent = true;
+    delete debugManager;
+    debugManager = manager;
 }
 
 bool AbstractBackupJob::IsRemoteTargetConsistent() const

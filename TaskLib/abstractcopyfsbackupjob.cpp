@@ -14,13 +14,13 @@ static const string errorCopyCommand = "Copy command failed";
 AbstractCopyFsBackupJob::AbstractCopyFsBackupJob(const string &debugFilename)
     : AbstractBackupJob(debugFilename)
 {
-    statusManager.SetDebugManager(&debugManager);
+    statusManager.SetDebugManager(debugManager);
 }
 
 AbstractCopyFsBackupJob::AbstractCopyFsBackupJob(const AbstractCopyFsBackupJob &other)
     : AbstractBackupJob(other), statusManager(other.statusManager)
 {
-    statusManager.SetDebugManager(&debugManager);
+    statusManager.SetDebugManager(debugManager);
 }
 
 AbstractCopyFsBackupJob::~AbstractCopyFsBackupJob()
@@ -34,9 +34,9 @@ int AbstractCopyFsBackupJob::RunOnParameters(const string &source, const string 
 
     commandJob.RunWithoutStatus();
 
-    debugManager.AddDataLine<string>("Copy command", commandJob.GetCommand() + " " + commandJob.GetCommandParameters());
-    debugManager.AddDataLine<string>("Copy output", commandJob.GetCommandOutput());
-    debugManager.AddDataLine<int>("Copy value", commandJob.GetCommandReturnCode());
+    debugManager->AddDataLine<string>("Copy command", commandJob.GetCommand() + " " + commandJob.GetCommandParameters());
+    debugManager->AddDataLine<string>("Copy output", commandJob.GetCommandOutput());
+    debugManager->AddDataLine<int>("Copy value", commandJob.GetCommandReturnCode());
 
     return commandJob.GetCommandReturnCode();
 }

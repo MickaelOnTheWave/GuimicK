@@ -29,14 +29,14 @@ GitFsBackupJob::GitFsBackupJob()
     : AbstractBackupJob("GitFsBackup"),
       forceRawCopy(false)
 {
-    statusManager.SetDebugManager(&debugManager);
+    statusManager.SetDebugManager(debugManager);
 }
 
 GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
     : AbstractBackupJob(other), statusManager(other.statusManager),
       forceRawCopy(other.forceRawCopy)
 {
-    statusManager.SetDebugManager(&debugManager);
+    statusManager.SetDebugManager(debugManager);
 }
 
 std::string GitFsBackupJob::GetName()
@@ -59,7 +59,7 @@ JobStatus *GitFsBackupJob::Run()
 
 void GitFsBackupJob::SetOutputDebugInformation(const bool value)
 {
-    debugManager.SetUse(value);
+    debugManager->SetUse(value);
 }
 
 void GitFsBackupJob::SetJoinAllBackups(const bool value)
@@ -83,14 +83,14 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
     if (status->GetCode() == JobStatus::OK)
         CopyData(source, destination, status);
 
+    string originalDirectory = FileTools::GetCurrentFullPath();
+    chdir(destination.c_str());
+
     FileBackupReport* report = new FileBackupReport();
     const bool hasChanges = HasChangesInRepository();
-    debugManager.AddDataLine<bool>("Changes detected", hasChanges);
+    debugManager->AddDataLine<bool>("Changes detected", hasChanges);
     if (hasChanges)
     {
-        string originalDirectory = FileTools::GetCurrentFullPath();
-        chdir(destination.c_str());
-
         if (status->GetCode() == JobStatus::OK)
             AddData(status);
 
@@ -100,9 +100,8 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
 
         if (status->GetCode() == JobStatus::OK)
             CreateReport(commitId, status, *report);
-
-        chdir(originalDirectory.c_str());
     }
+    chdir(originalDirectory.c_str());
 
     results.push_back(make_pair(status, report));
 }
@@ -114,16 +113,16 @@ JobStatus *GitFsBackupJob::CreateGlobalStatus(const ResultCollection& results)
 
 void GitFsBackupJob::CreateGitRepository(const string &path, JobStatus *status)
 {
-    debugManager.AddTagLine("Creating Repository");
+    debugManager->AddTagLine("Creating Repository");
     SetGitUserToFixUtf8Warning();
     FixCRLFIssue();
 
     const string params = string("init ") + path;
     ConsoleJob commandJob("git", params);
     commandJob.RunWithoutStatus();
-    debugManager.AddDataLine<string>("Create repository params", params);
-    debugManager.AddDataLine<string>("Create repository output", commandJob.GetCommandOutput());
-    debugManager.AddDataLine<int>("Create repository value", commandJob.GetCommandReturnCode());
+    debugManager->AddDataLine<string>("Create repository params", params);
+    debugManager->AddDataLine<string>("Create repository output", commandJob.GetCommandOutput());
+    debugManager->AddDataLine<int>("Create repository value", commandJob.GetCommandReturnCode());
     if (commandJob.GetCommandReturnCode() == 0)
         status->SetCode(JobStatus::OK);
     else
@@ -135,7 +134,7 @@ void GitFsBackupJob::CreateGitRepository(const string &path, JobStatus *status)
 
 void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *status)
 {
-    debugManager.AddTagLine("Cleaning destination");
+    debugManager->AddTagLine("Cleaning destination");
 
     string params = destination + " -mindepth 1 -path \"" + destination + ".git\" ";
     params += "-prune -o -print0 | xargs -0 rm -Rf";
@@ -143,9 +142,9 @@ void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *stat
     // @warning This doesn't work in BusyBox (synology system), as find command is too simple there.
     ConsoleJob commandJob("find", params);
     commandJob.RunWithoutStatus();
-    debugManager.AddDataLine<string>("Clean params", params);
-    debugManager.AddDataLine<string>("Clean output", commandJob.GetCommandOutput());
-    debugManager.AddDataLine<int>("Clean value", commandJob.GetCommandReturnCode());
+    debugManager->AddDataLine<string>("Clean params", params);
+    debugManager->AddDataLine<string>("Clean output", commandJob.GetCommandOutput());
+    debugManager->AddDataLine<int>("Clean value", commandJob.GetCommandReturnCode());
     if (commandJob.GetCommandReturnCode() == 0)
         status->SetCode(JobStatus::OK);
     else
@@ -158,7 +157,7 @@ void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *stat
 void GitFsBackupJob::CopyData(const string &source, const string &destination,
                               JobStatus *status)
 {
-    debugManager.AddTagLine("Copying data");
+    debugManager->AddTagLine("Copying data");
     AbstractCopyFsBackupJob* copyJob = PrepareCopy(destination, status);
     if (status->GetCode() == JobStatus::OK)
         RunCopy(copyJob, source, destination, status);
@@ -167,11 +166,11 @@ void GitFsBackupJob::CopyData(const string &source, const string &destination,
 
 void GitFsBackupJob::AddData(JobStatus *status)
 {
-    debugManager.AddTagLine("Adding data to git");
+    debugManager->AddTagLine("Adding data to git");
     ConsoleJob commandJob("git", "add -A :/");
     commandJob.RunWithoutStatus();
-    debugManager.AddDataLine<string>("Add output", commandJob.GetCommandOutput());
-    debugManager.AddDataLine<int>("Add value", commandJob.GetCommandReturnCode());
+    debugManager->AddDataLine<string>("Add output", commandJob.GetCommandOutput());
+    debugManager->AddDataLine<int>("Add value", commandJob.GetCommandReturnCode());
     if (commandJob.GetCommandReturnCode() == 0)
         status->SetCode(JobStatus::OK);
     else
@@ -183,12 +182,12 @@ void GitFsBackupJob::AddData(JobStatus *status)
 
 string GitFsBackupJob::CommitData(JobStatus *status)
 {
-    debugManager.AddTagLine("Committing data to git");
+    debugManager->AddTagLine("Committing data to git");
     ConsoleJob commandJob("git", "commit -m \"Automated backup\"");
     commandJob.RunWithoutStatus();
-    debugManager.AddDataLine<string>("Commit params", commandJob.GetCommandParameters());
-    debugManager.AddDataLine<string>("Commit output", commandJob.GetCommandOutput());
-    debugManager.AddDataLine<int>("Commit value", commandJob.GetCommandReturnCode());
+    debugManager->AddDataLine<string>("Commit params", commandJob.GetCommandParameters());
+    debugManager->AddDataLine<string>("Commit output", commandJob.GetCommandOutput());
+    debugManager->AddDataLine<int>("Commit value", commandJob.GetCommandReturnCode());
     if (IsCommitCodeOk(commandJob.GetCommandReturnCode()))
         return GetCommitId(commandJob.GetCommandOutput());
     else
@@ -237,7 +236,7 @@ int GitFsBackupJob::GetRevisionCount() const
 
 void GitFsBackupJob::CreateInitialReport(JobStatus *status, FileBackupReport &report)
 {
-    debugManager.AddDataLine<string>("Creating Initial Report", "");
+    debugManager->AddDataLine<string>("Creating Initial Report", "");
     ConsoleJob commandJob("ls");
     commandJob.RunWithoutStatus();
     if (commandJob.GetCommandReturnCode() != 0)
@@ -260,7 +259,7 @@ void GitFsBackupJob::CreateInitialReport(JobStatus *status, FileBackupReport &re
 void GitFsBackupJob::CreateDifferentialReport(const string &commitId, JobStatus *status,
                                               FileBackupReport& report)
 {
-    debugManager.AddDataLine<string>("Creating Differential Report", "");
+    debugManager->AddDataLine<string>("Creating Differential Report", "");
     const string params = string("diff-tree --no-commit-id --name-status -r ") + commitId;
     ConsoleJob commandJob("git", params);
     commandJob.RunWithoutStatus();
@@ -302,22 +301,24 @@ AbstractCopyFsBackupJob *GitFsBackupJob::PrepareCopy(const string &destination, 
 {
     bool usingRawCopy = (forceRawCopy || !RsyncCopyFsBackupJob::IsAvailable());
 
-    if (debugManager.IsUsed())
+    if (debugManager->IsUsed())
     {
         string rsyncPath = Tools::GetCommandPath("rsync", ConsoleJob::appSearchPaths);
-        debugManager.AddDataLine<string>("Rsync path", rsyncPath);
+        debugManager->AddDataLine<string>("Rsync path", rsyncPath);
         const bool manualCondition = (rsyncPath != "");
-        debugManager.AddDataLine<bool>("Manual condition", manualCondition);
+        debugManager->AddDataLine<bool>("Manual condition", manualCondition);
     }
 
-    debugManager.AddDataLine<bool>("Force Raw copy", forceRawCopy);
-    debugManager.AddDataLine<bool>("Using Raw copy", usingRawCopy);
+    debugManager->AddDataLine<bool>("Force Raw copy", forceRawCopy);
+    debugManager->AddDataLine<bool>("Using Raw copy", usingRawCopy);
 
     AbstractCopyFsBackupJob* copyJob;
     if (usingRawCopy)
-        copyJob = new RawCopyFsBackupJob("CopyInGitFsDebugInformation.txt");
+        copyJob = new RawCopyFsBackupJob();
     else
-        copyJob = new RsyncCopyFsBackupJob("RsyncInGitFsDebugInformation.txt");
+        copyJob = new RsyncCopyFsBackupJob();
+
+    copyJob->SetParentDebugManager(debugManager);
 
     if (usingRawCopy)
         CleanDestination(destination, status);
@@ -337,7 +338,7 @@ void GitFsBackupJob::RunCopy(AbstractCopyFsBackupJob *copyJob, const string &sou
     else
         copyJob->SetTargetRemote(sshUser, sshHost);
 
-    int returnValue = copyJob->RunOnParameters(source, destination);
+    int returnValue = copyJob->RunOnParameters(source, destination);   
     if (returnValue == 0 || returnValue == emptyDirError)
         status->SetCode(JobStatus::OK);
     else

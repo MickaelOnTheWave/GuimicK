@@ -15,6 +15,7 @@ public:
 
     AbstractBackupJob(const std::string& debugFileName);
     AbstractBackupJob(const AbstractBackupJob& other);
+    virtual ~AbstractBackupJob();
 
     virtual bool InitializeFromClient(Client* client);
     virtual bool IsInitialized(void);
@@ -29,6 +30,8 @@ public:
     void GetFolderList(std::vector<std::pair<std::string, std::string> >& folders);
     void ClearFolderList(void);
 
+    void SetParentDebugManager(JobDebugInformationManager* manager);
+
 protected:
     virtual void RunRepositoryBackup(const std::string& source,
                                      const std::string& destination,
@@ -41,7 +44,9 @@ protected:
     std::string sshUser;
     std::string sshHost;
     bool isTargetLocal;
-    JobDebugInformationManager debugManager;
+
+    JobDebugInformationManager* debugManager;
+    bool isDebugManagerParent;
 
 private:
     bool IsRemoteTargetConsistent() const;

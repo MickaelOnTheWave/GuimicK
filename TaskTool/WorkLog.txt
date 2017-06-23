@@ -1,5 +1,6 @@
 22/06/2017 (19.3)
 	As expected, the problem is that no changes were detected. Investigating...
+	Refactored DebugManager to allow a job to manage debug outputs from child jobs.
 
 18/06/2017 (0.3h)
 	Production run is not updating GitFs backup properly. Checking why... Rsync apparently did not run.
