@@ -20,6 +20,14 @@ protected:
                                      const std::string& destination,
                                      ResultCollection& results);
     virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
+
+private:
+    bool CreateBackupArchive(const std::string& folderToBackup,
+                             ResultCollection& results);
+    bool PrepareDestination(const std::string& destination,
+                             ResultCollection& results);
+    bool MoveBackupArchiveToDestination(const std::string& destination,
+                                        ResultCollection& results);
 };
 
 #endif // ZIPANDCOPYFSBACKUPJOB_H

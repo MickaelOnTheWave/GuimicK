@@ -1,6 +1,13 @@
-22/06/2017 (19.3)
+22/06/2017 (2.9h)
 	As expected, the problem is that no changes were detected. Investigating...
-	Refactored DebugManager to allow a job to manage debug outputs from child jobs.
+	Refactored DebugManager to allow a job to manage debug outputs from child jobs. Debug output
+	is now correctly reported, however bug in production was not reproduced in mini run. Waiting for
+	full run.
+	Began implementation of ZipAndCopy job. Basic backup is working (create tar archive and move it).
+Next planned work :
+	- Check production backup
+	- Implement status management/reporting in ZipAndCopy job
+	- Implement Restore in ZipAndCopy job
 
 18/06/2017 (0.3h)
 	Production run is not updating GitFs backup properly. Checking why... Rsync apparently did not run.

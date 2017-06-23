@@ -32,12 +32,12 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new FileToolsTest(toolsLibDir);
     //QObject* testSuite = new ClientWorkManagerTest();
     //QObject* testSuite = new ConfigurationTest(taskLibDir);
-    QObject* testSuite = new GitFsBackupJobTest(taskLibDir);
+    //QObject* testSuite = new GitFsBackupJobTest(taskLibDir);
     //QObject* testSuite = new GitCommitReportParserTest(parsersDir);
     //QObject* testSuite = new RawCopyFsBackupJobTest(taskLibDir);
     //QObject* testSuite = new RsyncCopyFsBackupJobTest(taskLibDir);
     //QObject* testSuite = new RsyncCommandParserTest(parsersDir);
-    //QObject* testSuite = new ZipAndCopyFsBackupJobTest(taskLibDir);
+    QObject* testSuite = new ZipAndCopyFsBackupJobTest(taskLibDir);
 
     QTest::qExec(testSuite, argc, argv);
 
