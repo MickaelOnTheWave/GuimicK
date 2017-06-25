@@ -1,3 +1,13 @@
+25/06/2017 (1h)
+	Found the cause of the issue : rsync binary used when cronjob is running is not the same as
+	rsync used once ssh login is done. rsync binary used from cronjob is not complete.. Attempted
+	to update DSM, updating to newer version might resolve the issue. However, full update was not
+	possible at the moment, and after reading a bit it is unlikely to solve. Manually changed the
+	binary. Now waiting for another run.
+Next planned work :
+	- Check production backup
+	- Go on previous roadmap
+
 22/06/2017 (2.9h)
 	As expected, the problem is that no changes were detected. Investigating...
 	Refactored DebugManager to allow a job to manage debug outputs from child jobs. Debug output
