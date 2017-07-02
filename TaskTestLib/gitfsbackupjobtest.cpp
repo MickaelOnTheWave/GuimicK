@@ -15,8 +15,9 @@ const string sshUser = "mickael";
 const string sshHost = "192.168.1.101";
 
 
-GitFsBackupJobTest::GitFsBackupJobTest(const std::string &dataPrefix)
-    : AbstractFsBackupJobTest(dataPrefix + suitePrefix)
+GitFsBackupJobTest::GitFsBackupJobTest(const std::string &dataPrefix,
+                                       const std::string& errorPrefix)
+    : AbstractFsBackupJobTest(dataPrefix + suitePrefix, errorPrefix)
 {
 }
 

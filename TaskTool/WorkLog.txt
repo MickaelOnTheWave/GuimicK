@@ -1,6 +1,12 @@
-02/07/2017 (15.5)
+02/07/2017 (2h)
 	Finished Tar command parser and its test suite. Now going back to memory issues. It looks like
-	they are in status management.
+	they are in status management. Memory issues disappeared...
+	Continued job implementation. Archive creation mostly done, restore implemented too. There seems
+	to be some issues with path management.
+Next planned work :
+	- Resolve path issues.
+	- Finish job with all tests
+	- Check Synology server
 
 02/07/2017 (1.5h)
 	Reinstalling Synology entirely. Already something like 2hs spent on this. Meanwhile, going on

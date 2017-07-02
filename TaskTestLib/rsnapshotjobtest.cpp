@@ -23,8 +23,8 @@ using namespace std;
 const string templateConfigurationFile = "rsnapshot.conf";
 const string suiteFolder = "Rsnapshot/";
 
-RsnapshotJobTest::RsnapshotJobTest(const string &dataPrefix)
-    : AbstractFsBackupJobTest(dataPrefix + suiteFolder)
+RsnapshotJobTest::RsnapshotJobTest(const string &dataPrefix, const string &errorPrefix)
+    : AbstractFsBackupJobTest(dataPrefix + suiteFolder, errorPrefix)
 {
     repository = FileTools::BuildFullPath("rsnapshotroot");
 }

@@ -8,7 +8,8 @@ class RawCopyFsBackupJobTest : public AbstractCopyFsBackupJobTest
     Q_OBJECT
 
 public:
-    RawCopyFsBackupJobTest(const std::string& dataPrefix);
+    RawCopyFsBackupJobTest(const std::string& dataPrefix,
+                           const std::string &errorPrefix);
     virtual ~RawCopyFsBackupJobTest();
 
 protected:

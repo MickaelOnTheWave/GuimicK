@@ -11,10 +11,10 @@ const string repository = "repository/";
 const string sshUser = "mickael";
 const string sshHost = "192.168.1.101";
 
-AbstractCopyFsBackupJobTest::AbstractCopyFsBackupJobTest(const std::string &dataPrefix)
- : AbstractFsBackupJobTest(dataPrefix)
+AbstractCopyFsBackupJobTest::AbstractCopyFsBackupJobTest(const std::string &dataPrefix,
+                                                         const std::string& errorPrefix)
+ : AbstractFsBackupJobTest(dataPrefix, errorPrefix)
 {
-
 }
 
 AbstractCopyFsBackupJobTest::~AbstractCopyFsBackupJobTest()

@@ -8,7 +8,8 @@ class RsyncCopyFsBackupJobTest : public AbstractCopyFsBackupJobTest
     Q_OBJECT
 
 public:
-    RsyncCopyFsBackupJobTest(const std::string& dataPrefix);
+    RsyncCopyFsBackupJobTest(const std::string& dataPrefix,
+                             const std::string& errorPrefix);
     virtual ~RsyncCopyFsBackupJobTest();
 
 protected:

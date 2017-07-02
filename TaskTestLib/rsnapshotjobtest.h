@@ -12,7 +12,8 @@ class RsnapshotJobTest : public AbstractFsBackupJobTest
     Q_OBJECT
 
 public:
-    RsnapshotJobTest(const std::string& dataPrefix);
+    RsnapshotJobTest(const std::string& dataPrefix,
+                     const std::string& errorPrefix);
     virtual ~RsnapshotJobTest();
 
 private Q_SLOTS:

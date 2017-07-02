@@ -4,8 +4,9 @@
 
 const std::string suitePrefix = "RawCopyFsBackup/";
 
-RawCopyFsBackupJobTest::RawCopyFsBackupJobTest(const std::string &dataPrefix)
-    : AbstractCopyFsBackupJobTest(dataPrefix + suitePrefix)
+RawCopyFsBackupJobTest::RawCopyFsBackupJobTest(const std::string &dataPrefix,
+                                               const std::string& errorPrefix)
+    : AbstractCopyFsBackupJobTest(dataPrefix + suitePrefix, errorPrefix)
 {
 }
 

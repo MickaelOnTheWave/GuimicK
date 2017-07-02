@@ -8,7 +8,8 @@ class AbstractFsBackupJobTest : public QtTestSuite
 {
     Q_OBJECT
 public:
-    AbstractFsBackupJobTest(const std::string& dataPrefix);
+    AbstractFsBackupJobTest(const std::string& dataPrefix,
+                            const std::string& errorPrefix);
     virtual ~AbstractFsBackupJobTest();
 
 private Q_SLOTS:

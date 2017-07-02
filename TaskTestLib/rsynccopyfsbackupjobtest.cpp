@@ -4,8 +4,9 @@
 
 const std::string suitePrefix = "RsyncCopyFsBackup/";
 
-RsyncCopyFsBackupJobTest::RsyncCopyFsBackupJobTest(const std::string &dataPrefix)
-    : AbstractCopyFsBackupJobTest(dataPrefix + suitePrefix)
+RsyncCopyFsBackupJobTest::RsyncCopyFsBackupJobTest(const std::string &dataPrefix,
+                                                   const std::string &errorPrefix)
+    : AbstractCopyFsBackupJobTest(dataPrefix + suitePrefix, errorPrefix)
 {
 }
 

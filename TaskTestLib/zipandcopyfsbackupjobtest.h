@@ -8,7 +8,7 @@ class ZipAndCopyFsBackupJobTest : public AbstractFsBackupJobTest
     Q_OBJECT
 
 public:
-    ZipAndCopyFsBackupJobTest(const std::string& dataPrefix);
+    ZipAndCopyFsBackupJobTest(const std::string& dataPrefix, const std::string& errorPrefix);
     virtual ~ZipAndCopyFsBackupJobTest();
 
 private Q_SLOTS:

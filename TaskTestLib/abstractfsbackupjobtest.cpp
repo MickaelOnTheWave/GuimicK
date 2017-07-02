@@ -14,10 +14,9 @@ using namespace std;
 #define JobStatus_OK_WITH_WARNINGS  2
 #define JobStatus_ERROR             3
 
-const string errorFolder = "../errors/";
-
-AbstractFsBackupJobTest::AbstractFsBackupJobTest(const std::string &dataPrefix) :
-    QtTestSuite(dataPrefix)
+AbstractFsBackupJobTest::AbstractFsBackupJobTest(const std::string &dataPrefix,
+                                                 const string &errorPrefix)
+    : QtTestSuite(dataPrefix, errorPrefix)
 {
 }
 
@@ -124,7 +123,7 @@ void AbstractFsBackupJobTest::CheckTextContent(const string &content, const QStr
     if (!isContentAsExpected)
     {
         const string filename = currentTestCaseName + "_" + referenceFile.toStdString();
-        FileTools::WriteBufferToFile(errorFolder + filename, content);
+        FileTools::WriteBufferToFile(GetErrorFolder() + filename, content);
     }
     QCOMPARE(isContentAsExpected, true);
 }
