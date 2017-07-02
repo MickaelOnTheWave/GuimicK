@@ -8,5 +8,6 @@
 #include "dfcommandparsertest.h"
 #include "rsnapshotreportparsertest.h"
 #include "rsynccommandparsertest.h"
+#include "tarcommandparsertest.h"
 
 #endif // PARSERSTESTSUITES_H

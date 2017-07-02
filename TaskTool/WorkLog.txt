@@ -1,3 +1,16 @@
+02/07/2017 (15.5)
+	Finished Tar command parser and its test suite. Now going back to memory issues. It looks like
+	they are in status management.
+
+02/07/2017 (1.5h)
+	Reinstalling Synology entirely. Already something like 2hs spent on this. Meanwhile, going on
+	ZipAndCopy job. Created Parser structure. However stopped on mysterious malloc issues with std
+	strings. Stopping for lunch. Probably the best is to first create the parser, then go back to
+	these issues.
+
+28/06/2017 (2h)
+	Trying to reinstall Synology after failed update attempt to DSM 3.
+
 25/06/2017 (1h)
 	Found the cause of the issue : rsync binary used when cronjob is running is not the same as
 	rsync used once ssh login is done. rsync binary used from cronjob is not complete.. Attempted
