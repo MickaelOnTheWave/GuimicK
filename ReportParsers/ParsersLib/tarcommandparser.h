@@ -6,7 +6,7 @@
 class TarCommandParser : public AbstractFileBackupParser
 {
 public:
-    TarCommandParser();
+    TarCommandParser(const std::string& _tarCommand);
     virtual ~TarCommandParser();
 
     virtual bool ParseBuffer(const std::string& buffer);
@@ -15,6 +15,7 @@ public:
 private:
     void FillReportData(const std::vector<std::string>& lines);
 
+    std::string tarCommand;
 };
 
 #endif // TARCOMMANDPARSER_H

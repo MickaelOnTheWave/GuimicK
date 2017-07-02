@@ -4,7 +4,9 @@
 
 using namespace std;
 
-TarCommandParser::TarCommandParser() : AbstractFileBackupParser(new FileBackupReport())
+TarCommandParser::TarCommandParser(const string &_tarCommand)
+    : AbstractFileBackupParser(new FileBackupReport()),
+      tarCommand(_tarCommand)
 {
 }
 
@@ -31,14 +33,18 @@ void TarCommandParser::GetReport(FileBackupReport &_reportData)
 
 void TarCommandParser::FillReportData(const std::vector<string> &lines)
 {
-    const string sourceFolder = lines.front();
-    vector<string>::const_iterator it=lines.begin()+1;
+    int filesStartPosition = 1;
+    string sourceFolder = lines.front();
+    if (sourceFolder.find(tarCommand) == 0)
+    {
+        sourceFolder = *(lines.begin()+1);
+        ++filesStartPosition;
+    }
+
+    vector<string>::const_iterator it=lines.begin()+filesStartPosition;
     for (; it!=lines.end(); ++it)
     {
-        if (sourceFolder.size() < it->size())
-        {
-            const string currentFile = it->substr(sourceFolder.size());
-            reportData->AddAsAdded(currentFile);
-        }
+        const string currentFile = it->substr(sourceFolder.size());
+        reportData->AddAsAdded(currentFile);
     }
 }
