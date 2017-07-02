@@ -4,15 +4,17 @@
 
 using namespace std;
 
-BackupStatusManager::BackupStatusManager()
-    : resultCollection(NULL), debugManager(NULL), joinReports(false)
+BackupStatusManager::BackupStatusManager(const string &_attachmentName)
+    : resultCollection(NULL), debugManager(NULL), joinReports(false),
+      attachmentName(_attachmentName)
 {
 }
 
 BackupStatusManager::BackupStatusManager(const BackupStatusManager &other)
     : resultCollection(other.resultCollection),
       debugManager(other.debugManager),
-      joinReports(other.joinReports)
+      joinReports(other.joinReports),
+      attachmentName(other.attachmentName)
 {
 }
 
@@ -24,6 +26,11 @@ void BackupStatusManager::SetDebugManager(JobDebugInformationManager *_debugMana
 void BackupStatusManager::SetJoinReports(const bool value)
 {
     joinReports = value;
+}
+
+void BackupStatusManager::SetAttachmentName(const string &name)
+{
+    attachmentName = name;
 }
 
 JobStatus *BackupStatusManager::CreateGlobalStatus(
@@ -53,7 +60,7 @@ JobStatus *BackupStatusManager::CreateSingleStatus()
 
     JobStatus* status = new JobStatus(result.first->GetCode());
     status->SetDescription(result.second->GetMiniDescription());
-    status->AddFileBuffer("GitFsBackup.txt", result.second->GetFullDescription());
+    status->AddFileBuffer(attachmentName, result.second->GetFullDescription());
     return status;
 }
 
@@ -76,7 +83,7 @@ JobStatus *BackupStatusManager::CreateMixedStatus()
 
     JobStatus* status = new JobStatus(JobStatus::ERROR);
     status->SetDescription(CreateFoldersMiniDescription());
-    status->AddFileBuffer("GitFsBackup.txt", CreateStatusesDescription());
+    status->AddFileBuffer(attachmentName, CreateStatusesDescription());
     return status;
 }
 
@@ -93,7 +100,7 @@ JobStatus *BackupStatusManager::CreateJoinedStatus()
         globalReport.AddWithPrefix(*it->second, itDestination->second);
 
     status->SetDescription(globalReport.GetMiniDescription());
-    status->AddFileBuffer("GitFsBackup.txt", globalReport.GetFullDescription());
+    status->AddFileBuffer(attachmentName, globalReport.GetFullDescription());
     return status;
 }
 
@@ -109,7 +116,7 @@ JobStatus *BackupStatusManager::CreateSeparatedStatus()
         globalReport.Add(*it->second);
 
     status->SetDescription(globalReport.GetMiniDescription());
-    status->AddFileBuffer("GitFsBackup.txt", CreateStatusesDescription());
+    status->AddFileBuffer(attachmentName, CreateStatusesDescription());
     return status;
 }
 

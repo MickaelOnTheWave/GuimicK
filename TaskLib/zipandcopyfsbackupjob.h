@@ -2,6 +2,7 @@
 #define ZIPANDCOPYFSBACKUPJOB_H
 
 #include "abstractbackupjob.h"
+#include "backupstatusmanager.h"
 
 class ZipAndCopyFsBackupJob : public AbstractBackupJob
 {
@@ -23,11 +24,15 @@ protected:
 
 private:
     bool CreateBackupArchive(const std::string& folderToBackup,
+                             const std::string& archiveName,
                              ResultCollection& results);
     bool PrepareDestination(const std::string& destination,
                              ResultCollection& results);
-    bool MoveBackupArchiveToDestination(const std::string& destination,
-                                        ResultCollection& results);
+    //bool MoveBackupArchiveToDestination(const std::string& destination,
+    //                                    ResultCollection& results);
+
+
+    BackupStatusManager statusManager;
 };
 
 #endif // ZIPANDCOPYFSBACKUPJOB_H

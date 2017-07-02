@@ -29,6 +29,7 @@ GitFsBackupJob::GitFsBackupJob()
     : AbstractBackupJob("GitFsBackup"),
       forceRawCopy(false)
 {
+    statusManager.SetAttachmentName("GitFsBackup.txt");
     statusManager.SetDebugManager(debugManager);
 }
 
@@ -36,6 +37,7 @@ GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
     : AbstractBackupJob(other), statusManager(other.statusManager),
       forceRawCopy(other.forceRawCopy)
 {
+    statusManager.SetAttachmentName("GitFsBackup.txt");
     statusManager.SetDebugManager(debugManager);
 }
 

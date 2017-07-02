@@ -2,18 +2,22 @@
 
 #include "consolejob.h"
 #include "filetools.h"
+#include "tarcommandparser.h"
 
 using namespace std;
 
-const string archiveName = "backup.tar";
-
-ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob() : AbstractBackupJob("ZipCopyFsBackup")
+ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob()
+    : AbstractBackupJob("ZipCopyFsBackup")
 {
+    statusManager.SetAttachmentName("ZipCopyFsBackup.txt");
+    statusManager.SetDebugManager(debugManager);
 }
 
 ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob(const ZipAndCopyFsBackupJob& other)
     : AbstractBackupJob(other)
 {
+    statusManager.SetAttachmentName("ZipCopyFsBackup.txt");
+    statusManager.SetDebugManager(debugManager);
 }
 
 std::string ZipAndCopyFsBackupJob::GetName()
@@ -26,10 +30,13 @@ AbstractJob *ZipAndCopyFsBackupJob::Clone()
     return new ZipAndCopyFsBackupJob(*this);
 }
 
-bool ZipAndCopyFsBackupJob::Restore(const string &backupFile, const string &destination)
+bool ZipAndCopyFsBackupJob::Restore(const string &backupFile, const string &)
 {
-    // Run tar -xf archive.tar
-    return false;
+    const string params = string("-xf ") + backupFile;
+    ConsoleJob commandJob("tar", params);
+    commandJob.RunWithoutStatus();
+
+    return (commandJob.GetCommandReturnCode() == 0);
 }
 
 void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
@@ -38,13 +45,14 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
 {
     if (isTargetLocal)
     {
-        bool ok = CreateBackupArchive(source, results);
+
+        bool ok = PrepareDestination(destination, results);
 
         if (ok)
-            PrepareDestination(destination, results);
+            ok = CreateBackupArchive(source, destination, results);
 
-        if (ok)
-            MoveBackupArchiveToDestination(destination, results);
+        //if (ok)
+        //    MoveBackupArchiveToDestination(destination, results);
     }
     else
     {
@@ -58,26 +66,55 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
 JobStatus *ZipAndCopyFsBackupJob::CreateGlobalStatus(
         const AbstractBackupJob::ResultCollection &results)
 {
-    // TODO : implement
-    return NULL;
+    return statusManager.CreateGlobalStatus(results, folderList);
 }
 
 bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
+                                                const string &archiveName,
                                                 AbstractBackupJob::ResultCollection &results)
 {
-    // TODO : finish implementation
+    JobStatus* status = new JobStatus();
+
     const string params = string("-cpzvf ") + archiveName + " " + folderToBackup;
-    ConsoleJob::Run("tar", params);
-    return true;
+    ConsoleJob commandJob("tar", params);
+    commandJob.RunWithoutStatus();
+
+    if (commandJob.GetCommandReturnCode() == 0)
+    {
+        TarCommandParser parser(commandJob.GetCommand());
+        bool ok = parser.ParseBuffer(commandJob.GetCommandOutput());
+        if (ok)
+        {
+            FileBackupReport* report = new FileBackupReport();
+            parser.GetReport(*report);
+
+            status->SetCode(JobStatus::OK);
+            results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, report));
+        }
+        else
+        {
+            status->SetCode(JobStatus::OK_WITH_WARNINGS);
+            status->SetDescription("Failed creating report");
+            results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
+        }
+        return true;
+    }
+    else
+    {
+        status->SetCode(JobStatus::ERROR);
+        status->SetDescription("tar command failed");
+        results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
+        return false;
+    }
 }
 
 bool ZipAndCopyFsBackupJob::PrepareDestination(const string &destination,
                                                AbstractBackupJob::ResultCollection &results)
 {
-    // TODO : finish implementation
-    if (FileTools::FolderExists(destination) == false)
+/*    if (FileTools::FolderExists(destination) == false)
         FileTools::CreateFolder(destination);
-    const string finalBackupArchive = destination + "/" + archiveName;
+*/
+    const string finalBackupArchive = destination;// + "/" + archiveName;
     if (FileTools::FileExists(finalBackupArchive))
     {
         // TODO : implement this RemoveFile
@@ -85,12 +122,31 @@ bool ZipAndCopyFsBackupJob::PrepareDestination(const string &destination,
         const string params = string("-Rf ") + finalBackupArchive;
         ConsoleJob::Run("rm", params);
     }
-    return true;
-}
 
+    if (!FileTools::FileExists(finalBackupArchive))
+        return true;
+    else
+    {
+        JobStatus* status = new JobStatus(JobStatus::ERROR, "error cleaning destination");
+        results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
+        return false;
+    }
+}
+/*
 bool ZipAndCopyFsBackupJob::MoveBackupArchiveToDestination(const string &destination,
                                                            AbstractBackupJob::ResultCollection &results)
 {
-    const string params = archiveName + " " + destination + "/";
-    ConsoleJob::Run("mv", params);
-}
+    string params = archiveName + " " + destination + "/";
+
+    ConsoleJob commandJob("mv", params);
+    commandJob.RunWithoutStatus();
+
+    if (commandJob.GetCommandReturnCode() == 0)
+        return true;
+    else
+    {
+        JobStatus* status = new JobStatus(JobStatus::ERROR, "failed to move archive");
+        results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
+        return false;
+    }
+}*/
