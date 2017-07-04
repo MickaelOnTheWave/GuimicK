@@ -1,3 +1,14 @@
+04/07/2017 (1.5h)
+	Configuring Synology back again. Configured time, wake up, shut down not used services.
+	Installed ipkg with wakelan, rsync, git, curl, scp and nano. Copied deploy script. Tried to
+	setup public key auth to Desktop without success. Set up ssh server verbose logging in Desktop
+	to catch next ssh login attemps with proper keys.
+Next planned work :
+	- Check Synology is waking as expected
+	- Finish passwordless login
+	- Install TaskManager back with a proper configuration
+	- Finish ZipCopy job
+
 02/07/2017 (2h)
 	Finished Tar command parser and its test suite. Now going back to memory issues. It looks like
 	they are in status management. Memory issues disappeared...
