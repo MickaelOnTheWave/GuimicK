@@ -1,4 +1,13 @@
 04/07/2017 (1.5h)
+	Finished Passwordless login setup on Synology. Updated deploy script and stored
+	production configuration file. Deployed taskmanager on synology, prepared folders
+	to receive backups and set up crontab. Now only waiting for run...
+Next planned work :
+	- Check production run
+	- Finish ZipCopy job
+	- Think about best production backups and set them
+
+04/07/2017 (1.5h)
 	Configuring Synology back again. Configured time, wake up, shut down not used services.
 	Installed ipkg with wakelan, rsync, git, curl, scp and nano. Copied deploy script. Tried to
 	setup public key auth to Desktop without success. Set up ssh server verbose logging in Desktop

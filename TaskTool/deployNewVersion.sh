@@ -4,31 +4,47 @@
 TASKTOOLPATH="~/Prog/TaskManager/TaskTool/"
 BINARIESPATH="~/Prog/TaskManager/bin/SynologyPackage"
 
-LOCALTASKLIB="/usr/lib/libTaskLib.so"
-LOCALPARSERSLIB="/usr/lib/libParsersLib.so"
-LOCALTOOLSLIB="/usrÂ/lib/libToolsLib.so"
+LOCALLIBPATH="/usr/lib/"
+TASKLIB="libTaskLib.so"
+PARSERSLIB="libParsersLib.so"
+TOOLSLIB="libToolsLib.so"
 
 EXT=".1"
+UNTESTED_TASKTOOL="untestedTaskTool"
 
-mv tasktool tasktool.old
-rm $LOCALTASKLIB
-rm $LOCALTASKLIB$EXT
-rm $LOCALPARSERSLIB
-rm $LOCALPARSERSLIB$EXT
-rm $LOCALTOOLSLIB
-rm $LOCALTOOLSLIB$EXT
+removeIfExists()
+{
+	FILE=$1
+	if [ -f $FILE ]
+	then
+		rm $FILE
+	fi
+}
+
+
+if [ -f tasktool ]
+then
+	mv tasktool tasktool.old
+fi
+
+removeIfExists $LOCALLIBPATH$TASKLIB
+removeIfExists $LOCALLIBPATH$TASKLIB$EXT
+removeIfExists $LOCALLIBPATH$PARSERSLIB
+removeIfExists $LOCALLIBPATH$PARSERSLIB$EXT
+removeIfExists $LOCALLIBPATH$TOOLSLIB
+removeIfExists $LOCALLIBPATH$TOOLSLIB$EXT
 
 ssh -t mickael@Desktop "cd $TASKTOOLPATH ; ./MakeSynologyBuild.sh"
-scp mickael@Desktop:$BINARIESPATH/TaskTool ./lalala
-mv lalala tasktool
+scp mickael@Desktop:$BINARIESPATH/TaskTool ./$UNTESTED_TASKTOOL
+mv $UNTESTED_TASKTOOL tasktool
 scp mickael@Desktop:$BINARIESPATH/CommandLineTool ./reportparser
-scp mickael@Desktop:$BINARIESPATH/libTaskLib.so $LOCALTASKLIB
-scp mickael@Desktop:$BINARIESPATH/libParsersLib.so $LOCALPARSERSLIB
-scp mickael@Desktop:$BINARIESPATH/libToolsLib.so $LOCALTOOLSLIB
+scp mickael@Desktop:$BINARIESPATH/$TASKLIB $LOCALLIBPATH$TASKLIB
+scp mickael@Desktop:$BINARIESPATH/$PARSERSLIB $LOCALLIBPATH$PARSERSLIB
+scp mickael@Desktop:$BINARIESPATH/$TOOLSLIB $LOCALLIBPATH$TOOLSLIB
 
-ln -s $LOCALTASKLIB $LOCALTASKLIB$EXT
-ln -s $LOCALPARSERSLIB $LOCALPARSERSLIB$EXT
-ln -s $LOCALTOOLSLIB $LOCALTOOLSLIB$EXT
+ln -s $LOCALLIBPATH$TASKLIB $LOCALLIBPATH$TASKLIB$EXT
+ln -s $LOCALLIBPATH$PARSERSLIB $LOCALLIBPATH$PARSERSLIB$EXT
+ln -s $LOCALLIBPATH$TOOLSLIB $LOCALLIBPATH$TOOLSLIB$EXT
 
 if [ -f tasktool ]
 then

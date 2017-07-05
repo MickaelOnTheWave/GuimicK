@@ -13,77 +13,52 @@ Client
 {
 	Name = "Desktop computer";
 	mac = "74:d4:35:bc:1a:5e";
-     	ip = "192.168.1.101";
+	ip = "192.168.1.101";
 	broadcast = "192.168.1.255";
-     	sshuser = "mickael";
+	sshuser = "mickael";
 	JobList
 	{
 		Wake();
-		RsnapshotBackup
+		GitFsBackup
 		{
-			repository = "/volume1/snapshots";
+			target = "remote";
 			Folder
 			{
-				source = "mickael@desktop:~/Documents/";
-				dest = "documents/";
+				source = "/home/mickael/Documents";
+				dest = "/volume1/backups/important/documents/";
 			}
-			Folder
-			{
-				source = "mickael@desktop:~/Pictures/";
-				dest = "pictures/";
-			}
-			Folder
-			{
-				source = "mickael@desktop:~/Music/";
-				dest = "music/";
-			}
-			Folder
-			{
-				source = "mickael@desktop:~/WindowsSoftware/";
-				dest = "logiciels/";
-			}
-			Folder
-			{
-				source = "mickael@desktop:~/Videos/";
-				dest = "videos/";
-			}
-			Folder
-			{
-				source = "mickael@desktop:/mnt/datadrive/Archives/";
-				dest = "archives/";
-			}
-		}
+		}		
 		GitBackup
 		{
 			Repository
 			{
 				source = "~/Prog/NoteReader";
-				dest = "/volume1/repositories/NoteReader";
+				dest = "/volume1/backups/repositories/NoteReader";
 			}
 			Repository
 			{
 				source = "~/Prog/TaskManager";
-				dest = "/volume1/repositories/TaskManager";
+				dest = "/volume1/backups/repositories/TaskManager";
 			}
 			Repository
 			{
 				source = "~/Prog/Tools";
-				dest = "/volume1/repositories/Tools";
+				dest = "/volume1/backups/repositories/Tools";
 			}
 			Repository
 			{
 				source = "~/Prog/QtTools";
-				dest = "/volume1/repositories/QtTools";
+				dest = "/volume1/backups/repositories/QtTools";
 			}
 			Repository
 			{
 				source = "~/Prog/WorklogAnalyzer";
-				dest = "/volume1/repositories/WorklogAnalyzer";
+				dest = "/volume1/backups/repositories/WorklogAnalyzer";
 			}
 			Repository
 			{
 				source = "~/Prog/homescripts";
-				dest = "/volume1/repositories/homescripts";
+				dest = "/volume1/backups/repositories/homescripts";
 			}
 		}
 		SshConsole
@@ -93,7 +68,7 @@ Client
 			params = "apt-get update";
 			returnCode = 0;
 		}
-		DiskSpaceCheck("/dev/hda3");
+		DiskSpaceCheck("/dev/sda3");
 		Shutdown();
 	}
 }
