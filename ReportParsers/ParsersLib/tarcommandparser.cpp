@@ -35,7 +35,7 @@ void TarCommandParser::FillReportData(const std::vector<string> &lines)
 {
     int filesStartPosition = 1;
     string sourceFolder = lines.front();
-    if (sourceFolder.find(tarCommand) == 0)
+    if (tarCommand != "" && sourceFolder.find(tarCommand) == 0)
     {
         sourceFolder = *(lines.begin()+1);
         ++filesStartPosition;
@@ -44,7 +44,10 @@ void TarCommandParser::FillReportData(const std::vector<string> &lines)
     vector<string>::const_iterator it=lines.begin()+filesStartPosition;
     for (; it!=lines.end(); ++it)
     {
-        const string currentFile = it->substr(sourceFolder.size());
-        reportData->AddAsAdded(currentFile);
+        if (it->size() > sourceFolder.size())
+        {
+            const string currentFile = it->substr(sourceFolder.size());
+            reportData->AddAsAdded(currentFile);
+        }
     }
 }

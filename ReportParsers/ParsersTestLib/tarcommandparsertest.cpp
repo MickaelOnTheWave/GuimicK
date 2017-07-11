@@ -24,7 +24,7 @@ FileBackupReport *TarCommandParserTest::CreateReport()
 
 AbstractFileBackupParser *TarCommandParserTest::CreateParser()
 {
-    return new TarCommandParser("");
+    return new TarCommandParser("/bin/tar");
 }
 
 void TarCommandParserTest::PopulateTestData()
