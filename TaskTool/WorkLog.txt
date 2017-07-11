@@ -1,3 +1,18 @@
+11/07/2017 (16.4)
+	Back to work. Trying to figure out if it is config file that causes weird bug - other commands, like
+	version, do not have it. Improved deploy script to send css file too. Now it seems that run is OK,
+	at least manually for light configuration. Now waiting for production run. Back to ZipCopy job.
+	ZipCopy local run is now working!
+
+10/07/2017 (0.4h)
+	Production run still failing. Checking why.. it seems that LD_LIBRARY_PATH was incorrectly
+	set on Synology causing the exe to not run. Trying to run manually, there is a mysterious bug
+	that causes desktop to halt (!!) when running tasktool on synology. No clue as to why..
+
+07/07/2017 (0.2h)
+	Checked production run : logs were created, so crontab is working as expected. However
+	a wrong command was used to call task manager. Fixed it and now waiting for next run..
+
 04/07/2017 (1.5h)
 	Finished Passwordless login setup on Synology. Updated deploy script and stored
 	production configuration file. Deployed taskmanager on synology, prepared folders
@@ -8,8 +23,7 @@ Next planned work :
 	- Think about best production backups and set them
 
 04/07/2017 (1.5h)
-	Configuring Synology back again. Configured time, wake up, shut down not used services.
-	Installed ipkg with wakelan, rsync, git, curl, scp and nano. Copied deploy script. Tried to
+	Configuring Synology back again. Configured time, wake up, shut down not used services. Installed ipkg with wakelan, rsync, git, curl, scp and nano. Copied deploy script. Tried t
 	setup public key auth to Desktop without success. Set up ssh server verbose logging in Desktop
 	to catch next ssh login attemps with proper keys.
 Next planned work :

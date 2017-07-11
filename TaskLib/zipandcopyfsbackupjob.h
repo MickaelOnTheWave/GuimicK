@@ -26,11 +26,8 @@ private:
     bool CreateBackupArchive(const std::string& folderToBackup,
                              const std::string& archiveName,
                              ResultCollection& results);
-    bool PrepareDestination(const std::string& destination,
+    bool RemovePreviousArchive(const std::string& destination,
                              ResultCollection& results);
-    //bool MoveBackupArchiveToDestination(const std::string& destination,
-    //                                    ResultCollection& results);
-
 
     BackupStatusManager statusManager;
 };

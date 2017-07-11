@@ -30,9 +30,16 @@ AbstractJob *ZipAndCopyFsBackupJob::Clone()
     return new ZipAndCopyFsBackupJob(*this);
 }
 
-bool ZipAndCopyFsBackupJob::Restore(const string &backupFile, const string &)
+bool ZipAndCopyFsBackupJob::Restore(const string &backupFile, const string &destination)
 {
-    const string params = string("-xf ") + backupFile;
+    if (FileTools::FolderExists(destination) == false)
+    {
+        bool result = FileTools::CreateFolder(destination);
+        if (!result)
+            return false;
+    }
+
+    const string params = string("-xf ") + backupFile + " -C " + destination;
     ConsoleJob commandJob("tar", params);
     commandJob.RunWithoutStatus();
 
@@ -46,13 +53,10 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
     if (isTargetLocal)
     {
 
-        bool ok = PrepareDestination(destination, results);
+        bool ok = RemovePreviousArchive(destination, results);
 
         if (ok)
             ok = CreateBackupArchive(source, destination, results);
-
-        //if (ok)
-        //    MoveBackupArchiveToDestination(destination, results);
     }
     else
     {
@@ -75,7 +79,7 @@ bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
 {
     JobStatus* status = new JobStatus();
 
-    const string params = string("-cpzvf ") + archiveName + " " + folderToBackup;
+    const string params = string("-cpzvf ") + archiveName + " -C " + folderToBackup + " .";
     ConsoleJob commandJob("tar", params);
     commandJob.RunWithoutStatus();
 
@@ -108,12 +112,9 @@ bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
     }
 }
 
-bool ZipAndCopyFsBackupJob::PrepareDestination(const string &destination,
+bool ZipAndCopyFsBackupJob::RemovePreviousArchive(const string &destination,
                                                AbstractBackupJob::ResultCollection &results)
 {
-/*    if (FileTools::FolderExists(destination) == false)
-        FileTools::CreateFolder(destination);
-*/
     const string finalBackupArchive = destination;// + "/" + archiveName;
     if (FileTools::FileExists(finalBackupArchive))
     {
@@ -132,21 +133,3 @@ bool ZipAndCopyFsBackupJob::PrepareDestination(const string &destination,
         return false;
     }
 }
-/*
-bool ZipAndCopyFsBackupJob::MoveBackupArchiveToDestination(const string &destination,
-                                                           AbstractBackupJob::ResultCollection &results)
-{
-    string params = archiveName + " " + destination + "/";
-
-    ConsoleJob commandJob("mv", params);
-    commandJob.RunWithoutStatus();
-
-    if (commandJob.GetCommandReturnCode() == 0)
-        return true;
-    else
-    {
-        JobStatus* status = new JobStatus(JobStatus::ERROR, "failed to move archive");
-        results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
-        return false;
-    }
-}*/

@@ -8,6 +8,7 @@ LOCALLIBPATH="/usr/lib/"
 TASKLIB="libTaskLib.so"
 PARSERSLIB="libParsersLib.so"
 TOOLSLIB="libToolsLib.so"
+CSSFILE=$TASKTOOLPATH"/data/report.css"
 
 EXT=".1"
 UNTESTED_TASKTOOL="untestedTaskTool"
@@ -38,6 +39,7 @@ ssh -t mickael@Desktop "cd $TASKTOOLPATH ; ./MakeSynologyBuild.sh"
 scp mickael@Desktop:$BINARIESPATH/TaskTool ./$UNTESTED_TASKTOOL
 mv $UNTESTED_TASKTOOL tasktool
 scp mickael@Desktop:$BINARIESPATH/CommandLineTool ./reportparser
+scp mickael@Desktop:$CSSFILE ./report.css
 scp mickael@Desktop:$BINARIESPATH/$TASKLIB $LOCALLIBPATH$TASKLIB
 scp mickael@Desktop:$BINARIESPATH/$PARSERSLIB $LOCALLIBPATH$PARSERSLIB
 scp mickael@Desktop:$BINARIESPATH/$TOOLSLIB $LOCALLIBPATH$TOOLSLIB
