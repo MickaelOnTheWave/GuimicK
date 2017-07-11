@@ -47,6 +47,8 @@ public:
     virtual int GetCommandReturnCode();
     virtual std::string GetCommandOutput() const;
 
+    bool IsRunOk() const;
+
 
     // TODO : find a better place for that. This is a global feature, not
     // necessary related to this job.

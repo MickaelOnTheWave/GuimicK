@@ -12,6 +12,7 @@ const string sshUser = "mickael";
 const string sshHost = "192.168.1.101";
 const string restoredFolder = "restore";
 const string archiveName = "backupArchive.tar";
+const string localArchive = "/tmp/localBackupArchive.tar";
 
 ZipAndCopyFsBackupJobTest::ZipAndCopyFsBackupJobTest(const string &dataPrefix,
                                                      const string& errorPrefix)
@@ -43,6 +44,7 @@ JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob()
 
     ZipAndCopyFsBackupJob* job = new ZipAndCopyFsBackupJob();
     job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), archiveName);
+    job->SetLocalDestination(localArchive);
     if (remote)
         job->SetTargetRemote(sshUser, sshHost);
     else

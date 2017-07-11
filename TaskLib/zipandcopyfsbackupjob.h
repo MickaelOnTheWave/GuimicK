@@ -3,6 +3,7 @@
 
 #include "abstractbackupjob.h"
 #include "backupstatusmanager.h"
+#include "AbstractConsoleJob.h"
 
 class ZipAndCopyFsBackupJob : public AbstractBackupJob
 {
@@ -16,6 +17,8 @@ public:
     static bool Restore(const std::string& backupFile,
                         const std::string& destination);
 
+    void SetLocalDestination(const std::string& value);
+
 protected:
     virtual void RunRepositoryBackup(const std::string& source,
                                      const std::string& destination,
@@ -27,8 +30,19 @@ private:
                              const std::string& archiveName,
                              ResultCollection& results);
     bool RemovePreviousArchive(const std::string& destination,
-                             ResultCollection& results);
+                               ResultCollection& results);
 
+    bool CopyBackupArchiveToDestination(const std::string& destination,
+                                        ResultCollection& results);
+
+    bool CleanBackupArchiveFromSource(ResultCollection& results);
+
+    void AddStatusToResults(ResultCollection& results,
+                            const int code, const std::string& message);
+
+    AbstractConsoleJob *CreateBackupConsoleJob(const std::string& parameters);
+
+    std::string localDestination;
     BackupStatusManager statusManager;
 };
 

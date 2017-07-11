@@ -112,6 +112,11 @@ string ConsoleJob::GetCommandOutput() const
     return commandOutput;
 }
 
+bool ConsoleJob::IsRunOk() const
+{
+    return receivedReturnCode == expectedReturnCode;
+}
+
 void ConsoleJob::AddAppSearchPath(const string &path)
 {
     appSearchPaths.push_back(path);

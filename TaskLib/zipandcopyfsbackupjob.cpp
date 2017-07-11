@@ -2,19 +2,22 @@
 
 #include "consolejob.h"
 #include "filetools.h"
+#include "sshconsolejob.h"
 #include "tarcommandparser.h"
 
 using namespace std;
 
 ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob()
-    : AbstractBackupJob("ZipCopyFsBackup")
+    : AbstractBackupJob("ZipCopyFsBackup"),
+      localDestination("")
 {
     statusManager.SetAttachmentName("ZipCopyFsBackup.txt");
     statusManager.SetDebugManager(debugManager);
 }
 
 ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob(const ZipAndCopyFsBackupJob& other)
-    : AbstractBackupJob(other)
+    : AbstractBackupJob(other),
+      localDestination(other.localDestination)
 {
     statusManager.SetAttachmentName("ZipCopyFsBackup.txt");
     statusManager.SetDebugManager(debugManager);
@@ -46,24 +49,29 @@ bool ZipAndCopyFsBackupJob::Restore(const string &backupFile, const string &dest
     return (commandJob.GetCommandReturnCode() == 0);
 }
 
+void ZipAndCopyFsBackupJob::SetLocalDestination(const string &value)
+{
+    localDestination = value;
+}
+
 void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
                                                 const std::string &destination,
                                                 AbstractBackupJob::ResultCollection &results)
 {
-    if (isTargetLocal)
-    {
+    bool ok = RemovePreviousArchive(destination, results);
 
-        bool ok = RemovePreviousArchive(destination, results);
+    const string localArchive = (isTargetLocal) ? destination : localDestination;
+
+    if (ok)
+        ok = CreateBackupArchive(source, localArchive, results);
+
+    if (!isTargetLocal)
+    {
+        if (ok)
+            ok = CopyBackupArchiveToDestination(destination, results);
 
         if (ok)
-            ok = CreateBackupArchive(source, destination, results);
-    }
-    else
-    {
-        // TODO : implement
-        // Run tar -cpzf archive.tar source/ on client
-        // copy tar archive to dest
-        // remove tar archive from client
+            CleanBackupArchiveFromSource(results);
     }
 }
 
@@ -80,13 +88,16 @@ bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
     JobStatus* status = new JobStatus();
 
     const string params = string("-cpzvf ") + archiveName + " -C " + folderToBackup + " .";
-    ConsoleJob commandJob("tar", params);
-    commandJob.RunWithoutStatus();
+    AbstractConsoleJob* commandJob = CreateBackupConsoleJob(params);
 
-    if (commandJob.GetCommandReturnCode() == 0)
+    JobStatus* unusedStatus = commandJob->Run();
+    delete unusedStatus;
+
+    bool returnValue = false;
+    if (commandJob->GetCommandReturnCode() == 0)
     {
-        TarCommandParser parser(commandJob.GetCommand());
-        bool ok = parser.ParseBuffer(commandJob.GetCommandOutput());
+        TarCommandParser parser(commandJob->GetCommand());
+        bool ok = parser.ParseBuffer(commandJob->GetCommandOutput());
         if (ok)
         {
             FileBackupReport* report = new FileBackupReport();
@@ -101,35 +112,86 @@ bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
             status->SetDescription("Failed creating report");
             results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
         }
-        return true;
+        returnValue = true;
     }
     else
     {
         status->SetCode(JobStatus::ERROR);
         status->SetDescription("tar command failed");
         results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
-        return false;
+        returnValue = false;
     }
+
+    delete commandJob;
+    return returnValue;
 }
 
 bool ZipAndCopyFsBackupJob::RemovePreviousArchive(const string &destination,
                                                AbstractBackupJob::ResultCollection &results)
 {
-    const string finalBackupArchive = destination;// + "/" + archiveName;
-    if (FileTools::FileExists(finalBackupArchive))
+    if (FileTools::FileExists(destination))
     {
         // TODO : implement this RemoveFile
         //FileTools::RemoveFile(finalBackupArchive);
-        const string params = string("-Rf ") + finalBackupArchive;
+        const string params = string("-Rf ") + destination;
         ConsoleJob::Run("rm", params);
     }
 
-    if (!FileTools::FileExists(finalBackupArchive))
-        return true;
+    const bool ok = !FileTools::FileExists(destination);
+    if (!ok)
+        AddStatusToResults(results, JobStatus::ERROR, "error cleaning destination");
+    return ok;
+}
+
+bool ZipAndCopyFsBackupJob::CopyBackupArchiveToDestination(
+        const string &destination,
+        AbstractBackupJob::ResultCollection &results)
+{
+    stringstream params;
+    params << sshUser << "@" << sshHost << ":" << localDestination << " " << destination;
+    ConsoleJob scpCommand("scp", params.str());
+    scpCommand.RunWithoutStatus();
+
+    const bool isRunOk = scpCommand.IsRunOk();
+    if (!isRunOk)
+        AddStatusToResults(results, JobStatus::ERROR, "error copying archive");
+
+    return isRunOk;
+}
+
+bool ZipAndCopyFsBackupJob::CleanBackupArchiveFromSource(AbstractBackupJob::ResultCollection &results)
+{
+    string parameters = string("-f ") + localDestination;
+    SshConsoleJob* remoteJob = new SshConsoleJob("", new ConsoleJob("rm", parameters));
+    remoteJob->SetTarget(sshUser, sshHost);
+
+    JobStatus* unusedStatus = remoteJob->Run();
+    delete unusedStatus;
+
+    const bool isOk = (remoteJob->GetCommandReturnCode() == 0);
+    if (!isOk)
+        AddStatusToResults(results, JobStatus::OK_WITH_WARNINGS, "remote archive not cleaned");
+
+    delete remoteJob;
+    return isOk;
+}
+
+void ZipAndCopyFsBackupJob::AddStatusToResults(AbstractBackupJob::ResultCollection &results,
+                                               const int code, const string &message)
+{
+    JobStatus* status = new JobStatus(code, message);
+    results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
+}
+
+AbstractConsoleJob *ZipAndCopyFsBackupJob::CreateBackupConsoleJob(const string &parameters)
+{
+    ConsoleJob* job = new ConsoleJob("tar", parameters);
+    if (isTargetLocal)
+        return job;
     else
     {
-        JobStatus* status = new JobStatus(JobStatus::ERROR, "error cleaning destination");
-        results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
-        return false;
+        SshConsoleJob* remoteJob = new SshConsoleJob("", job);
+        remoteJob->SetTarget(sshUser, sshHost);
+        return remoteJob;
     }
 }
