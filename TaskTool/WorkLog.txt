@@ -1,8 +1,14 @@
-11/07/2017 (16.4)
+11/07/2017 (2.7h)
 	Back to work. Trying to figure out if it is config file that causes weird bug - other commands, like
 	version, do not have it. Improved deploy script to send css file too. Now it seems that run is OK,
 	at least manually for light configuration. Now waiting for production run. Back to ZipCopy job.
 	ZipCopy local run is now working!
+	ZipCopy job finished, but there are still some errors in Rsnapshot task run. It seems to be
+	some .git folders.
+Next planned work :
+	- Clean up .git folders to validate rsnapshot jobs
+	- Check production run
+	- Update release plan
 
 10/07/2017 (0.4h)
 	Production run still failing. Checking why.. it seems that LD_LIBRARY_PATH was incorrectly
