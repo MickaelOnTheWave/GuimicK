@@ -1,3 +1,8 @@
+12/07/2017 (15.7-16.1)
+	Production still not running. Again this not found library issue. Probably best for long run to do
+	static builds... but right now, finishing off last bugs in tests.
+	Found and removed guilty .git folders. Now tests run as expected :-)
+
 11/07/2017 (2.7h)
 	Back to work. Trying to figure out if it is config file that causes weird bug - other commands, like
 	version, do not have it. Improved deploy script to send css file too. Now it seems that run is OK,
