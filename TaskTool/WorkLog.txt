@@ -1,7 +1,20 @@
-12/07/2017 (15.7-16.1)
+16/07/2017 (1.5h)
+	Production run still not working. Now spending time to fix this issue.
+	Not able to make tasktool output anything when run from crontab. Tried other commands, like
+	date and curl, and they work. Most probably, the issue is with finding libs. Trying to put them next
+	to executable as last try. Doesn't work, LD_LIBRARY_PATH seems mandatory. Only solution remaining :
+	create a static build.
+Next planned work:
+	- Create a static build of tasktool, if possible along with dynamic one
+
+12/07/2017 (0.9h)
 	Production still not running. Again this not found library issue. Probably best for long run to do
 	static builds... but right now, finishing off last bugs in tests.
 	Found and removed guilty .git folders. Now tests run as expected :-)
+	Probably fixed production issue - tasktool was successfully run after a reboot.
+Next planned work:
+	- Check production run
+	- Move on roadmap
 
 11/07/2017 (2.7h)
 	Back to work. Trying to figure out if it is config file that causes weird bug - other commands, like
