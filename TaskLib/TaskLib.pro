@@ -9,6 +9,8 @@ QT       -= core gui
 TARGET = TaskLib
 TEMPLATE = lib
 
+CONFIG += shared_and_static build_all
+
 DEFINES += TASKLIB_LIBRARY
 
 SOURCES += \

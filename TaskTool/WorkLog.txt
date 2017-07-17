@@ -1,3 +1,12 @@
+16/07/2017 (1.6h)
+	Changed build to create static executable. Updated deploy script to default to static build but
+	provide option for dynamic deploy too. Tested static version, now it works. There is still
+	a curl error though that prevents automated email sending.
+Next planned work :
+	- Check production run
+	- Fix curl error
+	- Move on roadmap
+
 16/07/2017 (1.5h)
 	Production run still not working. Now spending time to fix this issue.
 	Not able to make tasktool output anything when run from crontab. Tried other commands, like
