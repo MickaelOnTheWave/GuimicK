@@ -1,3 +1,10 @@
+17/07/2017 (18)
+	Production ran with errors on Git Fs backup and as expected, email sending. Previous idea of
+	using curl lib was discarded as curl was able to run, this is not the issue. Adding more
+	debug information to check next run. Also, due to attachment being scrambled, issue with Git
+	Fs backup was not detected. Waiting for another run to check this.
+
+
 16/07/2017 (1.6h)
 	Changed build to create static executable. Updated deploy script to default to static build but
 	provide option for dynamic deploy too. Tested static version, now it works. There is still

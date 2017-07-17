@@ -21,9 +21,11 @@ public:
     );
 
     void SetOutputDebugInformationOnFailure(const bool value);
+    void SetVerboseMode();
 
 protected:
     bool outputDebugInformation;
+    bool isVerbose;
 };
 
 #endif // CURLCONSOLEEMAILSENDER_H

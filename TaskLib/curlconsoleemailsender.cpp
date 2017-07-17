@@ -13,7 +13,8 @@ using namespace std;
 // @TODO Make proper implementation without clear password
 // @TODO Improve security handling SSL correctly without insecure option
 CurlConsoleEmailSender::CurlConsoleEmailSender()
-    : EmailReportDispatcher(), outputDebugInformation(false)
+    : EmailReportDispatcher(),
+      outputDebugInformation(false), isVerbose(false)
 {
 
 }
@@ -23,7 +24,7 @@ bool CurlConsoleEmailSender::Send(const bool isHtml,
                                   const string &subject, const string &body,
                                   const vector<string>& fileList, const vector<pair<string,string> >& fileBuffers)
 {
-    JobDebugInformationManager debugInfo("Email Sending", outputDebugInformation);
+    JobDebugInformationManager debugInfo("EmailSending", outputDebugInformation);
     const string mailFileName("mailContents.txt");
 
 	ofstream mailFile;
@@ -37,8 +38,8 @@ bool CurlConsoleEmailSender::Send(const bool isHtml,
     curlParams += "--mail-rcpt \"" + destEmail + "\" ";
     curlParams += "--upload-file " + mailFileName + " ";
     curlParams += "--user \"" + emailAddress + ":" + password + "\" ";
-    curlParams += "--insecure ";
-    curlParams += "--silent --show-error";
+    curlParams += "--insecure --show-error ";
+    curlParams += isVerbose ? "--verbose" : "--silent";
 
     debugInfo.AddDataLine<string>("Params", curlParams);
     ConsoleJob curl("curl", curlParams);
@@ -58,4 +59,9 @@ bool CurlConsoleEmailSender::Send(const bool isHtml,
 void CurlConsoleEmailSender::SetOutputDebugInformationOnFailure(const bool value)
 {
     outputDebugInformation = value;
+}
+
+void CurlConsoleEmailSender::SetVerboseMode()
+{
+    isVerbose = true;
 }

@@ -88,8 +88,6 @@ int main(int argc, char* argv[])
     if (onlyBackup)
         workList->RemoveAllButJobs("RSnapshot Backup");
 
-
-
     WorkResultData* workResult = workList->RunWorkList();
 
     reportCreator->Generate(workResult, PROGRAM_VERSION);
@@ -98,6 +96,7 @@ int main(int argc, char* argv[])
 
     CurlConsoleEmailSender sender;
     sender.SetOutputDebugInformationOnFailure(true);
+    sender.SetVerboseMode();
     sender.SetSenderData(
                 selfIdentity->name,
                 selfIdentity->email,
