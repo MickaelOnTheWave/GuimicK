@@ -27,9 +27,11 @@ bool CurlConsoleEmailSender::Send(const bool isHtml,
     JobDebugInformationManager debugInfo("EmailSending", outputDebugInformation);
     const string mailFileName("mailContents.txt");
 
+    MimeTools mimeCreator;
+
 	ofstream mailFile;
 	mailFile.open(mailFileName.c_str());
-    mailFile << MimeTools::CreateEmailContent(isHtml, displayName, emailAddress, destEmail, cc, bcc, subject, body, fileList, fileBuffers);
+    mailFile << mimeCreator.CreateEmailContent(isHtml, displayName, emailAddress, destEmail, cc, bcc, subject, body, fileList, fileBuffers);
 	mailFile.close();
 
     string curlParams;

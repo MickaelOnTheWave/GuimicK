@@ -3,6 +3,7 @@
 	using curl lib was discarded as curl was able to run, this is not the issue. Adding more
 	debug information to check next run. Also, due to attachment being scrambled, issue with Git
 	Fs backup was not detected. Waiting for another run to check this.
+	Fixed a TODO in mime creation : boundary flags are now generated at random, as required.
 
 
 16/07/2017 (1.6h)
