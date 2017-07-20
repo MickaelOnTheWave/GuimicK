@@ -65,6 +65,14 @@ private:
     bool AreClientPropertiesConsistent(ConfigurationObject* object,
                                        std::vector<std::string> &errorMessages);
 
+    void FillJobListLocally(ConfigurationObject* object,
+                            std::vector<std::string> &errorMessages);
+    void FillJobListRemotely(std::vector<std::string> &errorMessages);
+
+    void CopyClientFile(const std::string& source, const std::string& destination);
+    void FillRemoteClientObjects(const std::list<ConfigurationObject*>& objectList,
+                                 std::vector<std::string> &errorMessages);
+
 	Client* client;
 	SelfIdentity* self;
     std::list<AbstractJob*> jobList;

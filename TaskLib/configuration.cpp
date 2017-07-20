@@ -97,21 +97,11 @@ bool Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
     if (ok == false)
         return false;
 
-    ConfigurationObject* jobListObj = confObject->GetObject("JobList");
-    if (jobListObj == NULL)
-    {
-        errorMessages.push_back("Warning : client without job list");
-        return true;
-    }
-
-	list<ConfigurationObject*>::iterator itJobs = jobListObj->objectList.begin();
-	list<ConfigurationObject*>::iterator endJobs = jobListObj->objectList.end();
-	for (; itJobs != endJobs; itJobs++)
-	{
-        AbstractJob* parsedJob = CreateJobFromObject(*itJobs, errorMessages);
-        if (parsedJob)
-            jobList.push_back(parsedJob);
-	}
+    const string remoteJobList = confObject->GetProperty("remoteJobList");
+    if (remoteJobList == "true")
+        FillJobListRemotely(errorMessages);
+    else
+        FillJobListLocally(confObject->GetObject("JobList"), errorMessages);
 
     if (jobList.empty())
         errorMessages.push_back("Warning : client has an empty job list");
@@ -219,6 +209,62 @@ bool Configuration::AreClientPropertiesConsistent(ConfigurationObject *object,
     }
     else
         return true;
+}
+
+void Configuration::FillJobListLocally(ConfigurationObject* object,
+                                       std::vector<std::string> &errorMessages)
+{
+    ConfigurationObject* jobListObj = object->GetObject("JobList");
+    if (jobListObj == NULL)
+    {
+        errorMessages.push_back("Warning : client without job list");
+        return;
+    }
+
+    list<ConfigurationObject*>::iterator itJobs = jobListObj->objectList.begin();
+    list<ConfigurationObject*>::iterator endJobs = jobListObj->objectList.end();
+    for (; itJobs != endJobs; itJobs++)
+    {
+        AbstractJob* parsedJob = CreateJobFromObject(*itJobs, errorMessages);
+        if (parsedJob)
+            jobList.push_back(parsedJob);
+    }
+}
+
+void Configuration::FillJobListRemotely(std::vector<string> &errorMessages)
+{
+    const string defaultRemoteConfigurationFile = "~/.taskmanager";
+    const string tempClientFile = "tempClientConfiguration.conf";
+
+    // TODO refactor this : Configuration parser should be made like other parsers,
+    // can parse from file or buffer. And here it should parse buffer!
+
+    CopyClientFile(defaultRemoteConfigurationFile, tempClientFile);
+
+    ConfigurationParser parser;
+    bool result = parser.ParseFile(tempClientFile, errorMessages);
+    if (!result)
+        return;
+
+    FillRemoteClientObjects(parser.objectList, errorMessages);
+
+    ConsoleJob::Run("rm", string("-f ") + tempClientFile);
+}
+
+void Configuration::CopyClientFile(const string &source, const string &destination)
+{
+    // TODO : implement
+}
+
+void Configuration::FillRemoteClientObjects(const list<ConfigurationObject*> &objectList,
+                                            vector<string> &errorMessages)
+{
+    if (objectList.size() > 1)
+        errorMessages.push_back("Client configuration has unknown objects");
+    else if (objectList.size() == 0)
+        errorMessages.push_back("Client configuration is empty");
+    else
+        FillJobListLocally(objectList.front(), errorMessages);
 }
 
 ClientWorkManager *Configuration::BuildTimedWorkList() const

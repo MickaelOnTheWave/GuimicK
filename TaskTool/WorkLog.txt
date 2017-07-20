@@ -1,7 +1,12 @@
-20/07/2017 (19.3)
+20/07/2017 (0.9h)
 	Added full executable path information to debug output. Also checking where did curl got on
 	production run, the bug might be avoidable limiting the binary paths in configuration file.
 	It only exists in a single place, so it can't be that. Adding version information too.
+	Now going for Configuration separation. Thinking about best way to resolve this.
+	Created 3 examples for configuration parser. Also started implementing remote configuration.
+Next planned work:
+	- Check production run and debug output. Try to find out the issue and find a fix.
+	- Finish implementation for Remote configuration parser.
 
 17/07/2017 (2.3h)
 	Production ran with errors on Git Fs backup and as expected, email sending. Previous idea of
