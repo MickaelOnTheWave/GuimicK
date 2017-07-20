@@ -23,7 +23,9 @@ public:
     void SetOutputDebugInformationOnFailure(const bool value);
     void SetVerboseMode();
 
-protected:
+private:
+    std::string GetCurlVersion() const;
+
     bool outputDebugInformation;
     bool isVerbose;
 };

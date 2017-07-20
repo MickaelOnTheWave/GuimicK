@@ -48,8 +48,10 @@ bool CurlConsoleEmailSender::Send(const bool isHtml,
     JobStatus* status = curl.Run();
     if (status->GetCode() != JobStatus::OK)
     {
+        debugInfo.AddDataLine<string>("Command executable", curl.GetCommand());
         debugInfo.AddDataLine<int>("Return code", curl.GetCommandReturnCode());
         debugInfo.AddDataLine<string>("Output", curl.GetCommandOutput());
+        debugInfo.AddDataLine<string>("Curl version", GetCurlVersion());
         debugInfo.WriteToFile();
     }
     else
@@ -66,4 +68,11 @@ void CurlConsoleEmailSender::SetOutputDebugInformationOnFailure(const bool value
 void CurlConsoleEmailSender::SetVerboseMode()
 {
     isVerbose = true;
+}
+
+string CurlConsoleEmailSender::GetCurlVersion() const
+{
+    ConsoleJob command("curl", "--version");
+    command.RunWithoutStatus();
+    return command.GetCommandOutput();
 }
