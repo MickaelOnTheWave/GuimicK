@@ -1,10 +1,22 @@
-20/07/2017 (0.9h)
+23/07/2017 (1.1h)
+	Analyzed production run. Failed because of other curl version being used, which leads to various
+	approaches to fix it. Best (long) one : link with libcurl instead of using console. Short one :
+	create an option to force execution of specific binary.
+	Gone for first option. Refactored curl console and Email UI to use both curl from tools lib.
+	Email UI worked like a charm, now TaskTool is having serious problems with static linking curl.
+Next planned work:
+	- Find out how to static link curl in task tool, both pc and Synology.
+	- Finish Curl lib sending and check production run
+	- Move on Roadmap
+
+20/07/2017 (1.1h)
 	Added full executable path information to debug output. Also checking where did curl got on
 	production run, the bug might be avoidable limiting the binary paths in configuration file.
 	It only exists in a single place, so it can't be that. Adding version information too.
 	Now going for Configuration separation. Thinking about best way to resolve this.
 	Created 3 examples for configuration parser. Also started implementing remote configuration.
 Next planned work:
+	- Fix failing tests
 	- Check production run and debug output. Try to find out the issue and find a fix.
 	- Finish implementation for Remote configuration parser.
 

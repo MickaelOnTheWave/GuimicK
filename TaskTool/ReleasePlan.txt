@@ -83,12 +83,12 @@ v1.0 :
 	[017] Properly handle all error cases
 
 v0.9 :
-	[032] Property handle encodings for strings
-	[003] Use Curl lib instead of command line
 	[023] Remove wakelan executable dependency
 	[024] Remove ping executable dependency
+	[032] Property handle encodings for strings
 
 v0.8 :
+	[003] Use Curl lib instead of command line
 	[029] Split job config file into client/server files.
 	[034] Create Qt client app to create/manage backup folder configuration.
 	[047] Have a Restore option in backup jobs
