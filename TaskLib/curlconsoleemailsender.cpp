@@ -13,8 +13,7 @@ using namespace std;
 // @TODO Make proper implementation without clear password
 // @TODO Improve security handling SSL correctly without insecure option
 CurlConsoleEmailSender::CurlConsoleEmailSender()
-    : EmailReportDispatcher(),
-      outputDebugInformation(false), isVerbose(false)
+    : EmailReportDispatcher()
 {
 
 }
@@ -58,16 +57,6 @@ bool CurlConsoleEmailSender::Send(const bool isHtml,
         remove(mailFileName.c_str());
 
     return (status->GetCode() == JobStatus::OK);
-}
-
-void CurlConsoleEmailSender::SetOutputDebugInformationOnFailure(const bool value)
-{
-    outputDebugInformation = value;
-}
-
-void CurlConsoleEmailSender::SetVerboseMode()
-{
-    isVerbose = true;
 }
 
 string CurlConsoleEmailSender::GetCurlVersion() const

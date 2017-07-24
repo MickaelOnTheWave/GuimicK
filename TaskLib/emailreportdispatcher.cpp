@@ -5,9 +5,9 @@
 using namespace std;
 
 EmailReportDispatcher::EmailReportDispatcher()
+    : outputDebugInformation(false), isVerbose(false)
 {
 }
-
 
 void EmailReportDispatcher::SetSenderData(
 		const string& _displayName,
@@ -26,6 +26,15 @@ void EmailReportDispatcher::SetSenderData(
 	useSsl = _useSsl;
 }
 
+void EmailReportDispatcher::SetOutputDebugInformationOnFailure(const bool value)
+{
+    outputDebugInformation = value;
+}
+
+void EmailReportDispatcher::SetVerboseMode()
+{
+    isVerbose = true;
+}
 
 string EmailReportDispatcher::GetSmtpUrl()
 {

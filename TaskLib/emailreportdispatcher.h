@@ -16,10 +16,12 @@ public:
 		const std::string& _smtpServer,
 		const int _smtpPort,
 		const bool _useSsl
-			);
+    );
+
+    void SetOutputDebugInformationOnFailure(const bool value);
+    void SetVerboseMode();
 
 protected:
-
 	std::string GetSmtpUrl();
 
 	std::string displayName;
@@ -28,6 +30,8 @@ protected:
 	std::string smtpServer;
 	int smtpPort;
 	bool useSsl;
+    bool outputDebugInformation;
+    bool isVerbose;
 };
 
 #endif // EMAILREPORTDISPATCHER_H

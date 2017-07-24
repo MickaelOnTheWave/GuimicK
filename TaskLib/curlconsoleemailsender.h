@@ -20,14 +20,8 @@ public:
             const std::vector<std::pair<std::string,std::string> >& fileBuffers
     );
 
-    void SetOutputDebugInformationOnFailure(const bool value);
-    void SetVerboseMode();
-
 private:
     std::string GetCurlVersion() const;
-
-    bool outputDebugInformation;
-    bool isVerbose;
 };
 
 #endif // CURLCONSOLEEMAILSENDER_H
