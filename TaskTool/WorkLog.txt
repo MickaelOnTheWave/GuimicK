@@ -1,3 +1,17 @@
+26/07/2017 (2h)
+	Production run still failing with same issue. As workaround, changed syno curl binary to be
+	default one in ssh. This way emails could go through.
+	Working with libcurl static build. Several issues found, first one including a static lib
+	in another static lib is not "normal" behaviour and requires fine tuning. Going the other way
+	around : linking curl will be done on libTools users.
+	Trying to static build libcurl. Downloaded source code and built it, however it seems that its
+	dependencies are not build correctly. Did some work on that, now it is better but linking still
+	does not work. Working on ExternalCommandTester for easy example.
+Next planned work:
+	- Check minimalist libcurl settings using curl command line. Use report from Synology?
+	- Resolve libcurl static build/linking
+	- Once resolved, build libcurl for synology
+
 23/07/2017 (1.1h)
 	Analyzed production run. Failed because of other curl version being used, which leads to various
 	approaches to fix it. Best (long) one : link with libcurl instead of using console. Short one :
