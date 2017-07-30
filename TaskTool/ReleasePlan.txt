@@ -78,20 +78,20 @@ v1.1 :
 	[046] Include a Windows update job
 
 v1.0 :
-	[016] Create a package with binaries for easy install
-	[040] Use a zip lib to organize attachments in archives
-	[017] Properly handle all error cases
-
-v0.9 :
 	[023] Remove wakelan executable dependency
 	[024] Remove ping executable dependency
+	[016] Create a package with binaries for easy install
 	[032] Property handle encodings for strings
 
-v0.8 :
-	[003] Use Curl lib instead of command line
+v0.9 :
 	[029] Split job config file into client/server files.
 	[034] Create Qt client app to create/manage backup folder configuration.
 	[047] Have a Restore option in backup jobs
+
+v0.8 :
+	[003] Use Curl lib instead of command line
+	[040] Use a zip lib to organize attachments in archives
+	[017] Properly handle all error cases
 
 v0.7 : 12/07/2017
 	[037] Have automated tests for all features

@@ -1,3 +1,21 @@
+30/07/2017 (2.2h)
+	Production run did send email - at least that is working. However, still focusing on having
+	curl statically linked.
+	Tried to merge libraries using ar. It seems to work. However it seems impossible to fullfill all
+	libcurl dependencies. Especially pthreads.
+	Asking a question on StackOverflow about this issue, and waiting for an answer...
+Next planned work:
+	- Check for an answer on StackOverflow
+
+27/07/2017 (0.7h)
+	Production run still did not work, even for email sending. Current curl build is sending emails
+	as expected, keeping it for integration. Now back to trying to make static libcurl work...
+	Tried again without success.. :-( There seems to be no way of linking statically all libs minus
+	Qt.
+Next planned work :
+	- Consider creating a CMake project for ToolsLib with libcurl. The goal is to have it include
+	libcurl.
+
 26/07/2017 (2h)
 	Production run still failing with same issue. As workaround, changed syno curl binary to be
 	default one in ssh. This way emails could go through.
