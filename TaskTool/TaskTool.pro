@@ -3,7 +3,12 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-QMAKE_LFLAGS += -static
+#contains( CONFIG, Shared ) {
+#	message("Shared build")
+#}
+#else {
+#	message("Static build")
+#}
 
 SOURCES += main.cpp
 
@@ -31,10 +36,17 @@ unix:!macx: LIBS += -L$$PARSERS_LIB_PATH -lParsersLib
 INCLUDEPATH += $$PARSERS_INCLUDE_PATH
 DEPENDPATH += $$PARSERS_INCLUDE_PATH
 
+# linking NetworkToolsLib
+NETWORKTOOLS_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/NetworkToolsLib/
+NETWORKTOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/NetworkToolsLib/
+LIBS += -L$$NETWORKTOOLS_LIB_PATH -lNetworkToolsLib -lcurl
+INCLUDEPATH += $$NETWORKTOOLS_INCLUDE_PATH
+DEPENDPATH += $$NETWORKTOOLS_INCLUDE_PATH
+
 # linking ToolsLib
 TOOLS_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/ToolsLib
 TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
-LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
+LIBS += -L$$TOOLS_LIB_PATH  -lToolsLib
 INCLUDEPATH += $$TOOLS_INCLUDE_PATH
 DEPENDPATH += $$TOOLS_INCLUDE_PATH
 
@@ -49,3 +61,4 @@ OTHER_FILES += \
     data/realconf.txt \
     data/git.txt \
     data/report.css
+

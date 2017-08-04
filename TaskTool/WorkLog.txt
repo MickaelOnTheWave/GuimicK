@@ -1,3 +1,17 @@
+03/08/2017 (20.3)
+	Still no answer on StackOverflow. Re-analyzed the issue and possible solutions. Full static
+	build would resolve the dependency problem (and strange chroot on NAS) ideally, but is not at
+	all practical : even if all libs were downloaded, configured and built and statically linked
+	into one executable, this would need to be done for all platforms : NAS and Windows. As NAS
+	compiler is limited, what guarantee do I have that it would compile all dependencies?
+	On Windows dynamic linking is not an issue : it is easy to copy around dlls. So, the only
+	platform where this would be a better solution once deployed would be NAS. And it is a weird
+	enough platform to not design the solution around it. So, back to dynamic linking.
+	The ideal solution would actually be statically link all in-house dependencies and dynamic link
+	only external ones (curl, openssl...). First going back to full dynamic linking.
+	In order to not force curl dependency on all users of ToolsLib, a new NetworkToolsLib has been
+	created with the email sending class and mime content creation.
+
 30/07/2017 (2.2h)
 	Production run did send email - at least that is working. However, still focusing on having
 	curl statically linked.

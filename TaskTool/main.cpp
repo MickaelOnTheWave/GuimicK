@@ -6,14 +6,14 @@
 #include "commandlinemanager.h"
 #include "consolejob.h"
 #include "configuration.h"
-#include "curlconsoleemailsender.h"
+#include "curllibemailsender.h"
 #include "SelfIdentity.h"
 
 #include <fstream>
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.71";
+static const string PROGRAM_VERSION = "0.72";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
 void ShowErrors(vector<string> &errorMessages);
@@ -94,9 +94,7 @@ int main(int argc, char* argv[])
     string reportData = reportCreator->GetReportContent();
     delete workResult;
 
-    CurlConsoleEmailSender sender;
-    sender.SetOutputDebugInformationOnFailure(true);
-    sender.SetVerboseMode();
+    CurlLibEmailSender sender;
     sender.SetSenderData(
                 selfIdentity->name,
                 selfIdentity->email,
