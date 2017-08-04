@@ -7,6 +7,7 @@ BINARIESPATH="~/Prog/TaskManager/bin/SynologyPackage"
 LOCALLIBPATH="/usr/lib/"
 TASKLIB="libTaskLib.so"
 PARSERSLIB="libParsersLib.so"
+NETWORKTOOLSLIB="libNetworkToolsLib.so"
 TOOLSLIB="libToolsLib.so"
 CSSFILE=$TASKTOOLPATH"/data/report.css"
 
@@ -29,6 +30,31 @@ removeIfExists()
 	fi
 }
 
+removeLib()
+{
+	LIB=$1
+	removeIfExists $LOCALLIBPATH$LIB
+	removeIfExists $LOCALLIBPATH$LIB$EXT
+}
+
+copyLibFromRemote()
+{
+	LIB=$1
+	scp mickael@Desktop:$BINARIESPATH/$LIB $LOCALLIBPATH$LIB
+}
+
+createLibDynamicLink()
+{
+	LIB=$1
+	ln -s $LOCALLIBPATH$LIB $LOCALLIBPATH$LIB$EXT
+}
+
+setupLib()
+{
+	LIB=$1
+	copyLibFromRemote $LIB
+	createLibDynamicLink $LIB
+}
 
 if [ -f tasktool ]
 then
@@ -37,12 +63,10 @@ fi
 
 if [ "$STATIC_SETUP" = false ]
 then
-	removeIfExists $LOCALLIBPATH$TASKLIB
-	removeIfExists $LOCALLIBPATH$TASKLIB$EXT
-	removeIfExists $LOCALLIBPATH$PARSERSLIB
-	removeIfExists $LOCALLIBPATH$PARSERSLIB$EXT
-	removeIfExists $LOCALLIBPATH$TOOLSLIB
-	removeIfExists $LOCALLIBPATH$TOOLSLIB$EXT
+	removeLib $TASKLIB
+	removeLib $PARSERSLIB
+	removeLib $NETWORKTOOLSLIB
+	removeLib $TOOLSLIB
 fi
 
 ssh -t mickael@Desktop "cd $TASKTOOLPATH ; ./MakeSynologyBuild.sh"
@@ -54,13 +78,10 @@ scp mickael@Desktop:$CSSFILE ./report.css
 
 if [ "$STATIC_SETUP" = false ]
 then
-	scp mickael@Desktop:$BINARIESPATH/$TASKLIB $LOCALLIBPATH$TASKLIB
-	scp mickael@Desktop:$BINARIESPATH/$PARSERSLIB $LOCALLIBPATH$PARSERSLIB
-	scp mickael@Desktop:$BINARIESPATH/$TOOLSLIB $LOCALLIBPATH$TOOLSLIB
-
-	ln -s $LOCALLIBPATH$TASKLIB $LOCALLIBPATH$TASKLIB$EXT
-	ln -s $LOCALLIBPATH$PARSERSLIB $LOCALLIBPATH$PARSERSLIB$EXT
-	ln -s $LOCALLIBPATH$TOOLSLIB $LOCALLIBPATH$TOOLSLIB$EXT
+	setupLib $TASKLIB
+	setupLib $PARSERSLIB
+	setupLib $NETWORKTOOLSLIB
+	setupLib $TOOLSLIB
 fi
 
 if [ -f tasktool ]

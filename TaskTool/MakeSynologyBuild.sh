@@ -1,17 +1,27 @@
 #!/bin/sh
 
 TARGET_DIRECTORY="/home/mickael/Prog/TaskManager/bin/SynologyPackage/"
+
 TOOLS_BUILD_PATH="/home/mickael/Prog/Tools/bin/Synology/"
 TOOLSLIB_BIN_PATH=$TOOLS_BUILD_PATH"ToolsLib/"
 TOOLSLIB_PATH="/home/mickael/Prog/Tools/ToolsLib/"
+
+NETWORKTOOLSLIB_BIN_PATH=$TOOLS_BUILD_PATH"NetworkToolsLib/"
+NETWORKTOOLSLIB_PATH="/home/mickael/Prog/Tools/NetworkToolsLib/"
+
+
 TASKMANAGER_BUILD_PATH="/home/mickael/Prog/TaskManager/bin/Synology/"
+
 PARSERSLIB_BIN_PATH1="/home/mickael/Prog/TaskManager/bin/Synology/ReportParsers/"
 PARSERSLIB_BIN_PATH=$PARSERSLIB_BIN_PATH1"ParsersLib/"
 PARSERSLIB_PATH="/home/mickael/Prog/TaskManager/ReportParsers/ParsersLib/"
+
 TASKLIB_BIN_PATH="/home/mickael/Prog/TaskManager/bin/Synology/TaskLib"
 TASKLIB_PATH="/home/mickael/Prog/TaskManager/TaskLib/"
+
 TASKTOOL_BIN_PATH="/home/mickael/Prog/TaskManager/bin/Synology/TaskTool"
 TASKTOOL_PATH="/home/mickael/Prog/TaskManager/TaskTool/"
+
 PARSERTOOL_BIN_PATH="/home/mickael/Prog/TaskManager/bin/Synology/ReportParsers/CommandLineTool/"
 PARSERTOOL_PATH="/home/mickael/Prog/TaskManager/ReportParsers/CommandLineTool/"
 
@@ -31,6 +41,12 @@ createFolderIfNotPresent $TOOLSLIB_BIN_PATH
 cd $TOOLSLIB_BIN_PATH
 qmake -spec linux-arm-synology -o toolsMakefile "CONFIG+=synology" $TOOLSLIB_PATH/ToolsLib.pro
 make -f toolsMakefile
+
+# Building Network Tools lib
+createFolderIfNotPresent $NETWORKTOOLSLIB_BIN_PATH
+cd $NETWORKTOOLSLIB_BIN_PATH
+qmake -spec linux-arm-synology -o networktoolsMakefile "CONFIG+=synology" $NETWORKTOOLSLIB_PATH/NetworkToolsLib.pro
+make -f networktoolsMakefile
 
 # Building Parsers lib
 createFolderIfNotPresent $PARSERSLIB_BIN_PATH1
@@ -65,6 +81,7 @@ fi
 mkdir $TARGET_DIRECTORY
 
 cp $TOOLSLIB_BIN_PATH/libToolsLib.so $TARGET_DIRECTORY/
+cp $NETWORKTOOLSLIB_BIN_PATH/libNetworkToolsLib.so $TARGET_DIRECTORY/
 cp $PARSERSLIB_BIN_PATH/libParsersLib.so $TARGET_DIRECTORY/
 cp $TASKLIB_BIN_PATH/libTaskLib.so $TARGET_DIRECTORY/
 cp $TASKTOOL_BIN_PATH/TaskTool $TARGET_DIRECTORY/
