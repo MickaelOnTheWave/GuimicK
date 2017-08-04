@@ -87,11 +87,13 @@ v0.9 :
 	[029] Split job config file into client/server files.
 	[034] Create Qt client app to create/manage backup folder configuration.
 	[047] Have a Restore option in backup jobs
+	[043] Create an archive differential File backup job
 
 v0.8 :
 	[003] Use Curl lib instead of command line
-	[040] Use a zip lib to organize attachments in archives
 	[017] Properly handle all error cases
+	[040] Use a zip lib to organize attachments in archives
+	[044] Add generic debugging option for all jobs
 
 v0.7 : 12/07/2017
 	[037] Have automated tests for all features
