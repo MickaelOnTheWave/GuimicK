@@ -223,7 +223,12 @@ void UserConsoleJob::FillErrorStatusFromReturnCode()
 
     stringstream message;
     message << "Return value : " << receivedReturnCode << " - expected : " << expectedReturnCode << endl;
+
     currentStatus->SetDescription(message.str());
+
+    const string attachmentName = GetName() + ".txt";
+    const string content = string("Output : \n") + commandOutput;
+    currentStatus->AddFileBuffer(attachmentName, content);
 }
 
 void UserConsoleJob::FinalizeStatusCreation()

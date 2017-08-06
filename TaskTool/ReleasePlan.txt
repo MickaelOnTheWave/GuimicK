@@ -48,6 +48,7 @@ Features to implement:
 	[046] Include a Windows update job
 	[047] Have a Restore option in backup jobs
 	[048] Create configuration checking tool/feature
+	[049] Make build be at least partially static (internal dependencies static)
 
 Abandoned features :
 	[020] Check/repair Screensaver modification from script
@@ -76,6 +77,7 @@ v1.1 :
 	[006] Include Harddrive check job
 	[007] Include Defragmentation job
 	[046] Include a Windows update job
+	[049] Make build be at least partially static (internal dependencies static)
 
 v1.0 :
 	[023] Remove wakelan executable dependency

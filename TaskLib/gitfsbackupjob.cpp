@@ -59,11 +59,6 @@ JobStatus *GitFsBackupJob::Run()
         return AbstractBackupJob::Run();
 }
 
-void GitFsBackupJob::SetOutputDebugInformation(const bool value)
-{
-    debugManager->SetUse(value);
-}
-
 void GitFsBackupJob::SetJoinAllBackups(const bool value)
 {
     statusManager.SetJoinReports(value);
@@ -303,7 +298,7 @@ AbstractCopyFsBackupJob *GitFsBackupJob::PrepareCopy(const string &destination, 
 {
     bool usingRawCopy = (forceRawCopy || !RsyncCopyFsBackupJob::IsAvailable());
 
-    if (debugManager->IsUsed())
+    if (debugManager->GetUse() == DebugOutput::ALWAYS)
     {
         string rsyncPath = Tools::GetCommandPath("rsync", ConsoleJob::appSearchPaths);
         debugManager->AddDataLine<string>("Rsync path", rsyncPath);

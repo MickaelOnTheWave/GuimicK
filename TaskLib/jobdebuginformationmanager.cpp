@@ -7,7 +7,7 @@ using namespace std;
 
 JobDebugInformationManager::JobDebugInformationManager(const string &jobName,
         const bool _usingDebug
-        ) : usingDebug(_usingDebug), allData("")
+        ) : debugUse(_usingDebug), allData("")
 {
     debugFilename = jobName + "DebugInformation.txt";
 }
@@ -15,7 +15,7 @@ JobDebugInformationManager::JobDebugInformationManager(const string &jobName,
 JobDebugInformationManager::JobDebugInformationManager(const JobDebugInformationManager &other)
 {
     debugFilename = other.debugFilename;
-    usingDebug = other.usingDebug;
+    debugUse = other.debugUse;
     allData = other.allData;
 }
 
@@ -24,19 +24,19 @@ void JobDebugInformationManager::Reset()
     allData = "";
 }
 
-bool JobDebugInformationManager::IsUsed() const
+int JobDebugInformationManager::GetUse() const
 {
-    return usingDebug;
+    return debugUse;
 }
 
-void JobDebugInformationManager::SetUse(const bool value)
+void JobDebugInformationManager::SetUse(const int value)
 {
-    usingDebug = value;
+    debugUse = value;
 }
 
 void JobDebugInformationManager::AddTagLine(const string &tag)
 {
-    if (usingDebug == false)
+    if (debugUse == false)
         return;
 
     std::stringstream line;
@@ -46,7 +46,7 @@ void JobDebugInformationManager::AddTagLine(const string &tag)
 
 JobStatus *JobDebugInformationManager::UpdateStatus(JobStatus *status) const
 {
-    if (usingDebug == true)
+    if (debugUse == true)
         status->AddFileBuffer(debugFilename, allData);
     return status;
 }

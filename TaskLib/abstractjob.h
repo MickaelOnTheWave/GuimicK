@@ -6,10 +6,18 @@
 #include "client.h"
 #include "jobstatus.h"
 
+namespace DebugOutput
+{
+    static const int NEVER = 0;
+    static const int ON_ERROR = 1;
+    static const int ALWAYS = 2;
+}
+
 class AbstractJob
 {
 public:
-	virtual ~AbstractJob() {}
+    AbstractJob();
+    virtual ~AbstractJob();
 
 	virtual std::string GetName() = 0;
 
@@ -30,6 +38,11 @@ public:
 		@note It is caller's responsibility to delete the JobStatus object.
 	  */
 	virtual JobStatus* Run() = 0;
+
+    void SetOutputDebugInformation(const int value);
+
+protected:
+    int outputDebugInformation;
 };
 
 #endif // ABSTRACTJOB_H

@@ -17,7 +17,6 @@ public:
     virtual AbstractJob* Clone();
     virtual JobStatus* Run();
 
-    void SetOutputDebugInformation(const bool value);
     void SetJoinAllBackups(const bool value);
     void SetForceRawCopyUse(const bool value);
 

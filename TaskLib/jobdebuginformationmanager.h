@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 
+#include "abstractjob.h"
 #include "jobstatus.h"
 
 class JobDebugInformationManager
@@ -13,15 +14,15 @@ public:
     JobDebugInformationManager(const JobDebugInformationManager& other);
 
     void Reset();
-    bool IsUsed() const;
-    void SetUse(const bool value);
+    void SetUse(const int value);
+    int GetUse() const;
 
     void AddTagLine(const std::string& tag);
 
     template <class T>
     void AddDataLine(const std::string& label, const T& data)
     {
-        if (usingDebug == false)
+        if (debugUse == DebugOutput::NEVER)
             return;
 
         std::stringstream line;
@@ -35,7 +36,7 @@ public:
 
 private:
     std::string debugFilename;
-    bool usingDebug;
+    int debugUse;
     std::string allData;
 };
 

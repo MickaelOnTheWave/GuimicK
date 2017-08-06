@@ -61,7 +61,8 @@ SOURCES += \
     rsynccopyfsbackupjob.cpp \
     rawcopyfsbackupjob.cpp \
     copyjobchooser.cpp \
-    zipandcopyfsbackupjob.cpp
+    zipandcopyfsbackupjob.cpp \
+    abstractjob.cpp
 
 HEADERS +=\
     abstractjob.h \
