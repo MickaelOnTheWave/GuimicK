@@ -1,3 +1,12 @@
+06/08/2017 (15.4)
+	Dynamic linking solution would only work on a "proper" unix-like environment, which the NAS
+	system has proven not to be. Remaining solutions are static linking and leaving as it is for
+	now. It would be a shame to design the solution based only on Synology NAS as it is a weird
+	environment. The emergency is to have backup running again on Synology, and existing "solution"
+	(override default curl executable with proper one) is currently working, so the best is
+	to leave this for the future, once the run is fully ok.
+	For now, getting the build to work again and then go for error management.
+
 03/08/2017 (2.2h)
 	Still no answer on StackOverflow. Re-analyzed the issue and possible solutions. Full static
 	build would resolve the dependency problem (and strange chroot on NAS) ideally, but is not at

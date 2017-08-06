@@ -99,10 +99,15 @@ bool Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
 
     const string remoteJobList = confObject->GetProperty("remoteJobList");
     if (remoteJobList == "true")
-        FillJobListRemotely(errorMessages);
+        ok = FillJobListRemotely(errorMessages);
     else
-        FillJobListLocally(confObject->GetObject("JobList"), errorMessages);
+        ok = FillJobListLocally(confObject->GetObject("JobList"), errorMessages);
 
+    if (!ok)
+        return false;
+
+    // TODO : refactor this so that this warning is not shown if there is no job list
+    // (redundancy)
     if (jobList.empty())
         errorMessages.push_back("Warning : client has an empty job list");
 
@@ -211,27 +216,27 @@ bool Configuration::AreClientPropertiesConsistent(ConfigurationObject *object,
         return true;
 }
 
-void Configuration::FillJobListLocally(ConfigurationObject* object,
+bool Configuration::FillJobListLocally(ConfigurationObject* jobListObj,
                                        std::vector<std::string> &errorMessages)
 {
-    ConfigurationObject* jobListObj = object->GetObject("JobList");
     if (jobListObj == NULL)
-    {
         errorMessages.push_back("Warning : client without job list");
-        return;
+    else
+    {
+        list<ConfigurationObject*>::iterator itJobs = jobListObj->objectList.begin();
+        list<ConfigurationObject*>::iterator endJobs = jobListObj->objectList.end();
+        for (; itJobs != endJobs; itJobs++)
+        {
+            AbstractJob* parsedJob = CreateJobFromObject(*itJobs, errorMessages);
+            if (parsedJob)
+                jobList.push_back(parsedJob);
+        }
     }
 
-    list<ConfigurationObject*>::iterator itJobs = jobListObj->objectList.begin();
-    list<ConfigurationObject*>::iterator endJobs = jobListObj->objectList.end();
-    for (; itJobs != endJobs; itJobs++)
-    {
-        AbstractJob* parsedJob = CreateJobFromObject(*itJobs, errorMessages);
-        if (parsedJob)
-            jobList.push_back(parsedJob);
-    }
+    return true;
 }
 
-void Configuration::FillJobListRemotely(std::vector<string> &errorMessages)
+bool Configuration::FillJobListRemotely(std::vector<string> &errorMessages)
 {
     const string defaultRemoteConfigurationFile = "~/.taskmanager";
     const string tempClientFile = "tempClientConfiguration.conf";
@@ -244,11 +249,12 @@ void Configuration::FillJobListRemotely(std::vector<string> &errorMessages)
     ConfigurationParser parser;
     bool result = parser.ParseFile(tempClientFile, errorMessages);
     if (!result)
-        return;
+        return false;
 
     FillRemoteClientObjects(parser.objectList, errorMessages);
 
     ConsoleJob::Run("rm", string("-f ") + tempClientFile);
+    return true;
 }
 
 void Configuration::CopyClientFile(const string &source, const string &destination)

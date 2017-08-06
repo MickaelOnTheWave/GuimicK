@@ -163,7 +163,8 @@ void ConfigurationTest::LoadClientExamples()
     QTest::newRow("Client - No job list")
                             << "client - no job list.txt"
                             << true
-                            << QStringList({"Warning : client without job list"});
+                            << QStringList({"Warning : client without job list",
+                                           "Warning : client has an empty job list"});
     QTest::newRow("Client - empty job list")
                             << "client - empty job list.txt"
                             << true
