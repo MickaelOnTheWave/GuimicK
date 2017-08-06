@@ -6,7 +6,9 @@ CONFIG -= qt
 contains( CONFIG, UseCurlLib ) {
 	DEFINES += USE_CURL_LIB
 }
-
+else {
+	QMAKE_LFLAGS += -static
+}
 #contains( CONFIG, Shared ) {
 #	message("Shared build")
 #}
