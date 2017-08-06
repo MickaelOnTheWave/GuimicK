@@ -68,7 +68,6 @@ int main(int argc, char* argv[])
         return CONFIGURATION_ERROR;
     }
 
-
     SelfIdentity* selfIdentity = configuration.GetAgent();
 
     ClientWorkManager* workList = configuration.BuildTimedWorkList();

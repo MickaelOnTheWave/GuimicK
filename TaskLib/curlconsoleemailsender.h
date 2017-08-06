@@ -5,15 +5,18 @@
 #include <string>
 #include <vector>
 
-class CurlConsoleEmailSender : public EmailReportDispatcher
+class CurlConsoleReportDispatcher : public EmailReportDispatcher
 {
 public:
-    CurlConsoleEmailSender();
+    CurlConsoleReportDispatcher();
 
-    bool Dispatch(AbstractReportCreator* reportCreator);
+    virtual bool Dispatch(AbstractReportCreator* reportCreator);
 
 private:
     std::string GetCurlVersion() const;
+    std::string BuildCurlParams(const std::string& mailFilename) const;
+    void WriteReportContentToFile(AbstractReportCreator* reportCreator,
+                                  const std::string& filename);
 };
 
 #endif // CURLCONSOLEEMAILSENDER_H

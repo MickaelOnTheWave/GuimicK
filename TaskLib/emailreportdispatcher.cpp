@@ -40,7 +40,7 @@ void EmailReportDispatcher::SetVerboseMode()
     isVerbose = true;
 }
 
-string EmailReportDispatcher::GetSmtpUrl()
+string EmailReportDispatcher::GetSmtpUrl() const
 {
 	string smtpUrl("smtp://");
 	smtpUrl += smtpServer + ":";

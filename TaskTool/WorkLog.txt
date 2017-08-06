@@ -5,7 +5,9 @@
 	environment. The emergency is to have backup running again on Synology, and existing "solution"
 	(override default curl executable with proper one) is currently working, so the best is
 	to leave this for the future, once the run is fully ok.
-	For now, getting the build to work again and then go for error management.
+	For now, getting the build to work again and then go for error management. Fixed all test issues
+	and build issues. Now it is working in Desktop, what is missing is conditional compile switch and
+	(possibly) adjusting Synology build script.
 
 03/08/2017 (2.2h)
 	Still no answer on StackOverflow. Re-analyzed the issue and possible solutions. Full static

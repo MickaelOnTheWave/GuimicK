@@ -10,41 +10,23 @@
 
 using namespace std;
 
+static const string mailFileName = "mailContents.txt";
+
 // @TODO Make proper implementation without clear password
 // @TODO Improve security handling SSL correctly without insecure option
-CurlConsoleEmailSender::CurlConsoleEmailSender()
+CurlConsoleReportDispatcher::CurlConsoleReportDispatcher()
     : EmailReportDispatcher()
 {
 
 }
 
-bool CurlConsoleEmailSender::Dispatch(AbstractReportCreator *reportCreator)
+bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 {
     JobDebugInformationManager debugInfo("EmailSending", outputDebugInformation);
-    const string mailFileName("mailContents.txt");
 
-    vector<string> externalFiles;
-    vector<pair<string,string> > fileBuffers;
-    reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
+    WriteReportContentToFile(reportCreator, mailFileName);
 
-    MimeTools mimeCreator;
-
-    ofstream mailFile;
-    mailFile.open(mailFileName.c_str());
-    mailFile << mimeCreator.CreateEmailContent(isHtml, displayName, emailAddress,
-                                               destEmail, cc, bcc,
-                                               subject, reportCreator->GetReportContent(),
-                                               externalFiles, fileBuffers);
-    mailFile.close();
-
-    string curlParams;
-    curlParams += " --url \"" + GetSmtpUrl() + "\" --ssl-reqd ";
-    curlParams += "--mail-from \"" + emailAddress + "\" ";
-    curlParams += "--mail-rcpt \"" + destEmail + "\" ";
-    curlParams += "--upload-file " + mailFileName + " ";
-    curlParams += "--user \"" + emailAddress + ":" + password + "\" ";
-    curlParams += "--insecure --show-error ";
-    curlParams += isVerbose ? "--verbose" : "--silent";
+    const string curlParams = BuildCurlParams(mailFileName);
 
     debugInfo.AddDataLine<string>("Params", curlParams);
     ConsoleJob curl("curl", curlParams);
@@ -63,9 +45,40 @@ bool CurlConsoleEmailSender::Dispatch(AbstractReportCreator *reportCreator)
     return (status->GetCode() == JobStatus::OK);
 }
 
-string CurlConsoleEmailSender::GetCurlVersion() const
+string CurlConsoleReportDispatcher::GetCurlVersion() const
 {
     ConsoleJob command("curl", "--version");
     command.RunWithoutStatus();
     return command.GetCommandOutput();
+}
+
+string CurlConsoleReportDispatcher::BuildCurlParams(const string &mailFilename) const
+{
+    string params;
+    params += " --url \"" + GetSmtpUrl() + "\" --ssl-reqd ";
+    params += "--mail-from \"" + emailAddress + "\" ";
+    params += "--mail-rcpt \"" + destEmail + "\" ";
+    params += "--upload-file " + mailFilename + " ";
+    params += "--user \"" + emailAddress + ":" + password + "\" ";
+    params += "--insecure --show-error ";
+    params += isVerbose ? "--verbose" : "--silent";
+    return params;
+}
+
+void CurlConsoleReportDispatcher::WriteReportContentToFile(AbstractReportCreator *reportCreator,
+                                                           const string &filename)
+{
+    vector<string> externalFiles;
+    vector<pair<string,string> > fileBuffers;
+    reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
+
+    MimeTools mimeCreator;
+
+    ofstream mailFile;
+    mailFile.open(filename.c_str());
+    mailFile << mimeCreator.CreateEmailContent(isHtml, displayName, emailAddress,
+                                               destEmail, cc, bcc,
+                                               subject, reportCreator->GetReportContent(),
+                                               externalFiles, fileBuffers);
+    mailFile.close();
 }

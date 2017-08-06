@@ -1,9 +1,16 @@
 #include "emaildispatcherfactory.h"
 
-//#include "curllibemailsender.h"
-#include "curlconsoleemailsender.h"
+#ifdef USE_CURL_LIB
+    #include "curllibreportdispatcher.h"
+#else
+    #include "curlconsoleemailsender.h"
+#endif
 
 EmailReportDispatcher *EmailDispatcherFactory::Create()
 {
-    return new CurlConsoleEmailSender();
+#ifdef USE_CURL_LIB
+    return new CurlLibReportDispatcher();
+#else
+    return new CurlConsoleReportDispatcher();
+#endif
 }

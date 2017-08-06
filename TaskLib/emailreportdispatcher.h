@@ -16,7 +16,7 @@ public:
     void SetVerboseMode();
 
 protected:
-	std::string GetSmtpUrl();
+    std::string GetSmtpUrl() const;
 
 	std::string displayName;
 	std::string emailAddress;
