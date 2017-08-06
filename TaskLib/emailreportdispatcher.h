@@ -2,21 +2,15 @@
 #define EMAILREPORTDISPATCHER_H
 
 #include <string>
+#include "ReportDispatcher.h"
 
-// @TODO make this class implement ReportDispatcher interface and stick to it
-class EmailReportDispatcher
+class EmailReportDispatcher : public AbstractReportDispatcher
 {
 public:
 	EmailReportDispatcher();
+    virtual ~EmailReportDispatcher();
 
-	void SetSenderData(
-		const std::string& _displayName,
-		const std::string& _emailAddress,
-		const std::string& _password,
-		const std::string& _smtpServer,
-		const int _smtpPort,
-		const bool _useSsl
-    );
+    virtual void Initialize(SelfIdentity* self, const Configuration& configuration);
 
     void SetOutputDebugInformationOnFailure(const bool value);
     void SetVerboseMode();
@@ -32,6 +26,12 @@ protected:
 	bool useSsl;
     bool outputDebugInformation;
     bool isVerbose;
+
+    bool isHtml;
+    std::string destEmail;
+    std::string cc;
+    std::string bcc;
+    static const std::string subject;
 };
 
 #endif // EMAILREPORTDISPATCHER_H

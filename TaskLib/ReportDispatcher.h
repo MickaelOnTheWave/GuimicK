@@ -1,14 +1,20 @@
 #ifndef REPORTDISPATCHER_H
 #define REPORTDISPATCHER_H
 
+#include "abstractreportcreator.h"
+#include "configuration.h"
+#include "SelfIdentity.h"
+
 /**
   Interface for all classes that manages dispatching of
   maintenance report to user (email sending etc...).
   */
-class IReportDispatcher
+class AbstractReportDispatcher
 {
 public :
-	virtual Dispatch() = 0;
+    virtual ~AbstractReportDispatcher() {}
+    virtual void Initialize(SelfIdentity* self, const Configuration& configuration) = 0;
+    virtual bool Dispatch(AbstractReportCreator* reportCreator) = 0;
 };
 
 

@@ -18,20 +18,24 @@ CurlConsoleEmailSender::CurlConsoleEmailSender()
 
 }
 
-bool CurlConsoleEmailSender::Send(const bool isHtml,
-                                  const string &destEmail, const string &cc, const string &bcc,
-                                  const string &subject, const string &body,
-                                  const vector<string>& fileList, const vector<pair<string,string> >& fileBuffers)
+bool CurlConsoleEmailSender::Dispatch(AbstractReportCreator *reportCreator)
 {
     JobDebugInformationManager debugInfo("EmailSending", outputDebugInformation);
     const string mailFileName("mailContents.txt");
 
+    vector<string> externalFiles;
+    vector<pair<string,string> > fileBuffers;
+    reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
+
     MimeTools mimeCreator;
 
-	ofstream mailFile;
-	mailFile.open(mailFileName.c_str());
-    mailFile << mimeCreator.CreateEmailContent(isHtml, displayName, emailAddress, destEmail, cc, bcc, subject, body, fileList, fileBuffers);
-	mailFile.close();
+    ofstream mailFile;
+    mailFile.open(mailFileName.c_str());
+    mailFile << mimeCreator.CreateEmailContent(isHtml, displayName, emailAddress,
+                                               destEmail, cc, bcc,
+                                               subject, reportCreator->GetReportContent(),
+                                               externalFiles, fileBuffers);
+    mailFile.close();
 
     string curlParams;
     curlParams += " --url \"" + GetSmtpUrl() + "\" --ssl-reqd ";

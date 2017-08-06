@@ -4,26 +4,30 @@
 
 using namespace std;
 
+const string EmailReportDispatcher::subject = "Maintenance Report";
+
 EmailReportDispatcher::EmailReportDispatcher()
     : outputDebugInformation(false), isVerbose(false)
 {
 }
 
-void EmailReportDispatcher::SetSenderData(
-		const string& _displayName,
-		const string &_emailAddress,
-		const string &_password,
-		const string &_smtpServer,
-		const int _smtpPort,
-		const bool _useSsl
-)
+EmailReportDispatcher::~EmailReportDispatcher()
 {
-	displayName = _displayName;
-	emailAddress = _emailAddress;
-	smtpServer = _smtpServer;
-	smtpPort = _smtpPort;
-	password = _password;
-	useSsl = _useSsl;
+}
+
+void EmailReportDispatcher::Initialize(SelfIdentity *self, const Configuration &configuration)
+{
+    displayName = self->name;
+    emailAddress = self->email;
+    smtpServer = self->emailSmtpServer;
+    smtpPort = self->emailSmtpPort;
+    password = self->emailPassword;
+    useSsl = self->emailUseSsl;
+
+    isHtml = configuration.IsReportHtml();
+    destEmail = configuration.GetMasterEmail();
+    cc = string("");
+    bcc = string("");
 }
 
 void EmailReportDispatcher::SetOutputDebugInformationOnFailure(const bool value)

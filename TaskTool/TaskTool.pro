@@ -10,7 +10,8 @@ CONFIG -= qt
 #	message("Static build")
 #}
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    emaildispatcherfactory.cpp
 
 contains( CONFIG, synology ) {
 	BUILD_TYPE = Synology
@@ -61,4 +62,7 @@ OTHER_FILES += \
     data/realconf.txt \
     data/git.txt \
     data/report.css
+
+HEADERS += \
+    emaildispatcherfactory.h
 

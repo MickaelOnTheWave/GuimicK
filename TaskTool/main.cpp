@@ -6,7 +6,8 @@
 #include "commandlinemanager.h"
 #include "consolejob.h"
 #include "configuration.h"
-#include "curllibemailsender.h"
+#include "emaildispatcherfactory.h"
+#include "emailreportdispatcher.h"
 #include "SelfIdentity.h"
 
 #include <fstream>
@@ -17,6 +18,7 @@ static const string PROGRAM_VERSION = "0.72";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
 void ShowErrors(vector<string> &errorMessages);
+void SendReportByEmail(AbstractReportCreator* reportCreator, SelfIdentity* self, const Configuration& configuration);
 
 int main(int argc, char* argv[])
 {
@@ -94,30 +96,8 @@ int main(int argc, char* argv[])
     string reportData = reportCreator->GetReportContent();
     delete workResult;
 
-    CurlLibEmailSender sender;
-    sender.SetSenderData(
-                selfIdentity->name,
-                selfIdentity->email,
-                selfIdentity->emailPassword,
-                selfIdentity->emailSmtpServer,
-                selfIdentity->emailSmtpPort,
-                selfIdentity->emailUseSsl
-    );
-
-
     if (sendReportByEmail)
-    {
-        vector<string> externalFiles;
-        vector<pair<string,string> > fileBuffers;
-        reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
-        bool emailOk = sender.Send(configuration.IsReportHtml(), configuration.GetMasterEmail(), "", "", "Maintenance report",
-                                            reportData, externalFiles, fileBuffers);
-        if (!emailOk)
-        {
-            cout << "Email failed" << endl;
-            cout << "Maintenance report : " << endl << reportData << endl;
-        }
-    }
+        SendReportByEmail(reportCreator, selfIdentity, configuration);
     else
         cout << reportData << endl;
 
@@ -143,4 +123,20 @@ void ShowErrors(vector<string>& errorMessages)
     for (; it!=errorMessages.end(); it++)
         cout << *it << endl;
     cout << endl;
+}
+
+void SendReportByEmail(AbstractReportCreator* reportCreator, SelfIdentity* self, const Configuration& configuration)
+{
+    const string reportData = reportCreator->GetReportContent();
+    EmailReportDispatcher* emailDispatcher = EmailDispatcherFactory::Create();
+    emailDispatcher->Initialize(self, configuration);
+
+    bool emailOk = emailDispatcher->Dispatch(reportCreator);
+    if (!emailOk)
+    {
+        cout << "Email failed" << endl;
+        cout << "Maintenance report : " << endl << reportData << endl;
+    }
+
+    delete emailDispatcher;
 }
