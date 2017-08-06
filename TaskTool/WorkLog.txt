@@ -1,4 +1,4 @@
-06/08/2017 (15.4)
+06/08/2017 (3.4h)
 	Dynamic linking solution would only work on a "proper" unix-like environment, which the NAS
 	system has proven not to be. Remaining solutions are static linking and leaving as it is for
 	now. It would be a shame to design the solution based only on Synology NAS as it is a weird
@@ -8,6 +8,19 @@
 	For now, getting the build to work again and then go for error management. Fixed all test issues
 	and build issues. Now it is working in Desktop, what is missing is conditional compile switch and
 	(possibly) adjusting Synology build script.
+	Improved code reuse in existing script and added one more rule : if curl lib build is not selected,
+	the build will be full static. Therefore, no adjustments are needed to build Synology :-)
+	(and this makes sense).
+	Leaving for next session to decide if this can be considered a final solution for the Curl lib
+	feature.
+	Began refactoring debug information management, now abstract job has this option. Changed some
+	jobs and objects accordingly (but not all!). Most of actual information has undefined behaviour,
+	although it should be the same as before. Added debug information to user console job.
+Next planned work:
+	- Check production run, it should send email as before. Decide if this is enough (probably)
+	to close the curl feature.
+	- Check debug output and improve error messages to have a clear why
+	- Continue refactoring debug output management
 
 03/08/2017 (2.2h)
 	Still no answer on StackOverflow. Re-analyzed the issue and possible solutions. Full static
