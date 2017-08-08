@@ -22,6 +22,8 @@ public:
 
     virtual JobStatus* Run();
 
+    virtual void SetOutputDebugInformation(const int value);
+
     void SetTargetRemote(const std::string& user = "", const std::string& host = "");
     void SetTargetLocal();
 

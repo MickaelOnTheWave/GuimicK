@@ -13,6 +13,10 @@
 using namespace std;
 
 const string clientName = "Test Client";
+static const char* okMessage                = "Ok";
+static const char* okWithWarningsMessage    = "Executed with minor errors";
+static const char* errorMessage             = "Error";
+static const char* notExecutedMessage       = "Not executed";
 
 ClientWorkManagerTest::ClientWorkManagerTest()
     : QtTestSuite("")
@@ -89,14 +93,14 @@ void ClientWorkManagerTest::testRunWorkList_data()
 
     QTest::newRow("Empty list") << QStringList() << QStringList() << QStringList() << QStringList();
     QTest::newRow("Simple list") << QStringList({"Job 1","Job 2", "Job 3", "Job 4"})
-                                   << QStringList({"Ok","Executed with minor errors", "Error", "Not executed"})
+                                   << QStringList({okMessage, okWithWarningsMessage, errorMessage, notExecutedMessage})
                                    << QStringList({"first description", "second description",
                                                    "third description", "last description"})
                                    << QStringList({"", "", "", ""});
 
     QTest::newRow("Mixed list") << QStringList({"Simple job 1","Simple Job 2", "Warning job",
                                                 "Error job", "No init job"})
-                                   << QStringList({"Ok","Ok","Executed with minor errors", "Error", "Not executed"})
+                                   << QStringList({okMessage,okMessage,okWithWarningsMessage,errorMessage,notExecutedMessage})
                                    << QStringList({"", "", "", "", "Initialization failed"})
                                    << QStringList({"", "", "", "", "fail"});
 }

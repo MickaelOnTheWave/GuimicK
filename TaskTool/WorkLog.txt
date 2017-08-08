@@ -1,3 +1,13 @@
+08/08/2017 (17.3)
+	Closed the Curl lib feature. Now going for errors. There are three distinct issues to resolve :
+	1. Errors on commands - show relevant error messages and information
+	2. Attachments - organize them as 1 per job (2 if considering debug output).
+	3. Attachments bug - still having garbage at the end of attachment.
+	The most annoying is 1. However 2. seems to be the best to resolve first. 3. does not seem to
+	interfere with others and is not as much annoying, but should probably be resolved in the same
+	loop. Best as last one. Creating an automated test for 2.
+	Created automated test for GitFsBackup job and fixed implementation to match it.
+
 06/08/2017 (3.4h)
 	Dynamic linking solution would only work on a "proper" unix-like environment, which the NAS
 	system has proven not to be. Remaining solutions are static linking and leaving as it is for

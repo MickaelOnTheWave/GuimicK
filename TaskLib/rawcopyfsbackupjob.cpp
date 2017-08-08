@@ -5,7 +5,7 @@
 using namespace std;
 
 static const string defaultDebugFilename = "CopyFsBackupDebug.txt";
-static const string attachmentName = "CopyFsBackupJob.txt";
+static const string defaultattachmentName = "CopyFsBackupJob.txt";
 static const string errorReportCreation = "Error creating report";
 
 
@@ -66,13 +66,13 @@ void RawCopyFsBackupJob::CreateReport(const std::string &destination,
         report->AddAsAdded(fileList);
         status->SetCode(JobStatus::OK);
         status->SetDescription(report->GetMiniDescription());
-        status->AddFileBuffer(attachmentName, report->GetFullDescription());
+        status->AddFileBuffer(defaultattachmentName, report->GetFullDescription());
     }
     else
     {
         status->SetCode(JobStatus::OK_WITH_WARNINGS);
         status->SetDescription(errorReportCreation);
-        status->AddFileBuffer(attachmentName, lsCommand.GetCommandOutput());
+        status->AddFileBuffer(defaultattachmentName, lsCommand.GetCommandOutput());
     }
 
     results.push_back(make_pair(status, report));

@@ -25,11 +25,14 @@ const int emptyDirError = 1;
 const int gitNothingToCommitWarningCode = 1;
 const int gitCommitUtf8WarningCode = 137;
 
+const string jobName = "Git Filesystem Backup";
+const string defaultAttachmentName = jobName + ".txt";
+
 GitFsBackupJob::GitFsBackupJob()
-    : AbstractBackupJob("GitFsBackup"),
+    : AbstractBackupJob(jobName),
       forceRawCopy(false)
 {
-    statusManager.SetAttachmentName("GitFsBackup.txt");
+    statusManager.SetAttachmentName(defaultAttachmentName);
     statusManager.SetDebugManager(debugManager);
 }
 
@@ -37,13 +40,13 @@ GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
     : AbstractBackupJob(other), statusManager(other.statusManager),
       forceRawCopy(other.forceRawCopy)
 {
-    statusManager.SetAttachmentName("GitFsBackup.txt");
+    statusManager.SetAttachmentName(defaultAttachmentName);
     statusManager.SetDebugManager(debugManager);
 }
 
 std::string GitFsBackupJob::GetName()
 {
-    return string("Git Filesystem Backup");
+    return jobName;
 }
 
 AbstractJob *GitFsBackupJob::Clone()

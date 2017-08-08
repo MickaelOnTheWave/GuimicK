@@ -6,7 +6,7 @@
 
 using namespace std;
 
-static const string attachmentName = "CopyFsBackupJob.txt";
+static const string defaultattachmentName = "CopyFsBackupJob.txt";
 
 static const string errorReportCreation = "Error creating report";
 static const string errorCopyCommand = "Copy command failed";
@@ -77,6 +77,6 @@ void AbstractCopyFsBackupJob::RunCopy(const string &source, const string &destin
 void AbstractCopyFsBackupJob::CreateCopyErrorReport(const std::string& message, AbstractBackupJob::ResultCollection &results)
 {
     JobStatus* status = new JobStatus(JobStatus::ERROR, errorCopyCommand);
-    status->AddFileBuffer(attachmentName, message);
+    status->AddFileBuffer(defaultattachmentName, message);
     results.push_back(make_pair(status, new FileBackupReport()));
 }

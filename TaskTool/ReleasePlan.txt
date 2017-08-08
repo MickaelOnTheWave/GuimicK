@@ -20,9 +20,9 @@ Features implemented:
 	18/05/2017 - [039] Create a Git-based File backup job
 	11/06/2017 - [041] Create a simple copy-based File backup job
 	12/07/2017 - [042] Create a copy-zip-based File backup job
+	08/08/2017 - [003] Use Curl lib instead of command line
 
 Features to implement:
-	[003] Use Curl lib instead of command line
 	[005] Include AntiVirus scan job
 	[006] Include Harddrive check job
 	[007] Include Defragmentation job

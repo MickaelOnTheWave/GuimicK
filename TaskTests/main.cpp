@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ConfigurationParserTest(toolsLibDir);
     //QObject* testSuite = new FileToolsTest(toolsLibDir);
     //QObject* testSuite = new ClientWorkManagerTest();
-    QObject* testSuite = new ConfigurationTest(taskLibDir);
-    //QObject* testSuite = new GitFsBackupJobTest(taskLibDir);
+    //QObject* testSuite = new ConfigurationTest(taskLibDir);
+    QObject* testSuite = new GitFsBackupJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new GitCommitReportParserTest(parsersDir);
     //QObject* testSuite = new RawCopyFsBackupJobTest(taskLibDir);
     //QObject* testSuite = new RsyncCopyFsBackupJobTest(taskLibDir);

@@ -39,10 +39,7 @@ public:
 	  */
 	virtual JobStatus* Run() = 0;
 
-    void SetOutputDebugInformation(const int value);
-
-protected:
-    int outputDebugInformation;
+    virtual void SetOutputDebugInformation(const int value);
 };
 
 #endif // ABSTRACTJOB_H

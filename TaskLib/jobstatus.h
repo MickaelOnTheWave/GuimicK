@@ -10,7 +10,7 @@ class JobStatus
 public:
 	static const int NOT_EXECUTED			= 0;
 	static const int OK						= 1;
-	static const int OK_WITH_WARNINGS	= 2;
+    static const int OK_WITH_WARNINGS       = 2;
 	static const int ERROR					= 3;
 
 	JobStatus();
@@ -53,11 +53,9 @@ public:
 
     bool HasExternalFiles();
 
-	/**
-		@param[out] fileNames
-	*/
+    typedef std::vector<std::pair<std::string,std::string> > FileBufferList;
     void GetExternalFilenames(std::vector<std::string>& _fileNames);
-    void GetFileBuffers(std::vector<std::pair<std::string,std::string> >& _filebuffers);
+    void GetFileBuffers(FileBufferList& _filebuffers);
 
 protected:
 	int			code;

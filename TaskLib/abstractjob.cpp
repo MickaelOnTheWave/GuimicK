@@ -1,7 +1,6 @@
 #include "abstractjob.h"
 
 AbstractJob::AbstractJob()
-    : outputDebugInformation(0)
 {
 }
 
@@ -9,7 +8,6 @@ AbstractJob::~AbstractJob()
 {
 }
 
-void AbstractJob::SetOutputDebugInformation(const int value)
+void AbstractJob::SetOutputDebugInformation(const int)
 {
-    outputDebugInformation = value;
 }

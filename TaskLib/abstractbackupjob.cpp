@@ -50,6 +50,11 @@ JobStatus *AbstractBackupJob::Run()
     return debugManager->UpdateStatus(CreateGlobalStatus(results));
 }
 
+void AbstractBackupJob::SetOutputDebugInformation(const int value)
+{
+    debugManager->SetUse(value);
+}
+
 void AbstractBackupJob::SetTargetRemote(const std::string &user, const std::string &host)
 {
     isTargetLocal = false;

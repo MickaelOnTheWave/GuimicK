@@ -5,11 +5,13 @@
 
 using namespace std;
 
+static const string debugSuffix = " - Debug.txt";
+
 JobDebugInformationManager::JobDebugInformationManager(const string &jobName,
         const bool _usingDebug
         ) : debugUse(_usingDebug), allData("")
 {
-    debugFilename = jobName + "DebugInformation.txt";
+    debugFilename = jobName + debugSuffix;
 }
 
 JobDebugInformationManager::JobDebugInformationManager(const JobDebugInformationManager &other)
