@@ -42,6 +42,8 @@ JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob()
 {
     QFETCH(bool, remote);
 
+    // TODO : improve this. There are only two lines that are specific to this test suite,
+    // the rest of the code should be used from parent class.
     ZipAndCopyFsBackupJob* job = new ZipAndCopyFsBackupJob();
     job->InitializeFromClient(nullptr);
     job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), archiveName);

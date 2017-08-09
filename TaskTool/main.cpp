@@ -14,7 +14,7 @@
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.73";
+static const string PROGRAM_VERSION = "0.74";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
 void ShowErrors(vector<string> &errorMessages);

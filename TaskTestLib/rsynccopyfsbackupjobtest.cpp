@@ -14,11 +14,6 @@ RsyncCopyFsBackupJobTest::~RsyncCopyFsBackupJobTest()
 {
 }
 
-AbstractCopyFsBackupJob *RsyncCopyFsBackupJobTest::CreateCopyJob()
-{
-    return new RsyncCopyFsBackupJob();
-}
-
 AbstractCopyFsBackupJob *RsyncCopyFsBackupJobTest::CreateNewJob()
 {
     return new RsyncCopyFsBackupJob();

@@ -13,7 +13,6 @@ public:
     virtual ~RawCopyFsBackupJobTest();
 
 protected:
-    virtual AbstractCopyFsBackupJob* CreateCopyJob();
     virtual AbstractBackupJob* CreateNewJob();
 
 };

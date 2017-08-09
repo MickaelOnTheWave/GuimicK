@@ -14,12 +14,6 @@ RawCopyFsBackupJobTest::~RawCopyFsBackupJobTest()
 {
 }
 
-// TODO : remove OBVIOUS duplication
-AbstractCopyFsBackupJob *RawCopyFsBackupJobTest::CreateCopyJob()
-{
-    return new RawCopyFsBackupJob();
-}
-
 AbstractBackupJob *RawCopyFsBackupJobTest::CreateNewJob()
 {
     return new RawCopyFsBackupJob();

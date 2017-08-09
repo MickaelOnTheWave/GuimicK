@@ -1,4 +1,4 @@
-08/08/2017 (17.3)
+08/08/2017 (3.8h)
 	Closed the Curl lib feature. Now going for errors. There are three distinct issues to resolve :
 	1. Errors on commands - show relevant error messages and information
 	2. Attachments - organize them as 1 per job (2 if considering debug output).
@@ -7,6 +7,15 @@
 	interfere with others and is not as much annoying, but should probably be resolved in the same
 	loop. Best as last one. Creating an automated test for 2.
 	Created automated test for GitFsBackup job and fixed implementation to match it.
+	Refactored nearly all Backup jobs - now debug information and status management are all in
+	parent class. Also, all of them execute attachment tests. String names duplication also removed.
+	Even improved Rsnapshot job to be a Backup job!! However, there are still some work missing
+	to close this feature.
+Next planned work :
+	- Refactor GitJobTest, it should be a Backup test suite and run attachment tests
+	- Make sure all test suites run on multiple data (check Rsnapshot and Git Repository)
+	- Add attachment tests for Console, wakeup, shutdown and disk check jobs
+	- If not already done, move debug management to AbstractJob level
 
 06/08/2017 (3.4h)
 	Dynamic linking solution would only work on a "proper" unix-like environment, which the NAS

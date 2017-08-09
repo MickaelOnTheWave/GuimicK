@@ -13,7 +13,6 @@ public:
     virtual ~RsyncCopyFsBackupJobTest();
 
 protected:
-    virtual AbstractCopyFsBackupJob* CreateCopyJob();
     virtual AbstractCopyFsBackupJob* CreateNewJob();
 
 };
