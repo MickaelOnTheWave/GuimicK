@@ -58,8 +58,13 @@ JobStatus *BackupStatusManager::CreateSingleStatus()
     debugManager->AddTagLine("Creating Single status");
     const AbstractBackupJob::ResultEntry& result = resultCollection->front();
 
-    JobStatus* status = new JobStatus(result.first->GetCode());
-    status->SetDescription(result.second->GetMiniDescription());
+    const int statusCode = result.first->GetCode();
+    JobStatus* status = new JobStatus(statusCode);
+    if (statusCode == JobStatus::OK || statusCode == JobStatus::OK_WITH_WARNINGS)
+        status->SetDescription(result.second->GetMiniDescription());
+    else
+        status->SetDescription(result.first->GetDescription());
+
     status->AddFileBuffer(attachmentName, result.second->GetFullDescription());
     return status;
 }

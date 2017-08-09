@@ -102,7 +102,7 @@ string ConsoleJob::GetCommandParameters() const
     return commandParams;
 }
 
-int ConsoleJob::GetCommandReturnCode()
+int ConsoleJob::GetCommandReturnCode() const
 {
     return receivedReturnCode;
 }

@@ -102,7 +102,7 @@ void SshConsoleJob::SetCommand(const string &command)
     remoteJob->SetCommand(command);
 }
 
-int SshConsoleJob::GetCommandReturnCode()
+int SshConsoleJob::GetCommandReturnCode() const
 {
     return remoteJob->GetCommandReturnCode();
 }

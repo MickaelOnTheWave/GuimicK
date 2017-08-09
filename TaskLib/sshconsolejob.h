@@ -30,7 +30,7 @@ public:
     virtual std::string GetCommand() const;
     virtual void SetCommand(const std::string& command);
 
-    virtual int GetCommandReturnCode();
+    virtual int GetCommandReturnCode() const;
     virtual std::string GetCommandOutput() const;
 
 private:

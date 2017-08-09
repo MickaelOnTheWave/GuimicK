@@ -21,9 +21,10 @@ const string errorAddingData = "Git add failed";
 const string errorCommitingData = "Git commit failed";
 const string errorGitNotInstalled = "Git not installed";
 
-const int emptyDirError = 1;
-const int gitNothingToCommitWarningCode = 1;
-const int gitCommitUtf8WarningCode = 137;
+static const int emptyDirError = 1;
+static const int gitNothingToCommitWarningCode = 1;
+static const int gitCommitUtf8WarningCode = 137;
+static const int gitNotConfiguredError = 128;
 
 GitFsBackupJob::GitFsBackupJob()
     : AbstractBackupJob(), forceRawCopy(false)
@@ -172,9 +173,14 @@ string GitFsBackupJob::CommitData(JobStatus *status)
     debugManager->AddTagLine("Committing data to git");
     ConsoleJob commandJob("git", "commit -m \"Automated backup\"");
     commandJob.RunWithoutStatus();
-    debugManager->AddDataLine<string>("Commit params", commandJob.GetCommandParameters());
-    debugManager->AddDataLine<string>("Commit output", commandJob.GetCommandOutput());
-    debugManager->AddDataLine<int>("Commit value", commandJob.GetCommandReturnCode());
+    LogDebugCommand("Commit", commandJob);
+    if (commandJob.GetCommandReturnCode() == gitNotConfiguredError)
+    {
+        ConfigureGitRepository();
+        commandJob.RunWithoutStatus();
+        LogDebugCommand("Commit", commandJob);
+    }
+
     if (IsCommitCodeOk(commandJob.GetCommandReturnCode()))
         return GetCommitId(commandJob.GetCommandOutput());
     else
@@ -333,4 +339,17 @@ void GitFsBackupJob::RunCopy(AbstractCopyFsBackupJob *copyJob, const string &sou
         status->SetCode(JobStatus::ERROR);
         status->SetDescription(errorCopyingData);
     }
+}
+
+void GitFsBackupJob::LogDebugCommand(const string &title, const ConsoleJob &job)
+{
+    debugManager->AddDataLine<string>(title + " command", job.GetCommand());
+    debugManager->AddDataLine<string>(title + " params", job.GetCommandParameters());
+    debugManager->AddDataLine<string>(title + " output", job.GetCommandOutput());
+    debugManager->AddDataLine<int>(title + " return value", job.GetCommandReturnCode());
+}
+
+void GitFsBackupJob::ConfigureGitRepository()
+{
+    // TODO : implement
 }

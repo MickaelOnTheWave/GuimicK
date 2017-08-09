@@ -1,3 +1,8 @@
+09/08/2017 (18.2)
+	Identified problem in Git Fs production run : git is not properly configured (no email). Before
+	creating fix (this should be easy), changing code to display proper error message. Waiting for
+	next run to make the fix.
+
 08/08/2017 (3.8h)
 	Closed the Curl lib feature. Now going for errors. There are three distinct issues to resolve :
 	1. Errors on commands - show relevant error messages and information

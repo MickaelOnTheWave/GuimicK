@@ -44,7 +44,7 @@ public:
     virtual void SetCommandParameters(const std::string& parameters);
     std::string GetCommandParameters() const;
 
-    virtual int GetCommandReturnCode();
+    virtual int GetCommandReturnCode() const;
     virtual std::string GetCommandOutput() const;
 
     bool IsRunOk() const;

@@ -52,6 +52,10 @@ private:
     void RunCopy(AbstractCopyFsBackupJob* copyJob,
                  const std::string& source, const std::string& destination, JobStatus* status);
 
+    void LogDebugCommand(const std::string& title, const ConsoleJob &job);
+
+    void ConfigureGitRepository();
+
     bool forceRawCopy;
 };
 
