@@ -10,6 +10,7 @@ class RsnapshotBackupJob : public AbstractBackupJob
 public:
     RsnapshotBackupJob(const std::string& _backupRepositoryPath = "",
               const std::string& _rsnapshotConfFile = "");
+    RsnapshotBackupJob(const RsnapshotBackupJob& other);
     virtual ~RsnapshotBackupJob();
 
 	virtual std::string GetName();
@@ -41,6 +42,10 @@ protected:
     std::string configurationFile;
 
 private:
+    JobStatus* RunBackup();
+    JobStatus* RunReportCreation();
+    JobStatus* CreateParsedReportStatus();
+
 	ConsoleJob* backupCommand;
 	ConsoleJob* reportCommand;
     std::string backupRepositoryPath;

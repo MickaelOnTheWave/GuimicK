@@ -41,7 +41,7 @@ Features to implement:
 	[032] Property handle encodings for strings
 	[034] Create Qt client app to create/manage backup folder configuration.
 	[036] Console job improvement : support a chain system.
-	[040] Use a zip lib to organize attachments in archives
+	[040] Organize attachments in archives
 	[043] Create an archive differential File backup job
 	[044] Add generic debugging option for all jobs
 	[045] Make Windows client work with (nearly) all features
@@ -93,9 +93,9 @@ v0.9 :
 
 v0.8 :
 	[003] Use Curl lib instead of command line
-	[017] Properly handle all error cases
-	[040] Use a zip lib to organize attachments in archives
+	[040] Organize attachments in archives
 	[044] Add generic debugging option for all jobs
+	[017] Properly handle all error cases
 
 v0.7 : 12/07/2017
 	[037] Have automated tests for all features
