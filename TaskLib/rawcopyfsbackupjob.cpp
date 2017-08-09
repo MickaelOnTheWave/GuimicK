@@ -4,17 +4,9 @@
 
 using namespace std;
 
-static const string defaultDebugFilename = "CopyFsBackupDebug.txt";
-static const string defaultattachmentName = "CopyFsBackupJob.txt";
 static const string errorReportCreation = "Error creating report";
 
-
-RawCopyFsBackupJob::RawCopyFsBackupJob() : AbstractCopyFsBackupJob(defaultDebugFilename)
-{
-}
-
-RawCopyFsBackupJob::RawCopyFsBackupJob(const std::string &debugFilename)
-    : AbstractCopyFsBackupJob(debugFilename)
+RawCopyFsBackupJob::RawCopyFsBackupJob() : AbstractCopyFsBackupJob()
 {
 }
 
@@ -25,7 +17,7 @@ RawCopyFsBackupJob::RawCopyFsBackupJob(const AbstractCopyFsBackupJob &other)
 
 string RawCopyFsBackupJob::GetName()
 {
-    return string("RawCopyFsBackupJob");
+    return string("Copy Backup");
 }
 
 AbstractJob *RawCopyFsBackupJob::Clone()
@@ -66,13 +58,13 @@ void RawCopyFsBackupJob::CreateReport(const std::string &destination,
         report->AddAsAdded(fileList);
         status->SetCode(JobStatus::OK);
         status->SetDescription(report->GetMiniDescription());
-        status->AddFileBuffer(defaultattachmentName, report->GetFullDescription());
+        status->AddFileBuffer(GetAttachmentName(), report->GetFullDescription());
     }
     else
     {
         status->SetCode(JobStatus::OK_WITH_WARNINGS);
         status->SetDescription(errorReportCreation);
-        status->AddFileBuffer(defaultattachmentName, lsCommand.GetCommandOutput());
+        status->AddFileBuffer(GetAttachmentName(), lsCommand.GetCommandOutput());
     }
 
     results.push_back(make_pair(status, report));

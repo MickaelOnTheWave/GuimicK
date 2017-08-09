@@ -9,8 +9,6 @@
 
 using namespace std;
 
-static const string debugFile = "GitRepositoryBackup";
-
 static const string invalidSourceRepositoryError        = "Invalid source repository";
 static const string repositoryCloneOk                   = "Repository cloned successfully";
 static const string invalidDestinationRepositoryError   = "Invalid destination repository";
@@ -18,7 +16,7 @@ static const string unknownError                        = "Unknown error";
 static const string repositoryPullOk                    = "Repository successfully updated, see attached file.";
 
 GitBackupJob::GitBackupJob()
- : AbstractBackupJob(debugFile), writeLogsToFile(false)
+ : AbstractBackupJob(), writeLogsToFile(false)
 {
 }
 
@@ -30,7 +28,7 @@ GitBackupJob::GitBackupJob(const GitBackupJob &other)
 }
 
 GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &repositoryList)
- : AbstractBackupJob(debugFile), writeLogsToFile(false)
+ : AbstractBackupJob(), writeLogsToFile(false)
 {
     folderList = repositoryList;
 }
@@ -41,7 +39,7 @@ GitBackupJob::~GitBackupJob()
 
 string GitBackupJob::GetName()
 {
-    return "Git Backup";
+    return "Git Repository Backup";
 }
 
 AbstractJob *GitBackupJob::Clone()

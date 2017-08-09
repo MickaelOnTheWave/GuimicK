@@ -6,6 +6,8 @@
 #include "filebackupreport.h"
 #include "jobdebuginformationmanager.h"
 
+class BackupStatusManager;
+
 class AbstractBackupJob : public AbstractJob
 {
 public:
@@ -13,7 +15,7 @@ public:
     typedef std::vector<ResultEntry> ResultCollection;
     typedef std::vector<std::pair<std::string, std::string> > BackupCollection;
 
-    AbstractBackupJob(const std::string& debugFileName);
+    AbstractBackupJob();
     AbstractBackupJob(const AbstractBackupJob& other);
     virtual ~AbstractBackupJob();
 
@@ -35,10 +37,11 @@ public:
     void SetParentDebugManager(JobDebugInformationManager* manager);
 
 protected:
+    virtual bool Initialize();
     virtual void RunRepositoryBackup(const std::string& source,
                                      const std::string& destination,
                                      ResultCollection& results) = 0;
-    virtual JobStatus* CreateGlobalStatus(const ResultCollection& results) = 0;
+    virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
 
     std::string repository;
     BackupCollection folderList;
@@ -48,6 +51,7 @@ protected:
     bool isTargetLocal;
 
     JobDebugInformationManager* debugManager;
+    BackupStatusManager* statusManager;
     bool isDebugManagerParent;
 
 private:

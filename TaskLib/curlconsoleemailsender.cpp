@@ -22,7 +22,7 @@ CurlConsoleReportDispatcher::CurlConsoleReportDispatcher()
 
 bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 {
-    JobDebugInformationManager debugInfo("EmailSending", outputDebugInformation);
+    JobDebugInformationManager debugInfo(outputDebugInformation, "EmailSend");
 
     WriteReportContentToFile(reportCreator, mailFileName);
 
@@ -31,7 +31,9 @@ bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
     debugInfo.AddDataLine<string>("Params", curlParams);
     ConsoleJob curl("curl", curlParams);
     JobStatus* status = curl.Run();
-    if (status->GetCode() != JobStatus::OK)
+    if (status->GetCode() == JobStatus::OK)
+        remove(mailFileName.c_str());
+    else
     {
         debugInfo.AddDataLine<string>("Command executable", curl.GetCommand());
         debugInfo.AddDataLine<int>("Return code", curl.GetCommandReturnCode());
@@ -39,8 +41,7 @@ bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
         debugInfo.AddDataLine<string>("Curl version", GetCurlVersion());
         debugInfo.WriteToFile();
     }
-    else
-        remove(mailFileName.c_str());
+
 
     return (status->GetCode() == JobStatus::OK);
 }

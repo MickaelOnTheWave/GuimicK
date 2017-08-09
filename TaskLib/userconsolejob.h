@@ -27,7 +27,7 @@ public:
     void SetMiniDescriptionParserCommand(const std::string& parser);
 
     void SetAttachOutput(const bool value);
-    void SetOutputDebugInformation(const bool value);
+    virtual void SetOutputDebugInformation(const bool value);
 
     void SetOutputTofile(const std::string& filename);
     void SetOutputToBuffer(void);

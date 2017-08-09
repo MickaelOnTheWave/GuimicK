@@ -8,19 +8,14 @@
 using namespace std;
 
 ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob()
-    : AbstractBackupJob("ZipCopyFsBackup"),
-      localDestination("")
+    : AbstractBackupJob(), localDestination("")
 {
-    statusManager.SetAttachmentName("ZipCopyFsBackup.txt");
-    statusManager.SetDebugManager(debugManager);
 }
 
 ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob(const ZipAndCopyFsBackupJob& other)
     : AbstractBackupJob(other),
       localDestination(other.localDestination)
 {
-    statusManager.SetAttachmentName("ZipCopyFsBackup.txt");
-    statusManager.SetDebugManager(debugManager);
 }
 
 std::string ZipAndCopyFsBackupJob::GetName()
@@ -78,7 +73,7 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
 JobStatus *ZipAndCopyFsBackupJob::CreateGlobalStatus(
         const AbstractBackupJob::ResultCollection &results)
 {
-    return statusManager.CreateGlobalStatus(results, folderList);
+    return statusManager->CreateGlobalStatus(results, folderList);
 }
 
 bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,

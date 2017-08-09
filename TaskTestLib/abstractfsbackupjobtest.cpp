@@ -14,6 +14,10 @@ using namespace std;
 #define JobStatus_OK_WITH_WARNINGS  2
 #define JobStatus_ERROR             3
 
+const string repository = "repository/";
+const string sshUser = "mickael";
+const string sshHost = "192.168.1.101";
+
 AbstractFsBackupJobTest::AbstractFsBackupJobTest(const std::string &dataPrefix,
                                                  const string &errorPrefix)
     : QtTestSuite(dataPrefix, errorPrefix)
@@ -61,6 +65,22 @@ void AbstractFsBackupJobTest::testRunBackup()
 
 void AbstractFsBackupJobTest::ProcessingBetweenBackups()
 {
+}
+
+void AbstractFsBackupJobTest::CheckBackedUpDataIsOk()
+{
+    FileTestUtils::CheckFoldersHaveSameContent(repository, currentSourceFolder);
+}
+
+JobStatus *AbstractFsBackupJobTest::RunBackupJob()
+{
+    QFETCH(bool, remote);
+
+    AbstractBackupJob* job = CreateNewJob();
+    JobStatus* status = RunBackupJob(job, remote);
+
+    delete job;
+    return status;
 }
 
 void AbstractFsBackupJobTest::LoadExternalDataSamples(const bool isRemote)
@@ -126,4 +146,78 @@ void AbstractFsBackupJobTest::CheckTextContent(const string &content, const QStr
         FileTools::WriteBufferToFile(GetErrorFolder() + filename, content);
     }
     QCOMPARE(isContentAsExpected, true);
+}
+
+
+void AbstractFsBackupJobTest::testCreatesOnlyOneAttachment()
+{
+    vector<string> expectedAttachments = {GetJobAttachmentName()};
+    testCheckJobAttachments(false, expectedAttachments);
+}
+
+void AbstractFsBackupJobTest::testCreatesDebugAttachment()
+{
+    vector<string> expectedAttachments =
+    {
+        GetJobAttachmentName(),
+        GetJobDebugName()
+    };
+
+    testCheckJobAttachments(true, expectedAttachments);
+}
+
+void AbstractFsBackupJobTest::testCheckJobAttachments(
+        const bool debugOutput,const std::vector<string> &expectedAttachments)
+{
+    AbstractBackupJob* job = CreateNewJob();
+
+    job->SetOutputDebugInformation(debugOutput);
+    job->AddFolder("dummySource", "dummyDestination");
+    JobStatus* status = RunBackupJob(job, false);
+
+    JobStatus::FileBufferList fileBuffers;
+    status->GetFileBuffers(fileBuffers);
+    QCOMPARE(fileBuffers.size(), expectedAttachments.size());
+
+    vector<string> attachmentNames;
+    for (auto&& it : fileBuffers)
+        attachmentNames.push_back(it.first);
+
+    bool isEqual = std::equal(attachmentNames.begin(), attachmentNames.end(),
+                              expectedAttachments.begin());
+    QCOMPARE(isEqual, true);
+
+    delete status;
+    delete job;
+}
+
+JobStatus *AbstractFsBackupJobTest::RunBackupJob(AbstractBackupJob *job, const bool isRemote)
+{
+    job->InitializeFromClient(nullptr);
+    job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), repository);
+    if (isRemote)
+        job->SetTargetRemote(sshUser, sshHost);
+    else
+        job->SetTargetLocal();
+
+    return job->Run();
+}
+
+string AbstractFsBackupJobTest::GetJobAttachmentName()
+{
+    AbstractBackupJob* dummyJob = CreateNewJob();
+    string name = dummyJob->GetAttachmentName();
+    delete dummyJob;
+
+    return name;
+}
+
+// TODO : remove duplication with debug manager
+string AbstractFsBackupJobTest::GetJobDebugName()
+{
+    AbstractBackupJob* dummyJob = CreateNewJob();
+    string name = dummyJob->GetName();
+    delete dummyJob;
+
+    return name + " - Debug.txt";
 }

@@ -106,6 +106,11 @@ JobStatus *RsnapshotJobTest::RunBackupJob()
     return RunRsnapshotJob();
 }
 
+AbstractBackupJob *RsnapshotJobTest::CreateNewJob()
+{
+    return new RsnapshotBackupJob();
+}
+
 JobStatus *RsnapshotJobTest::RunRsnapshotJob(const string &tempConfigurationFile)
 {
     RsnapshotSmartCreator creator(repository);

@@ -43,7 +43,6 @@ private:
     AbstractConsoleJob *CreateBackupConsoleJob(const std::string& parameters);
 
     std::string localDestination;
-    BackupStatusManager statusManager;
 };
 
 #endif // ZIPANDCOPYFSBACKUPJOB_H

@@ -16,18 +16,8 @@ public:
 private Q_SLOTS:
     void testRunBackup_data();
 
-    void testCreatesOnlyOneAttachment();
-    void testCreatesDebugAttachment();
-
 protected:
-    virtual void CheckBackedUpDataIsOk();
-    virtual JobStatus* RunBackupJob();
-
-private:
-    void testCheckJobAttachments(const bool debugOutput,
-                                 const std::vector<std::string>& expectedAttachments);
-
-    JobStatus* RunBackupJob(GitFsBackupJob* job, const bool isRemote);
+    virtual AbstractBackupJob* CreateNewJob();
 };
 
 #endif // GITFSBACKUPJOBTEST_H

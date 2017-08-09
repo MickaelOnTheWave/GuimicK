@@ -14,6 +14,7 @@ public:
 
 protected:
     virtual AbstractCopyFsBackupJob* CreateCopyJob();
+    virtual AbstractBackupJob* CreateNewJob();
 
 };
 

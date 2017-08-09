@@ -17,6 +17,7 @@ private Q_SLOTS:
 protected:
     virtual void CheckBackedUpDataIsOk();
     virtual JobStatus* RunBackupJob();
+    virtual AbstractBackupJob* CreateNewJob() override;
 
 };
 

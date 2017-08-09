@@ -8,7 +8,7 @@
 class AbstractCopyFsBackupJob : public AbstractBackupJob
 {
 public:
-    AbstractCopyFsBackupJob(const std::string& debugFilename);
+    AbstractCopyFsBackupJob();
     AbstractCopyFsBackupJob(const AbstractCopyFsBackupJob& other);
     virtual ~AbstractCopyFsBackupJob();
 
@@ -24,7 +24,6 @@ protected:
     virtual void RunRepositoryBackup(const std::string& source,
                                     const std::string& destination,
                                      ResultCollection& results);
-    virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
 
     virtual void PrepareCopyCommand(const std::string &source,
                                     const std::string &destination,
@@ -38,8 +37,6 @@ private:
                  ResultCollection& results);
 
     void CreateCopyErrorReport(const std::string &message, ResultCollection& results);
-
-    BackupStatusManager statusManager;
 };
 
 #endif // ABSTRACTCOPYFSBACKUPJOB_H

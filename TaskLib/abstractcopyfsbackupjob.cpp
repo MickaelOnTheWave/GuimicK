@@ -6,21 +6,16 @@
 
 using namespace std;
 
-static const string defaultattachmentName = "CopyFsBackupJob.txt";
-
 static const string errorReportCreation = "Error creating report";
 static const string errorCopyCommand = "Copy command failed";
 
-AbstractCopyFsBackupJob::AbstractCopyFsBackupJob(const string &debugFilename)
-    : AbstractBackupJob(debugFilename)
+AbstractCopyFsBackupJob::AbstractCopyFsBackupJob() : AbstractBackupJob()
 {
-    statusManager.SetDebugManager(debugManager);
 }
 
 AbstractCopyFsBackupJob::AbstractCopyFsBackupJob(const AbstractCopyFsBackupJob &other)
-    : AbstractBackupJob(other), statusManager(other.statusManager)
+    : AbstractBackupJob(other)
 {
-    statusManager.SetDebugManager(debugManager);
 }
 
 AbstractCopyFsBackupJob::~AbstractCopyFsBackupJob()
@@ -43,7 +38,7 @@ int AbstractCopyFsBackupJob::RunOnParameters(const string &source, const string 
 
 void AbstractCopyFsBackupJob::SetJoinAllBackups(const bool value)
 {
-    statusManager.SetJoinReports(value);
+    statusManager->SetJoinReports(value);
 }
 
 void AbstractCopyFsBackupJob::RunRepositoryBackup(const string &source,
@@ -54,11 +49,6 @@ void AbstractCopyFsBackupJob::RunRepositoryBackup(const string &source,
         FileTools::CreateFolder(destination);
 
     RunCopy(source, destination, results);
-}
-
-JobStatus *AbstractCopyFsBackupJob::CreateGlobalStatus(const AbstractBackupJob::ResultCollection &results)
-{
-    return statusManager.CreateGlobalStatus(results, folderList);
 }
 
 void AbstractCopyFsBackupJob::RunCopy(const string &source, const string &destination,
@@ -77,6 +67,6 @@ void AbstractCopyFsBackupJob::RunCopy(const string &source, const string &destin
 void AbstractCopyFsBackupJob::CreateCopyErrorReport(const std::string& message, AbstractBackupJob::ResultCollection &results)
 {
     JobStatus* status = new JobStatus(JobStatus::ERROR, errorCopyCommand);
-    status->AddFileBuffer(defaultattachmentName, message);
+    status->AddFileBuffer(GetAttachmentName(), message);
     results.push_back(make_pair(status, new FileBackupReport()));
 }

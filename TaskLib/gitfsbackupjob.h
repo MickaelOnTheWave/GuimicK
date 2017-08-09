@@ -24,7 +24,6 @@ private:
     void RunRepositoryBackup(const std::string& source,
                              const std::string& destination,
                              ResultCollection &results);
-    virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
 
     void CreateGitRepository(const std::string& path, JobStatus* status);
     void CleanDestination(const std::string& destination, JobStatus* status);
@@ -53,7 +52,6 @@ private:
     void RunCopy(AbstractCopyFsBackupJob* copyJob,
                  const std::string& source, const std::string& destination, JobStatus* status);
 
-    BackupStatusManager statusManager;
     bool forceRawCopy;
 };
 

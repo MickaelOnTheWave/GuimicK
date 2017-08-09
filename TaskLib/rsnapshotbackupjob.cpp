@@ -9,12 +9,11 @@
 
 using namespace std;
 
-const string DEFAULT_BACKUP_FILENAME        = "FilesystemBackup.txt";
 const string DEFAULT_RSNAPSHOT_CONF_FILE    = "rsnapshot.conf";
 const string debugFilename                  = "RsnapshotDebug.txt";
 
 RsnapshotBackupJob::RsnapshotBackupJob(const string& _backupRepositoryPath, const string &_rsnapshotConfFile)
-    : showDebugOutput(false), waitAfterRun(false)
+    : waitAfterRun(false)
 {
     backupCommand = new ConsoleJob("rsnapshot");
     reportCommand = new ConsoleJob("rsnapshot-diff");
@@ -37,7 +36,7 @@ RsnapshotBackupJob::~RsnapshotBackupJob()
 
 string RsnapshotBackupJob::GetName()
 {
-    return "Backup";
+    return "Rsnapshot Backup";
 }
 
 AbstractJob *RsnapshotBackupJob::Clone()
@@ -47,7 +46,6 @@ AbstractJob *RsnapshotBackupJob::Clone()
     clone->reportCommand = static_cast<ConsoleJob*>(reportCommand->Clone());
     clone->backupRepositoryPath = backupRepositoryPath;
     clone->configurationFile = configurationFile;
-    clone->showDebugOutput = showDebugOutput;
     clone->waitAfterRun = waitAfterRun;
     return clone;
 }
@@ -70,9 +68,9 @@ void RsnapshotBackupJob::SeConfigurationFile(const string &file)
     backupCommand->SetCommandParameters(parameters);
 }
 
-bool RsnapshotBackupJob::InitializeFromClient(Client *)
+bool RsnapshotBackupJob::InitializeFromClient(Client *client)
 {
-    return true;
+    return AbstractBackupJob::InitializeFromClient(client);
 }
 
 bool RsnapshotBackupJob::IsInitialized()
@@ -87,10 +85,8 @@ JobStatus* RsnapshotBackupJob::Run()
     if (waitAfterRun)
         sleep(1);
 
-    stringstream debugOutput;
 	JobStatus* backupStatus = backupCommand->Run();
-    if (showDebugOutput)
-        debugOutput << "Full command output : <" << backupCommand->GetCommandOutput() << ">" << endl;
+    debugManager->AddDataLine<string>("Full command output", backupCommand->GetCommandOutput());
 	if (backupStatus->GetCode() != JobStatus::OK)
 	{
         if (backupCommand->GetCommandReturnCode() == 1)
@@ -103,14 +99,14 @@ JobStatus* RsnapshotBackupJob::Run()
             else
             {
                 backupStatus->SetDescription("Fatal error running RSnapshot. See attached file.");
-                backupStatus->AddFileBuffer(DEFAULT_BACKUP_FILENAME, backupCommand->GetCommandOutput());
+                backupStatus->AddFileBuffer(GetAttachmentName(), backupCommand->GetCommandOutput());
             }
         }
         else if (backupCommand->GetCommandReturnCode() == 2)
         {
             backupStatus->SetDescription("RSnapshot executed with some warnings. See attached file.");
             backupStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
-            backupStatus->AddFileBuffer(DEFAULT_BACKUP_FILENAME, backupCommand->GetCommandOutput());
+            backupStatus->AddFileBuffer(GetAttachmentName(), backupCommand->GetCommandOutput());
         }
 		else
 		{
@@ -119,16 +115,15 @@ JobStatus* RsnapshotBackupJob::Run()
 			stream << backupCommand->GetCommandReturnCode();
 			description += stream.str();
 			backupStatus->SetDescription(description);
-            backupStatus->AddFileBuffer(DEFAULT_BACKUP_FILENAME, backupCommand->GetCommandOutput());
+            backupStatus->AddFileBuffer(GetAttachmentName(), backupCommand->GetCommandOutput());
 		}
-		return backupStatus;
+        return debugManager->UpdateStatus(backupStatus);
 	}
 	else
 		delete backupStatus;
 
 	JobStatus* reportStatus = reportCommand->Run();
-    if (showDebugOutput)
-        debugOutput << "Full report output : <" << reportCommand->GetCommandOutput() << ">" << endl;
+    debugManager->AddDataLine<string>("Full report output", reportCommand->GetCommandOutput());
 	if (reportStatus->GetCode() != JobStatus::OK)
 	{
 		string description("Error creating rsnapshot report. Return code : ");
@@ -137,8 +132,8 @@ JobStatus* RsnapshotBackupJob::Run()
 		description += stream.str();
 		reportStatus->SetDescription(description);
 		reportStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
-        reportStatus->AddFileBuffer(DEFAULT_BACKUP_FILENAME, backupCommand->GetCommandOutput());
-		return reportStatus;
+        reportStatus->AddFileBuffer(GetAttachmentName(), backupCommand->GetCommandOutput());
+        return debugManager->UpdateStatus(reportStatus);
 	}
 	else
 		delete reportStatus;
@@ -147,19 +142,21 @@ JobStatus* RsnapshotBackupJob::Run()
     parser.ParseBuffer(reportCommand->GetCommandOutput());
 
     JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
-    status->AddFileBuffer(DEFAULT_BACKUP_FILENAME, parser.GetFullDescription());
-    if (showDebugOutput)
-        status->AddFileBuffer(debugFilename, debugOutput.str());
-
-    return status;
-}
-
-void RsnapshotBackupJob::SetOutputDebugInformation(const bool value)
-{
-    showDebugOutput = value;
+    status->AddFileBuffer(GetAttachmentName(), parser.GetFullDescription());
+    return debugManager->UpdateStatus(status);
 }
 
 void RsnapshotBackupJob::SetWaitAfterRun(const bool value)
 {
     waitAfterRun = value;
+}
+
+void RsnapshotBackupJob::RunRepositoryBackup(const string &source, const string &destination, AbstractBackupJob::ResultCollection &results)
+{
+    // TODO : Finish refactoring. This should not be empty.
+}
+
+JobStatus *RsnapshotBackupJob::CreateGlobalStatus(const AbstractBackupJob::ResultCollection &results)
+{
+    return NULL;
 }

@@ -20,6 +20,7 @@ public:
     virtual ~AbstractJob();
 
 	virtual std::string GetName() = 0;
+    std::string GetAttachmentName();
 
     virtual AbstractJob* Clone() = 0;
 
@@ -40,6 +41,7 @@ public:
 	virtual JobStatus* Run() = 0;
 
     virtual void SetOutputDebugInformation(const int value);
+
 };
 
 #endif // ABSTRACTJOB_H

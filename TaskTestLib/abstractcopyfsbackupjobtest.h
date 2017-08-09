@@ -16,12 +16,6 @@ public:
 
 private Q_SLOTS:
     void testRunBackup_data();
-
-protected:
-    virtual void CheckBackedUpDataIsOk();
-    virtual JobStatus* RunBackupJob();
-
-    virtual AbstractCopyFsBackupJob* CreateCopyJob() = 0;
 };
 
 #endif // COPYFSBACKUPJOBTEST_H

@@ -29,6 +29,7 @@ protected:
     virtual void ProcessingBetweenBackups();
     virtual void CheckBackedUpDataIsOk();
     virtual JobStatus* RunBackupJob();
+    virtual AbstractBackupJob* CreateNewJob();
 
 private:
     JobStatus* RunRsnapshotJob(const std::string& tempConfigurationFile = "");

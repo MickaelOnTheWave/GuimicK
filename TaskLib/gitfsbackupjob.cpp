@@ -25,28 +25,20 @@ const int emptyDirError = 1;
 const int gitNothingToCommitWarningCode = 1;
 const int gitCommitUtf8WarningCode = 137;
 
-const string jobName = "Git Filesystem Backup";
-const string defaultAttachmentName = jobName + ".txt";
-
 GitFsBackupJob::GitFsBackupJob()
-    : AbstractBackupJob(jobName),
-      forceRawCopy(false)
+    : AbstractBackupJob(), forceRawCopy(false)
 {
-    statusManager.SetAttachmentName(defaultAttachmentName);
-    statusManager.SetDebugManager(debugManager);
 }
 
 GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
-    : AbstractBackupJob(other), statusManager(other.statusManager),
-      forceRawCopy(other.forceRawCopy)
+    : AbstractBackupJob(other), forceRawCopy(other.forceRawCopy)
 {
-    statusManager.SetAttachmentName(defaultAttachmentName);
-    statusManager.SetDebugManager(debugManager);
+
 }
 
 std::string GitFsBackupJob::GetName()
 {
-    return jobName;
+    return string("Git Filesystem Backup");
 }
 
 AbstractJob *GitFsBackupJob::Clone()
@@ -64,7 +56,7 @@ JobStatus *GitFsBackupJob::Run()
 
 void GitFsBackupJob::SetJoinAllBackups(const bool value)
 {
-    statusManager.SetJoinReports(value);
+    statusManager->SetJoinReports(value);
 }
 
 void GitFsBackupJob::SetForceRawCopyUse(const bool value)
@@ -104,11 +96,6 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
     chdir(originalDirectory.c_str());
 
     results.push_back(make_pair(status, report));
-}
-
-JobStatus *GitFsBackupJob::CreateGlobalStatus(const ResultCollection& results)
-{
-    return statusManager.CreateGlobalStatus(results, folderList);
 }
 
 void GitFsBackupJob::CreateGitRepository(const string &path, JobStatus *status)

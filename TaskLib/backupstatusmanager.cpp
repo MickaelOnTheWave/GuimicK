@@ -145,7 +145,8 @@ string BackupStatusManager::CreateStatusesDescription()
     for (; it!=resultCollection->end(); ++it, ++itDestination)
     {
         fullDescription += BuildRepositoryHeader(itDestination->second);
-        fullDescription += it->second->GetFullDescription();
+        if (it->second)
+            fullDescription += it->second->GetFullDescription();
     }
     fullDescription += BuildFooter();
     return fullDescription;

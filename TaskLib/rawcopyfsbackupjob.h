@@ -7,7 +7,6 @@ class RawCopyFsBackupJob : public AbstractCopyFsBackupJob
 {
 public:
     RawCopyFsBackupJob();
-    RawCopyFsBackupJob(const std::string& debugFilename);
     RawCopyFsBackupJob(const AbstractCopyFsBackupJob& other);
 
     virtual std::string GetName();

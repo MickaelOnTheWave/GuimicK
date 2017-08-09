@@ -5,14 +5,7 @@
 
 using namespace std;
 
-const string defaultDebugFilename = "RsyncCopyFsBackup.txt";
-
-RsyncCopyFsBackupJob::RsyncCopyFsBackupJob() : AbstractCopyFsBackupJob(defaultDebugFilename)
-{
-}
-
-RsyncCopyFsBackupJob::RsyncCopyFsBackupJob(const std::string &debugFilename)
-    : AbstractCopyFsBackupJob(debugFilename)
+RsyncCopyFsBackupJob::RsyncCopyFsBackupJob() : AbstractCopyFsBackupJob()
 {
 }
 
@@ -23,7 +16,7 @@ RsyncCopyFsBackupJob::RsyncCopyFsBackupJob(const AbstractCopyFsBackupJob &other)
 
 string RsyncCopyFsBackupJob::GetName()
 {
-    return string("RSync Fs Backup");
+    return string("Rsync Copy Backup");
 }
 
 AbstractJob *RsyncCopyFsBackupJob::Clone()

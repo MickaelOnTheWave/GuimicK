@@ -43,6 +43,7 @@ JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob()
     QFETCH(bool, remote);
 
     ZipAndCopyFsBackupJob* job = new ZipAndCopyFsBackupJob();
+    job->InitializeFromClient(nullptr);
     job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), archiveName);
     job->SetLocalDestination(localArchive);
     if (remote)
@@ -54,4 +55,9 @@ JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob()
 
     delete job;
     return status;
+}
+
+AbstractBackupJob *ZipAndCopyFsBackupJobTest::CreateNewJob()
+{
+    return new ZipAndCopyFsBackupJob();
 }

@@ -62,7 +62,7 @@ void WakeJob::SetOutputDebugInformation(const bool value)
 JobStatus *WakeJob::Run()
 {
     const string wakeCommand = wakelanPath + " -m " + macAddress + " -b " + broadcastIp;
-    JobDebugInformationManager debugInfo(GetName(), outputDebugInformation);
+    JobDebugInformationManager debugInfo(outputDebugInformation, GetName());
     debugInfo.AddDataLine<string>("Wake command", wakeCommand);
 
     const int maxRetries = 3;

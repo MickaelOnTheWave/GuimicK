@@ -56,7 +56,7 @@ void LinuxShutdownJob::SetOutputDebugInformation(const bool value)
 
 JobStatus *LinuxShutdownJob::Run()
 {
-    JobDebugInformationManager debugInfo(GetName(), outputDebugInformation);
+    JobDebugInformationManager debugInfo(outputDebugInformation, GetName());
     JobStatus* status = shutdownJob->Run();
 
     // TODO : reactivate this when [044] is implemented

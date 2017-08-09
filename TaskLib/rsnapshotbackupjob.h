@@ -1,11 +1,11 @@
 #ifndef BACKUPJOB_H
 #define BACKUPJOB_H
 
-#include "abstractjob.h"
+#include "abstractbackupjob.h"
 #include "consolejob.h"
 #include <rsnapshotreportparser.h>
 
-class RsnapshotBackupJob : public AbstractJob
+class RsnapshotBackupJob : public AbstractBackupJob
 {
 public:
     RsnapshotBackupJob(const std::string& _backupRepositoryPath = "",
@@ -20,13 +20,11 @@ public:
 
     void SeConfigurationFile(const std::string& file);
 
-    virtual bool InitializeFromClient(Client*);
+    virtual bool InitializeFromClient(Client* client);
 
     virtual bool IsInitialized(void);
 
 	virtual JobStatus* Run();
-
-    void SetOutputDebugInformation(const bool value);
 
     /**
      * On automated testing, if there is no wait after
@@ -35,13 +33,17 @@ public:
     void SetWaitAfterRun(const bool value);
 
 protected:
+    virtual void RunRepositoryBackup(const std::string& source,
+                                     const std::string& destination,
+                                     ResultCollection& results);
+    virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
+
     std::string configurationFile;
 
 private:
 	ConsoleJob* backupCommand;
 	ConsoleJob* reportCommand;
     std::string backupRepositoryPath;
-    bool showDebugOutput;
     bool waitAfterRun;
 };
 

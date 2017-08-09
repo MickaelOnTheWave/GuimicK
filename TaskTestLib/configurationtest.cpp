@@ -83,7 +83,7 @@ void ConfigurationTest::testBuildSimpleWorkList()
 
     QCOMPARE(jobList.size(), 5ul);
     QCOMPARE(jobList[0]->GetName().c_str(), "Wake");
-    QCOMPARE(jobList[1]->GetName().c_str(), "Backup");
+    QCOMPARE(jobList[1]->GetName().c_str(), "Rsnapshot Backup");
     QCOMPARE(jobList[2]->GetName().c_str(), "ClamAV Scan");
     QCOMPARE(jobList[3]->GetName().c_str(), "Change Screen Saver");
     QCOMPARE(jobList[4]->GetName().c_str(), "Shutdown");

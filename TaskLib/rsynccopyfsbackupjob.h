@@ -7,7 +7,6 @@ class RsyncCopyFsBackupJob : public AbstractCopyFsBackupJob
 {
 public:
     RsyncCopyFsBackupJob();
-    RsyncCopyFsBackupJob(const std::string& debugFilename);
     RsyncCopyFsBackupJob(const AbstractCopyFsBackupJob& other);
 
     virtual std::string GetName();

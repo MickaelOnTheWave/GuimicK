@@ -7,7 +7,7 @@
 using namespace std;
 
 UserConsoleJob::UserConsoleJob()
-    : ConsoleJob(), debugInfo("", false)
+    : ConsoleJob(), debugInfo(DebugOutput::NEVER, "UserConsoleJob")
 {
 }
 
@@ -15,7 +15,7 @@ UserConsoleJob::UserConsoleJob(const std::string &_commandTitle,
                                const std::string &_command, const std::string& _params,
                                int _expectedReturnCode)
     : ConsoleJob(_command, _params, _expectedReturnCode), commandTitle(_commandTitle),
-      debugInfo(_commandTitle, false)
+      debugInfo(false, _commandTitle)
 {
     Initialize(_command, _expectedReturnCode);
 }
@@ -226,9 +226,7 @@ void UserConsoleJob::FillErrorStatusFromReturnCode()
 
     currentStatus->SetDescription(message.str());
 
-    const string attachmentName = GetName() + ".txt";
-    const string content = string("Output : \n") + commandOutput;
-    currentStatus->AddFileBuffer(attachmentName, content);
+    debugInfo.AddDataLine<string>("Output", commandOutput);
 }
 
 void UserConsoleJob::FinalizeStatusCreation()

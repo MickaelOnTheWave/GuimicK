@@ -14,6 +14,7 @@ public:
 
 protected:
     virtual AbstractCopyFsBackupJob* CreateCopyJob();
+    virtual AbstractCopyFsBackupJob* CreateNewJob();
 
 };
 #endif // RSYNCCOPYFSBACKUPJOBTEST_H
