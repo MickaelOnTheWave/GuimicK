@@ -1,9 +1,9 @@
 #ifndef GITBACKUPJOBCONFIGURATION_H
 #define GITBACKUPJOBCONFIGURATION_H
 
-#include "abstractjobconfiguration.h"
+#include "abstractbackupjobconfiguration.h"
 
-class GitBackupJobConfiguration : public AbstractJobConfiguration
+class GitBackupJobConfiguration : public AbstractBackupJobConfiguration
 {
 public:
     GitBackupJobConfiguration();

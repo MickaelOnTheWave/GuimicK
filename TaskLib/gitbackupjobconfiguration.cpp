@@ -4,7 +4,7 @@
 using namespace std;
 
 GitBackupJobConfiguration::GitBackupJobConfiguration()
-    : AbstractJobConfiguration("GitBackup")
+    : AbstractBackupJobConfiguration("GitBackup")
 {
 }
 
@@ -12,6 +12,9 @@ AbstractJob *GitBackupJobConfiguration::CreateConfiguredJobAfterCheck(
                                             ConfigurationObject *confObject,
                                             std::vector<std::string> &)
 {
+    // TODO : change architecture at this point.
+    // One virtual CreateJob() that only creates a new instance
+    // One virtual ConfigureJob() that only configures a job
     GitBackupJob* job = new GitBackupJob();
     list<ConfigurationObject*>::iterator it = confObject->objectList.begin();
     for (; it != confObject->objectList.end(); it++)
@@ -36,16 +39,14 @@ AbstractJob *GitBackupJobConfiguration::CreateConfiguredJobAfterCheck(
     if (writeLogsToFiles == "true")
         job->SetWriteLogsToFiles(true);
 
-    string showDebugInformation(confObject->propertyList["showDebugInformation"]);
-    if (showDebugInformation == "true")
-        job->SetOutputDebugInformation(true);
-
+    AbstractBackupJobConfiguration::ConfigureJob(job, confObject);
 
     return job;
 }
 
 void GitBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &properties)
 {
+    AbstractBackupJobConfiguration::FillKnownProperties(properties);
     properties.push_back("target");
     properties.push_back("writeLogsToFiles");
 }
