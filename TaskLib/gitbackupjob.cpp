@@ -90,12 +90,16 @@ bool GitBackupJob::AreSourcesConsistent() const
 void GitBackupJob::RunGitPull(const string &repository,
                               ResultCollection &statusList) const
 {
+    debugManager->AddDataLine<string>("Git Pull on", repository);
     string originalDirectory = FileTools::GetCurrentFullPath();
     chdir(repository.c_str());
 
     ConsoleJob* gitCommand = new ConsoleJob("git", "pull");
     JobStatus* status = gitCommand->Run();
     FileBackupReport* report = new FileBackupReport();
+
+    debugManager->AddDataLine<int>("result", gitCommand->GetCommandReturnCode());
+    debugManager->AddDataLine<string>("output", gitCommand->GetCommandOutput());
 
     if (gitCommand->GetCommandReturnCode() == 128)
         status->SetDescription(invalidDestinationRepositoryError);
@@ -107,6 +111,7 @@ void GitBackupJob::RunGitPull(const string &repository,
         GitReportParser parser;
         string reportContent = "";
         bool ok = parser.ParseBuffer(gitCommand->GetCommandOutput());
+        debugManager->AddDataLine<bool>("Parser result", ok);
         if (ok)
         {
             parser.GetReport(*report);
@@ -138,9 +143,12 @@ void GitBackupJob::RunGitClone(const string &source,
                                const string &destination,
                                ResultCollection &statusList) const
 {
+    debugManager->AddDataLine<string>("Git Clone on", repository);
     ConsoleJob* gitCommand = new ConsoleJob("git", BuildGitParameters(source, destination));
     const string gitLogFile = FileTools::GetFilenameFromUnixPath(destination) + ".txt";
     JobStatus* status = gitCommand->Run();
+    debugManager->AddDataLine<int>("Clone result", gitCommand->GetCommandReturnCode());
+    debugManager->AddDataLine<string>("Clone output", gitCommand->GetCommandOutput());
     if (gitCommand->GetCommandReturnCode() == 128)
         status->SetDescription(invalidSourceRepositoryError);
     else

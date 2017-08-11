@@ -36,6 +36,11 @@ AbstractJob *GitBackupJobConfiguration::CreateConfiguredJobAfterCheck(
     if (writeLogsToFiles == "true")
         job->SetWriteLogsToFiles(true);
 
+    string showDebugInformation(confObject->propertyList["showDebugInformation"]);
+    if (showDebugInformation == "true")
+        job->SetOutputDebugInformation(true);
+
+
     return job;
 }
 

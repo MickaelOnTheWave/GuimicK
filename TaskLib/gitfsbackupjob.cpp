@@ -217,6 +217,8 @@ void GitFsBackupJob::FixCRLFIssue()
     ConsoleJob::Run("git", "config --local core.safecrlf false");
 }
 
+// TODO : check this. THere was an error that suggested that it is not working
+// as expected. There is an improved version of it, ConfigureGitRepository().
 void GitFsBackupJob::SetGitUserToFixUtf8Warning()
 {
     ConsoleJob::Run("git", "config --local user.name \"TaskManager\"");
