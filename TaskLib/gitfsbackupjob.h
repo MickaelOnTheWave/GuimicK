@@ -54,7 +54,8 @@ private:
 
     void LogDebugCommand(const std::string& title, const ConsoleJob &job);
 
-    void ConfigureGitRepository();
+    bool ConfigureGitRepository();
+    bool SetupGitConfig(const std::string& configuration, const std::string& value);
 
     bool forceRawCopy;
 };

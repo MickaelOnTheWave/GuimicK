@@ -26,6 +26,9 @@ static const int gitNothingToCommitWarningCode = 1;
 static const int gitCommitUtf8WarningCode = 137;
 static const int gitNotConfiguredError = 128;
 
+static const string gitUserName = "TaskManager";
+static const string gitUserEmail = "task@manager.com";
+
 GitFsBackupJob::GitFsBackupJob()
     : AbstractBackupJob(), forceRawCopy(false)
 {
@@ -349,7 +352,27 @@ void GitFsBackupJob::LogDebugCommand(const string &title, const ConsoleJob &job)
     debugManager->AddDataLine<int>(title + " return value", job.GetCommandReturnCode());
 }
 
-void GitFsBackupJob::ConfigureGitRepository()
+bool GitFsBackupJob::ConfigureGitRepository()
 {
-    // TODO : implement
+    if (!SetupGitConfig("email", gitUserEmail))
+        return false;
+
+    if (!SetupGitConfig("name", gitUserName))
+        return false;
+
+    return true;
+}
+
+bool GitFsBackupJob::SetupGitConfig(const string &configuration, const string &value)
+{
+    // TODO wait for production run to confirm correct error message before activating implementation
+    return false;
+
+/*    const string param = string("config user.") + configuration + " \"" + value + "\"";
+    ConsoleJob job("git", param);
+    job.RunWithoutStatus();
+    if (!job.IsRunOk())
+        LogDebugCommand(string("Git config ") + configuration, job);
+
+    return job.IsRunOk();*/
 }
