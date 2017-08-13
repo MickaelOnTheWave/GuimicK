@@ -1,3 +1,6 @@
+13/08/2017 (8.7)
+	Production run ran as expected. Now fixing the issue.
+
 10/08/2017 (1h)
 	Back to work, before production even ran! So, best bet is to work on things that won't go into
 	production anyway. Start implementation of fix without activating it.

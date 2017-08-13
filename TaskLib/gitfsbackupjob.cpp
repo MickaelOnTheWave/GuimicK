@@ -367,14 +367,11 @@ bool GitFsBackupJob::ConfigureGitRepository()
 
 bool GitFsBackupJob::SetupGitConfig(const string &configuration, const string &value)
 {
-    // TODO wait for production run to confirm correct error message before activating implementation
-    return false;
-
-/*    const string param = string("config user.") + configuration + " \"" + value + "\"";
+    const string param = string("config user.") + configuration + " \"" + value + "\"";
     ConsoleJob job("git", param);
     job.RunWithoutStatus();
     if (!job.IsRunOk())
         LogDebugCommand(string("Git config ") + configuration, job);
 
-    return job.IsRunOk();*/
+    return job.IsRunOk();
 }
