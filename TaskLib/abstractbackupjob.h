@@ -24,17 +24,15 @@ public:
 
     virtual JobStatus* Run();
 
-    virtual void SetOutputDebugInformation(const int value);
-
     void SetTargetRemote(const std::string& user = "", const std::string& host = "");
     void SetTargetLocal();
 
-    void SetRepository(const std::string& value);
+    virtual void SetRepository(const std::string& value);
     void AddFolder(const std::string& source, const std::string& destination);
     void GetFolderList(std::vector<std::pair<std::string, std::string> >& folders);
     void ClearFolderList(void);
 
-    void SetParentDebugManager(JobDebugInformationManager* manager);
+    void SetJoinAllBackups(const bool value);
 
 protected:
     virtual bool Initialize();
@@ -50,7 +48,6 @@ protected:
     std::string sshHost;
     bool isTargetLocal;
 
-    JobDebugInformationManager* debugManager;
     BackupStatusManager* statusManager;
     bool isDebugManagerParent;
 

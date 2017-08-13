@@ -1,69 +1,85 @@
 #include "rsnapshotbackupjobconfiguration.h"
 
-#include "rsnapshotsmartcreator.h"
+#include "rsnapshotrawbackupjob.h"
+#include "rsnapshotsmartbackupjob.h"
 
 using namespace std;
 
+static const string fullConfigurationProperty = "fullConfigurationFile";
+static const string waitProperty = "waitAfterRun";
+static const string templateConfigurationProperty = "templateConfigurationFile";
+static const string repositoryProperty = "repository";
+
 RsnapshotBackupJobConfiguration::RsnapshotBackupJobConfiguration()
-    : AbstractJobConfiguration("RsnapshotBackup")
+    : AbstractBackupJobConfiguration("RsnapshotBackup"),
+      fullConfigurationFile("")
 {
 }
 
-AbstractJob *RsnapshotBackupJobConfiguration::CreateConfiguredJobAfterCheck(
-                                                    ConfigurationObject *confObject,
-                                                    std::vector<std::string> &)
+void RsnapshotBackupJobConfiguration::AnalyzeConfiguration(ConfigurationObject *confObject)
 {
-    string repository = confObject->GetFirstProperty("repository", "param0");
-    string configurationFile = confObject->GetFirstProperty("fullConfigurationFile", "param1");
+    fullConfigurationFile = confObject->GetFirstProperty(fullConfigurationProperty, "param1");
+}
 
-    RsnapshotBackupJob* job = NULL;
-    if (configurationFile != "")
-        job = new RsnapshotBackupJob(repository, configurationFile);
+AbstractJob *RsnapshotBackupJobConfiguration::CreateJob()
+{
+    if (fullConfigurationFile != "")
+        return new RsnapshotRawBackupJob();
     else
-        job = CreateRsnapshotBackupJobFromCreator(confObject, repository);
+        return new RsnapshotSmartBackupJob();
+}
 
-    if (confObject->propertyList["showDebugInformation"] == "true")
-        job->SetOutputDebugInformation(true);
-    if (confObject->propertyList["waitAfterRun"] != "")
-        job->SetWaitAfterRun(true);
-    return job;
+void RsnapshotBackupJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationObject *confObject, std::vector<string> &errorMessages)
+{
+    if (fullConfigurationFile != "")
+        ConfigureRawJob(static_cast<RsnapshotRawBackupJob*>(job), confObject, errorMessages);
+    else
+        ConfigureSmartJob(static_cast<RsnapshotSmartBackupJob*>(job), confObject, errorMessages);
 }
 
 void RsnapshotBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &properties)
 {
-    properties.push_back("repository");
-    properties.push_back("fullConfigurationFile");
-    properties.push_back("showDebugInformation");
-    properties.push_back("waitAfterRun");
-    properties.push_back("templateConfigurationFile");
+    AbstractBackupJobConfiguration::FillKnownProperties(properties);
+    properties.push_back(repositoryProperty);
+    properties.push_back(fullConfigurationProperty);
+    properties.push_back(waitProperty);
+    properties.push_back(templateConfigurationProperty);
 }
 
-void RsnapshotBackupJobConfiguration::FillKnownSubObjects(std::vector<std::string> &objects)
+string RsnapshotBackupJobConfiguration::GetBackupItemName() const
 {
-    objects.push_back("Folder");
+    return string("Folder");
 }
 
-RsnapshotBackupJob *RsnapshotBackupJobConfiguration::CreateRsnapshotBackupJobFromCreator(
-                                                                ConfigurationObject *object,
-                                                                const string &repository) const
+void RsnapshotBackupJobConfiguration::ConfigureSmartJob(RsnapshotSmartBackupJob *job,
+                                                        ConfigurationObject *confObject,
+                                                        std::vector<string> &errorMessages)
 {
-    RsnapshotSmartCreator creator(repository);
+    AbstractBackupJobConfiguration::ConfigureJob(job, confObject, errorMessages);
 
-    string templateFile = object->propertyList["templateConfigurationFile"];
-    creator.SetTemplateConfigurationFile(templateFile);
+    const string templateFile = confObject->GetProperty(templateConfigurationProperty);
+    job->SetTemplateConfigurationFile(templateFile);
 
-    list<ConfigurationObject*>::iterator it = object->objectList.begin();
-    for (; it != object->objectList.end(); it++)
-    {
-        ConfigurationObject* currentObj = *it;
+    job->SetRepository(GetRepositoryValue(confObject));
+}
 
-        if (currentObj->name != "Folder")
-            continue;
+void RsnapshotBackupJobConfiguration::ConfigureRawJob(RsnapshotRawBackupJob *job,
+                                                      ConfigurationObject *confObject,
+                                                      std::vector<string> &errorMessages)
+{
+    AbstractJobDefaultConfiguration::ConfigureJob(job, confObject, errorMessages);
 
-        string source(currentObj->propertyList["source"]);
-        string dest(currentObj->propertyList["dest"]);
-        creator.AddFolderToBackup(source, dest);
-    }
+    job->SetConfigurationFile(fullConfigurationFile);
+    job->SetRepository(GetRepositoryValue(confObject));
+    job->SetWaitAfterRun(GetWaitAfterRunValue(confObject));
+}
 
-    return creator.CreateConfiguredJob();
+string RsnapshotBackupJobConfiguration::GetRepositoryValue(ConfigurationObject *confObject) const
+{
+    return confObject->GetFirstProperty(repositoryProperty, "param0");
+}
+
+bool RsnapshotBackupJobConfiguration::GetWaitAfterRunValue(ConfigurationObject *confObject) const
+{
+    return (confObject->GetProperty(waitProperty) == "true");
 }

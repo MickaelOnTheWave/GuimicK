@@ -58,11 +58,6 @@ JobStatus *GitFsBackupJob::Run()
         return AbstractBackupJob::Run();
 }
 
-void GitFsBackupJob::SetJoinAllBackups(const bool value)
-{
-    statusManager->SetJoinReports(value);
-}
-
 void GitFsBackupJob::SetForceRawCopyUse(const bool value)
 {
     forceRawCopy = value;

@@ -8,8 +8,9 @@
 
 #include "filetestutils.h"
 #include "filetools.h"
+#include "rsnapshotsmartbackupjob.h"
 #include "rsnapshotbackupjob.h"
-#include "rsnapshotsmartcreator.h"
+#include "rsnapshotconfigurationbuilder.h"
 #include "tools.h"
 
 using namespace std;
@@ -113,16 +114,13 @@ AbstractBackupJob *RsnapshotJobTest::CreateNewJob()
 
 JobStatus *RsnapshotJobTest::RunRsnapshotJob(const string &tempConfigurationFile)
 {
-    RsnapshotSmartCreator creator(repository);
-    creator.SetTemplateConfigurationFile(GetDataFolder() + templateConfigurationFile);
-    creator.AddFolderToBackup(FileTools::BuildFullPath(currentSourceFolder), currentSourceFolder);
+    RsnapshotSmartBackupJob job;
+    job.SetTemplateConfigurationFile(GetDataFolder() + templateConfigurationFile);
     if (tempConfigurationFile != "")
-        creator.SetGeneratedConfigurationFile(tempConfigurationFile);
+        job.SetTemporaryFile(tempConfigurationFile);
+    job.SetRepository(repository);
 
-    RsnapshotBackupJob* job = creator.CreateConfiguredJob();
-    JobStatus* status = job->Run();
-    delete job;
-    return status;
+    return job.Run();
 }
 
 string RsnapshotJobTest::GetRsnapshotBackupFolder(const int number) const

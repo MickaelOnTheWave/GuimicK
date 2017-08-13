@@ -5,9 +5,8 @@ ClamAvJobConfiguration::ClamAvJobConfiguration() : AbstractJobConfiguration("Cla
 {
 }
 
-AbstractJob *ClamAvJobConfiguration::CreateConfiguredJobAfterCheck(
-        ConfigurationObject *,
-        std::vector<std::string> &)
+AbstractJob *ClamAvJobConfiguration::CreateJob()
 {
     return new ClamAvJob();
 }
+

@@ -7,13 +7,7 @@ WakeJobConfiguration::WakeJobConfiguration() : AbstractJobConfiguration("Wake")
 {
 }
 
-AbstractJob *WakeJobConfiguration::CreateConfiguredJobAfterCheck(
-                                        ConfigurationObject *confObject,
-                                        vector<string> &)
+AbstractJob *WakeJobConfiguration::CreateJob()
 {
-    WakeJob* job = new WakeJob();
-    string param = confObject->propertyList["param0"];
-    if (param == "showDebugInformation")
-        job->SetOutputDebugInformation(true);
-    return job;
+    return new WakeJob();
 }

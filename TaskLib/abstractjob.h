@@ -4,19 +4,14 @@
 #include <string>
 
 #include "client.h"
+#include "jobdebuginformationmanager.h"
 #include "jobstatus.h"
-
-namespace DebugOutput
-{
-    static const int NEVER = 0;
-    static const int ON_ERROR = 1;
-    static const int ALWAYS = 2;
-}
 
 class AbstractJob
 {
 public:
     AbstractJob();
+    AbstractJob(const AbstractJob& other);
     virtual ~AbstractJob();
 
 	virtual std::string GetName() = 0;
@@ -42,6 +37,11 @@ public:
 
     virtual void SetOutputDebugInformation(const int value);
 
+    void SetParentDebugManager(JobDebugInformationManager* manager);
+
+protected:
+    JobDebugInformationManager* debugManager;
+    bool isDebugManagerParent;
 };
 
 #endif // ABSTRACTJOB_H

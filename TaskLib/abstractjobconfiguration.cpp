@@ -25,8 +25,26 @@ AbstractJob *AbstractJobConfiguration::CreateConfiguredJob(
 {
     CheckKnownProperties(confObject, errorMessages);
     CheckKnownSubObjects(confObject, errorMessages);
-
     return CreateConfiguredJobAfterCheck(confObject, errorMessages);
+}
+
+AbstractJob *AbstractJobConfiguration::CreateConfiguredJobAfterCheck(
+        ConfigurationObject *confObject,
+        std::vector<string> &errorMessages)
+{
+    AnalyzeConfiguration(confObject);
+    AbstractJob* job = CreateJob();
+    ConfigureJob(job, confObject, errorMessages);
+    return job;
+}
+
+void AbstractJobConfiguration::AnalyzeConfiguration(ConfigurationObject *)
+{
+}
+
+void AbstractJobConfiguration::ConfigureJob(AbstractJob *,
+                                            ConfigurationObject *, vector<string> &)
+{
 }
 
 void AbstractJobConfiguration::FillKnownProperties(vector<string> &)

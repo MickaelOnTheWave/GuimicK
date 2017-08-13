@@ -1,24 +1,39 @@
 #ifndef RSNAPSHOTBACKUPJOBCONFIGURATION_H
 #define RSNAPSHOTBACKUPJOBCONFIGURATION_H
 
-#include "abstractjobconfiguration.h"
-#include "rsnapshotbackupjob.h"
+#include "abstractbackupjobconfiguration.h"
+#include "rsnapshotrawbackupjob.h"
+#include "rsnapshotsmartbackupjob.h"
 
-class RsnapshotBackupJobConfiguration : public AbstractJobConfiguration
+class RsnapshotBackupJobConfiguration : public AbstractBackupJobConfiguration
 {
 public:
     RsnapshotBackupJobConfiguration();
 
 protected:
-    virtual AbstractJob* CreateConfiguredJobAfterCheck(ConfigurationObject *confObject,
-                                                       std::vector<std::string> &errorMessages);
+
+    virtual void AnalyzeConfiguration(ConfigurationObject* confObject);
+    virtual AbstractJob* CreateJob();
+    virtual void ConfigureJob(AbstractJob* job,
+                              ConfigurationObject *confObject,
+                              std::vector<std::string> &errorMessages);
+
     virtual void FillKnownProperties(std::vector<std::string>& properties);
-    virtual void FillKnownSubObjects(std::vector<std::string>& objects);
 
 private:
-    RsnapshotBackupJob *CreateRsnapshotBackupJobFromCreator(
-                            ConfigurationObject *object,
-                            const std::string &repository) const;
+    virtual std::string GetBackupItemName() const;
+
+    void ConfigureSmartJob(RsnapshotSmartBackupJob* job,
+                           ConfigurationObject *confObject,
+                           std::vector<std::string> &errorMessages);
+    void ConfigureRawJob(RsnapshotRawBackupJob* job,
+                         ConfigurationObject *confObject,
+                         std::vector<std::string> &errorMessages);
+
+    std::string GetRepositoryValue(ConfigurationObject *confObject) const;
+    bool GetWaitAfterRunValue(ConfigurationObject *confObject) const;
+
+    std::string fullConfigurationFile;
 };
 
 #endif // RSNAPSHOTBACKUPJOBCONFIGURATION_H

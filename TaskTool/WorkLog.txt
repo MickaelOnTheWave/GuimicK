@@ -1,5 +1,13 @@
-13/08/2017 (8.7)
+13/08/2017 (4.3h)
 	Production run ran as expected. Now fixing the issue.
+	Refactored debug manager to put it fully into AbstractJob. Continued configuration refactoring.
+	Refactored most of Rsnapshot job and configuration : there are now two independent jobs, one for
+	old way and one for new way (with reuse between them).
+Next planned work :
+	- Fix crashing tests after refactoring and issues that will be related
+	- Remove old RsnapshotBackupJob
+	- Make RsnapshotJob test suite use AbstractBackupTest
+	- Create new tests configurations
 
 10/08/2017 (1h)
 	Back to work, before production even ran! So, best bet is to work on things that won't go into

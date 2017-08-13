@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 
-#include "abstractjob.h"
+#include "debugoutput.h"
 #include "jobstatus.h"
 
 class JobDebugInformationManager

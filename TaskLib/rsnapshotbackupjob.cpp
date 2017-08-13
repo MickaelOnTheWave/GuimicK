@@ -10,7 +10,6 @@
 using namespace std;
 
 const string DEFAULT_RSNAPSHOT_CONF_FILE    = "rsnapshot.conf";
-const string debugFilename                  = "RsnapshotDebug.txt";
 
 RsnapshotBackupJob::RsnapshotBackupJob(const string& _backupRepositoryPath, const string &_rsnapshotConfFile)
     : AbstractBackupJob(), waitAfterRun(false)
@@ -19,19 +18,18 @@ RsnapshotBackupJob::RsnapshotBackupJob(const string& _backupRepositoryPath, cons
     reportCommand = new ConsoleJob("rsnapshot-diff");
 
     if (_backupRepositoryPath != "")
-        SetRepositoryPath(_backupRepositoryPath);
+        SetRepository(_backupRepositoryPath);
 
     if (_rsnapshotConfFile != "")
-        SeConfigurationFile(_rsnapshotConfFile);
+        SetConfigurationFile(_rsnapshotConfFile);
     else
-        SeConfigurationFile(DEFAULT_RSNAPSHOT_CONF_FILE);
+        SetConfigurationFile(DEFAULT_RSNAPSHOT_CONF_FILE);
 
 }
 
 RsnapshotBackupJob::RsnapshotBackupJob(const RsnapshotBackupJob &other)
     : AbstractBackupJob(other),
       configurationFile(other.configurationFile),
-      backupRepositoryPath(other.backupRepositoryPath),
       waitAfterRun(other.waitAfterRun)
 {
     backupCommand = dynamic_cast<ConsoleJob*>(other.backupCommand->Clone());
@@ -54,16 +52,16 @@ AbstractJob *RsnapshotBackupJob::Clone()
     return new RsnapshotBackupJob(*this);
 }
 
-void RsnapshotBackupJob::SetRepositoryPath(const string &path)
+void RsnapshotBackupJob::SetRepository(const string &value)
 {
-    backupRepositoryPath = path;
+    AbstractBackupJob::SetRepository(value);
 
     string parameters("-v ");
-    parameters += backupRepositoryPath + "/weekly.0 " + backupRepositoryPath + "/weekly.1 2>&1";
+    parameters += repository + "/weekly.0 " + repository + "/weekly.1 2>&1";
     reportCommand->SetCommandParameters(parameters);
 }
 
-void RsnapshotBackupJob::SeConfigurationFile(const string &file)
+void RsnapshotBackupJob::SetConfigurationFile(const string &file)
 {
     configurationFile = file;
 
@@ -79,7 +77,7 @@ bool RsnapshotBackupJob::InitializeFromClient(Client *client)
 
 bool RsnapshotBackupJob::IsInitialized()
 {
-    bool ret = (backupRepositoryPath != "" &&
+    bool ret = (repository != "" &&
             backupCommand->IsInitialized() && reportCommand->IsInitialized());
     return ret;
 }

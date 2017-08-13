@@ -14,16 +14,14 @@ public:
     virtual ~RsnapshotBackupJob();
 
 	virtual std::string GetName();
-
     virtual AbstractJob* Clone();
-
-    void SetRepositoryPath(const std::string& path);
-
-    void SeConfigurationFile(const std::string& file);
-
     virtual bool InitializeFromClient(Client* client);
-
     virtual bool IsInitialized(void);
+
+    void SetConfigurationFile(const std::string& file);
+
+    virtual void SetRepository(const std::string& value);
+
 
 	virtual JobStatus* Run();
 
@@ -48,7 +46,6 @@ private:
 
 	ConsoleJob* backupCommand;
 	ConsoleJob* reportCommand;
-    std::string backupRepositoryPath;
     bool waitAfterRun;
 };
 

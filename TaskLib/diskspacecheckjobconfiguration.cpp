@@ -3,27 +3,36 @@
 
 using namespace std;
 
+static const string driveProperty = "drive";
+static const string targetProperty = "localTarget";
+
 DiskSpaceCheckJobConfiguration::DiskSpaceCheckJobConfiguration()
     : AbstractJobConfiguration("DiskSpaceCheck")
 {
 }
 
-AbstractJob *DiskSpaceCheckJobConfiguration::CreateConfiguredJobAfterCheck(
-                                                ConfigurationObject *confObject,
-                                                std::vector<std::string> &)
+AbstractJob *DiskSpaceCheckJobConfiguration::CreateJob()
 {
-    const string drive = confObject->GetFirstProperty("drive", "param0");
-    const string localTarget = confObject->GetFirstProperty("localTarget", "param1");
+    return new LinuxFreeSpaceCheckJob();
+}
 
-    LinuxFreeSpaceCheckJob* job = new LinuxFreeSpaceCheckJob(drive);
+void DiskSpaceCheckJobConfiguration::ConfigureJob(AbstractJob *job,
+                                                  ConfigurationObject *confObject,
+                                                  std::vector<string> &errorMessages)
+{
+    AbstractJobConfiguration::ConfigureJob(job, confObject, errorMessages);
+
+    const string drive = confObject->GetFirstProperty(driveProperty, "param0");
+    const string localTarget = confObject->GetFirstProperty(targetProperty, "param1");
+
+    LinuxFreeSpaceCheckJob* castJob = static_cast<LinuxFreeSpaceCheckJob*>(job);
+    castJob->SetDrive(drive);
     if (localTarget == "false")
-        job->SetTargetToRemote(true);
-
-    return job;
+        castJob->SetTargetToRemote(true);
 }
 
 void DiskSpaceCheckJobConfiguration::FillKnownProperties(std::vector<string> &properties)
 {
-    properties.push_back("drive");
-    properties.push_back("localTarget");
+    properties.push_back(driveProperty);
+    properties.push_back(targetProperty);
 }

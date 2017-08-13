@@ -66,6 +66,7 @@ Pending bugs :
 		- Issue happens more on Release, with other failures in Git test suites. Resolve all of them.
 	[007] Rsnapshot fails at ignoring unmodified files in tests. Create/modify tests to fit this test case.
 	[008] Git FS backup doesn't work with first data report (git diff command).
+	[009] MIME email content is still buggy - some junk chars at the end of each archive. Looks like the counting is wrong in relation with message size.
 
 -------------
 Release plan

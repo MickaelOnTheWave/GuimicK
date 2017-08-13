@@ -24,6 +24,8 @@ public:
 
     void SetTargetToRemote(const bool value);
 
+    void SetDrive(const std::string& value);
+
 
 private:
     bool IsRemoteTargetConsistent() const;

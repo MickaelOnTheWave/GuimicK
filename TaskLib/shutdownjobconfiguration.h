@@ -9,9 +9,7 @@ public:
     ShutdownJobConfiguration();
 
 protected:
-    virtual AbstractJob* CreateConfiguredJobAfterCheck(
-                                ConfigurationObject *confObject,
-                                std::vector<std::string> &errorMessages);
+    virtual AbstractJob* CreateJob();
 };
 
 #endif // SHUTDOWNJOBCONFIGURATION_H

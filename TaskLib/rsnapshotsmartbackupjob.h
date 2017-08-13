@@ -1,18 +1,41 @@
 #ifndef RSNAPSHOTSMARTBACKUPJOB_H
 #define RSNAPSHOTSMARTBACKUPJOB_H
 
-#include "rsnapshotbackupjob.h"
+#include "abstractbackupjob.h"
 
 /**
- * This job differs from its parent job in that it removes its configuration
- * file when destroyed, considering that it was a temporary construction.
+ * This job implements the Rsnapshot backup using the standard Backup job interface.
+ * It uses in the background the raw Rsnapshot backup.
  */
-class RsnapshotSmartBackupJob : public RsnapshotBackupJob
+class RsnapshotSmartBackupJob : public AbstractBackupJob
 {
 public:
-    RsnapshotSmartBackupJob(const std::string& _backupRepositoryPath,
-                            const std::string& _rsnapshotConfFile);
-    ~RsnapshotSmartBackupJob();
+    RsnapshotSmartBackupJob();
+    RsnapshotSmartBackupJob(const RsnapshotSmartBackupJob& other);
+    virtual ~RsnapshotSmartBackupJob();
+
+    virtual std::string GetName();
+
+    virtual AbstractJob* Clone();
+
+    virtual JobStatus* Run();
+
+    void SetTemplateConfigurationFile(const std::string& value);
+    void SetTemporaryFile(const std::string& value);
+
+protected:
+    virtual void RunRepositoryBackup(const std::string& source,
+                                     const std::string& destination,
+                                     ResultCollection& results);
+
+private:
+    JobStatus* RunConfiguredBackupJob();
+
+    void RemoveFile(const std::string& file); // TODO : remove this and put it in FileTools
+
+    std::string templateConfigurationFile;
+    std::string temporaryFile;
+    BackupCollection dataToBackup;
 };
 
 #endif // RSNAPSHOTSMARTBACKUPJOB_H

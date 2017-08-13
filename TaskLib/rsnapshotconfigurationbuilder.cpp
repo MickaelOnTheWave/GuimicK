@@ -1,4 +1,4 @@
-#include "rsnapshotsmartcreator.h"
+#include "rsnapshotconfigurationbuilder.h"
 
 #include <sstream>
 #include <unistd.h>
@@ -24,43 +24,44 @@ static const string defaultTemplateConfiguration =
         "lockfile	/var/run/rsnapshot.pid\n"
         "rsync_long_args	--delete --numeric-ids --delete-excluded\n";
 
-RsnapshotSmartCreator::RsnapshotSmartCreator(const string& repositoryPath)
-    : repository(repositoryPath), templateFile(""),
-      configurationFile(defaultConfigurationFile)
+RsnapshotConfigurationBuilder::RsnapshotConfigurationBuilder(const string &templateConfigurationFile)
+    : templateFile(templateConfigurationFile), configurationFile(defaultConfigurationFile),
+      repository("")
 {
 }
 
-void RsnapshotSmartCreator::SetTemplateConfigurationFile(const string &file)
+void RsnapshotConfigurationBuilder::SetRepository(const string &value)
+{
+    repository = value;
+}
+
+void RsnapshotConfigurationBuilder::SetTemplateConfigurationFile(const string &file)
 {
     templateFile = file;
 }
 
-void RsnapshotSmartCreator::SetGeneratedConfigurationFile(const string &file)
+void RsnapshotConfigurationBuilder::SetGeneratedConfigurationFile(const string &file)
 {
     configurationFile = file;
 }
 
-void RsnapshotSmartCreator::AddFolderToBackup(const string &folder,
-                                              const string &destination)
+string RsnapshotConfigurationBuilder::CreateConfigurationFile(
+        const AbstractBackupJob::BackupCollection &dataToBackup)
 {
-    dataToBackup.push_back(make_pair(folder, destination));
+    BuildConfigurationFile(dataToBackup);
+    return configurationFile;
 }
 
-RsnapshotBackupJob *RsnapshotSmartCreator::CreateConfiguredJob()
-{
-    BuildConfigurationFile();
-    return new RsnapshotSmartBackupJob(repository, configurationFile);
-}
-
-void RsnapshotSmartCreator::BuildConfigurationFile()
+void RsnapshotConfigurationBuilder::BuildConfigurationFile(
+        const AbstractBackupJob::BackupCollection &dataToBackup)
 {
     string configurationContent = GetTemplateConfiguration();
-    AppendBackupData(configurationContent);
+    AppendBackupData(configurationContent, dataToBackup);
     CheckAndFixConfigurationFile();
     FileTools::WriteBufferToFile(configurationFile, configurationContent);
 }
 
-string RsnapshotSmartCreator::GetTemplateConfiguration() const
+string RsnapshotConfigurationBuilder::GetTemplateConfiguration() const
 {
     if (templateFile != "")
         return FileTools::GetTextFileContent(templateFile);
@@ -68,7 +69,9 @@ string RsnapshotSmartCreator::GetTemplateConfiguration() const
         return defaultTemplateConfiguration;
 }
 
-void RsnapshotSmartCreator::AppendBackupData(string &configurationData) const
+void RsnapshotConfigurationBuilder::AppendBackupData(
+        string &configurationData,
+        const AbstractBackupJob::BackupCollection &dataToBackup) const
 {
     configurationData += string("\nsnapshot_root\t") + repository + "\n";
 
@@ -80,7 +83,7 @@ void RsnapshotSmartCreator::AppendBackupData(string &configurationData) const
     }
 }
 
-void RsnapshotSmartCreator::CheckAndFixConfigurationFile()
+void RsnapshotConfigurationBuilder::CheckAndFixConfigurationFile()
 {
     string newConfigurationFile = configurationFile;
     int counter = 0;

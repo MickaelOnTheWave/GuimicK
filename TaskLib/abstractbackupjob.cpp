@@ -5,27 +5,24 @@
 using namespace std;
 
 AbstractBackupJob::AbstractBackupJob()
-    : repository(""), sshUser(""), sshHost(""),
-      isTargetLocal(false)
+    : AbstractJob(),
+      repository(""), sshUser(""), sshHost(""), isTargetLocal(false)
 {
-    debugManager = new JobDebugInformationManager(false);
+
     statusManager = new BackupStatusManager();
 }
 
 AbstractBackupJob::AbstractBackupJob(const AbstractBackupJob &other)
-    : repository(other.repository),
-      folderList(other.folderList),
+    : AbstractJob(other),
+      repository(other.repository), folderList(other.folderList),
       sshUser(other.sshUser), sshHost(other.sshHost),
       isTargetLocal(other.isTargetLocal),
-      debugManager(new JobDebugInformationManager(*other.debugManager)),
       statusManager(new BackupStatusManager(*other.statusManager))
 {
 }
 
 AbstractBackupJob::~AbstractBackupJob()
 {
-    if (isDebugManagerParent == false)
-        delete debugManager;
     delete statusManager;
 }
 
@@ -57,11 +54,6 @@ JobStatus *AbstractBackupJob::Run()
         RunRepositoryBackup(it->first, it->second, results);
 
     return debugManager->UpdateStatus(CreateGlobalStatus(results));
-}
-
-void AbstractBackupJob::SetOutputDebugInformation(const int value)
-{
-    debugManager->SetUse(value);
 }
 
 void AbstractBackupJob::SetTargetRemote(const std::string &user, const std::string &host)
@@ -98,11 +90,9 @@ void AbstractBackupJob::ClearFolderList()
     folderList.clear();
 }
 
-void AbstractBackupJob::SetParentDebugManager(JobDebugInformationManager *manager)
+void AbstractBackupJob::SetJoinAllBackups(const bool value)
 {
-    isDebugManagerParent = true;
-    delete debugManager;
-    debugManager = manager;
+    statusManager->SetJoinReports(value);
 }
 
 bool AbstractBackupJob::Initialize()

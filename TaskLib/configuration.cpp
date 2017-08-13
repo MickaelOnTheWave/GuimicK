@@ -8,6 +8,7 @@
 
 #include "changescreensaverjobconfiguration.h"
 #include "clamavjobconfiguration.h"
+#include "consolejob.h"
 #include "diskspacecheckjobconfiguration.h"
 #include "gitbackupjobconfiguration.h"
 #include "gitfsbackupjobconfiguration.h"

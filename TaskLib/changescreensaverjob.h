@@ -8,11 +8,13 @@
 class ChangeScreensaverJob : public UserConsoleJob
 {
 public:
-	ChangeScreensaverJob(int _timeOut);
+    ChangeScreensaverJob(int _timeOut = 0);
 
 	virtual bool InitializeFromClient(Client *client);
 
     virtual bool IsInitialized(void);
+
+    void SetTimeout(const int value);
 
 protected:
 	std::string sshUser;

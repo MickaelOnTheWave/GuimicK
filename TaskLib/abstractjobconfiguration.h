@@ -18,9 +18,15 @@ public:
                                      std::vector<std::string> &errorMessages);
 
 protected:
-    virtual AbstractJob* CreateConfiguredJobAfterCheck(
+    AbstractJob* CreateConfiguredJobAfterCheck(
                             ConfigurationObject* confObject,
-                            std::vector<std::string> &errorMessages) = 0;
+                            std::vector<std::string> &errorMessages);
+
+    virtual void AnalyzeConfiguration(ConfigurationObject* confObject);
+    virtual AbstractJob* CreateJob() = 0;
+    virtual void ConfigureJob(AbstractJob* job, ConfigurationObject* confObject,
+                              std::vector<std::string> &errorMessages);
+
     virtual void FillKnownProperties(std::vector<std::string>& properties);
     virtual void FillKnownSubObjects(std::vector<std::string>& objects);
 

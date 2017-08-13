@@ -1,19 +1,22 @@
 #ifndef GITFSBACKUPJOBCONFIGURATION_H
 #define GITFSBACKUPJOBCONFIGURATION_H
 
-#include "abstractjobconfiguration.h"
+#include "abstractbackupjobconfiguration.h"
 
-class GitFsBackupJobConfiguration : public AbstractJobConfiguration
+class GitFsBackupJobConfiguration : public AbstractBackupJobConfiguration
 {
 public:
     GitFsBackupJobConfiguration();
 
 protected:
-    virtual AbstractJob* CreateConfiguredJobAfterCheck(
-                                            ConfigurationObject *confObject,
-                                            std::vector<std::string> &errorMessages);
+    virtual AbstractJob *CreateJob();
+    virtual void ConfigureJob(AbstractJob* job,
+                              ConfigurationObject *confObject,
+                              std::vector<std::string> &errorMessages);
     virtual void FillKnownProperties(std::vector<std::string>& properties);
-    virtual void FillKnownSubObjects(std::vector<std::string>& objects);
+
+private:
+    virtual std::string GetBackupItemName() const;
 
 };
 

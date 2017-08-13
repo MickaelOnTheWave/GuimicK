@@ -39,7 +39,6 @@ SOURCES += \
     rsnapshoterroranalyzer.cpp \
     wakejob.cpp \
     jobdebuginformationmanager.cpp \
-    rsnapshotsmartcreator.cpp \
     linuxfreespacecheckjob.cpp \
     rsnapshotsmartbackupjob.cpp \
     abstractjobconfiguration.cpp \
@@ -63,7 +62,10 @@ SOURCES += \
     copyjobchooser.cpp \
     zipandcopyfsbackupjob.cpp \
     abstractjob.cpp \
-    abstractbackupjobconfiguration.cpp
+    abstractbackupjobconfiguration.cpp \
+    abstractjobdefaultconfiguration.cpp \
+    rsnapshotrawbackupjob.cpp \
+    rsnapshotconfigurationbuilder.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -94,7 +96,6 @@ HEADERS +=\
     rsnapshoterroranalyzer.h \
     wakejob.h \
     jobdebuginformationmanager.h \
-    rsnapshotsmartcreator.h \
     linuxfreespacecheckjob.h \
     rsnapshotsmartbackupjob.h \
     AbstractConsoleJob.h \
@@ -117,7 +118,11 @@ HEADERS +=\
     rawcopyfsbackupjob.h \
     copyjobchooser.h \
     zipandcopyfsbackupjob.h \
-    abstractbackupjobconfiguration.h
+    abstractbackupjobconfiguration.h \
+    abstractjobdefaultconfiguration.h \
+    rsnapshotrawbackupjob.h \
+    rsnapshotconfigurationbuilder.h \
+    debugoutput.h
 
 unix {
     target.path = /usr/lib

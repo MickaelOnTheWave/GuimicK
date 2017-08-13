@@ -6,13 +6,7 @@ ShutdownJobConfiguration::ShutdownJobConfiguration()
 {
 }
 
-AbstractJob *ShutdownJobConfiguration::CreateConfiguredJobAfterCheck(
-                                            ConfigurationObject *confObject,
-                                            std::vector<std::string> &)
+AbstractJob *ShutdownJobConfiguration::CreateJob()
 {
-    LinuxShutdownJob* job = new LinuxShutdownJob();
-    std::string param = confObject->propertyList["param0"];
-    if (param == "showDebugInformation")
-        job->SetOutputDebugInformation(true);
-    return job;
+    return new LinuxShutdownJob();
 }

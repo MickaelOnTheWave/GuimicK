@@ -3,55 +3,38 @@
 
 using namespace std;
 
+static const string writeLogProperty = "writeLogsToFiles";
+
 GitBackupJobConfiguration::GitBackupJobConfiguration()
     : AbstractBackupJobConfiguration("GitBackup")
 {
 }
 
-AbstractJob *GitBackupJobConfiguration::CreateConfiguredJobAfterCheck(
-                                            ConfigurationObject *confObject,
-                                            std::vector<std::string> &)
+AbstractJob *GitBackupJobConfiguration::CreateJob()
 {
-    // TODO : change architecture at this point.
-    // One virtual CreateJob() that only creates a new instance
-    // One virtual ConfigureJob() that only configures a job
-    GitBackupJob* job = new GitBackupJob();
-    list<ConfigurationObject*>::iterator it = confObject->objectList.begin();
-    for (; it != confObject->objectList.end(); it++)
-    {
-        ConfigurationObject* currentObj = *it;
+    return new GitBackupJob();
+}
 
-        if (currentObj->name != "Repository")
-            continue;
+void GitBackupJobConfiguration::ConfigureJob(AbstractJob *job,
+                                             ConfigurationObject *confObject,
+                                             std::vector<string> &errorMessages)
+{
+    AbstractBackupJobConfiguration::ConfigureJob(job, confObject, errorMessages);
 
-        string source(currentObj->propertyList["source"]);
-        string dest(currentObj->propertyList["dest"]);
-        job->AddFolder(source, dest);
-    }
-
-    string target(confObject->propertyList["target"]);
-    if (target == "local")
-        job->SetTargetLocal();
-    else
-        job->SetTargetRemote();
-
-    string writeLogsToFiles(confObject->propertyList["writeLogsToFiles"]);
+    GitBackupJob* castJob = static_cast<GitBackupJob*>(job);
+    const string writeLogsToFiles(confObject->GetProperty(writeLogProperty));
     if (writeLogsToFiles == "true")
-        job->SetWriteLogsToFiles(true);
+        castJob->SetWriteLogsToFiles(true);
 
-    AbstractBackupJobConfiguration::ConfigureJob(job, confObject);
-
-    return job;
 }
 
 void GitBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &properties)
 {
     AbstractBackupJobConfiguration::FillKnownProperties(properties);
-    properties.push_back("target");
-    properties.push_back("writeLogsToFiles");
+    properties.push_back(writeLogProperty);
 }
 
-void GitBackupJobConfiguration::FillKnownSubObjects(std::vector<std::string> &objects)
+string GitBackupJobConfiguration::GetBackupItemName() const
 {
-    objects.push_back("Repository");
+    return string("Repository");
 }

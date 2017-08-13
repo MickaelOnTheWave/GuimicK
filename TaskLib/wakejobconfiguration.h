@@ -9,9 +9,7 @@ public:
     WakeJobConfiguration();
 
 protected:
-    virtual AbstractJob* CreateConfiguredJobAfterCheck(
-                                             ConfigurationObject *confObject,
-                                             std::vector<std::string> &errorMessages);
+    virtual AbstractJob* CreateJob();
 };
 
 #endif // WAKEJOBCONFIGURATION_H

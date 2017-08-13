@@ -6,57 +6,57 @@
 using namespace std;
 
 UserConsoleJobConfiguration::UserConsoleJobConfiguration()
-    : AbstractJobConfiguration("Console")
+    : AbstractJobDefaultConfiguration("Console")
 {
 }
 
 UserConsoleJobConfiguration::UserConsoleJobConfiguration(const string &tag)
-    : AbstractJobConfiguration(tag)
+    : AbstractJobDefaultConfiguration(tag)
 {
 }
 
-AbstractJob *UserConsoleJobConfiguration::CreateConfiguredJobAfterCheck(
-                                            ConfigurationObject *confObject,
-                                            std::vector<std::string> &)
+AbstractJob *UserConsoleJobConfiguration::CreateJob()
 {
-    string title =          confObject->GetFirstProperty("title", "param0");
-    string command =        confObject->GetFirstProperty("command", "param1");
-    string rawReturnCode =  confObject->GetFirstProperty("returnCode","param2");
-    string expectedOutput = confObject->GetProperty("expectedOutput");
-    string outputFile     = confObject->GetProperty("outputFileName");
-    string parserCommand  = confObject->GetProperty("parserCommand");
-    string parserUsingBuffer = confObject->GetProperty("parserUsesBuffer");
+    return new UserConsoleJob();
+}
 
-    UserConsoleJob* job = new UserConsoleJob();
-    job->SetTitle(title);
-    job->Initialize(command);
+void UserConsoleJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationObject *confObject, std::vector<string> &errorMessages)
+{
+    AbstractJobDefaultConfiguration::ConfigureJob(job, confObject, errorMessages);
 
-    if (confObject->propertyList["showDebugInformation"] != "")
-        job->SetOutputDebugInformation(true);
+    const string title =          confObject->GetFirstProperty("title", "param0");
+    const string command =        confObject->GetFirstProperty("command", "param1");
+    const string rawReturnCode =  confObject->GetFirstProperty("returnCode","param2");
+    const string expectedOutput = confObject->GetProperty("expectedOutput");
+    const string outputFile     = confObject->GetProperty("outputFileName");
+    const string parserCommand  = confObject->GetProperty("parserCommand");
+    const string parserUsingBuffer = confObject->GetProperty("parserUsesBuffer");
+
+    UserConsoleJob* castJob = static_cast<UserConsoleJob*>(job);
+    castJob->SetTitle(title);
+    castJob->Initialize(command);
 
     if (rawReturnCode != "")
     {
         int returnCode = 0;
         stringstream ss(rawReturnCode);
         ss >> returnCode;
-        job->SetExpectedReturnCode(returnCode);
+        castJob->SetExpectedReturnCode(returnCode);
     }
 
     if (expectedOutput != "")
-        job->SetExpectedOutput(expectedOutput);
+        castJob->SetExpectedOutput(expectedOutput);
 
     if (outputFile != "")
-        job->SetOutputTofile(outputFile);
+        castJob->SetOutputTofile(outputFile);
     else
-        job->SetAttachOutput(true);
+        castJob->SetAttachOutput(true);
 
     if (parserCommand != "")
-        job->SetMiniDescriptionParserCommand(parserCommand);
+        castJob->SetMiniDescriptionParserCommand(parserCommand);
 
     if (parserUsingBuffer == "true")
-        job->SetParsingUsingBuffer(true);
-
-    return job;
+        castJob->SetParsingUsingBuffer(true);
 }
 
 void UserConsoleJobConfiguration::FillKnownProperties(std::vector<string> &properties)
@@ -67,6 +67,5 @@ void UserConsoleJobConfiguration::FillKnownProperties(std::vector<string> &prope
     properties.push_back("expectedOutput");
     properties.push_back("outputFileName");
     properties.push_back("parserCommand");
-    properties.push_back("showDebugInformation");
     properties.push_back("parserUsesBuffer");
 }

@@ -83,6 +83,11 @@ void LinuxFreeSpaceCheckJob::SetTargetToRemote(const bool value)
     isTargetLocal = value;
 }
 
+void LinuxFreeSpaceCheckJob::SetDrive(const string &value)
+{
+    drive = value;
+}
+
 bool LinuxFreeSpaceCheckJob::IsRemoteTargetConsistent() const
 {
     return (sshUser != "" && sshHost != "");

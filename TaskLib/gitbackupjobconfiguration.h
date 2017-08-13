@@ -9,11 +9,14 @@ public:
     GitBackupJobConfiguration();
 
 protected:
-    virtual AbstractJob* CreateConfiguredJobAfterCheck(
-                                            ConfigurationObject *confObject,
-                                            std::vector<std::string> &errorMessages);
+    virtual AbstractJob* CreateJob();
+    virtual void ConfigureJob(AbstractJob* job,
+                              ConfigurationObject *confObject,
+                              std::vector<std::string> &errorMessages);
     virtual void FillKnownProperties(std::vector<std::string>& properties);
-    virtual void FillKnownSubObjects(std::vector<std::string>& objects);
+
+private:
+    virtual std::string GetBackupItemName() const;
 };
 
 #endif // GITBACKUPJOBCONFIGURATION_H
