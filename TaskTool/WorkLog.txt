@@ -1,7 +1,14 @@
-14/08/2017 (19-22.2)
+14/08/2017 (3.4h)
 	Fixed Rsnapshot test suite. Refactored architecture accordingly.
 	There was a mistake with first fix, Rsnapshot was not considering destination tag. Fixed this and
 	updated all tests accordingly. Now ALL tests are working again :-)
+	Old Rsnapshot job removed.  After a big rebuild, two tests are still failing.
+	Investigated, this is because the waitAfterRun option of Rsnapshot job is not being processed
+	correctly.
+Next planned work :
+	- Fix Rsnapshot configuration to correctly pass the wait option to final job
+	- Create tests for configuration objects
+	- Create missing configuration objects
 
 13/08/2017 (4.3h)
 	Production run ran as expected. Now fixing the issue.

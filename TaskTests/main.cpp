@@ -21,9 +21,9 @@ int main(int argc, char* argv[])
         FileTools::CreateFolder(testingFolder);
     chdir(testingFolder.c_str());
 
-    QObject* testSuite = new RsnapshotJobTest(taskLibDir, errorDir);
+    //QObject* testSuite = new RsnapshotJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new RsnapshotErrorAnalyzerTest(taskLibDir);
-    //QObject* testSuite = new TaskFeatureTest(taskLibDir, errorDir);
+    QObject* testSuite = new TaskFeatureTest(taskLibDir, errorDir);
     //QObject* testSuite = new ConsoleJobTest();
     //QObject* testSuite = new GitJobTest();
     //QObject* testSuite = new UserConsoleJobTest();

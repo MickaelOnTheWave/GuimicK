@@ -35,7 +35,6 @@ SOURCES += \
     textreportcreator.cpp \
     abstractreportcreator.cpp \
     userconsolejob.cpp \
-    rsnapshotbackupjob.cpp \
     rsnapshoterroranalyzer.cpp \
     wakejob.cpp \
     jobdebuginformationmanager.cpp \
@@ -92,7 +91,6 @@ HEADERS +=\
     textreportcreator.h \
     abstractreportcreator.h \
     userconsolejob.h \
-    rsnapshotbackupjob.h \
     rsnapshoterroranalyzer.h \
     wakejob.h \
     jobdebuginformationmanager.h \

@@ -9,7 +9,6 @@
 #include "filetestutils.h"
 #include "filetools.h"
 #include "rsnapshotsmartbackupjob.h"
-#include "rsnapshotbackupjob.h"
 #include "rsnapshotconfigurationbuilder.h"
 #include "tools.h"
 
