@@ -2,6 +2,7 @@
 
 #include "rsnapshotconfigurationbuilder.h"
 #include "rsnapshotrawbackupjob.h"
+#include "tools.h"
 
 #include <cstdio>
 
@@ -54,10 +55,10 @@ void RsnapshotSmartBackupJob::SetTemporaryFile(const string &value)
 }
 
 void RsnapshotSmartBackupJob::RunRepositoryBackup(const string &source,
-                                                  const string &destination,
+                                                  const string &,
                                                   AbstractBackupJob::ResultCollection &)
 {
-    dataToBackup.push_back(make_pair(source, destination));
+    dataToBackup.push_back(make_pair(source, GetLastPathComponent(source)));
 }
 
 JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
@@ -67,7 +68,8 @@ JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
     if (temporaryFile != "")
         builder.SetGeneratedConfigurationFile(temporaryFile);
     string configuration = builder.CreateConfigurationFile(dataToBackup);
-    RsnapshotRawBackupJob* rawBackupJob = new RsnapshotRawBackupJob(configuration);
+    RsnapshotRawBackupJob* rawBackupJob = new RsnapshotRawBackupJob(repository, configuration);
+    rawBackupJob->SetParentDebugManager(debugManager);
 
     JobStatus* status = rawBackupJob->Run();
 
@@ -79,6 +81,13 @@ JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
 void RsnapshotSmartBackupJob::RemoveFile(const string &file)
 {
     remove(file.c_str());
+}
+
+string RsnapshotSmartBackupJob::GetLastPathComponent(const string &path) const
+{
+    vector<string> tokens;
+    Tools::TokenizeString(path, '/', tokens);
+    return tokens.back();
 }
 
 

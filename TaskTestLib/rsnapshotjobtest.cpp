@@ -36,7 +36,10 @@ RsnapshotJobTest::~RsnapshotJobTest()
 
 void RsnapshotJobTest::testCreate_InvalidSource()
 {
-    JobStatus* status = RunRsnapshotJob();
+    AbstractBackupJob* job = CreateNewJob();
+    job->AddFolder("dummySource", "dummyName");
+    JobStatus* status = job->Run();
+    delete job;
 
     QCOMPARE(status->GetCode(), JobStatus_ERROR);
     const string expectedMessage = "Tried to backup invalid folder";
@@ -45,6 +48,8 @@ void RsnapshotJobTest::testCreate_InvalidSource()
     vector<pair<string,string> > buffers;
     status->GetFileBuffers(buffers);
     QCOMPARE(buffers.size(), 0ul);
+
+    delete status;
 }
 
 void RsnapshotJobTest::testRunBackup_data()
@@ -102,14 +107,12 @@ void RsnapshotJobTest::CheckBackedUpDataIsOk()
                                                currentSourceFolder);
 }
 
-JobStatus *RsnapshotJobTest::RunBackupJob()
-{
-    return RunRsnapshotJob();
-}
-
 AbstractBackupJob *RsnapshotJobTest::CreateNewJob()
 {
-    return new RsnapshotBackupJob();
+    RsnapshotSmartBackupJob* job = new RsnapshotSmartBackupJob();
+    job->SetTemplateConfigurationFile(GetDataFolder() + templateConfigurationFile);
+    job->SetRepository(repository);
+    return job;
 }
 
 JobStatus *RsnapshotJobTest::RunRsnapshotJob(const string &tempConfigurationFile)

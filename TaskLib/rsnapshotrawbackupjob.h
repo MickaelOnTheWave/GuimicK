@@ -32,7 +32,7 @@ public:
 private:
     JobStatus* RunBackup();
     JobStatus* RunReportCreation();
-    JobStatus* CreateParsedReportStatus(const std::string &output);
+    JobStatus* CreateParsedReportStatus();
 
     ConsoleJob* CreateBackupCommandJob();
     ConsoleJob* CreateReportCommandJob();
@@ -40,6 +40,7 @@ private:
     std::string configurationFile;
     std::string repository;
     bool waitAfterRun;
+    std::string reportJobOutput;
 };
 
 #endif // RSNAPSHOTRAWBACKUPJOB_H

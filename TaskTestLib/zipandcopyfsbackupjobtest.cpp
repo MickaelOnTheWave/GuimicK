@@ -38,20 +38,23 @@ void ZipAndCopyFsBackupJobTest::CheckBackedUpDataIsOk()
     FileTestUtils::CheckFoldersHaveSameContent(currentSourceFolder, restoredFolder);
 }
 
-JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob()
+JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob(const bool isRemote,
+                                                   const bool useDebug)
 {
-    QFETCH(bool, remote);
-
     // TODO : improve this. There are only two lines that are specific to this test suite,
     // the rest of the code should be used from parent class.
     ZipAndCopyFsBackupJob* job = new ZipAndCopyFsBackupJob();
     job->InitializeFromClient(nullptr);
     job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), archiveName);
+
     job->SetLocalDestination(localArchive);
-    if (remote)
+
+    if (isRemote)
         job->SetTargetRemote(sshUser, sshHost);
     else
         job->SetTargetLocal();
+
+    job->SetOutputDebugInformation(useDebug ? DebugOutput::ALWAYS : DebugOutput::NEVER);
 
     JobStatus* status = job->Run();
 

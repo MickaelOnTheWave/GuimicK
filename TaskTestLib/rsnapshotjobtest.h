@@ -28,7 +28,6 @@ private Q_SLOTS:
 protected:
     virtual void ProcessingBetweenBackups();
     virtual void CheckBackedUpDataIsOk();
-    virtual JobStatus* RunBackupJob();
     virtual AbstractBackupJob* CreateNewJob();
 
 private:

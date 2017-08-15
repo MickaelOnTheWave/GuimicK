@@ -11,14 +11,16 @@ RsnapshotRawBackupJob::RsnapshotRawBackupJob(const std::string &_backupRepositor
                                              const std::string &_rsnapshotConfFile)
     : AbstractJob(),
       configurationFile(_rsnapshotConfFile),
-      repository(_backupRepositoryPath), waitAfterRun(false)
+      repository(_backupRepositoryPath), waitAfterRun(false),
+      reportJobOutput("")
 {
 }
 
 RsnapshotRawBackupJob::RsnapshotRawBackupJob(const RsnapshotRawBackupJob &other)
     : AbstractJob(),
       configurationFile(other.configurationFile),
-      repository(other.repository), waitAfterRun(other.waitAfterRun)
+      repository(other.repository), waitAfterRun(other.waitAfterRun),
+      reportJobOutput(other.reportJobOutput)
 {
 }
 
@@ -65,7 +67,7 @@ JobStatus *RsnapshotRawBackupJob::Run()
     else
         delete reportStatus;
 
-    return CreateParsedReportStatus(reportStatus->GetDescription());
+    return CreateParsedReportStatus();
 }
 
 void RsnapshotRawBackupJob::SetRepository(const string &value)
@@ -130,9 +132,7 @@ JobStatus *RsnapshotRawBackupJob::RunReportCreation()
     JobStatus* reportStatus = reportJob->Run();
     debugManager->AddDataLine<string>("Full report output", reportJob->GetCommandOutput());
     if (reportStatus->GetCode() == JobStatus::OK)
-    {
-        reportStatus->SetDescription(reportJob->GetCommandOutput());
-    }
+        reportJobOutput = reportJob->GetCommandOutput();
     else
     {
         string description("Error creating rsnapshot report. Return code : ");
@@ -148,10 +148,10 @@ JobStatus *RsnapshotRawBackupJob::RunReportCreation()
     return debugManager->UpdateStatus(reportStatus);
 }
 
-JobStatus *RsnapshotRawBackupJob::CreateParsedReportStatus(const string& output)
+JobStatus *RsnapshotRawBackupJob::CreateParsedReportStatus()
 {
     RSnapshotReportParser parser;
-    parser.ParseBuffer(output);
+    parser.ParseBuffer(reportJobOutput);
 
     JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
     status->AddFileBuffer(GetAttachmentName(), parser.GetFullDescription());

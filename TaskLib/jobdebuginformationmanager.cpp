@@ -51,7 +51,7 @@ void JobDebugInformationManager::AddTagLine(const string &tag)
 
 JobStatus *JobDebugInformationManager::UpdateStatus(JobStatus *status) const
 {
-    if (debugUse == true)
+    if (debugUse != DebugOutput::NEVER)
         status->AddFileBuffer(debugFilename, allData);
     return status;
 }

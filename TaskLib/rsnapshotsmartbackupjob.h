@@ -33,6 +33,8 @@ private:
 
     void RemoveFile(const std::string& file); // TODO : remove this and put it in FileTools
 
+    std::string GetLastPathComponent(const std::string& path) const;
+
     std::string templateConfigurationFile;
     std::string temporaryFile;
     BackupCollection dataToBackup;
