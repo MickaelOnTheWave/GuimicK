@@ -16,7 +16,7 @@ void SshConsoleJobTest::testRun_NoTargetError()
 {
     job = new SshConsoleJob("", "ls");
 
-    RunAndCheckNoAttachments(JobStatus_ERROR, "No target specified");
+    RunAndCheckNoAttachments(JobStatus::ERROR, "No target specified");
 }
 
 void SshConsoleJobTest::testRun_InvalidTargetError()
@@ -24,7 +24,7 @@ void SshConsoleJobTest::testRun_InvalidTargetError()
     job = new SshConsoleJob("", "ls");
     GetJob()->SetTarget("invalidUser", "invalidHost");
 
-    RunAndCheckNoAttachments(JobStatus_ERROR, "Invalid target specified");
+    RunAndCheckNoAttachments(JobStatus::ERROR, "Invalid target specified");
 }
 
 void SshConsoleJobTest::testRun_CheckResultingCommand()
@@ -35,7 +35,7 @@ void SshConsoleJobTest::testRun_CheckResultingCommand()
 
     CreateRemoteCatJob(filename);
 
-    RunAndCheckOneAttachment(JobStatus_OK, "", contentToWrite);
+    RunAndCheckOneAttachment(JobStatus::OK, "", contentToWrite);
 }
 
 AbstractConsoleJob *SshConsoleJobTest::CreateDefaultJob(const std::string &command,

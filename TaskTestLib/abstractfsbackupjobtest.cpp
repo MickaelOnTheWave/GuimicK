@@ -8,12 +8,6 @@
 
 using namespace std;
 
-// TODO : remove this and find a way to use JobStatus values outside of library
-#define JobStatus_NOT_EXECUTED      0
-#define JobStatus_OK                1
-#define JobStatus_OK_WITH_WARNINGS  2
-#define JobStatus_ERROR             3
-
 static const string repository = "repository/";
 static const string sshUser = "mickael";
 static const string sshHost = "192.168.1.101";
@@ -134,7 +128,7 @@ JobStatus *AbstractFsBackupJobTest::RunBackupOnDataFolder(const string &folder,
 void AbstractFsBackupJobTest::CheckStatus(JobStatus *status)
 {
     QVERIFY(status != nullptr);
-    QCOMPARE(status->GetCode(), JobStatus_OK);
+    QCOMPARE(status->GetCode(), JobStatus::OK);
 
     QFETCH(QString, description);
     CheckTextContent(status->GetDescription(), description);

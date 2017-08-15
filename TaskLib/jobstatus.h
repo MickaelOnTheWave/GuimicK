@@ -8,10 +8,10 @@
 class JobStatus
 {
 public:
-	static const int NOT_EXECUTED			= 0;
-	static const int OK						= 1;
-    static const int OK_WITH_WARNINGS       = 2;
-	static const int ERROR					= 3;
+    static const int NOT_EXECUTED;
+    static const int OK;
+    static const int OK_WITH_WARNINGS;
+    static const int ERROR;
 
 	JobStatus();
 	JobStatus(int _code, const std::string& _description = "");

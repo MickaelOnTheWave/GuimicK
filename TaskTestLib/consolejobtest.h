@@ -5,12 +5,6 @@
 
 #include "consolejob.h"
 
-// TODO : remove this and find a way to use JobStatus values outside of library
-#define JobStatus_NOT_EXECUTED      0
-#define JobStatus_OK                1
-#define JobStatus_OK_WITH_WARNINGS  2
-#define JobStatus_ERROR             3
-
 class ConsoleJobTest : public QObject
 {
     Q_OBJECT

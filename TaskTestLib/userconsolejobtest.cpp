@@ -15,11 +15,11 @@ void UserConsoleJobTest::testRun_InvalidCommand()
     const string expectedDescription = GetExpectedErrorDescription(0, 127);
     job = CreateDefaultJob("nonexistentcommand");
 
-    RunAndCheckNoAttachments(JobStatus_ERROR, expectedDescription);
+    RunAndCheckNoAttachments(JobStatus::ERROR, expectedDescription);
 
     GetJob()->SetAttachOutput(true);
 
-    RunAndCheckOneAttachment(JobStatus_ERROR,
+    RunAndCheckOneAttachment(JobStatus::ERROR,
                              expectedDescription,
                              "sh: 1: nonexistentcommand: not found");
 }
@@ -29,10 +29,10 @@ void UserConsoleJobTest::testRun_CheckReturnCode()
     job = ConsoleJobTest::CreateDefaultJob();
 
     job->SetExpectedReturnCode(0);
-    RunAndCheckNoAttachments(JobStatus_OK, "");
+    RunAndCheckNoAttachments(JobStatus::OK, "");
 
     job->SetExpectedReturnCode(1);
-    RunAndCheckNoAttachments(JobStatus_ERROR, GetExpectedErrorDescription(1, 0));
+    RunAndCheckNoAttachments(JobStatus::ERROR, GetExpectedErrorDescription(1, 0));
 }
 
 void UserConsoleJobTest::testRun_CheckOutput()
@@ -41,10 +41,10 @@ void UserConsoleJobTest::testRun_CheckOutput()
     job = ConsoleJobTest::CreateDefaultJob();
 
     GetJob()->SetExpectedOutput("testFile");
-    RunAndCheckNoAttachments(JobStatus_OK, "");
+    RunAndCheckNoAttachments(JobStatus::OK, "");
 
     GetJob()->SetExpectedOutput("Output is not that");
-    RunAndCheckNoAttachments(JobStatus_ERROR, GetExpectedErrorDescription("Output is not that", "testFile"));
+    RunAndCheckNoAttachments(JobStatus::ERROR, GetExpectedErrorDescription("Output is not that", "testFile"));
 }
 
 void UserConsoleJobTest::testRun_CheckAttachment()
@@ -52,10 +52,10 @@ void UserConsoleJobTest::testRun_CheckAttachment()
     FileTools::WriteBufferToFile("testFile", "test content");
     job = ConsoleJobTest::CreateDefaultJob();
 
-    RunAndCheckNoAttachments(JobStatus_OK, "");
+    RunAndCheckNoAttachments(JobStatus::OK, "");
 
     GetJob()->SetAttachOutput(true);
-    RunAndCheckOneAttachment(JobStatus_OK, "", "testFile");
+    RunAndCheckOneAttachment(JobStatus::OK, "", "testFile");
 }
 
 void UserConsoleJobTest::testRun_OutputToFile_ReturnCode()
@@ -64,7 +64,7 @@ void UserConsoleJobTest::testRun_OutputToFile_ReturnCode()
     job = CreateDefaultJob("ls testFile");
     GetJob()->SetOutputTofile("outputFile");
 
-    RunAndCheck(JobStatus_OK, "");
+    RunAndCheck(JobStatus::OK, "");
     CheckAttachmentCount(1, 0);
 
     string content = FileTools::GetTextFileContent("outputFile");
@@ -82,12 +82,12 @@ void UserConsoleJobTest::testRun_OutputToFile_OutputDoesNotWork()
     GetJob()->SetOutputTofile(outputFileName);
 
     GetJob()->SetExpectedOutput(testFileContent);
-    RunAndCheck(JobStatus_ERROR, GetExpectedErrorDescription(testFileContent, ""));
+    RunAndCheck(JobStatus::ERROR, GetExpectedErrorDescription(testFileContent, ""));
     CheckAttachmentCount(1, 0);
 
     const string wrongContent = "wrong content";
     GetJob()->SetExpectedOutput(wrongContent);
-    RunAndCheck(JobStatus_ERROR, GetExpectedErrorDescription(wrongContent, ""));
+    RunAndCheck(JobStatus::ERROR, GetExpectedErrorDescription(wrongContent, ""));
     CheckAttachmentCount(1, 0);
 }
 

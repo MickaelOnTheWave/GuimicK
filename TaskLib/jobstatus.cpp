@@ -4,6 +4,12 @@
 
 using namespace std;
 
+
+const int JobStatus::NOT_EXECUTED		= 0;
+const int JobStatus::OK                 = 1;
+const int JobStatus::OK_WITH_WARNINGS   = 2;
+const int JobStatus::ERROR				= 3;
+
 JobStatus::JobStatus()
 	: code(NOT_EXECUTED),
 	  elapsedTime(0),

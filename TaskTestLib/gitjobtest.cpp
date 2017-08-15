@@ -28,12 +28,6 @@ void GitJobTest::cleanup()
     FileTestUtils::RemoveAll(destinationRepository);
 }
 
-// TODO : remove this and find a way to use JobStatus values outside of library
-#define JobStatus_NOT_EXECUTED      0
-#define JobStatus_OK                1
-#define JobStatus_OK_WITH_WARNINGS  2
-#define JobStatus_ERROR             3
-
 void GitJobTest::testCreate_InvalidSource()
 {
     RunGitBackup(invalidRepository.toStdString(), destinationRepository.toStdString());
@@ -90,7 +84,7 @@ void GitJobTest::testUpdate_MultipleRepositories()
     CreateInitialRepositoryData(repositories);
 
     RunGitBackup(CreateRepositoryListForBackup(repositories));
-    CheckGitJobReturn(JobStatus_OK, repositories.size(), BuildMultiDescriptionString(repositories));
+    CheckGitJobReturn(JobStatus::OK, repositories.size(), BuildMultiDescriptionString(repositories));
 
     for (auto it=repositories.begin(); it!=repositories.end(); ++it)
     {
@@ -197,12 +191,12 @@ void GitJobTest::RunGitBackup(const std::vector<std::pair<std::string, std::stri
 
 void GitJobTest::CheckGitJobReturnsError(const QString& description)
 {
-    CheckGitJobReturn(JobStatus_ERROR, 0, description);
+    CheckGitJobReturn(JobStatus::ERROR, 0, description);
 }
 
 void GitJobTest::CheckGitJobReturnsOk(const QString &description)
 {
-    CheckGitJobReturn(JobStatus_OK, 1, description);
+    CheckGitJobReturn(JobStatus::OK, 1, description);
 }
 
 void GitJobTest::CheckGitJobReturn(const int expectedStatus,

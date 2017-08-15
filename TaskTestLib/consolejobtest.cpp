@@ -28,18 +28,18 @@ void ConsoleJobTest::cleanup()
 void ConsoleJobTest::testRunOk()
 {
     job = CreateDefaultJob();
-    RunAndCheckNoAttachments(JobStatus_OK,
+    RunAndCheckNoAttachments(JobStatus::OK,
                              GetExpectedOkDescription());
 
     job->SetExpectedReturnCode(1);
-    RunAndCheckNoAttachments(JobStatus_ERROR,
+    RunAndCheckNoAttachments(JobStatus::ERROR,
                              GetExpectedErrorDescription(1, 0));
 }
 
 void ConsoleJobTest::testRunError()
 {
     job = CreateDefaultJob("ls nonexistingfolder");
-    RunAndCheckNoAttachments(JobStatus_ERROR,
+    RunAndCheckNoAttachments(JobStatus::ERROR,
                              GetExpectedErrorDescription(0, 2));
 }
 
@@ -53,13 +53,13 @@ void ConsoleJobTest::testCommandWithParameter()
     const string catCommand = string("cat ") + fullFilename;
 
     job = CreateDefaultJob(catCommand);
-    RunAndCheckNoAttachments(JobStatus_OK,
+    RunAndCheckNoAttachments(JobStatus::OK,
                              GetExpectedOkDescription());
     QCOMPARE(job->GetCommandOutput().c_str(), fileContent.c_str());
 
     delete job;
     job = CreateDefaultJob("cat", fullFilename);
-    RunAndCheckNoAttachments(JobStatus_OK,
+    RunAndCheckNoAttachments(JobStatus::OK,
                              GetExpectedOkDescription());
     QCOMPARE(job->GetCommandOutput().c_str(), fileContent.c_str());
 }

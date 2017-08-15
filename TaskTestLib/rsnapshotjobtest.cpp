@@ -14,12 +14,6 @@
 
 using namespace std;
 
-// TODO : remove this and find a way to use JobStatus values outside of library
-#define JobStatus_NOT_EXECUTED      0
-#define JobStatus_OK                1
-#define JobStatus_OK_WITH_WARNINGS  2
-#define JobStatus_ERROR             3
-
 const string templateConfigurationFile = "rsnapshot.conf";
 const string suiteFolder = "Rsnapshot/";
 
@@ -40,7 +34,7 @@ void RsnapshotJobTest::testCreate_InvalidSource()
     JobStatus* status = job->Run();
     delete job;
 
-    QCOMPARE(status->GetCode(), JobStatus_ERROR);
+    QCOMPARE(status->GetCode(), JobStatus::ERROR);
     const string expectedMessage = "Tried to backup invalid folder";
     QCOMPARE(status->GetDescription(), expectedMessage);
 
