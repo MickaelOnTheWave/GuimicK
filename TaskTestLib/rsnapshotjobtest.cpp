@@ -129,7 +129,7 @@ JobStatus *RsnapshotJobTest::RunRsnapshotJob(const string &tempConfigurationFile
 string RsnapshotJobTest::GetRsnapshotBackupFolder(const int number) const
 {
     stringstream stream;
-    stream << repository << "weekly." << number << "/" << currentSourceFolder;
+    stream << repository << "weekly." << number << "/repository";
     return stream.str();
 }
 

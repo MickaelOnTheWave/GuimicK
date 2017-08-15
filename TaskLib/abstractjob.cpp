@@ -12,7 +12,7 @@ AbstractJob::AbstractJob(const AbstractJob &other)
     if (isDebugManagerParent)
         debugManager = other.debugManager;
     else
-        debugManager = new JobDebugInformationManager(other.debugManager);
+        debugManager = new JobDebugInformationManager(*other.debugManager);
 }
 
 AbstractJob::~AbstractJob()

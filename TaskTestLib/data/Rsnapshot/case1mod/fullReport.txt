@@ -1,7 +1,7 @@
 0 files added
 
 1 files modified
-	/currentFolderToBackup/file.txt
+	/repository/file.txt
 
 0 files removed
 

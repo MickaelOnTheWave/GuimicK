@@ -1,5 +1,7 @@
-14/08/2017 (19-21.5)
+14/08/2017 (19-22.2)
 	Fixed Rsnapshot test suite. Refactored architecture accordingly.
+	There was a mistake with first fix, Rsnapshot was not considering destination tag. Fixed this and
+	updated all tests accordingly. Now ALL tests are working again :-)
 
 13/08/2017 (4.3h)
 	Production run ran as expected. Now fixing the issue.

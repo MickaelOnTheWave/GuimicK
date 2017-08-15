@@ -3,10 +3,10 @@
 0 files modified
 
 5 files removed
-	/currentFolderToBackup/6232100495809.sav
-	/currentFolderToBackup/GamerProfile.xml
-	/currentFolderToBackup/TODOs
-	/currentFolderToBackup/TODOs (2016)
-	/currentFolderToBackup/ex1_description.txt
+	/repository/6232100495809.sav
+	/repository/GamerProfile.xml
+	/repository/TODOs
+	/repository/TODOs (2016)
+	/repository/ex1_description.txt
 
 0.00 bytes added, 1.79 Mb removed, and overall 1.79 Mb freed

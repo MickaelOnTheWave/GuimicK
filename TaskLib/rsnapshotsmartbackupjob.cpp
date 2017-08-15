@@ -2,7 +2,6 @@
 
 #include "rsnapshotconfigurationbuilder.h"
 #include "rsnapshotrawbackupjob.h"
-#include "tools.h"
 
 #include <cstdio>
 
@@ -54,11 +53,11 @@ void RsnapshotSmartBackupJob::SetTemporaryFile(const string &value)
     temporaryFile = value;
 }
 
-void RsnapshotSmartBackupJob::RunRepositoryBackup(const string &source,
-                                                  const string &,
+void RsnapshotSmartBackupJob::RunRepositoryBackup(const string& source,
+                                                  const string& destination,
                                                   AbstractBackupJob::ResultCollection &)
 {
-    dataToBackup.push_back(make_pair(source, GetLastPathComponent(source)));
+    dataToBackup.push_back(make_pair(source, destination));
 }
 
 JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
@@ -83,11 +82,5 @@ void RsnapshotSmartBackupJob::RemoveFile(const string &file)
     remove(file.c_str());
 }
 
-string RsnapshotSmartBackupJob::GetLastPathComponent(const string &path) const
-{
-    vector<string> tokens;
-    Tools::TokenizeString(path, '/', tokens);
-    return tokens.back();
-}
 
 

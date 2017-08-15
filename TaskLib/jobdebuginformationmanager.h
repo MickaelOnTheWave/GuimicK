@@ -10,7 +10,7 @@
 class JobDebugInformationManager
 {
 public:
-    JobDebugInformationManager(const bool _usingDebug, const std::string& jobName = "");
+    explicit JobDebugInformationManager(const int _debugUse, const std::string& jobName = "");
     JobDebugInformationManager(const JobDebugInformationManager& other);
 
     void SetJobName(const std::string& name);

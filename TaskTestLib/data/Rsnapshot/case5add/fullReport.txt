@@ -1,9 +1,9 @@
 5 files added
-	/currentFolderToBackup/6232100495809.sav
-	/currentFolderToBackup/GamerProfile.xml
-	/currentFolderToBackup/TODOs
-	/currentFolderToBackup/TODOs (2016)
-	/currentFolderToBackup/ex1_description.txt
+	/repository/6232100495809.sav
+	/repository/GamerProfile.xml
+	/repository/TODOs
+	/repository/TODOs (2016)
+	/repository/ex1_description.txt
 
 0 files modified
 
