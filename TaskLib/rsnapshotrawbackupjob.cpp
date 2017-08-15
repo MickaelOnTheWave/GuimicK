@@ -11,7 +11,7 @@ RsnapshotRawBackupJob::RsnapshotRawBackupJob(const std::string &_backupRepositor
                                              const std::string &_rsnapshotConfFile)
     : AbstractJob(),
       configurationFile(_rsnapshotConfFile),
-      repository(_backupRepositoryPath), waitAfterRun(false),
+      repository(_backupRepositoryPath), waitBeforeRun(false),
       reportJobOutput("")
 {
 }
@@ -19,7 +19,7 @@ RsnapshotRawBackupJob::RsnapshotRawBackupJob(const std::string &_backupRepositor
 RsnapshotRawBackupJob::RsnapshotRawBackupJob(const RsnapshotRawBackupJob &other)
     : AbstractJob(),
       configurationFile(other.configurationFile),
-      repository(other.repository), waitAfterRun(other.waitAfterRun),
+      repository(other.repository), waitBeforeRun(other.waitBeforeRun),
       reportJobOutput(other.reportJobOutput)
 {
 }
@@ -52,7 +52,7 @@ bool RsnapshotRawBackupJob::IsInitialized()
 
 JobStatus *RsnapshotRawBackupJob::Run()
 {
-    if (waitAfterRun)
+    if (waitBeforeRun)
         sleep(1);
 
     JobStatus* backupStatus = RunBackup();
@@ -80,9 +80,9 @@ void RsnapshotRawBackupJob::SetConfigurationFile(const string &value)
     configurationFile = value;
 }
 
-void RsnapshotRawBackupJob::SetWaitAfterRun(const bool value)
+void RsnapshotRawBackupJob::SetWaitBeforeRun(const bool value)
 {
-    waitAfterRun = value;
+    waitBeforeRun = value;
 }
 
 JobStatus *RsnapshotRawBackupJob::RunBackup()

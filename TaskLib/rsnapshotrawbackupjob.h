@@ -27,7 +27,7 @@ public:
      * On automated testing, if there is no wait after
      * Rsnapshot run, data is not retrieved normally.
      */
-    void SetWaitAfterRun(const bool value);
+    void SetWaitBeforeRun(const bool value);
 
 private:
     JobStatus* RunBackup();
@@ -39,7 +39,7 @@ private:
 
     std::string configurationFile;
     std::string repository;
-    bool waitAfterRun;
+    bool waitBeforeRun;
     std::string reportJobOutput;
 };
 

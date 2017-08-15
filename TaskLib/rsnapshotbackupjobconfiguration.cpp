@@ -61,6 +61,7 @@ void RsnapshotBackupJobConfiguration::ConfigureSmartJob(RsnapshotSmartBackupJob 
     job->SetTemplateConfigurationFile(templateFile);
 
     job->SetRepository(GetRepositoryValue(confObject));
+    job->SetWaitBeforeRun(GetWaitBeforeRunValue(confObject));
 }
 
 void RsnapshotBackupJobConfiguration::ConfigureRawJob(RsnapshotRawBackupJob *job,
@@ -71,7 +72,7 @@ void RsnapshotBackupJobConfiguration::ConfigureRawJob(RsnapshotRawBackupJob *job
 
     job->SetConfigurationFile(fullConfigurationFile);
     job->SetRepository(GetRepositoryValue(confObject));
-    job->SetWaitAfterRun(GetWaitAfterRunValue(confObject));
+    job->SetWaitBeforeRun(GetWaitBeforeRunValue(confObject));
 }
 
 string RsnapshotBackupJobConfiguration::GetRepositoryValue(ConfigurationObject *confObject) const
@@ -79,7 +80,7 @@ string RsnapshotBackupJobConfiguration::GetRepositoryValue(ConfigurationObject *
     return confObject->GetFirstProperty(repositoryProperty, "param0");
 }
 
-bool RsnapshotBackupJobConfiguration::GetWaitAfterRunValue(ConfigurationObject *confObject) const
+bool RsnapshotBackupJobConfiguration::GetWaitBeforeRunValue(ConfigurationObject *confObject) const
 {
     return (confObject->GetProperty(waitProperty) == "true");
 }

@@ -31,7 +31,7 @@ private:
                          std::vector<std::string> &errorMessages);
 
     std::string GetRepositoryValue(ConfigurationObject *confObject) const;
-    bool GetWaitAfterRunValue(ConfigurationObject *confObject) const;
+    bool GetWaitBeforeRunValue(ConfigurationObject *confObject) const;
 
     std::string fullConfigurationFile;
 };

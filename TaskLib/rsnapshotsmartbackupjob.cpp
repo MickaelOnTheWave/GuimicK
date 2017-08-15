@@ -9,7 +9,8 @@ using namespace std;
 
 RsnapshotSmartBackupJob::RsnapshotSmartBackupJob()
     : AbstractBackupJob(),
-      templateConfigurationFile(""), temporaryFile("")
+      templateConfigurationFile(""), temporaryFile(""),
+      waitBeforeRun(false)
 {
 }
 
@@ -17,7 +18,8 @@ RsnapshotSmartBackupJob::RsnapshotSmartBackupJob(const RsnapshotSmartBackupJob &
     : AbstractBackupJob(other),
       templateConfigurationFile(other.templateConfigurationFile),
       temporaryFile(other.temporaryFile),
-      dataToBackup(other.dataToBackup)
+      dataToBackup(other.dataToBackup),
+      waitBeforeRun(other.waitBeforeRun)
 {
 }
 
@@ -53,6 +55,11 @@ void RsnapshotSmartBackupJob::SetTemporaryFile(const string &value)
     temporaryFile = value;
 }
 
+void RsnapshotSmartBackupJob::SetWaitBeforeRun(const bool value)
+{
+    waitBeforeRun = value;
+}
+
 void RsnapshotSmartBackupJob::RunRepositoryBackup(const string& source,
                                                   const string& destination,
                                                   AbstractBackupJob::ResultCollection &)
@@ -69,6 +76,7 @@ JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
     string configuration = builder.CreateConfigurationFile(dataToBackup);
     RsnapshotRawBackupJob* rawBackupJob = new RsnapshotRawBackupJob(repository, configuration);
     rawBackupJob->SetParentDebugManager(debugManager);
+    rawBackupJob->SetWaitBeforeRun(waitBeforeRun);
 
     JobStatus* status = rawBackupJob->Run();
 
