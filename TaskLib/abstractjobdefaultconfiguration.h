@@ -12,6 +12,9 @@ protected:
     virtual void ConfigureJob(AbstractJob* job, ConfigurationObject* confObject,
                               std::vector<std::string> &errorMessages);
     virtual void FillKnownProperties(std::vector<std::string>& properties);
+
+private:
+    int GetDebugValue(const std::string& stringValue) const;
 };
 
 #endif // ABSTRACTJOBDEFAULTCONFIGURATION_H
