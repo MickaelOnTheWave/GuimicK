@@ -5,6 +5,8 @@
 
 using namespace std;
 
+static const string nullConfigurationError = "Invalid configuration";
+
 AbstractJobConfiguration::AbstractJobConfiguration(const std::string &tag)
     : jobTag(tag)
 {
@@ -23,6 +25,12 @@ AbstractJob *AbstractJobConfiguration::CreateConfiguredJob(
                             ConfigurationObject *confObject,
                             std::vector<std::string> &errorMessages)
 {
+    if (confObject == NULL)
+    {
+        errorMessages.push_back(nullConfigurationError);
+        return NULL;
+    }
+
     CheckKnownProperties(confObject, errorMessages);
     CheckKnownSubObjects(confObject, errorMessages);
     return CreateConfiguredJobAfterCheck(confObject, errorMessages);

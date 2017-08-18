@@ -19,6 +19,7 @@ void GetTaskLibTests(std::vector<QObject*>& tests,
     tests.push_back(new RawCopyFsBackupJobTest(dataPrefix, errorPrefix));
     tests.push_back(new RsyncCopyFsBackupJobTest(dataPrefix, errorPrefix));
     tests.push_back(new ZipAndCopyFsBackupJobTest(dataPrefix, errorPrefix));
+    tests.push_back(new GitFsBackupJobConfigurationTest());
 }
 
 

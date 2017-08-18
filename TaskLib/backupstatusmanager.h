@@ -12,6 +12,7 @@ public :
     BackupStatusManager(const BackupStatusManager& other);
 
     void SetDebugManager(JobDebugInformationManager* _debugManager);
+    bool GetJoinReports() const;
     void SetJoinReports(const bool value);
     void SetAttachmentName(const std::string& name);
 

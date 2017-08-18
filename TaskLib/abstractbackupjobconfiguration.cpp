@@ -2,8 +2,8 @@
 
 using namespace std;
 
-static const string targetProperty = "target";
-const string joinReportsProperty = "joinReports";
+const string AbstractBackupJobConfiguration::TargetProperty = "target";
+const string AbstractBackupJobConfiguration::JoinReportsProperty = "joinReports";
 
 AbstractBackupJobConfiguration::AbstractBackupJobConfiguration(const std::string &tag)
     : AbstractJobDefaultConfiguration(tag)
@@ -13,8 +13,8 @@ AbstractBackupJobConfiguration::AbstractBackupJobConfiguration(const std::string
 void AbstractBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &properties)
 {
     AbstractJobDefaultConfiguration::FillKnownProperties(properties);
-    properties.push_back(targetProperty);
-    properties.push_back(joinReportsProperty);
+    properties.push_back(TargetProperty);
+    properties.push_back(JoinReportsProperty);
 }
 
 void AbstractBackupJobConfiguration::FillKnownSubObjects(std::vector<string> &objects)
@@ -32,7 +32,7 @@ void AbstractBackupJobConfiguration::ConfigureJob(AbstractJob *job,
 
     ConfigureItemList(castJob, confObject, errorMessages);
     ConfigureTarget(castJob, confObject);
-    castJob->SetJoinAllBackups(confObject->GetProperty(joinReportsProperty) != "false");
+    castJob->SetJoinAllBackups(confObject->GetProperty(JoinReportsProperty) != "false");
 }
 
 void AbstractBackupJobConfiguration::ConfigureItemList(AbstractBackupJob *job,
@@ -60,7 +60,7 @@ void AbstractBackupJobConfiguration::ConfigureItemList(AbstractBackupJob *job,
 void AbstractBackupJobConfiguration::ConfigureTarget(AbstractBackupJob *job,
                                                      ConfigurationObject *confObject)
 {
-    string target(confObject->GetProperty(targetProperty));
+    string target(confObject->GetProperty(TargetProperty));
     if (target == "local")
         job->SetTargetLocal();
     else

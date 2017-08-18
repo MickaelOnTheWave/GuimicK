@@ -90,6 +90,11 @@ void AbstractBackupJob::ClearFolderList()
     folderList.clear();
 }
 
+bool AbstractBackupJob::IsReportJoint() const
+{
+    return statusManager->GetJoinReports();
+}
+
 void AbstractBackupJob::SetJoinAllBackups(const bool value)
 {
     statusManager->SetJoinReports(value);

@@ -6,9 +6,12 @@
 
 using namespace std;
 
-AbstractJobConfigurationTest::AbstractJobConfigurationTest(const string &dataPrefix,
-                                                           const string &errorPrefix)
-    : QtTestSuite(dataPrefix, errorPrefix)
+static const string nullConfigurationError = "Invalid configuration";
+static const string unknownPropertyError = "Unknown property";
+static const string unknownObjectError = "Unknown object";
+
+AbstractJobConfigurationTest::AbstractJobConfigurationTest()
+    : QtTestSuite("", "")
 {
 }
 
@@ -16,22 +19,41 @@ AbstractJobConfigurationTest::~AbstractJobConfigurationTest()
 {
 }
 
-void AbstractJobConfigurationTest::init()
-{
-
-}
-
-void AbstractJobConfigurationTest::cleanup()
-{
-
-}
-
 void AbstractJobConfigurationTest::testConfigure_NullConfiguration()
 {
-    vector<string> expectedErrors = {"Empty configuration"};
+    vector<string> expectedErrors = {nullConfigurationError};
     AbstractJob* job = TestConfiguration(nullptr, expectedErrors);
     QVERIFY(job == nullptr);
     delete job;
+}
+
+void AbstractJobConfigurationTest::testConfigure_UnknownProperty()
+{
+    const string propertyName = "unknownProperty";
+    ConfigurationObject* confObject = new ConfigurationObject();
+    confObject->SetProperty(propertyName, "value");
+
+    vector<string> expectedErrors = {BuildUnknownError("property", propertyName)};
+    AbstractJob* job = TestConfiguration(confObject, expectedErrors);
+    QVERIFY(job != nullptr);
+
+    delete job;
+    delete confObject;
+}
+
+void AbstractJobConfigurationTest::testConfigure_UnknownSubObject()
+{
+    const string objectName = "unknownObject";
+    ConfigurationObject* confObject = new ConfigurationObject();
+    confObject->AddObject(new ConfigurationObject(objectName));
+
+    vector<string> expectedErrors = {BuildUnknownError("sub object", objectName)};
+    AbstractJob* job = TestConfiguration(confObject, expectedErrors);
+    QVERIFY(job != nullptr);
+
+    delete job;
+    delete confObject;
+
 }
 
 AbstractJob* AbstractJobConfigurationTest::TestConfiguration(ConfigurationObject *confObject,
@@ -58,6 +80,18 @@ void AbstractJobConfigurationTest::CheckErrorMessages(const std::vector<string> 
 {
     QCOMPARE(errorMessages.size(), expectedErrorMessages.size());
 
-    bool areErrorsEqual = std::equal(errorMessages.begin(), errorMessages.end(),                                     expectedErrorMessages.begin());
+    bool areErrorsEqual = std::equal(errorMessages.begin(), errorMessages.end(),
+                                     expectedErrorMessages.begin());
     QVERIFY2(areErrorsEqual == true, "Error messages are different");
+}
+
+string AbstractJobConfigurationTest::BuildUnknownError(const string &object, const string &name) const
+{
+    AbstractJobConfiguration* dummyInstance = CreateNewConfiguration();
+    string message = "Warning : ";
+    message += object + " \"" + name + "\" is not handled by job \"";
+    message += dummyInstance->GetTagName() + "\"";
+
+    delete dummyInstance;
+    return message;
 }

@@ -8,6 +8,9 @@
 class AbstractBackupJobConfiguration : public AbstractJobDefaultConfiguration
 {
 public:
+    static const std::string TargetProperty;
+    static const std::string JoinReportsProperty;
+
     AbstractBackupJobConfiguration(const std::string& tag);
 
 protected:

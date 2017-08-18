@@ -23,6 +23,11 @@ void BackupStatusManager::SetDebugManager(JobDebugInformationManager *_debugMana
     debugManager = _debugManager;
 }
 
+bool BackupStatusManager::GetJoinReports() const
+{
+    return joinReports;
+}
+
 void BackupStatusManager::SetJoinReports(const bool value)
 {
     joinReports = value;

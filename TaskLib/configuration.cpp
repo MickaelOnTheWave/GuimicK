@@ -154,7 +154,7 @@ void Configuration::CreateReport(ConfigurationObject *confObject, vector<string>
     string useProfiling = confObject->GetFirstProperty("timed", "param1");
     reportCreator->UseProfileColumn(useProfiling != "false");
 
-    string cssFile = confObject->propertyList["css"];
+    string cssFile = confObject->GetProperty("css");
     if (cssFile != "")
     {
         HtmlReportCreator* htmlReportCreator = dynamic_cast<HtmlReportCreator*>(reportCreator);

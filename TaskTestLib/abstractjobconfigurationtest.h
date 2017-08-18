@@ -9,15 +9,13 @@ class AbstractJobConfigurationTest : public QtTestSuite
 {
     Q_OBJECT
 public:
-    AbstractJobConfigurationTest(const std::string& dataPrefix,
-                                 const std::string& errorPrefix);
+    AbstractJobConfigurationTest();
     virtual ~AbstractJobConfigurationTest();
 
 private Q_SLOTS:
-    void init();
-    void cleanup();
-
     void testConfigure_NullConfiguration();
+    void testConfigure_UnknownProperty();
+    void testConfigure_UnknownSubObject();
 
 protected:
     AbstractJob *TestConfiguration(ConfigurationObject* confObject,
@@ -29,7 +27,10 @@ private:
     void CheckErrorMessages(const std::vector<std::string> &errorMessages,
                             const std::vector<std::string> &expectedErrorMessages);
 
-    virtual AbstractJobConfiguration* CreateNewConfiguration() = 0;
+    virtual AbstractJobConfiguration* CreateNewConfiguration() const = 0;
+
+    std::string BuildUnknownError(const std::string& object,
+                                  const std::string& name) const;
 };
 
 #endif // ABSTRACTJOBCONFIGURATIONTEST_H

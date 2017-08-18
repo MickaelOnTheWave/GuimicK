@@ -1,3 +1,15 @@
+18/08/2017 (1.3h)
+	Production ran ok for git fs job. However report is not exactly what was expected.
+	It would be nice to change parser to create expected report.
+	But first, going for configuration test classes.
+	Created GitFs configuration test. Test suite is working with tests on Join reports
+	property and default tests from interface.
+Next planned work:
+	- Finish GitFs test class : all properties and objects. With proper architecture.
+	- Create test based on report from production run.
+	- Fix implementation from production run : report should list all files, not first level only.
+	- Continue implementing other configuration tests
+
 15/08/2017 (1h)
 	Fixed waitBeforeRun option for Rsnapshot. Now all existing tests are OK!
 	Created Abstract configuration test class. Implemented main test functions that will
