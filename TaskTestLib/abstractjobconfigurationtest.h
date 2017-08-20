@@ -23,6 +23,9 @@ protected:
 
     virtual AbstractJobConfiguration* CreateNewConfiguration() const = 0;
 
+    ConfigurationObject* CreateSimpleConfigurationObject(
+            const std::string& property, const std::string& value);
+
 private:
     AbstractJob* RunConfiguration(ConfigurationObject* confObject,
                                   std::vector<std::string> &errorMessages);

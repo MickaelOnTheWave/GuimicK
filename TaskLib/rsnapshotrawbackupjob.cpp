@@ -70,9 +70,19 @@ JobStatus *RsnapshotRawBackupJob::Run()
     return CreateParsedReportStatus();
 }
 
+string RsnapshotRawBackupJob::GetRepository() const
+{
+    return repository;
+}
+
 void RsnapshotRawBackupJob::SetRepository(const string &value)
 {
     repository = value;
+}
+
+string RsnapshotRawBackupJob::GetConfigurationFile() const
+{
+    return configurationFile;
 }
 
 void RsnapshotRawBackupJob::SetConfigurationFile(const string &value)

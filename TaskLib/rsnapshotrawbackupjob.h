@@ -20,7 +20,10 @@ public:
 
     virtual JobStatus* Run();
 
+    std::string GetRepository() const;
     void SetRepository(const std::string& value);
+
+    std::string GetConfigurationFile() const;
     void SetConfigurationFile(const std::string& value);
 
     /**

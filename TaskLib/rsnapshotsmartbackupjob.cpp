@@ -45,14 +45,29 @@ JobStatus *RsnapshotSmartBackupJob::Run()
     return RunConfiguredBackupJob();
 }
 
+string RsnapshotSmartBackupJob::GetTemplateConfigurationFile() const
+{
+    return templateConfigurationFile;
+}
+
 void RsnapshotSmartBackupJob::SetTemplateConfigurationFile(const string &value)
 {
     templateConfigurationFile = value;
 }
 
+string RsnapshotSmartBackupJob::GetTemporaryFile() const
+{
+    return temporaryFile;
+}
+
 void RsnapshotSmartBackupJob::SetTemporaryFile(const string &value)
 {
     temporaryFile = value;
+}
+
+bool RsnapshotSmartBackupJob::GetWaitBeforeRun() const
+{
+    return waitBeforeRun;
 }
 
 void RsnapshotSmartBackupJob::SetWaitBeforeRun(const bool value)

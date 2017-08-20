@@ -39,7 +39,8 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new RsyncCommandParserTest(parsersDir);
     //QObject* testSuite = new ZipAndCopyFsBackupJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new TarCommandParserTest(parsersDir);
-    QObject* testSuite = new GitFsBackupJobConfigurationTest();
+    //QObject* testSuite = new GitFsBackupJobConfigurationTest();
+    QObject* testSuite = new RsnapshotBackupJobConfigurationTest();
 
     QTest::qExec(testSuite, argc, argv);
 

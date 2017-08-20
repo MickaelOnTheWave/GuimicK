@@ -8,10 +8,14 @@
 class RsnapshotBackupJobConfiguration : public AbstractBackupJobConfiguration
 {
 public:
+    static const std::string FullConfigurationProperty;
+    static const std::string WaitProperty;
+    static const std::string TemplateConfigurationProperty;
+    static const std::string RepositoryProperty;
+
     RsnapshotBackupJobConfiguration();
 
 protected:
-
     virtual void AnalyzeConfiguration(ConfigurationObject* confObject);
     virtual AbstractJob* CreateJob();
     virtual void ConfigureJob(AbstractJob* job,

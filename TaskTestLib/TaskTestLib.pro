@@ -35,7 +35,8 @@ SOURCES += tasktestlib.cpp \
     abstractjobconfigurationtest.cpp \
     gitfsbackupjobconfigurationtest.cpp \
     abstractbackupjobconfigurationtest.cpp \
-    abstractjobdefaultconfigurationtest.cpp
+    abstractjobdefaultconfigurationtest.cpp \
+    rsnapshotbackupjobconfigurationtest.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
@@ -60,7 +61,8 @@ HEADERS += tasktestlib.h \
     abstractjobconfigurationtest.h \
     gitfsbackupjobconfigurationtest.h \
     abstractbackupjobconfigurationtest.h \
-    abstractjobdefaultconfigurationtest.h
+    abstractjobdefaultconfigurationtest.h \
+    rsnapshotbackupjobconfigurationtest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

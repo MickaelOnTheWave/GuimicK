@@ -20,8 +20,13 @@ public:
 
     virtual JobStatus* Run();
 
+    std::string GetTemplateConfigurationFile() const;
     void SetTemplateConfigurationFile(const std::string& value);
+
+    std::string GetTemporaryFile() const;
     void SetTemporaryFile(const std::string& value);
+
+    bool GetWaitBeforeRun() const;
     void SetWaitBeforeRun(const bool value);
 
 protected:

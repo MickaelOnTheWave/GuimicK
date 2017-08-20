@@ -5,10 +5,10 @@
 
 using namespace std;
 
-static const string fullConfigurationProperty = "fullConfigurationFile";
-static const string waitProperty = "waitAfterRun";
-static const string templateConfigurationProperty = "templateConfigurationFile";
-static const string repositoryProperty = "repository";
+const string RsnapshotBackupJobConfiguration::FullConfigurationProperty = "fullConfigurationFile";
+const string RsnapshotBackupJobConfiguration::WaitProperty = "waitAfterRun";
+const string RsnapshotBackupJobConfiguration::TemplateConfigurationProperty = "templateConfigurationFile";
+const string RsnapshotBackupJobConfiguration::RepositoryProperty = "repository";
 
 RsnapshotBackupJobConfiguration::RsnapshotBackupJobConfiguration()
     : AbstractBackupJobConfiguration("RsnapshotBackup"),
@@ -18,7 +18,7 @@ RsnapshotBackupJobConfiguration::RsnapshotBackupJobConfiguration()
 
 void RsnapshotBackupJobConfiguration::AnalyzeConfiguration(ConfigurationObject *confObject)
 {
-    fullConfigurationFile = confObject->GetFirstProperty(fullConfigurationProperty, "param1");
+    fullConfigurationFile = confObject->GetFirstProperty(FullConfigurationProperty, "param1");
 }
 
 AbstractJob *RsnapshotBackupJobConfiguration::CreateJob()
@@ -40,10 +40,10 @@ void RsnapshotBackupJobConfiguration::ConfigureJob(AbstractJob *job, Configurati
 void RsnapshotBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &properties)
 {
     AbstractBackupJobConfiguration::FillKnownProperties(properties);
-    properties.push_back(repositoryProperty);
-    properties.push_back(fullConfigurationProperty);
-    properties.push_back(waitProperty);
-    properties.push_back(templateConfigurationProperty);
+    properties.push_back(RepositoryProperty);
+    properties.push_back(FullConfigurationProperty);
+    properties.push_back(WaitProperty);
+    properties.push_back(TemplateConfigurationProperty);
 }
 
 string RsnapshotBackupJobConfiguration::GetBackupItemName() const
@@ -57,7 +57,7 @@ void RsnapshotBackupJobConfiguration::ConfigureSmartJob(RsnapshotSmartBackupJob 
 {
     AbstractBackupJobConfiguration::ConfigureJob(job, confObject, errorMessages);
 
-    const string templateFile = confObject->GetProperty(templateConfigurationProperty);
+    const string templateFile = confObject->GetProperty(TemplateConfigurationProperty);
     job->SetTemplateConfigurationFile(templateFile);
 
     job->SetRepository(GetRepositoryValue(confObject));
@@ -77,10 +77,10 @@ void RsnapshotBackupJobConfiguration::ConfigureRawJob(RsnapshotRawBackupJob *job
 
 string RsnapshotBackupJobConfiguration::GetRepositoryValue(ConfigurationObject *confObject) const
 {
-    return confObject->GetFirstProperty(repositoryProperty, "param0");
+    return confObject->GetFirstProperty(RepositoryProperty, "param0");
 }
 
 bool RsnapshotBackupJobConfiguration::GetWaitBeforeRunValue(ConfigurationObject *confObject) const
 {
-    return (confObject->GetProperty(waitProperty) == "true");
+    return (confObject->GetProperty(WaitProperty) == "true");
 }

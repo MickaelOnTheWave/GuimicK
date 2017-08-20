@@ -8,6 +8,7 @@
 #include "gitfsbackupjobtest.h"
 #include "gitjobtest.h"
 #include "rawcopyfsbackupjobtest.h"
+#include "rsnapshotbackupjobconfigurationtest.h"
 #include "rsnapshoterroranalyzertest.h"
 #include "rsnapshotjobtest.h"
 #include "rsynccopyfsbackupjobtest.h"

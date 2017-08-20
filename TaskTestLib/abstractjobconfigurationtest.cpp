@@ -30,8 +30,8 @@ void AbstractJobConfigurationTest::testConfigure_NullConfiguration()
 void AbstractJobConfigurationTest::testConfigure_UnknownProperty()
 {
     const string propertyName = "unknownProperty";
-    ConfigurationObject* confObject = new ConfigurationObject();
-    confObject->SetProperty(propertyName, "value");
+    ConfigurationObject* confObject = CreateSimpleConfigurationObject(
+                propertyName, "value");
 
     vector<string> expectedErrors = {BuildUnknownError("property", propertyName)};
     AbstractJob* job = TestConfiguration(confObject, expectedErrors);
@@ -63,6 +63,15 @@ AbstractJob* AbstractJobConfigurationTest::TestConfiguration(
     AbstractJob* job = RunConfiguration(confObject, errorMessages);
     CheckErrorMessages(errorMessages, expectedErrorMessages);
     return job;
+}
+
+ConfigurationObject *AbstractJobConfigurationTest::CreateSimpleConfigurationObject(
+        const string &property, const string &value)
+{
+    ConfigurationObject* confObject = new ConfigurationObject();
+    if (property != "")
+        confObject->SetProperty(property, value);
+    return confObject;
 }
 
 AbstractJob* AbstractJobConfigurationTest::RunConfiguration(ConfigurationObject *confObject,
