@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 
     //QObject* testSuite = new RsnapshotJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new RsnapshotErrorAnalyzerTest(taskLibDir);
-    //QObject* testSuite = new TaskFeatureTest(taskLibDir, errorDir);
+    QObject* testSuite = new TaskFeatureTest(taskLibDir, errorDir);
     //QObject* testSuite = new ConsoleJobTest();
     //QObject* testSuite = new GitJobTest();
     //QObject* testSuite = new UserConsoleJobTest();
@@ -40,7 +40,9 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ZipAndCopyFsBackupJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new TarCommandParserTest(parsersDir);
     //QObject* testSuite = new GitFsBackupJobConfigurationTest();
-    QObject* testSuite = new RsnapshotBackupJobConfigurationTest();
+    //QObject* testSuite = new RsnapshotBackupJobConfigurationTest();
+    //QObject* testSuite = new WakeJobConfigurationTest();
+    //QObject* testSuite = new ChangeScreensaverJobConfigurationTest();
 
     QTest::qExec(testSuite, argc, argv);
 

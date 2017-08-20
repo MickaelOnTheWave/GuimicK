@@ -230,21 +230,30 @@ int GitFsBackupJob::GetRevisionCount() const
 void GitFsBackupJob::CreateInitialReport(JobStatus *status, FileBackupReport &report)
 {
     debugManager->AddDataLine<string>("Creating Initial Report", "");
-    ConsoleJob commandJob("ls");
+    ConsoleJob commandJob("find", ". -path ./.git -prune -o -print");
     commandJob.RunWithoutStatus();
+    LogDebugCommand("Initial report command", commandJob);
     if (commandJob.GetCommandReturnCode() != 0)
     {
         status->SetCode(JobStatus::OK_WITH_WARNINGS);
-        status->AddFileBuffer("output", commandJob.GetCommandOutput());
+
+        string content = "Error while trying to create report. Here is output data:\n";
+        content += commandJob.GetCommandOutput();
+        status->AddFileBuffer(GetAttachmentName(), content);
     }
     else
     {
+        // TODO : put this in a class and create a test suite for it.
+        // There is already production.txt file to check on test.
         vector<string> fileList;
         Tools::TokenizeString(commandJob.GetCommandOutput(), '\n', fileList);
 
         vector<string>::const_iterator it = fileList.begin();
         for(; it!=fileList.end(); ++it)
-            report.AddAsAdded(*it);
+        {
+            if (*it != ".")
+                report.AddAsAdded(CreateFilteredFileName(*it));
+        }
         status->SetCode(JobStatus::OK);
     }
 }
@@ -369,4 +378,12 @@ bool GitFsBackupJob::SetupGitConfig(const string &configuration, const string &v
         LogDebugCommand(string("Git config ") + configuration, job);
 
     return job.IsRunOk();
+}
+
+string GitFsBackupJob::CreateFilteredFileName(const string &name)
+{
+    if (name.length() < 2)
+        return string("");
+    else
+        return name.substr(2);
 }

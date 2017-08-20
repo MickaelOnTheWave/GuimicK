@@ -1,11 +1,13 @@
 #ifndef CHANGESCREENSAVERJOBCONFIGURATION_H
 #define CHANGESCREENSAVERJOBCONFIGURATION_H
 
-#include "abstractjobconfiguration.h"
+#include "abstractjobdefaultconfiguration.h"
 
-class ChangeScreensaverJobConfiguration : public AbstractJobConfiguration
+class ChangeScreensaverJobConfiguration : public AbstractJobDefaultConfiguration
 {
 public:
+    static const std::string TimeoutProperty;
+
     ChangeScreensaverJobConfiguration();
 
 protected:

@@ -5,10 +5,10 @@
 
 using namespace std;
 
-static const string timeoutProperty = "timeout";
+const string ChangeScreensaverJobConfiguration::TimeoutProperty = "timeout";
 
 ChangeScreensaverJobConfiguration::ChangeScreensaverJobConfiguration()
-    : AbstractJobConfiguration("ChangeScreenSaver")
+    : AbstractJobDefaultConfiguration("ChangeScreenSaver")
 {
 }
 
@@ -21,10 +21,10 @@ void ChangeScreensaverJobConfiguration::ConfigureJob(AbstractJob *job,
                                                      ConfigurationObject *confObject,
                                                      vector<string> &errorMessages)
 {
-    AbstractJobConfiguration::ConfigureJob(job, confObject, errorMessages);
+    AbstractJobDefaultConfiguration::ConfigureJob(job, confObject, errorMessages);
 
     int time = 600;
-    string param = confObject->GetFirstProperty("param0", timeoutProperty);
+    string param = confObject->GetFirstProperty("param0", TimeoutProperty);
     if (param != "")
         time = atoi(param.c_str());
 
@@ -34,5 +34,6 @@ void ChangeScreensaverJobConfiguration::ConfigureJob(AbstractJob *job,
 
 void ChangeScreensaverJobConfiguration::FillKnownProperties(std::vector<string> &properties)
 {
-    properties.push_back(timeoutProperty);
+    AbstractJobDefaultConfiguration::FillKnownProperties(properties);
+    properties.push_back(TimeoutProperty);
 }

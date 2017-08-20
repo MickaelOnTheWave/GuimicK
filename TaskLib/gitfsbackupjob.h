@@ -56,6 +56,8 @@ private:
     bool ConfigureGitRepository();
     bool SetupGitConfig(const std::string& configuration, const std::string& value);
 
+    std::string CreateFilteredFileName(const std::string& name);
+
     bool forceRawCopy;
 };
 

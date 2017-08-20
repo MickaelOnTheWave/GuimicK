@@ -3,7 +3,8 @@
 
 using namespace std;
 
-WakeJobConfiguration::WakeJobConfiguration() : AbstractJobConfiguration("Wake")
+WakeJobConfiguration::WakeJobConfiguration()
+    : AbstractJobDefaultConfiguration("Wake")
 {
 }
 

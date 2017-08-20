@@ -1,9 +1,9 @@
 #ifndef WAKEJOBCONFIGURATION_H
 #define WAKEJOBCONFIGURATION_H
 
-#include "abstractjobconfiguration.h"
+#include "abstractjobdefaultconfiguration.h"
 
-class WakeJobConfiguration : public AbstractJobConfiguration
+class WakeJobConfiguration : public AbstractJobDefaultConfiguration
 {
 public:
     WakeJobConfiguration();

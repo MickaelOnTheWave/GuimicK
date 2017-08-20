@@ -1,3 +1,15 @@
+20/08/2017 (1.7h)
+	Going for faulty production report. Trying to create test.. it is impossible : the error
+	is in a code that is not encapsulated, it is on "Initial report" creating for git job.
+	Best way would be to create a class for it and test it. However, it seems to be a lot of job
+	for just a simple mistake. Changing list command to a proper find one to get data.
+	Back to configuration testing... Created test suites for Wake and ChangeScreensaver jobs.
+	Fixed implementations accordingly. Created taskfeature test to catch initial report bug.
+	Fixed implementation accordingly.
+Next planned work:
+	- Finish configuration tests. Following class list in Configuration.
+	- Create global debug option and test it.
+
 20/08/2017 (3.9h)
 	Created all configuration tests for Abstract Backup configurations and all architecture
 	on top of it. Now started Rsnapshot configuration test. Finished it!

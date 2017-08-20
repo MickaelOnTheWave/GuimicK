@@ -3,16 +3,24 @@
 #include <unistd.h>
 
 #include "consolejob.h"
-#include "jobdebuginformationmanager.h"
 #include "tools.h"
 
 using namespace std;
 
 static const int DEFAULT_TIMEOUT = 120;
 
-WakeJob::WakeJob()
-    : macAddress(""), broadcastIp(""), expectedIp(""),
-      wakelanPath(""), outputDebugInformation(false)
+WakeJob::WakeJob() : AbstractJob(),
+    macAddress(""), broadcastIp(""), expectedIp(""),
+    wakelanPath("")
+{
+}
+
+WakeJob::WakeJob(const WakeJob &other)
+    : AbstractJob(other),
+      macAddress(other.macAddress),
+      broadcastIp(other.broadcastIp),
+      expectedIp(other.expectedIp),
+      wakelanPath(other.wakelanPath)
 {
 }
 
@@ -27,13 +35,7 @@ std::string WakeJob::GetName()
 
 AbstractJob *WakeJob::Clone()
 {
-    WakeJob* cloned = new WakeJob();
-    cloned->macAddress = macAddress;
-    cloned->broadcastIp = broadcastIp;
-    cloned->expectedIp = expectedIp;
-    cloned->wakelanPath = wakelanPath;
-    cloned->outputDebugInformation = outputDebugInformation;
-    return cloned;
+    return new WakeJob(*this);
 }
 
 bool WakeJob::InitializeFromClient(Client *client)
@@ -54,38 +56,32 @@ bool WakeJob::IsInitialized()
     return wakelanPath != "" && HasMandatoryParameters();
 }
 
-void WakeJob::SetOutputDebugInformation(const bool value)
-{
-    outputDebugInformation = value;
-}
-
 JobStatus *WakeJob::Run()
 {
     const string wakeCommand = wakelanPath + " -m " + macAddress + " -b " + broadcastIp;
-    JobDebugInformationManager debugInfo(outputDebugInformation, GetName());
-    debugInfo.AddDataLine<string>("Wake command", wakeCommand);
+    debugManager->AddDataLine<string>("Wake command", wakeCommand);
 
     const int maxRetries = 3;
     for (int i=0; i<maxRetries; ++i)
     {
         std::string wakeCommandOutput;
         Tools::RunExternalCommandToBuffer(wakeCommand, wakeCommandOutput, true);
-        debugInfo.AddDataLine<string>("Output", wakeCommandOutput);
+        debugManager->AddDataLine<string>("Output", wakeCommandOutput);
 
         int secondsToWake = WaitForComputerToGoUp();
         if (secondsToWake < DEFAULT_TIMEOUT)
         {
-            debugInfo.AddDataLine<int>("retries", i);
-            debugInfo.AddDataLine<int>("maxRetries", maxRetries);
-            debugInfo.AddDataLine<int>("seconds counter", secondsToWake);
-            debugInfo.AddDataLine<int>("timeout", DEFAULT_TIMEOUT);
-            return debugInfo.CreateStatus(JobStatus::OK, "");
+            debugManager->AddDataLine<int>("retries", i);
+            debugManager->AddDataLine<int>("maxRetries", maxRetries);
+            debugManager->AddDataLine<int>("seconds counter", secondsToWake);
+            debugManager->AddDataLine<int>("timeout", DEFAULT_TIMEOUT);
+            return debugManager->CreateStatus(JobStatus::OK, "");
         }
     }
 
-    debugInfo.AddDataLine<int>("maxRetries", maxRetries);
-    debugInfo.AddDataLine<int>("timeout", DEFAULT_TIMEOUT);
-    return debugInfo.CreateStatus(JobStatus::ERROR, "Machine still not awake");
+    debugManager->AddDataLine<int>("maxRetries", maxRetries);
+    debugManager->AddDataLine<int>("timeout", DEFAULT_TIMEOUT);
+    return debugManager->CreateStatus(JobStatus::ERROR, "Machine still not awake");
 }
 
 bool WakeJob::HasMandatoryParameters() const

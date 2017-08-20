@@ -14,6 +14,7 @@ public:
 
     virtual bool IsInitialized(void);
 
+    int GetTimeout(void) const;
     void SetTimeout(const int value);
 
 protected:

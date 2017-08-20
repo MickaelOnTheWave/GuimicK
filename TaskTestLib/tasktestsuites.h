@@ -1,6 +1,7 @@
 #ifndef TASKTESTSUITES_H
 #define TASKTESTSUITES_H
 
+#include "changescreensaverjobconfigurationtest.h"
 #include "clientworkmanagertest.h"
 #include "configurationtest.h"
 #include "consolejobtest.h"
@@ -15,6 +16,7 @@
 #include "sshconsolejobtest.h"
 #include "taskfeaturetest.h"
 #include "userconsolejobtest.h"
+#include "wakejobconfigurationtest.h"
 #include "zipandcopyfsbackupjobtest.h"
 
 #endif // TASKTESTSUITES_H

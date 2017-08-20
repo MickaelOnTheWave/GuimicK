@@ -40,6 +40,11 @@ bool ChangeScreensaverJob::IsInitialized()
     return true;
 }
 
+int ChangeScreensaverJob::GetTimeout() const
+{
+    return timeOut;
+}
+
 void ChangeScreensaverJob::SetTimeout(const int value)
 {
     timeOut = value;

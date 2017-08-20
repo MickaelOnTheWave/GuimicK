@@ -6,9 +6,9 @@
 class WakeJob : public AbstractJob
 {
 public:
-    WakeJob();    
+    WakeJob();
+    WakeJob(const WakeJob& other);
     virtual ~WakeJob();
-
 
     virtual std::string GetName();
 
@@ -17,8 +17,6 @@ public:
     virtual bool InitializeFromClient(Client* client);
 
     virtual bool IsInitialized(void);
-
-    void SetOutputDebugInformation(const bool value);
 
     virtual JobStatus* Run();
 
@@ -34,7 +32,6 @@ private:
     std::string broadcastIp;
     std::string expectedIp;
     std::string wakelanPath;
-    bool outputDebugInformation;
 };
 
 #endif // WAKEJOB_H
