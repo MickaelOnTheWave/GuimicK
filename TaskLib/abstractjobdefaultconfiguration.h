@@ -6,6 +6,8 @@
 class AbstractJobDefaultConfiguration : public AbstractJobConfiguration
 {
 public:
+    static const std::string DebugProperty;
+
     AbstractJobDefaultConfiguration(const std::string& tag);
 
 protected:

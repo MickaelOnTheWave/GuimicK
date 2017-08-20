@@ -56,6 +56,11 @@ JobStatus *AbstractBackupJob::Run()
     return debugManager->UpdateStatus(CreateGlobalStatus(results));
 }
 
+bool AbstractBackupJob::IsTargetLocal() const
+{
+    return isTargetLocal;
+}
+
 void AbstractBackupJob::SetTargetRemote(const std::string &user, const std::string &host)
 {
     isTargetLocal = false;

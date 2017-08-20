@@ -1,23 +1,18 @@
 #ifndef GITFSBACKUPJOBCONFIGURATIONTEST_H
 #define GITFSBACKUPJOBCONFIGURATIONTEST_H
 
-#include "abstractjobconfigurationtest.h"
+#include "abstractbackupjobconfigurationtest.h"
 
-class GitFsBackupJobConfigurationTest : public AbstractJobConfigurationTest
+class GitFsBackupJobConfigurationTest : public AbstractBackupJobConfigurationTest
 {
     Q_OBJECT
 
-private Q_SLOTS:
-    void testConfigure_JoinReports_True();
-    void testConfigure_JoinReports_False();
-    void testConfigure_JoinReports_TrueAsDefault();
-    void testConfigure_JoinReports_TrueOnUnknown();
+public:
+    GitFsBackupJobConfigurationTest() = default;
+    virtual ~GitFsBackupJobConfigurationTest() = default;
 
 private:
     virtual AbstractJobConfiguration* CreateNewConfiguration() const override;
-
-    void testConfigure_JoinReportsProperty(const std::string& propertyValue,
-                                           const bool expectedValue);
 };
 
 #endif // GITFSBACKUPJOBCONFIGURATIONTEST_H

@@ -5,6 +5,9 @@ using namespace std;
 const string AbstractBackupJobConfiguration::TargetProperty = "target";
 const string AbstractBackupJobConfiguration::JoinReportsProperty = "joinReports";
 
+static const string invalidSourceError = "Error : source is invalid";
+static const string invalidDestinationError = "Error : destination is invalid";
+
 AbstractBackupJobConfiguration::AbstractBackupJobConfiguration(const std::string &tag)
     : AbstractJobDefaultConfiguration(tag)
 {
@@ -46,13 +49,18 @@ void AbstractBackupJobConfiguration::ConfigureItemList(AbstractBackupJob *job,
 
         if (currentObj->name == GetBackupItemName())
         {
-            string source(currentObj->propertyList["source"]);
-            string dest(currentObj->propertyList["dest"]);
+            const string source(currentObj->GetProperty("source"));
+            const string dest(currentObj->GetProperty("dest"));
 
-            if (source != "" && dest != "")
+            const bool isSourceValid = (source != "");
+            const bool isDestinationValid = (dest != "");
+
+            if (isSourceValid && isDestinationValid)
                 job->AddFolder(source, dest);
-            else
-                errorMessages.push_back("Error : invalid folder specified");
+            else if (isSourceValid == false)
+                errorMessages.push_back(invalidSourceError);
+            else // isDestinationValid == false
+                errorMessages.push_back(invalidDestinationError);
         }
     }
 }

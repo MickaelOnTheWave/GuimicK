@@ -35,6 +35,7 @@ public:
 	  */
 	virtual JobStatus* Run() = 0;
 
+    virtual int GetOutputDebugInformationValue() const;
     virtual void SetOutputDebugInformation(const int value);
 
     void SetParentDebugManager(JobDebugInformationManager* manager);

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-static const string debugProperty = "showDebugInformation";
+const string AbstractJobDefaultConfiguration::DebugProperty = "showDebugInformation";
 
 AbstractJobDefaultConfiguration::AbstractJobDefaultConfiguration(const std::string &tag)
     : AbstractJobConfiguration(tag)
@@ -13,7 +13,7 @@ void AbstractJobDefaultConfiguration::ConfigureJob(AbstractJob *job,
                                                    ConfigurationObject *confObject,
                                                    std::vector<std::string> &)
 {
-    const string showDebugInformation(confObject->GetProperty(debugProperty));
+    const string showDebugInformation(confObject->GetProperty(DebugProperty));
     if (showDebugInformation != "")
     {
         const int debugValue = GetDebugValue(showDebugInformation);
@@ -23,7 +23,7 @@ void AbstractJobDefaultConfiguration::ConfigureJob(AbstractJob *job,
 
 void AbstractJobDefaultConfiguration::FillKnownProperties(std::vector<std::string> &properties)
 {
-    properties.push_back(debugProperty);
+    properties.push_back(DebugProperty);
 }
 
 int AbstractJobDefaultConfiguration::GetDebugValue(const string &stringValue) const

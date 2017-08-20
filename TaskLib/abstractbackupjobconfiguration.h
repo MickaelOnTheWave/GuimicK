@@ -13,6 +13,8 @@ public:
 
     AbstractBackupJobConfiguration(const std::string& tag);
 
+    virtual std::string GetBackupItemName() const = 0;
+
 protected:
     virtual void ConfigureJob(AbstractJob *job,
                               ConfigurationObject *confObject,
@@ -22,8 +24,6 @@ protected:
     virtual void FillKnownSubObjects(std::vector<std::string>& objects);
 
 private:
-    virtual std::string GetBackupItemName() const = 0;
-
     void ConfigureItemList(AbstractBackupJob *job,
                            ConfigurationObject *confObject,
                            std::vector<std::string>& errorMessages);

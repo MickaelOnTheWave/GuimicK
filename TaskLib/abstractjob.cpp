@@ -48,3 +48,8 @@ std::string AbstractJob::GetAttachmentName()
 {
     return GetName() + ".txt";
 }
+
+int AbstractJob::GetOutputDebugInformationValue() const
+{
+    return debugManager->GetUse();
+}

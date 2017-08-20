@@ -56,8 +56,8 @@ void AbstractJobConfigurationTest::testConfigure_UnknownSubObject()
 
 }
 
-AbstractJob* AbstractJobConfigurationTest::TestConfiguration(ConfigurationObject *confObject,
-                                                             vector<string> &expectedErrorMessages)
+AbstractJob* AbstractJobConfigurationTest::TestConfiguration(
+        ConfigurationObject *confObject, const vector<string>& expectedErrorMessages)
 {
     vector<string> errorMessages;
     AbstractJob* job = RunConfiguration(confObject, errorMessages);
