@@ -94,8 +94,8 @@ v0.9 :
 
 v0.8 :
 	[003] Use Curl lib instead of command line
-	[040] Organize attachments in archives
 	[044] Add generic debugging option for all jobs
+	[040] Organize attachments in archives
 	[017] Properly handle all error cases
 
 v0.7 : 12/07/2017

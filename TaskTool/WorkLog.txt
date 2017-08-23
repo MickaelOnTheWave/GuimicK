@@ -1,3 +1,13 @@
+22/08/2017 (1.3h)
+	Too little time to work, and configuration tests are extensive. Instead, focused on resolving
+	an error on production with Git repository backups. It seems that using pull is not the right
+	tool, so changed it to checkout which seems more appropriate and does not give errors.
+	Checkout doesn't do what is expected, it changes the current version on local history. So
+	looking on the internet. There is no apparent direct answer, so posting a question on StackOverflow.
+Next planned work :
+	- Try to resolve the git update issue from StackOverflow / another way
+	- Back to previous roadmap
+
 20/08/2017 (1.7h)
 	Going for faulty production report. Trying to create test.. it is impossible : the error
 	is in a code that is not encapsulated, it is on "Initial report" creating for git job.
