@@ -4,9 +4,12 @@
 
 using namespace std;
 
+static const string defaultItemBackupMessage = "backups succeeded";
+
 BackupStatusManager::BackupStatusManager(const string &_attachmentName)
-    : resultCollection(NULL), debugManager(NULL), joinReports(false),
-      attachmentName(_attachmentName)
+    : resultCollection(NULL), debugManager(NULL), joinReports(true),
+      attachmentName(_attachmentName),
+      itemBackupMessage(defaultItemBackupMessage)
 {
 }
 
@@ -14,7 +17,8 @@ BackupStatusManager::BackupStatusManager(const BackupStatusManager &other)
     : resultCollection(other.resultCollection),
       debugManager(other.debugManager),
       joinReports(other.joinReports),
-      attachmentName(other.attachmentName)
+      attachmentName(other.attachmentName),
+      itemBackupMessage(other.itemBackupMessage)
 {
 }
 
@@ -36,6 +40,11 @@ void BackupStatusManager::SetJoinReports(const bool value)
 void BackupStatusManager::SetAttachmentName(const string &name)
 {
     attachmentName = name;
+}
+
+void BackupStatusManager::SetItemBackupMessage(const string &message)
+{
+    itemBackupMessage = message;
 }
 
 JobStatus *BackupStatusManager::CreateGlobalStatus(
@@ -109,7 +118,7 @@ JobStatus *BackupStatusManager::CreateJoinedStatus()
     for (; it!=resultCollection->end(); ++it, ++itDestination)
         globalReport.AddWithPrefix(*it->second, itDestination->second);
 
-    status->SetDescription(globalReport.GetMiniDescription());
+    status->SetDescription(CreateFoldersMiniDescription());
     status->AddFileBuffer(attachmentName, globalReport.GetFullDescription());
     return status;
 }
@@ -125,7 +134,7 @@ JobStatus *BackupStatusManager::CreateSeparatedStatus()
     for (; it!=resultCollection->end(); ++it)
         globalReport.Add(*it->second);
 
-    status->SetDescription(globalReport.GetMiniDescription());
+    status->SetDescription(CreateFoldersMiniDescription());
     status->AddFileBuffer(attachmentName, CreateStatusesDescription());
     return status;
 }
@@ -170,7 +179,7 @@ string BackupStatusManager::CreateFoldersMiniDescription()
     stringstream miniDescription;
     if (successCount > 0)
     {
-        miniDescription << successCount << " succeeded";
+        miniDescription << successCount << " " << itemBackupMessage;
         miniDescription << ((failureCount > 0) ? ", " : ".");
     }
 

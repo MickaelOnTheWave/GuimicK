@@ -10,7 +10,9 @@ public:
 
     static void Init(const std::string &repository);
 
-    static void Clone(const std::string &source, const std::string& destination);
+    static void Clone(const std::string &source,
+                      const std::string& destination,
+                      const bool isMirror = false);
 
     static void CommitAllChanges(const std::string &repository);
 

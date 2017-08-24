@@ -3,6 +3,8 @@
 
 #include "abstractbackupjob.h"
 
+#include "consolejob.h"
+
 class GitBackupJob : public AbstractBackupJob
 {
 public:
@@ -25,8 +27,26 @@ protected:
 private:
     bool InitializeRemoteTarget(Client* client);
     bool AreSourcesConsistent() const;
-    void RunGitPull(const std::string &repository,
-                    ResultCollection& statusList) const;
+
+    void UpdateGitRepository(const std::string &repository,
+                             ResultCollection& statusList);
+
+    std::string GetRepositoryHeadId() const;
+
+    bool FetchUpdates(const std::string &repository,
+                      ResultCollection& statusList);
+
+    void ComputeChanges(const std::string &repository,
+                        const std::string& oldCommitId, const std::string& newCommitId,
+                        ResultCollection& statusList);
+
+    void CreateReport(const std::string &repository,
+                      const std::string& commandOutput,
+                      ResultCollection& statusList);
+
+    void AddToAttachedArchive(const std::string& repository,
+                              const std::string& content);
+
     void RunGitClone(const std::string &source,
                      const std::string &destination,
                      ResultCollection& statusList) const;
@@ -38,7 +58,10 @@ private:
     unsigned int CountFaultyRepositories(const ResultCollection &results) const;
     std::string GetCorrectRepositoryWord() const;
 
+    bool IsInvalidSourceError(const ConsoleJob &job) const;
+
     bool writeLogsToFile;
+    std::string archiveContent;
 };
 
 #endif // GITBACKUPJOB_H

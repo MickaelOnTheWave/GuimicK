@@ -1,5 +1,6 @@
 #include "gittools.h"
 
+#include <unistd.h>
 #include <QDir>
 #include <QTest>
 
@@ -17,9 +18,11 @@ void GitTools::Init(const string& repository)
     CommitAllChanges(repository);
 }
 
-void GitTools::Clone(const string &source, const string &destination)
+void GitTools::Clone(const string &source, const string &destination, const bool isMirror)
 {
     std::string command("git clone ");
+    if (isMirror)
+        command += "--mirror ";
     command += source + " " + destination;
     command += " 2>&1 > /dev/null";
     std::string unusedOutput;
@@ -40,7 +43,9 @@ void GitTools::Update(const std::string &repository,
                                 const QStringList &removed)
 {
     GitTools::AddProceduralFilesAndCommit(repository, added, 10000);
+    sleep(1);
     GitTools::ChangeProcedurallyFilesAndCommit(repository, modified);
+    sleep(1);
     GitTools::RemoveFilesAndCommit(repository, removed);
 }
 

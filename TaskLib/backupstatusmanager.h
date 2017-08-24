@@ -15,6 +15,7 @@ public :
     bool GetJoinReports() const;
     void SetJoinReports(const bool value);
     void SetAttachmentName(const std::string& name);
+    void SetItemBackupMessage(const std::string& message);
 
     JobStatus *CreateGlobalStatus(const AbstractBackupJob::ResultCollection& results,
                                   const AbstractBackupJob::BackupCollection& backups);
@@ -40,6 +41,7 @@ private:
     JobDebugInformationManager* debugManager;
     bool joinReports;
     std::string attachmentName;
+    std::string itemBackupMessage;
 };
 
 #endif // BACKUPSTATUSMANAGER_H

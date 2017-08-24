@@ -50,6 +50,9 @@ private:
             const std::vector<GitRepository*>& repositories
     );
 
+    void CheckGitHeadContent(const std::string& repository,
+                             const QStringList &expectedContents);
+
     const QString sourceRepository = "GitRepository";
     const QString destinationRepository = "GitDestRepository";
     const QString invalidRepository = "blablabla";
