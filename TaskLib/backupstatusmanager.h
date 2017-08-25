@@ -36,6 +36,9 @@ private:
     std::string BuildRepositoryHeader(const std::string &name);
     std::string BuildFooter();
 
+    std::string GetCorrectMiniDescription(
+            const AbstractBackupJob::ResultEntry& result) const;
+
     const AbstractBackupJob::ResultCollection* resultCollection;
     const AbstractBackupJob::BackupCollection* backupCollection;
     JobDebugInformationManager* debugManager;

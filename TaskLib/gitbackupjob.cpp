@@ -191,7 +191,7 @@ void GitBackupJob::CreateReport(
         debugManager->AddDataLine<string>("Parser input", commandOutput);
         JobStatus* status = new JobStatus(JobStatus::OK_WITH_WARNINGS, reportCreationError);
         AddToAttachedArchive(repository, commandOutput);
-        statusList.push_back(make_pair(status, new FileBackupReport()));
+        statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
     }
 }
 
@@ -206,11 +206,10 @@ void GitBackupJob::AddToAttachedArchive(
 
 void GitBackupJob::RunGitClone(const string &source,
                                const string &destination,
-                               ResultCollection &statusList) const
+                               ResultCollection &statusList)
 {
     debugManager->AddDataLine<string>("Git Clone on", repository);
     ConsoleJob* gitCommand = new ConsoleJob("git", BuildGitParameters(source, destination));
-    const string gitLogFile = FileTools::GetFilenameFromUnixPath(destination) + ".txt";
     JobStatus* status = gitCommand->Run();
     debugManager->AddDataLine<int>("Clone result", gitCommand->GetCommandReturnCode());
     debugManager->AddDataLine<string>("Clone output", gitCommand->GetCommandOutput());
@@ -219,10 +218,10 @@ void GitBackupJob::RunGitClone(const string &source,
     else
     {
         status->SetDescription(repositoryCloneOk);
-        status->AddFileBuffer(gitLogFile, gitCommand->GetCommandOutput());
+        AddToAttachedArchive(source, "Repository cloned");
     }
 
-    statusList.push_back(make_pair(status, new FileBackupReport()));
+    statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
     delete gitCommand;
 }
 

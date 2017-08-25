@@ -35,15 +35,15 @@ void GitJobTest::cleanup()
 void GitJobTest::testCreate_InvalidSource()
 {
     RunGitBackup(invalidRepository.toStdString(), destinationRepository.toStdString());
-    CheckGitJobReturn(JobStatus::ERROR, 1, messageInvalidSource);
+    CheckGitJobReturn(JobStatus::ERROR, 0, messageInvalidSource);
     FileTestUtils::CheckFolderExistence(invalidRepository, false);
     FileTestUtils::CheckFolderExistence(destinationRepository, false);
 }
 
-void GitJobTest::testCreate_AllValid()
+void GitJobTest::testCreateOne_Ok()
 {
     RunGitBackup(sourceRepository.toStdString(), destinationRepository.toStdString());
-    CheckGitJobReturn(JobStatus::OK, 1, BuildDescriptionString(0,0,0));
+    CheckGitJobReturn(JobStatus::OK, 0, "Repository cloned successfully");
     FileTestUtils::CheckFolderExistence(sourceRepository, true);
     FileTestUtils::CheckFolderExistence(destinationRepository, true);
     CheckGitHeadContent(destinationRepository.toStdString(), defaultRepositoryContent);

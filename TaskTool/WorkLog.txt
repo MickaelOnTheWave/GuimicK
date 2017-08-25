@@ -1,5 +1,5 @@
-24/08/2017 (18-19.8)
-	Fixed git tests and implementation. Now tests are ok.
+24/08/2017 (18-21)
+	Fixed git tests and implementation. Now tests are ok. Fixed all tests, report creation was improved.
 
 
 23/08/2017 (5.1h)

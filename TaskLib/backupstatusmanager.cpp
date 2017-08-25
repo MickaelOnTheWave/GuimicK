@@ -72,14 +72,10 @@ JobStatus *BackupStatusManager::CreateSingleStatus()
     debugManager->AddTagLine("Creating Single status");
     const AbstractBackupJob::ResultEntry& result = resultCollection->front();
 
-    const int statusCode = result.first->GetCode();
-    JobStatus* status = new JobStatus(statusCode);
-    if (statusCode == JobStatus::OK || statusCode == JobStatus::OK_WITH_WARNINGS)
-        status->SetDescription(result.second->GetMiniDescription());
-    else
-        status->SetDescription(result.first->GetDescription());
-
-    status->AddFileBuffer(attachmentName, result.second->GetFullDescription());
+    JobStatus* status = new JobStatus(result.first->GetCode());
+    status->SetDescription(GetCorrectMiniDescription(result));
+    if (result.second)
+        status->AddFileBuffer(attachmentName, result.second->GetFullDescription());
     return status;
 }
 
@@ -116,7 +112,10 @@ JobStatus *BackupStatusManager::CreateJoinedStatus()
     AbstractBackupJob::BackupCollection::const_iterator itDestination = backupCollection->begin();
     AbstractBackupJob::ResultCollection::const_iterator it = resultCollection->begin();
     for (; it!=resultCollection->end(); ++it, ++itDestination)
-        globalReport.AddWithPrefix(*it->second, itDestination->second);
+    {
+        if (it->second != NULL)
+            globalReport.AddWithPrefix(*it->second, itDestination->second);
+    }
 
     status->SetDescription(CreateFoldersMiniDescription());
     status->AddFileBuffer(attachmentName, globalReport.GetFullDescription());
@@ -209,4 +208,18 @@ string BackupStatusManager::BuildRepositoryHeader(const string& name)
 string BackupStatusManager::BuildFooter()
 {
     return string("------------------\n");
+}
+
+string BackupStatusManager::GetCorrectMiniDescription(
+        const AbstractBackupJob::ResultEntry &result) const
+{
+    const int statusCode = result.first->GetCode();
+    const bool isStatusCodeAcceptable = (statusCode == JobStatus::OK ||
+                                         statusCode == JobStatus::OK_WITH_WARNINGS);
+    string description;
+    if (isStatusCodeAcceptable && result.second != NULL)
+        description = result.second->GetMiniDescription();
+    else
+        description = result.first->GetDescription();
+    return description;
 }

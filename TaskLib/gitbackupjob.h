@@ -49,7 +49,7 @@ private:
 
     void RunGitClone(const std::string &source,
                      const std::string &destination,
-                     ResultCollection& statusList) const;
+                     ResultCollection& statusList);
     std::string BuildGitParameters(const std::string &source, const std::string &destination) const;
     JobStatus* CreateGlobalStatus(const std::vector<JobStatus*>& statusList) const;
     JobStatus* CreateSingleRepositoryStatus(const ResultEntry &entry) const;

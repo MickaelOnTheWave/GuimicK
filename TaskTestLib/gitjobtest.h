@@ -18,7 +18,7 @@ private Q_SLOTS:
     void cleanup();
 
     void testCreate_InvalidSource();
-    void testCreate_AllValid();
+    void testCreateOne_Ok();
 
     void testUpdate_data();
     void testUpdate();
