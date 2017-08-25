@@ -1,6 +1,10 @@
-24/08/2017 (18-21)
+24/08/2017 (3.8h)
 	Fixed git tests and implementation. Now tests are ok. Fixed all tests, report creation was improved.
-
+	Removed useless code and improved code design. Also created some tests to check correct
+	report creation. Fixed implementation accordingly. Oh, and updated StackOverflow answer :-)
+Next planned work:
+	- Check production run - now repository backups should be working
+	- Back to previous roadmap - configuration tests
 
 23/08/2017 (5.1h)
 	StackOverflow gave a good answer, however this was not enough. Reworked the solution to

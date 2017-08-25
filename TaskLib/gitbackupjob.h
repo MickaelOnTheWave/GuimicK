@@ -22,7 +22,6 @@ protected:
     virtual void RunRepositoryBackup(const std::string &source,
                                      const std::string &destination,
                                      ResultCollection &results);
-    virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
 
 private:
     bool InitializeRemoteTarget(Client* client);
@@ -50,13 +49,7 @@ private:
     void RunGitClone(const std::string &source,
                      const std::string &destination,
                      ResultCollection& statusList);
-    std::string BuildGitParameters(const std::string &source, const std::string &destination) const;
-    JobStatus* CreateGlobalStatus(const std::vector<JobStatus*>& statusList) const;
-    JobStatus* CreateSingleRepositoryStatus(const ResultEntry &entry) const;
-    JobStatus* CreateMultiRepositoryStatus(const ResultCollection &results) const;
-
-    unsigned int CountFaultyRepositories(const ResultCollection &results) const;
-    std::string GetCorrectRepositoryWord() const;
+    std::string BuildCloneParameters(const std::string &source, const std::string &destination) const;
 
     bool IsInvalidSourceError(const ConsoleJob &job) const;
 

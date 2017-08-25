@@ -63,7 +63,7 @@ JobStatus *BackupStatusManager::CreateGlobalStatus(
         if (AreAllStatusesEqual(JobStatus::OK))
             return CreateAllOkStatus();
         else
-            return CreateMixedStatus();
+            return CreateSeparatedStatus(JobStatus::ERROR);
     }
 }
 
@@ -86,19 +86,8 @@ JobStatus *BackupStatusManager::CreateAllOkStatus()
     if (joinReports)
         return CreateJoinedStatus();
     else
-        return CreateSeparatedStatus();
+        return CreateSeparatedStatus(JobStatus::OK);
 
-    return status;
-}
-
-JobStatus *BackupStatusManager::CreateMixedStatus()
-{
-    if (debugManager)
-        debugManager->AddTagLine("Creating Mixed status");
-
-    JobStatus* status = new JobStatus(JobStatus::ERROR);
-    status->SetDescription(CreateFoldersMiniDescription());
-    status->AddFileBuffer(attachmentName, CreateStatusesDescription());
     return status;
 }
 
@@ -107,33 +96,24 @@ JobStatus *BackupStatusManager::CreateJoinedStatus()
     if (debugManager)
         debugManager->AddTagLine("Creating Joined status");
 
-    JobStatus* status = new JobStatus(JobStatus::OK);
-    FileBackupReport globalReport;
-    AbstractBackupJob::BackupCollection::const_iterator itDestination = backupCollection->begin();
-    AbstractBackupJob::ResultCollection::const_iterator it = resultCollection->begin();
-    for (; it!=resultCollection->end(); ++it, ++itDestination)
-    {
-        if (it->second != NULL)
-            globalReport.AddWithPrefix(*it->second, itDestination->second);
-    }
+    FileBackupReport* globalReport = CreateGlobalReport();
 
-    status->SetDescription(CreateFoldersMiniDescription());
-    status->AddFileBuffer(attachmentName, globalReport.GetFullDescription());
+    JobStatus* status = new JobStatus(JobStatus::OK);
+    status->SetDescription(CreateRepositoriesMiniDescription());
+    status->AddFileBuffer(attachmentName, globalReport->GetFullDescription());
+
+    delete globalReport;
     return status;
 }
 
-JobStatus *BackupStatusManager::CreateSeparatedStatus()
+JobStatus *BackupStatusManager::CreateSeparatedStatus(const int code)
 {
     if (debugManager)
         debugManager->AddTagLine("Creating Separated status");
 
-    JobStatus* status = new JobStatus(JobStatus::OK);
-    FileBackupReport globalReport;
-    AbstractBackupJob::ResultCollection::const_iterator it = resultCollection->begin();
-    for (; it!=resultCollection->end(); ++it)
-        globalReport.Add(*it->second);
+    JobStatus* status = new JobStatus(code);
 
-    status->SetDescription(CreateFoldersMiniDescription());
+    status->SetDescription(CreateRepositoriesMiniDescription());
     status->AddFileBuffer(attachmentName, CreateStatusesDescription());
     return status;
 }
@@ -170,7 +150,7 @@ string BackupStatusManager::CreateStatusesDescription()
     return fullDescription;
 }
 
-string BackupStatusManager::CreateFoldersMiniDescription()
+string BackupStatusManager::CreateRepositoriesMiniDescription()
 {
     const int successCount = ComputeSuccessCount();
     const int failureCount = resultCollection->size() - successCount;
@@ -222,4 +202,17 @@ string BackupStatusManager::GetCorrectMiniDescription(
     else
         description = result.first->GetDescription();
     return description;
+}
+
+FileBackupReport *BackupStatusManager::CreateGlobalReport() const
+{
+    FileBackupReport* report = new FileBackupReport();
+    AbstractBackupJob::BackupCollection::const_iterator itDestination = backupCollection->begin();
+    AbstractBackupJob::ResultCollection::const_iterator it = resultCollection->begin();
+    for (; it!=resultCollection->end(); ++it, ++itDestination)
+    {
+        if (it->second != NULL)
+            report->AddWithPrefix(*it->second, itDestination->second);
+    }
+    return report;
 }

@@ -23,14 +23,13 @@ public :
 private:
     JobStatus* CreateSingleStatus();
     JobStatus* CreateAllOkStatus();
-    JobStatus* CreateMixedStatus();
 
     JobStatus* CreateJoinedStatus();
-    JobStatus* CreateSeparatedStatus();
+    JobStatus* CreateSeparatedStatus(const int code);
 
     bool AreAllStatusesEqual(const int expectedCode);
     std::string CreateStatusesDescription();
-    std::string CreateFoldersMiniDescription();
+    std::string CreateRepositoriesMiniDescription();
     int ComputeSuccessCount() const;
 
     std::string BuildRepositoryHeader(const std::string &name);
@@ -38,6 +37,8 @@ private:
 
     std::string GetCorrectMiniDescription(
             const AbstractBackupJob::ResultEntry& result) const;
+
+    FileBackupReport* CreateGlobalReport() const;
 
     const AbstractBackupJob::ResultCollection* resultCollection;
     const AbstractBackupJob::BackupCollection* backupCollection;
