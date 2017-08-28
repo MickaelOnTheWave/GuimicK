@@ -18,7 +18,7 @@ public:
     int RunOnParameters(const std::string &source,
                          const std::string &destination);
 
-    void SetJoinAllBackups(const bool value);
+    void SetJoinReports(const bool value);
 
 protected:
     virtual void RunRepositoryBackup(const std::string& source,

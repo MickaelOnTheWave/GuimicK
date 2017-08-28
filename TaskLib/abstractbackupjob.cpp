@@ -95,12 +95,12 @@ void AbstractBackupJob::ClearFolderList()
     folderList.clear();
 }
 
-bool AbstractBackupJob::IsReportJoint() const
+bool AbstractBackupJob::GetJoinReports() const
 {
     return statusManager->GetJoinReports();
 }
 
-void AbstractBackupJob::SetJoinAllBackups(const bool value)
+void AbstractBackupJob::SetJoinReports(const bool value)
 {
     statusManager->SetJoinReports(value);
 }

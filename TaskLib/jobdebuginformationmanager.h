@@ -36,6 +36,8 @@ public:
     void WriteToFile() const;
 
 private:
+    bool ShouldAttachDebugInformation(const int statusCode) const;
+
     std::string debugFilename;
     int debugUse;
     std::string allData;

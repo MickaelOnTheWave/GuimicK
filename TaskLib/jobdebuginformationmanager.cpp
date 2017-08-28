@@ -41,7 +41,7 @@ void JobDebugInformationManager::SetUse(const int value)
 
 void JobDebugInformationManager::AddTagLine(const string &tag)
 {
-    if (debugUse == false)
+    if (debugUse == DebugOutput::NEVER)
         return;
 
     std::stringstream line;
@@ -51,8 +51,9 @@ void JobDebugInformationManager::AddTagLine(const string &tag)
 
 JobStatus *JobDebugInformationManager::UpdateStatus(JobStatus *status) const
 {
-    if (debugUse != DebugOutput::NEVER)
+    if (status && ShouldAttachDebugInformation(status->GetCode()))
         status->AddFileBuffer(debugFilename, allData);
+
     return status;
 }
 
@@ -64,4 +65,23 @@ JobStatus *JobDebugInformationManager::CreateStatus(const int code, const string
 void JobDebugInformationManager::WriteToFile() const
 {
     FileTools::WriteBufferToFile(debugFilename, allData);
+}
+
+bool JobDebugInformationManager::ShouldAttachDebugInformation(const int statusCode) const
+{
+    const bool isStatusOk = (statusCode == JobStatus::OK);
+    const bool isStatusNotExecuted = (statusCode == JobStatus::NOT_EXECUTED);
+    const bool isStatusError = (statusCode == JobStatus::ERROR);
+
+    switch (debugUse)
+    {
+        case (DebugOutput::ALWAYS) :
+            return true;
+        case (DebugOutput::ON_ANY_ERROR) :
+            return !isStatusOk;
+        case (DebugOutput::ON_FATAL_ERROR) :
+            return isStatusError || isStatusNotExecuted;
+        default :
+            return false;
+    }
 }

@@ -36,7 +36,7 @@ int AbstractCopyFsBackupJob::RunOnParameters(const string &source, const string 
     return commandJob.GetCommandReturnCode();
 }
 
-void AbstractCopyFsBackupJob::SetJoinAllBackups(const bool value)
+void AbstractCopyFsBackupJob::SetJoinReports(const bool value)
 {
     statusManager->SetJoinReports(value);
 }

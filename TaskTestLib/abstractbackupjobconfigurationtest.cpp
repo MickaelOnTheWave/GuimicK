@@ -39,8 +39,8 @@ void AbstractBackupJobConfigurationTest::testConfigure_JoinReports_data()
 
     QTest::newRow("True") << "true" << true;
     QTest::newRow("False") << "false" << false;
-    QTest::newRow("True as default") << "" << true;
-    QTest::newRow("True on unknown") << "blabla" << true;
+    QTest::newRow("False as default") << "" << false;
+    QTest::newRow("False on unknown") << "blabla" << false;
 }
 
 void AbstractBackupJobConfigurationTest::testConfigure_JoinReports()
@@ -123,7 +123,7 @@ void AbstractBackupJobConfigurationTest::testConfigure_JoinReportsProperty(const
     auto castJob = dynamic_cast<AbstractBackupJob*>(job);
 
     QVERIFY(castJob != nullptr);
-    QVERIFY(castJob->IsReportJoint() == expectedValue);
+    QVERIFY(castJob->GetJoinReports() == expectedValue);
 
     delete job;
     delete confObject;

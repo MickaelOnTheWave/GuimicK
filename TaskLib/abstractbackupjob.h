@@ -33,8 +33,8 @@ public:
     void GetFolderList(std::vector<std::pair<std::string, std::string> >& folders);
     void ClearFolderList(void);
 
-    bool IsReportJoint() const;
-    void SetJoinAllBackups(const bool value);
+    bool GetJoinReports() const;
+    void SetJoinReports(const bool value);
 
 protected:
     virtual bool Initialize();

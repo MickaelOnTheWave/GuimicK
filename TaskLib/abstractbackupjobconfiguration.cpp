@@ -35,7 +35,7 @@ void AbstractBackupJobConfiguration::ConfigureJob(AbstractJob *job,
 
     ConfigureItemList(castJob, confObject, errorMessages);
     ConfigureTarget(castJob, confObject);
-    castJob->SetJoinAllBackups(confObject->GetProperty(JoinReportsProperty) != "false");
+    castJob->SetJoinReports(confObject->GetProperty(JoinReportsProperty) == "true");
 }
 
 void AbstractBackupJobConfiguration::ConfigureItemList(AbstractBackupJob *job,
