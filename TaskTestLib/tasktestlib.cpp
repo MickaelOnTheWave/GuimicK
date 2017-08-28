@@ -23,6 +23,10 @@ void GetTaskLibTests(std::vector<QObject*>& tests,
     tests.push_back(new RsnapshotBackupJobConfigurationTest());
     tests.push_back(new WakeJobConfigurationTest());
     tests.push_back(new ChangeScreensaverJobConfigurationTest());
+    tests.push_back(new ClamAvJobConfigurationTest());
+    tests.push_back(new ShutdownJobConfigurationTest());
+    tests.push_back(new UserConsoleJobConfigurationTest());
+    tests.push_back(new SshConsoleJobConfigurationTest());
 }
 
 

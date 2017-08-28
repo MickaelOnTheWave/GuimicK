@@ -65,6 +65,13 @@ AbstractJob* AbstractJobConfigurationTest::TestConfiguration(
     return job;
 }
 
+AbstractJob *AbstractJobConfigurationTest::TestConfigurationWithoutErrors(
+        ConfigurationObject *confObject)
+{
+    vector<string> expectedErrors;
+    return TestConfiguration(confObject, expectedErrors);
+}
+
 ConfigurationObject *AbstractJobConfigurationTest::CreateSimpleConfigurationObject(
         const string &property, const string &value)
 {

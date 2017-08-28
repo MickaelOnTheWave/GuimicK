@@ -73,6 +73,11 @@ void UserConsoleJob::SetTitle(const std::string &title)
     commandTitle = title;
 }
 
+string UserConsoleJob::GetMiniDescriptionParserCommand() const
+{
+    return parserCommand;
+}
+
 void UserConsoleJob::SetMiniDescriptionParserCommand(const string &parser)
 {
     parserCommand = parser;
@@ -89,6 +94,11 @@ void UserConsoleJob::SetOutputDebugInformation(const bool value)
     debugInfo.SetUse(value);
 }
 
+string UserConsoleJob::GetOutputFile() const
+{
+    return outputFileName;
+}
+
 void UserConsoleJob::SetOutputTofile(const string &filename)
 {
     outputFileName = filename;
@@ -99,6 +109,11 @@ void UserConsoleJob::SetOutputTofile(const string &filename)
 void UserConsoleJob::SetOutputToBuffer()
 {
     outputFileName = "";
+}
+
+bool UserConsoleJob::IsParsingUsingBuffer() const
+{
+    return useParserWithBuffer;
 }
 
 void UserConsoleJob::SetParsingUsingBuffer(const bool value)

@@ -1,9 +1,9 @@
 #ifndef CLAMAVJOBCONFIGURATION_H
 #define CLAMAVJOBCONFIGURATION_H
 
-#include "abstractjobconfiguration.h"
+#include "abstractjobdefaultconfiguration.h"
 
-class ClamAvJobConfiguration : public AbstractJobConfiguration
+class ClamAvJobConfiguration : public AbstractJobDefaultConfiguration
 {
 public:
     ClamAvJobConfiguration();

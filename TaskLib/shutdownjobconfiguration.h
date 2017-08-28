@@ -1,9 +1,9 @@
 #ifndef SHUTDOWNJOBCONFIGURATION_H
 #define SHUTDOWNJOBCONFIGURATION_H
 
-#include "abstractjobconfiguration.h"
+#include "abstractjobdefaultconfiguration.h"
 
-class ShutdownJobConfiguration : public AbstractJobConfiguration
+class ShutdownJobConfiguration : public AbstractJobDefaultConfiguration
 {
 public:
     ShutdownJobConfiguration();

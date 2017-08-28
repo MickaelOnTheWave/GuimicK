@@ -1,8 +1,11 @@
-28/08/2017 (18)
+28/08/2017 (2.6h)
 	Production run is OK, however report is not exactly as expected. Fixing this.. Fixed issue,
 	it was just a wrong default. Updated tests and improved debug information management. It should
 	now behave as expected - attach information only in given cases.
-	Back to configuration tests.
+	Back to configuration tests. Created most configuration test suites, only missing some.
+Next planned work :
+	- Create missing test suites : GitBackup and DiskSpaceCheck
+	- Create configuration classes and test suites for all copy jobs
 
 24/08/2017 (3.8h)
 	Fixed git tests and implementation. Now tests are ok. Fixed all tests, report creation was improved.

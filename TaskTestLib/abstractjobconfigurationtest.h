@@ -20,6 +20,7 @@ private Q_SLOTS:
 protected:
     AbstractJob *TestConfiguration(ConfigurationObject* confObject,
                                    const std::vector<std::string>& expectedErrorMessages);
+    AbstractJob *TestConfigurationWithoutErrors(ConfigurationObject* confObject);
 
     virtual AbstractJobConfiguration* CreateNewConfiguration() const = 0;
 

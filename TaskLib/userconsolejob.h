@@ -24,13 +24,17 @@ public:
 
     void SetTitle(const std::string& title);
 
+    std::string GetMiniDescriptionParserCommand() const;
     void SetMiniDescriptionParserCommand(const std::string& parser);
 
     void SetAttachOutput(const bool value);
     virtual void SetOutputDebugInformation(const bool value);
 
+    std::string GetOutputFile() const;
     void SetOutputTofile(const std::string& filename);
     void SetOutputToBuffer(void);
+
+    bool IsParsingUsingBuffer() const;
     void SetParsingUsingBuffer(const bool value);
 
     virtual void SetExpectedReturnCode(const int value);

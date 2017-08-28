@@ -38,7 +38,11 @@ SOURCES += tasktestlib.cpp \
     abstractjobdefaultconfigurationtest.cpp \
     rsnapshotbackupjobconfigurationtest.cpp \
     wakejobconfigurationtest.cpp \
-    changescreensaverjobconfigurationtest.cpp
+    changescreensaverjobconfigurationtest.cpp \
+    clamavjobconfigurationtest.cpp \
+    shutdownjobconfigurationtest.cpp \
+    userconsolejobconfigurationtest.cpp \
+    sshconsolejobconfigurationtest.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
@@ -66,7 +70,11 @@ HEADERS += tasktestlib.h \
     abstractjobdefaultconfigurationtest.h \
     rsnapshotbackupjobconfigurationtest.h \
     wakejobconfigurationtest.h \
-    changescreensaverjobconfigurationtest.h
+    changescreensaverjobconfigurationtest.h \
+    clamavjobconfigurationtest.h \
+    shutdownjobconfigurationtest.h \
+    userconsolejobconfigurationtest.h \
+    sshconsolejobconfigurationtest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
