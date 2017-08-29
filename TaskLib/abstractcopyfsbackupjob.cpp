@@ -36,11 +36,6 @@ int AbstractCopyFsBackupJob::RunOnParameters(const string &source, const string 
     return commandJob.GetCommandReturnCode();
 }
 
-void AbstractCopyFsBackupJob::SetJoinReports(const bool value)
-{
-    statusManager->SetJoinReports(value);
-}
-
 void AbstractCopyFsBackupJob::RunRepositoryBackup(const string &source,
                                           const string &destination,
                                           ResultCollection &results)

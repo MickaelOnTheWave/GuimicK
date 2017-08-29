@@ -1,5 +1,7 @@
-29/08/2017 (16.8-17.5)
-	Missing test suites done. How going for missing configurations..
+29/08/2017 (16.8-18)
+	Missing test suites done. Now going for missing configurations.. Created missing configurations
+	and their test suites (no attributes, so configuration is very straightforward, and same for
+	test suites). Now going for global debug option...
 
 28/08/2017 (2.6h)
 	Production run is OK, however report is not exactly as expected. Fixing this.. Fixed issue,

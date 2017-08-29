@@ -16,9 +16,7 @@ public:
      * @return command return code.
      */
     int RunOnParameters(const std::string &source,
-                         const std::string &destination);
-
-    void SetJoinReports(const bool value);
+                        const std::string &destination);
 
 protected:
     virtual void RunRepositoryBackup(const std::string& source,

@@ -2,13 +2,14 @@
 
 #include <vector>
 
+#include "consolejob.h"
 #include "configurationparser.h"
 #include "htmlreportcreator.h"
 #include "profiledjob.h"
 
 #include "changescreensaverjobconfiguration.h"
 #include "clamavjobconfiguration.h"
-#include "consolejob.h"
+#include "copyfsbackupjobconfigurations.h"
 #include "diskspacecheckjobconfiguration.h"
 #include "gitbackupjobconfiguration.h"
 #include "gitfsbackupjobconfiguration.h"
@@ -360,6 +361,9 @@ void Configuration::FillSupportedJobsList()
     supportedJobs.push_back(new GitBackupJobConfiguration);
     supportedJobs.push_back(new DiskSpaceCheckJobConfiguration);
     supportedJobs.push_back(new GitFsBackupJobConfiguration);
+    supportedJobs.push_back(new RawCopyFsBackupJobConfiguration());
+    supportedJobs.push_back(new RsyncCopyFsBackupJobConfiguration());
+    supportedJobs.push_back(new ZipAndCopyFsBackupJobConfiguration());
 }
 
 void Configuration::FillRootObjects(const list<ConfigurationObject *> &objectList,

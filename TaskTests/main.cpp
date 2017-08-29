@@ -47,7 +47,10 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ShutdownJobConfigurationTest();
     //QObject* testSuite = new UserConsoleJobConfigurationTest();
     //QObject* testSuite = new GitBackupJobConfigurationTest();
-    QObject* testSuite = new DiskSpaceCheckJobConfigurationTest();
+    //QObject* testSuite = new DiskSpaceCheckJobConfigurationTest();
+    //QObject* testSuite = new RawCopyFsBackupJobConfigurationTest();
+    //QObject* testSuite = new RsyncCopyFsBackupJobConfigurationTest();
+    QObject* testSuite = new ZipAndCopyFsBackupJobConfigurationTest();
 
     QTest::qExec(testSuite, argc, argv);
 

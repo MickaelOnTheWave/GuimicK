@@ -44,7 +44,8 @@ SOURCES += tasktestlib.cpp \
     userconsolejobconfigurationtest.cpp \
     sshconsolejobconfigurationtest.cpp \
     gitbackupjobconfigurationtest.cpp \
-    diskspacecheckjobconfigurationtest.cpp
+    diskspacecheckjobconfigurationtest.cpp \
+    copyfsbackupjobconfigurationstests.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
@@ -78,7 +79,8 @@ HEADERS += tasktestlib.h \
     userconsolejobconfigurationtest.h \
     sshconsolejobconfigurationtest.h \
     gitbackupjobconfigurationtest.h \
-    diskspacecheckjobconfigurationtest.h
+    diskspacecheckjobconfigurationtest.h \
+    copyfsbackupjobconfigurationstests.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

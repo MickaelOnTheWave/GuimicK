@@ -64,7 +64,9 @@ SOURCES += \
     abstractbackupjobconfiguration.cpp \
     abstractjobdefaultconfiguration.cpp \
     rsnapshotrawbackupjob.cpp \
-    rsnapshotconfigurationbuilder.cpp
+    rsnapshotconfigurationbuilder.cpp \
+    abstractfsbackupjobconfiguration.cpp \
+    copyfsbackupjobconfigurations.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -120,7 +122,9 @@ HEADERS +=\
     abstractjobdefaultconfiguration.h \
     rsnapshotrawbackupjob.h \
     rsnapshotconfigurationbuilder.h \
-    debugoutput.h
+    debugoutput.h \
+    abstractfsbackupjobconfiguration.h \
+    copyfsbackupjobconfigurations.h
 
 unix {
     target.path = /usr/lib
