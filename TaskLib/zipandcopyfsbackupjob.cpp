@@ -70,12 +70,6 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
     }
 }
 
-JobStatus *ZipAndCopyFsBackupJob::CreateGlobalStatus(
-        const AbstractBackupJob::ResultCollection &results)
-{
-    return statusManager->CreateGlobalStatus(results, folderList);
-}
-
 bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
                                                 const string &archiveName,
                                                 AbstractBackupJob::ResultCollection &results)

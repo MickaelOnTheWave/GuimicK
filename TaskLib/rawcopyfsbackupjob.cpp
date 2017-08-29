@@ -48,6 +48,7 @@ void RawCopyFsBackupJob::CreateReport(const std::string &destination,
     FileBackupReport* report = new FileBackupReport();
     JobStatus* status = new JobStatus();
 
+    // TODO : change this to a proper recursive command.
     ConsoleJob lsCommand("ls", destination);
     lsCommand.RunWithoutStatus();
     if (lsCommand.GetCommandReturnCode() == 0)

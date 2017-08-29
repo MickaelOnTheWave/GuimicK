@@ -23,7 +23,6 @@ protected:
     virtual void RunRepositoryBackup(const std::string& source,
                                      const std::string& destination,
                                      ResultCollection& results);
-    virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
 
 private:
     bool CreateBackupArchive(const std::string& folderToBackup,
