@@ -42,7 +42,9 @@ SOURCES += tasktestlib.cpp \
     clamavjobconfigurationtest.cpp \
     shutdownjobconfigurationtest.cpp \
     userconsolejobconfigurationtest.cpp \
-    sshconsolejobconfigurationtest.cpp
+    sshconsolejobconfigurationtest.cpp \
+    gitbackupjobconfigurationtest.cpp \
+    diskspacecheckjobconfigurationtest.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
@@ -74,7 +76,9 @@ HEADERS += tasktestlib.h \
     clamavjobconfigurationtest.h \
     shutdownjobconfigurationtest.h \
     userconsolejobconfigurationtest.h \
-    sshconsolejobconfigurationtest.h
+    sshconsolejobconfigurationtest.h \
+    gitbackupjobconfigurationtest.h \
+    diskspacecheckjobconfigurationtest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

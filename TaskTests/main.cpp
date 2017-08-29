@@ -45,7 +45,9 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ChangeScreensaverJobConfigurationTest();
     //QObject* testSuite = new ClamAvJobConfigurationTest();
     //QObject* testSuite = new ShutdownJobConfigurationTest();
-    QObject* testSuite = new UserConsoleJobConfigurationTest();
+    //QObject* testSuite = new UserConsoleJobConfigurationTest();
+    //QObject* testSuite = new GitBackupJobConfigurationTest();
+    QObject* testSuite = new DiskSpaceCheckJobConfigurationTest();
 
     QTest::qExec(testSuite, argc, argv);
 

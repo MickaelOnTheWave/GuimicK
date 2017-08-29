@@ -6,6 +6,8 @@
 #include "clientworkmanagertest.h"
 #include "configurationtest.h"
 #include "consolejobtest.h"
+#include "diskspacecheckjobconfigurationtest.h"
+#include "gitbackupjobconfigurationtest.h"
 #include "gitfsbackupjobconfigurationtest.h"
 #include "gitfsbackupjobtest.h"
 #include "gitjobtest.h"

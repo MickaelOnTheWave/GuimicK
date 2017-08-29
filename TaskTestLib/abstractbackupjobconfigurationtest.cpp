@@ -100,8 +100,7 @@ void AbstractBackupJobConfigurationTest::testConfigure_TargetProperty(const stri
     if (propertyValue != "")
         confObject->SetProperty(AbstractBackupJobConfiguration::TargetProperty, propertyValue);
 
-    vector<string> expectedErrors;
-    AbstractJob* job = TestConfiguration(confObject, expectedErrors);
+    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
     auto castJob = dynamic_cast<AbstractBackupJob*>(job);
 
     QVERIFY(castJob != nullptr);
@@ -118,8 +117,7 @@ void AbstractBackupJobConfigurationTest::testConfigure_JoinReportsProperty(const
     if (propertyValue != "")
         confObject->SetProperty(AbstractBackupJobConfiguration::JoinReportsProperty, propertyValue);
 
-    vector<string> expectedErrors;
-    AbstractJob* job = TestConfiguration(confObject, expectedErrors);
+    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
     auto castJob = dynamic_cast<AbstractBackupJob*>(job);
 
     QVERIFY(castJob != nullptr);

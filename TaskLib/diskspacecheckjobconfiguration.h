@@ -1,11 +1,14 @@
 #ifndef DISKSPACECHECKJOBCONFIGURATION_H
 #define DISKSPACECHECKJOBCONFIGURATION_H
 
-#include "abstractjobconfiguration.h"
+#include "abstractjobdefaultconfiguration.h"
 
-class DiskSpaceCheckJobConfiguration : public AbstractJobConfiguration
+class DiskSpaceCheckJobConfiguration : public AbstractJobDefaultConfiguration
 {
 public:
+    static const std::string DriveProperty;
+    static const std::string TargetProperty;
+
     DiskSpaceCheckJobConfiguration();
 
 protected:

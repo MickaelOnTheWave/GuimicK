@@ -6,6 +6,8 @@
 class GitBackupJobConfiguration : public AbstractBackupJobConfiguration
 {
 public:
+    static const std::string WriteLogProperty;
+
     GitBackupJobConfiguration();
 
 protected:

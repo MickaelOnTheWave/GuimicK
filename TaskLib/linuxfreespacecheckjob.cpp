@@ -78,9 +78,19 @@ JobStatus *LinuxFreeSpaceCheckJob::Run()
     return status;
 }
 
-void LinuxFreeSpaceCheckJob::SetTargetToRemote(const bool value)
+bool LinuxFreeSpaceCheckJob::IsTargetLocal() const
+{
+    return isTargetLocal;
+}
+
+void LinuxFreeSpaceCheckJob::SetTargetToLocal(const bool value)
 {
     isTargetLocal = value;
+}
+
+string LinuxFreeSpaceCheckJob::GetDrive() const
+{
+    return drive;
 }
 
 void LinuxFreeSpaceCheckJob::SetDrive(const string &value)

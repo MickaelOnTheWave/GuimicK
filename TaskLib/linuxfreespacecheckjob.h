@@ -22,8 +22,10 @@ public:
 
     virtual JobStatus* Run();
 
-    void SetTargetToRemote(const bool value);
+    bool IsTargetLocal() const;
+    void SetTargetToLocal(const bool value);
 
+    std::string GetDrive() const;
     void SetDrive(const std::string& value);
 
 

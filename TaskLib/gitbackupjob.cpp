@@ -58,6 +58,11 @@ AbstractJob *GitBackupJob::Clone()
     return new GitBackupJob(*this);
 }
 
+bool GitBackupJob::GetWriteLogsToFile() const
+{
+    return writeLogsToFile;
+}
+
 void GitBackupJob::SetWriteLogsToFiles(bool enabled)
 {
     writeLogsToFile = enabled;

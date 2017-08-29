@@ -27,6 +27,8 @@ void GetTaskLibTests(std::vector<QObject*>& tests,
     tests.push_back(new ShutdownJobConfigurationTest());
     tests.push_back(new UserConsoleJobConfigurationTest());
     tests.push_back(new SshConsoleJobConfigurationTest());
+    tests.push_back(new GitBackupJobConfigurationTest());
+    tests.push_back(new DiskSpaceCheckJobConfigurationTest());
 }
 
 
