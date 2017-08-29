@@ -1,8 +1,14 @@
-29/08/2017 (16.8-18.5)
+29/08/2017 (2.4h)
 	Missing test suites done. Now going for missing configurations.. Created missing configurations
 	and their test suites (no attributes, so configuration is very straightforward, and same for
 	test suites). Created new feature tests for copy jobs.
-	Now going for global debug option...
+	Now going for global debug option... Created client option, handled in abstract job.
+	Revised existing jobs to use it. Created feature test for it with two backup jobs.
+	Now waiting for prodution run to confirm option.
+Next planned work:
+	- Check production run to confirm global debug option
+	- If possible, also confirm archive feature
+	- Check missing error cases. Look for example for configuration parsing errors and warnings.
 
 28/08/2017 (2.6h)
 	Production run is OK, however report is not exactly as expected. Fixing this.. Fixed issue,

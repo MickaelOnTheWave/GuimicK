@@ -28,17 +28,20 @@ AbstractBackupJob::~AbstractBackupJob()
 
 bool AbstractBackupJob::InitializeFromClient(Client *client)
 {
-    bool ok = Initialize();
-    if (!ok)
-        return false;
-
-    if (client && isTargetLocal == false)
+    if (AbstractJob::InitializeFromClient(client))
     {
-        sshUser = client->GetProperty("sshuser");
-        sshHost = client->GetProperty("ip");
-    }
+        if (Initialize() == false)
+            return false;
 
-    return IsInitialized();
+        if (client && isTargetLocal == false)
+        {
+            sshUser = client->GetProperty("sshuser");
+            sshHost = client->GetProperty("ip");
+        }
+        return IsInitialized();
+    }
+    else
+        return false;
 }
 
 bool AbstractBackupJob::IsInitialized()

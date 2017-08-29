@@ -25,8 +25,6 @@ public:
 
     virtual AbstractJob* Clone();
 
-    virtual bool InitializeFromClient(Client *);
-
     virtual bool IsInitialized(void);
 
 	virtual JobStatus* Run();

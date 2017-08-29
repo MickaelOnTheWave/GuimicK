@@ -1,5 +1,7 @@
 #include "abstractjob.h"
 
+using namespace std;
+
 AbstractJob::AbstractJob()
     : debugManager(new JobDebugInformationManager(false)),
       isDebugManagerParent(false)
@@ -47,6 +49,17 @@ void AbstractJob::SetParentDebugManager(JobDebugInformationManager* manager)
 std::string AbstractJob::GetAttachmentName()
 {
     return GetName() + ".txt";
+}
+
+bool AbstractJob::InitializeFromClient(Client *client)
+{
+    if (client)
+    {
+        string debugProperty = client->GetProperty("showDebugInformation");
+        debugManager->SetUse(DebugOutput::GetValue(debugProperty));
+    }
+
+    return true;
 }
 
 int AbstractJob::GetOutputDebugInformationValue() const

@@ -51,13 +51,18 @@ void SshConsoleJob::SetTarget(const string &_user, const string &_host)
 
 bool SshConsoleJob::InitializeFromClient(Client *client)
 {
-    if (user == "")
-        user = client->GetProperty("sshuser");
+    if (AbstractConsoleJob::InitializeFromClient(client))
+    {
+        if (user == "")
+            user = client->GetProperty("sshuser");
 
-    if (host == "")
-        host = client->GetProperty("ip");
+        if (host == "")
+            host = client->GetProperty("ip");
 
-    return IsInitialized();
+        return IsInitialized();
+    }
+    else
+        return false;
 }
 
 bool SshConsoleJob::IsInitialized()

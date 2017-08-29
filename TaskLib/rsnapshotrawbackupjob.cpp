@@ -38,11 +38,6 @@ AbstractJob *RsnapshotRawBackupJob::Clone()
     return new RsnapshotRawBackupJob(*this);
 }
 
-bool RsnapshotRawBackupJob::InitializeFromClient(Client *)
-{
-    return true;
-}
-
 bool RsnapshotRawBackupJob::IsInitialized()
 {
     bool isRepositoryOk = (repository != "");

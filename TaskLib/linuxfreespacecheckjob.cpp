@@ -31,16 +31,21 @@ AbstractJob *LinuxFreeSpaceCheckJob::Clone()
 
 bool LinuxFreeSpaceCheckJob::InitializeFromClient(Client *client)
 {
-    if (isTargetLocal == false)
+    if (AbstractJob::InitializeFromClient(client))
     {
-        if (sshUser == "")
-            sshUser = client->GetProperty("sshuser");
-        if (sshHost == "")
-            sshHost = client->GetProperty("ip");
-        return IsRemoteTargetConsistent();
+        if (isTargetLocal == false)
+        {
+            if (sshUser == "")
+                sshUser = client->GetProperty("sshuser");
+            if (sshHost == "")
+                sshHost = client->GetProperty("ip");
+            return IsRemoteTargetConsistent();
+        }
+        else
+            return true;
     }
     else
-        return true;
+        return false;
 }
 
 bool LinuxFreeSpaceCheckJob::IsInitialized()

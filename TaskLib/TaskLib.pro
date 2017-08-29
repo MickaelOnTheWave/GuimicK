@@ -66,7 +66,8 @@ SOURCES += \
     rsnapshotrawbackupjob.cpp \
     rsnapshotconfigurationbuilder.cpp \
     abstractfsbackupjobconfiguration.cpp \
-    copyfsbackupjobconfigurations.cpp
+    copyfsbackupjobconfigurations.cpp \
+    DebugOutput.cpp
 
 HEADERS +=\
     abstractjob.h \

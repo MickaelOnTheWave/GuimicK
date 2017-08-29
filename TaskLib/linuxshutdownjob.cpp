@@ -36,9 +36,15 @@ AbstractJob *LinuxShutdownJob::Clone()
 
 bool LinuxShutdownJob::InitializeFromClient(Client *client)
 {
-    computer = client->GetProperty("ip");
-    bool jobInitialized = shutdownJob->InitializeFromClient(client);
-    return (jobInitialized && computer != "");
+    bool ok = AbstractJob::InitializeFromClient(client);
+    if (ok)
+    {
+        computer = client->GetProperty("ip");
+        bool jobInitialized = shutdownJob->InitializeFromClient(client);
+        return (jobInitialized && computer != "");
+    }
+    else
+        return false;
 }
 
 bool LinuxShutdownJob::IsInitialized()

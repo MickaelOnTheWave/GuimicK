@@ -42,11 +42,6 @@ AbstractJob *ConsoleJob::Clone()
     return new ConsoleJob(*this);
 }
 
-bool ConsoleJob::InitializeFromClient(Client *)
-{
-    return true;
-}
-
 bool ConsoleJob::IsInitialized()
 {
     return (command != "");

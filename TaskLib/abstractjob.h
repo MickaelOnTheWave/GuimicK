@@ -26,7 +26,7 @@ public:
 		@note failure is considered fatal, the job should not be ran if
 		it wasn't sucessfully initialized.
 	  */
-    virtual bool InitializeFromClient(Client* client) = 0;
+    virtual bool InitializeFromClient(Client* client);
 
     virtual bool IsInitialized(void) = 0;
 
