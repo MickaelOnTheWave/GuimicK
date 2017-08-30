@@ -1,8 +1,9 @@
-30/08/2017 (17.1)
+30/08/2017 (0.6h)
 	Production run worked, however there were some issues. One unnamed attachment and two missing
 	ones. Investigating...
 	Some jobs were still duplicating debugManager : wake, console jobs and shutdown. They were
-	fixed. Next production run should be OK.
+	fixed. Next production run should be OK. Updated production configuration to test other
+	debug options. Created script to automate production configuration backup.
 Next planned work:
 	- Same as previous
 
