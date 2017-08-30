@@ -81,13 +81,13 @@ JobStatus *WakeJob::Run()
             debugManager->AddDataLine<int>("maxRetries", maxRetries);
             debugManager->AddDataLine<int>("seconds counter", secondsToWake);
             debugManager->AddDataLine<int>("timeout", DEFAULT_TIMEOUT);
-            return debugManager->CreateStatus(JobStatus::OK, "");
+            return debugManager->UpdateStatus(new JobStatus(JobStatus::OK));
         }
     }
 
     debugManager->AddDataLine<int>("maxRetries", maxRetries);
     debugManager->AddDataLine<int>("timeout", DEFAULT_TIMEOUT);
-    return debugManager->CreateStatus(JobStatus::ERROR, "Machine still not awake");
+    return debugManager->UpdateStatus(new JobStatus(JobStatus::ERROR, "Machine still not awake"));
 }
 
 bool WakeJob::HasMandatoryParameters() const

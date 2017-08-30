@@ -53,6 +53,7 @@ std::string AbstractJob::GetAttachmentName()
 
 bool AbstractJob::InitializeFromClient(Client *client)
 {
+    debugManager->SetJobName(GetName());
     if (client)
     {
         string debugProperty = client->GetProperty("showDebugInformation");

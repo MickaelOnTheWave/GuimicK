@@ -110,7 +110,6 @@ void AbstractBackupJob::SetJoinReports(const bool value)
 
 bool AbstractBackupJob::Initialize()
 {
-    debugManager->SetJobName(GetName());
     statusManager->SetDebugManager(debugManager);
     statusManager->SetAttachmentName(GetAttachmentName());
     return true;

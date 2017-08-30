@@ -1,3 +1,11 @@
+30/08/2017 (17.1)
+	Production run worked, however there were some issues. One unnamed attachment and two missing
+	ones. Investigating...
+	Some jobs were still duplicating debugManager : wake, console jobs and shutdown. They were
+	fixed. Next production run should be OK.
+Next planned work:
+	- Same as previous
+
 29/08/2017 (2.4h)
 	Missing test suites done. Now going for missing configurations.. Created missing configurations
 	and their test suites (no attributes, so configuration is very straightforward, and same for

@@ -28,7 +28,6 @@ public:
     void SetMiniDescriptionParserCommand(const std::string& parser);
 
     void SetAttachOutput(const bool value);
-    virtual void SetOutputDebugInformation(const bool value);
 
     std::string GetOutputFile() const;
     void SetOutputTofile(const std::string& filename);
@@ -69,8 +68,6 @@ private:
     bool useParserWithBuffer;
     std::string outputFileName;
     std::string expectedOutput;
-
-    JobDebugInformationManager debugInfo;
 };
 
 #endif // USERCONSOLEJOB_H

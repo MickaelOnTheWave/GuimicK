@@ -6,7 +6,7 @@
 using namespace std;
 
 JobDebugInformationManager::JobDebugInformationManager(const int _debugUse, const std::string& jobName)
-    : debugFilename(""), debugUse(_debugUse), allData("")
+    : debugFilename("defaultDebugFile.txt"), debugUse(_debugUse), allData("")
 {
     if (jobName != "")
         SetJobName(jobName);

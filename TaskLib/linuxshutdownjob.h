@@ -18,8 +18,6 @@ public:
 
     virtual bool IsInitialized(void);
 
-    void SetOutputDebugInformation(const bool value);
-
     virtual JobStatus* Run();
 
 private:
@@ -31,7 +29,6 @@ private:
     SshConsoleJob* shutdownJob;
     std::string computer;
     int jobTimeoutInSeconds;
-    bool outputDebugInformation;
 };
 
 #endif // LINUXSHUTDOWNJOB_H

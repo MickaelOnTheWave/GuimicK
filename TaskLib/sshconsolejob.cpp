@@ -81,10 +81,15 @@ JobStatus *SshConsoleJob::Run()
     string newCommandName = string("ssh ") + user + "@" + host + " \"" + oldCommandName + "\"";
     remoteJob->SetCommand(newCommandName);
 
+    debugManager->AddDataLine<string>("Full command", newCommandName);
+
     JobStatus* status = remoteJob->Run();
 
+    debugManager->AddDataLine<string>("Output", remoteJob->GetCommandOutput());
+    debugManager->AddDataLine<int>("Return code", remoteJob->GetCommandReturnCode());
+
     remoteJob->SetCommand(oldCommandName);
-    return status;
+    return debugManager->UpdateStatus(status);
 }
 
 int SshConsoleJob::GetExpectedReturnCode() const

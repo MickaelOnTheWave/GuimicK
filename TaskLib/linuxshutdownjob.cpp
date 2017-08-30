@@ -10,8 +10,8 @@ using namespace std;
 static const int DEFAULT_TIMEOUT = 120;
 
 LinuxShutdownJob::LinuxShutdownJob()
-    : computer(""), jobTimeoutInSeconds(DEFAULT_TIMEOUT),
-      outputDebugInformation(false)
+    : AbstractJob(),
+      computer(""), jobTimeoutInSeconds(DEFAULT_TIMEOUT)
 {
     shutdownJob = new SshConsoleJob("", "shutdown -h now");
 }
@@ -52,37 +52,26 @@ bool LinuxShutdownJob::IsInitialized()
     return shutdownJob->IsInitialized() && computer != "";
 }
 
-void LinuxShutdownJob::SetOutputDebugInformation(const bool value)
-{
-    outputDebugInformation = value;
-
-    // TODO : reactivate this when [044] is implemented
-    //shutdownJob->SetOutputDebugInformation(outputDebugInformation);
-}
-
 JobStatus *LinuxShutdownJob::Run()
 {
-    JobDebugInformationManager debugInfo(outputDebugInformation, GetName());
     JobStatus* status = shutdownJob->Run();
 
-    // TODO : reactivate this when [044] is implemented
-    //debugInfo.AddIntDataLine("Return code", shutdownJob->GetCommandReturnCode());
-    //debugInfo.AddStringDataLine("Output", shutdownJob->GetCommandOutput());
-
-
-    if (status->GetCode() == JobStatus::ERROR)
-        return debugInfo.UpdateStatus(status);
-
-    int secondsToShutdown = WaitForComputerToGoDown();
-    if (secondsToShutdown > jobTimeoutInSeconds)
+    debugManager->AddDataLine<int>("Return code", shutdownJob->GetCommandReturnCode());
+    debugManager->AddDataLine<string>("Output", shutdownJob->GetCommandOutput());
+    if (status->GetCode() != JobStatus::ERROR)
     {
-        status->SetCode(JobStatus::ERROR);
-        status->SetDescription("Machine still running");
+        int secondsToShutdown = WaitForComputerToGoDown();
+        if (secondsToShutdown > jobTimeoutInSeconds)
+        {
+            status->SetCode(JobStatus::ERROR);
+            status->SetDescription("Machine still running");
+        }
+
+        debugManager->AddDataLine<int>("Seconds counter", secondsToShutdown);
+        debugManager->AddDataLine<int>("Timeout", jobTimeoutInSeconds);
     }
 
-    debugInfo.AddDataLine<int>("Seconds counter", secondsToShutdown);
-    debugInfo.AddDataLine<int>("Timeout", jobTimeoutInSeconds);
-    return debugInfo.UpdateStatus(status);
+    return debugManager->UpdateStatus(status);
 }
 
 int LinuxShutdownJob::WaitForComputerToGoDown() const

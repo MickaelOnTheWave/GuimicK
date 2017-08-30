@@ -7,21 +7,20 @@
 using namespace std;
 
 UserConsoleJob::UserConsoleJob()
-    : ConsoleJob(), debugInfo(DebugOutput::NEVER, "UserConsoleJob")
+    : ConsoleJob()
 {
 }
 
 UserConsoleJob::UserConsoleJob(const std::string &_commandTitle,
                                const std::string &_command, const std::string& _params,
                                int _expectedReturnCode)
-    : ConsoleJob(_command, _params, _expectedReturnCode), commandTitle(_commandTitle),
-      debugInfo(false, _commandTitle)
+    : ConsoleJob(_command, _params, _expectedReturnCode), commandTitle(_commandTitle)
 {
     Initialize(_command, _expectedReturnCode);
 }
 
 UserConsoleJob::UserConsoleJob(const UserConsoleJob &other)
-    : ConsoleJob(other), debugInfo(other.debugInfo)
+    : ConsoleJob(other)
 {
     commandTitle = other.commandTitle;
     attachOutputToStatus = other.attachOutputToStatus;
@@ -89,11 +88,6 @@ void UserConsoleJob::SetAttachOutput(const bool value)
     attachOutputToStatus = value;
 }
 
-void UserConsoleJob::SetOutputDebugInformation(const bool value)
-{
-    debugInfo.SetUse(value);
-}
-
 string UserConsoleJob::GetOutputFile() const
 {
     return outputFileName;
@@ -145,9 +139,9 @@ void UserConsoleJob::SetExpectedOutput(const string &value)
 // @TODO resolve bug where apparently output is not correctly processed with it has some special chars (like in :-) )
 bool UserConsoleJob::RunCommand()
 {
-    debugInfo.Reset();
+    debugManager->Reset();
 
-    debugInfo.AddDataLine<string>("Command", command);
+    debugManager->AddDataLine<string>("Command", command);
 
     delete currentStatus;
     currentStatus = new JobStatus();
@@ -156,7 +150,7 @@ bool UserConsoleJob::RunCommand()
     else
         RunCommandOnBuffer();
 
-    debugInfo.AddDataLine<int>("Received return code", receivedReturnCode);
+    debugManager->AddDataLine<int>("Received return code", receivedReturnCode);
 
     return IsRunOk();
 }
@@ -207,7 +201,7 @@ bool UserConsoleJob::IsRunOk()
 
 void UserConsoleJob::FillStatusFromParsing()
 {
-    debugInfo.AddDataLine<string>("Parser command", parserCommand);
+    debugManager->AddDataLine<string>("Parser command", parserCommand);
 
     string miniDescription("");
     int returnValue = Tools::RunExternalCommandToBuffer(CreateParserCommand(), miniDescription, true);
@@ -241,12 +235,12 @@ void UserConsoleJob::FillErrorStatusFromReturnCode()
 
     currentStatus->SetDescription(message.str());
 
-    debugInfo.AddDataLine<string>("Output", commandOutput);
+    debugManager->AddDataLine<string>("Output", commandOutput);
 }
 
 void UserConsoleJob::FinalizeStatusCreation()
 {
-    currentStatus = debugInfo.UpdateStatus(currentStatus);
+    currentStatus = debugManager->UpdateStatus(currentStatus);
 }
 
 string UserConsoleJob::CreateParserCommand() const
