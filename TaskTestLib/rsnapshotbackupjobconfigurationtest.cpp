@@ -13,69 +13,14 @@ AbstractJobConfiguration *RsnapshotBackupJobConfigurationTest::CreateNewConfigur
     return new RsnapshotBackupJobConfiguration();
 }
 
-void RsnapshotBackupJobConfigurationTest::testConfigure_RepositoryProperty_data()
-{
-    QTest::addColumn<QString>("propertyValue");
-    QTest::addColumn<QString>("expectedValue");
-    QTest::newRow("Some value") << "some/value" << "some/value";
-}
-
 void RsnapshotBackupJobConfigurationTest::testConfigure_RepositoryProperty()
 {
-    QFETCH(QString, propertyValue);
-    QFETCH(QString, expectedValue);
-    testConfigure_RepositoryProperty(propertyValue.toStdString(), expectedValue.toStdString());
-}
-
-void RsnapshotBackupJobConfigurationTest::testConfigure_FullConfigurationProperty_data()
-{
-    QTest::addColumn<QString>("propertyValue");
-    QTest::addColumn<QString>("expectedValue");
-    QTest::newRow("Some value") << "some/value" << "some/value";
+    TestRepositoryProperty("some/value");
 }
 
 void RsnapshotBackupJobConfigurationTest::testConfigure_FullConfigurationProperty()
 {
-    QFETCH(QString, propertyValue);
-    QFETCH(QString, expectedValue);
-    testConfigure_FullConfigurationProperty(propertyValue.toStdString(), expectedValue.toStdString());
-}
-
-void RsnapshotBackupJobConfigurationTest::testConfigure_RepositoryProperty(
-        const string& propertyValue, const string& expectedValue)
-{
-    ConfigurationObject* confObject = new ConfigurationObject();
-    confObject->SetProperty(RsnapshotBackupJobConfiguration::FullConfigurationProperty, "blabla");
-    if (propertyValue != "")
-        confObject->SetProperty(RsnapshotBackupJobConfiguration::RepositoryProperty, propertyValue);
-
-    vector<string> expectedErrors;
-    AbstractJob* job = TestConfiguration(confObject, expectedErrors);
-    auto castJob = dynamic_cast<RsnapshotRawBackupJob*>(job);
-
-    QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetRepository(), expectedValue);
-
-    delete job;
-    delete confObject;
-}
-
-void RsnapshotBackupJobConfigurationTest::testConfigure_FullConfigurationProperty(
-        const string &propertyValue,
-        const string &expectedValue)
-{
-    ConfigurationObject* confObject = CreateSimpleConfigurationObject(
-                RsnapshotBackupJobConfiguration::FullConfigurationProperty, propertyValue);
-
-    vector<string> expectedErrors;
-    AbstractJob* job = TestConfiguration(confObject, expectedErrors);
-    auto castJob = dynamic_cast<RsnapshotRawBackupJob*>(job);
-
-    QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetConfigurationFile(), expectedValue);
-
-    delete job;
-    delete confObject;
+    TestFullConfigurationProperty("some/value");
 }
 
 void RsnapshotBackupJobConfigurationTest::testConfigure_WaitProperty_data()
@@ -93,31 +38,74 @@ void RsnapshotBackupJobConfigurationTest::testConfigure_WaitProperty()
 {
     QFETCH(QString, propertyValue);
     QFETCH(bool, expectedValue);
-    testConfigure_WaitProperty(propertyValue.toStdString(), expectedValue);
-}
-
-void RsnapshotBackupJobConfigurationTest::testConfigure_TemplateConfigurationProperty_data()
-{
-    QTest::addColumn<QString>("propertyValue");
-    QTest::addColumn<QString>("expectedValue");
-    QTest::newRow("Some value") << "some/value" << "some/value";
+    TestWaitProperty(propertyValue.toStdString(), expectedValue);
 }
 
 void RsnapshotBackupJobConfigurationTest::testConfigure_TemplateConfigurationProperty()
 {
-    QFETCH(QString, propertyValue);
-    QFETCH(QString, expectedValue);
-    testConfigure_TemplateConfigurationProperty(propertyValue.toStdString(), expectedValue.toStdString());
+    TestTemplateConfigurationProperty("some/value");
 }
 
-void RsnapshotBackupJobConfigurationTest::testConfigure_WaitProperty(
-        const std::string &propertyValue, const bool expected)
+void RsnapshotBackupJobConfigurationTest::testConfigure_MaxBackupCountProperty_data()
+{
+    QTest::addColumn<QString>("propertyValue");
+    QTest::addColumn<int>("expectedValue");
+
+    QTest::newRow("3") << "3" << 3;
+    QTest::newRow("22") << "22" << 22;
+    QTest::newRow("Zero is 100 (default)") << "0" << 100;
+    QTest::newRow("Negative is 1") << "-3" << 1;
+    QTest::newRow("Default is 100") << "" << 100;
+    QTest::newRow("Unknown is 100") << "blabla" << 100;
+}
+
+void RsnapshotBackupJobConfigurationTest::testConfigure_MaxBackupCountProperty()
+{
+    QFETCH(QString, propertyValue);
+    QFETCH(int, expectedValue);
+    TestMaxBackupCountProperty(propertyValue.toStdString(), expectedValue);
+}
+
+
+void RsnapshotBackupJobConfigurationTest::TestRepositoryProperty(const string& propertyValue)
+{
+    ConfigurationObject* confObject = new ConfigurationObject();
+    confObject->SetProperty(RsnapshotBackupJobConfiguration::FullConfigurationProperty, "blabla");
+    if (propertyValue != "")
+        confObject->SetProperty(RsnapshotBackupJobConfiguration::RepositoryProperty, propertyValue);
+
+    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
+    auto castJob = dynamic_cast<RsnapshotRawBackupJob*>(job);
+
+    QVERIFY(castJob != nullptr);
+    QCOMPARE(castJob->GetRepository(), propertyValue);
+
+    delete job;
+    delete confObject;
+}
+
+void RsnapshotBackupJobConfigurationTest::TestFullConfigurationProperty(const string &propertyValue)
+{
+    ConfigurationObject* confObject = CreateSimpleConfigurationObject(
+                RsnapshotBackupJobConfiguration::FullConfigurationProperty, propertyValue);
+
+    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
+    auto castJob = dynamic_cast<RsnapshotRawBackupJob*>(job);
+
+    QVERIFY(castJob != nullptr);
+    QCOMPARE(castJob->GetConfigurationFile(), propertyValue);
+
+    delete job;
+    delete confObject;
+}
+
+void RsnapshotBackupJobConfigurationTest::TestWaitProperty(const std::string &propertyValue,
+                                                           const bool expected)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 RsnapshotBackupJobConfiguration::WaitProperty, propertyValue);
 
-    vector<string> expectedErrors;
-    AbstractJob* job = TestConfiguration(confObject, expectedErrors);
+    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
     auto castJob = dynamic_cast<RsnapshotSmartBackupJob*>(job);
 
     QVERIFY(castJob != nullptr);
@@ -127,19 +115,32 @@ void RsnapshotBackupJobConfigurationTest::testConfigure_WaitProperty(
     delete confObject;
 }
 
-void RsnapshotBackupJobConfigurationTest::testConfigure_TemplateConfigurationProperty(
-        const string &propertyValue,
-        const string &expectedValue)
+void RsnapshotBackupJobConfigurationTest::TestTemplateConfigurationProperty(const string &propertyValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 RsnapshotBackupJobConfiguration::TemplateConfigurationProperty, propertyValue);
 
-    vector<string> expectedErrors;
-    AbstractJob* job = TestConfiguration(confObject, expectedErrors);
+    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
     auto castJob = dynamic_cast<RsnapshotSmartBackupJob*>(job);
 
     QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetTemplateConfigurationFile(), expectedValue);
+    QCOMPARE(castJob->GetTemplateConfigurationFile(), propertyValue);
+
+    delete job;
+    delete confObject;
+}
+
+void RsnapshotBackupJobConfigurationTest::TestMaxBackupCountProperty(const string &propertyValue,
+                                                                     const int expected)
+{
+    ConfigurationObject* confObject = CreateSimpleConfigurationObject(
+                RsnapshotBackupJobConfiguration::MaxBackupCountProperty, propertyValue);
+
+    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
+    auto castJob = dynamic_cast<RsnapshotSmartBackupJob*>(job);
+
+    QVERIFY(castJob != nullptr);
+    QCOMPARE(castJob->GetMaxBackupCount(), expected);
 
     delete job;
     delete confObject;

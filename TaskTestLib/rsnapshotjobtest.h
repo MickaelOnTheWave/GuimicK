@@ -25,6 +25,9 @@ private Q_SLOTS:
     void testSmartCreator_TempFileIsCleaned();
     void testSmartCreator_TempFileDoesNotOverwrite();
 
+    // TODO : test maxBackups property. Check backup recycling and
+    // that the property is respected.
+
 protected:
     virtual void ProcessingBetweenBackups();
     virtual void CheckBackedUpDataIsOk();

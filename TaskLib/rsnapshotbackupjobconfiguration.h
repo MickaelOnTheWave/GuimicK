@@ -12,6 +12,7 @@ public:
     static const std::string WaitProperty;
     static const std::string TemplateConfigurationProperty;
     static const std::string RepositoryProperty;
+    static const std::string MaxBackupCountProperty;
 
     RsnapshotBackupJobConfiguration();
 
@@ -36,6 +37,7 @@ private:
 
     std::string GetRepositoryValue(ConfigurationObject *confObject) const;
     bool GetWaitBeforeRunValue(ConfigurationObject *confObject) const;
+    void SetMaxBackupCount(RsnapshotSmartBackupJob* job, ConfigurationObject* confObject) const;
 
     std::string fullConfigurationFile;
 };

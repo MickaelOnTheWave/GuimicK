@@ -12,11 +12,15 @@ public:
     void SetTemplateConfigurationFile(const std::string& file);
     void SetGeneratedConfigurationFile(const std::string& file);
 
-    std::string CreateConfigurationFile(const AbstractBackupJob::BackupCollection& dataToBackup);
+    std::string CreateConfigurationFile(const AbstractBackupJob::BackupCollection& dataToBackup,
+                                        const int maxBackups);
 
 private:
-    void BuildConfigurationFile(const AbstractBackupJob::BackupCollection &dataToBackup);
+    void BuildConfigurationFile(const AbstractBackupJob::BackupCollection &dataToBackup,
+                                const int maxBackups);
     std::string GetTemplateConfiguration(void) const;
+
+    void AppendMaxBackups(std::string& configurationData, const int maxBackups);
     void AppendBackupData(std::string& configurationData,
                           const AbstractBackupJob::BackupCollection &dataToBackup) const;
     void CheckAndFixConfigurationFile(void);

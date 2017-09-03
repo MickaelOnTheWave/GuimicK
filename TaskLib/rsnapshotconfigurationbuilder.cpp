@@ -15,9 +15,6 @@ static const string defaultTemplateConfiguration =
         "cmd_rm		/opt/bin/rm\n"
         "cmd_rsync	/opt/bin/rsync\n"
         "cmd_ssh	/opt/bin/ssh\n"
-        "interval	weekly	500\n"
-        "interval	monthly	12\n"
-        "interval	yearly	2\n"
         "verbose		3\n"
         "loglevel	4\n"
         "logfile	/var/log/rsnapshot\n"
@@ -46,16 +43,19 @@ void RsnapshotConfigurationBuilder::SetGeneratedConfigurationFile(const string &
 }
 
 string RsnapshotConfigurationBuilder::CreateConfigurationFile(
-        const AbstractBackupJob::BackupCollection &dataToBackup)
+        const AbstractBackupJob::BackupCollection &dataToBackup,
+        const int maxBackups)
 {
-    BuildConfigurationFile(dataToBackup);
+    BuildConfigurationFile(dataToBackup, maxBackups);
     return configurationFile;
 }
 
 void RsnapshotConfigurationBuilder::BuildConfigurationFile(
-        const AbstractBackupJob::BackupCollection &dataToBackup)
+        const AbstractBackupJob::BackupCollection &dataToBackup,
+        const int maxBackups)
 {
     string configurationContent = GetTemplateConfiguration();
+    AppendMaxBackups(configurationContent, maxBackups);
     AppendBackupData(configurationContent, dataToBackup);
     CheckAndFixConfigurationFile();
     FileTools::WriteBufferToFile(configurationFile, configurationContent);
@@ -67,6 +67,13 @@ string RsnapshotConfigurationBuilder::GetTemplateConfiguration() const
         return FileTools::GetTextFileContent(templateFile);
     else
         return defaultTemplateConfiguration;
+}
+
+void RsnapshotConfigurationBuilder::AppendMaxBackups(string &configurationData, const int maxBackups)
+{
+    stringstream stream;
+    stream << "interval	weekly	" << maxBackups << endl;
+    configurationData +=  stream.str();
 }
 
 void RsnapshotConfigurationBuilder::AppendBackupData(

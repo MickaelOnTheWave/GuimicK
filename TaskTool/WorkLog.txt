@@ -1,4 +1,15 @@
-03/09/2017 (3.3h)
+03/09/2017 (19.9)
+	In order to include rsnapshot backups, it would be wise to update it to support
+	interval configuring (with relevant tests). This is a feature of its own, but as
+	it is important to have a full production backup running, going on it now! (at least
+	feature with existing tests, leaving further testing for later).
+	Also, there is a possibility to refactor further main tool to handle commandline and
+	configuration in a single module. Thus, tests would be closer to reality! This too is
+	a feature of its own, and only test related. Leaving it for now.
+	Created maxBackupCount property. Changed configuration generation to use it. Also updated
+	configuration and configuration tests.
+
+03/09/2017 (3.5h)
 	Production ran this time as expected. Updating Release plan :-)
 	Checking error cases that need management :
 		- Integrate warnings/errors from configuration to report

@@ -10,7 +10,7 @@ using namespace std;
 RsnapshotSmartBackupJob::RsnapshotSmartBackupJob()
     : AbstractBackupJob(),
       templateConfigurationFile(""), temporaryFile(""),
-      waitBeforeRun(false)
+      waitBeforeRun(false), maxBackupCount(100)
 {
 }
 
@@ -19,7 +19,8 @@ RsnapshotSmartBackupJob::RsnapshotSmartBackupJob(const RsnapshotSmartBackupJob &
       templateConfigurationFile(other.templateConfigurationFile),
       temporaryFile(other.temporaryFile),
       dataToBackup(other.dataToBackup),
-      waitBeforeRun(other.waitBeforeRun)
+      waitBeforeRun(other.waitBeforeRun),
+      maxBackupCount(other.maxBackupCount)
 {
 }
 
@@ -75,6 +76,16 @@ void RsnapshotSmartBackupJob::SetWaitBeforeRun(const bool value)
     waitBeforeRun = value;
 }
 
+int RsnapshotSmartBackupJob::GetMaxBackupCount() const
+{
+    return maxBackupCount;
+}
+
+void RsnapshotSmartBackupJob::SetMaxBackupCount(const int value)
+{
+    maxBackupCount = value;
+}
+
 void RsnapshotSmartBackupJob::RunRepositoryBackup(const string& source,
                                                   const string& destination,
                                                   AbstractBackupJob::ResultCollection &)
@@ -88,7 +99,7 @@ JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
     builder.SetRepository(repository);
     if (temporaryFile != "")
         builder.SetGeneratedConfigurationFile(temporaryFile);
-    string configuration = builder.CreateConfigurationFile(dataToBackup);
+    string configuration = builder.CreateConfigurationFile(dataToBackup, maxBackupCount);
     RsnapshotRawBackupJob* rawBackupJob = new RsnapshotRawBackupJob(repository, configuration);
     rawBackupJob->SetParentDebugManager(debugManager);
     rawBackupJob->SetWaitBeforeRun(waitBeforeRun);

@@ -29,6 +29,9 @@ public:
     bool GetWaitBeforeRun() const;
     void SetWaitBeforeRun(const bool value);
 
+    int GetMaxBackupCount() const;
+    void SetMaxBackupCount(const int value);
+
 protected:
     virtual void RunRepositoryBackup(const std::string& source,
                                      const std::string& destination,
@@ -43,6 +46,7 @@ private:
     std::string temporaryFile;
     BackupCollection dataToBackup;
     bool waitBeforeRun;
+    int maxBackupCount;
 };
 
 #endif // RSNAPSHOTSMARTBACKUPJOB_H

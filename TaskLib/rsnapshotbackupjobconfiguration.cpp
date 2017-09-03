@@ -1,5 +1,6 @@
 #include "rsnapshotbackupjobconfiguration.h"
 
+#include <stdlib.h>
 #include "rsnapshotrawbackupjob.h"
 #include "rsnapshotsmartbackupjob.h"
 
@@ -9,6 +10,7 @@ const string RsnapshotBackupJobConfiguration::FullConfigurationProperty = "fullC
 const string RsnapshotBackupJobConfiguration::WaitProperty = "waitAfterRun";
 const string RsnapshotBackupJobConfiguration::TemplateConfigurationProperty = "templateConfigurationFile";
 const string RsnapshotBackupJobConfiguration::RepositoryProperty = "repository";
+const string RsnapshotBackupJobConfiguration::MaxBackupCountProperty = "maxBackupCount";
 
 RsnapshotBackupJobConfiguration::RsnapshotBackupJobConfiguration()
     : AbstractBackupJobConfiguration("RsnapshotBackup"),
@@ -44,6 +46,7 @@ void RsnapshotBackupJobConfiguration::FillKnownProperties(std::vector<std::strin
     properties.push_back(FullConfigurationProperty);
     properties.push_back(WaitProperty);
     properties.push_back(TemplateConfigurationProperty);
+    properties.push_back(MaxBackupCountProperty);
 }
 
 string RsnapshotBackupJobConfiguration::GetBackupItemName() const
@@ -62,6 +65,7 @@ void RsnapshotBackupJobConfiguration::ConfigureSmartJob(RsnapshotSmartBackupJob 
 
     job->SetRepository(GetRepositoryValue(confObject));
     job->SetWaitBeforeRun(GetWaitBeforeRunValue(confObject));
+    SetMaxBackupCount(job, confObject);
 }
 
 void RsnapshotBackupJobConfiguration::ConfigureRawJob(RsnapshotRawBackupJob *job,
@@ -83,4 +87,20 @@ string RsnapshotBackupJobConfiguration::GetRepositoryValue(ConfigurationObject *
 bool RsnapshotBackupJobConfiguration::GetWaitBeforeRunValue(ConfigurationObject *confObject) const
 {
     return (confObject->GetProperty(WaitProperty) == "true");
+}
+
+void RsnapshotBackupJobConfiguration::SetMaxBackupCount(RsnapshotSmartBackupJob *job,
+                                                        ConfigurationObject *confObject) const
+{
+    const string maxBackupCountProperty = confObject->GetProperty(MaxBackupCountProperty);
+    if (maxBackupCountProperty != "")
+    {
+        int intMaxBackupCount = atoi(maxBackupCountProperty.c_str());
+        if (intMaxBackupCount != 0)
+        {
+            if (intMaxBackupCount < 1)
+                intMaxBackupCount = 1;
+            job->SetMaxBackupCount(intMaxBackupCount);
+        }
+    }
 }

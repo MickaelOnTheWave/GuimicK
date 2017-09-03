@@ -13,29 +13,26 @@ public:
 
 private Q_SLOTS:
 
-    void testConfigure_RepositoryProperty_data();
     void testConfigure_RepositoryProperty();
-
-    void testConfigure_FullConfigurationProperty_data();
     void testConfigure_FullConfigurationProperty();
 
     void testConfigure_WaitProperty_data();
     void testConfigure_WaitProperty();
 
-    void testConfigure_TemplateConfigurationProperty_data();
     void testConfigure_TemplateConfigurationProperty();
+
+    void testConfigure_MaxBackupCountProperty_data();
+    void testConfigure_MaxBackupCountProperty();
 
 protected:
     virtual AbstractJobConfiguration* CreateNewConfiguration() const;
 
 private:
-    void testConfigure_RepositoryProperty(const std::string &propertyValue,
-                                          const std::string &expectedValue);
-    void testConfigure_FullConfigurationProperty(const std::string &propertyValue,
-                                                 const std::string &expectedValue);
-    void testConfigure_WaitProperty(const std::string& propertyValue, const bool expected);
-    void testConfigure_TemplateConfigurationProperty(const std::string &propertyValue,
-                                                     const std::string &expectedValue);
+    void TestRepositoryProperty(const std::string &propertyValue);
+    void TestFullConfigurationProperty(const std::string &propertyValue);
+    void TestWaitProperty(const std::string& propertyValue, const bool expected);
+    void TestTemplateConfigurationProperty(const std::string &propertyValue);
+    void TestMaxBackupCountProperty(const std::string& propertyValue, const int expected);
 
 };
 
