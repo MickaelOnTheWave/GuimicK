@@ -1,4 +1,4 @@
-03/09/2017 (19.9)
+03/09/2017 (19.9-20.9)
 	In order to include rsnapshot backups, it would be wise to update it to support
 	interval configuring (with relevant tests). This is a feature of its own, but as
 	it is important to have a full production backup running, going on it now! (at least
@@ -7,7 +7,7 @@
 	configuration in a single module. Thus, tests would be closer to reality! This too is
 	a feature of its own, and only test related. Leaving it for now.
 	Created maxBackupCount property. Changed configuration generation to use it. Also updated
-	configuration and configuration tests.
+	configuration and configuration tests. Updated production configuration to backup videos.
 
 03/09/2017 (3.5h)
 	Production ran this time as expected. Updating Release plan :-)

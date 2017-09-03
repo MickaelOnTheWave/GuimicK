@@ -16,7 +16,7 @@
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.713";
+static const string PROGRAM_VERSION = "0.714";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
 static const string noEmailCommand = "noemail";

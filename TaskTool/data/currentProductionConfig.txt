@@ -62,6 +62,16 @@ Client
 				dest = "/volume1/backups/repositories/homescripts";
 			}
 		}
+		RsnapshotBackup
+		{
+			repository = "/volume1/backups/other";
+			maxBackupCount = 4;
+			Folder
+			{
+				source = "mickael@desktop:~/Videos/";
+				dest = "videos/";
+			}
+		}
 		SshConsole
 		{
 			title = "Package list update";
