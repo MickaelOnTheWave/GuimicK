@@ -56,7 +56,7 @@ bool ClientWorkManager::RemoveAllButJobs(const string &jobName)
 		if ((*it)->GetName() != jobName)
 		{
 			it = jobList.erase(it);
-			removedJobs++;
+            ++removedJobs;
 		}
         else
             ++it;

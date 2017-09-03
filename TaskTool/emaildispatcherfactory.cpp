@@ -6,7 +6,7 @@
     #include "curlconsoleemailsender.h"
 #endif
 
-EmailReportDispatcher *EmailDispatcherFactory::Create()
+AbstractEmailReportDispatcher *EmailDispatcherFactory::Create()
 {
 #ifdef USE_CURL_LIB
     return new CurlLibReportDispatcher();

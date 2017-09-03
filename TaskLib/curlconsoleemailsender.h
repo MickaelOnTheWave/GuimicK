@@ -1,11 +1,11 @@
 #ifndef CURLCONSOLEEMAILSENDER_H
 #define CURLCONSOLEEMAILSENDER_H
 
-#include "emailreportdispatcher.h"
+#include "abstractemailreportdispatcher.h"
 #include <string>
 #include <vector>
 
-class CurlConsoleReportDispatcher : public EmailReportDispatcher
+class CurlConsoleReportDispatcher : public AbstractEmailReportDispatcher
 {
 public:
     CurlConsoleReportDispatcher();

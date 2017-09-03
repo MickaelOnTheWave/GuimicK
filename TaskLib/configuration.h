@@ -5,6 +5,7 @@
 #include <string>
 
 #include "abstractjobconfiguration.h"
+#include "AbstractReportDispatcher.h"
 #include "client.h"
 #include "clientworkmanager.h"
 #include "SelfIdentity.h"
@@ -26,7 +27,9 @@ public:
 
     AbstractReportCreator* GetReportCreator(void) const;
 
-    SelfIdentity* GetAgent();
+    AbstractReportDispatcher* CreateReportDispatcher(const bool commandLinePreventsEmail) const;
+
+    const SelfIdentity *GetAgent() const;
     Client* GetClient();
 
 	std::string GetMasterEmail() const;

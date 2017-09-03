@@ -15,7 +15,7 @@ static const string mailFileName = "mailContents.txt";
 // @TODO Make proper implementation without clear password
 // @TODO Improve security handling SSL correctly without insecure option
 CurlConsoleReportDispatcher::CurlConsoleReportDispatcher()
-    : EmailReportDispatcher()
+    : AbstractEmailReportDispatcher()
 {
 
 }

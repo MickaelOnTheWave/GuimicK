@@ -9,8 +9,10 @@
 
 #include "changescreensaverjobconfiguration.h"
 #include "clamavjobconfiguration.h"
+#include "consolereportdispatcher.h"
 #include "copyfsbackupjobconfigurations.h"
 #include "diskspacecheckjobconfiguration.h"
+#include "dummyemailreportdispatcher.h"
 #include "gitbackupjobconfiguration.h"
 #include "gitfsbackupjobconfiguration.h"
 #include "rsnapshotbackupjobconfiguration.h"
@@ -304,6 +306,19 @@ AbstractReportCreator *Configuration::GetReportCreator() const
     return reportCreator;
 }
 
+AbstractReportDispatcher *Configuration::CreateReportDispatcher(
+        const bool commandLinePreventsEmail) const
+{
+    AbstractReportDispatcher* dispatcher = NULL;
+    if (emailReport && !commandLinePreventsEmail)
+        dispatcher = new DummyEmailReportDispatcher();
+    else
+        dispatcher = new ConsoleReportDispatcher();
+
+    dispatcher->Initialize(this);
+    return dispatcher;
+}
+
 AbstractReportCreator *Configuration::CreateReportObject(const string& type) const
 {
     if (type == "text")
@@ -314,7 +329,7 @@ AbstractReportCreator *Configuration::CreateReportObject(const string& type) con
         return NULL;
 }
 
-SelfIdentity *Configuration::GetAgent()
+const SelfIdentity *Configuration::GetAgent() const
 {
     return self;
 }

@@ -1,116 +1,119 @@
+#include <fstream>
 #include <iostream>
 #include <string.h>
 
 #include "client.h"
 #include "clientworkmanager.h"
 #include "commandlinemanager.h"
-#include "consolejob.h"
 #include "configuration.h"
+#include "consolejob.h"
+#include "consolereportdispatcher.h"
 #include "emaildispatcherfactory.h"
-#include "emailreportdispatcher.h"
+#include "filetools.h"
 #include "SelfIdentity.h"
 
-#include <fstream>
+//------------------------------------------------------------------------------
 
 using namespace std;
 
-static const string PROGRAM_VERSION = "0.712";
+static const string PROGRAM_VERSION = "0.713";
 static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
 
+static const string noEmailCommand = "noemail";
+static const string noShutdownCommand = "noshutdown";
+static const string onlyOneJobCommand = "onlyjob";
+static const string confFileCommand = "conffile";
+
+//------------------------------------------------------------------------------
+
+bool SetupCommandLine(CommandLineManager& manager);
+
+string GetConfigurationFile(const string& commandLineFile);
+
 void ShowErrors(vector<string> &errorMessages);
-void SendReportByEmail(AbstractReportCreator* reportCreator, SelfIdentity* self, const Configuration& configuration);
+
+bool SetupShutdownOptions(const bool isConfigShutdownEnabled, const bool isCommandLineShutdownCanceled,
+                          ClientWorkManager* workList);
+
+AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const Configuration& configuration);
+
+void DispatchReport(AbstractReportCreator* reportCreator,
+                    const Configuration& configuration,
+                    const CommandLineManager& commandLine);
+
+AbstractReportDispatcher* ReplaceDispatcherIfEmail(AbstractReportDispatcher* input,
+                                                   const Configuration& configuration);
+
+bool RunLocalShutdown(const bool isLocalShutdownEnabled);
+
+//------------------------------------------------------------------------------
 
 int main(int argc, char* argv[])
 {
-    // TODO : clean this code. Main should be a lot smaller.
-
     const int NO_ERROR              = 0;
     const int CONFIGURATION_ERROR   = 1;
+    const int OTHER_ERROR           = 2;
 
     CommandLineManager commandLine(argc, argv);
-
-    commandLine.AddParameter("noemail",     "Doesn't send report via email.");
-    commandLine.AddParameter("noshutdown",  "Doesn't shutdown client neither server after running.");
-    commandLine.AddParameter("onlybackup",  "Only performs backup job.");
-    commandLine.AddParameter("conffile",    "[CONFIGURATION FILE] Specifies which configuration file to use.");
-
-    commandLine.EnableHelpCommand();
-    commandLine.EnableVersionCommand("Task Manager", PROGRAM_VERSION, "Mickael C. Guimaraes", "2014-2017");
-
-    if (commandLine.HandleUnknownParameters())
-        return NO_ERROR;
-    else if (commandLine.HandleVersionCommand())
-        return NO_ERROR;
-    else if (commandLine.HandleHelpCommand())
+    bool shouldReturn = SetupCommandLine(commandLine);
+    if (shouldReturn)
         return NO_ERROR;
 
-    string configurationFile(DEFAULT_CONFIGURATION_FILE);
-    if (commandLine.HasParameter("conffile"))
+    string configurationFile = GetConfigurationFile(commandLine.GetParameterValue(confFileCommand));
+    if (FileTools::FileExists(configurationFile) == false)
     {
-        string newConfigurationFile = commandLine.GetParameterValue("conffile");
-        ifstream file(newConfigurationFile.c_str());
-        if (file.is_open())
-            configurationFile = newConfigurationFile;
-        else
-        {
-            cout << "Error : file " << newConfigurationFile << " could not be opened." << endl;
-            return CONFIGURATION_ERROR;
-        }
+        cout << "Error : file " << configurationFile << " could not be opened." << endl;
+        return CONFIGURATION_ERROR;
     }
 
     Configuration configuration;
-    vector<string> errors;
-    bool configurationIsUsable = configuration.LoadFromFile(configurationFile, errors);
-    ShowErrors(errors);
+    vector<string> configurationErrors;
+    bool configurationIsUsable = configuration.LoadFromFile(configurationFile, configurationErrors);
+    ShowErrors(configurationErrors);
     if (configurationIsUsable == false)
     {
         cout << "Unrecoverable errors while trying to read configuration file. Exiting." << endl;
         return CONFIGURATION_ERROR;
     }
 
-    SelfIdentity* selfIdentity = configuration.GetAgent();
-
     ClientWorkManager* workList = configuration.BuildTimedWorkList();
-    AbstractReportCreator* reportCreator = configuration.GetReportCreator();
 
-    // Use configuration and consider command line as priority when specified
-    bool sendReportByEmail = configuration.GetSendReportByEmail();
-    if (commandLine.HasParameter("noemail"))
-        sendReportByEmail = false;
+    bool localShutdown = SetupShutdownOptions(configuration.GetLocalShutdown(),
+                                              commandLine.HasParameter(noShutdownCommand),
+                                              workList);
 
-    bool localShutdown = configuration.GetLocalShutdown();
-    if (commandLine.HasParameter("noshutdown"))
-    {
-        localShutdown = false;
-        workList->RemoveJob("Shutdown");
-    }
+    string singleJob = commandLine.GetParameterValue(onlyOneJobCommand);
+    if (singleJob != "")
+        workList->RemoveAllButJobs(singleJob);
 
-    bool onlyBackup = commandLine.HasParameter("onlybackup");
-    if (onlyBackup)
-        workList->RemoveAllButJobs("RSnapshot Backup");
-
-    WorkResultData* workResult = workList->RunWorkList();
-
-    reportCreator->Generate(workResult, PROGRAM_VERSION);
-    string reportData = reportCreator->GetReportContent();
-    delete workResult;
-
-    if (sendReportByEmail)
-        SendReportByEmail(reportCreator, selfIdentity, configuration);
-    else
-        cout << reportData << endl;
-
+    AbstractReportCreator* reportCreator = RunWorkList(workList, configuration);
+    DispatchReport(reportCreator, configuration, commandLine);
     delete reportCreator;
 
-    if (localShutdown)
-    {
-        ConsoleJob finalShutdown("/sbin/poweroff");
-        JobStatus* status = finalShutdown.Run();
-        if (status->GetCode() != JobStatus::OK)
-            cout << "Local shutdown failed : " << status->GetDescription() << endl;
-    }
+    bool ok = RunLocalShutdown(localShutdown);
+    return (ok) ? NO_ERROR : OTHER_ERROR;
+    //return 0;
+}
 
-    return NO_ERROR;
+//------------------------------------------------------------------------------
+
+bool SetupCommandLine(CommandLineManager& manager)
+{
+    manager.AddParameter(noEmailCommand,     "Doesn't send report via email.");
+    manager.AddParameter(noShutdownCommand,  "Doesn't shutdown client neither server after running.");
+    manager.AddParameter(onlyOneJobCommand,  "[JOBNAME] Only runs job JOBNAME.");
+    manager.AddParameter(confFileCommand,    "[CONFIGURATION FILE] Specifies which configuration file to use.");
+
+    manager.EnableHelpCommand();
+    manager.EnableVersionCommand("Task Manager", PROGRAM_VERSION, "Mickael C. Guimaraes", "2014-2017");
+
+    return (manager.HandleUnknownParameters() || manager.HandleVersionCommand() ||
+            manager.HandleHelpCommand());
+}
+
+string GetConfigurationFile(const string& commandLineFile)
+{
+    return (commandLineFile != "") ? commandLineFile : DEFAULT_CONFIGURATION_FILE;
 }
 
 void ShowErrors(vector<string>& errorMessages)
@@ -124,18 +127,78 @@ void ShowErrors(vector<string>& errorMessages)
     cout << endl;
 }
 
-void SendReportByEmail(AbstractReportCreator* reportCreator, SelfIdentity* self, const Configuration& configuration)
+bool SetupShutdownOptions(const bool isConfigShutdownEnabled, const bool isCommandLineShutdownCanceled,
+                          ClientWorkManager* workList)
 {
-    const string reportData = reportCreator->GetReportContent();
-    EmailReportDispatcher* emailDispatcher = EmailDispatcherFactory::Create();
-    emailDispatcher->Initialize(self, configuration);
-
-    bool emailOk = emailDispatcher->Dispatch(reportCreator);
-    if (!emailOk)
+    bool localShutdown = isConfigShutdownEnabled;
+    if (isCommandLineShutdownCanceled)
     {
-        cout << "Email failed" << endl;
-        cout << "Maintenance report : " << endl << reportData << endl;
+        localShutdown = false;
+        workList->RemoveJob("Shutdown");
     }
+    return localShutdown;
+}
 
-    delete emailDispatcher;
+AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const Configuration& configuration)
+{
+    WorkResultData* workResult = workList->RunWorkList();
+    AbstractReportCreator* reportCreator = configuration.GetReportCreator();
+    reportCreator->Generate(workResult, PROGRAM_VERSION);
+    delete workResult;
+
+    return reportCreator;
+}
+
+void DispatchReport(AbstractReportCreator* reportCreator,
+                    const Configuration& configuration,
+                    const CommandLineManager& commandLine)
+{
+    AbstractReportDispatcher* reportDispatcher = configuration.CreateReportDispatcher(
+                commandLine.HasParameter(noEmailCommand)
+                );
+    reportDispatcher = ReplaceDispatcherIfEmail(reportDispatcher, configuration);
+    bool ok = reportDispatcher->Dispatch(reportCreator);
+    if (!ok)
+    {
+        ConsoleReportDispatcher fallbackDispatcher;
+        fallbackDispatcher.Initialize(&configuration);
+
+        cout << reportDispatcher->GetName() << "failed. ";
+        cout << "Using " << fallbackDispatcher.GetName() << endl;
+
+        fallbackDispatcher.Dispatch(reportCreator);
+    }
+}
+
+AbstractReportDispatcher* ReplaceDispatcherIfEmail(AbstractReportDispatcher* input,
+                                                   const Configuration& configuration)
+{
+    // For linking reasons, email dispatcher creation is being done in tool, not in
+    // tasklib. Here is the workaround to get the final dispatcher : replace the dummy
+    // one returned from configuration to the real one linked in tool.
+
+    if (input->GetName() == "Dummy Email")
+    {
+        delete input;
+        AbstractReportDispatcher* trueDispatcher = EmailDispatcherFactory::Create();
+        trueDispatcher->Initialize(&configuration);
+        return trueDispatcher;
+    }
+    else
+        return input;
+}
+
+bool RunLocalShutdown(const bool isLocalShutdownEnabled)
+{
+    if (isLocalShutdownEnabled == false)
+        return true;
+
+    ConsoleJob finalShutdown("/sbin/poweroff");
+    JobStatus* status = finalShutdown.Run();
+    const bool shutdownError = (status->GetCode() != JobStatus::OK);
+    if (shutdownError)
+        cout << "Local shutdown failed : " << status->GetDescription() << endl;
+
+    delete status;
+    return !shutdownError;
 }

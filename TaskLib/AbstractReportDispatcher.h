@@ -2,8 +2,9 @@
 #define REPORTDISPATCHER_H
 
 #include "abstractreportcreator.h"
-#include "configuration.h"
 #include "SelfIdentity.h"
+
+class Configuration;
 
 /**
   Interface for all classes that manages dispatching of
@@ -13,7 +14,8 @@ class AbstractReportDispatcher
 {
 public :
     virtual ~AbstractReportDispatcher() {}
-    virtual void Initialize(SelfIdentity* self, const Configuration& configuration) = 0;
+    virtual std::string GetName(void) const = 0;
+    virtual void Initialize(const Configuration* configuration) = 0;
     virtual bool Dispatch(AbstractReportCreator* reportCreator) = 0;
 };
 

@@ -50,7 +50,7 @@ void ConfigurationTest::testLoadFromFile_Agent_Valid()
 {
     LoadFromFile("valid.txt", true, QStringList());
 
-    SelfIdentity* identity = configuration->GetAgent();
+    const SelfIdentity* identity = configuration->GetAgent();
 
     QCOMPARE(identity->name.c_str(), "Testing Agent");
     QCOMPARE(identity->email.c_str(), "invalid.email@provider.com");

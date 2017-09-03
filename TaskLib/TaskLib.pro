@@ -22,7 +22,6 @@ SOURCES += \
     consolejob.cpp \
     curlconsoleemailsender.cpp \
     dummyjob.cpp \
-    emailreportdispatcher.cpp \
     gitbackupjob.cpp \
     htmlreportcreator.cpp \
     jobstatus.cpp \
@@ -67,7 +66,10 @@ SOURCES += \
     rsnapshotconfigurationbuilder.cpp \
     abstractfsbackupjobconfiguration.cpp \
     copyfsbackupjobconfigurations.cpp \
-    DebugOutput.cpp
+    DebugOutput.cpp \
+    consolereportdispatcher.cpp \
+    abstractemailreportdispatcher.cpp \
+    dummyemailreportdispatcher.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -79,13 +81,11 @@ HEADERS +=\
     consolejob.h \
     curlconsoleemailsender.h \
     dummyjob.h \
-    emailreportdispatcher.h \
     gitbackupjob.h \
     htmlreportcreator.h \
     jobstatus.h \
     linuxshutdownjob.h \
     profiledjob.h \
-    ReportDispatcher.h \
     SelfIdentity.h \
     shutdownjob.h \
     sleepjob.h \
@@ -125,7 +125,11 @@ HEADERS +=\
     rsnapshotconfigurationbuilder.h \
     debugoutput.h \
     abstractfsbackupjobconfiguration.h \
-    copyfsbackupjobconfigurations.h
+    copyfsbackupjobconfigurations.h \
+    consolereportdispatcher.h \
+    AbstractReportDispatcher.h \
+    abstractemailreportdispatcher.h \
+    dummyemailreportdispatcher.h
 
 unix {
     target.path = /usr/lib

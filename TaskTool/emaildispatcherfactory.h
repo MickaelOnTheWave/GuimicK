@@ -1,13 +1,12 @@
 #ifndef EMAILDISPATCHERFACTORY_H
 #define EMAILDISPATCHERFACTORY_H
 
-#include "emailreportdispatcher.h"
+#include "abstractemailreportdispatcher.h"
 
 class EmailDispatcherFactory
 {
 public:
-
-    static EmailReportDispatcher* Create();
+    static AbstractEmailReportDispatcher* Create();
 };
 
 #endif // EMAILDISPATCHERFACTORY_H

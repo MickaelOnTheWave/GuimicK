@@ -1,16 +1,19 @@
-#ifndef EMAILREPORTDISPATCHER_H
-#define EMAILREPORTDISPATCHER_H
+#ifndef ABSTRACTEMAILREPORTDISPATCHER_H
+#define ABSTRACTEMAILREPORTDISPATCHER_H
 
 #include <string>
-#include "ReportDispatcher.h"
+#include "AbstractReportDispatcher.h"
 
-class EmailReportDispatcher : public AbstractReportDispatcher
+class Configuration;
+
+class AbstractEmailReportDispatcher : public AbstractReportDispatcher
 {
 public:
-	EmailReportDispatcher();
-    virtual ~EmailReportDispatcher();
+    AbstractEmailReportDispatcher();
+    virtual ~AbstractEmailReportDispatcher();
 
-    virtual void Initialize(SelfIdentity* self, const Configuration& configuration);
+    virtual std::string GetName(void) const;
+    virtual void Initialize(const Configuration* configuration);
 
     void SetOutputDebugInformationOnFailure(const bool value);
     void SetVerboseMode();
@@ -34,4 +37,4 @@ protected:
     static const std::string subject;
 };
 
-#endif // EMAILREPORTDISPATCHER_H
+#endif // ABSTRACTEMAILREPORTDISPATCHER_H
