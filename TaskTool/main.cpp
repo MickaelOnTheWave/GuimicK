@@ -35,6 +35,8 @@ void ShowErrors(vector<string> &errorMessages);
 bool SetupShutdownOptions(const bool isConfigShutdownEnabled, const bool isCommandLineShutdownCanceled,
                           ClientWorkManager* workList);
 
+void SetupSingleJobOption(ClientWorkManager* workList, const CommandLineManager& commandLine);
+
 AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const Configuration& configuration);
 
 void DispatchReport(AbstractReportCreator* reportCreator,
@@ -82,9 +84,7 @@ int main(int argc, char* argv[])
                                               commandLine.HasParameter(noShutdownCommand),
                                               workList);
 
-    string singleJob = commandLine.GetParameterValue(onlyOneJobCommand);
-    if (singleJob != "")
-        workList->RemoveAllButJobs(singleJob);
+    SetupSingleJobOption(workList, commandLine);
 
     AbstractReportCreator* reportCreator = RunWorkList(workList, configuration);
     DispatchReport(reportCreator, configuration, commandLine);
@@ -92,7 +92,6 @@ int main(int argc, char* argv[])
 
     bool ok = RunLocalShutdown(localShutdown);
     return (ok) ? NO_ERROR : OTHER_ERROR;
-    //return 0;
 }
 
 //------------------------------------------------------------------------------
@@ -137,6 +136,13 @@ bool SetupShutdownOptions(const bool isConfigShutdownEnabled, const bool isComma
         workList->RemoveJob("Shutdown");
     }
     return localShutdown;
+}
+
+void SetupSingleJobOption(ClientWorkManager* workList, const CommandLineManager& commandLine)
+{
+    string singleJob = commandLine.GetParameterValue(onlyOneJobCommand);
+    if (singleJob != "")
+        workList->RemoveAllButJobs(singleJob);
 }
 
 AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const Configuration& configuration)
@@ -202,3 +208,4 @@ bool RunLocalShutdown(const bool isLocalShutdownEnabled)
     delete status;
     return !shutdownError;
 }
+

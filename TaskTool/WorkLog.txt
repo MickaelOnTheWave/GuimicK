@@ -1,4 +1,4 @@
-03/09/2017 (0.1h 13.9)
+03/09/2017 (0.1h 13.9-17.2)
 	Production ran this time as expected. Updating Release plan :-)
 	Checking error cases that need management :
 		- Integrate warnings/errors from configuration to report
