@@ -1,3 +1,6 @@
+04/09/2017 (0.3h)
+	Production did not run - there was a bug in command line parameters. Fixed it.
+
 03/09/2017 (2.3h)
 	In order to include rsnapshot backups, it would be wise to update it to support
 	interval configuring (with relevant tests). This is a feature of its own, but as
