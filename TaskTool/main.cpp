@@ -37,7 +37,8 @@ bool SetupShutdownOptions(const bool isConfigShutdownEnabled, const bool isComma
 
 void SetupSingleJobOption(ClientWorkManager* workList, const CommandLineManager& commandLine);
 
-AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const Configuration& configuration);
+AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const Configuration& configuration,
+                                   const vector<string>& configurationErrors);
 
 void DispatchReport(AbstractReportCreator* reportCreator,
                     const Configuration& configuration,
@@ -86,7 +87,7 @@ int main(int argc, char* argv[])
 
     SetupSingleJobOption(workList, commandLine);
 
-    AbstractReportCreator* reportCreator = RunWorkList(workList, configuration);
+    AbstractReportCreator* reportCreator = RunWorkList(workList, configuration, configurationErrors);
     DispatchReport(reportCreator, configuration, commandLine);
     delete reportCreator;
 
@@ -145,11 +146,12 @@ void SetupSingleJobOption(ClientWorkManager* workList, const CommandLineManager&
         workList->RemoveAllButJobs(singleJob);
 }
 
-AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const Configuration& configuration)
+AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const Configuration& configuration,
+                                   const vector<string>& configurationErrors)
 {
     WorkResultData* workResult = workList->RunWorkList();
     AbstractReportCreator* reportCreator = configuration.GetReportCreator();
-    reportCreator->Generate(workResult, PROGRAM_VERSION);
+    reportCreator->Generate(workResult, configurationErrors, PROGRAM_VERSION);
     delete workResult;
 
     return reportCreator;

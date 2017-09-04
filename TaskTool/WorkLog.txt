@@ -1,4 +1,4 @@
-03/09/2017 (19.9-20.9)
+03/09/2017 (2.3h)
 	In order to include rsnapshot backups, it would be wise to update it to support
 	interval configuring (with relevant tests). This is a feature of its own, but as
 	it is important to have a full production backup running, going on it now! (at least
@@ -8,6 +8,17 @@
 	a feature of its own, and only test related. Leaving it for now.
 	Created maxBackupCount property. Changed configuration generation to use it. Also updated
 	configuration and configuration tests. Updated production configuration to backup videos.
+	Now going for error integration...
+	Refactored report creators. Created new class with all structure (all of it was duplciated
+	in html and text creators). Now there is a single parent class that does all this, html and
+	text only creates parts. Implemented configuration error reporting for text creator, not
+	for html one.
+Next planned work:
+	- Refactor tasktool and taskfeaturetest to use a more common interface
+	- Create test for console report creator
+	- Create test for html report creator
+	- Implement configuration error table in html report creator
+	- Continue with other errors to manager
 
 03/09/2017 (3.5h)
 	Production ran this time as expected. Updating Release plan :-)

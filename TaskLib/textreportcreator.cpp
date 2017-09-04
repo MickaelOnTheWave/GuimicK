@@ -4,97 +4,81 @@
 
 using namespace std;
 
+static const string overallString = "Overall";
+
 TextReportCreator::TextReportCreator()
-    : AbstractReportCreator(),
-      version(""), generalCode(JobStatus::NOT_EXECUTED),
-	  generalDuration(0)
+    : AbstractStructuredReportCreator()
 {
 }
 
-void TextReportCreator::Generate(WorkResultData *data, const string &versionString)
+TextReportCreator::~TextReportCreator()
 {
-	report.str("");
-	version = versionString;
-
-	vector<pair<string, ClientJobResults*> >::iterator itClient=data->allClientsResults.begin();
-	vector<pair<string, ClientJobResults*> >::iterator endClient=data->allClientsResults.end();
-	for (; itClient!=endClient; itClient++)
-	{
-		pair<string, ClientJobResults*> clientData = *itClient;
-		AddClientInformation(clientData.first);
-
-		unsigned int nameCellSize = FindBiggestJobNameSize(clientData.second)+3;
-
-		ClientJobResults::iterator itJob=clientData.second->begin();
-		ClientJobResults::iterator endJob=clientData.second->end();
-		for (; itJob!=endJob; itJob++)
-		{
-			pair<string, JobStatus*> jobData = *itJob;
-			AddJobInformation(jobData.first, jobData.second, nameCellSize);
-		}
-
-		FinishReportGeneration(nameCellSize);
-	}
 }
 
-void TextReportCreator::AddClientInformation(const std::string &clientName)
+void TextReportCreator::AddHeader()
 {
-	report << "\t\t\t" << clientName << endl;
-	report << endl;
-	report << endl;
 }
 
-void TextReportCreator::AddJobInformation(const std::string &jobName, JobStatus *jobStatus, unsigned int nameCellSize)
+void TextReportCreator::AddClientData(const pair<string, ClientJobResults*>& clientData)
 {
-	int localCode = jobStatus->GetCode();
-	string stringOutput(jobStatus->GetDescription());
-    jobStatus->GetExternalFilenames(externalFiles);
-    jobStatus->GetFileBuffers(fileBuffers);
+    report << Tools::Tabs(3) << clientData.first << endl;
+    report << endl;
+    report << endl;
 
-	generalDuration += jobStatus->GetDuration();
+    UpdateNameCellSize(clientData.second);
+}
 
-	if (jobStatus->IsWorseThan(generalCode))
-		generalCode = localCode;
+void TextReportCreator::AddJobData(const string &jobName, JobStatus *status)
+{
+    string stringOutput(status->GetDescription());
 
-    report << "\t" << jobName << SpacingString(nameCellSize-jobName.size()) << jobStatus->GetCodeDescription();
+    report << "\t" << jobName << Tools::Spaces(nameCellSize-jobName.size()) << status->GetCodeDescription();
     if (useProfiling)
-        report << "\t" << Tools::FormatTimeString(jobStatus->GetDuration()) << endl;
+        report << "\t" << Tools::FormatTimeString(status->GetDuration());
+    report << endl;
 
-	if (stringOutput != "")
-		report << "\t\t" << stringOutput << endl;
-
+    if (stringOutput != "")
+        report << Tools::Tabs(2) << stringOutput << endl;
 }
 
-void TextReportCreator::FinishReportGeneration(unsigned int nameCellSize)
+void TextReportCreator::AddSummaryData(const int code, const time_t duration)
 {
-	report << endl;
-    report << "\t" << "Overall" << SpacingString(nameCellSize-string("Overall").size()) << JobStatus::GetCodeDescription(generalCode);
+    report << endl;
+    report << "\t" << overallString << Tools::Spaces(nameCellSize-overallString.size());
+    report << JobStatus::GetCodeDescription(code);
     if (useProfiling)
-        report << "\t" << Tools::FormatTimeString(generalDuration) << endl;
-	report << endl;
+        report << "\t" << Tools::FormatTimeString(duration) << endl;
+    report << endl;
+}
+
+void TextReportCreator::AddConfigurationErrorsData(const std::vector<string> &errors)
+{
+    if (errors.size() > 0)
+    {
+        report << Tools::Tabs(1) << "Configuration file has some errors :" << endl;
+        for (vector<string>::const_iterator it=errors.begin(); it!=errors.end(); ++it)
+            report << Tools::Tabs(2) << *it << endl;
+        report << endl;
+    }
+}
+
+void TextReportCreator::AddProgramData(const string &version)
+{
     report << "Task Manager version " << version << endl;
 }
 
-unsigned int TextReportCreator::FindBiggestJobNameSize(ClientJobResults *data)
+void TextReportCreator::UpdateNameCellSize(ClientJobResults *data)
 {
-	unsigned int biggestSize = string("Overall").size();
+    nameCellSize = overallString.size();
 
-	ClientJobResults::iterator itJob=data->begin();
-	ClientJobResults::iterator endJob=data->end();
-	for (; itJob!=endJob; itJob++)
-	{
-		pair<string, JobStatus*> jobData = *itJob;
-		if (jobData.first.size() > biggestSize)
-			biggestSize = jobData.first.size();
-	}
-	return biggestSize;
+    ClientJobResults::iterator itJob=data->begin();
+    ClientJobResults::iterator endJob=data->end();
+    for (; itJob!=endJob; itJob++)
+    {
+        pair<string, JobStatus*> jobData = *itJob;
+        if (jobData.first.size() > nameCellSize)
+            nameCellSize = jobData.first.size();
+    }
+
+    nameCellSize += 3;
 }
-
-string TextReportCreator::SpacingString(unsigned int spacesToFill)
-{
-	string spacingString;
-	for (unsigned int i=0; i<spacesToFill; i++)
-		spacingString += " ";
-	return spacingString;
-}
-

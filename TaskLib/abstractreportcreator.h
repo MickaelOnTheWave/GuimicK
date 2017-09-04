@@ -12,7 +12,10 @@ public:
 	virtual ~AbstractReportCreator() {}
 
     void UseProfileColumn(const bool value);
-    virtual void Generate(WorkResultData* data, const std::string& version) = 0;
+    void Generate(WorkResultData* data, const std::string& version);
+    virtual void Generate(WorkResultData* data,
+                          const std::vector<std::string>& configErrors,
+                          const std::string& version) = 0;
     std::string GetReportContent(void) const;
     void GetAssociatedFiles(std::vector<std::string>& _externalFiles,
                             std::vector<std::pair<std::string,std::string> >& _fileBuffers);

@@ -12,6 +12,12 @@ void AbstractReportCreator::UseProfileColumn(const bool value)
     useProfiling = value;
 }
 
+void AbstractReportCreator::Generate(WorkResultData *data, const string &version)
+{
+    vector<string> noErrors;
+    Generate(data, noErrors, version);
+}
+
 string AbstractReportCreator::GetReportContent() const
 {
     return report.str();

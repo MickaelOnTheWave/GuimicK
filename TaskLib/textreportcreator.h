@@ -4,27 +4,26 @@
 #include <ctime>
 #include <string>
 
-#include "abstractreportcreator.h"
+#include "abstractstructuredreportcreator.h"
 #include "jobstatus.h"
 
-class TextReportCreator : public AbstractReportCreator
+class TextReportCreator : public AbstractStructuredReportCreator
 {
 public:
 	TextReportCreator();
-
-    virtual void Generate(WorkResultData* data, const std::string& versionString);
+    virtual ~TextReportCreator();
 
 protected:
-	virtual void AddClientInformation(const std::string& clientName);
-	virtual void AddJobInformation(const std::string& jobName, JobStatus* jobStatus, unsigned int nameCellSize);
-	virtual void FinishReportGeneration(unsigned int nameCellSize);
+    virtual void AddHeader(void);
+    virtual void AddClientData(const std::pair<std::string, ClientJobResults *> &clientData);
+    virtual void AddJobData(const std::string& jobName, JobStatus* status);
+    virtual void AddSummaryData(const int code, const time_t duration);
+    virtual void AddConfigurationErrorsData(const std::vector<std::string>& errors);
+    virtual void AddProgramData(const std::string& version);
 
-	unsigned int FindBiggestJobNameSize(ClientJobResults* data);
-	std::string SpacingString(unsigned int spacesToFill);
+    void UpdateNameCellSize(ClientJobResults* data);
 
-	std::string version;
-	int generalCode;
-	std::time_t generalDuration;
+    unsigned int nameCellSize;
 };
 
 #endif // CONSOLEREPORT_H

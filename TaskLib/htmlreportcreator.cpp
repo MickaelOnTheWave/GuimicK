@@ -6,7 +6,11 @@
 using namespace std;
 
 HtmlReportCreator::HtmlReportCreator()
-    : AbstractReportCreator(), cssFile("")
+    : AbstractStructuredReportCreator(), cssFile("")
+{
+}
+
+HtmlReportCreator::~HtmlReportCreator()
 {
 }
 
@@ -15,9 +19,8 @@ void HtmlReportCreator::SetCssFile(const string &_cssFile)
     cssFile = _cssFile;
 }
 
-void HtmlReportCreator::Generate(WorkResultData *data, const string &versionString)
+void HtmlReportCreator::AddHeader()
 {
-    report.str("");
     report << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">" << endl;
     report << "<html>" << endl;
     report << "  <head>" << endl;
@@ -28,52 +31,48 @@ void HtmlReportCreator::Generate(WorkResultData *data, const string &versionStri
     }
     report << "  </head>" << endl;
     report << "<body>" << endl;
+}
 
-    vector<pair<string, ClientJobResults*> >::iterator itClient=data->allClientsResults.begin();
-    vector<pair<string, ClientJobResults*> >::iterator endClient=data->allClientsResults.end();
-    for (; itClient!=endClient; itClient++)
-    {
-        pair<string, ClientJobResults*> clientData = *itClient;
+void HtmlReportCreator::AddClientData(const pair<string, ClientJobResults *>& clientData)
+{
+    report << "<h1>" << clientData.first << "</h1>" << endl;
+    report << "<table>" << endl;
 
-        report << "<h1>" << clientData.first << "</h1>" << endl;
-        report << "<table>" << endl;
+    report << "  <tr>" << endl;
+    report << "    <th>Task</th>" << endl;
+    report << "    <th>Status</th>" << endl;
+    if (useProfiling)
+        report << "    <th>Time spent</th>" << endl;
+    report << "  </tr>" << endl;
+}
 
-        report << "  <tr>" << endl;
-        report << "    <th>Task</th>" << endl;
-        report << "    <th>Status</th>" << endl;
-        if (useProfiling)
-            report << "    <th>Time spent</th>" << endl;
-        report << "  </tr>" << endl;
+void HtmlReportCreator::AddJobData(const string &jobName, JobStatus* status)
+{
+    AddJobData(jobName, status->GetDescription(), status->GetCodeDescription(),
+               Tools::FormatTimeString(status->GetDuration()));
+}
 
-        int totalCode = JobStatus::NOT_EXECUTED;
-        time_t totalDuration = 0;
+void HtmlReportCreator::AddSummaryData(const int code, const time_t duration)
+{
+    AddJobData("Total", "", JobStatus::GetCodeDescription(code),
+               Tools::FormatTimeString(duration));
+    report << "</table>" << endl;
+}
 
-        ClientJobResults::iterator itJob=clientData.second->begin();
-        ClientJobResults::iterator endJob=clientData.second->end();
-        for (; itJob!=endJob; itJob++)
-        {
-            pair<string, JobStatus*> jobData = *itJob;
+void HtmlReportCreator::AddConfigurationErrorsData(const std::vector<string> &errors)
+{
+    // TODO : fill this
+}
 
-            jobData.second->GetExternalFilenames(externalFiles);
-            jobData.second->GetFileBuffers(fileBuffers);
-
-            if (jobData.second->IsWorseThan(totalCode))
-                totalCode = jobData.second->GetCode();
-            totalDuration += jobData.second->GetDuration();
-
-            AddJobData(jobData.first, jobData.second->GetDescription(), jobData.second->GetCodeDescription(), Tools::FormatTimeString(jobData.second->GetDuration()));
-        }
-        AddJobData("Total", "", JobStatus::GetCodeDescription(totalCode), Tools::FormatTimeString(totalDuration));
-
-        report << "</table>" << endl;
-    }
-
-    report << "<small>Task Manager version " << versionString << "</small>" << endl;
+void HtmlReportCreator::AddProgramData(const std::string& version)
+{
+    report << "<small>Task Manager version " << version << "</small>" << endl;
     report << "</body>" << endl;
     report << "</html>" << endl;
 }
 
-void HtmlReportCreator::AddJobData(const string &jobName, const string &jobDescription, const string &jobStatusCode, const string &jobDuration)
+void HtmlReportCreator::AddJobData(const string &jobName, const string &jobDescription,
+                                   const string &jobStatusCode, const string &jobDuration)
 {
     report << "  <tr>" << endl;
     report << "    <td>" << endl;

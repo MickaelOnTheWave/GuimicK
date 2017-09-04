@@ -69,7 +69,8 @@ SOURCES += \
     DebugOutput.cpp \
     consolereportdispatcher.cpp \
     abstractemailreportdispatcher.cpp \
-    dummyemailreportdispatcher.cpp
+    dummyemailreportdispatcher.cpp \
+    abstractstructuredreportcreator.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -129,7 +130,8 @@ HEADERS +=\
     consolereportdispatcher.h \
     AbstractReportDispatcher.h \
     abstractemailreportdispatcher.h \
-    dummyemailreportdispatcher.h
+    dummyemailreportdispatcher.h \
+    abstractstructuredreportcreator.h
 
 unix {
     target.path = /usr/lib
