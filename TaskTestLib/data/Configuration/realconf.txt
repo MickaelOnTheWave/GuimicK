@@ -105,5 +105,5 @@ Report
 }
 
 MasterEmail = "mickael.dacruz@gmail.com";
-SendReportByEmail = true;
+ReportDispatching = "email";
 ShutdownOnFinish = true;

@@ -30,5 +30,5 @@ Report
 	css = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/report.css";
 }
 
-SendReportByEmail = false;
+ReportDispatching = "file";
 ShutdownOnFinish = false;
