@@ -36,7 +36,7 @@ public:
 
 	bool GetLocalShutdown() const;
 
-	bool GetSendReportByEmail() const;
+    std::string GetReportDispatching() const;
 
     bool IsReportHtml(void) const;
 
@@ -84,7 +84,7 @@ private:
     AbstractReportCreator* reportCreator;
 
 	std::string masterEmail;
-	bool emailReport;
+    std::string reportDispatching;
 	bool shutdown;
     bool hasFatalError;
 };

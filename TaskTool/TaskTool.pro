@@ -17,7 +17,8 @@ else {
 #}
 
 SOURCES += main.cpp \
-	 emaildispatcherfactory.cpp
+	 emaildispatcherfactory.cpp \
+    curldispatcherreplacer.cpp
 
 contains( CONFIG, UseCurlLib ) {
 	SOURCES += curllibreportdispatcher.cpp
@@ -78,5 +79,6 @@ OTHER_FILES += \
     data/report.css
 
 HEADERS += \
-	 emaildispatcherfactory.h
+	 emaildispatcherfactory.h \
+    curldispatcherreplacer.h
 

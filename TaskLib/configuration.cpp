@@ -13,6 +13,7 @@
 #include "copyfsbackupjobconfigurations.h"
 #include "diskspacecheckjobconfiguration.h"
 #include "dummyemailreportdispatcher.h"
+#include "filereportdispatcher.h"
 #include "gitbackupjobconfiguration.h"
 #include "gitfsbackupjobconfiguration.h"
 #include "rsnapshotbackupjobconfiguration.h"
@@ -26,7 +27,7 @@ using namespace std;
 Configuration::Configuration()
     : client(NULL), self(NULL), reportCreator(NULL), masterEmail("")
 {
-	emailReport = true;
+    reportDispatching = "email";
 	shutdown = true;
     hasFatalError = false;
 
@@ -310,9 +311,12 @@ AbstractReportDispatcher *Configuration::CreateReportDispatcher(
         const bool commandLinePreventsEmail) const
 {
     AbstractReportDispatcher* dispatcher = NULL;
-    if (emailReport && !commandLinePreventsEmail)
+
+    if (reportDispatching == "email" && !commandLinePreventsEmail)
         dispatcher = new DummyEmailReportDispatcher();
-    else
+    else if (reportDispatching == "file")
+        dispatcher = new FileReportDispatcher();
+    else // reportDispatching == "console"
         dispatcher = new ConsoleReportDispatcher();
 
     dispatcher->Initialize(this);
@@ -349,9 +353,9 @@ bool Configuration::GetLocalShutdown() const
 	return shutdown;
 }
 
-bool Configuration::GetSendReportByEmail() const
+std::string Configuration::GetReportDispatching() const
 {
-    return emailReport;
+    return reportDispatching;
 }
 
 bool Configuration::IsReportHtml() const
@@ -424,8 +428,8 @@ void Configuration::FillGlobalProperties(ConfigurationObject *object,
         pair<string, string> currentProp = *itProp;
         if (currentProp.first == "MasterEmail")
             masterEmail = currentProp.second;
-        else if (currentProp.first == "SendReportByEmail")
-            emailReport = GetBooleanValue(currentProp.second, errorMessages);
+        else if (currentProp.first == "ReportDispatching")
+            reportDispatching = currentProp.second;
         else if (currentProp.first == "ShutdownOnFinish")
             shutdown = GetBooleanValue(currentProp.second, errorMessages);
         else
@@ -457,9 +461,18 @@ bool Configuration::IsConfigurationConsistent(vector<string> &errorMessages)
         errorMessages.push_back("Warning : missing Report configuration. Defaulting to text");
         return true;
     }
-    else if (emailReport && !IsEmailDataComplete())
+    else if (reportDispatching != "email" && reportDispatching != "file" &&
+             reportDispatching != "console")
     {
-        errorMessages.push_back("Error : missing data for email sending");
+        stringstream message;
+        message << "Warning : unknown " << reportDispatching << " dispatching.";
+        message << "Defaulting to console.";
+        errorMessages.push_back(message.str());
+        return true;
+    }
+    else if (reportDispatching == "email" && !IsEmailDataComplete())
+    {
+        errorMessages.push_back("Error : missing data for email sending. Defaulting to console.");
         return false;
     }
     else

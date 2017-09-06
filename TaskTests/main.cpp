@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ConfigurationParserTest(toolsLibDir);
     //QObject* testSuite = new FileToolsTest(toolsLibDir);
     //QObject* testSuite = new ClientWorkManagerTest();
-    //QObject* testSuite = new ConfigurationTest(taskLibDir);
+    QObject* testSuite = new ConfigurationTest(taskLibDir);
     //QObject* testSuite = new GitFsBackupJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new GitCommitReportParserTest(parsersDir);
     //QObject* testSuite = new RawCopyFsBackupJobTest(taskLibDir, errorDir);
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ZipAndCopyFsBackupJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new TarCommandParserTest(parsersDir);
     //QObject* testSuite = new GitFsBackupJobConfigurationTest();
-    QObject* testSuite = new RsnapshotBackupJobConfigurationTest();
+    //QObject* testSuite = new RsnapshotBackupJobConfigurationTest();
     //QObject* testSuite = new WakeJobConfigurationTest();
     //QObject* testSuite = new ChangeScreensaverJobConfigurationTest();
     //QObject* testSuite = new ClamAvJobConfigurationTest();

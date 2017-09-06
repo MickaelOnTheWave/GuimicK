@@ -21,12 +21,16 @@ private Q_SLOTS:
     void testRun();
 
 private:
+    void CheckFinalReport();
+
+    std::vector<std::string> GetAttachmentFiles() const;
+
     void CopyDataFolders();
     QStringList GetAttachmentFiles(const std::string& folder);
 
     void ReadConfiguration(Configuration& configuration);
     void CheckReport(const std::string& reportContent);
-    void CheckAttachments(WorkResultData* results);
+    void CheckAttachments(const std::vector<std::string>& files);
 
     void GetAttachmentContents(const QStringList& fileList,
                                std::vector<std::string>& contentList);

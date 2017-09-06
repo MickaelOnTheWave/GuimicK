@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QTest>
 
+#include "maintoolmodule.h"
 #include "clientworkmanager.h"
 #include "configuration.h"
 #include "curlconsoleemailsender.h"
@@ -14,7 +15,9 @@
 
 using namespace std;
 
-const string suiteTag = "TaskFeature/";
+static const string suiteTag = "TaskFeature/";
+static const string reportDir = "report/";
+static const string reportFile = "report.html";
 
 TaskFeatureTest::TaskFeatureTest(const std::string& _dataFolder,
                                  const std::string& _errorFolder)
@@ -58,20 +61,36 @@ void TaskFeatureTest::testRun_data()
 
 void TaskFeatureTest::testRun()
 {
-    Configuration configuration;
-    ReadConfiguration(configuration);
+    QFETCH(QString, configurationFile);
 
-    ClientWorkManager * manager = configuration.BuildSimpleWorkList();
-    WorkResultData* results = manager->RunWorkList();
+    MainToolModule mainTool("AutoTest");
+    mainTool.EnableTimedRuns(false);
 
-    AbstractReportCreator* reportCreator = configuration.GetReportCreator();
-    reportCreator->Generate(results, "AutoTest");
-    CheckReport(reportCreator->GetReportContent());
+    map<string,string> parameters;
+    parameters["conffile"] = currentTestCaseFolder + configurationFile.toStdString();
+    mainTool.RunFromParameterMap(parameters);
 
-    CheckAttachments(results);
+    CheckFinalReport();
+}
 
-    delete manager;
-    delete results;
+void TaskFeatureTest::CheckFinalReport()
+{
+    const string reportContents = FileTools::GetTextFileContent(reportDir + reportFile);
+    vector<string> attachments = GetAttachmentFiles();
+
+    CheckReport(reportContents);
+    CheckAttachments(attachments);
+}
+
+vector<string> TaskFeatureTest::GetAttachmentFiles() const
+{
+    QStringList fileList = FileTestUtils::GetFileList(reportDir.c_str());
+    fileList.removeAll(reportFile.c_str());
+
+    vector<string> stdFileList;
+    for (auto&& it : fileList)
+        stdFileList.push_back(it.toStdString());
+    return stdFileList;
 }
 
 void TaskFeatureTest::CopyDataFolders()
@@ -116,12 +135,14 @@ void TaskFeatureTest::CheckReport(const string &reportContent)
     QCOMPARE(reportContent, expectedContent);
 }
 
-void TaskFeatureTest::CheckAttachments(WorkResultData *results)
-{
-    QVERIFY(results->GetClientCount() == 1);
-
+void TaskFeatureTest::CheckAttachments(const std::vector<string> &files)
+{   
     vector<string> resultAttachmentContents;
-    results->GetAttachmentContents(resultAttachmentContents);
+    for (auto&& it : files)
+    {
+        const string content = FileTools::GetTextFileContent(reportDir + it);
+        resultAttachmentContents.push_back(content);
+    }
 
     QFETCH(QStringList, attachmentFiles);
     vector<string> expectedAttachmentContents;
@@ -139,7 +160,8 @@ void TaskFeatureTest::GetAttachmentContents(const QStringList &fileList, std::ve
     }
 }
 
-void TaskFeatureTest::CheckAttachmentContentsAreEqual(const std::vector<string> &contents, const std::vector<string> &expectedContents)
+void TaskFeatureTest::CheckAttachmentContentsAreEqual(const std::vector<string> &contents,
+                                                      const std::vector<string> &expectedContents)
 {
     if (contents.size() != expectedContents.size())
     {
@@ -148,19 +170,15 @@ void TaskFeatureTest::CheckAttachmentContentsAreEqual(const std::vector<string> 
         QFAIL("Wrong number of attachments");
     }
 
-    auto it=contents.begin();
-    auto itExp=expectedContents.begin();
-    int counter = 1;
-    while (it!=contents.end() && itExp!=expectedContents.end())
+    unsigned int counter = 1;
+    for (auto&& itExpected : expectedContents)
     {
-        bool isAsExpected = (*it == *itExp);
-        if (isAsExpected == false)
-            WriteAttachment(*it, counter);
-
-        QCOMPARE(*it, *itExp);
-
-        ++it;
-        ++itExp;
+        auto itElement = find(contents.begin(), contents.end(), itExpected);
+        if (itElement == contents.end())
+        {
+            WriteAttachment(itExpected, counter);
+            QFAIL("Attachment not found");
+        }
         ++counter;
     }
 }
