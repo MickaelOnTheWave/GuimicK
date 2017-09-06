@@ -93,39 +93,45 @@ void RsnapshotRawBackupJob::SetWaitBeforeRun(const bool value)
 JobStatus *RsnapshotRawBackupJob::RunBackup()
 {
     ConsoleJob* backupJob = CreateBackupCommandJob();
-    JobStatus* backupStatus = backupJob->Run();
-    debugManager->AddDataLine<string>("Full command output", backupJob->GetCommandOutput());
-    if (backupStatus->GetCode() != JobStatus::OK)
+    JobStatus* backupStatus = NULL;
+    if (backupJob->IsCommandAvailable())
     {
-        if (backupJob->GetCommandReturnCode() == 1)
+        backupStatus = backupJob->Run();
+        debugManager->AddDataLine<string>("Full command output", backupJob->GetCommandOutput());
+        if (backupStatus->GetCode() != JobStatus::OK)
         {
-            RsnapshotErrorAnalyzer analyzer(backupJob->GetCommandOutput());
-            if (analyzer.IsOutOfSpaceError())
-                backupStatus->SetDescription("Not enough disk space to perform backup");
-            else if (analyzer.IsInvalidFolderError())
-                backupStatus->SetDescription("Tried to backup invalid folder");
+            if (backupJob->GetCommandReturnCode() == 1)
+            {
+                RsnapshotErrorAnalyzer analyzer(backupJob->GetCommandOutput());
+                if (analyzer.IsOutOfSpaceError())
+                    backupStatus->SetDescription("Not enough disk space to perform backup");
+                else if (analyzer.IsInvalidFolderError())
+                    backupStatus->SetDescription("Tried to backup invalid folder");
+                else
+                {
+                    backupStatus->SetDescription("Fatal error. See attached file.");
+                    backupStatus->AddFileBuffer(GetAttachmentName(), backupJob->GetCommandOutput());
+                }
+            }
+            else if (backupJob->GetCommandReturnCode() == 2)
+            {
+                backupStatus->SetDescription("RSnapshot executed with some warnings. See attached file.");
+                backupStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
+                backupStatus->AddFileBuffer(GetAttachmentName(), backupJob->GetCommandOutput());
+            }
             else
             {
-                backupStatus->SetDescription("Fatal error. See attached file.");
+                string description("Unknown error running rsnapshot. Return code : ");
+                stringstream stream;
+                stream << backupJob->GetCommandReturnCode();
+                description += stream.str();
+                backupStatus->SetDescription(description);
                 backupStatus->AddFileBuffer(GetAttachmentName(), backupJob->GetCommandOutput());
             }
         }
-        else if (backupJob->GetCommandReturnCode() == 2)
-        {
-            backupStatus->SetDescription("RSnapshot executed with some warnings. See attached file.");
-            backupStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
-            backupStatus->AddFileBuffer(GetAttachmentName(), backupJob->GetCommandOutput());
-        }
-        else
-        {
-            string description("Unknown error running rsnapshot. Return code : ");
-            stringstream stream;
-            stream << backupJob->GetCommandReturnCode();
-            description += stream.str();
-            backupStatus->SetDescription(description);
-            backupStatus->AddFileBuffer(GetAttachmentName(), backupJob->GetCommandOutput());
-        }
     }
+    else
+        backupStatus = new JobStatus(JobStatus::ERROR, "Rsnapshot not installed");
 
     delete backupJob;
     return debugManager->UpdateStatus(backupStatus);
@@ -134,20 +140,26 @@ JobStatus *RsnapshotRawBackupJob::RunBackup()
 JobStatus *RsnapshotRawBackupJob::RunReportCreation()
 {
     ConsoleJob* reportJob = CreateReportCommandJob();
-    JobStatus* reportStatus = reportJob->Run();
-    debugManager->AddDataLine<string>("Full report output", reportJob->GetCommandOutput());
-    if (reportStatus->GetCode() == JobStatus::OK)
-        reportJobOutput = reportJob->GetCommandOutput();
-    else
+    JobStatus* reportStatus = NULL;
+    if (reportJob->IsCommandAvailable())
     {
-        string description("Error creating rsnapshot report. Return code : ");
-        stringstream stream;
-        stream << reportJob->GetCommandReturnCode();
-        description += stream.str();
-        reportStatus->SetDescription(description);
-        reportStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
-        reportStatus->AddFileBuffer(GetAttachmentName(), reportJob->GetCommandOutput());
+        reportStatus = reportJob->Run();
+        debugManager->AddDataLine<string>("Full report output", reportJob->GetCommandOutput());
+        if (reportStatus->GetCode() == JobStatus::OK)
+            reportJobOutput = reportJob->GetCommandOutput();
+        else
+        {
+            string description("Error creating rsnapshot report. Return code : ");
+            stringstream stream;
+            stream << reportJob->GetCommandReturnCode();
+            description += stream.str();
+            reportStatus->SetDescription(description);
+            reportStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
+            reportStatus->AddFileBuffer(GetAttachmentName(), reportJob->GetCommandOutput());
+        }
     }
+    else
+        reportStatus = new JobStatus(JobStatus::OK_WITH_WARNINGS, "Rsnapshot reporting not available");
 
     delete reportJob;
     return debugManager->UpdateStatus(reportStatus);
