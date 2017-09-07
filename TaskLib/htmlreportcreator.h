@@ -11,7 +11,10 @@ public:
     HtmlReportCreator();
     virtual ~HtmlReportCreator();
 
-    void SetCssFile(const std::string& _cssFile);
+    virtual void UpdateWithDispatchError(const std::string& failedDispatcher,
+                                         const std::string& fallbackDispatcher);
+
+    void SetCssFile(const std::string& _cssFile);    
 
 private:
     virtual void AddHeader(void);

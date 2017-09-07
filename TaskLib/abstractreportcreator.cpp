@@ -3,7 +3,8 @@
 using namespace std;
 
 AbstractReportCreator::AbstractReportCreator()
-    : report(""), useProfiling(true)
+    : fullReport(""), reportCore(""), dispatchErrors(""),
+      programVersion(""), useProfiling(true)
 {
 }
 
@@ -20,7 +21,7 @@ void AbstractReportCreator::Generate(WorkResultData *data, const string &version
 
 string AbstractReportCreator::GetReportContent() const
 {
-    return report.str();
+    return fullReport;
 }
 
 void AbstractReportCreator::GetAssociatedFiles(vector<string> &_externalFiles,

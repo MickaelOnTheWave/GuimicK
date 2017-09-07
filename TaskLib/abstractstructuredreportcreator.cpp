@@ -14,7 +14,10 @@ void AbstractStructuredReportCreator::Generate(WorkResultData *data,
                                                const vector<string> &configErrors,
                                                const string &version)
 {
-    report.str("");
+    fullReport = "";
+    reportCore.str("");
+    dispatchErrors.str("");
+    programVersion.str("");
 
     AddHeader();
 
@@ -47,7 +50,11 @@ void AbstractStructuredReportCreator::Generate(WorkResultData *data,
 
     AddConfigurationErrorsData(configErrors);
     AddProgramData(version);
+
+    fullReport = reportCore.str() + programVersion.str();
 }
+
+
 
 void AbstractStructuredReportCreator::UpdateAttachments(JobStatus *status)
 {

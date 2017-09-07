@@ -7,5 +7,5 @@ std::string DummyEmailReportDispatcher::GetName() const
 
 bool DummyEmailReportDispatcher::Dispatch(AbstractReportCreator *)
 {
-    return true;
+    return false;
 }

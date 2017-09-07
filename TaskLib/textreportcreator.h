@@ -13,6 +13,9 @@ public:
 	TextReportCreator();
     virtual ~TextReportCreator();
 
+    virtual void UpdateWithDispatchError(const std::string& failedDispatcher,
+                                         const std::string& fallbackDispatcher);
+
 protected:
     virtual void AddHeader(void);
     virtual void AddClientData(const std::pair<std::string, ClientJobResults *> &clientData);

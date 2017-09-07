@@ -8,6 +8,7 @@
 #include "clientworkmanager.h"
 #include "configuration.h"
 #include "curlconsoleemailsender.h"
+#include "filereportdispatcher.h"
 #include "filetestutils.h"
 #include "filetools.h"
 #include "gittools.h"
@@ -27,6 +28,7 @@ TaskFeatureTest::TaskFeatureTest(const std::string& _dataFolder,
 
 void TaskFeatureTest::init()
 {
+    cleanup();
     currentTestCaseName = QTest::currentDataTag();
     currentTestCaseFolder = suiteFolder + currentTestCaseName + "/";
 
@@ -65,6 +67,7 @@ void TaskFeatureTest::testRun()
 
     MainToolModule mainTool("AutoTest");
     mainTool.EnableTimedRuns(false);
+    mainTool.SetFallbackDispatcher(new FileReportDispatcher());
 
     map<string,string> parameters;
     parameters["conffile"] = currentTestCaseFolder + configurationFile.toStdString();

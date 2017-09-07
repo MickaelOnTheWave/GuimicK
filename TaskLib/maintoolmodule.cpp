@@ -21,11 +21,13 @@ static const int OTHER_ERROR           = 2;
 MainToolModule::MainToolModule(const string &_version)
     : version(_version), replacer(NULL), timedRuns(true)
 {
+    fallbackDispatcher = new ConsoleReportDispatcher();
 }
 
 MainToolModule::~MainToolModule()
 {
     delete replacer;
+    delete fallbackDispatcher;
 }
 
 void MainToolModule::EnableTimedRuns(const bool value)
@@ -36,6 +38,12 @@ void MainToolModule::EnableTimedRuns(const bool value)
 void MainToolModule::SetDispatcherReplacer(AbstractReportDispatcherReplacer *_replacer)
 {
     replacer = _replacer;
+}
+
+void MainToolModule::SetFallbackDispatcher(AbstractReportDispatcher *dispatcher)
+{
+    delete fallbackDispatcher;
+    fallbackDispatcher = dispatcher;
 }
 
 int MainToolModule::RunFromCommandLine(int argc, char *argv[])
@@ -66,9 +74,9 @@ int MainToolModule::Run(CommandLineManager &commandLine)
     Configuration configuration;
     vector<string> configurationErrors;
     bool configurationIsUsable = configuration.LoadFromFile(configurationFile, configurationErrors);
-    ShowErrors(configurationErrors);
     if (configurationIsUsable == false)
     {
+        ShowErrors(configurationErrors);
         cout << "Unrecoverable errors while trying to read configuration file. Exiting." << endl;
         return CONFIGURATION_ERROR;
     }
@@ -164,23 +172,24 @@ void MainToolModule::DispatchReport(AbstractReportCreator* reportCreator,
     if (replacer)
         reportDispatcher = replacer->Run(reportDispatcher, configuration);
 
-    bool ok = reportDispatcher->Dispatch(reportCreator);
+    bool ok = DispatchReport(reportCreator, reportDispatcher);
     if (!ok)
-    {
-        cout << reportDispatcher->GetName() << "dispatcher failed. ";
-        DispatchUsingFallback(reportCreator, configuration);
-    }
+        DispatchReport(reportCreator, fallbackDispatcher);
 }
 
-void MainToolModule::DispatchUsingFallback(AbstractReportCreator* reportCreator,
-                                           const Configuration &configuration)
+bool MainToolModule::DispatchReport(AbstractReportCreator *reportCreator,
+                                    AbstractReportDispatcher *dispatcher)
 {
-    ConsoleReportDispatcher fallbackDispatcher;
-    fallbackDispatcher.Initialize(&configuration);
+    bool ok = dispatcher->Dispatch(reportCreator);
+    if (!ok)
+    {
+        const string fallbackName = (dispatcher != fallbackDispatcher) ?
+                    fallbackDispatcher->GetName() :
+                    string("");
 
-    cout << "Using " << fallbackDispatcher.GetName() << endl;
-
-    fallbackDispatcher.Dispatch(reportCreator);
+        reportCreator->UpdateWithDispatchError(dispatcher->GetName(), fallbackName);
+    }
+    return ok;
 }
 
 bool MainToolModule::RunLocalShutdown(const bool isLocalShutdownEnabled)

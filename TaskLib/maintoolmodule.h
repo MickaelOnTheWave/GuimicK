@@ -15,6 +15,7 @@ public:
 
     void EnableTimedRuns(const bool value);
     void SetDispatcherReplacer(AbstractReportDispatcherReplacer* _replacer);
+    void SetFallbackDispatcher(AbstractReportDispatcher* dispatcher);
 
     int RunFromCommandLine(int argc, char* argv[]);
     int RunFromParameterMap(const std::map<std::string, std::string>& parameters);
@@ -41,8 +42,8 @@ private:
                         const Configuration& configuration,
                         const CommandLineManager& commandLine);
 
-    void DispatchUsingFallback(AbstractReportCreator *reportCreator,
-                               const Configuration& configuration);
+    bool DispatchReport(AbstractReportCreator* reportCreator,
+                        AbstractReportDispatcher* dispatcher);
 
     AbstractReportDispatcher* ReplaceDispatcherIfEmail(AbstractReportDispatcher* input,
                                                        const Configuration& configuration);
@@ -51,6 +52,7 @@ private:
 
     const std::string version;
     AbstractReportDispatcherReplacer* replacer;
+    AbstractReportDispatcher* fallbackDispatcher;
     bool timedRuns;
 };
 

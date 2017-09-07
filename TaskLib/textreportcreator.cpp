@@ -15,15 +15,28 @@ TextReportCreator::~TextReportCreator()
 {
 }
 
+void TextReportCreator::UpdateWithDispatchError(const std::string& failedDispatcher,
+                                                const std::string& fallbackDispatcher)
+{
+    fullReport = "";
+
+    dispatchErrors << failedDispatcher << " failed.";
+    if (fallbackDispatcher != "")
+        dispatchErrors << " Using " << fallbackDispatcher << ".";
+    dispatchErrors << endl;
+
+    fullReport = reportCore.str() + dispatchErrors.str() + programVersion.str();
+}
+
 void TextReportCreator::AddHeader()
 {
 }
 
 void TextReportCreator::AddClientData(const pair<string, ClientJobResults*>& clientData)
 {
-    report << Tools::Tabs(3) << clientData.first << endl;
-    report << endl;
-    report << endl;
+    reportCore << Tools::Tabs(3) << clientData.first << endl;
+    reportCore << endl;
+    reportCore << endl;
 
     UpdateNameCellSize(clientData.second);
 }
@@ -32,39 +45,39 @@ void TextReportCreator::AddJobData(const string &jobName, JobStatus *status)
 {
     string stringOutput(status->GetDescription());
 
-    report << "\t" << jobName << Tools::Spaces(nameCellSize-jobName.size()) << status->GetCodeDescription();
+    reportCore << "\t" << jobName << Tools::Spaces(nameCellSize-jobName.size()) << status->GetCodeDescription();
     if (useProfiling)
-        report << "\t" << Tools::FormatTimeString(status->GetDuration());
-    report << endl;
+        reportCore << "\t" << Tools::FormatTimeString(status->GetDuration());
+    reportCore << endl;
 
     if (stringOutput != "")
-        report << Tools::Tabs(2) << stringOutput << endl;
+        reportCore << Tools::Tabs(2) << stringOutput << endl;
 }
 
 void TextReportCreator::AddSummaryData(const int code, const time_t duration)
 {
-    report << endl;
-    report << "\t" << overallString << Tools::Spaces(nameCellSize-overallString.size());
-    report << JobStatus::GetCodeDescription(code);
+    reportCore << endl;
+    reportCore << "\t" << overallString << Tools::Spaces(nameCellSize-overallString.size());
+    reportCore << JobStatus::GetCodeDescription(code);
     if (useProfiling)
-        report << "\t" << Tools::FormatTimeString(duration) << endl;
-    report << endl;
+        reportCore << "\t" << Tools::FormatTimeString(duration) << endl;
+    reportCore << endl;
 }
 
 void TextReportCreator::AddConfigurationErrorsData(const std::vector<string> &errors)
 {
     if (errors.size() > 0)
     {
-        report << Tools::Tabs(1) << "Configuration file has some errors :" << endl;
+        reportCore << Tools::Tabs(1) << "Configuration file has some errors :" << endl;
         for (vector<string>::const_iterator it=errors.begin(); it!=errors.end(); ++it)
-            report << Tools::Tabs(2) << *it << endl;
-        report << endl;
+            reportCore << Tools::Tabs(2) << *it << endl;
+        reportCore << endl;
     }
 }
 
 void TextReportCreator::AddProgramData(const string &version)
 {
-    report << "Task Manager version " << version << endl;
+    programVersion << "Task Manager version " << version << endl;
 }
 
 void TextReportCreator::UpdateNameCellSize(ClientJobResults *data)

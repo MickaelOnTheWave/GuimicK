@@ -473,7 +473,7 @@ bool Configuration::IsConfigurationConsistent(vector<string> &errorMessages)
     else if (reportDispatching == "email" && !IsEmailDataComplete())
     {
         errorMessages.push_back("Error : missing data for email sending. Defaulting to console.");
-        return false;
+        return true;
     }
     else
         return true;

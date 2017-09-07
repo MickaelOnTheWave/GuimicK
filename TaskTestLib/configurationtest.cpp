@@ -137,7 +137,7 @@ void ConfigurationTest::LoadAgentExamples()
 {
     QTest::newRow("Agent - missing password")
                             << "agent - nopassword.txt"
-                            << false
+                            << true
                             << QStringList({"Error : missing data for email sending. Defaulting to console."});
     QTest::newRow("Agent - unknown property")
                             << "agent - unknown property.txt"
