@@ -61,7 +61,15 @@ void HtmlReportCreator::AddSummaryData(const int code, const time_t duration)
 
 void HtmlReportCreator::AddConfigurationErrorsData(const std::vector<string> &errors)
 {
-    // TODO : fill this
+    if (errors.size() == 0)
+        return;
+
+    report << "<table>" << endl;
+    report << "<tr><th>Configuration file errors</th></tr>" << endl;
+    vector<string>::const_iterator it = errors.begin();
+    for (; it != errors.end(); ++it)
+        report << "<tr><td>" << *it << "</td></tr>" << endl;
+    report << "</table>" << endl;
 }
 
 void HtmlReportCreator::AddProgramData(const std::string& version)
