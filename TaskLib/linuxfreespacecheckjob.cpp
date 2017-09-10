@@ -80,7 +80,7 @@ JobStatus *LinuxFreeSpaceCheckJob::Run()
     }
 
     delete job;
-    return status;
+    return debugManager->UpdateStatus(status);
 }
 
 bool LinuxFreeSpaceCheckJob::IsTargetLocal() const

@@ -33,6 +33,8 @@ public:
     virtual int GetCommandReturnCode() const;
     virtual std::string GetCommandOutput() const;
 
+    virtual bool IsCommandAvailable() const;
+
 private:
     std::string title;
 	std::string user;

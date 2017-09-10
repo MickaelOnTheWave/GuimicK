@@ -122,3 +122,9 @@ string SshConsoleJob::GetCommandOutput() const
     return remoteJob->GetCommandOutput();
 }
 
+bool SshConsoleJob::IsCommandAvailable() const
+{
+    // No way to check remotely if command exists.
+    return true;
+}
+

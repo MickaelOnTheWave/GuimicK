@@ -47,7 +47,7 @@ public:
 
     bool IsRunOk() const;
 
-    bool IsCommandAvailable() const;
+    virtual bool IsCommandAvailable() const;
 
 
     // TODO : find a better place for that. This is a global feature, not

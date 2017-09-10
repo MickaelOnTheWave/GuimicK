@@ -7,6 +7,8 @@
 using namespace std;
 
 static string whichCommandPath("");
+static string notInstalledError("Command not installed");
+
 std::vector<std::string> ConsoleJob::appSearchPaths;
 
 ConsoleJob::ConsoleJob(const string &_command,
@@ -49,6 +51,9 @@ bool ConsoleJob::IsInitialized()
 
 JobStatus *ConsoleJob::Run()
 {
+    if (IsCommandAvailable() == false)
+        return debugManager->CreateStatus(JobStatus::ERROR, notInstalledError);
+
     bool success = RunCommand();
     if (success)
         return CreateSuccessStatus();

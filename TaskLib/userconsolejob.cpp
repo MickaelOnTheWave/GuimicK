@@ -136,7 +136,8 @@ void UserConsoleJob::SetExpectedOutput(const string &value)
     successConditionOnStandardOutput = true;
 }
 
-// @TODO resolve bug where apparently output is not correctly processed with it has some special chars (like in :-) )
+// @TODO resolve bug where apparently output is not correctly processed with it has some
+// special chars (like in :-) )
 bool UserConsoleJob::RunCommand()
 {
     debugManager->Reset();
