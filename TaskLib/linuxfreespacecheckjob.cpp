@@ -57,6 +57,9 @@ JobStatus *LinuxFreeSpaceCheckJob::Run()
 {
     AbstractConsoleJob* job = CreateJobInstance();
 
+    debugManager->AddDataLine<string>("Command", job->GetCommand());
+    debugManager->AddDataLine<string>("Parameters", job->GetCommandParameters());
+
     JobStatus* status = job->Run();
     if (status->GetCode() == JobStatus::OK)
     {
@@ -76,7 +79,7 @@ JobStatus *LinuxFreeSpaceCheckJob::Run()
         }
 
         if (reportContent != "")
-            status->AddFileBuffer("FreeSpaceCheck.txt", reportContent);
+            status->AddFileBuffer(GetAttachmentName(), reportContent);
     }
 
     delete job;

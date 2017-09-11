@@ -111,6 +111,16 @@ void SshConsoleJob::SetCommand(const string &command)
     remoteJob->SetCommand(command);
 }
 
+string SshConsoleJob::GetCommandParameters() const
+{
+    return remoteJob->GetCommandParameters();
+}
+
+void SshConsoleJob::SetCommandParameters(const string &parameters)
+{
+    remoteJob->SetCommandParameters(parameters);
+}
+
 int SshConsoleJob::GetCommandReturnCode() const
 {
     return remoteJob->GetCommandReturnCode();

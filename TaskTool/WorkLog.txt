@@ -1,4 +1,6 @@
 11/09/2017 (18.4)
+	Production run ran mostly as expected, expect from command line error
+	in console jobs. Adding debug information to them.
 
 
 10/09/2017 (3h)

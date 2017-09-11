@@ -14,6 +14,9 @@ public:
     virtual std::string GetCommand() const = 0;
     virtual void SetCommand(const std::string& command) = 0;
 
+    virtual std::string GetCommandParameters() const = 0;
+    virtual void SetCommandParameters(const std::string& parameters) = 0;
+
     virtual int GetCommandReturnCode() const = 0;
     virtual std::string GetCommandOutput() const = 0;
 
