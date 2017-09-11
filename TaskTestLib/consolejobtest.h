@@ -24,6 +24,7 @@ private Q_SLOTS:
 protected:
     virtual void TestCommandWithParameter(const int codeOnAppended,
                                           const std::string& expectedMessage,
+                                          const std::string &expectedOutput,
                                           const bool appendCommand);
     virtual std::string GetExpectedOkDescription();
     virtual std::string GetExpectedErrorDescription(const int expectedCode,

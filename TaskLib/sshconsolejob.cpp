@@ -87,6 +87,8 @@ JobStatus *SshConsoleJob::Run()
     debugManager->AddDataLine<string>("Output", sshJob->GetCommandOutput());
     debugManager->AddDataLine<int>("Return code", sshJob->GetCommandReturnCode());
 
+    remoteJob->SetCommandOutput(sshJob->GetCommandOutput());
+
     delete sshJob;
     return debugManager->UpdateStatus(status);
 }

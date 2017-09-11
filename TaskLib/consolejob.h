@@ -47,6 +47,8 @@ public:
     virtual int GetCommandReturnCode() const;
     virtual std::string GetCommandOutput() const;
 
+    void SetCommandOutput(const std::string& value);
+
     bool IsRunOk() const;
 
     virtual bool IsCommandAvailable() const;

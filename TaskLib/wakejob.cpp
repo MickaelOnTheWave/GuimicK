@@ -41,20 +41,18 @@ AbstractJob *WakeJob::Clone()
 bool WakeJob::InitializeFromClient(Client *client)
 {
     bool ok = AbstractJob::InitializeFromClient(client);
-    if (ok)
-    {
-        if (macAddress == "")
-            macAddress = client->GetProperty("mac");
-        if (broadcastIp == "")
-            broadcastIp = client->GetProperty("broadcast");
-        if (expectedIp == "")
-            expectedIp = client->GetProperty("ip");
-
-        wakelanPath = Tools::GetCommandPath("wakelan", ConsoleJob::appSearchPaths);
-        return IsInitialized();
-    }
-    else
+    if (!ok)
         return false;
+
+    if (macAddress == "")
+        macAddress = client->GetProperty("mac");
+    if (broadcastIp == "")
+        broadcastIp = client->GetProperty("broadcast");
+    if (expectedIp == "")
+        expectedIp = client->GetProperty("ip");
+
+    wakelanPath = Tools::GetCommandPath("wakelan", ConsoleJob::appSearchPaths);
+    return IsInitialized();
 }
 
 bool WakeJob::IsInitialized()

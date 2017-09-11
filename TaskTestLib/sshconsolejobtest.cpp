@@ -62,10 +62,10 @@ void SshConsoleJobTest::CreateRemoteCatJob(const string &fileToTest)
 
 void SshConsoleJobTest::TestCommandWithAppendedParameter()
 {
-    TestCommandWithParameter(JobStatus::OK, "", true);
+    TestCommandWithParameter(JobStatus::OK, "", "my super content", true);
 }
 
 void SshConsoleJobTest::TestCommandWithSeparatedParameter()
 {
-    TestCommandWithParameter(JobStatus::OK, "", false);
+    TestCommandWithAppendedParameter();
 }

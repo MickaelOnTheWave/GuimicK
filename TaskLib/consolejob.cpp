@@ -112,6 +112,11 @@ string ConsoleJob::GetCommandOutput() const
     return commandOutput;
 }
 
+void ConsoleJob::SetCommandOutput(const string &value)
+{
+    commandOutput = value;
+}
+
 bool ConsoleJob::IsRunOk() const
 {
     return receivedReturnCode == expectedReturnCode;
