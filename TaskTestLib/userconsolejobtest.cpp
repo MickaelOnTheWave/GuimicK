@@ -12,16 +12,15 @@ UserConsoleJobTest::UserConsoleJobTest()
 
 void UserConsoleJobTest::testRun_InvalidCommand()
 {
-    const string expectedDescription = GetExpectedErrorDescription(0, 127);
     job = CreateDefaultJob("nonexistentcommand");
 
-    RunAndCheckNoAttachments(JobStatus::ERROR, expectedDescription);
+    RunAndCheckNoAttachments(JobStatus::ERROR, ConsoleJob::NotAvailableError);
 
     GetJob()->SetAttachOutput(true);
 
-    RunAndCheckOneAttachment(JobStatus::ERROR,
-                             expectedDescription,
-                             "sh: 1: nonexistentcommand: not found");
+    // Even though job is marked to attach output, as command is invalid,
+    // nothing is attached.
+    RunAndCheckNoAttachments(JobStatus::ERROR, ConsoleJob::NotAvailableError);
 }
 
 void UserConsoleJobTest::testRun_CheckReturnCode()
@@ -61,7 +60,7 @@ void UserConsoleJobTest::testRun_CheckAttachment()
 void UserConsoleJobTest::testRun_OutputToFile_ReturnCode()
 {
     FileTools::WriteBufferToFile("testFile", "test content");
-    job = CreateDefaultJob("ls testFile");
+    job = CreateDefaultJob("ls",  "testFile");
     GetJob()->SetOutputTofile("outputFile");
 
     RunAndCheck(JobStatus::OK, "");
@@ -78,7 +77,7 @@ void UserConsoleJobTest::testRun_OutputToFile_OutputDoesNotWork()
     const string outputFileName = "output";
 
     FileTools::WriteBufferToFile(testFileName, testFileContent);
-    job = CreateDefaultJob(string("cat ") + testFileName);
+    job = CreateDefaultJob("cat", testFileName);
     GetJob()->SetOutputTofile(outputFileName);
 
     GetJob()->SetExpectedOutput(testFileContent);

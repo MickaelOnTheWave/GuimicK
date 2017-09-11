@@ -18,7 +18,8 @@ Client
 		Console
 		{
 			title = "Simple command - parsing through buffer";
-			command = "cat folder/output.txt";
+			command = "cat";
+			params = "folder/output.txt";
 			parserCommand = "./folder/CommandLineTool --direct --parser git --inputbuffer";
 			parserUsesBuffer = true;
 		}

@@ -7,6 +7,7 @@ using namespace std;
 
 const std::string UserConsoleJobConfiguration::TitleProperty = "title";
 const std::string UserConsoleJobConfiguration::CommandProperty = "command";
+const std::string UserConsoleJobConfiguration::ParameterProperty = "params";
 const std::string UserConsoleJobConfiguration::ReturnCodeProperty = "returnCode";
 const std::string UserConsoleJobConfiguration::ExpectedOutputProperty = "expectedOutput";
 const std::string UserConsoleJobConfiguration::OutputFilenameProperty = "outputFileName";
@@ -34,6 +35,7 @@ void UserConsoleJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationOb
 
     const string title =          confObject->GetFirstProperty(TitleProperty, "param0");
     const string command =        confObject->GetFirstProperty(CommandProperty, "param1");
+    const string parameters =     confObject->GetFirstProperty(ParameterProperty, "param1");
     const string rawReturnCode =  confObject->GetFirstProperty(ReturnCodeProperty,"param2");
     const string expectedOutput = confObject->GetProperty(ExpectedOutputProperty);
     const string outputFile     = confObject->GetProperty(OutputFilenameProperty);
@@ -43,6 +45,7 @@ void UserConsoleJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationOb
     UserConsoleJob* castJob = static_cast<UserConsoleJob*>(job);
     castJob->SetTitle(title);
     castJob->Initialize(command);
+    castJob->SetCommandParameters(parameters);
 
     if (rawReturnCode != "")
     {
@@ -73,6 +76,7 @@ void UserConsoleJobConfiguration::FillKnownProperties(std::vector<string> &prope
 
     properties.push_back(TitleProperty);
     properties.push_back(CommandProperty);
+    properties.push_back(ParameterProperty);
     properties.push_back(ReturnCodeProperty);
     properties.push_back(ExpectedOutputProperty);
     properties.push_back(OutputFilenameProperty);

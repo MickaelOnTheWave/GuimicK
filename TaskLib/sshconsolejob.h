@@ -36,6 +36,8 @@ public:
     virtual bool IsCommandAvailable() const;
 
 private:
+    ConsoleJob* CreateSshJob();
+
     std::string title;
 	std::string user;
 	std::string host;

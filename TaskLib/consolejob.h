@@ -16,6 +16,8 @@
 class ConsoleJob : public AbstractConsoleJob
 {
 public:
+    static std::string NotAvailableError;
+
     ConsoleJob(const std::string& _command = "",
                const std::string& _params = "", int _expectedReturnCode = 0);
     ConsoleJob(const ConsoleJob& other);
@@ -59,6 +61,7 @@ public:
 protected:
 
     virtual bool RunCommand();
+
     virtual JobStatus* CreateSuccessStatus();
     virtual JobStatus* CreateErrorStatus();
 

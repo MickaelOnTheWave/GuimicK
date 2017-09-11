@@ -38,30 +38,37 @@ void ConsoleJobTest::testRunOk()
 
 void ConsoleJobTest::testRunError()
 {
-    job = CreateDefaultJob("ls nonexistingfolder");
+    job = CreateDefaultJob("ls", "nonexistingfolder");
     RunAndCheckNoAttachments(JobStatus::ERROR,
                              GetExpectedErrorDescription(0, 2));
 }
 
-void ConsoleJobTest::testCommandWithParameter()
+void ConsoleJobTest::testCommandWithAppendedParameter()
+{
+    TestCommandWithAppendedParameter();
+}
+
+void ConsoleJobTest::testCommandWithSeparatedParameter()
+{
+    TestCommandWithSeparatedParameter();
+}
+
+void ConsoleJobTest::TestCommandWithParameter(const int expectedCode,
+                                              const string &expectedMessage,
+                                              const bool appendCommand)
 {
     const string fileContent = "my super content";
     const string filename = "myfile.txt";
     FileTools::WriteBufferToFile(filename, fileContent);
 
     const string fullFilename = FileTools::GetCurrentFullPath() + "/" + filename;
-    const string catCommand = string("cat ") + fullFilename;
 
-    job = CreateDefaultJob(catCommand);
-    RunAndCheckNoAttachments(JobStatus::OK,
-                             GetExpectedOkDescription());
-    QCOMPARE(job->GetCommandOutput().c_str(), fileContent.c_str());
+    const string catCommand = (appendCommand) ? string("cat ") + fullFilename : string("cat");
+    const string catParam = (appendCommand) ? string("") : fullFilename;
 
-    delete job;
-    job = CreateDefaultJob("cat", fullFilename);
-    RunAndCheckNoAttachments(JobStatus::OK,
-                             GetExpectedOkDescription());
-    QCOMPARE(job->GetCommandOutput().c_str(), fileContent.c_str());
+    job = CreateDefaultJob(catCommand, catParam);
+    RunAndCheckNoAttachments(expectedCode, expectedMessage);
+    QCOMPARE(job->GetCommandOutput().c_str(), "");
 }
 
 string ConsoleJobTest::GetExpectedOkDescription()
@@ -100,7 +107,10 @@ void ConsoleJobTest::RunAndCheckOneAttachment(const int expectedCode,
 
     vector<pair<string,string> > buffers;
     status->GetFileBuffers(buffers);
-    QCOMPARE(buffers.front().second.c_str(), expectedAttachmentContent.c_str());
+    if (buffers.size() == 0)
+        QFAIL("No attachment to check");
+    else
+        QCOMPARE(buffers.front().second.c_str(), expectedAttachmentContent.c_str());
 }
 
 void ConsoleJobTest::RunAndCheck(const int expectedCode,
@@ -120,4 +130,14 @@ void ConsoleJobTest::CheckAttachmentCount(const unsigned long fileCount,
     status->GetFileBuffers(filebuffers);
     QCOMPARE(filenames.size(), fileCount);
     QCOMPARE(filebuffers.size(), bufferCount);
+}
+
+void ConsoleJobTest::TestCommandWithAppendedParameter()
+{
+    TestCommandWithParameter(JobStatus::ERROR, ConsoleJob::NotAvailableError, true);
+}
+
+void ConsoleJobTest::TestCommandWithSeparatedParameter()
+{
+    TestCommandWithParameter(JobStatus::OK, "my super content", false);
 }

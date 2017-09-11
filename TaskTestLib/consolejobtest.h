@@ -18,9 +18,13 @@ private Q_SLOTS:
 
     void testRunOk();
     void testRunError();
-    void testCommandWithParameter();
+    void testCommandWithAppendedParameter();
+    void testCommandWithSeparatedParameter();
 
 protected:
+    virtual void TestCommandWithParameter(const int codeOnAppended,
+                                          const std::string& expectedMessage,
+                                          const bool appendCommand);
     virtual std::string GetExpectedOkDescription();
     virtual std::string GetExpectedErrorDescription(const int expectedCode,
                                                     const int receivedCode);
@@ -42,6 +46,10 @@ protected:
 
     AbstractConsoleJob* job = nullptr;
     JobStatus* status = nullptr;
+
+private:
+    virtual void TestCommandWithAppendedParameter();
+    virtual void TestCommandWithSeparatedParameter();
 };
 
 #endif // CONSOLEJOBTEST_H

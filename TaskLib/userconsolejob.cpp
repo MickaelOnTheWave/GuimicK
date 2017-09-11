@@ -180,7 +180,8 @@ JobStatus *UserConsoleJob::CreateErrorStatus()
 
 void UserConsoleJob::RunCommandOnFile()
 {
-    int rawCode = Tools::RunExternalCommandToFile(command, outputFileName, true);
+    string commandToRun = command + " " + commandParams;
+    int rawCode = Tools::RunExternalCommandToFile(commandToRun, outputFileName, true);
     receivedReturnCode = WEXITSTATUS(rawCode);
     currentStatus->AddExternalFile(outputFileName);
 }

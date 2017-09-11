@@ -77,18 +77,13 @@ JobStatus *SshConsoleJob::Run()
     else if (Tools::IsComputerAlive(host) == false)
         return new JobStatus(JobStatus::ERROR, invalidTargetError);
 
-    string oldCommandName = remoteJob->GetCommand();
-    string newCommandName = string("ssh ") + user + "@" + host + " \"" + oldCommandName + "\"";
-    remoteJob->SetCommand(newCommandName);
+    ConsoleJob* sshJob = CreateSshJob();
+    JobStatus* status = sshJob->Run();
 
-    debugManager->AddDataLine<string>("Full command", newCommandName);
+    debugManager->AddDataLine<string>("Output", sshJob->GetCommandOutput());
+    debugManager->AddDataLine<int>("Return code", sshJob->GetCommandReturnCode());
 
-    JobStatus* status = remoteJob->Run();
-
-    debugManager->AddDataLine<string>("Output", remoteJob->GetCommandOutput());
-    debugManager->AddDataLine<int>("Return code", remoteJob->GetCommandReturnCode());
-
-    remoteJob->SetCommand(oldCommandName);
+    delete sshJob;
     return debugManager->UpdateStatus(status);
 }
 
@@ -126,5 +121,18 @@ bool SshConsoleJob::IsCommandAvailable() const
 {
     // No way to check remotely if command exists.
     return true;
+}
+
+ConsoleJob *SshConsoleJob::CreateSshJob()
+{
+    ConsoleJob* sshJob = static_cast<ConsoleJob*>(remoteJob->Clone());
+    const string remoteJobCommand = remoteJob->GetCommand() + " " +
+                                    remoteJob->GetCommandParameters();
+    const string sshParameters = user + "@" + host + " \"" + remoteJobCommand + "\"";
+    sshJob->SetCommand("ssh");
+    sshJob->SetCommandParameters(sshParameters);
+
+    debugManager->AddDataLine<string>("Ssh parameters", sshParameters);
+    return sshJob;
 }
 

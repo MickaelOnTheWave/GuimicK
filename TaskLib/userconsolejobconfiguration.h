@@ -8,6 +8,7 @@ class UserConsoleJobConfiguration : public AbstractJobDefaultConfiguration
 public:
     static const std::string TitleProperty;
     static const std::string CommandProperty;
+    static const std::string ParameterProperty;
     static const std::string ReturnCodeProperty;
     static const std::string ExpectedOutputProperty;
     static const std::string OutputFilenameProperty;

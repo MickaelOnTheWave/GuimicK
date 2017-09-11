@@ -14,6 +14,7 @@ public:
 private Q_SLOTS:
     void testConfigure_TitleProperty();
     void testConfigure_CommandProperty();
+    void testConfigure_ParamsProperty();
     void testConfigure_ExpectedOutputProperty();
     void testConfigure_OutputFilenameProperty();
     void testConfigure_ParserCommandProperty();
@@ -30,6 +31,7 @@ protected:
 private:
     void TestTitleProperty(const std::string &propertyValue);
     void TestCommandProperty(const std::string &propertyValue);
+    void TestParamsProperty(const std::string &propertyValue);
     void TestReturnCodeProperty(const std::string &propertyValue, const int &expectedValue);
     void TestExpectedOutputProperty(const std::string &propertyValue);
     void TestOutputFilenameProperty(const std::string &propertyValue);

@@ -19,11 +19,14 @@ private Q_SLOTS:
 
 protected:
     virtual AbstractConsoleJob* CreateDefaultJob(const std::string& command,
-                                                 const std::string & params) override;
+                                                 const std::string & params) override;   
 
     SshConsoleJob* GetJob();
 
 private:
+    virtual void TestCommandWithAppendedParameter();
+    virtual void TestCommandWithSeparatedParameter();
+
     void CreateRemoteCatJob(const std::string& fileToTest);
 
 };

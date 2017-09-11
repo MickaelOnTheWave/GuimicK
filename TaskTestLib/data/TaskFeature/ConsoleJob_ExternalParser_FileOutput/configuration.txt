@@ -18,7 +18,8 @@ Client
 		Console
 		{
 			title = "Simple command - parsing through files";
-			command = "cat folder/output.txt > file.txt";
+			command = "cat";
+			params = "folder/output.txt > file.txt";
 			parserCommand = "./folder/CommandLineTool --direct --parser git --input file.txt";
 		}
 	}

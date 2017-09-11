@@ -53,9 +53,19 @@ SshConsoleJob *SshConsoleJobTest::GetJob()
 
 void SshConsoleJobTest::CreateRemoteCatJob(const string &fileToTest)
 {
-    const string fullCatCommand = string("cat ") + FileTools::GetCurrentFullPath() + "/" + fileToTest;
-    UserConsoleJob* embeddedJob = new UserConsoleJob("", fullCatCommand);
+    const string catParams = FileTools::GetCurrentFullPath() + "/" + fileToTest;
+    UserConsoleJob* embeddedJob = new UserConsoleJob("", "cat", catParams);
     embeddedJob->SetAttachOutput(true);
     job = new SshConsoleJob("", embeddedJob);
     GetJob()->SetTarget("mickael", "Desktop");
+}
+
+void SshConsoleJobTest::TestCommandWithAppendedParameter()
+{
+    TestCommandWithParameter(JobStatus::OK, "", true);
+}
+
+void SshConsoleJobTest::TestCommandWithSeparatedParameter()
+{
+    TestCommandWithParameter(JobStatus::OK, "", false);
 }

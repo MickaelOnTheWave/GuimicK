@@ -16,6 +16,11 @@ void UserConsoleJobConfigurationTest::testConfigure_CommandProperty()
     TestCommandProperty("command");
 }
 
+void UserConsoleJobConfigurationTest::testConfigure_ParamsProperty()
+{
+    TestParamsProperty("parameters");
+}
+
 void UserConsoleJobConfigurationTest::testConfigure_ReturnCodeProperty_data()
 {
     QTest::addColumn<QString>("propertyValue");
@@ -98,6 +103,21 @@ void UserConsoleJobConfigurationTest::TestCommandProperty(const std::string &pro
 
     QVERIFY(castJob != nullptr);
     QCOMPARE(castJob->GetCommand(), propertyValue);
+
+    delete job;
+    delete confObject;
+}
+
+void UserConsoleJobConfigurationTest::TestParamsProperty(const string &propertyValue)
+{
+    ConfigurationObject* confObject = CreateSimpleConfigurationObject(
+                UserConsoleJobConfiguration::ParameterProperty, propertyValue);
+
+    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
+    auto castJob = dynamic_cast<UserConsoleJob*>(job);
+
+    QVERIFY(castJob != nullptr);
+    QCOMPARE(castJob->GetCommandParameters(), propertyValue);
 
     delete job;
     delete confObject;

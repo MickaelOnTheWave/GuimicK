@@ -18,7 +18,8 @@ Client
 		Console
 		{
 			title = "Simple console command";
-			command = "ls folder";
+			command = "ls";
+			params = "folder";
 		}
 	}
 }
