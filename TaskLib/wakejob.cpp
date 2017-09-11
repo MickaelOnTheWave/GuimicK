@@ -7,11 +7,12 @@
 
 using namespace std;
 
-static const int DEFAULT_TIMEOUT = 120;
+static const int defaultTimeout = 120;
+static const int defaultRetries = 3;
 
 WakeJob::WakeJob() : AbstractJob(),
     macAddress(""), broadcastIp(""), expectedIp(""),
-    wakelanPath("")
+    timeout(defaultTimeout), maxRetries(defaultRetries)
 {
 }
 
@@ -19,8 +20,7 @@ WakeJob::WakeJob(const WakeJob &other)
     : AbstractJob(other),
       macAddress(other.macAddress),
       broadcastIp(other.broadcastIp),
-      expectedIp(other.expectedIp),
-      wakelanPath(other.wakelanPath)
+      expectedIp(other.expectedIp)
 {
 }
 
@@ -51,41 +51,66 @@ bool WakeJob::InitializeFromClient(Client *client)
     if (expectedIp == "")
         expectedIp = client->GetProperty("ip");
 
-    wakelanPath = Tools::GetCommandPath("wakelan", ConsoleJob::appSearchPaths);
     return IsInitialized();
 }
 
 bool WakeJob::IsInitialized()
 {
-    return wakelanPath != "" && HasMandatoryParameters();
+    return HasMandatoryParameters();
 }
 
 JobStatus *WakeJob::Run()
 {
-    const string wakeCommand = wakelanPath + " -m " + macAddress + " -b " + broadcastIp;
-    debugManager->AddDataLine<string>("Wake command", wakeCommand);
+    const string parameters = string("-m ") + macAddress + " -b " + broadcastIp;
+    ConsoleJob wakeCommand("wakelan", parameters);
+    wakeCommand.SetParentDebugManager(debugManager);
 
-    const int maxRetries = 3;
+    if (!wakeCommand.IsCommandAvailable())
+        return debugManager->CreateStatus(JobStatus::ERROR, "wakelan not installed");
+
+    debugManager->AddDataLine<int>("maxRetries", maxRetries);
+    debugManager->AddDataLine<int>("timeout", timeout);
+
     for (int i=0; i<maxRetries; ++i)
     {
-        std::string wakeCommandOutput;
-        Tools::RunExternalCommandToBuffer(wakeCommand, wakeCommandOutput, true);
-        debugManager->AddDataLine<string>("Output", wakeCommandOutput);
+        JobStatus* status = wakeCommand.Run();
+        if (status->GetCode() != JobStatus::OK)
+            return status;
+        else
+            delete status;
+
+        debugManager->AddDataLine<string>("Wake Output", wakeCommand.GetCommandOutput());
 
         int secondsToWake = WaitForComputerToGoUp();
-        if (secondsToWake < DEFAULT_TIMEOUT)
+        if (secondsToWake < timeout)
         {
-            debugManager->AddDataLine<int>("retries", i);
-            debugManager->AddDataLine<int>("maxRetries", maxRetries);
+            debugManager->AddDataLine<int>("Retry count", i);
             debugManager->AddDataLine<int>("seconds counter", secondsToWake);
-            debugManager->AddDataLine<int>("timeout", DEFAULT_TIMEOUT);
-            return debugManager->UpdateStatus(new JobStatus(JobStatus::OK));
+            return debugManager->CreateStatus(JobStatus::OK, "");
         }
     }
 
-    debugManager->AddDataLine<int>("maxRetries", maxRetries);
-    debugManager->AddDataLine<int>("timeout", DEFAULT_TIMEOUT);
-    return debugManager->UpdateStatus(new JobStatus(JobStatus::ERROR, "Machine still not awake"));
+    return debugManager->CreateStatus(JobStatus::ERROR, "Machine still not awake");
+}
+
+int WakeJob::GetTimeout() const
+{
+    return timeout;
+}
+
+void WakeJob::SetTimeout(const int value)
+{
+    timeout = value;
+}
+
+int WakeJob::GetMaxRetries() const
+{
+    return maxRetries;
+}
+
+void WakeJob::SetMaxRetries(const int value)
+{
+    maxRetries = value;
 }
 
 bool WakeJob::HasMandatoryParameters() const
@@ -96,7 +121,7 @@ bool WakeJob::HasMandatoryParameters() const
 int WakeJob::WaitForComputerToGoUp() const
 {
     int secondsElapsed = 0;
-    while (!Tools::IsComputerAlive(expectedIp) && secondsElapsed < DEFAULT_TIMEOUT)
+    while (!Tools::IsComputerAlive(expectedIp) && secondsElapsed < timeout)
     {
         sleep(1);
         ++secondsElapsed;

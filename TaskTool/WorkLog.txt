@@ -1,8 +1,11 @@
-11/09/2017 (18.4)
+11/09/2017 (18.4-19.7)
 	Production run ran mostly as expected, expect from command line error
 	in console jobs. Adding debug information to them.
 	Fix remaining failures in tests. There were because of incomplete child
 	job setup in ssh console job.
+	Now checking Wake job for error testing.. Improved its architecture, added
+	configurable options and some error cases checking. Created tests for
+	new configurable options.
 
 
 10/09/2017 (3h)

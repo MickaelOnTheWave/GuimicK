@@ -11,14 +11,16 @@ public:
     virtual ~WakeJob();
 
     virtual std::string GetName();
-
     virtual AbstractJob* Clone();
-
     virtual bool InitializeFromClient(Client* client);
-
     virtual bool IsInitialized(void);
-
     virtual JobStatus* Run();
+
+    int GetTimeout() const;
+    void SetTimeout(const int value);
+
+    int GetMaxRetries() const;
+    void SetMaxRetries(const int value);
 
 private:
 
@@ -31,7 +33,8 @@ private:
     std::string macAddress;
     std::string broadcastIp;
     std::string expectedIp;
-    std::string wakelanPath;
+    int timeout;
+    int maxRetries;
 };
 
 #endif // WAKEJOB_H

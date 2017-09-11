@@ -11,8 +11,19 @@ public:
     WakeJobConfigurationTest() = default;
     virtual ~WakeJobConfigurationTest() = default;
 
+private Q_SLOTS:
+    void testConfigure_TimeoutProperty_data();
+    void testConfigure_TimeoutProperty();
+
+    void testConfigure_RetriesProperty_data();
+    void testConfigure_RetriesProperty();
+
 protected:
     virtual AbstractJobConfiguration* CreateNewConfiguration() const override;
+
+private:
+    void TestTimeoutProperty(const std::string& propertyValue, const int expectedValue);
+    void TestRetriesProperty(const std::string& propertyValue, const int expectedValue);
 };
 
 #endif // WAKEJOBCONFIGURATIONTEST_H
