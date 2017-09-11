@@ -38,6 +38,8 @@ public:
 
     virtual bool IsCommandAvailable() const;
 
+    virtual bool IsRunOk() const;
+
 private:
     ConsoleJob* CreateSshJob();
 

@@ -44,12 +44,13 @@ public:
     virtual void SetCommandParameters(const std::string& parameters);
     std::string GetCommandParameters() const;
 
-    virtual int GetCommandReturnCode() const;
+    virtual int GetCommandReturnCode() const;    
+    virtual void SetCommandReturnCode(const int value);
+
     virtual std::string GetCommandOutput() const;
+    virtual void SetCommandOutput(const std::string& value);
 
-    void SetCommandOutput(const std::string& value);
-
-    bool IsRunOk() const;
+    virtual bool IsRunOk() const;
 
     virtual bool IsCommandAvailable() const;
 

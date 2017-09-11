@@ -83,7 +83,7 @@ bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
     delete unusedStatus;
 
     bool returnValue = false;
-    if (commandJob->GetCommandReturnCode() == 0)
+    if (commandJob->IsRunOk())
     {
         TarCommandParser parser(commandJob->GetCommand());
         bool ok = parser.ParseBuffer(commandJob->GetCommandOutput());

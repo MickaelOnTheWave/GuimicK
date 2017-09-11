@@ -107,6 +107,11 @@ int ConsoleJob::GetCommandReturnCode() const
     return receivedReturnCode;
 }
 
+void ConsoleJob::SetCommandReturnCode(const int value)
+{
+    receivedReturnCode = value;
+}
+
 string ConsoleJob::GetCommandOutput() const
 {
     return commandOutput;

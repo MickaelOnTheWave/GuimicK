@@ -20,6 +20,7 @@ public:
     virtual int GetCommandReturnCode() const = 0;
     virtual std::string GetCommandOutput() const = 0;
 
+    virtual bool IsRunOk() const = 0;
 };
 
 #endif // ABSTRACTCONSOLEJOB_H

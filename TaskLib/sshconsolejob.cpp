@@ -12,6 +12,7 @@ SshConsoleJob::SshConsoleJob(const string& _title, ConsoleJob *_job)
     : title(_title), user(""), host("")
 {
     remoteJob = _job;
+    remoteJob->SetParentDebugManager(debugManager);
 }
 
 SshConsoleJob::SshConsoleJob(const string &_title, const string &_command)
@@ -87,6 +88,7 @@ JobStatus *SshConsoleJob::Run()
     debugManager->AddDataLine<string>("Output", sshJob->GetCommandOutput());
     debugManager->AddDataLine<int>("Return code", sshJob->GetCommandReturnCode());
 
+    remoteJob->SetCommandReturnCode(sshJob->GetCommandReturnCode());
     remoteJob->SetCommandOutput(sshJob->GetCommandOutput());
 
     delete sshJob;
@@ -137,6 +139,11 @@ bool SshConsoleJob::IsCommandAvailable() const
 {
     // No way to check remotely if command exists.
     return true;
+}
+
+bool SshConsoleJob::IsRunOk() const
+{
+    return remoteJob->IsRunOk();
 }
 
 ConsoleJob *SshConsoleJob::CreateSshJob()
