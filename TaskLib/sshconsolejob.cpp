@@ -78,6 +78,10 @@ JobStatus *SshConsoleJob::Run()
         return new JobStatus(JobStatus::ERROR, invalidTargetError);
 
     ConsoleJob* sshJob = CreateSshJob();
+
+    debugManager->AddDataLine<string>("Child command", sshJob->GetCommand());
+    debugManager->AddDataLine<string>("Child params", sshJob->GetCommandParameters());
+
     JobStatus* status = sshJob->Run();
 
     debugManager->AddDataLine<string>("Output", sshJob->GetCommandOutput());
