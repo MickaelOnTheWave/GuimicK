@@ -1,7 +1,13 @@
-10/09/2017 (18.9)
+10/09/2017 (3h)
 	Added generic "Command not installed" error in base console job.
 	Improved child job management in Ssh console. Updated tests accordingly.
 	Added params configuration property for console jobs.
+Next planned work :
+	- Make ALL tests run OK
+	- Check if backup jobs can have better error checking
+	- Check if wake/shutdown jobs can have better error checking
+	- Fix existing build warnings
+	- Apt update : improve error detection and fix job
 
 07/09/2017 (2.4h)
 	Updated Html report creator to create configuration error table. Created test

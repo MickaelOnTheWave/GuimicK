@@ -68,7 +68,9 @@ void ConsoleJobTest::TestCommandWithParameter(const int expectedCode,
 
     job = CreateDefaultJob(catCommand, catParam);
     RunAndCheckNoAttachments(expectedCode, expectedMessage);
-    QCOMPARE(job->GetCommandOutput().c_str(), "");
+
+    const string expectedCommandOutput = (expectedCode == JobStatus::OK) ? fileContent : string("");
+    QCOMPARE(job->GetCommandOutput().c_str(), expectedCommandOutput.c_str());
 }
 
 string ConsoleJobTest::GetExpectedOkDescription()
@@ -139,5 +141,5 @@ void ConsoleJobTest::TestCommandWithAppendedParameter()
 
 void ConsoleJobTest::TestCommandWithSeparatedParameter()
 {
-    TestCommandWithParameter(JobStatus::OK, "my super content", false);
+    TestCommandWithParameter(JobStatus::OK, "", false);
 }
