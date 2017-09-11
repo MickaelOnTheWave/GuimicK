@@ -7,6 +7,12 @@
 
 using namespace std;
 
+static const string reportCreationError = "Failed creating report";
+static const string tarCommandError = "tar command failed";
+static const string cleaningError = "error cleaning destination";
+static const string copyingError = "error copying archive";
+static const string remoteCleaningError = "remote archive not cleaned";
+
 ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob()
     : AbstractBackupJob(), localDestination("")
 {
@@ -70,6 +76,8 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
     }
 }
 
+// TODO : maybe there is a better architectural option to these result collections :
+// create a JobBackupStatus that stores backup report.
 bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
                                                 const string &archiveName,
                                                 AbstractBackupJob::ResultCollection &results)
@@ -78,6 +86,7 @@ bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
 
     const string params = string("-cpzvf ") + archiveName + " -C " + folderToBackup + " .";
     AbstractConsoleJob* commandJob = CreateBackupConsoleJob(params);
+    commandJob->SetParentDebugManager(debugManager);
 
     JobStatus* unusedStatus = commandJob->Run();
     delete unusedStatus;
@@ -98,7 +107,7 @@ bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
         else
         {
             status->SetCode(JobStatus::OK_WITH_WARNINGS);
-            status->SetDescription("Failed creating report");
+            status->SetDescription(reportCreationError);
             results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
         }
         returnValue = true;
@@ -106,7 +115,9 @@ bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
     else
     {
         status->SetCode(JobStatus::ERROR);
-        status->SetDescription("tar command failed");
+        status->SetDescription(tarCommandError);
+        debugManager->AddDataLine<string>("tar output", commandJob->GetCommandOutput());
+        debugManager->AddDataLine<string>("tar code", commandJob->GetCommandReturnCode());
         results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
         returnValue = false;
     }
@@ -128,7 +139,7 @@ bool ZipAndCopyFsBackupJob::RemovePreviousArchive(const string &destination,
 
     const bool ok = !FileTools::FileExists(destination);
     if (!ok)
-        AddStatusToResults(results, JobStatus::ERROR, "error cleaning destination");
+        AddStatusToResults(results, JobStatus::ERROR, cleaningError);
     return ok;
 }
 
@@ -143,7 +154,7 @@ bool ZipAndCopyFsBackupJob::CopyBackupArchiveToDestination(
 
     const bool isRunOk = scpCommand.IsRunOk();
     if (!isRunOk)
-        AddStatusToResults(results, JobStatus::ERROR, "error copying archive");
+        AddStatusToResults(results, JobStatus::ERROR, copyingError);
 
     return isRunOk;
 }
@@ -159,7 +170,7 @@ bool ZipAndCopyFsBackupJob::CleanBackupArchiveFromSource(AbstractBackupJob::Resu
 
     const bool isOk = (remoteJob->GetCommandReturnCode() == 0);
     if (!isOk)
-        AddStatusToResults(results, JobStatus::OK_WITH_WARNINGS, "remote archive not cleaned");
+        AddStatusToResults(results, JobStatus::OK_WITH_WARNINGS, remoteCleaningError);
 
     delete remoteJob;
     return isOk;

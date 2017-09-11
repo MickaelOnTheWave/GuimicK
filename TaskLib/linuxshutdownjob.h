@@ -8,6 +8,7 @@ class LinuxShutdownJob : public AbstractJob
 {
 public:
     LinuxShutdownJob();
+    LinuxShutdownJob(const LinuxShutdownJob& other);
     virtual ~LinuxShutdownJob();
 
     virtual std::string GetName();

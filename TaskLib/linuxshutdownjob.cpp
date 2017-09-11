@@ -7,13 +7,20 @@
 
 using namespace std;
 
-static const int DEFAULT_TIMEOUT = 120;
+static const int defaultTimeout = 120;
 
 LinuxShutdownJob::LinuxShutdownJob()
     : AbstractJob(),
-      computer(""), jobTimeoutInSeconds(DEFAULT_TIMEOUT)
+      computer(""), jobTimeoutInSeconds(defaultTimeout)
 {
     shutdownJob = new SshConsoleJob("", "shutdown -h now");
+}
+
+LinuxShutdownJob::LinuxShutdownJob(const LinuxShutdownJob &other)
+    : AbstractJob(),
+      computer(other.computer),
+      jobTimeoutInSeconds(other.jobTimeoutInSeconds)
+{
 }
 
 LinuxShutdownJob::~LinuxShutdownJob()
@@ -28,10 +35,7 @@ std::string LinuxShutdownJob::GetName()
 
 AbstractJob *LinuxShutdownJob::Clone()
 {
-    LinuxShutdownJob* clone = new LinuxShutdownJob();
-    clone->computer = computer;
-    clone->jobTimeoutInSeconds = jobTimeoutInSeconds;
-    return clone;
+    return new LinuxShutdownJob(*this);
 }
 
 bool LinuxShutdownJob::InitializeFromClient(Client *client)

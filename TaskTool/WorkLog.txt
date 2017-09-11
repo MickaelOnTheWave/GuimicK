@@ -1,4 +1,4 @@
-11/09/2017 (18.4-19.7)
+11/09/2017 (1.8h)
 	Production run ran mostly as expected, expect from command line error
 	in console jobs. Adding debug information to them.
 	Fix remaining failures in tests. There were because of incomplete child
@@ -6,7 +6,13 @@
 	Now checking Wake job for error testing.. Improved its architecture, added
 	configurable options and some error cases checking. Created tests for
 	new configurable options.
-
+	Now going for shutdown job.. There are no relevant error cases to test.
+	Some options could be configurable (like wake job), but refactoring isn't
+	worth it (at least now).
+	Moving to backup jobs.. Minor improvements in ZipAndCopy job.
+Next planned work :
+	- Fix existing build warnings
+	- Apt update : improve error detection and fix job
 
 10/09/2017 (3h)
 	Added generic "Command not installed" error in base console job.
