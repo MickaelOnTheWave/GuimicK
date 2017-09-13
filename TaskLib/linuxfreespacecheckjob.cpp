@@ -113,7 +113,8 @@ bool LinuxFreeSpaceCheckJob::IsRemoteTargetConsistent() const
 
 AbstractConsoleJob *LinuxFreeSpaceCheckJob::CreateJobInstance() const
 {
-    ConsoleJob* dfJob = new ConsoleJob(string("df -h ") + drive);
+    const string parameters = string("-h ") + drive;
+    ConsoleJob* dfJob = new ConsoleJob("df", parameters);
     if (isTargetLocal)
         return dfJob;
     else
