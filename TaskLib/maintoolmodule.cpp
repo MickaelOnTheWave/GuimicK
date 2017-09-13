@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "consolejob.h"
-#include "consolereportdispatcher.h"
+#include "filereportdispatcher.h"
 #include "filetools.h"
 
 using namespace std;
@@ -21,7 +21,7 @@ static const int OTHER_ERROR           = 2;
 MainToolModule::MainToolModule(const string &_version)
     : version(_version), replacer(NULL), timedRuns(true)
 {
-    fallbackDispatcher = new ConsoleReportDispatcher();
+    fallbackDispatcher = new FileReportDispatcher();
 }
 
 MainToolModule::~MainToolModule()
