@@ -10,9 +10,8 @@ static const string changeDirError                      = "Failed accessing fold
 bool GitCommonTools::ChangeCurrentDir(const string &newDir,
                                     AbstractBackupJob::ResultCollection &statusList)
 {
-    const int errorValue = 999; // TODO : put real value there
     int returnValue = chdir(newDir.c_str());
-    const bool ok =  (returnValue != errorValue);
+    const bool ok =  (returnValue == 0);
 
     if (!ok)
     {
