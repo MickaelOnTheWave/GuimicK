@@ -17,7 +17,6 @@ QMAKE_CXXFLAGS += -std=c++11
 SOURCES += tasktestlib.cpp \
     gitjobtest.cpp \
     gitrepository.cpp \
-    gittools.cpp \
     rsnapshoterroranalyzertest.cpp \
     rsnapshotjobtest.cpp \
     taskfeaturetest.cpp \
@@ -45,12 +44,12 @@ SOURCES += tasktestlib.cpp \
     sshconsolejobconfigurationtest.cpp \
     gitbackupjobconfigurationtest.cpp \
     diskspacecheckjobconfigurationtest.cpp \
-    copyfsbackupjobconfigurationstests.cpp
+    copyfsbackupjobconfigurationstests.cpp \
+    gittesttools.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
     gitrepository.h \
-    gittools.h \
     rsnapshoterroranalyzertest.h \
     rsnapshotjobtest.h \
     taskfeaturetest.h \
@@ -80,7 +79,8 @@ HEADERS += tasktestlib.h \
     sshconsolejobconfigurationtest.h \
     gitbackupjobconfigurationtest.h \
     diskspacecheckjobconfigurationtest.h \
-    copyfsbackupjobconfigurationstests.h
+    copyfsbackupjobconfigurationstests.h \
+    gittesttools.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

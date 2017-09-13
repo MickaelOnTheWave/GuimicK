@@ -117,7 +117,7 @@ bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
         status->SetCode(JobStatus::ERROR);
         status->SetDescription(tarCommandError);
         debugManager->AddDataLine<string>("tar output", commandJob->GetCommandOutput());
-        debugManager->AddDataLine<string>("tar code", commandJob->GetCommandReturnCode());
+        debugManager->AddDataLine<int>("tar code", commandJob->GetCommandReturnCode());
         results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
         returnValue = false;
     }

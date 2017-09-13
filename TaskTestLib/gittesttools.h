@@ -1,10 +1,10 @@
-#ifndef GITTOOLS_H
-#define GITTOOLS_H
+#ifndef GITTESTTOOLS_H
+#define GITTESTTOOLS_H
 
 #include <QStringList>
 #include <string>
 
-class GitTools
+class GitTestTools
 {
 public:
 

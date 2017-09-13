@@ -21,6 +21,7 @@ LinuxShutdownJob::LinuxShutdownJob(const LinuxShutdownJob &other)
       computer(other.computer),
       jobTimeoutInSeconds(other.jobTimeoutInSeconds)
 {
+    shutdownJob = static_cast<SshConsoleJob*>(other.shutdownJob->Clone());
 }
 
 LinuxShutdownJob::~LinuxShutdownJob()

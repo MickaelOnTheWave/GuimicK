@@ -1,3 +1,21 @@
+12/09/2017 (20.9)
+	Fixed existing error.
+	Going for removing warnings in existing build. Warnings are only present
+	in release. All (removable) warnings are about ignoring return value of
+	chdir. The correct is to test it and create an error message when it gives
+	an error. However, as there is no internet access today, it is impossible to
+	properly check its value.
+	Created code with erroneous error case that will need to be corrected later.
+	Refactoring git jobs : there are too much duplicated code. Creating Git
+	tools.
+	Remaining warnings are about build source dirs (QMake) and unfinished
+	remote config file loading (will be resolved in future task.
+	There were build errors and test runtime crashes in actual code. Fixing them.
+Next planned work:
+	- Replace error code with real value in GitCommonTools
+	- Apt update : improve error detection and fix job
+	- Rsnapshot job : fix bug where first run report fails
+
 11/09/2017 (1.8h)
 	Production run ran mostly as expected, expect from command line error
 	in console jobs. Adding debug information to them.

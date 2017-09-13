@@ -11,7 +11,7 @@
 #include "filereportdispatcher.h"
 #include "filetestutils.h"
 #include "filetools.h"
-#include "gittools.h"
+#include "gittesttools.h"
 #include "tools.h"
 
 using namespace std;

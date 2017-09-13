@@ -7,6 +7,7 @@
 #include "backupstatusmanager.h"
 #include "consolejob.h"
 #include "gitcommitreportparser.h"
+#include "gitcommontools.h"
 
 using namespace std;
 
@@ -108,18 +109,20 @@ void GitBackupJob::UpdateGitRepository(const string &repository,
     debugManager->AddDataLine<string>("Updating Git repository", repository);
     string originalDirectory = FileTools::GetCurrentFullPath();
 
-    chdir(repository.c_str());
+    bool ok = GitCommonTools::ChangeCurrentDir(repository, statusList);
+    if (!ok)
+        return;
 
     // TODO : try again to use exceptions here
     const string oldHeadId = GetRepositoryHeadId();
-    bool ok = FetchUpdates(repository, statusList);
+    ok = FetchUpdates(repository, statusList);
     if (ok)
     {
         const string newHeadId = GetRepositoryHeadId();
         ComputeChanges(repository, oldHeadId, newHeadId, statusList);
     }
 
-    chdir(originalDirectory.c_str());
+    GitCommonTools::ChangeCurrentDir(originalDirectory, statusList);
 }
 
 string GitBackupJob::GetRepositoryHeadId() const
@@ -235,4 +238,3 @@ string GitBackupJob::BuildCloneParameters(const string &source, const string &de
     params += string(" 2>&1 ") + destination;
     return params;
 }
-

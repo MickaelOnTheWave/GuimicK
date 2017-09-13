@@ -8,6 +8,7 @@
 #include "copyjobchooser.h"
 #include "filetools.h"
 #include "gitcommitreportparser.h"
+#include "gitcommontools.h"
 #include "rawcopyfsbackupjob.h"
 #include "rsynccopyfsbackupjob.h"
 #include "tools.h"
@@ -75,7 +76,9 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
         CopyData(source, destination, status);
 
     string originalDirectory = FileTools::GetCurrentFullPath();
-    chdir(destination.c_str());
+    bool ok = GitCommonTools::ChangeCurrentDir(destination, results);
+    if (!ok)
+        return;
 
     FileBackupReport* report = new FileBackupReport();
     const bool hasChanges = HasChangesInRepository();
@@ -92,7 +95,8 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
         if (status->GetCode() == JobStatus::OK)
             CreateReport(commitId, status, *report);
     }
-    chdir(originalDirectory.c_str());
+
+    GitCommonTools::ChangeCurrentDir(originalDirectory, results);
 
     results.push_back(make_pair(status, report));
 }

@@ -72,7 +72,8 @@ SOURCES += \
     dummyemailreportdispatcher.cpp \
     abstractstructuredreportcreator.cpp \
     maintoolmodule.cpp \
-    filereportdispatcher.cpp
+    filereportdispatcher.cpp \
+    gitcommontools.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -136,7 +137,8 @@ HEADERS +=\
     abstractstructuredreportcreator.h \
     maintoolmodule.h \
     abstractreportdispatcherreplacer.h \
-    filereportdispatcher.h
+    filereportdispatcher.h \
+    gitcommontools.h
 
 unix {
     target.path = /usr/lib

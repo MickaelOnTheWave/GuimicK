@@ -8,7 +8,7 @@
 #include "filetools.h"
 #include "gitbackupjob.h"
 #include "filetestutils.h"
-#include "gittools.h"
+#include "gittesttools.h"
 #include "tools.h"
 
 using namespace std;
@@ -22,7 +22,7 @@ void GitJobTest::init()
     cleanup();
 
     CreateDefaultData(sourceRepository.toStdString());
-    GitTools::Init(sourceRepository.toStdString());
+    GitTestTools::Init(sourceRepository.toStdString());
 }
 
 void GitJobTest::cleanup()
@@ -72,7 +72,7 @@ void GitJobTest::testUpdate()
 
     const std::string stdSource = sourceRepository.toStdString();
     const std::string stdDestination = destinationRepository.toStdString();
-    GitTools::Clone(stdSource, stdDestination, true);
+    GitTestTools::Clone(stdSource, stdDestination, true);
     sleep(1);
 
     UpdateSourceRepository(added, modified, removed);
@@ -109,7 +109,7 @@ void GitJobTest::testUpdate_InvalidSource()
     const std::string stdDestination = destinationRepository.toStdString();
     const std::string errorInvalidTarget = "Invalid source repository";
 
-    GitTools::Clone(stdSource, stdDestination);
+    GitTestTools::Clone(stdSource, stdDestination);
     QDir dir(sourceRepository);
     dir.removeRecursively();
     RunGitBackup(stdSource, stdDestination);
@@ -160,11 +160,11 @@ void GitJobTest::CreateInitialRepositoryData(const std::vector<GitRepository*>& 
     for (auto it=repositories.begin(); it!=repositories.end(); ++it)
     {
             CreateDefaultData((*it)->source);
-            GitTools::Init((*it)->source);
+            GitTestTools::Init((*it)->source);
             if ((*it)->mustAlreadyExist)
             {
-                GitTools::Clone((*it)->source, (*it)->destination, true);
-                GitTools::Update((*it)->source, (*it)->added, (*it)->modified, (*it)->removed);
+                GitTestTools::Clone((*it)->source, (*it)->destination, true);
+                GitTestTools::Update((*it)->source, (*it)->added, (*it)->modified, (*it)->removed);
             }
     }
 }
@@ -226,7 +226,7 @@ QString GitJobTest::BuildMultiDescriptionString(const std::vector<GitRepository 
 
 void GitJobTest::UpdateSourceRepository(const QStringList &added, const QStringList &modified, const QStringList &removed)
 {
-    GitTools::Update(sourceRepository.toStdString(), added, modified, removed);
+    GitTestTools::Update(sourceRepository.toStdString(), added, modified, removed);
 }
 
 QStringList GitJobTest::CreatedExpectedDestinationRepositoryContent(const QStringList &added, const QStringList &removed)
