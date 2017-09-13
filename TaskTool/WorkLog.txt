@@ -1,4 +1,19 @@
-12/09/2017 (20.9)
+13/09/2017 (1h)
+	Production did not run as expected because of Internet problem. Checking
+	report by hand (if it was fallbacked to file). Report was not really written
+	as fallback dispatcher is console. But as output was being stored, checked output.
+	Apt update is still failing (SshConsole) and should not. Investigating...
+	Changed default fallback dispatcher to file.
+	Now that Internet is back, finalizing the chdir issue.
+	Disk check issue was found - console job still using joined syntax. Fixed it.
+	Debugging Ssh console issue. It seems due to child job mischecking its command.
+	The behaviour is strange - debugging...
+Next planned work:
+	- Finish debugging Ssh console and fix issue.
+	- Rsnapshot job : fix bug where first run report fails
+	- If possible, update Release plan.
+
+12/09/2017 (1h)
 	Fixed existing error.
 	Going for removing warnings in existing build. Warnings are only present
 	in release. All (removable) warnings are about ignoring return value of

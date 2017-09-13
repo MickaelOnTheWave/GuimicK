@@ -9,19 +9,20 @@ const string noTargetError = "No target specified";
 const string invalidTargetError = "Invalid target specified";
 
 SshConsoleJob::SshConsoleJob(const string& _title, ConsoleJob *_job)
-    : title(_title), user(""), host("")
+    : AbstractConsoleJob(), title(_title), user(""), host("")
 {
     remoteJob = _job;
     remoteJob->SetParentDebugManager(debugManager);
 }
 
 SshConsoleJob::SshConsoleJob(const string &_title, const string &_command)
-    : title(_title), user(""), host("")
+    : AbstractConsoleJob(), title(_title), user(""), host("")
 {
     remoteJob = new ConsoleJob(_command);
 }
 
 SshConsoleJob::SshConsoleJob(const SshConsoleJob &other)
+    : AbstractConsoleJob(other)
 {
     title = other.title;
     user = other.user;
@@ -83,7 +84,7 @@ JobStatus *SshConsoleJob::Run()
     debugManager->AddDataLine<string>("Child command", sshJob->GetCommand());
     debugManager->AddDataLine<string>("Child params", sshJob->GetCommandParameters());
 
-    JobStatus* status = sshJob->Run();
+    //JobStatus* status = sshJob->Run();
 
     debugManager->AddDataLine<string>("Output", sshJob->GetCommandOutput());
     debugManager->AddDataLine<int>("Return code", sshJob->GetCommandReturnCode());
@@ -92,7 +93,8 @@ JobStatus *SshConsoleJob::Run()
     remoteJob->SetCommandOutput(sshJob->GetCommandOutput());
 
     delete sshJob;
-    return debugManager->UpdateStatus(status);
+    //return debugManager->UpdateStatus(status);
+    return debugManager->CreateStatus(JobStatus::OK, "testing");
 }
 
 int SshConsoleJob::GetExpectedReturnCode() const
@@ -154,6 +156,7 @@ ConsoleJob *SshConsoleJob::CreateSshJob()
     const string sshParameters = user + "@" + host + " \"" + remoteJobCommand + "\"";
     sshJob->SetCommand("ssh");
     sshJob->SetCommandParameters(sshParameters);
+    sshJob->SetParentDebugManager(debugManager);
 
     debugManager->AddDataLine<string>("Ssh parameters", sshParameters);
     return sshJob;

@@ -49,6 +49,7 @@ Features to implement:
 	[047] Have a Restore option in backup jobs
 	[048] Create configuration checking tool/feature
 	[049] Make build be at least partially static (internal dependencies static)
+	[050] Create a backup job for cloud service
 
 Abandoned features :
 	[020] Check/repair Screensaver modification from script
