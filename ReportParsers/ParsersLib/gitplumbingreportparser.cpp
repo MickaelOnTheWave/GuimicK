@@ -1,19 +1,19 @@
-#include "gitcommitreportparser.h"
+#include "gitplumbingreportparser.h"
 
 #include "tools.h"
 
 using namespace std;
 
-GitCommitReportParser::GitCommitReportParser()
+GitPlumbingReportParser::GitPlumbingReportParser()
     : AbstractFileBackupParser(new FileBackupReport())
 {
 }
 
-GitCommitReportParser::~GitCommitReportParser()
+GitPlumbingReportParser::~GitPlumbingReportParser()
 {
 }
 
-bool GitCommitReportParser::ParseBuffer(const string &buffer)
+bool GitPlumbingReportParser::ParseBuffer(const string &buffer)
 {
     reportData->Clear();
 
@@ -24,12 +24,12 @@ bool GitCommitReportParser::ParseBuffer(const string &buffer)
     return true;
 }
 
-void GitCommitReportParser::GetReport(FileBackupReport &report)
+void GitPlumbingReportParser::GetReport(FileBackupReport &report)
 {
     report = *reportData;
 }
 
-void GitCommitReportParser::FillReportData(const std::vector<string> &lines)
+void GitPlumbingReportParser::FillReportData(const std::vector<string> &lines)
 {
     vector<string>::const_iterator it=lines.begin();
     for (; it!=lines.end(); ++it)

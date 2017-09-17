@@ -1,33 +1,33 @@
-#include "gitcommitreportparsertest.h"
+#include "gitplumbingreportparsertest.h"
 
 #include <QTest>
-#include "gitcommitreportparser.h"
+#include "gitplumbingreportparser.h"
 
 using namespace std;
 
-const string suiteFolder = "GitCommit/";
+const string suiteFolder = "GitPlumbing/";
 
-GitCommitReportParserTest::GitCommitReportParserTest(const std::string &dataPrefix)
+GitPlumbingReportParserTest::GitPlumbingReportParserTest(const std::string &dataPrefix)
     : FileBackupParserAbstractTest(dataPrefix + suiteFolder)
 {
 }
 
-void GitCommitReportParserTest::testParse()
+void GitPlumbingReportParserTest::testParse()
 {
     testParse_generic();
 }
 
-FileBackupReport *GitCommitReportParserTest::CreateReport()
+FileBackupReport *GitPlumbingReportParserTest::CreateReport()
 {
     return new FileBackupReport();
 }
 
-AbstractFileBackupParser *GitCommitReportParserTest::CreateParser()
+AbstractFileBackupParser *GitPlumbingReportParserTest::CreateParser()
 {
-    return new GitCommitReportParser();
+    return new GitPlumbingReportParser();
 }
 
-void GitCommitReportParserTest::PopulateTestData()
+void GitPlumbingReportParserTest::PopulateTestData()
 {
     const QStringList fullFileList = {
         "6232100495809.sav",

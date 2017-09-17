@@ -1,14 +1,14 @@
-#ifndef GITCOMMITREPORTPARSERTEST_H
-#define GITCOMMITREPORTPARSERTEST_H
+#ifndef GITPLUMBINGREPORTPARSERTEST_H
+#define GITPLUMBINGREPORTPARSERTEST_H
 
 #include "filebackupparserabstracttest.h"
 
-class GitCommitReportParserTest : public FileBackupParserAbstractTest
+class GitPlumbingReportParserTest : public FileBackupParserAbstractTest
 {
     Q_OBJECT
 
 public :
-    GitCommitReportParserTest(const std::string& dataPrefix);
+    GitPlumbingReportParserTest(const std::string& dataPrefix);
 
 private Q_SLOTS:
     void testParse();
@@ -21,4 +21,4 @@ protected:
 
 };
 
-#endif // GITCOMMITREPORTPARSERTEST_H
+#endif // GITPLUMBINGREPORTPARSERTEST_H

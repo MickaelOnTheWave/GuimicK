@@ -1,15 +1,15 @@
-#ifndef GITCOMMITREPORTPARSER_H
-#define GITCOMMITREPORTPARSER_H
+#ifndef GITPLUMBINGREPORTPARSER_H
+#define GITPLUMBINGREPORTPARSER_H
 
 #include "abstractfilebackupparser.h"
 
 #include "filebackupreport.h"
 
-class GitCommitReportParser : public AbstractFileBackupParser
+class GitPlumbingReportParser : public AbstractFileBackupParser
 {
 public:
-    GitCommitReportParser();
-    virtual ~GitCommitReportParser();
+    GitPlumbingReportParser();
+    virtual ~GitPlumbingReportParser();
 
     virtual bool ParseBuffer(const std::string& buffer);
 
@@ -19,4 +19,4 @@ private:
     void FillReportData(const std::vector<std::string>& lines);
 };
 
-#endif // GITCOMMITREPORTPARSER_H
+#endif // GITPLUMBINGREPORTPARSER_H

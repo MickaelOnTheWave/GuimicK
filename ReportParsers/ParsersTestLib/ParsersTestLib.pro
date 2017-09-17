@@ -21,9 +21,9 @@ SOURCES += parserstestlib.cpp \
     filebackupparserabstracttest.cpp \
     gitreportparsertest.cpp \
     mockparser.cpp \
-    gitcommitreportparsertest.cpp \
     rsynccommandparsertest.cpp \
-    tarcommandparsertest.cpp
+    tarcommandparsertest.cpp \
+    gitplumbingreportparsertest.cpp
 
 HEADERS += parserstestlib.h \
     rsnapshotreportparsertest.h \
@@ -34,9 +34,9 @@ HEADERS += parserstestlib.h \
     gitreportparsertest.h \
     mockparser.h \
     parserstestsuites.h \
-    gitcommitreportparsertest.h \
     rsynccommandparsertest.h \
-    tarcommandparsertest.h
+    tarcommandparsertest.h \
+    gitplumbingreportparsertest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

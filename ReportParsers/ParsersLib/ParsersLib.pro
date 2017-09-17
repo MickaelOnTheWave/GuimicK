@@ -22,9 +22,9 @@ SOURCES += \
     filebackupreport.cpp \
     abstractfilebackupparser.cpp \
     dfcommandparser.cpp \
-    gitcommitreportparser.cpp \
     rsynccommandparser.cpp \
-    tarcommandparser.cpp
+    tarcommandparser.cpp \
+    gitplumbingreportparser.cpp
 
 HEADERS +=\
     abstractoutputparser.h \
@@ -35,9 +35,9 @@ HEADERS +=\
     filebackupreport.h \
     abstractfilebackupparser.h \
     dfcommandparser.h \
-    gitcommitreportparser.h \
     rsynccommandparser.h \
-    tarcommandparser.h
+    tarcommandparser.h \
+    gitplumbingreportparser.h
 
 unix {
     target.path = /usr/lib

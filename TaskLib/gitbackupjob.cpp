@@ -6,7 +6,7 @@
 
 #include "backupstatusmanager.h"
 #include "consolejob.h"
-#include "gitcommitreportparser.h"
+#include "gitplumbingreportparser.h"
 #include "gitcommontools.h"
 
 using namespace std;
@@ -177,7 +177,7 @@ void GitBackupJob::CreateReport(
         const std::string& commandOutput,
         AbstractBackupJob::ResultCollection &statusList)
 {
-    GitCommitReportParser parser;
+    GitPlumbingReportParser parser;
     bool ok = parser.ParseBuffer(commandOutput);
     debugManager->AddDataLine<bool>("Parser result", ok);
     if (ok)

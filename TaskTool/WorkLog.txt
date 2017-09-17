@@ -5,7 +5,7 @@
 	error when requesting a password. Now next run should validate feature and
 	allow release plan update..
 	Now going for Rsnapshot report bug. Created RecursiveFileList tool and its
-	test suite.
+	test suite. Renamed git plumbing report parser consistently.
 
 
 14/09/2017 (2h)

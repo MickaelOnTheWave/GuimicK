@@ -7,7 +7,7 @@
 #include "consolejob.h"
 #include "copyjobchooser.h"
 #include "filetools.h"
-#include "gitcommitreportparser.h"
+#include "gitplumbingreportparser.h"
 #include "gitcommontools.h"
 #include "rawcopyfsbackupjob.h"
 #include "rsynccopyfsbackupjob.h"
@@ -271,7 +271,7 @@ void GitFsBackupJob::CreateDifferentialReport(const string &commitId, JobStatus 
     commandJob.RunWithoutStatus();
     if (commandJob.GetCommandReturnCode() == 0)
     {
-        GitCommitReportParser parser;
+        GitPlumbingReportParser parser;
         bool ok = parser.ParseBuffer(commandJob.GetCommandOutput());
         if (ok)
         {
