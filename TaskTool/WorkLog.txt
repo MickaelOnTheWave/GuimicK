@@ -1,6 +1,7 @@
-17/09/2017 (10.3)
+17/09/2017 (10.3-11.3)
 	Implemented changes in Ssh job. Updated tests accordingly. Now all tests are
-	running again :-)
+	running again :-). Also fixed debug file duplication in Ssh job. Now
+	ssh job is running as expected.
 
 
 14/09/2017 (2h)

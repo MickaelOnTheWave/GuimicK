@@ -87,14 +87,11 @@ JobStatus *SshConsoleJob::Run()
 
     JobStatus* status = sshJob->Run();
 
-    debugManager->AddDataLine<string>("Output", sshJob->GetCommandOutput());
-    debugManager->AddDataLine<int>("Return code", sshJob->GetCommandReturnCode());
-
     remoteJob->SetCommandReturnCode(sshJob->GetCommandReturnCode());
     remoteJob->SetCommandOutput(sshJob->GetCommandOutput());
 
     delete sshJob;
-    return debugManager->UpdateStatus(status);
+    return status;
 }
 
 void SshConsoleJob::SetTitle(const string &value)
