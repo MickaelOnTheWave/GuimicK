@@ -1,4 +1,4 @@
-17/09/2017 (10.3-13.4)
+17/09/2017 (3.7h)
 	Implemented changes in Ssh job. Updated tests accordingly. Now all tests are
 	running again :-). Also fixed debug file duplication in Ssh job. Now
 	ssh job is running as expected. Creating specific error message for terminal
@@ -6,7 +6,13 @@
 	allow release plan update..
 	Now going for Rsnapshot report bug. Created RecursiveFileList tool and its
 	test suite. Renamed git plumbing report parser consistently.
-
+	Updated production configuration to include pictures backup. Now new backup
+	should have a proper report.
+Next planned work :
+	- Check production run : update job should run and rsnapshot should have
+	a good report.
+	- If possible, update release plan (both for feature and bug)
+	- Go on roadmap
 
 14/09/2017 (2h)
 	Investigating issue. It is a deep flaw in Ssh console design.

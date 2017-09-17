@@ -72,6 +72,16 @@ Client
 				dest = "videos/";
 			}
 		}
+		RsnapshotBackup
+		{
+			repository = "/volume1/backups/important";
+			maxBackupCount = 5;
+			Folder
+			{
+				source = "mickael@desktop:~/Pictures/";
+				dest = "pictures/";
+			}
+		}
 		SshConsole
 		{
 			title = "Package list update";
