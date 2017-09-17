@@ -33,6 +33,9 @@ protected:
     void CheckJobConditions(const int expectedCode,
                             const std::string& expectedOutput);
 
+private:
+    virtual void TestCommandWithAppendedParameter() override;
+
 };
 
 #endif // USERCONSOLEJOBTEST_H

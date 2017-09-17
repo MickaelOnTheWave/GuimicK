@@ -4,8 +4,14 @@
 #include "userconsolejob.h"
 #include "userconsolejobconfiguration.h"
 
+using namespace std;
+
 SshConsoleJobConfiguration::SshConsoleJobConfiguration()
     : UserConsoleJobConfiguration("SshConsole")
+{
+}
+
+SshConsoleJobConfiguration::~SshConsoleJobConfiguration()
 {
 }
 
@@ -13,7 +19,12 @@ AbstractJob *SshConsoleJobConfiguration::CreateConfiguredJobAfterCheck(
                                             ConfigurationObject *confObject,
                                             std::vector<std::string> &errorMessages)
 {
+    SshConsoleJob* mainJob = new SshConsoleJob("", "");
+    AbstractJobDefaultConfiguration::ConfigureJob(mainJob, confObject, errorMessages);
+
     AbstractJob* remoteJob = UserConsoleJobConfiguration::CreateConfiguredJobAfterCheck(
                                                 confObject, errorMessages);
-    return new SshConsoleJob(remoteJob->GetName(), static_cast<UserConsoleJob*>(remoteJob));
+    ConsoleJob* castRemote = static_cast<ConsoleJob*>(remoteJob);
+    mainJob->SetRemoteJob(castRemote);
+    return mainJob;
 }

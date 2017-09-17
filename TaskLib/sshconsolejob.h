@@ -2,12 +2,11 @@
 #define SSHCONSOLEJOB_H
 
 #include "AbstractConsoleJob.h"
-#include "consolejob.h"
 
 class SshConsoleJob : public AbstractConsoleJob
 {
 public:
-    SshConsoleJob(const std::string& _title, ConsoleJob* _job);
+    SshConsoleJob(AbstractConsoleJob* _job);
     SshConsoleJob(const std::string& _title, const std::string& _command = "");
     SshConsoleJob(const SshConsoleJob& other);
     virtual ~SshConsoleJob();
@@ -24,6 +23,8 @@ public:
 
     virtual JobStatus* Run();
 
+    virtual void SetTitle(const std::string& value);
+
     virtual int GetExpectedReturnCode() const;
     virtual void SetExpectedReturnCode(const int value);
 
@@ -34,20 +35,34 @@ public:
     virtual void SetCommandParameters(const std::string& parameters);
 
     virtual int GetCommandReturnCode() const;
+    virtual void SetCommandReturnCode(const int value);
+
     virtual std::string GetCommandOutput() const;
+    virtual void SetCommandOutput(const std::string& value);
 
     virtual bool IsCommandAvailable() const;
 
     virtual bool IsRunOk() const;
 
+    void SetRemoteJob(AbstractConsoleJob* _remoteJob);
+
+    std::string GetExpectedOutput() const;
+    void SetExpectedOutput(const std::string& value);
+
+    std::string GetOutputFile() const;
+
+    std::string GetMiniDescriptionParserCommand() const;
+
+    bool IsParsingUsingBuffer() const;
+
 private:
-    ConsoleJob* CreateSshJob();
+    AbstractConsoleJob* CreateSshJob();
 
     std::string title;
 	std::string user;
 	std::string host;
 
-    ConsoleJob* remoteJob;
+    AbstractConsoleJob* remoteJob;
 };
 
 #endif // SSHCONSOLEJOB_H

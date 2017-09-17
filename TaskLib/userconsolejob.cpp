@@ -67,9 +67,17 @@ void UserConsoleJob::Initialize(const string &_command, int _expectedReturnCode)
     IsInitialized();
 }
 
-void UserConsoleJob::SetTitle(const std::string &title)
+JobStatus *UserConsoleJob::Run()
 {
-    commandTitle = title;
+    if (IsCommandAvailable() == false)
+        return debugManager->CreateStatus(JobStatus::ERROR, NotAvailableError);
+
+    return ConsoleJob::Run();
+}
+
+void UserConsoleJob::SetTitle(const std::string &value)
+{
+    commandTitle = value;
 }
 
 string UserConsoleJob::GetMiniDescriptionParserCommand() const

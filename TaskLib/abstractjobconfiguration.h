@@ -18,7 +18,7 @@ public:
                                      std::vector<std::string> &errorMessages);
 
 protected:
-    AbstractJob* CreateConfiguredJobAfterCheck(
+    virtual AbstractJob* CreateConfiguredJobAfterCheck(
                             ConfigurationObject* confObject,
                             std::vector<std::string> &errorMessages);
 

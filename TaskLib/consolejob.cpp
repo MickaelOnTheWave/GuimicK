@@ -51,9 +51,6 @@ bool ConsoleJob::IsInitialized()
 
 JobStatus *ConsoleJob::Run()
 {
-    if (IsCommandAvailable() == false)
-        return debugManager->CreateStatus(JobStatus::ERROR, NotAvailableError);
-
     bool success = RunCommand();
     if (success)
         return CreateSuccessStatus();

@@ -37,6 +37,12 @@ private:
     void TestOutputFilenameProperty(const std::string &propertyValue);
     void TestParserCommandProperty(const std::string &propertyValue);
     void TestParserUsesBufferProperty(const std::string &propertyValue, const bool &expectedValue);
+
+    virtual void FinalCheckTitleProperty(AbstractJob* job, const std::string& expectedValue);
+    virtual void FinalCheckExpectedOutputProperty(AbstractJob* job, const std::string& expectedValue);
+    virtual void FinalCheckOutputFilenameProperty(AbstractJob* job, const std::string& expectedValue);
+    virtual void FinalCheckParserCommandProperty(AbstractJob* job, const std::string& expectedValue);
+    virtual void FinalCheckParserUsesBufferProperty(AbstractJob* job, const bool expectedValue);
 };
 
 #endif // USERCONSOLEJOBCONFIGURATIONTEST_H

@@ -119,7 +119,7 @@ AbstractConsoleJob *LinuxFreeSpaceCheckJob::CreateJobInstance() const
         return dfJob;
     else
     {
-        SshConsoleJob* sshJob = new SshConsoleJob("", dfJob);
+        SshConsoleJob* sshJob = new SshConsoleJob(dfJob);
         sshJob->SetTarget(sshUser, sshHost);
         return sshJob;
     }

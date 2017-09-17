@@ -136,7 +136,7 @@ void ConsoleJobTest::CheckAttachmentCount(const unsigned long fileCount,
 
 void ConsoleJobTest::TestCommandWithAppendedParameter()
 {
-    TestCommandWithParameter(JobStatus::ERROR, ConsoleJob::NotAvailableError, "", true);
+    TestCommandWithParameter(JobStatus::OK, "", "my super content", true);
 }
 
 void ConsoleJobTest::TestCommandWithSeparatedParameter()

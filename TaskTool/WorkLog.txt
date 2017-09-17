@@ -1,3 +1,21 @@
+17/09/2017 (10.3)
+	Implemented changes in Ssh job. Updated tests accordingly. Now all tests are
+	running again :-)
+
+
+14/09/2017 (2h)
+	Investigating issue. It is a deep flaw in Ssh console design.
+	First, its test suite was not running. Changed that.
+	Second, ssh configuration tests were running as it ssh jobs were children of
+	user consoles one. This is not the case.
+	Ssh configurations were returning user console jobs. Changed that.
+	Added a sanity test for type checking.
+	Changed test suite to have final checks done differently for ssh jobs. Now issue
+	is putting in Ssh all missing features from User console job.
+Next planned work :
+	- Finish Ssh console job adapting.
+	- Go on previous roadmap.
+
 13/09/2017 (1h)
 	Production did not run as expected because of Internet problem. Checking
 	report by hand (if it was fallbacked to file). Report was not really written

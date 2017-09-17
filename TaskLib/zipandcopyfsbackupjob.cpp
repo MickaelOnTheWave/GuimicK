@@ -162,7 +162,7 @@ bool ZipAndCopyFsBackupJob::CopyBackupArchiveToDestination(
 bool ZipAndCopyFsBackupJob::CleanBackupArchiveFromSource(AbstractBackupJob::ResultCollection &results)
 {
     string parameters = string("-f ") + localDestination;
-    SshConsoleJob* remoteJob = new SshConsoleJob("", new ConsoleJob("rm", parameters));
+    SshConsoleJob* remoteJob = new SshConsoleJob(new ConsoleJob("rm", parameters));
     remoteJob->SetTarget(sshUser, sshHost);
 
     JobStatus* unusedStatus = remoteJob->Run();
@@ -190,7 +190,7 @@ AbstractConsoleJob *ZipAndCopyFsBackupJob::CreateBackupConsoleJob(const string &
         return job;
     else
     {
-        SshConsoleJob* remoteJob = new SshConsoleJob("", job);
+        SshConsoleJob* remoteJob = new SshConsoleJob(job);
         remoteJob->SetTarget(sshUser, sshHost);
         return remoteJob;
     }

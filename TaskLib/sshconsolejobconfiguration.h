@@ -7,6 +7,7 @@ class SshConsoleJobConfiguration : public UserConsoleJobConfiguration
 {
 public:
     SshConsoleJobConfiguration();
+    virtual ~SshConsoleJobConfiguration();
 
 protected:
     virtual AbstractJob* CreateConfiguredJobAfterCheck(

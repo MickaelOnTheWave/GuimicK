@@ -1,30 +1,31 @@
 #include "sshconsolejob.h"
 
 #include <sstream>
+#include "consolejob.h"
 #include "tools.h"
+#include "userconsolejob.h"
 
 using namespace std;
 
 const string noTargetError = "No target specified";
 const string invalidTargetError = "Invalid target specified";
 
-SshConsoleJob::SshConsoleJob(const string& _title, ConsoleJob *_job)
-    : AbstractConsoleJob(), title(_title), user(""), host("")
+SshConsoleJob::SshConsoleJob(AbstractConsoleJob *_job)
+    : AbstractConsoleJob(), title(""), user(""), host("")
 {
-    remoteJob = _job;
-    remoteJob->SetParentDebugManager(debugManager);
+    SetRemoteJob(_job);
 }
 
 SshConsoleJob::SshConsoleJob(const string &_title, const string &_command)
     : AbstractConsoleJob(), title(_title), user(""), host("")
 {
-    remoteJob = new ConsoleJob(_command);
+
+    SetRemoteJob(new ConsoleJob(_command));
 }
 
 SshConsoleJob::SshConsoleJob(const SshConsoleJob &other)
     : AbstractConsoleJob(other)
 {
-    title = other.title;
     user = other.user;
     host = other.host;
     remoteJob = static_cast<ConsoleJob*>(other.remoteJob->Clone());
@@ -37,7 +38,7 @@ SshConsoleJob::~SshConsoleJob()
 
 string SshConsoleJob::GetName()
 {
-    return title;
+    return remoteJob->GetName();
 }
 
 AbstractJob *SshConsoleJob::Clone()
@@ -79,12 +80,12 @@ JobStatus *SshConsoleJob::Run()
     else if (Tools::IsComputerAlive(host) == false)
         return new JobStatus(JobStatus::ERROR, invalidTargetError);
 
-    ConsoleJob* sshJob = CreateSshJob();
+    AbstractConsoleJob* sshJob = CreateSshJob();
 
     debugManager->AddDataLine<string>("Child command", sshJob->GetCommand());
     debugManager->AddDataLine<string>("Child params", sshJob->GetCommandParameters());
 
-    //JobStatus* status = sshJob->Run();
+    JobStatus* status = sshJob->Run();
 
     debugManager->AddDataLine<string>("Output", sshJob->GetCommandOutput());
     debugManager->AddDataLine<int>("Return code", sshJob->GetCommandReturnCode());
@@ -93,8 +94,12 @@ JobStatus *SshConsoleJob::Run()
     remoteJob->SetCommandOutput(sshJob->GetCommandOutput());
 
     delete sshJob;
-    //return debugManager->UpdateStatus(status);
-    return debugManager->CreateStatus(JobStatus::OK, "testing");
+    return debugManager->UpdateStatus(status);
+}
+
+void SshConsoleJob::SetTitle(const string &value)
+{
+    title = value;
 }
 
 int SshConsoleJob::GetExpectedReturnCode() const
@@ -132,9 +137,19 @@ int SshConsoleJob::GetCommandReturnCode() const
     return remoteJob->GetCommandReturnCode();
 }
 
+void SshConsoleJob::SetCommandReturnCode(const int value)
+{
+    remoteJob->SetCommandReturnCode(value);
+}
+
 string SshConsoleJob::GetCommandOutput() const
 {
     return remoteJob->GetCommandOutput();
+}
+
+void SshConsoleJob::SetCommandOutput(const string &value)
+{
+    remoteJob->SetCommandOutput(value);
 }
 
 bool SshConsoleJob::IsCommandAvailable() const
@@ -148,9 +163,46 @@ bool SshConsoleJob::IsRunOk() const
     return remoteJob->IsRunOk();
 }
 
-ConsoleJob *SshConsoleJob::CreateSshJob()
+void SshConsoleJob::SetRemoteJob(AbstractConsoleJob *_remoteJob)
 {
-    ConsoleJob* sshJob = static_cast<ConsoleJob*>(remoteJob->Clone());
+    remoteJob = _remoteJob;
+    remoteJob->SetParentDebugManager(debugManager);
+}
+
+string SshConsoleJob::GetExpectedOutput() const
+{
+    UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
+    return (castJob) ? castJob->GetExpectedOutput() : string("");
+}
+
+void SshConsoleJob::SetExpectedOutput(const string &value)
+{
+    UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
+    if (castJob)
+        castJob->SetExpectedOutput(value);
+}
+
+string SshConsoleJob::GetOutputFile() const
+{
+    UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
+    return (castJob) ? castJob->GetOutputFile() : string("");
+}
+
+string SshConsoleJob::GetMiniDescriptionParserCommand() const
+{
+    UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
+    return (castJob) ? castJob->GetMiniDescriptionParserCommand() : string("");
+}
+
+bool SshConsoleJob::IsParsingUsingBuffer() const
+{
+    UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
+    return (castJob) ? castJob->IsParsingUsingBuffer() : false;
+}
+
+AbstractConsoleJob *SshConsoleJob::CreateSshJob()
+{
+    AbstractConsoleJob* sshJob = static_cast<AbstractConsoleJob*>(remoteJob->Clone());
     const string remoteJobCommand = remoteJob->GetCommand() + " " +
                                     remoteJob->GetCommandParameters();
     const string sshParameters = user + "@" + host + " \"" + remoteJobCommand + "\"";

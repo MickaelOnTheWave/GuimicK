@@ -84,10 +84,8 @@ void UserConsoleJobConfigurationTest::TestTitleProperty(const string &propertyVa
                 UserConsoleJobConfiguration::TitleProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-    auto castJob = dynamic_cast<UserConsoleJob*>(job);
 
-    QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetName(), propertyValue);
+    FinalCheckTitleProperty(job, propertyValue);
 
     delete job;
     delete confObject;
@@ -99,7 +97,7 @@ void UserConsoleJobConfigurationTest::TestCommandProperty(const std::string &pro
                 UserConsoleJobConfiguration::CommandProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-    auto castJob = dynamic_cast<UserConsoleJob*>(job);
+    auto castJob = dynamic_cast<AbstractConsoleJob*>(job);
 
     QVERIFY(castJob != nullptr);
     QCOMPARE(castJob->GetCommand(), propertyValue);
@@ -114,7 +112,7 @@ void UserConsoleJobConfigurationTest::TestParamsProperty(const string &propertyV
                 UserConsoleJobConfiguration::ParameterProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-    auto castJob = dynamic_cast<UserConsoleJob*>(job);
+    auto castJob = dynamic_cast<AbstractConsoleJob*>(job);
 
     QVERIFY(castJob != nullptr);
     QCOMPARE(castJob->GetCommandParameters(), propertyValue);
@@ -130,7 +128,7 @@ void UserConsoleJobConfigurationTest::TestReturnCodeProperty(const string &prope
                 UserConsoleJobConfiguration::ReturnCodeProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-    auto castJob = dynamic_cast<UserConsoleJob*>(job);
+    auto castJob = dynamic_cast<AbstractConsoleJob*>(job);
 
     QVERIFY(castJob != nullptr);
     QCOMPARE(castJob->GetExpectedReturnCode(), expectedValue);
@@ -145,10 +143,8 @@ void UserConsoleJobConfigurationTest::TestExpectedOutputProperty(const string &p
                 UserConsoleJobConfiguration::ExpectedOutputProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-    auto castJob = dynamic_cast<UserConsoleJob*>(job);
 
-    QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetExpectedOutput(), propertyValue);
+    FinalCheckExpectedOutputProperty(job, propertyValue);
 
     delete job;
     delete confObject;
@@ -160,10 +156,8 @@ void UserConsoleJobConfigurationTest::TestOutputFilenameProperty(const string &p
                 UserConsoleJobConfiguration::OutputFilenameProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-    auto castJob = dynamic_cast<UserConsoleJob*>(job);
 
-    QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetOutputFile(), propertyValue);
+    FinalCheckOutputFilenameProperty(job, propertyValue);
 
     delete job;
     delete confObject;
@@ -175,10 +169,8 @@ void UserConsoleJobConfigurationTest::TestParserCommandProperty(const string &pr
                 UserConsoleJobConfiguration::ParserCommandProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-    auto castJob = dynamic_cast<UserConsoleJob*>(job);
 
-    QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetMiniDescriptionParserCommand(), propertyValue);
+    FinalCheckParserCommandProperty(job, propertyValue);
 
     delete job;
     delete confObject;
@@ -191,11 +183,49 @@ void UserConsoleJobConfigurationTest::TestParserUsesBufferProperty(const string 
                 UserConsoleJobConfiguration::ParserUsesBufferProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-    auto castJob = dynamic_cast<UserConsoleJob*>(job);
 
-    QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->IsParsingUsingBuffer(), expectedValue);
+    FinalCheckParserUsesBufferProperty(job, expectedValue);
 
     delete job;
     delete confObject;
+}
+
+void UserConsoleJobConfigurationTest::FinalCheckTitleProperty(AbstractJob *job,
+                                                              const string &expectedValue)
+{
+    auto castJob = dynamic_cast<UserConsoleJob*>(job);
+    QVERIFY(castJob != nullptr);
+    QCOMPARE(castJob->GetName(), expectedValue);
+}
+
+void UserConsoleJobConfigurationTest::FinalCheckExpectedOutputProperty(AbstractJob *job,
+                                                                       const string &expectedValue)
+{
+    auto castJob = dynamic_cast<UserConsoleJob*>(job);
+    QVERIFY(castJob != nullptr);
+    QCOMPARE(castJob->GetExpectedOutput(), expectedValue);
+}
+
+void UserConsoleJobConfigurationTest::FinalCheckOutputFilenameProperty(AbstractJob *job,
+                                                                       const string &expectedValue)
+{
+    auto castJob = dynamic_cast<UserConsoleJob*>(job);
+    QVERIFY(castJob != nullptr);
+    QCOMPARE(castJob->GetOutputFile(), expectedValue);
+}
+
+void UserConsoleJobConfigurationTest::FinalCheckParserCommandProperty(AbstractJob *job,
+                                                                      const string &expectedValue)
+{
+    auto castJob = dynamic_cast<UserConsoleJob*>(job);
+    QVERIFY(castJob != nullptr);
+    QCOMPARE(castJob->GetMiniDescriptionParserCommand(), expectedValue);
+}
+
+void UserConsoleJobConfigurationTest::FinalCheckParserUsesBufferProperty(AbstractJob *job,
+                                                                         const bool expectedValue)
+{
+    auto castJob = dynamic_cast<UserConsoleJob*>(job);
+    QVERIFY(castJob != nullptr);
+    QCOMPARE(castJob->IsParsingUsingBuffer(), expectedValue);
 }

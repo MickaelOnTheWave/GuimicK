@@ -38,8 +38,7 @@ void AbstractJobDefaultConfigurationTest::testConfigure_ShowDebugProperty(
     if (propertyValue != "")
         confObject->SetProperty(AbstractJobDefaultConfiguration::DebugProperty, propertyValue);
 
-    vector<string> expectedErrors;
-    AbstractJob* job = TestConfiguration(confObject, expectedErrors);
+    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
 
     QVERIFY(job != nullptr);
     QVERIFY(job->GetOutputDebugInformationValue() == expectedValue);

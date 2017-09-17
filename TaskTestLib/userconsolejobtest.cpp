@@ -136,3 +136,10 @@ void UserConsoleJobTest::CheckJobConditions(const int expectedCode,
     QCOMPARE(GetJob()->GetExpectedReturnCode(), expectedCode);
     QCOMPARE(GetJob()->GetExpectedOutput().c_str(), expectedOutput.c_str());
 }
+
+void UserConsoleJobTest::TestCommandWithAppendedParameter()
+{
+    TestCommandWithParameter(JobStatus::ERROR, ConsoleJob::NotAvailableError, "", true);
+
+}
+

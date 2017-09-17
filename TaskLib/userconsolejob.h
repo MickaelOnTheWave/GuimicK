@@ -22,7 +22,9 @@ public:
     virtual void Initialize(const std::string& _command,
                             int _expectedReturnCode = 0);
 
-    void SetTitle(const std::string& title);
+    virtual JobStatus* Run();
+
+    virtual void SetTitle(const std::string& value);
 
     std::string GetMiniDescriptionParserCommand() const;
     void SetMiniDescriptionParserCommand(const std::string& parser);
