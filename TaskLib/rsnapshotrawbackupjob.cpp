@@ -3,7 +3,9 @@
 #include <sstream>
 #include <unistd.h>
 
+#include "filetools.h"
 #include "rsnapshoterroranalyzer.h"
+#include "tools.h"
 
 using namespace std;
 
@@ -56,13 +58,7 @@ JobStatus *RsnapshotRawBackupJob::Run()
     else
         delete backupStatus;
 
-    JobStatus* reportStatus = RunReportCreation();
-    if (reportStatus->GetCode() != JobStatus::OK)
-        return reportStatus;
-    else
-        delete reportStatus;
-
-    return CreateParsedReportStatus();
+    return RunReportCreation();
 }
 
 string RsnapshotRawBackupJob::GetRepository() const
@@ -139,6 +135,43 @@ JobStatus *RsnapshotRawBackupJob::RunBackup()
 
 JobStatus *RsnapshotRawBackupJob::RunReportCreation()
 {
+    if (IsFirstBackup())
+        return RunRecursiveListReportCreation();
+    else
+    {
+        JobStatus* status = RunRsnapshotDiffReportCreation();
+        if (status->GetCode() == JobStatus::OK)
+        {
+            delete status;
+            return CreateParsedReportStatus();
+        }
+        else
+            return status;
+    }
+}
+
+JobStatus *RsnapshotRawBackupJob::RunRecursiveListReportCreation()
+{
+    const string backupFolder = repository + "/weekly.0";
+    vector<string> fileList;
+    bool ok = Tools::GetFolderContentRecursively(backupFolder, fileList);
+    if (ok)
+    {
+        FileBackupReport report;
+        report.AddAsAdded(fileList);
+        JobStatus* status = new JobStatus(JobStatus::OK, report.GetMiniDescription());
+        status->AddFileBuffer(GetAttachmentName(), report.GetFullDescription());
+        return debugManager->UpdateStatus(status);
+    }
+    else
+    {
+        debugManager->AddDataLine<string>("Backup folder not found", backupFolder);
+        return debugManager->CreateStatus(JobStatus::OK_WITH_WARNINGS, "Report could not be created");
+    }
+}
+
+JobStatus *RsnapshotRawBackupJob::RunRsnapshotDiffReportCreation()
+{
     ConsoleJob* reportJob = CreateReportCommandJob();
     JobStatus* reportStatus = NULL;
     if (reportJob->IsCommandAvailable())
@@ -162,7 +195,7 @@ JobStatus *RsnapshotRawBackupJob::RunReportCreation()
         reportStatus = new JobStatus(JobStatus::OK_WITH_WARNINGS, "Rsnapshot reporting not available");
 
     delete reportJob;
-    return debugManager->UpdateStatus(reportStatus);
+    return reportStatus;
 }
 
 JobStatus *RsnapshotRawBackupJob::CreateParsedReportStatus()
@@ -173,6 +206,11 @@ JobStatus *RsnapshotRawBackupJob::CreateParsedReportStatus()
     JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
     status->AddFileBuffer(GetAttachmentName(), parser.GetFullDescription());
     return debugManager->UpdateStatus(status);
+}
+
+bool RsnapshotRawBackupJob::IsFirstBackup() const
+{
+    return !FileTools::FolderExists(repository + "/weekly.1");
 }
 
 ConsoleJob *RsnapshotRawBackupJob::CreateBackupCommandJob()

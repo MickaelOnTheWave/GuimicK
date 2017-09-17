@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ConsoleJobTest();
     //QObject* testSuite = new GitJobTest();
     //QObject* testSuite = new UserConsoleJobTest();
-    QObject* testSuite = new SshConsoleJobTest();
+    //QObject* testSuite = new SshConsoleJobTest();
     //QObject* testSuite = new ConfigurationParserTest(toolsLibDir);
     //QObject* testSuite = new FileToolsTest(toolsLibDir);
     //QObject* testSuite = new ClientWorkManagerTest();
@@ -52,6 +52,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new RawCopyFsBackupJobConfigurationTest();
     //QObject* testSuite = new RsyncCopyFsBackupJobConfigurationTest();
     //QObject* testSuite = new ZipAndCopyFsBackupJobConfigurationTest();
+    QObject* testSuite = new ToolsTest(toolsLibDir);
 
     QTest::qExec(testSuite, argc, argv);
 

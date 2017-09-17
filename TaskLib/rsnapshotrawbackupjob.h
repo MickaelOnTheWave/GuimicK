@@ -34,7 +34,11 @@ public:
 private:
     JobStatus* RunBackup();
     JobStatus* RunReportCreation();
+    JobStatus* RunRecursiveListReportCreation();
+    JobStatus* RunRsnapshotDiffReportCreation();
     JobStatus* CreateParsedReportStatus();
+
+    bool IsFirstBackup() const;
 
     ConsoleJob* CreateBackupCommandJob();
     ConsoleJob* CreateReportCommandJob();
