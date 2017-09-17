@@ -6,6 +6,10 @@
 class SshConsoleJob : public AbstractConsoleJob
 {
 public:
+    static std::string NoTargetError;
+    static std::string InvalidTargetError;
+    static std::string NoTerminalForPasswordError;
+
     SshConsoleJob(AbstractConsoleJob* _job);
     SshConsoleJob(const std::string& _title, const std::string& _command = "");
     SshConsoleJob(const SshConsoleJob& other);
@@ -57,6 +61,9 @@ public:
 
 private:
     AbstractConsoleJob* CreateSshJob();
+
+    bool IsAskTerminalError(JobStatus* status,
+                            const std::string &message) const;
 
     std::string title;
 	std::string user;

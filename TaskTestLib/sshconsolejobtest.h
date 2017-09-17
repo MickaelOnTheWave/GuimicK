@@ -16,6 +16,7 @@ private Q_SLOTS:
     void testRun_NoTargetError();
     void testRun_InvalidTargetError();
     void testRun_CheckResultingCommand();
+    void testRun_NoTtyError();
 
 protected:
     virtual AbstractConsoleJob* CreateDefaultJob(const std::string& command,

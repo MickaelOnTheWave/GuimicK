@@ -7,8 +7,9 @@
 
 using namespace std;
 
-const string noTargetError = "No target specified";
-const string invalidTargetError = "Invalid target specified";
+string SshConsoleJob::NoTargetError = "No target specified";
+string SshConsoleJob::InvalidTargetError = "Invalid target specified";
+string SshConsoleJob::NoTerminalForPasswordError = "Password needed";
 
 SshConsoleJob::SshConsoleJob(AbstractConsoleJob *_job)
     : AbstractConsoleJob(), title(""), user(""), host("")
@@ -76,9 +77,9 @@ bool SshConsoleJob::IsInitialized()
 JobStatus *SshConsoleJob::Run()
 {
     if (IsInitialized() == false)
-        return new JobStatus(JobStatus::ERROR, noTargetError);
+        return new JobStatus(JobStatus::ERROR, NoTargetError);
     else if (Tools::IsComputerAlive(host) == false)
-        return new JobStatus(JobStatus::ERROR, invalidTargetError);
+        return new JobStatus(JobStatus::ERROR, InvalidTargetError);
 
     AbstractConsoleJob* sshJob = CreateSshJob();
 
@@ -89,6 +90,9 @@ JobStatus *SshConsoleJob::Run()
 
     remoteJob->SetCommandReturnCode(sshJob->GetCommandReturnCode());
     remoteJob->SetCommandOutput(sshJob->GetCommandOutput());
+
+    if (IsAskTerminalError(status, sshJob->GetCommandOutput()))
+        status->SetDescription(NoTerminalForPasswordError);
 
     delete sshJob;
     return status;
@@ -211,3 +215,10 @@ AbstractConsoleJob *SshConsoleJob::CreateSshJob()
     return sshJob;
 }
 
+bool SshConsoleJob::IsAskTerminalError(JobStatus *status,
+                                       const string& message) const
+{
+    const string expectedOutput = "sudo: no tty present";
+    return (status->GetCode() == JobStatus::ERROR &&
+            message.find(expectedOutput) == 0);
+}
