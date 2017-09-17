@@ -16,7 +16,6 @@ DEFINES += PARSERSLIB_LIBRARY
 SOURCES += \
     aptgetupgradeparser.cpp \
     clamavreportparser.cpp \
-    gitreportparser.cpp \
     rsnapshotreportparser.cpp \
     abstractoutputparser.cpp \
     filebackupreport.cpp \
@@ -24,20 +23,21 @@ SOURCES += \
     dfcommandparser.cpp \
     rsynccommandparser.cpp \
     tarcommandparser.cpp \
-    gitplumbingreportparser.cpp
+    gitplumbingreportparser.cpp \
+    gitporcelainreportparser.cpp
 
 HEADERS +=\
     abstractoutputparser.h \
     aptgetupgradeparser.h \
     clamavreportparser.h \
-    gitreportparser.h \
     rsnapshotreportparser.h \
     filebackupreport.h \
     abstractfilebackupparser.h \
     dfcommandparser.h \
     rsynccommandparser.h \
     tarcommandparser.h \
-    gitplumbingreportparser.h
+    gitplumbingreportparser.h \
+    gitporcelainreportparser.h
 
 unix {
     target.path = /usr/lib

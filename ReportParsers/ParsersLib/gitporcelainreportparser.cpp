@@ -1,4 +1,4 @@
-#include "gitreportparser.h"
+#include "gitporcelainreportparser.h"
 
 #include <sstream>
 
@@ -9,16 +9,16 @@ using namespace std;
 // TODO : check if there is code to be refactored here. Maybe put in AbstractFileBackupParser
 // for shared usage with other parsers?
 
-GitReportParser::GitReportParser()
+GitPorcelainReportParser::GitPorcelainReportParser()
     : AbstractFileBackupParser(new FileBackupReport())
 {
 }
 
-GitReportParser::~GitReportParser()
+GitPorcelainReportParser::~GitPorcelainReportParser()
 {
 }
 
-bool GitReportParser::ParseBuffer(const string &buffer)
+bool GitPorcelainReportParser::ParseBuffer(const string &buffer)
 {
     reportData->Clear();
 
@@ -38,7 +38,7 @@ bool GitReportParser::ParseBuffer(const string &buffer)
     return true;
 }
 
-string GitReportParser::GetFullDescription()
+string GitPorcelainReportParser::GetFullDescription()
 {
     stringstream descriptionStream;
     descriptionStream << "Data parsed and report created successfully :" << endl;
@@ -46,12 +46,12 @@ string GitReportParser::GetFullDescription()
     return descriptionStream.str() + "\n";
 }
 
-void GitReportParser::GetReport(FileBackupReport& report)
+void GitPorcelainReportParser::GetReport(FileBackupReport& report)
 {
     report = *reportData;
 }
 
-void GitReportParser::WriteFileList(const vector<string>& fileList,
+void GitPorcelainReportParser::WriteFileList(const vector<string>& fileList,
                                     const string& operation,
                                     stringstream& stream)
 {
@@ -68,7 +68,7 @@ void GitReportParser::WriteFileList(const vector<string>& fileList,
         stream << endl;
 }
 
-void GitReportParser::RemoveLinesWithoutStartingWhitespaces(std::vector<string> &linesList)
+void GitPorcelainReportParser::RemoveLinesWithoutStartingWhitespaces(std::vector<string> &linesList)
 {
    vector<string>::iterator it=linesList.begin();
     while (it != linesList.end())
@@ -80,7 +80,7 @@ void GitReportParser::RemoveLinesWithoutStartingWhitespaces(std::vector<string> 
     }
 }
 
-void GitReportParser::SplitIntoSections(const std::vector<string> &linesList,
+void GitPorcelainReportParser::SplitIntoSections(const std::vector<string> &linesList,
                                         std::vector<string> &fileLinesList,
                                         std::vector<string> &informationLinesList)
 {
@@ -94,19 +94,19 @@ void GitReportParser::SplitIntoSections(const std::vector<string> &linesList,
     }
 }
 
-std::string GitReportParser::GetLeftTrimmed(const std::string& input)
+std::string GitPorcelainReportParser::GetLeftTrimmed(const std::string& input)
 {
     size_t first = input.find_first_not_of(' ');
     return input.substr(first);
 }
 
-std::string GitReportParser::GetRightTrimmed(const std::string& input)
+std::string GitPorcelainReportParser::GetRightTrimmed(const std::string& input)
 {
     size_t last = input.find_last_not_of(' ');
     return input.substr(0, last+1);
 }
 
-void GitReportParser::CreateFileList(const std::vector<string> &linesList, std::vector<string> &fileList)
+void GitPorcelainReportParser::CreateFileList(const std::vector<string> &linesList, std::vector<string> &fileList)
 {
     std::vector<string>::const_iterator it=linesList.begin();
     for (; it!=linesList.end(); ++it)
@@ -117,7 +117,7 @@ void GitReportParser::CreateFileList(const std::vector<string> &linesList, std::
     }
 }
 
-void GitReportParser::FillReportData(const std::vector<string> &files,
+void GitPorcelainReportParser::FillReportData(const std::vector<string> &files,
                                      const std::vector<string> &informationLines,
                                      FileBackupReport &reportData)
 {
@@ -138,7 +138,7 @@ void GitReportParser::FillReportData(const std::vector<string> &files,
     }
 }
 
-string GitReportParser::GetLineWithSubstring(const string &stringToFind, const std::vector<string> &stringList)
+string GitPorcelainReportParser::GetLineWithSubstring(const string &stringToFind, const std::vector<string> &stringList)
 {
     vector<string>::const_iterator it=stringList.begin();
     for(; it!=stringList.end(); ++it)

@@ -1,5 +1,0 @@
-M	GamerProfile.xml
-A	HomepageEsperancajpg
-D	TODOs
-D	TODOs (2016)
-M	ex1_description.txt

@@ -5,7 +5,7 @@
 #include <aptgetupgradeparser.h>
 #include <clamavreportparser.h>
 #include <dfcommandparser.h>
-#include <gitreportparser.h>
+#include <gitporcelainreportparser.h>
 #include <rsnapshotreportparser.h>
 
 using namespace std;
@@ -92,7 +92,7 @@ AbstractOutputParser* CreateParser(const std::string& name)
     else if (name == "rsnapshot")
         return new RSnapshotReportParser();
     else if (name == "git")
-        return new GitReportParser();
+        return new GitPorcelainReportParser();
     else if (name == "df")
         return new DfCommandParser();
     else

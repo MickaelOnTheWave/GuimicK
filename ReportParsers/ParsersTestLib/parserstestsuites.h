@@ -4,7 +4,7 @@
 #include "abstractoutputparsertest.h"
 #include "aptupgradeparsertest.h"
 #include "gitplumbingreportparsertest.h"
-#include "gitreportparsertest.h"
+#include "gitporcelainreportparsertest.h"
 #include "dfcommandparsertest.h"
 #include "rsnapshotreportparsertest.h"
 #include "rsynccommandparsertest.h"

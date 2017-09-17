@@ -1,33 +1,33 @@
-#include "gitreportparsertest.h"
+#include "gitporcelainreportparsertest.h"
 
 #include <QTest>
-#include "gitreportparser.h"
+#include "gitporcelainreportparser.h"
 
 using namespace std;
 
 const string suiteFolder = "GitPull/";
 
-GitReportParserTest::GitReportParserTest(const string &dataPrefix)
+GitPorcelainReportParserTest::GitPorcelainReportParserTest(const string &dataPrefix)
     : FileBackupParserAbstractTest(dataPrefix + suiteFolder)
 {
 }
 
-void GitReportParserTest::testParse()
+void GitPorcelainReportParserTest::testParse()
 {
     testParse_generic();
 }
 
-FileBackupReport *GitReportParserTest::CreateReport()
+FileBackupReport *GitPorcelainReportParserTest::CreateReport()
 {
     return new FileBackupReport();
 }
 
-AbstractFileBackupParser *GitReportParserTest::CreateParser()
+AbstractFileBackupParser *GitPorcelainReportParserTest::CreateParser()
 {
-    return new GitReportParser();
+    return new GitPorcelainReportParser();
 }
 
-void GitReportParserTest::PopulateTestData()
+void GitPorcelainReportParserTest::PopulateTestData()
 {
     QStringList fileListWith5;
     for (int i=0; i<5; ++i)

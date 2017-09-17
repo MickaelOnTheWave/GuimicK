@@ -1,5 +1,5 @@
-#ifndef GITREPORTPARSER_H
-#define GITREPORTPARSER_H
+#ifndef GITPORCELAINREPORTPARSER_H
+#define GITPORCELAINREPORTPARSER_H
 
 #include "abstractfilebackupparser.h"
 
@@ -9,11 +9,11 @@
 
 #include "filebackupreport.h"
 
-class GitReportParser : public AbstractFileBackupParser
+class GitPorcelainReportParser : public AbstractFileBackupParser
 {
 public:
-    GitReportParser();
-    virtual ~GitReportParser();
+    GitPorcelainReportParser();
+    virtual ~GitPorcelainReportParser();
 
     virtual bool ParseBuffer(const std::string& buffer);
     virtual std::string GetFullDescription();
@@ -42,4 +42,4 @@ private:
     std::string GetRightTrimmed(const std::string &input);
 };
 
-#endif // GITREPORTPARSER_H
+#endif // GITPORCELAINREPORTPARSER_H
