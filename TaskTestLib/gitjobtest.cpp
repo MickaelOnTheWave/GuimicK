@@ -204,7 +204,15 @@ void GitJobTest::CheckGitJobReturn(const int expectedStatus,
                                    const QString &description)
 {
     QCOMPARE(currentStatus->GetCode(), expectedStatus);
-    QCOMPARE(currentStatus->GetDescription(), description.toStdString());
+    const bool isSameDescription = (currentStatus->GetDescription() ==
+                                    description.toStdString());
+    if (!isSameDescription)
+    {
+        string message = "Description is different :\n";
+        message += "\texpected: " + description.toStdString() + "\n";
+        message += "\tgot: " + currentStatus->GetDescription() + "\n";
+        QFAIL(message.c_str());
+    }
 
     std::vector<std::pair<std::string,std::string> > reportFiles;
     currentStatus->GetFileBuffers(reportFiles);

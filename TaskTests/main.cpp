@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ConfigurationParserTest(toolsLibDir);
     //QObject* testSuite = new FileToolsTest(toolsLibDir);
     //QObject* testSuite = new ClientWorkManagerTest();
-    //QObject* testSuite = new ConfigurationTest(taskLibDir);
+    QObject* testSuite = new ConfigurationTest(taskLibDir);
     //QObject* testSuite = new GitFsBackupJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new GitPlumbingReportParserTest(parsersDir);
     //QObject* testSuite = new RawCopyFsBackupJobTest(taskLibDir, errorDir);
@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new RsyncCopyFsBackupJobConfigurationTest();
     //QObject* testSuite = new ZipAndCopyFsBackupJobConfigurationTest();
     //QObject* testSuite = new ToolsTest(toolsLibDir);
-    QObject* testSuite = new GitPorcelainReportParserTest(parsersDir);
+    //QObject* testSuite = new GitPorcelainReportParserTest(parsersDir);
 
     QTest::qExec(testSuite, argc, argv);
 

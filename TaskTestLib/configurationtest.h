@@ -23,6 +23,8 @@ private Q_SLOTS:
 
     void testBuildSimpleWorkList();
 
+    void testRemoteJobList();
+
 private:
     void LoadRootErrorExamples();
     void LoadRootWarningExamples();
@@ -30,6 +32,7 @@ private:
     void LoadClientExamples();
     void LoadJobsExamples();
     void LoadValidExamples();
+    void LoadRemoteJobListExamples();
 
     void LoadFromFile(const QString& file, const bool expectedResult,
                       const QStringList& expectedErrors);

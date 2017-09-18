@@ -70,11 +70,15 @@ private:
 
     bool FillJobListLocally(ConfigurationObject* jobListObj,
                             std::vector<std::string> &errorMessages);
-    bool FillJobListRemotely(std::vector<std::string> &errorMessages);
+    bool FillJobListRemotely(Client *client, std::vector<std::string> &errorMessages);
 
-    void CopyClientFile(const std::string& source, const std::string& destination);
+    bool CopyClientFile(Client *client,
+                        const std::string& source, const std::string& destination,
+                        std::vector<std::string>& errorMessages);
     void FillRemoteClientObjects(const std::list<ConfigurationObject*>& objectList,
                                  std::vector<std::string> &errorMessages);
+
+    std::string CreateScpErrorMessage(const std::string& output) const;
 
 	Client* client;
 	SelfIdentity* self;

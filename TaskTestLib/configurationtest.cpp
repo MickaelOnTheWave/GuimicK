@@ -33,6 +33,7 @@ void ConfigurationTest::testLoadFromFile_Errors_data()
     LoadAgentExamples();
     LoadClientExamples();
     LoadJobsExamples();
+    LoadRemoteJobListExamples();
 
     LoadValidExamples();
 }
@@ -87,6 +88,23 @@ void ConfigurationTest::testBuildSimpleWorkList()
     QCOMPARE(jobList[2]->GetName().c_str(), "ClamAV Scan");
     QCOMPARE(jobList[3]->GetName().c_str(), "Change Screen Saver");
     QCOMPARE(jobList[4]->GetName().c_str(), "Shutdown");
+}
+
+void ConfigurationTest::testRemoteJobList()
+{
+    LoadFromFile("remote - valid.txt", true, QStringList());
+
+    vector<AbstractJob*> jobList;
+    ClientWorkManager* manager = configuration->BuildSimpleWorkList();
+    manager->GetJobList(jobList);
+
+    QCOMPARE(jobList.size(), 5ul);
+    QCOMPARE(jobList[0]->GetName().c_str(), "Wake");
+    QCOMPARE(jobList[1]->GetName().c_str(), "Rsnapshot Backup");
+    QCOMPARE(jobList[2]->GetName().c_str(), "ClamAV Scan");
+    QCOMPARE(jobList[3]->GetName().c_str(), "Change Screen Saver");
+    QCOMPARE(jobList[4]->GetName().c_str(), "Shutdown");
+
 }
 
 void ConfigurationTest::LoadRootErrorExamples()
@@ -189,6 +207,30 @@ void ConfigurationTest::LoadValidExamples()
 {
     QTest::newRow("All Valid") << "valid.txt" << true << QStringList();
     QTest::newRow("Production configuration") << "realconf.txt" << true << QStringList();
+}
+
+void ConfigurationTest::LoadRemoteJobListExamples()
+{
+    QTest::newRow("Remote job list - not set up") << "remote - nolist.txt"
+                                                  << true
+                                                  << QStringList({"Warning : client without job list",
+                                                                  "Warning : client has an empty job list"});
+
+    QTest::newRow("Remote job list - missing remote file") << "remote - nofile.txt"
+                                                  << false
+                                                  << QStringList({"Error : Client configuration file missing"});
+
+    QTest::newRow("Remote job list - invalid host") << "remote - invalidhost.txt"
+                                                  << false
+                                                  << QStringList({"Error : Client not available"});
+
+    QTest::newRow("Remote job list - user password") << "remote - userprompt.txt"
+                                                  << false
+                                                  << QStringList({"Error : Client requires password"});
+
+    QTest::newRow("Remote job list - ok") << "remote - valid.txt"
+                                          << true
+                                          << QStringList();
 }
 
 void ConfigurationTest::LoadFromFile(const QString &file, const bool expectedResult,

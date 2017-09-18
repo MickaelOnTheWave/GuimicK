@@ -1,4 +1,19 @@
-17/09/2017 (3.7h)
+18/09/2017 (2.4h)
+	Production run ran as expected! :-)) Updating release plan.
+	Checking test failures to fix another bug - the one with failing tests in Release.
+	The bug is in git job. For some strange reason, the job detects other modifications
+	when ran in Release. Tried to increment the sleep counter - no effect. Also,
+	cleaning was checked and is correct. Leaving the bug for now, going for features.
+	Finished test cases for remote job list. Implemented accordingly - tests are now ok.
+	Fixed an scp option that asked for a password in global tests (because they run in
+	a real terminal). Now scp never tries to authenticate with password.
+	Updated production config - now client and server are separated.
+Next planned work :
+	- Check production run - it should run as before
+	- If ok, update release plan
+	- Start Client GUI
+
+17/09/2017 (3.8h)
 	Implemented changes in Ssh job. Updated tests accordingly. Now all tests are
 	running again :-). Also fixed debug file duplication in Ssh job. Now
 	ssh job is running as expected. Creating specific error message for terminal

@@ -3,17 +3,18 @@
 #include <vector>
 
 #include "consolejob.h"
+#include "consolereportdispatcher.h"
 #include "configurationparser.h"
+#include "dummyemailreportdispatcher.h"
+#include "filereportdispatcher.h"
 #include "htmlreportcreator.h"
 #include "profiledjob.h"
+#include "tools.h"
 
 #include "changescreensaverjobconfiguration.h"
 #include "clamavjobconfiguration.h"
-#include "consolereportdispatcher.h"
 #include "copyfsbackupjobconfigurations.h"
 #include "diskspacecheckjobconfiguration.h"
-#include "dummyemailreportdispatcher.h"
-#include "filereportdispatcher.h"
 #include "gitbackupjobconfiguration.h"
 #include "gitfsbackupjobconfiguration.h"
 #include "rsnapshotbackupjobconfiguration.h"
@@ -104,7 +105,7 @@ bool Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
 
     const string remoteJobList = confObject->GetProperty("remoteJobList");
     if (remoteJobList == "true")
-        ok = FillJobListRemotely(errorMessages);
+        ok = FillJobListRemotely(client, errorMessages);
     else
         ok = FillJobListLocally(confObject->GetObject("JobList"), errorMessages);
 
@@ -241,15 +242,21 @@ bool Configuration::FillJobListLocally(ConfigurationObject* jobListObj,
     return true;
 }
 
-bool Configuration::FillJobListRemotely(std::vector<string> &errorMessages)
+bool Configuration::FillJobListRemotely(Client* client, std::vector<string> &errorMessages)
 {
-    const string defaultRemoteConfigurationFile = "~/.taskmanager";
     const string tempClientFile = "tempClientConfiguration.conf";
+    const string defaultRemoteConfigurationFile = "~/.taskmanager";
+
+    string remoteConfigurationFile = client->GetProperty("remoteConfigurationFile");
+    if (remoteConfigurationFile == "")
+        remoteConfigurationFile = defaultRemoteConfigurationFile;
 
     // TODO refactor this : Configuration parser should be made like other parsers,
     // can parse from file or buffer. And here it should parse buffer!
-
-    CopyClientFile(defaultRemoteConfigurationFile, tempClientFile);
+    bool clientFileOk = CopyClientFile(client, remoteConfigurationFile, tempClientFile,
+                                       errorMessages);
+    if (!clientFileOk)
+        return false;
 
     ConfigurationParser parser;
     bool result = parser.ParseFile(tempClientFile, errorMessages);
@@ -262,9 +269,32 @@ bool Configuration::FillJobListRemotely(std::vector<string> &errorMessages)
     return true;
 }
 
-void Configuration::CopyClientFile(const string &source, const string &destination)
+bool Configuration::CopyClientFile(Client* client,
+                                   const string &source, const string &destination,
+                                   vector<string> &errorMessages)
 {
-    // TODO : implement
+    const string host = client->GetProperty("ip");
+    if (!Tools::IsComputerAlive(host))
+    {
+        errorMessages.push_back("Error : Client not available");
+        return false;
+    }
+
+    string scpParams = "-o \"PasswordAuthentication no\" ";
+    scpParams += client->GetProperty("sshuser") + "@" + host + ":";
+    scpParams += source + " " + destination;
+    ConsoleJob copyJob("scp", scpParams);
+
+    copyJob.RunWithoutStatus();
+
+    if (!copyJob.IsRunOk())
+    {
+        const string errorMessage = CreateScpErrorMessage(copyJob.GetCommandOutput());
+        errorMessages.push_back(errorMessage);
+        return false;
+    }
+    else
+        return true;
 }
 
 void Configuration::FillRemoteClientObjects(const list<ConfigurationObject*> &objectList,
@@ -276,6 +306,18 @@ void Configuration::FillRemoteClientObjects(const list<ConfigurationObject*> &ob
         errorMessages.push_back("Client configuration is empty");
     else
         FillJobListLocally(objectList.front(), errorMessages);
+}
+
+string Configuration::CreateScpErrorMessage(const string &output) const
+{
+    if (output.find("Permission denied") != string::npos)
+    {
+        return "Error : Client requires password";
+    }
+    else if (output.find("No such file or directory") != string::npos)
+        return "Error : Client configuration file missing";
+    else
+        return "Error trying to access Client configuration";
 }
 
 ClientWorkManager *Configuration::BuildTimedWorkList() const
