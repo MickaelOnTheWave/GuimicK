@@ -1,0 +1,75 @@
+JobList
+{
+	Wake();
+	GitFsBackup
+	{
+		target = "remote";
+		Folder
+		{
+			source = "/home/mickael/Documents";
+			dest = "/volume1/backups/important/documents/";
+		}
+	}		
+	GitBackup
+	{
+		Repository
+		{
+			source = "~/Prog/NoteReader";
+			dest = "/volume1/backups/repositories/NoteReader";
+		}
+		Repository
+		{
+			source = "~/Prog/TaskManager";
+			dest = "/volume1/backups/repositories/TaskManager";
+		}
+		Repository
+		{
+			source = "~/Prog/Tools";
+			dest = "/volume1/backups/repositories/Tools";
+		}
+		Repository
+		{
+			source = "~/Prog/QtTools";
+			dest = "/volume1/backups/repositories/QtTools";
+		}
+		Repository
+		{
+			source = "~/Prog/WorklogAnalyzer";
+			dest = "/volume1/backups/repositories/WorklogAnalyzer";
+		}
+		Repository
+		{
+			source = "~/Prog/homescripts";
+			dest = "/volume1/backups/repositories/homescripts";
+		}
+	}
+	RsnapshotBackup
+	{
+		repository = "/volume1/backups/other";
+		maxBackupCount = 4;
+		Folder
+		{
+			source = "mickael@desktop:~/Videos/";
+			dest = "videos/";
+		}
+	}
+	RsnapshotBackup
+	{
+		repository = "/volume1/backups/important";
+		maxBackupCount = 5;
+		Folder
+		{
+			source = "mickael@desktop:~/Pictures/";
+			dest = "pictures/";
+		}
+	}
+	SshConsole
+	{
+		title = "Package list update";
+		command = "sudo";
+		params = "apt-get update";
+		returnCode = 0;
+	}
+	DiskSpaceCheck("/dev/sda3");
+	Shutdown();
+}
