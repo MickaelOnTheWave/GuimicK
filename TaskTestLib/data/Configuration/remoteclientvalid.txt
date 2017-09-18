@@ -1,0 +1,8 @@
+JobList
+{
+	Wake();
+	RsnapshotBackup();
+	ClamAv();
+	ChangeScreenSaver();
+	Shutdown();
+}
