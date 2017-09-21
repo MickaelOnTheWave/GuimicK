@@ -76,7 +76,8 @@ OTHER_FILES += \
     data/rsnapshot.conf \
     data/realconf.txt \
     data/git.txt \
-    data/report.css
+    data/report.css \
+    data/currentProductionConfig.txt
 
 HEADERS += \
 	 emaildispatcherfactory.h \

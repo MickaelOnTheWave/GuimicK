@@ -1,3 +1,21 @@
+21/09/2017 (0.3h)
+	Production run did not work. There is a design flaw : how can remote list be retrieved
+	if computer was not waked? And the wake job is in the list...
+	The whole solution needs to be rethought. Here are some possibilities :
+	- Embed a wake job in the list retrieval process.
+		- Pros : easy to implement and fits nicely with current solution
+		- Cons : wake job is out of report, or major architecture changes are needed
+	- Create a special job that retrieves and runs remote list
+		- Pros : seems to integrate better with job logic.
+		- Cons : Major architecture problem : how this job nows about work list?
+					How ClientManager can handle a job changing it?
+	Solution 2 seems better in the long run but needs major refactoring. A solution
+	could be to create a special status that contains other statuses. Report creators
+	would need to be aware of that and "explode" these reports.
+	Meanwhile, returning production configuration back to server-only.
+Next planned work :
+	- Choose a solution and implement it
+
 18/09/2017 (2.4h)
 	Production run ran as expected! :-)) Updating release plan.
 	Checking test failures to fix another bug - the one with failing tests in Release.
