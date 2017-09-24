@@ -104,7 +104,6 @@ void ConfigurationTest::testRemoteJobList()
     QCOMPARE(jobList[2]->GetName().c_str(), "ClamAV Scan");
     QCOMPARE(jobList[3]->GetName().c_str(), "Change Screen Saver");
     QCOMPARE(jobList[4]->GetName().c_str(), "Shutdown");
-
 }
 
 void ConfigurationTest::LoadRootErrorExamples()
@@ -211,7 +210,7 @@ void ConfigurationTest::LoadValidExamples()
 
 void ConfigurationTest::LoadRemoteJobListExamples()
 {
-    QTest::newRow("Remote job list - not set up") << "remote - nolist.txt"
+/*    QTest::newRow("Remote job list - not set up") << "remote - nolist.txt"
                                                   << true
                                                   << QStringList({"Warning : client without job list",
                                                                   "Warning : client has an empty job list"});
@@ -230,7 +229,16 @@ void ConfigurationTest::LoadRemoteJobListExamples()
 
     QTest::newRow("Remote job list - ok") << "remote - valid.txt"
                                           << true
-                                          << QStringList();
+                                          << QStringList();*/
+
+    QTest::newRow("Remote job list - deprecated") << "remote - deprecated.txt"
+                                                  << true
+                                                  << QStringList({
+                                                                 "Warning : Remote option deprecated",
+                                                                 "Warning : client without job list",
+                                                                 "Warning : client has an empty job list"
+                                                                 });
+
 }
 
 void ConfigurationTest::LoadFromFile(const QString &file, const bool expectedResult,

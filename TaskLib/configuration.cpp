@@ -104,11 +104,10 @@ bool Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
         return false;
 
     const string remoteJobList = confObject->GetProperty("remoteJobList");
-    if (remoteJobList == "true")
-        ok = FillJobListRemotely(client, errorMessages);
-    else
-        ok = FillJobListLocally(confObject->GetObject("JobList"), errorMessages);
+    if (remoteJobList != "")
+        errorMessages.push_back("Warning : Remote option deprecated");
 
+    ok = FillJobListLocally(confObject->GetObject("JobList"), errorMessages);
     if (!ok)
         return false;
 
