@@ -73,7 +73,8 @@ SOURCES += \
     abstractstructuredreportcreator.cpp \
     maintoolmodule.cpp \
     filereportdispatcher.cpp \
-    gitcommontools.cpp
+    gitcommontools.cpp \
+    remotejobsrunner.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -138,7 +139,8 @@ HEADERS +=\
     maintoolmodule.h \
     abstractreportdispatcherreplacer.h \
     filereportdispatcher.h \
-    gitcommontools.h
+    gitcommontools.h \
+    remotejobsrunner.h
 
 unix {
     target.path = /usr/lib
