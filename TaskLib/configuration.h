@@ -16,6 +16,17 @@ class ConfigurationObject;
 class Configuration
 {
 public:
+    static std::string MsgNoPassword;
+    static std::string MsgNoConfigFile;
+    static std::string MsgClientConfigAccessError;
+    static std::string MsgClientConfigUnknownObjects;
+    static std::string MsgClientConfigEmpty;
+    static std::string MsgMissingClient;
+    static std::string MsgMissingAgent;
+    static std::string MsgClientWithoutName;
+    static std::string MsgRemoteOptionDeprecated;
+    static std::string MsgOneClientSupported;
+
 	Configuration();
 	virtual ~Configuration();
 
@@ -79,6 +90,10 @@ private:
                                  std::vector<std::string> &errorMessages);
 
     std::string CreateScpErrorMessage(const std::string& output) const;
+
+    std::string CreateWarning(const std::string& message) const;
+    std::string CreateError(const std::string& message) const;
+    std::string CreateMessage(const std::string& tag, const std::string& message) const;
 
 	Client* client;
 	SelfIdentity* self;

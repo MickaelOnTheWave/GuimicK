@@ -25,6 +25,18 @@
 
 using namespace std;
 
+string Configuration::MsgNoPassword = "Client requires password";
+string Configuration::MsgNoConfigFile = "Client configuration file missing";
+string Configuration::MsgClientConfigAccessError = "Error trying to access Client configuration";
+string Configuration::MsgClientConfigUnknownObjects = "Client configuration has unknown objects";
+string Configuration::MsgClientConfigEmpty = "Client configuration is empty";
+string Configuration::MsgMissingClient = "missing Client";
+string Configuration::MsgMissingAgent = "missing Agent configuration";
+string Configuration::MsgClientWithoutName = "Client without name";
+string Configuration::MsgRemoteOptionDeprecated = "Remote option deprecated";
+string Configuration::MsgOneClientSupported = "only one client is supported for now. "
+                                              "Redefining default client";
+
 Configuration::Configuration()
     : client(NULL), self(NULL), reportCreator(NULL), masterEmail("")
 {
@@ -82,8 +94,7 @@ bool Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
 {
     if (client != NULL)
     {
-        errorMessages.push_back("Warning : only one client is supported for now. "
-                                "Redefining default client");
+        errorMessages.push_back(CreateWarning(MsgOneClientSupported));
         delete client;
     }
 
@@ -94,7 +105,7 @@ bool Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
     const string clientName = confObject->GetProperty("Name");
     if (clientName == "")
     {
-        errorMessages.push_back("Error : Client without name");
+        errorMessages.push_back(CreateError(MsgClientWithoutName));
         return false;
     }
     client->SetName(clientName);
@@ -105,7 +116,7 @@ bool Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
 
     const string remoteJobList = confObject->GetProperty("remoteJobList");
     if (remoteJobList != "")
-        errorMessages.push_back("Warning : Remote option deprecated");
+        errorMessages.push_back(CreateWarning(MsgRemoteOptionDeprecated));
 
     ok = FillJobListLocally(confObject->GetObject("JobList"), errorMessages);
     if (!ok)
@@ -300,9 +311,9 @@ void Configuration::FillRemoteClientObjects(const list<ConfigurationObject*> &ob
                                             vector<string> &errorMessages)
 {
     if (objectList.size() > 1)
-        errorMessages.push_back("Client configuration has unknown objects");
+        errorMessages.push_back(MsgClientConfigUnknownObjects);
     else if (objectList.size() == 0)
-        errorMessages.push_back("Client configuration is empty");
+        errorMessages.push_back(MsgClientConfigEmpty);
     else
         FillJobListLocally(objectList.front(), errorMessages);
 }
@@ -311,12 +322,30 @@ string Configuration::CreateScpErrorMessage(const string &output) const
 {
     if (output.find("Permission denied") != string::npos)
     {
-        return "Error : Client requires password";
+        return CreateError(MsgNoPassword);
     }
     else if (output.find("No such file or directory") != string::npos)
-        return "Error : Client configuration file missing";
+        return CreateError(MsgNoConfigFile);
     else
-        return "Error trying to access Client configuration";
+        return MsgClientConfigAccessError;
+}
+
+string Configuration::CreateWarning(const string &message) const
+{
+    return CreateMessage("Warning", message);
+}
+
+string Configuration::CreateError(const string &message) const
+{
+    return CreateMessage("Error", message);
+}
+
+string Configuration::CreateMessage(const string &tag, const string &message) const
+{
+    if (message != "")
+        return tag + " : " + message;
+    else
+        return string("");
 }
 
 ClientWorkManager *Configuration::BuildTimedWorkList() const
@@ -488,12 +517,12 @@ bool Configuration::IsConfigurationConsistent(vector<string> &errorMessages)
         return false;
     else if (self == NULL)
     {
-        errorMessages.push_back("Error : missing Agent configuration");
+        errorMessages.push_back(CreateError(MsgMissingAgent));
         return false;
     }
     else if (client == NULL)
     {
-        errorMessages.push_back("Error : missing Client");
+        errorMessages.push_back(CreateError(MsgMissingClient));
         return false;
     }
     else if (reportCreator == NULL)
