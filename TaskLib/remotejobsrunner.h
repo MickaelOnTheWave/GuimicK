@@ -18,14 +18,21 @@ public:
     std::string GetConfigurationFile() const;
     void SetConfigurationFile(const std::string& value);
 
+    bool GetIsWorkListTimed() const;
+    void SetIsWorkListTimed(const bool value);
+
 private:
     bool RetrieveRemoteConfiguration(std::string& output);
 
-    JobStatus* CreateErrorStatus(const std::string& message);
+    JobStatus* CreateErrorStatus(const std::string& message);    
+    JobStatus* CreateConfigurationErrorStatus(const std::vector<std::string>& errors);
 
+    bool IsInvalidFileError() const;
+    bool IsPasswordError() const;
 
     std::string configurationFile;
     std::string host, user;
+    bool isWorkListTimed;
 };
 
 #endif // REMOTEJOBSRUNNER_H

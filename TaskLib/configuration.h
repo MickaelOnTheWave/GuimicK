@@ -7,13 +7,11 @@
 #include "abstractjobconfiguration.h"
 #include "AbstractReportDispatcher.h"
 #include "client.h"
-#include "clientworkmanager.h"
 #include "SelfIdentity.h"
+#include "taskmanagerconfiguration.h"
 #include "textreportcreator.h"
 
-class ConfigurationObject;
-
-class Configuration
+class Configuration : public TaskManagerConfiguration
 {
 public:
     static std::string MsgNoPassword;
@@ -31,10 +29,6 @@ public:
 	virtual ~Configuration();
 
     bool LoadFromFile(const std::string& fileName, std::vector<std::string> &errorMessages);
-
-    ClientWorkManager* BuildTimedWorkList() const;
-
-    ClientWorkManager* BuildSimpleWorkList() const;
 
     AbstractReportCreator* GetReportCreator(void) const;
 
@@ -56,11 +50,12 @@ public:
 private:
     void FillSupportedJobsList();
 
-    void FillRootObjects(const std::list<ConfigurationObject*>& objectList,
+    virtual void FillRootObjects(const std::list<ConfigurationObject*>& objectList,
                          std::vector<std::string> &errorMessages);
-    void FillGlobalProperties(ConfigurationObject* object,
+    virtual void FillGlobalProperties(ConfigurationObject* object,
                          std::vector<std::string> &errorMessages);
-    bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
+    virtual bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
+
     bool IsEmailDataComplete() const;
 
     AbstractJob *CreateJobFromObject(ConfigurationObject *object,
@@ -95,9 +90,7 @@ private:
     std::string CreateError(const std::string& message) const;
     std::string CreateMessage(const std::string& tag, const std::string& message) const;
 
-	Client* client;
 	SelfIdentity* self;
-    std::list<AbstractJob*> jobList;
     std::vector<AbstractJobConfiguration*> supportedJobs;
 
     AbstractReportCreator* reportCreator;
@@ -105,7 +98,6 @@ private:
 	std::string masterEmail;
     std::string reportDispatching;
 	bool shutdown;
-    bool hasFatalError;
 };
 
 #endif // CONFIGURATION_H

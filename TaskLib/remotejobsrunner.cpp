@@ -1,6 +1,7 @@
 #include "remotejobsrunner.h"
 
 #include "consolejob.h"
+#include "joblistconfiguration.h"
 #include "sshconsolejob.h"
 #include "tools.h"
 
@@ -10,7 +11,7 @@ string RemoteJobsRunner::TargetNotAccessibleError = "Client is offline";
 
 RemoteJobsRunner::RemoteJobsRunner()
     : configurationFile(".taskmanager"),
-      host(""), user("")
+      host(""), user(""), isWorkListTimed(true)
 {
 }
 
@@ -42,14 +43,19 @@ JobStatus *RemoteJobsRunner::Run()
     if (!ok)
         return CreateErrorStatus(content);
 
-    JobStatus* status = new JobStatus();
-    ClientWorkManager* workManager = CreateWorkManager(content, status);
-    if (configErrors)
-        return ConfigErrors;
+    vector<string> configurationErrors;
+    JobListConfiguration configuration;
+    bool usable = configuration.Parse(content, configurationErrors);
+    if (!usable)
+        return CreateConfigurationErrorStatus(configurationErrors);
 
-    workList = CreateWorkList(workManager);
-    workResults = RunWorkList(workList);
-    return ResultCollectionStatus(workResults);
+    JobStatus* status = new JobStatus();
+    ClientWorkManager* workManager = (isWorkListTimed) ? configuration.BuildTimedWorkList()
+                                                       : configuration.BuildSimpleWorkList();
+
+    //workResults = RunWorkList(workManager);
+    //return ResultCollectionStatus(workResults);
+    return NULL;
 }
 
 std::string RemoteJobsRunner::GetConfigurationFile() const
@@ -60,6 +66,16 @@ std::string RemoteJobsRunner::GetConfigurationFile() const
 void RemoteJobsRunner::SetConfigurationFile(const std::string &value)
 {
     configurationFile = value;
+}
+
+bool RemoteJobsRunner::GetIsWorkListTimed() const
+{
+    return isWorkListTimed;
+}
+
+void RemoteJobsRunner::SetIsWorkListTimed(const bool value)
+{
+    isWorkListTimed = value;
 }
 
 bool RemoteJobsRunner::RetrieveRemoteConfiguration(string& output)
@@ -87,4 +103,19 @@ bool RemoteJobsRunner::RetrieveRemoteConfiguration(string& output)
 JobStatus *RemoteJobsRunner::CreateErrorStatus(const string &message)
 {
     return debugManager->CreateStatus(JobStatus::ERROR, message);
+}
+
+JobStatus *RemoteJobsRunner::CreateConfigurationErrorStatus(const std::vector<string>& errors)
+{
+    return CreateErrorStatus("Implement the real one");
+}
+
+bool RemoteJobsRunner::IsInvalidFileError() const
+{
+
+}
+
+bool RemoteJobsRunner::IsPasswordError() const
+{
+
 }

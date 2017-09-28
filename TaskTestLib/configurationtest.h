@@ -23,7 +23,7 @@ private Q_SLOTS:
 
     void testBuildSimpleWorkList();
 
-    void testRemoteJobList();
+    //void testRemoteJobList();
 
 private:
     void LoadRootErrorExamples();

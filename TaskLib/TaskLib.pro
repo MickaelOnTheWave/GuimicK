@@ -74,7 +74,9 @@ SOURCES += \
     maintoolmodule.cpp \
     filereportdispatcher.cpp \
     gitcommontools.cpp \
-    remotejobsrunner.cpp
+    remotejobsrunner.cpp \
+    joblistconfiguration.cpp \
+    taskmanagerconfiguration.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -140,7 +142,9 @@ HEADERS +=\
     abstractreportdispatcherreplacer.h \
     filereportdispatcher.h \
     gitcommontools.h \
-    remotejobsrunner.h
+    remotejobsrunner.h \
+    joblistconfiguration.h \
+    taskmanagerconfiguration.h
 
 unix {
     target.path = /usr/lib

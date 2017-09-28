@@ -2,9 +2,9 @@
 
 #include <vector>
 
+#include "configurationparser.h"
 #include "consolejob.h"
 #include "consolereportdispatcher.h"
-#include "configurationparser.h"
 #include "dummyemailreportdispatcher.h"
 #include "filereportdispatcher.h"
 #include "htmlreportcreator.h"
@@ -38,11 +38,11 @@ string Configuration::MsgOneClientSupported = "only one client is supported for 
                                               "Redefining default client";
 
 Configuration::Configuration()
-    : client(NULL), self(NULL), reportCreator(NULL), masterEmail("")
+    : TaskManagerConfiguration(),
+      self(NULL), reportCreator(NULL), masterEmail("")
 {
     reportDispatching = "email";
 	shutdown = true;
-    hasFatalError = false;
 
     FillSupportedJobsList();
 }
@@ -56,23 +56,6 @@ Configuration::~Configuration()
     for (; it!=supportedJobs.end(); ++it)
         delete *it;
     supportedJobs.clear();
-}
-
-bool Configuration::LoadFromFile(const string &fileName, std::vector<string> &errorMessages)
-{
-	errorMessages.clear();
-	jobList.clear();
-    hasFatalError = false;
-
-	ConfigurationParser parser;
-	bool result = parser.ParseFile(fileName, errorMessages);
-	if (!result)
-		return false;
-
-    FillRootObjects(parser.objectList, errorMessages);
-    FillGlobalProperties(parser.anonymousObject, errorMessages);
-
-    return IsConfigurationConsistent(errorMessages);
 }
 
 AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object,
@@ -346,30 +329,6 @@ string Configuration::CreateMessage(const string &tag, const string &message) co
         return tag + " : " + message;
     else
         return string("");
-}
-
-ClientWorkManager *Configuration::BuildTimedWorkList() const
-{
-	ClientWorkManager* workManager = new ClientWorkManager(client);
-
-	list<AbstractJob*>::const_iterator it = jobList.begin();
-	list<AbstractJob*>::const_iterator end = jobList.end();
-	for (; it!=end; it++)
-        workManager->AddJob(new ProfiledJob((*it)->Clone()));
-
-    return workManager;
-}
-
-ClientWorkManager *Configuration::BuildSimpleWorkList() const
-{
-    ClientWorkManager* workManager = new ClientWorkManager(client->Clone());
-
-    list<AbstractJob*>::const_iterator it = jobList.begin();
-    list<AbstractJob*>::const_iterator end = jobList.end();
-    for (; it!=end; it++)
-        workManager->AddJob((*it)->Clone());
-
-    return workManager;
 }
 
 AbstractReportCreator *Configuration::GetReportCreator() const

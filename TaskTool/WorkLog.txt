@@ -1,3 +1,14 @@
+27/09/2017 (1.2h)
+	Continued work. Refactoring Configuration to a common class with server and client
+	specializations. Fixed remaining failing tests.
+Next planned work:
+	- Finish Configuration refactoring. Change Configuration name to ServerConfiguration.
+	- Create/update tests
+	- Continue RemoteJobsRunner
+
+25/09/2017 (0.5h)
+	Continued work. Created JobListConfiguration.
+
 24/09/2017 (2h)
 	Production ran as expected (server list). Going for solution 2, but before deprecating
 	current solution. Added deprecate warning and created test for it. Began changing

@@ -89,7 +89,7 @@ void ConfigurationTest::testBuildSimpleWorkList()
     QCOMPARE(jobList[3]->GetName().c_str(), "Change Screen Saver");
     QCOMPARE(jobList[4]->GetName().c_str(), "Shutdown");
 }
-
+/*
 void ConfigurationTest::testRemoteJobList()
 {
     LoadFromFile("remote - valid.txt", true, QStringList());
@@ -104,7 +104,7 @@ void ConfigurationTest::testRemoteJobList()
     QCOMPARE(jobList[2]->GetName().c_str(), "ClamAV Scan");
     QCOMPARE(jobList[3]->GetName().c_str(), "Change Screen Saver");
     QCOMPARE(jobList[4]->GetName().c_str(), "Shutdown");
-}
+}*/
 
 void ConfigurationTest::LoadRootErrorExamples()
 {
