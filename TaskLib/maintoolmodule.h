@@ -5,7 +5,7 @@
 #include "abstractreportdispatcherreplacer.h"
 #include "clientworkmanager.h"
 #include "commandlinemanager.h"
-#include "configuration.h"
+#include "serverconfiguration.h"
 
 class MainToolModule
 {
@@ -35,18 +35,18 @@ private:
 
     void SetupSingleJobOption(ClientWorkManager* workList, const CommandLineManager& commandLine);
 
-    AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const Configuration& configuration,
+    AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const ServerConfiguration& configuration,
                                        const std::vector<std::string>& configurationErrors);
 
     void DispatchReport(AbstractReportCreator* reportCreator,
-                        const Configuration& configuration,
+                        const ServerConfiguration& configuration,
                         const CommandLineManager& commandLine);
 
     bool DispatchReport(AbstractReportCreator* reportCreator,
                         AbstractReportDispatcher* dispatcher);
 
     AbstractReportDispatcher* ReplaceDispatcherIfEmail(AbstractReportDispatcher* input,
-                                                       const Configuration& configuration);
+                                                       const ServerConfiguration& configuration);
 
     bool RunLocalShutdown(const bool isLocalShutdownEnabled);
 

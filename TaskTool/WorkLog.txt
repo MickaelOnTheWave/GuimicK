@@ -1,3 +1,13 @@
+28/09/2017 (1.8h)
+	Added Buffer parsing feature to ConfigurationParser. Refactored it accordingly.
+	Renamed configuration to ServerConfiguration and tests accordingly.
+	Continued refactoring. Now Client configuration is compiling and seems finished.
+	All tests are OK.
+Next planned work :
+	- Create Client configuration (TODO). Make it use ClientJobsConfiguration.
+	- Create tests for Client configuration.
+	- Continue RemoteJobsRunner
+
 27/09/2017 (1.2h)
 	Continued work. Refactoring Configuration to a common class with server and client
 	specializations. Fixed remaining failing tests.

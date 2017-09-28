@@ -1,15 +1,15 @@
-#ifndef CONFIGURATIONTEST_H
-#define CONFIGURATIONTEST_H
+#ifndef SERVERCONFIGURATIONTEST_H
+#define SERVERCONFIGURATIONTEST_H
 
 #include "qttestsuite.h"
 
-#include "configuration.h"
+#include "serverconfiguration.h"
 
-class ConfigurationTest : public QtTestSuite
+class ServerConfigurationTest : public QtTestSuite
 {
     Q_OBJECT
 public:
-    ConfigurationTest(const std::string& dataPrefix);
+    ServerConfigurationTest(const std::string& dataPrefix);
 
 private Q_SLOTS:
     void init();
@@ -37,7 +37,7 @@ private:
     void LoadFromFile(const QString& file, const bool expectedResult,
                       const QStringList& expectedErrors);
 
-    Configuration* configuration;
+    ServerConfiguration* configuration;
 };
 
-#endif // CONFIGURATIONTEST_H
+#endif // SERVERCONFIGURATIONTEST_H

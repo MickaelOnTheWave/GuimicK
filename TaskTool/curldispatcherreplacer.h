@@ -7,7 +7,7 @@ class CurlDispatcherReplacer : public AbstractReportDispatcherReplacer
 {
 public:
     AbstractReportDispatcher* Run(AbstractReportDispatcher* input,
-                                  const Configuration& configuration);
+                                  const ServerConfiguration& configuration);
 
 };
 

@@ -3,13 +3,13 @@
 
 #include "AbstractReportDispatcher.h"
 
-class Configuration;
+class ServerConfiguration;
 
 class ConsoleReportDispatcher : public AbstractReportDispatcher
 {
 public:
     virtual std::string GetName(void) const;
-    virtual void Initialize(const Configuration* configuration);
+    virtual void Initialize(const ServerConfiguration* configuration);
     virtual bool Dispatch(AbstractReportCreator* reportCreator);
 
 private:

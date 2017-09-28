@@ -1,4 +1,4 @@
-#include "configuration.h"
+#include "serverconfiguration.h"
 
 #include <vector>
 
@@ -25,55 +25,33 @@
 
 using namespace std;
 
-string Configuration::MsgNoPassword = "Client requires password";
-string Configuration::MsgNoConfigFile = "Client configuration file missing";
-string Configuration::MsgClientConfigAccessError = "Error trying to access Client configuration";
-string Configuration::MsgClientConfigUnknownObjects = "Client configuration has unknown objects";
-string Configuration::MsgClientConfigEmpty = "Client configuration is empty";
-string Configuration::MsgMissingClient = "missing Client";
-string Configuration::MsgMissingAgent = "missing Agent configuration";
-string Configuration::MsgClientWithoutName = "Client without name";
-string Configuration::MsgRemoteOptionDeprecated = "Remote option deprecated";
-string Configuration::MsgOneClientSupported = "only one client is supported for now. "
+string ServerConfiguration::MsgNoPassword = "Client requires password";
+string ServerConfiguration::MsgNoConfigFile = "Client configuration file missing";
+string ServerConfiguration::MsgClientConfigAccessError = "Error trying to access Client configuration";
+string ServerConfiguration::MsgClientConfigUnknownObjects = "Client configuration has unknown objects";
+string ServerConfiguration::MsgClientConfigEmpty = "Client configuration is empty";
+string ServerConfiguration::MsgMissingClient = "missing Client";
+string ServerConfiguration::MsgMissingAgent = "missing Agent configuration";
+string ServerConfiguration::MsgClientWithoutName = "Client without name";
+string ServerConfiguration::MsgRemoteOptionDeprecated = "Remote option deprecated";
+string ServerConfiguration::MsgOneClientSupported = "only one client is supported for now. "
                                               "Redefining default client";
 
-Configuration::Configuration()
+ServerConfiguration::ServerConfiguration()
     : TaskManagerConfiguration(),
       self(NULL), reportCreator(NULL), masterEmail("")
 {
     reportDispatching = "email";
 	shutdown = true;
-
-    FillSupportedJobsList();
 }
 
-Configuration::~Configuration()
+ServerConfiguration::~ServerConfiguration()
 {
-    delete client;
 	delete self;
-
-    vector<AbstractJobConfiguration*>::iterator it=supportedJobs.begin();
-    for (; it!=supportedJobs.end(); ++it)
-        delete *it;
-    supportedJobs.clear();
 }
 
-AbstractJob* Configuration::CreateJobFromObject(ConfigurationObject* object,
-                                                std::vector<string> &errorMessages)
-{
-    AbstractJobConfiguration* relatedConfiguration = GetJobConfiguration(object->name);
-    if (relatedConfiguration == NULL)
-    {
-        string errorMessage = "Warning : unknown job \"";
-        errorMessage += object->name + "\". Ignoring...";
-        errorMessages.push_back(errorMessage);
-        return NULL;
-    }
-    else
-        return relatedConfiguration->CreateConfiguredJob(object, errorMessages);
-}
 
-bool Configuration::CreateClient(ConfigurationObject *confObject, vector<string> &errorMessages)
+bool ServerConfiguration::CreateClient(ConfigurationObject *confObject, vector<string> &errorMessages)
 {
     if (client != NULL)
     {
@@ -113,7 +91,7 @@ bool Configuration::CreateClient(ConfigurationObject *confObject, vector<string>
     return true;
 }
 
-void Configuration::CreateAgent(ConfigurationObject *confObject, vector<string> &errorMessages)
+void ServerConfiguration::CreateAgent(ConfigurationObject *confObject, vector<string> &errorMessages)
 {
     if (self != NULL)
     {
@@ -137,7 +115,7 @@ void Configuration::CreateAgent(ConfigurationObject *confObject, vector<string> 
     }
 }
 
-void Configuration::CreateReport(ConfigurationObject *confObject, vector<string> &errorMessages)
+void ServerConfiguration::CreateReport(ConfigurationObject *confObject, vector<string> &errorMessages)
 {
     string reportType = confObject->GetFirstProperty("type", "param0");
     reportCreator = CreateReportObject(reportType);
@@ -161,7 +139,7 @@ void Configuration::CreateReport(ConfigurationObject *confObject, vector<string>
     }
 }
 
-bool Configuration::GetBooleanValue(const string &strValue, vector<string> &errorMessages) const
+bool ServerConfiguration::GetBooleanValue(const string &strValue, vector<string> &errorMessages) const
 {
 	if (strValue == "true")
 		return true;
@@ -174,18 +152,7 @@ bool Configuration::GetBooleanValue(const string &strValue, vector<string> &erro
     return false;
 }
 
-AbstractJobConfiguration *Configuration::GetJobConfiguration(const string &jobTab)
-{
-    vector<AbstractJobConfiguration*>::iterator it = supportedJobs.begin();
-    for (; it != supportedJobs.end(); ++it)
-    {
-        if ((*it)->GetTagName() == jobTab)
-            return *it;
-    }
-    return NULL;
-}
-
-bool Configuration::AreClientPropertiesConsistent(ConfigurationObject *object,
+bool ServerConfiguration::AreClientPropertiesConsistent(ConfigurationObject *object,
                                                   std::vector<string> &errorMessages)
 {
     map<string, string>::iterator itProp = object->propertyList.begin();
@@ -215,7 +182,7 @@ bool Configuration::AreClientPropertiesConsistent(ConfigurationObject *object,
         return true;
 }
 
-bool Configuration::FillJobListLocally(ConfigurationObject* jobListObj,
+bool ServerConfiguration::FillJobListLocally(ConfigurationObject* jobListObj,
                                        std::vector<std::string> &errorMessages)
 {
     if (jobListObj == NULL)
@@ -235,7 +202,7 @@ bool Configuration::FillJobListLocally(ConfigurationObject* jobListObj,
     return true;
 }
 
-bool Configuration::FillJobListRemotely(Client* client, std::vector<string> &errorMessages)
+bool ServerConfiguration::FillJobListRemotely(Client* client, std::vector<string> &errorMessages)
 {
     const string tempClientFile = "tempClientConfiguration.conf";
     const string defaultRemoteConfigurationFile = "~/.taskmanager";
@@ -244,8 +211,8 @@ bool Configuration::FillJobListRemotely(Client* client, std::vector<string> &err
     if (remoteConfigurationFile == "")
         remoteConfigurationFile = defaultRemoteConfigurationFile;
 
-    // TODO refactor this : Configuration parser should be made like other parsers,
-    // can parse from file or buffer. And here it should parse buffer!
+    // TODO refactor this : either change to get buffer and parse it or remove completely
+    // this (for now) obsolete method
     bool clientFileOk = CopyClientFile(client, remoteConfigurationFile, tempClientFile,
                                        errorMessages);
     if (!clientFileOk)
@@ -262,7 +229,7 @@ bool Configuration::FillJobListRemotely(Client* client, std::vector<string> &err
     return true;
 }
 
-bool Configuration::CopyClientFile(Client* client,
+bool ServerConfiguration::CopyClientFile(Client* client,
                                    const string &source, const string &destination,
                                    vector<string> &errorMessages)
 {
@@ -290,7 +257,7 @@ bool Configuration::CopyClientFile(Client* client,
         return true;
 }
 
-void Configuration::FillRemoteClientObjects(const list<ConfigurationObject*> &objectList,
+void ServerConfiguration::FillRemoteClientObjects(const list<ConfigurationObject*> &objectList,
                                             vector<string> &errorMessages)
 {
     if (objectList.size() > 1)
@@ -301,7 +268,7 @@ void Configuration::FillRemoteClientObjects(const list<ConfigurationObject*> &ob
         FillJobListLocally(objectList.front(), errorMessages);
 }
 
-string Configuration::CreateScpErrorMessage(const string &output) const
+string ServerConfiguration::CreateScpErrorMessage(const string &output) const
 {
     if (output.find("Permission denied") != string::npos)
     {
@@ -313,30 +280,12 @@ string Configuration::CreateScpErrorMessage(const string &output) const
         return MsgClientConfigAccessError;
 }
 
-string Configuration::CreateWarning(const string &message) const
-{
-    return CreateMessage("Warning", message);
-}
-
-string Configuration::CreateError(const string &message) const
-{
-    return CreateMessage("Error", message);
-}
-
-string Configuration::CreateMessage(const string &tag, const string &message) const
-{
-    if (message != "")
-        return tag + " : " + message;
-    else
-        return string("");
-}
-
-AbstractReportCreator *Configuration::GetReportCreator() const
+AbstractReportCreator *ServerConfiguration::GetReportCreator() const
 {
     return reportCreator;
 }
 
-AbstractReportDispatcher *Configuration::CreateReportDispatcher(
+AbstractReportDispatcher *ServerConfiguration::CreateReportDispatcher(
         const bool commandLinePreventsEmail) const
 {
     AbstractReportDispatcher* dispatcher = NULL;
@@ -352,7 +301,7 @@ AbstractReportDispatcher *Configuration::CreateReportDispatcher(
     return dispatcher;
 }
 
-AbstractReportCreator *Configuration::CreateReportObject(const string& type) const
+AbstractReportCreator *ServerConfiguration::CreateReportObject(const string& type) const
 {
     if (type == "text")
 		return new TextReportCreator();
@@ -362,59 +311,32 @@ AbstractReportCreator *Configuration::CreateReportObject(const string& type) con
         return NULL;
 }
 
-const SelfIdentity *Configuration::GetAgent() const
+const SelfIdentity *ServerConfiguration::GetAgent() const
 {
     return self;
 }
 
-Client *Configuration::GetClient()
-{
-    return client;
-}
-
-string Configuration::GetMasterEmail() const
+string ServerConfiguration::GetMasterEmail() const
 {
 	return masterEmail;
 }
 
-bool Configuration::GetLocalShutdown() const
+bool ServerConfiguration::GetLocalShutdown() const
 {
 	return shutdown;
 }
 
-std::string Configuration::GetReportDispatching() const
+std::string ServerConfiguration::GetReportDispatching() const
 {
     return reportDispatching;
 }
 
-bool Configuration::IsReportHtml() const
+bool ServerConfiguration::IsReportHtml() const
 {
     return (dynamic_cast<HtmlReportCreator*>(reportCreator));
 }
 
-bool Configuration::HasClient() const
-{
-    return (client != NULL);
-}
-
-void Configuration::FillSupportedJobsList()
-{
-    supportedJobs.push_back(new WakeJobConfiguration);
-    supportedJobs.push_back(new ChangeScreensaverJobConfiguration);
-    supportedJobs.push_back(new RsnapshotBackupJobConfiguration);
-    supportedJobs.push_back(new ClamAvJobConfiguration);
-    supportedJobs.push_back(new ShutdownJobConfiguration);
-    supportedJobs.push_back(new UserConsoleJobConfiguration);
-    supportedJobs.push_back(new SshConsoleJobConfiguration);
-    supportedJobs.push_back(new GitBackupJobConfiguration);
-    supportedJobs.push_back(new DiskSpaceCheckJobConfiguration);
-    supportedJobs.push_back(new GitFsBackupJobConfiguration);
-    supportedJobs.push_back(new RawCopyFsBackupJobConfiguration());
-    supportedJobs.push_back(new RsyncCopyFsBackupJobConfiguration());
-    supportedJobs.push_back(new ZipAndCopyFsBackupJobConfiguration());
-}
-
-void Configuration::FillRootObjects(const list<ConfigurationObject *> &objectList,
+void ServerConfiguration::FillRootObjects(const list<ConfigurationObject *> &objectList,
                                     vector<string> &errorMessages)
 {
     list<ConfigurationObject*>::const_iterator it = objectList.begin();
@@ -441,7 +363,7 @@ void Configuration::FillRootObjects(const list<ConfigurationObject *> &objectLis
     }
 }
 
-void Configuration::FillGlobalProperties(ConfigurationObject *object,
+void ServerConfiguration::FillGlobalProperties(ConfigurationObject *object,
                                          vector<string> &errorMessages)
 {
     if (!object)
@@ -470,7 +392,7 @@ void Configuration::FillGlobalProperties(ConfigurationObject *object,
     }
 }
 
-bool Configuration::IsConfigurationConsistent(vector<string> &errorMessages)
+bool ServerConfiguration::IsConfigurationConsistent(vector<string> &errorMessages)
 {
     if (hasFatalError)
         return false;
@@ -508,7 +430,7 @@ bool Configuration::IsConfigurationConsistent(vector<string> &errorMessages)
         return true;
 }
 
-bool Configuration::IsEmailDataComplete() const
+bool ServerConfiguration::IsEmailDataComplete() const
 {
     return (self->HasValidEmailData() && masterEmail != "");
 }

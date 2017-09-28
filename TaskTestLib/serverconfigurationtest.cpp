@@ -1,4 +1,4 @@
-#include "configurationtest.h"
+#include "serverconfigurationtest.h"
 
 #include <QTest>
 #include "testutils.h"
@@ -7,22 +7,22 @@ using namespace std;
 
 const string suitePrefix = "Configuration/";
 
-ConfigurationTest::ConfigurationTest(const string &dataPrefix) :
+ServerConfigurationTest::ServerConfigurationTest(const string &dataPrefix) :
     QtTestSuite(dataPrefix + suitePrefix)
 {
 }
 
-void ConfigurationTest::init()
+void ServerConfigurationTest::init()
 {
-    configuration = new Configuration();
+    configuration = new ServerConfiguration();
 }
 
-void ConfigurationTest::cleanup()
+void ServerConfigurationTest::cleanup()
 {
     delete configuration;
 }
 
-void ConfigurationTest::testLoadFromFile_Errors_data()
+void ServerConfigurationTest::testLoadFromFile_Errors_data()
 {
     QTest::addColumn<QString>("filename");
     QTest::addColumn<bool>("expectedResult");
@@ -38,7 +38,7 @@ void ConfigurationTest::testLoadFromFile_Errors_data()
     LoadValidExamples();
 }
 
-void ConfigurationTest::testLoadFromFile_Errors()
+void ServerConfigurationTest::testLoadFromFile_Errors()
 {
     QFETCH(QString, filename);
     QFETCH(bool, expectedResult);
@@ -47,7 +47,7 @@ void ConfigurationTest::testLoadFromFile_Errors()
     LoadFromFile(filename, expectedResult, expectedErrors);
 }
 
-void ConfigurationTest::testLoadFromFile_Agent_Valid()
+void ServerConfigurationTest::testLoadFromFile_Agent_Valid()
 {
     LoadFromFile("valid.txt", true, QStringList());
 
@@ -61,7 +61,7 @@ void ConfigurationTest::testLoadFromFile_Agent_Valid()
     QCOMPARE(identity->emailUseSsl, true);
 }
 
-void ConfigurationTest::testLoadFromFile_Client_Valid()
+void ServerConfigurationTest::testLoadFromFile_Client_Valid()
 {
     LoadFromFile("valid.txt", true, QStringList());
 
@@ -74,7 +74,7 @@ void ConfigurationTest::testLoadFromFile_Client_Valid()
     QCOMPARE(client->GetProperty("sshuser").c_str(), "userusedforremotetasks");
 }
 
-void ConfigurationTest::testBuildSimpleWorkList()
+void ServerConfigurationTest::testBuildSimpleWorkList()
 {
     LoadFromFile("valid.txt", true, QStringList());
 
@@ -106,7 +106,7 @@ void ConfigurationTest::testRemoteJobList()
     QCOMPARE(jobList[4]->GetName().c_str(), "Shutdown");
 }*/
 
-void ConfigurationTest::LoadRootErrorExamples()
+void ServerConfigurationTest::LoadRootErrorExamples()
 {
     QTest::newRow("Root - Inexistent file")
                             << "inexistent file"
@@ -126,7 +126,7 @@ void ConfigurationTest::LoadRootErrorExamples()
                             << QStringList({"Error : missing Client"});
 }
 
-void ConfigurationTest::LoadRootWarningExamples()
+void ServerConfigurationTest::LoadRootWarningExamples()
 {
     QTest::newRow("Root - Unsupported master object")
                             << "root - unknown object.txt"
@@ -150,7 +150,7 @@ void ConfigurationTest::LoadRootWarningExamples()
                             << QStringList({"Warning : unsupported \"whatever\" report type. Defaulting to text"});
 }
 
-void ConfigurationTest::LoadAgentExamples()
+void ServerConfigurationTest::LoadAgentExamples()
 {
     QTest::newRow("Agent - missing password")
                             << "agent - nopassword.txt"
@@ -163,7 +163,7 @@ void ConfigurationTest::LoadAgentExamples()
 
 }
 
-void ConfigurationTest::LoadClientExamples()
+void ServerConfigurationTest::LoadClientExamples()
 {
     QTest::newRow("Client - No name")
                             << "client - noname.txt"
@@ -193,7 +193,7 @@ void ConfigurationTest::LoadClientExamples()
                                             "Redefining default client"});
 }
 
-void ConfigurationTest::LoadJobsExamples()
+void ServerConfigurationTest::LoadJobsExamples()
 {
     QTest::newRow("Jobs - unknown job")
                             << "job - unknown.txt"
@@ -202,13 +202,13 @@ void ConfigurationTest::LoadJobsExamples()
 
 }
 
-void ConfigurationTest::LoadValidExamples()
+void ServerConfigurationTest::LoadValidExamples()
 {
     QTest::newRow("All Valid") << "valid.txt" << true << QStringList();
     QTest::newRow("Production configuration") << "realconf.txt" << true << QStringList();
 }
 
-void ConfigurationTest::LoadRemoteJobListExamples()
+void ServerConfigurationTest::LoadRemoteJobListExamples()
 {
 /*    QTest::newRow("Remote job list - not set up") << "remote - nolist.txt"
                                                   << true
@@ -241,7 +241,7 @@ void ConfigurationTest::LoadRemoteJobListExamples()
 
 }
 
-void ConfigurationTest::LoadFromFile(const QString &file, const bool expectedResult,
+void ServerConfigurationTest::LoadFromFile(const QString &file, const bool expectedResult,
                                      const QStringList &expectedErrors)
 {
     const string fullFilename = GetDataFolder() + file.toStdString();

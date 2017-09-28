@@ -1,7 +1,7 @@
 #include "abstractemailreportdispatcher.h"
 
 #include <sstream>
-#include "configuration.h"
+#include "serverconfiguration.h"
 
 using namespace std;
 
@@ -21,7 +21,7 @@ string AbstractEmailReportDispatcher::GetName() const
     return string("Email");
 }
 
-void AbstractEmailReportDispatcher::Initialize(const Configuration* configuration)
+void AbstractEmailReportDispatcher::Initialize(const ServerConfiguration* configuration)
 {
     const SelfIdentity* self = configuration->GetAgent();
     displayName = self->name;

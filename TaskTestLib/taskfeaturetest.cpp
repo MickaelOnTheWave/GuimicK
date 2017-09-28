@@ -6,12 +6,12 @@
 
 #include "maintoolmodule.h"
 #include "clientworkmanager.h"
-#include "configuration.h"
 #include "curlconsoleemailsender.h"
 #include "filereportdispatcher.h"
 #include "filetestutils.h"
 #include "filetools.h"
 #include "gittesttools.h"
+#include "serverconfiguration.h"
 #include "tools.h"
 
 using namespace std;
@@ -115,7 +115,7 @@ QStringList TaskFeatureTest::GetAttachmentFiles(const string &folder)
     return currentDir.entryList(QStringList({"attachment*.txt"}), QDir::Files);
 }
 
-void TaskFeatureTest::ReadConfiguration(Configuration &configuration)
+void TaskFeatureTest::ReadConfiguration(ServerConfiguration &configuration)
 {
     QFETCH(QString, configurationFile);
 

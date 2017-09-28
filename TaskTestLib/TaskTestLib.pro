@@ -24,7 +24,6 @@ SOURCES += tasktestlib.cpp \
     userconsolejobtest.cpp \
     sshconsolejobtest.cpp \
     clientworkmanagertest.cpp \
-    configurationtest.cpp \
     gitfsbackupjobtest.cpp \
     abstractfsbackupjobtest.cpp \
     abstractcopyfsbackupjobtest.cpp \
@@ -45,7 +44,8 @@ SOURCES += tasktestlib.cpp \
     gitbackupjobconfigurationtest.cpp \
     diskspacecheckjobconfigurationtest.cpp \
     copyfsbackupjobconfigurationstests.cpp \
-    gittesttools.cpp
+    gittesttools.cpp \
+    serverconfigurationtest.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
@@ -59,7 +59,6 @@ HEADERS += tasktestlib.h \
     sshconsolejobtest.h \
     tasktestsuites.h \
     clientworkmanagertest.h \
-    configurationtest.h \
     gitfsbackupjobtest.h \
     abstractfsbackupjobtest.h \
     abstractcopyfsbackupjobtest.h \
@@ -80,7 +79,8 @@ HEADERS += tasktestlib.h \
     gitbackupjobconfigurationtest.h \
     diskspacecheckjobconfigurationtest.h \
     copyfsbackupjobconfigurationstests.h \
-    gittesttools.h
+    gittesttools.h \
+    serverconfigurationtest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

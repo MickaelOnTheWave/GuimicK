@@ -71,7 +71,7 @@ int MainToolModule::Run(CommandLineManager &commandLine)
         return CONFIGURATION_ERROR;
     }
 
-    Configuration configuration;
+    ServerConfiguration configuration;
     vector<string> configurationErrors;
     bool configurationIsUsable = configuration.LoadFromFile(configurationFile, configurationErrors);
     if (configurationIsUsable == false)
@@ -150,7 +150,7 @@ void MainToolModule::SetupSingleJobOption(ClientWorkManager* workList,
 }
 
 AbstractReportCreator* MainToolModule::RunWorkList(ClientWorkManager* workList,
-                                                   const Configuration& configuration,
+                                                   const ServerConfiguration& configuration,
                                                    const vector<string>& configurationErrors)
 {
     WorkResultData* workResult = workList->RunWorkList();
@@ -162,7 +162,7 @@ AbstractReportCreator* MainToolModule::RunWorkList(ClientWorkManager* workList,
 }
 
 void MainToolModule::DispatchReport(AbstractReportCreator* reportCreator,
-                    const Configuration& configuration,
+                    const ServerConfiguration& configuration,
                     const CommandLineManager& commandLine)
 {
     AbstractReportDispatcher* reportDispatcher = configuration.CreateReportDispatcher(

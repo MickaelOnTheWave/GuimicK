@@ -9,7 +9,7 @@ public:
     FileReportDispatcher();
 
     virtual std::string GetName(void) const;
-    virtual void Initialize(const Configuration* configuration);
+    virtual void Initialize(const ServerConfiguration* configuration);
     virtual bool Dispatch(AbstractReportCreator* reportCreator);
 
 private:

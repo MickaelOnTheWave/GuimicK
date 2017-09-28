@@ -19,7 +19,7 @@ string FileReportDispatcher::GetName() const
     return string("File");
 }
 
-void FileReportDispatcher::Initialize(const Configuration *)
+void FileReportDispatcher::Initialize(const ServerConfiguration *)
 {
 }
 

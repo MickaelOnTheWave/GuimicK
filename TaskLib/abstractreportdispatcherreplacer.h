@@ -2,14 +2,14 @@
 #define ABSTRACTREPORTDISPATCHERREPLACER_H
 
 #include "AbstractReportDispatcher.h"
-#include "configuration.h"
+#include "serverconfiguration.h"
 
 class AbstractReportDispatcherReplacer
 {
 public:
     virtual ~AbstractReportDispatcherReplacer() {}
     virtual AbstractReportDispatcher* Run(  AbstractReportDispatcher* input,
-                                            const Configuration& configuration) = 0;
+                                            const ServerConfiguration& configuration) = 0;
 
 };
 

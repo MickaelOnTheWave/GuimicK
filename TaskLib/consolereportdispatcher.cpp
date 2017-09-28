@@ -9,7 +9,7 @@ string ConsoleReportDispatcher::GetName() const
     return string("Console");
 }
 
-void ConsoleReportDispatcher::Initialize(const Configuration *)
+void ConsoleReportDispatcher::Initialize(const ServerConfiguration *)
 {
 }
 

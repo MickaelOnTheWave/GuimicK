@@ -4,7 +4,7 @@
 #include "abstractreportcreator.h"
 #include "SelfIdentity.h"
 
-class Configuration;
+class ServerConfiguration;
 
 /**
   Interface for all classes that manages dispatching of
@@ -15,7 +15,7 @@ class AbstractReportDispatcher
 public :
     virtual ~AbstractReportDispatcher() {}
     virtual std::string GetName(void) const = 0;
-    virtual void Initialize(const Configuration* configuration) = 0;
+    virtual void Initialize(const ServerConfiguration* configuration) = 0;
     virtual bool Dispatch(AbstractReportCreator* reportCreator) = 0;
 };
 

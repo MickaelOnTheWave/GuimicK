@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QStringList>
 
-#include "configuration.h"
+#include "serverconfiguration.h"
 
 class TaskFeatureTest : public QObject
 {
@@ -28,7 +28,7 @@ private:
     void CopyDataFolders();
     QStringList GetAttachmentFiles(const std::string& folder);
 
-    void ReadConfiguration(Configuration& configuration);
+    void ReadConfiguration(ServerConfiguration& configuration);
     void CheckReport(const std::string& reportContent);
     void CheckAttachments(const std::vector<std::string>& files);
 

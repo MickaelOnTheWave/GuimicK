@@ -14,7 +14,7 @@ void GetTaskLibTests(std::vector<QObject*>& tests,
     tests.push_back(new UserConsoleJobTest());
     tests.push_back(new SshConsoleJobTest());
     tests.push_back(new ClientWorkManagerTest());
-    tests.push_back(new ConfigurationTest(dataPrefix));
+    tests.push_back(new ServerConfigurationTest(dataPrefix));
     tests.push_back(new GitFsBackupJobTest(dataPrefix, errorPrefix));
     tests.push_back(new RawCopyFsBackupJobTest(dataPrefix, errorPrefix));
     tests.push_back(new RsyncCopyFsBackupJobTest(dataPrefix, errorPrefix));

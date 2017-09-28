@@ -1,7 +1,7 @@
 #include "remotejobsrunner.h"
 
 #include "consolejob.h"
-#include "joblistconfiguration.h"
+#include "clientconfiguration.h"
 #include "sshconsolejob.h"
 #include "tools.h"
 
@@ -44,8 +44,8 @@ JobStatus *RemoteJobsRunner::Run()
         return CreateErrorStatus(content);
 
     vector<string> configurationErrors;
-    JobListConfiguration configuration;
-    bool usable = configuration.Parse(content, configurationErrors);
+    ClientJobsConfiguration configuration;
+    bool usable = configuration.LoadFromBuffer(content, configurationErrors);
     if (!usable)
         return CreateConfigurationErrorStatus(configurationErrors);
 

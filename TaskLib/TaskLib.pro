@@ -18,7 +18,6 @@ SOURCES += \
     clamavjob.cpp \
     client.cpp \
     clientworkmanager.cpp \
-    configuration.cpp \
     consolejob.cpp \
     curlconsoleemailsender.cpp \
     dummyjob.cpp \
@@ -75,8 +74,9 @@ SOURCES += \
     filereportdispatcher.cpp \
     gitcommontools.cpp \
     remotejobsrunner.cpp \
-    joblistconfiguration.cpp \
-    taskmanagerconfiguration.cpp
+    taskmanagerconfiguration.cpp \
+    serverconfiguration.cpp \
+    clientjobsconfiguration.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -84,7 +84,6 @@ HEADERS +=\
     clamavjob.h \
     client.h \
     clientworkmanager.h \
-    configuration.h \
     consolejob.h \
     curlconsoleemailsender.h \
     dummyjob.h \
@@ -143,8 +142,9 @@ HEADERS +=\
     filereportdispatcher.h \
     gitcommontools.h \
     remotejobsrunner.h \
-    joblistconfiguration.h \
-    taskmanagerconfiguration.h
+    taskmanagerconfiguration.h \
+    serverconfiguration.h \
+    clientjobsconfiguration.h
 
 unix {
     target.path = /usr/lib
