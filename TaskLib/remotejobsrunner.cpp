@@ -1,7 +1,7 @@
 #include "remotejobsrunner.h"
 
 #include "consolejob.h"
-#include "clientconfiguration.h"
+#include "clientjobsconfiguration.h"
 #include "sshconsolejob.h"
 #include "tools.h"
 

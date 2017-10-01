@@ -13,6 +13,7 @@
 
 #include "changescreensaverjobconfiguration.h"
 #include "clamavjobconfiguration.h"
+#include "clientconfiguration.h"
 #include "copyfsbackupjobconfigurations.h"
 #include "diskspacecheckjobconfiguration.h"
 #include "gitbackupjobconfiguration.h"
@@ -32,7 +33,6 @@ string ServerConfiguration::MsgClientConfigUnknownObjects = "Client configuratio
 string ServerConfiguration::MsgClientConfigEmpty = "Client configuration is empty";
 string ServerConfiguration::MsgMissingClient = "missing Client";
 string ServerConfiguration::MsgMissingAgent = "missing Agent configuration";
-string ServerConfiguration::MsgClientWithoutName = "Client without name";
 string ServerConfiguration::MsgRemoteOptionDeprecated = "Remote option deprecated";
 string ServerConfiguration::MsgOneClientSupported = "only one client is supported for now. "
                                               "Redefining default client";
@@ -59,36 +59,9 @@ bool ServerConfiguration::CreateClient(ConfigurationObject *confObject, vector<s
         delete client;
     }
 
-    client = new Client();
-
-    // TODO : either put all this into client or into a separate client config class.
-
-    const string clientName = confObject->GetProperty("Name");
-    if (clientName == "")
-    {
-        errorMessages.push_back(CreateError(MsgClientWithoutName));
-        return false;
-    }
-    client->SetName(clientName);
-
-    bool ok = AreClientPropertiesConsistent(confObject, errorMessages);
-    if (ok == false)
-        return false;
-
-    const string remoteJobList = confObject->GetProperty("remoteJobList");
-    if (remoteJobList != "")
-        errorMessages.push_back(CreateWarning(MsgRemoteOptionDeprecated));
-
-    ok = FillJobListLocally(confObject->GetObject("JobList"), errorMessages);
-    if (!ok)
-        return false;
-
-    // TODO : refactor this so that this warning is not shown if there is no job list
-    // (redundancy)
-    if (jobList.empty())
-        errorMessages.push_back("Warning : client has an empty job list");
-
-    return true;
+    ClientConfiguration config;
+    client = config.CreateConfiguredClient(confObject, errorMessages);
+    return (client != NULL);
 }
 
 void ServerConfiguration::CreateAgent(ConfigurationObject *confObject, vector<string> &errorMessages)
@@ -150,134 +123,6 @@ bool ServerConfiguration::GetBooleanValue(const string &strValue, vector<string>
     error += strValue + " is not a valid boolean value. Defaulting to false";
 	errorMessages.push_back(error);
     return false;
-}
-
-bool ServerConfiguration::AreClientPropertiesConsistent(ConfigurationObject *object,
-                                                  std::vector<string> &errorMessages)
-{
-    map<string, string>::iterator itProp = object->propertyList.begin();
-    map<string, string>::iterator endProp = object->propertyList.end();
-    for (; itProp != endProp; itProp++)
-    {
-        pair<string, string> currentProp = *itProp;
-
-        // Name already handled
-        if (currentProp.first == "Name")
-            continue;
-
-        client->AddProperty(currentProp.first, currentProp.second);
-    }
-
-    if (client->GetProperty("ip") == "")
-    {
-        errorMessages.push_back("Error : Client without IP address");
-        return false;
-    }
-    else if (client->GetProperty("sshuser") == "")
-    {
-        errorMessages.push_back("Error : Client without Ssh user");
-        return false;
-    }
-    else
-        return true;
-}
-
-bool ServerConfiguration::FillJobListLocally(ConfigurationObject* jobListObj,
-                                       std::vector<std::string> &errorMessages)
-{
-    if (jobListObj == NULL)
-        errorMessages.push_back("Warning : client without job list");
-    else
-    {
-        list<ConfigurationObject*>::iterator itJobs = jobListObj->objectList.begin();
-        list<ConfigurationObject*>::iterator endJobs = jobListObj->objectList.end();
-        for (; itJobs != endJobs; itJobs++)
-        {
-            AbstractJob* parsedJob = CreateJobFromObject(*itJobs, errorMessages);
-            if (parsedJob)
-                jobList.push_back(parsedJob);
-        }
-    }
-
-    return true;
-}
-
-bool ServerConfiguration::FillJobListRemotely(Client* client, std::vector<string> &errorMessages)
-{
-    const string tempClientFile = "tempClientConfiguration.conf";
-    const string defaultRemoteConfigurationFile = "~/.taskmanager";
-
-    string remoteConfigurationFile = client->GetProperty("remoteConfigurationFile");
-    if (remoteConfigurationFile == "")
-        remoteConfigurationFile = defaultRemoteConfigurationFile;
-
-    // TODO refactor this : either change to get buffer and parse it or remove completely
-    // this (for now) obsolete method
-    bool clientFileOk = CopyClientFile(client, remoteConfigurationFile, tempClientFile,
-                                       errorMessages);
-    if (!clientFileOk)
-        return false;
-
-    ConfigurationParser parser;
-    bool result = parser.ParseFile(tempClientFile, errorMessages);
-    if (!result)
-        return false;
-
-    FillRemoteClientObjects(parser.objectList, errorMessages);
-
-    ConsoleJob::Run("rm", string("-f ") + tempClientFile);
-    return true;
-}
-
-bool ServerConfiguration::CopyClientFile(Client* client,
-                                   const string &source, const string &destination,
-                                   vector<string> &errorMessages)
-{
-    const string host = client->GetProperty("ip");
-    if (!Tools::IsComputerAlive(host))
-    {
-        errorMessages.push_back("Error : Client not available");
-        return false;
-    }
-
-    string scpParams = "-o \"PasswordAuthentication no\" ";
-    scpParams += client->GetProperty("sshuser") + "@" + host + ":";
-    scpParams += source + " " + destination;
-    ConsoleJob copyJob("scp", scpParams);
-
-    copyJob.RunWithoutStatus();
-
-    if (!copyJob.IsRunOk())
-    {
-        const string errorMessage = CreateScpErrorMessage(copyJob.GetCommandOutput());
-        errorMessages.push_back(errorMessage);
-        return false;
-    }
-    else
-        return true;
-}
-
-void ServerConfiguration::FillRemoteClientObjects(const list<ConfigurationObject*> &objectList,
-                                            vector<string> &errorMessages)
-{
-    if (objectList.size() > 1)
-        errorMessages.push_back(MsgClientConfigUnknownObjects);
-    else if (objectList.size() == 0)
-        errorMessages.push_back(MsgClientConfigEmpty);
-    else
-        FillJobListLocally(objectList.front(), errorMessages);
-}
-
-string ServerConfiguration::CreateScpErrorMessage(const string &output) const
-{
-    if (output.find("Permission denied") != string::npos)
-    {
-        return CreateError(MsgNoPassword);
-    }
-    else if (output.find("No such file or directory") != string::npos)
-        return CreateError(MsgNoConfigFile);
-    else
-        return MsgClientConfigAccessError;
 }
 
 AbstractReportCreator *ServerConfiguration::GetReportCreator() const

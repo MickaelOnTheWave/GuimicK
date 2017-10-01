@@ -1,3 +1,12 @@
+01/10/2017 (1h)
+	Created client configuration. It is using ClientJobsListConf to retrieve job list,
+	as expected. Refactored ServerConfiguration accordingly. There is a need for a deeper
+	refactoring : job list should belong to client, not to configuration.
+Next planned work:
+	- Refactor job list to put it into Client.
+	- Fix existing tests and check that everything done so far works fine.
+	- Create test suite for it.
+
 28/09/2017 (1.8h)
 	Added Buffer parsing feature to ConfigurationParser. Refactored it accordingly.
 	Renamed configuration to ServerConfiguration and tests accordingly.

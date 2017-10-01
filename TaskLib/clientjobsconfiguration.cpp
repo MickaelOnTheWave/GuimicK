@@ -11,6 +11,13 @@ ClientJobsConfiguration::ClientJobsConfiguration()
 {
 }
 
+bool ClientJobsConfiguration::LoadFromConfigurationObject(ConfigurationObject* confObject,
+                                                          std::vector<string>& errorMessages)
+{
+   FillJobList(confObject, errorMessages);
+   return IsConfigurationConsistent(errorMessages);
+}
+
 void ClientJobsConfiguration::FillRootObjects(const list<ConfigurationObject*> &objectList,
                                               vector<string> &errorMessages)
 {

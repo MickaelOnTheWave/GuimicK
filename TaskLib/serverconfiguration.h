@@ -20,7 +20,6 @@ public:
     static std::string MsgClientConfigEmpty;
     static std::string MsgMissingClient;
     static std::string MsgMissingAgent;
-    static std::string MsgClientWithoutName;
     static std::string MsgRemoteOptionDeprecated;
     static std::string MsgOneClientSupported;
 
@@ -57,21 +56,6 @@ private:
     AbstractReportCreator* CreateReportObject(const std::string& type) const;
 
     bool GetBooleanValue(const std::string& strValue, std::vector<std::string>& errorMessages) const;
-
-    bool AreClientPropertiesConsistent(ConfigurationObject* object,
-                                       std::vector<std::string> &errorMessages);
-
-    bool FillJobListLocally(ConfigurationObject* jobListObj,
-                            std::vector<std::string> &errorMessages);
-    bool FillJobListRemotely(Client *client, std::vector<std::string> &errorMessages);
-
-    bool CopyClientFile(Client *client,
-                        const std::string& source, const std::string& destination,
-                        std::vector<std::string>& errorMessages);
-    void FillRemoteClientObjects(const std::list<ConfigurationObject*>& objectList,
-                                 std::vector<std::string> &errorMessages);
-
-    std::string CreateScpErrorMessage(const std::string& output) const;
 
 	SelfIdentity* self;
    AbstractReportCreator* reportCreator;
