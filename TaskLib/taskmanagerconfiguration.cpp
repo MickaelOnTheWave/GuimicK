@@ -56,26 +56,9 @@ bool TaskManagerConfiguration::LoadFromBuffer(const string &content, vector<stri
     return SetupData(parser, errorMessages);
 }
 
-ClientWorkManager *TaskManagerConfiguration::BuildTimedWorkList() const
+ClientWorkManager *TaskManagerConfiguration::BuildWorkList(const bool withProfiling) const
 {
-    ClientWorkManager* workManager = new ClientWorkManager(client->Clone());
-
-    list<AbstractJob*>::const_iterator it = jobList.begin();
-    for (; it!=jobList.end(); it++)
-        workManager->AddJob(new ProfiledJob((*it)->Clone()));
-
-    return workManager;
-}
-
-ClientWorkManager *TaskManagerConfiguration::BuildSimpleWorkList() const
-{
-    ClientWorkManager* workManager = new ClientWorkManager(client->Clone());
-
-    list<AbstractJob*>::const_iterator it = jobList.begin();
-    for (; it!=jobList.end(); it++)
-        workManager->AddJob((*it)->Clone());
-
-    return workManager;
+   return new ClientWorkManager(client->Clone(), withProfiling);
 }
 
 bool TaskManagerConfiguration::HasClient() const

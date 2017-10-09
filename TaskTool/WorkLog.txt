@@ -1,3 +1,18 @@
+08/10/2017 (1h)
+	Finished refactoring Client work manager. Dedicated tests running, now fixing
+	remaining ones. Timed property correctly handled.
+Next planned work:
+	- Fix remaining tests
+	- Updated production to run with new version and add more backup data
+	- Continue with remote jobs runner
+
+05/10/2017 (1h)
+	Refactored job list into Client. Now updating code accordingly.
+Next planned work :
+	- Finish Client work manager updating : we need to check how to properly handle
+	timed property from configuration. No profiled job cloning!
+	- Continue previous roadmap
+
 01/10/2017 (1h)
 	Created client configuration. It is using ClientJobsListConf to retrieve job list,
 	as expected. Refactored ServerConfiguration accordingly. There is a need for a deeper

@@ -10,7 +10,7 @@
 class ClientWorkManager
 {
 public:
-	 ClientWorkManager(Client* _client);
+    ClientWorkManager(Client* _client, const bool timedWorkList = false);
     ~ClientWorkManager();
 
     void AddJob(AbstractJob* newJob);	 
@@ -35,10 +35,11 @@ public:
 
      void GetJobList(std::vector<AbstractJob*> &_jobs);
 
-protected:
-    Client* client;
+private:
+   void AddJobsFromClient(const bool timedWorkList);
 
-    std::list<AbstractJob*> jobList;
+   Client* client;
+   std::list<AbstractJob*> jobList;
 };
 
 #endif // CLIENTWORKMANAGER_H

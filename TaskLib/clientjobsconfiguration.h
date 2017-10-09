@@ -19,6 +19,8 @@ public:
    bool LoadFromConfigurationObject(ConfigurationObject* confObject,
                                     std::vector<std::string> &errorMessages);
 
+   void GetJobList(std::list<AbstractJob*>& _jobList) const;
+
 
 private:
     virtual void FillRootObjects(const std::list<ConfigurationObject*>& objectList,

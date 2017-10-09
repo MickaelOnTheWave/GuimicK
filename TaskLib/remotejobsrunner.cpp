@@ -50,9 +50,7 @@ JobStatus *RemoteJobsRunner::Run()
         return CreateConfigurationErrorStatus(configurationErrors);
 
     JobStatus* status = new JobStatus();
-    ClientWorkManager* workManager = (isWorkListTimed) ? configuration.BuildTimedWorkList()
-                                                       : configuration.BuildSimpleWorkList();
-
+    ClientWorkManager* workManager = configuration.BuildWorkList(isWorkListTimed);
     //workResults = RunWorkList(workManager);
     //return ResultCollectionStatus(workResults);
     return NULL;

@@ -69,14 +69,15 @@ JobStatus *BackupStatusManager::CreateGlobalStatus(
 
 JobStatus *BackupStatusManager::CreateSingleStatus()
 {
-    debugManager->AddTagLine("Creating Single status");
-    const AbstractBackupJob::ResultEntry& result = resultCollection->front();
+   if (debugManager)
+      debugManager->AddTagLine("Creating Single status");
+   const AbstractBackupJob::ResultEntry& result = resultCollection->front();
 
-    JobStatus* status = new JobStatus(result.first->GetCode());
-    status->SetDescription(GetCorrectMiniDescription(result));
-    if (result.second)
-        status->AddFileBuffer(attachmentName, result.second->GetFullDescription());
-    return status;
+   JobStatus* status = new JobStatus(result.first->GetCode());
+   status->SetDescription(GetCorrectMiniDescription(result));
+   if (result.second)
+     status->AddFileBuffer(attachmentName, result.second->GetFullDescription());
+   return status;
 }
 
 JobStatus *BackupStatusManager::CreateAllOkStatus()

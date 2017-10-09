@@ -21,8 +21,7 @@ public:
     bool LoadFromBuffer(const std::string& content,
                          std::vector<std::string> &errorMessages);
 
-    ClientWorkManager* BuildTimedWorkList() const;
-    ClientWorkManager* BuildSimpleWorkList() const;
+    ClientWorkManager* BuildWorkList(const bool withProfiling) const;
 
     bool HasClient() const;
     Client* GetClient();

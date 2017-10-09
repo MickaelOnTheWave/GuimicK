@@ -18,6 +18,13 @@ bool ClientJobsConfiguration::LoadFromConfigurationObject(ConfigurationObject* c
    return IsConfigurationConsistent(errorMessages);
 }
 
+void ClientJobsConfiguration::GetJobList(std::list<AbstractJob*>& _jobList) const
+{
+   list<AbstractJob*>::const_iterator it = jobList.begin();
+   for (; it != jobList.end(); ++it)
+      _jobList.push_back((*it)->Clone());
+}
+
 void ClientJobsConfiguration::FillRootObjects(const list<ConfigurationObject*> &objectList,
                                               vector<string> &errorMessages)
 {

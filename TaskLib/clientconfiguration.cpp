@@ -6,6 +6,7 @@ using namespace std;
 
 string ClientConfiguration::MsgClientWithoutName = "Error : Client without name";
 string ClientConfiguration::MsgClientWithoutJobs = "Warning : Client has no jobs";
+string ClientConfiguration::MsgDeprecatedRemoteOption = "Warning : Remote option deprecated";
 
 
 ClientConfiguration::ClientConfiguration()
@@ -24,6 +25,10 @@ Client* ClientConfiguration::CreateConfiguredClient(ConfigurationObject* confObj
        return NULL;
    }
 
+   const string deprecatedRemoteJobOption = confObject->GetProperty("remoteJobList");
+   if (deprecatedRemoteJobOption != "")
+       errorMessages.push_back(MsgDeprecatedRemoteOption);
+
    client = new Client();
    client->SetName(clientName);
 
@@ -31,17 +36,22 @@ Client* ClientConfiguration::CreateConfiguredClient(ConfigurationObject* confObj
    if (ok)
    {
       ClientJobsConfiguration jobsConfiguration;
-      ok = jobsConfiguration.LoadFromConfigurationObject(confObject->GetObject("JobList"),
-                                                         errorMessages);
+      ConfigurationObject* jobListObject = confObject->GetObject("JobList");
+      if (jobListObject)
+         ok = jobsConfiguration.LoadFromConfigurationObject(jobListObject, errorMessages);
+
+      if (ok)
+      {
+         list<AbstractJob*> jobList;
+         jobsConfiguration.GetJobList(jobList);
+         if (jobList.empty())
+             errorMessages.push_back(MsgClientWithoutJobs);
+         else
+            client->SetJobList(jobList);
+      }
    }
 
-   if (ok)
-   {
-      //TODO : fix this. Refactor that. Client probably should keep its job list, not configuration.
-      if (false)//jobsConfiguration.jobList.empty())
-          errorMessages.push_back(MsgClientWithoutJobs);
-   }
-   else
+   if (ok == false)
    {
       delete client;
       client = NULL;

@@ -11,6 +11,7 @@ class ClientConfiguration
 public:
    static std::string MsgClientWithoutName;
    static std::string MsgClientWithoutJobs;
+   static std::string MsgDeprecatedRemoteOption;
 
    ClientConfiguration();
 

@@ -81,9 +81,7 @@ int MainToolModule::Run(CommandLineManager &commandLine)
         return CONFIGURATION_ERROR;
     }
 
-    ClientWorkManager* workList = (timedRuns) ? configuration.BuildTimedWorkList()
-                                              : configuration.BuildSimpleWorkList();
-
+    ClientWorkManager* workList = configuration.BuildWorkList(timedRuns);
     bool localShutdown = SetupShutdownOptions(configuration.GetLocalShutdown(),
                                               commandLine.HasParameter(noShutdownCommand),
                                               workList);

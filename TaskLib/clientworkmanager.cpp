@@ -1,12 +1,14 @@
 #include "clientworkmanager.h"
 
 #include <utility>
+#include "profiledjob.h"
 
 using namespace std;
 
-ClientWorkManager::ClientWorkManager(Client *_client)
+ClientWorkManager::ClientWorkManager(Client *_client, const bool timedWorkList)
 	: client(_client)
 {
+   AddJobsFromClient(timedWorkList);
 }
 
 ClientWorkManager::~ClientWorkManager()
@@ -93,5 +95,18 @@ WorkResultData *ClientWorkManager::RunWorkList()
 
 void ClientWorkManager::GetJobList(vector<AbstractJob *> &_jobs)
 {
-    copy(jobList.begin(), jobList.end(), back_inserter(_jobs));
+   copy(jobList.begin(), jobList.end(), back_inserter(_jobs));
+}
+
+void ClientWorkManager::AddJobsFromClient(const bool timedWorkList)
+{
+   list<AbstractJob*> clientJobList;
+   client->GetJobList(clientJobList);
+
+   list<AbstractJob*>::iterator it=clientJobList.begin();
+   for (; it != clientJobList.end(); ++it)
+   {
+      AbstractJob* job = (timedWorkList) ? new ProfiledJob(*it) : *it; // stealing temp instance
+      jobList.push_back(job);
+   }
 }

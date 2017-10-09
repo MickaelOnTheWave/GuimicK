@@ -1,6 +1,8 @@
 #include "serverconfigurationtest.h"
 
 #include <QTest>
+
+#include "clientconfiguration.h"
 #include "testutils.h"
 
 using namespace std;
@@ -79,7 +81,7 @@ void ServerConfigurationTest::testBuildSimpleWorkList()
     LoadFromFile("valid.txt", true, QStringList());
 
     vector<AbstractJob*> jobList;
-    ClientWorkManager* manager = configuration->BuildSimpleWorkList();
+    ClientWorkManager* manager = configuration->BuildWorkList(false);
     manager->GetJobList(jobList);
 
     QCOMPARE(jobList.size(), 5ul);
@@ -180,12 +182,11 @@ void ServerConfigurationTest::LoadClientExamples()
     QTest::newRow("Client - No job list")
                             << "client - no job list.txt"
                             << true
-                            << QStringList({"Warning : client without job list",
-                                           "Warning : client has an empty job list"});
+                            << QStringList({QString(ClientConfiguration::MsgClientWithoutJobs.c_str())});
     QTest::newRow("Client - empty job list")
                             << "client - empty job list.txt"
                             << true
-                            << QStringList({"Warning : client has an empty job list"});
+                            << QStringList({"Warning : Client has no jobs"});
     QTest::newRow("Client - Supporting only one client")
                             << "client - oneonly.txt"
                             << true
@@ -235,8 +236,7 @@ void ServerConfigurationTest::LoadRemoteJobListExamples()
                                                   << true
                                                   << QStringList({
                                                                  "Warning : Remote option deprecated",
-                                                                 "Warning : client without job list",
-                                                                 "Warning : client has an empty job list"
+                                                                 "Warning : Client has no jobs"
                                                                  });
 
 }
