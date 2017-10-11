@@ -14,7 +14,7 @@ public:
    static std::string MsgNoJobList;
    static std::string MsgUnsupportedObjects;
 
-   ClientJobsConfiguration();
+   ClientJobsConfiguration(const int _debugOption = DebugOutput::UNDEFINED);
 
    bool LoadFromConfigurationObject(ConfigurationObject* confObject,
                                     std::vector<std::string> &errorMessages);
@@ -33,6 +33,7 @@ private:
 
     void FillJobList(ConfigurationObject* jobListObj, std::vector<std::string> &errorMessages);
 
+    int debugOption;
 };
 
 #endif // CLIENTJOBSCONFIGURATION_H

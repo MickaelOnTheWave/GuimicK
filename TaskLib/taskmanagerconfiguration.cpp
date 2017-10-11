@@ -142,8 +142,8 @@ void TaskManagerConfiguration::FreeSupportedJobsList()
 
 void TaskManagerConfiguration::Reset()
 {
-    jobList.clear();
-    hasFatalError = false;
+   jobList.clear();
+   hasFatalError = false;
 }
 
 bool TaskManagerConfiguration::SetupData(const ConfigurationParser &parser,

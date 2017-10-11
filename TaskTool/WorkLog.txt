@@ -1,3 +1,14 @@
+10/10/2017 (0.8h)
+	Fixed remaining tests. There were several small mistakes :
+	1. Client global debug option was not handled anymore, therefor there were
+	no debug attachments anymore.
+	2. Jobs were not being initialized anymore in work manager, which caused
+	attachments to have the same name and overwrite one another.
+	Updating production version.
+Next planned work:
+	- Add more backup data
+	- Continue with remote jobs runner
+
 08/10/2017 (1h)
 	Finished refactoring Client work manager. Dedicated tests running, now fixing
 	remaining ones. Timed property correctly handled.

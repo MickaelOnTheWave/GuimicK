@@ -35,7 +35,11 @@ Client* ClientConfiguration::CreateConfiguredClient(ConfigurationObject* confObj
    bool ok = AreClientPropertiesConsistent(confObject, errorMessages);
    if (ok)
    {
-      ClientJobsConfiguration jobsConfiguration;
+      const string debugOptionString = confObject->GetProperty("showDebugInformation");
+      const int debugOption = (debugOptionString != "") ?
+                                 DebugOutput::GetValue(debugOptionString) :
+                                 DebugOutput::UNDEFINED;
+      ClientJobsConfiguration jobsConfiguration(debugOption);
       ConfigurationObject* jobListObject = confObject->GetObject("JobList");
       if (jobListObject)
          ok = jobsConfiguration.LoadFromConfigurationObject(jobListObject, errorMessages);

@@ -7,7 +7,8 @@ static const string JobListObjectName = "JobList";
 string ClientJobsConfiguration::MsgNoJobList = "Client without job list";
 string ClientJobsConfiguration::MsgUnsupportedObjects = "Unsupported objects present";
 
-ClientJobsConfiguration::ClientJobsConfiguration()
+ClientJobsConfiguration::ClientJobsConfiguration(const int _debugOption)
+   : debugOption(_debugOption)
 {
 }
 
@@ -72,6 +73,10 @@ void ClientJobsConfiguration::FillJobList(ConfigurationObject* jobListObj,
    {
        AbstractJob* parsedJob = CreateJobFromObject(*itJobs, errorMessages);
        if (parsedJob)
-           jobList.push_back(parsedJob);
+       {
+          if (debugOption != DebugOutput::UNDEFINED)
+            parsedJob->SetOutputDebugInformation(debugOption);
+          jobList.push_back(parsedJob);
+       }
    }
 }

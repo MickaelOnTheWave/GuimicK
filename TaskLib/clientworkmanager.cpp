@@ -77,7 +77,7 @@ WorkResultData *ClientWorkManager::RunWorkList()
 	{
 		AbstractJob* currentJob = *it;
         JobStatus* status;
-        if (currentJob->IsInitialized())
+        if (currentJob->InitializeFromClient(client))
             status = currentJob->Run();
         else
         {
