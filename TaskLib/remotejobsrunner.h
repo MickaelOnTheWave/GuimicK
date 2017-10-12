@@ -9,6 +9,11 @@ public:
     static std::string TargetNotAccessibleError;
 
     RemoteJobsRunner();
+    RemoteJobsRunner(const RemoteJobsRunner& other);
+
+    virtual std::string GetName();
+
+    virtual AbstractJob* Clone();
 
     virtual bool InitializeFromClient(Client *client);
     virtual bool IsInitialized(void);
@@ -33,6 +38,7 @@ private:
     std::string configurationFile;
     std::string host, user;
     bool isWorkListTimed;
+    Client* originalClient;
 };
 
 #endif // REMOTEJOBSRUNNER_H

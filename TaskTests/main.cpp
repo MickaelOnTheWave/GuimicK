@@ -54,6 +54,8 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ZipAndCopyFsBackupJobConfigurationTest();
     //QObject* testSuite = new ToolsTest(toolsLibDir);
     //QObject* testSuite = new GitPorcelainReportParserTest(parsersDir);
+    //QObject* testSuite = new RemoteJobsRunnerTest();
+    //QObject* testSuite = new RemoteJobsRunnerConfigurationTest();
 
     QTest::qExec(testSuite, argc, argv);
 

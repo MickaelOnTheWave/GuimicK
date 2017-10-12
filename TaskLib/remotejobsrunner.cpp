@@ -2,6 +2,7 @@
 
 #include "consolejob.h"
 #include "clientjobsconfiguration.h"
+#include "resultcollectionstatus.h"
 #include "sshconsolejob.h"
 #include "tools.h"
 
@@ -10,22 +11,45 @@ using namespace std;
 string RemoteJobsRunner::TargetNotAccessibleError = "Client is offline";
 
 RemoteJobsRunner::RemoteJobsRunner()
-    : configurationFile(".taskmanager"),
-      host(""), user(""), isWorkListTimed(true)
+    : AbstractJob(),
+      configurationFile(".taskmanager"),
+      host(""), user(""), isWorkListTimed(true),
+      originalClient(NULL)
 {
+}
+
+RemoteJobsRunner::RemoteJobsRunner(const RemoteJobsRunner& other)
+   : AbstractJob(other),
+     configurationFile(other.configurationFile),
+     host(other.host), user(other.user),
+     isWorkListTimed(other.isWorkListTimed),
+     originalClient(other.originalClient)
+
+{
+}
+
+string RemoteJobsRunner::GetName()
+{
+   return string("RemoteJobsRunner");
+}
+
+AbstractJob* RemoteJobsRunner::Clone()
+{
+   return new RemoteJobsRunner(*this);
 }
 
 bool RemoteJobsRunner::InitializeFromClient(Client *client)
 {
-    bool ok = AbstractJob::InitializeFromClient(client);
-    if (ok)
-    {
-        host = client->GetProperty("ip");
-        user = client->GetProperty("sshuser");
-        return IsInitialized();
-    }
-    else
-        return false;
+   bool ok = AbstractJob::InitializeFromClient(client);
+   if (ok)
+   {
+      originalClient = client;
+      host = client->GetProperty("ip");
+      user = client->GetProperty("sshuser");
+      return IsInitialized();
+   }
+   else
+      return false;
 }
 
 bool RemoteJobsRunner::IsInitialized()
@@ -49,11 +73,10 @@ JobStatus *RemoteJobsRunner::Run()
     if (!usable)
         return CreateConfigurationErrorStatus(configurationErrors);
 
-    JobStatus* status = new JobStatus();
+    configuration.SetClient(originalClient);
     ClientWorkManager* workManager = configuration.BuildWorkList(isWorkListTimed);
-    //workResults = RunWorkList(workManager);
-    //return ResultCollectionStatus(workResults);
-    return NULL;
+    WorkResultData* remoteResults = workManager->RunWorkList();
+    return new ResultCollectionStatus(remoteResults);
 }
 
 std::string RemoteJobsRunner::GetConfigurationFile() const
@@ -73,29 +96,30 @@ bool RemoteJobsRunner::GetIsWorkListTimed() const
 
 void RemoteJobsRunner::SetIsWorkListTimed(const bool value)
 {
-    isWorkListTimed = value;
+   isWorkListTimed = value;
 }
 
 bool RemoteJobsRunner::RetrieveRemoteConfiguration(string& output)
 {
-    SshConsoleJob remoteRetrieveJob(new ConsoleJob("ls", configurationFile));
-    remoteRetrieveJob.SetParentDebugManager(debugManager);
-    remoteRetrieveJob.SetTarget(user, host);
+   ConsoleJob* retrieveJob = new ConsoleJob("cat", Tools::EscapedSpaces(configurationFile));
+   SshConsoleJob remoteRetrieveJob(retrieveJob);
+   remoteRetrieveJob.SetParentDebugManager(debugManager);
+   remoteRetrieveJob.SetTarget(user, host);
 
-    JobStatus* status = remoteRetrieveJob.Run();
+   JobStatus* status = remoteRetrieveJob.Run();
 
-    const bool success = (status->GetCode() == JobStatus::OK);
-    if (success)
-        output = remoteRetrieveJob.GetCommandOutput();
-    else if (IsInvalidFileError())
-        output = "Configuration file not found";
-    else if (IsPasswordError())
-        output = "Password needed";
-    else
-        output = "Error trying to retrieve configuration";
+   const bool success = (status->GetCode() == JobStatus::OK);
+   if (success)
+     output = remoteRetrieveJob.GetCommandOutput();
+   else if (IsInvalidFileError())
+     output = "Configuration file not found";
+   else if (IsPasswordError())
+     output = "Password needed";
+   else
+     output = "Error trying to retrieve configuration";
 
-    delete status;
-    return success;
+   delete status;
+   return success;
 }
 
 JobStatus *RemoteJobsRunner::CreateErrorStatus(const string &message)

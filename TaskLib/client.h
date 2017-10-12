@@ -28,6 +28,8 @@ public:
     void GetJobList(std::list<AbstractJob*>& _jobList) const;
     void SetJobList(const std::list<AbstractJob*>& _jobList);
 
+    void AddJob(AbstractJob* job);
+
 protected:
     void FreeJobList();
 

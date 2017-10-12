@@ -24,7 +24,8 @@ public:
     ClientWorkManager* BuildWorkList(const bool withProfiling) const;
 
     bool HasClient() const;
-    Client* GetClient();
+    Client* GetClient() const;
+    void SetClient(Client* _client);
 
 protected:
     std::string CreateWarning(const std::string& message) const;

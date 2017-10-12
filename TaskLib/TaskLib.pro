@@ -77,7 +77,9 @@ SOURCES += \
     taskmanagerconfiguration.cpp \
     serverconfiguration.cpp \
     clientjobsconfiguration.cpp \
-    clientconfiguration.cpp
+    clientconfiguration.cpp \
+    resultcollectionstatus.cpp \
+    remotejobsrunnerconfiguration.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -146,7 +148,9 @@ HEADERS +=\
     taskmanagerconfiguration.h \
     serverconfiguration.h \
     clientjobsconfiguration.h \
-    clientconfiguration.h
+    clientconfiguration.h \
+    resultcollectionstatus.h \
+    remotejobsrunnerconfiguration.h
 
 unix {
     target.path = /usr/lib

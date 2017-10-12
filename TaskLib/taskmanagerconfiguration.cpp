@@ -9,6 +9,7 @@
 #include "diskspacecheckjobconfiguration.h"
 #include "gitbackupjobconfiguration.h"
 #include "gitfsbackupjobconfiguration.h"
+#include "remotejobsrunnerconfiguration.h"
 #include "rsnapshotbackupjobconfiguration.h"
 #include "shutdownjobconfiguration.h"
 #include "sshconsolejobconfiguration.h"
@@ -66,9 +67,14 @@ bool TaskManagerConfiguration::HasClient() const
     return (client != NULL);
 }
 
-Client* TaskManagerConfiguration::GetClient()
+Client* TaskManagerConfiguration::GetClient() const
 {
-    return client;
+   return client;
+}
+
+void TaskManagerConfiguration::SetClient(Client* _client)
+{
+   client = _client;
 }
 
 string TaskManagerConfiguration::CreateWarning(const string &message) const
@@ -130,6 +136,7 @@ void TaskManagerConfiguration::FillSupportedJobsList()
     supportedJobs.push_back(new RawCopyFsBackupJobConfiguration());
     supportedJobs.push_back(new RsyncCopyFsBackupJobConfiguration());
     supportedJobs.push_back(new ZipAndCopyFsBackupJobConfiguration());
+    supportedJobs.push_back(new RemoteJobsRunnerConfiguration());
 }
 
 void TaskManagerConfiguration::FreeSupportedJobsList()

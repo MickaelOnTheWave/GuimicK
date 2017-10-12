@@ -1,3 +1,26 @@
+12/10/2017 (2.1h)
+	Continued RemoteJobsRunner implementation to the point where it compiles and its
+	design seems complete. Updated Tools and fixed some issues for it to run.
+	Created TaskFeatureTest for it. Created configuration class and its test suite.
+	Test suite is complete and running. Also created new tool test suite and it is
+	running fine. Now refining implementation... Remote configuration is retrieved and
+	parsed successfully. However there is a design flaw in WorkManager : we don't want
+	client jobs added to it in this case!
+Next planned work:
+	- Fix design flaw; Either rework ClientWorkManager or configurations (or both!)
+	- Finish implementation and have test running
+	- Check that to do with dedicated test suite
+
+11/10/2017 (2h)
+	Created a test suite for RemoteJobsRunner. However it proved to be badly designed :
+	it is designed around updating client whereas use case is around running jobs and
+	providing a result list that will be merged in final result.
+	Started updating RemoteJobsRunner implementation, but it needs to be finished.
+Next planned work:
+	- Finish RemoteJobsRunner implementation
+	- Create TaskFeature test for it
+	- Check if dedicated test suite can be used for further testing
+
 10/10/2017 (0.8h)
 	Fixed remaining tests. There were several small mistakes :
 	1. Client global debug option was not handled anymore, therefor there were
