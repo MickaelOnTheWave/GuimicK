@@ -12,6 +12,13 @@ ClientJobsConfiguration::ClientJobsConfiguration(const int _debugOption)
 {
 }
 
+ClientWorkManager* ClientJobsConfiguration::BuildWorkList(const bool withProfiling) const
+{
+   ClientWorkManager* workManager = new ClientWorkManager(client->Clone());
+   workManager->AddJobs(jobList, withProfiling);
+   return workManager;
+}
+
 bool ClientJobsConfiguration::LoadFromConfigurationObject(ConfigurationObject* confObject,
                                                           std::vector<string>& errorMessages)
 {

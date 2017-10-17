@@ -12,6 +12,8 @@
   */
 typedef std::vector<std::pair<std::string, JobStatus*> > ClientJobResults;
 
+typedef std::pair<std::string, ClientJobResults*> ClientResult;
+
 class WorkResultData
 {
 public:
@@ -24,7 +26,7 @@ public:
 
     void GetAttachmentContents(std::vector<std::string>& attachments) const;
 
-	std::vector<std::pair<std::string, ClientJobResults*> > allClientsResults;
+   std::vector<ClientResult> allClientsResults;
 
 private:
     void GetBufferAttachments(JobStatus* status, std::vector<std::string>& attachments) const;

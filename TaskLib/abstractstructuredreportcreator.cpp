@@ -1,8 +1,11 @@
 #include "abstractstructuredreportcreator.h"
 
+#include "resultcollectionstatus.h"
+
 using namespace std;
 
 AbstractStructuredReportCreator::AbstractStructuredReportCreator()
+   : globalCode(JobStatus::NOT_EXECUTED), globalDuration(0)
 {
 }
 
@@ -21,31 +24,19 @@ void AbstractStructuredReportCreator::Generate(WorkResultData *data,
 
     AddHeader();
 
-    vector<pair<string, ClientJobResults*> >::iterator itClient=data->allClientsResults.begin();
-    vector<pair<string, ClientJobResults*> >::iterator endClient=data->allClientsResults.end();
+    vector<ClientResult>::iterator itClient=data->allClientsResults.begin();
+    vector<ClientResult>::iterator endClient=data->allClientsResults.end();
     for (; itClient!=endClient; itClient++)
     {
         pair<string, ClientJobResults*> clientData = *itClient;
 
-        AddClientData(clientData);
+        AddClientHeaderData(clientData);
 
-        int totalCode = JobStatus::NOT_EXECUTED;
-        time_t totalDuration = 0;
+        globalCode = JobStatus::NOT_EXECUTED;
+        globalDuration = 0;
 
-        ClientJobResults::iterator itJob=clientData.second->begin();
-        ClientJobResults::iterator endJob=clientData.second->end();
-        for (; itJob!=endJob; itJob++)
-        {
-            pair<string, JobStatus*> jobData = *itJob;
-
-            UpdateAttachments(jobData.second);
-            totalCode = GetUpdatedCode(totalCode, jobData.second);
-            totalDuration += jobData.second->GetDuration();
-
-            AddJobData(jobData.first, jobData.second);
-        }
-
-        AddSummaryData(totalCode, totalDuration);
+        AddJobResultData(clientData);
+        AddSummaryData(globalCode, globalDuration);
     }
 
     AddConfigurationErrorsData(configErrors);
@@ -54,7 +45,30 @@ void AbstractStructuredReportCreator::Generate(WorkResultData *data,
     fullReport = reportCore.str() + programVersion.str();
 }
 
+void AbstractStructuredReportCreator::AddJobResultData(const ClientResult& clientData)
+{
+   ClientJobResults::iterator itJob=clientData.second->begin();
+   ClientJobResults::iterator endJob=clientData.second->end();
+   for (; itJob!=endJob; itJob++)
+   {
+      pair<string, JobStatus*> jobData = *itJob;
 
+      ResultCollectionStatus* collectionStatus = dynamic_cast<ResultCollectionStatus*>(jobData.second);
+      if (collectionStatus)
+      {
+         WorkResultData* remoteResults = collectionStatus->GetResults();
+         AddJobResultData(remoteResults->allClientsResults.front());
+      }
+      else
+      {
+         UpdateAttachments(jobData.second);
+         globalCode = GetUpdatedCode(globalCode, jobData.second);
+         globalDuration += jobData.second->GetDuration();
+
+         AddJobData(jobData.first, jobData.second);
+      }
+   }
+}
 
 void AbstractStructuredReportCreator::UpdateAttachments(JobStatus *status)
 {
@@ -62,7 +76,7 @@ void AbstractStructuredReportCreator::UpdateAttachments(JobStatus *status)
     status->GetFileBuffers(fileBuffers);
 }
 
-int AbstractStructuredReportCreator::GetUpdatedCode(const int inputCode, JobStatus *status)
+int AbstractStructuredReportCreator::GetUpdatedCode(const int inputCode, JobStatus *status) const
 {
     return (status->IsWorseThan(inputCode)) ? status->GetCode() : inputCode;
 }

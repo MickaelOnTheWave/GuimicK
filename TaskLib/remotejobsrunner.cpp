@@ -73,7 +73,7 @@ JobStatus *RemoteJobsRunner::Run()
     if (!usable)
         return CreateConfigurationErrorStatus(configurationErrors);
 
-    configuration.SetClient(originalClient);
+    configuration.SetClient(originalClient->Clone());
     ClientWorkManager* workManager = configuration.BuildWorkList(isWorkListTimed);
     WorkResultData* remoteResults = workManager->RunWorkList();
     return new ResultCollectionStatus(remoteResults);
@@ -134,10 +134,12 @@ JobStatus *RemoteJobsRunner::CreateConfigurationErrorStatus(const std::vector<st
 
 bool RemoteJobsRunner::IsInvalidFileError() const
 {
-
+   // TODO : implement
+   return false;
 }
 
 bool RemoteJobsRunner::IsPasswordError() const
 {
-
+   // TODO : implement
+   return false;
 }

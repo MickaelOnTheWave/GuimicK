@@ -10,33 +10,36 @@
 class ClientWorkManager
 {
 public:
-    ClientWorkManager(Client* _client, const bool timedWorkList = false);
-    ~ClientWorkManager();
+   ClientWorkManager(Client* _client);
+   ~ClientWorkManager();
 
-    void AddJob(AbstractJob* newJob);	 
+   void AddJob(AbstractJob* newJob);
 
-	 /**
-		 Removes a job from loaded job list.
-		 @param[in] jobName Job name.
-		 @note This method will only work if there is only
-		 one job with this name. In case of several jobs, none
-         of them will be removed.
-		*/
-	 bool RemoveJob(const std::string& jobName);
+   void AddJobs(const std::list<AbstractJob*>& _jobList, const bool timedWorkList);
 
-	 /**
-		 Removes all jobs except those with specified name
-		 @param[in] jobName Job name.
-		*/
+   void AddJobsFromClient(const bool timedWorkList);
 
-	 bool RemoveAllButJobs(const std::string& jobName);
+   /**
+    Removes a job from loaded job list.
+    @param[in] jobName Job name.
+    @note This method will only work if there is only
+    one job with this name. In case of several jobs, none
+      of them will be removed.
+   */
+   bool RemoveJob(const std::string& jobName);
 
-	 WorkResultData* RunWorkList();
+   /**
+    Removes all jobs except those with specified name
+    @param[in] jobName Job name.
+   */
 
-     void GetJobList(std::vector<AbstractJob*> &_jobs);
+   bool RemoveAllButJobs(const std::string& jobName);
+
+   WorkResultData* RunWorkList();
+
+   void GetJobList(std::vector<AbstractJob*> &_jobs);
 
 private:
-   void AddJobsFromClient(const bool timedWorkList);
 
    Client* client;
    std::list<AbstractJob*> jobList;

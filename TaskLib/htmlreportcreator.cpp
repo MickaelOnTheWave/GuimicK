@@ -51,7 +51,7 @@ void HtmlReportCreator::AddHeader()
     reportCore << "<body>" << endl;
 }
 
-void HtmlReportCreator::AddClientData(const pair<string, ClientJobResults *>& clientData)
+void HtmlReportCreator::AddClientHeaderData(const pair<string, ClientJobResults *>& clientData)
 {
     reportCore << "<h1>" << clientData.first << "</h1>" << endl;
     reportCore << "<table>" << endl;

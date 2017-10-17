@@ -26,6 +26,8 @@ public:
     ServerConfiguration();
     virtual ~ServerConfiguration();
 
+    virtual ClientWorkManager* BuildWorkList(const bool withProfiling) const;
+
     AbstractReportCreator* GetReportCreator(void) const;
 
     AbstractReportDispatcher* CreateReportDispatcher(const bool commandLinePreventsEmail) const;

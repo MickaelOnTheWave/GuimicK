@@ -32,7 +32,7 @@ void TextReportCreator::AddHeader()
 {
 }
 
-void TextReportCreator::AddClientData(const pair<string, ClientJobResults*>& clientData)
+void TextReportCreator::AddClientHeaderData(const pair<string, ClientJobResults*>& clientData)
 {
     reportCore << Tools::Tabs(3) << clientData.first << endl;
     reportCore << endl;

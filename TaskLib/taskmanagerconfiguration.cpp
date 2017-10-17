@@ -57,11 +57,6 @@ bool TaskManagerConfiguration::LoadFromBuffer(const string &content, vector<stri
     return SetupData(parser, errorMessages);
 }
 
-ClientWorkManager *TaskManagerConfiguration::BuildWorkList(const bool withProfiling) const
-{
-   return new ClientWorkManager(client->Clone(), withProfiling);
-}
-
 bool TaskManagerConfiguration::HasClient() const
 {
     return (client != NULL);

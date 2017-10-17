@@ -5,10 +5,9 @@
 
 using namespace std;
 
-ClientWorkManager::ClientWorkManager(Client *_client, const bool timedWorkList)
+ClientWorkManager::ClientWorkManager(Client *_client)
 	: client(_client)
 {
-   AddJobsFromClient(timedWorkList);
 }
 
 ClientWorkManager::~ClientWorkManager()
@@ -24,7 +23,17 @@ ClientWorkManager::~ClientWorkManager()
 void ClientWorkManager::AddJob(AbstractJob *newJob)
 {
 	newJob->InitializeFromClient(client);
-	jobList.push_back(newJob);
+   jobList.push_back(newJob);
+}
+
+void ClientWorkManager::AddJobs(const list<AbstractJob*>& _jobList, const bool timedWorkList)
+{
+   list<AbstractJob*>::const_iterator it=_jobList.begin();
+   for (; it != _jobList.end(); ++it)
+   {
+      AbstractJob* job = (timedWorkList) ? new ProfiledJob(*it) : *it; // stealing temp instance
+      jobList.push_back(job);
+   }
 }
 
 bool ClientWorkManager::RemoveJob(const string &jobName)
@@ -76,14 +85,14 @@ WorkResultData *ClientWorkManager::RunWorkList()
 	for (; it!=end; it++)
 	{
 		AbstractJob* currentJob = *it;
-        JobStatus* status;
-        if (currentJob->InitializeFromClient(client))
-            status = currentJob->Run();
-        else
-        {
-            status = new JobStatus(JobStatus::NOT_EXECUTED, "Initialization failed");
-            status->SetDuration(0);
-        }
+      JobStatus* status;
+      if (currentJob->InitializeFromClient(client))
+         status = currentJob->Run();
+      else
+      {
+         status = new JobStatus(JobStatus::NOT_EXECUTED, "Initialization failed");
+         status->SetDuration(0);
+      }
 
 		jobResults->push_back(make_pair(currentJob->GetName(), status));
 	}
@@ -102,11 +111,5 @@ void ClientWorkManager::AddJobsFromClient(const bool timedWorkList)
 {
    list<AbstractJob*> clientJobList;
    client->GetJobList(clientJobList);
-
-   list<AbstractJob*>::iterator it=clientJobList.begin();
-   for (; it != clientJobList.end(); ++it)
-   {
-      AbstractJob* job = (timedWorkList) ? new ProfiledJob(*it) : *it; // stealing temp instance
-      jobList.push_back(job);
-   }
+   AddJobs(clientJobList, timedWorkList);
 }

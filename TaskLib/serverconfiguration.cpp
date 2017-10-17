@@ -47,7 +47,14 @@ ServerConfiguration::ServerConfiguration()
 
 ServerConfiguration::~ServerConfiguration()
 {
-	delete self;
+   delete self;
+}
+
+ClientWorkManager* ServerConfiguration::BuildWorkList(const bool withProfiling) const
+{
+   ClientWorkManager* workManager = new ClientWorkManager(client->Clone());
+   workManager->AddJobsFromClient(withProfiling);
+   return workManager;
 }
 
 

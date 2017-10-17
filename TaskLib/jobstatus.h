@@ -15,8 +15,8 @@ public:
 
 	JobStatus();
 	JobStatus(int _code, const std::string& _description = "");
-    JobStatus(const JobStatus& other);
-	~JobStatus();
+   JobStatus(const JobStatus& other);
+   virtual ~JobStatus();
 
 	void Reset();
 
@@ -62,8 +62,8 @@ protected:
 	std::time_t elapsedTime;
 	std::string description;
 
-    std::vector<std::string> externalFilenames;
-    std::vector<std::pair<std::string, std::string> > filebuffers;
+   std::vector<std::string> externalFilenames;
+   std::vector<std::pair<std::string, std::string> > filebuffers;
 };
 
 #endif // JOBSTATUS_H

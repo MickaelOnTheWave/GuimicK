@@ -18,7 +18,7 @@ public:
 
 protected:
     virtual void AddHeader(void);
-    virtual void AddClientData(const std::pair<std::string, ClientJobResults *> &clientData);
+    virtual void AddClientHeaderData(const std::pair<std::string, ClientJobResults *> &clientData);
     virtual void AddJobData(const std::string& jobName, JobStatus* status);
     virtual void AddSummaryData(const int code, const time_t duration);
     virtual void AddConfigurationErrorsData(const std::vector<std::string>& errors);

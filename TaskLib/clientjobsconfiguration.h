@@ -16,6 +16,8 @@ public:
 
    ClientJobsConfiguration(const int _debugOption = DebugOutput::UNDEFINED);
 
+   virtual ClientWorkManager* BuildWorkList(const bool withProfiling) const;
+
    bool LoadFromConfigurationObject(ConfigurationObject* confObject,
                                     std::vector<std::string> &errorMessages);
 
