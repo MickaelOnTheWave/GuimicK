@@ -62,17 +62,17 @@ Abandoned features :
 
 Fixed bugs :
 	18-09-2017 - [002] Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
+	16-10-2017 - [006] Occasionally a test in TaskFeature test will fail. Reproduce issue, check what it is and fix it!!
 
 Pending bugs :
 	[001] Git report parser crashes when trying to parse a report coming from git asking for ssh password.
 	[003] Rsnapshot tests need to wait before doing backup. Maybe pending file operations need to be flushed before?
 	[004] Rsnapshot job created from SmartCreator leaves configuration file behind. Change its design to clean everything (and check while writing to not overwrite an existing one!!)
 	[005] Some bad configurations make app crash. See confbackuponly.txt in Synology.
-	[006] Occasionally a test in TaskFeature test will fail. Reproduce issue, check what it is and fix it!!
-		- Issue happens more on Release, with other failures in Git test suites. Resolve all of them.
 	[007] Rsnapshot fails at ignoring unmodified files in tests. Create/modify tests to fit this test case.
 	[008] Git FS backup doesn't work with first data report (git diff command).
 	[009] MIME email content is still buggy - some junk chars at the end of each archive. Looks like the counting is wrong in relation with message size.
+	[010] Some tests are failing in GitJob only in Release. Make all test suites pass 100% in both Debug and Release.
 
 -------------
 Release plan
@@ -81,6 +81,9 @@ Release plan
 v1.2 :
 	[051] Implement a licensing system : either CD-Key or online activation. Use crypto.
 	[026] Support multiple clients with multiple job lists
+	[050] Create a backup job for cloud service
+	[025] Use libssh instead of using command line
+	[010] Implement all TODOs in code
 
 v1.1 :
 	[045] Make Windows client work with (nearly) all features

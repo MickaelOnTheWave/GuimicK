@@ -1,9 +1,10 @@
-16/10/2017 (2.3h)
+16/10/2017 (2.6h)
 	Nearly finished RemoteJobsRunner. Refactored ClientWorkManager and configurations -
 	now specialized configurations build work list differently. It is no longer in
 	ClientWorkManager's responsibility. Basic TaskFeature test is working as expected.
 	Updated production run to use it. There are however some tests to do and situations
 	to handle to consider the feature finished.
+	Added future features to release plan. Checked old bug and found new one.
 Next planned work:
 	- Check dedicated test suite : there might be some relevant tests. If not, remove.
 	- Create tests for error cases specified in implementation.
