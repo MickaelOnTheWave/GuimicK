@@ -109,11 +109,12 @@ bool RemoteJobsRunner::RetrieveRemoteConfiguration(string& output)
    JobStatus* status = remoteRetrieveJob.Run();
 
    const bool success = (status->GetCode() == JobStatus::OK);
+   const string commandOutput = remoteRetrieveJob.GetCommandOutput();
    if (success)
-     output = remoteRetrieveJob.GetCommandOutput();
-   else if (IsInvalidFileError())
+     output = commandOutput;
+   else if (IsInvalidFileError(commandOutput, configurationFile))
      output = "Configuration file not found";
-   else if (IsPasswordError())
+   else if (IsPasswordError(commandOutput))
      output = "Password needed";
    else
      output = "Error trying to retrieve configuration";
@@ -129,17 +130,30 @@ JobStatus *RemoteJobsRunner::CreateErrorStatus(const string &message)
 
 JobStatus *RemoteJobsRunner::CreateConfigurationErrorStatus(const std::vector<string>& errors)
 {
-    return CreateErrorStatus("Implement the real one");
+   JobStatus* status = new JobStatus(JobStatus::ERROR, "Errors in remote configuration");
+   status->AddFileBuffer(GetAttachmentName(), CreateConfigurationErrorDescription(errors));
+   return status;
 }
 
-bool RemoteJobsRunner::IsInvalidFileError() const
+bool RemoteJobsRunner::IsInvalidFileError(const string& output, const string& file) const
 {
-   // TODO : implement
-   return false;
+   size_t catCommandPos = output.find("cat:");
+   const bool isCatCommand = (catCommandPos != string::npos);
+   const bool isFileNotFound = (output.find(file + ": No such file or directory", catCommandPos));
+   return isCatCommand && isFileNotFound;
 }
 
-bool RemoteJobsRunner::IsPasswordError() const
+bool RemoteJobsRunner::IsPasswordError(const string& output) const
 {
-   // TODO : implement
-   return false;
+   return (output.find("Permission denied") == 0);
+}
+
+string RemoteJobsRunner::CreateConfigurationErrorDescription(const std::vector<string>& errors) const
+{
+   string content;
+   content += "The following errors occured while loading client configuration :\n";
+   vector<string>::const_iterator it = errors.begin();
+   for (; it!=errors.end(); ++it)
+      content += string("\t") + *it + "\n";
+   return content;
 }

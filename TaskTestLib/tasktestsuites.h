@@ -13,7 +13,6 @@
 #include "gitjobtest.h"
 #include "rawcopyfsbackupjobtest.h"
 #include "remotejobsrunnerconfigurationtest.h"
-#include "remotejobsrunnertest.h"
 #include "rsnapshotbackupjobconfigurationtest.h"
 #include "rsnapshoterroranalyzertest.h"
 #include "rsnapshotjobtest.h"

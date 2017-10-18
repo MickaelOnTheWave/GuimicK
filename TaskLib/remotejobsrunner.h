@@ -32,8 +32,10 @@ private:
     JobStatus* CreateErrorStatus(const std::string& message);    
     JobStatus* CreateConfigurationErrorStatus(const std::vector<std::string>& errors);
 
-    bool IsInvalidFileError() const;
-    bool IsPasswordError() const;
+    bool IsInvalidFileError(const std::string& output, const std::string& file) const;
+    bool IsPasswordError(const std::string& output) const;
+
+    std::string CreateConfigurationErrorDescription(const std::vector<std::string>& errors) const;
 
     std::string configurationFile;
     std::string host, user;

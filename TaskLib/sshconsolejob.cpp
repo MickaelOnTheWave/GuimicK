@@ -206,7 +206,9 @@ AbstractConsoleJob *SshConsoleJob::CreateSshJob()
     AbstractConsoleJob* sshJob = static_cast<AbstractConsoleJob*>(remoteJob->Clone());
     const string remoteJobCommand = remoteJob->GetCommand() + " " +
                                     remoteJob->GetCommandParameters();
-    const string sshParameters = user + "@" + host + " \"" + remoteJobCommand + "\"";
+
+    const string sshBatchMode = "-o BatchMode=yes ";
+    const string sshParameters = sshBatchMode + user + "@" + host + " \"" + remoteJobCommand + "\"";
     sshJob->SetCommand("ssh");
     sshJob->SetCommandParameters(sshParameters);
     sshJob->SetParentDebugManager(debugManager);

@@ -1,3 +1,11 @@
+17/10/2017 (2.4h)
+	Found no use for dedicated test suite. Removing it...
+	Created test cases for all error cases for RemoteJobsRunner. Implemented all
+	error cases detection. Now only production run is needed to confirm feature :-)
+Next planned work:
+	- Check production run. If ok, update release plan.
+	- Start user job name implementation
+
 16/10/2017 (2.6h)
 	Nearly finished RemoteJobsRunner. Refactored ClientWorkManager and configurations -
 	now specialized configurations build work list differently. It is no longer in
