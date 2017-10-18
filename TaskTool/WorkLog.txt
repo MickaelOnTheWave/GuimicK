@@ -1,3 +1,10 @@
+18/10/2017 (0.2h)
+	Checked production run. There was an error in email sending, but run was
+	successfull :-) As email is not related (probably internet provider, internet
+	was awful lately), considering the feature complete. Updating release plan...
+Next planned work:
+	- Start user job name implementation
+
 17/10/2017 (2.4h)
 	Found no use for dedicated test suite. Removing it...
 	Created test cases for all error cases for RemoteJobsRunner. Implemented all
