@@ -11,7 +11,7 @@ using namespace std;
 string RemoteJobsRunner::TargetNotAccessibleError = "Client is offline";
 
 RemoteJobsRunner::RemoteJobsRunner()
-    : AbstractJob(),
+    : AbstractJob("RemoteJobsRunner"),
       configurationFile(".taskmanager"),
       host(""), user(""), isWorkListTimed(true),
       originalClient(NULL)
@@ -26,11 +26,6 @@ RemoteJobsRunner::RemoteJobsRunner(const RemoteJobsRunner& other)
      originalClient(other.originalClient)
 
 {
-}
-
-string RemoteJobsRunner::GetName()
-{
-   return string("RemoteJobsRunner");
 }
 
 AbstractJob* RemoteJobsRunner::Clone()

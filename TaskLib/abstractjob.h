@@ -10,39 +10,42 @@
 class AbstractJob
 {
 public:
-    AbstractJob();
-    AbstractJob(const AbstractJob& other);
-    virtual ~AbstractJob();
+   AbstractJob(const std::string& _title);
+   AbstractJob(const AbstractJob& other);
+   virtual ~AbstractJob();
 
-	virtual std::string GetName() = 0;
-    std::string GetAttachmentName();
+   virtual std::string GetName();
+   void SetName(const std::string& value);
 
-    virtual AbstractJob* Clone() = 0;
+   std::string GetAttachmentName();
 
-	/**
-		Performs initial setup and gets needed data from client if
-		needed.
-		@return true on sucess, false on failure.
-		@note failure is considered fatal, the job should not be ran if
-		it wasn't sucessfully initialized.
-	  */
-    virtual bool InitializeFromClient(Client* client);
+   virtual AbstractJob* Clone() = 0;
 
-    virtual bool IsInitialized(void) = 0;
+   /**
+   Performs initial setup and gets needed data from client if
+   needed.
+   @return true on sucess, false on failure.
+   @note failure is considered fatal, the job should not be ran if
+   it wasn't sucessfully initialized.
+   */
+   virtual bool InitializeFromClient(Client* client);
 
-	/**
-		@note It is caller's responsibility to delete the JobStatus object.
-	  */
-	virtual JobStatus* Run() = 0;
+   virtual bool IsInitialized(void) = 0;
 
-    virtual int GetOutputDebugInformationValue() const;
-    virtual void SetOutputDebugInformation(const int value);
+   /**
+   @note It is caller's responsibility to delete the JobStatus object.
+   */
+   virtual JobStatus* Run() = 0;
 
-    void SetParentDebugManager(JobDebugInformationManager* manager);
+   virtual int GetOutputDebugInformationValue() const;
+   virtual void SetOutputDebugInformation(const int value);
+
+   void SetParentDebugManager(JobDebugInformationManager* manager);
 
 protected:
     JobDebugInformationManager* debugManager;
     bool isDebugManagerParent;
+    std::string title;
 };
 
 #endif // ABSTRACTJOB_H

@@ -3,7 +3,8 @@
 using namespace std;
 
 ProfiledJob::ProfiledJob(AbstractJob *_baseJob)
-    : baseJob(_baseJob), elapsedTime(0)
+    : AbstractJob(""),
+      baseJob(_baseJob), elapsedTime(0)
 {
 }
 

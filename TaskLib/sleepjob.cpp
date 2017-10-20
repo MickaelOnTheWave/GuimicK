@@ -7,7 +7,7 @@
 #endif
 
 SleepJob::SleepJob(int _sleepTime)
-	: sleepTime(_sleepTime)
+   : AbstractJob("SleepJob"), sleepTime(_sleepTime)
 {
 }
 

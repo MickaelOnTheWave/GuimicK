@@ -14,10 +14,12 @@ public:
 private Q_SLOTS:
     void testConfigure_ShowDebugProperty_data();
     void testConfigure_ShowDebugProperty();
+    void testConfigure_TitleProperty();
 
 private:
-    void testConfigure_ShowDebugProperty(const std::string& propertyValue,
+    void TestShowDebugProperty(const std::string& propertyValue,
                                          const int expectedValue);
+    void TestTitleProperty(const std::string& value);
 
 };
 

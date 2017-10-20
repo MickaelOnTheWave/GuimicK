@@ -8,8 +8,6 @@ class SleepJob : public AbstractJob
 public:
 	SleepJob(int _sleepTime);
 
-	virtual std::string GetName() { return "SleepJob"; }
-
 	virtual JobStatus* Run();
 
 protected:

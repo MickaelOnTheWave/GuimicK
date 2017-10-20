@@ -10,8 +10,7 @@ public:
     DummyJob(const std::string& _name = "DummyJob",
              const int expectedCode = JobStatus::OK,
              const std::string& _expectedDescription = "");
-
-    virtual std::string GetName();
+    DummyJob(const DummyJob& other);
 
     virtual AbstractJob* Clone();
 
@@ -26,7 +25,6 @@ public:
     void SetInitialization(const bool value);
 
 protected:
-    std::string name;
     int statusCode;
     std::string statusDescription;
     bool initializationValue;

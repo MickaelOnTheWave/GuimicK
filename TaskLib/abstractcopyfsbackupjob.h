@@ -8,7 +8,7 @@
 class AbstractCopyFsBackupJob : public AbstractBackupJob
 {
 public:
-    AbstractCopyFsBackupJob();
+    AbstractCopyFsBackupJob(const std::string& _title);
     AbstractCopyFsBackupJob(const AbstractCopyFsBackupJob& other);
     virtual ~AbstractCopyFsBackupJob();
 

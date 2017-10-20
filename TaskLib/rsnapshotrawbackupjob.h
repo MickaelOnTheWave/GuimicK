@@ -13,7 +13,6 @@ public:
     RsnapshotRawBackupJob(const RsnapshotRawBackupJob& other);
     virtual ~RsnapshotRawBackupJob();
 
-    virtual std::string GetName();
     virtual AbstractJob* Clone();
     virtual bool IsInitialized();
 

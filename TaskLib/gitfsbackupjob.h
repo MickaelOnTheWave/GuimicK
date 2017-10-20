@@ -13,7 +13,6 @@ public:
     GitFsBackupJob();
     GitFsBackupJob(const GitFsBackupJob& other);
 
-    virtual std::string GetName();
     virtual AbstractJob* Clone();
     virtual JobStatus* Run();
 

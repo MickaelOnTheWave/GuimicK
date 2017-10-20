@@ -9,7 +9,8 @@ const string UPDATE_LOG_FILE = "clamavupdate.txt";
 const string SCAN_LOG_FILE = "clamavscan.txt";
 
 ClamAvJob::ClamAvJob()
-	: scanDir(""), blockOnFailingUpdate(false)
+   : AbstractJob("ClamAV Scan"),
+     scanDir(""), blockOnFailingUpdate(false)
 {
     virusDefinitionUpdateJob = new UserConsoleJob("", "freshclam.exe --verbose --on-update-execute=EXIT_0 --on-error-execute=EXIT_1 --on-outdated-execute=EXIT_2");
     virusFullScanJob = new UserConsoleJob("", "");
@@ -19,11 +20,6 @@ ClamAvJob::~ClamAvJob()
 {
 	delete virusDefinitionUpdateJob;
 	delete virusFullScanJob;
-}
-
-std::string ClamAvJob::GetName()
-{
-    return "ClamAV Scan";
 }
 
 AbstractJob *ClamAvJob::Clone()

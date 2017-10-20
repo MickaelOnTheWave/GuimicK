@@ -9,7 +9,6 @@ public:
     RawCopyFsBackupJob();
     RawCopyFsBackupJob(const AbstractCopyFsBackupJob& other);
 
-    virtual std::string GetName();
     virtual AbstractJob* Clone();
 
 protected:

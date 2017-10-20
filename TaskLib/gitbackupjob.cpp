@@ -22,7 +22,8 @@ static const string reportCreationError                 = "Failed creating repor
 static const string repositoryBackupMessage = "repositories backed up";
 
 GitBackupJob::GitBackupJob()
- : AbstractBackupJob(), writeLogsToFile(false), archiveContent("")
+ : AbstractBackupJob("Git Repository Backup"),
+   writeLogsToFile(false), archiveContent("")
 {
     statusManager->SetItemBackupMessage(repositoryBackupMessage);
     statusManager->SetJoinReports(false);
@@ -38,7 +39,8 @@ GitBackupJob::GitBackupJob(const GitBackupJob &other)
 }
 
 GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &repositoryList)
- : AbstractBackupJob(), writeLogsToFile(false), archiveContent("")
+ : AbstractBackupJob("Git Repository Backup"),
+   writeLogsToFile(false), archiveContent("")
 {
     folderList = repositoryList;
     statusManager->SetItemBackupMessage(repositoryBackupMessage);
@@ -47,11 +49,6 @@ GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &reposi
 
 GitBackupJob::~GitBackupJob()
 {
-}
-
-string GitBackupJob::GetName()
-{
-    return "Git Repository Backup";
 }
 
 AbstractJob *GitBackupJob::Clone()

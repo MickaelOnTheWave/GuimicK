@@ -9,7 +9,8 @@ using namespace std;
 static const string errorReportCreation = "Error creating report";
 static const string errorCopyCommand = "Copy command failed";
 
-AbstractCopyFsBackupJob::AbstractCopyFsBackupJob() : AbstractBackupJob()
+AbstractCopyFsBackupJob::AbstractCopyFsBackupJob(const string& _title)
+   : AbstractBackupJob(_title)
 {
 }
 

@@ -2,14 +2,15 @@
 
 using namespace std;
 
-AbstractJob::AbstractJob()
+AbstractJob::AbstractJob(const string& _title)
     : debugManager(new JobDebugInformationManager(false)),
-      isDebugManagerParent(false)
+      isDebugManagerParent(false), title(_title)
 {
 }
 
 AbstractJob::AbstractJob(const AbstractJob &other)
-    : isDebugManagerParent(other.isDebugManagerParent)
+    : isDebugManagerParent(other.isDebugManagerParent),
+      title(other.title)
 {
     if (isDebugManagerParent)
         debugManager = other.debugManager;
@@ -20,7 +21,17 @@ AbstractJob::AbstractJob(const AbstractJob &other)
 AbstractJob::~AbstractJob()
 {
     if (!isDebugManagerParent)
-        delete debugManager;
+       delete debugManager;
+}
+
+string AbstractJob::GetName()
+{
+   return title;
+}
+
+void AbstractJob::SetName(const string& value)
+{
+   title = value;
 }
 
 void AbstractJob::SetOutputDebugInformation(const int value)

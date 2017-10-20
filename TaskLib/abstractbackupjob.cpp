@@ -4,8 +4,8 @@
 
 using namespace std;
 
-AbstractBackupJob::AbstractBackupJob()
-    : AbstractJob(),
+AbstractBackupJob::AbstractBackupJob(const string& _title)
+    : AbstractJob(_title),
       repository(""), sshUser(""), sshHost(""), isTargetLocal(false)
 {
 

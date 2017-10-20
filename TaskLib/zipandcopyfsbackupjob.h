@@ -11,7 +11,6 @@ public:
     ZipAndCopyFsBackupJob();
     ZipAndCopyFsBackupJob(const ZipAndCopyFsBackupJob& other);
 
-    virtual std::string GetName();
     virtual AbstractJob* Clone();
 
     static bool Restore(const std::string& backupFile,

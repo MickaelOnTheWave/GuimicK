@@ -14,7 +14,8 @@ static const string copyingError = "error copying archive";
 static const string remoteCleaningError = "remote archive not cleaned";
 
 ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob()
-    : AbstractBackupJob(), localDestination("")
+    : AbstractBackupJob("ZipAndCopy Backup"),
+      localDestination("")
 {
 }
 
@@ -22,11 +23,6 @@ ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob(const ZipAndCopyFsBackupJob& other)
     : AbstractBackupJob(other),
       localDestination(other.localDestination)
 {
-}
-
-std::string ZipAndCopyFsBackupJob::GetName()
-{
-    return string("ZipAndCopy Backup");
 }
 
 AbstractJob *ZipAndCopyFsBackupJob::Clone()

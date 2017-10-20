@@ -11,7 +11,7 @@ using namespace std;
 
 RsnapshotRawBackupJob::RsnapshotRawBackupJob(const std::string &_backupRepositoryPath,
                                              const std::string &_rsnapshotConfFile)
-    : AbstractJob(),
+    : AbstractJob("Rsnapshot Backup"),
       configurationFile(_rsnapshotConfFile),
       repository(_backupRepositoryPath), waitBeforeRun(false),
       reportJobOutput("")
@@ -19,7 +19,7 @@ RsnapshotRawBackupJob::RsnapshotRawBackupJob(const std::string &_backupRepositor
 }
 
 RsnapshotRawBackupJob::RsnapshotRawBackupJob(const RsnapshotRawBackupJob &other)
-    : AbstractJob(),
+    : AbstractJob(other),
       configurationFile(other.configurationFile),
       repository(other.repository), waitBeforeRun(other.waitBeforeRun),
       reportJobOutput(other.reportJobOutput)
@@ -28,11 +28,6 @@ RsnapshotRawBackupJob::RsnapshotRawBackupJob(const RsnapshotRawBackupJob &other)
 
 RsnapshotRawBackupJob::~RsnapshotRawBackupJob()
 {
-}
-
-std::string RsnapshotRawBackupJob::GetName()
-{
-    return string("Rsnapshot Backup");
 }
 
 AbstractJob *RsnapshotRawBackupJob::Clone()

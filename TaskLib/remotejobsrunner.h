@@ -11,8 +11,6 @@ public:
     RemoteJobsRunner();
     RemoteJobsRunner(const RemoteJobsRunner& other);
 
-    virtual std::string GetName();
-
     virtual AbstractJob* Clone();
 
     virtual bool InitializeFromClient(Client *client);

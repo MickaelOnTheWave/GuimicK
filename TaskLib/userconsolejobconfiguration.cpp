@@ -43,7 +43,6 @@ void UserConsoleJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationOb
     const string parserUsingBuffer = confObject->GetProperty(ParserUsesBufferProperty);
 
     UserConsoleJob* castJob = static_cast<UserConsoleJob*>(job);
-    castJob->SetTitle(title);
     castJob->Initialize(command);
     castJob->SetCommandParameters(parameters);
 

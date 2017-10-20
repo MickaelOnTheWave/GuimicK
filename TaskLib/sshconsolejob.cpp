@@ -12,13 +12,13 @@ string SshConsoleJob::InvalidTargetError = "Invalid target specified";
 string SshConsoleJob::NoTerminalForPasswordError = "Password needed";
 
 SshConsoleJob::SshConsoleJob(AbstractConsoleJob *_job)
-    : AbstractConsoleJob(), title(""), user(""), host("")
+    : AbstractConsoleJob(""), title(""), user(""), host("")
 {
     SetRemoteJob(_job);
 }
 
 SshConsoleJob::SshConsoleJob(const string &_title, const string &_command)
-    : AbstractConsoleJob(), title(_title), user(""), host("")
+    : AbstractConsoleJob(""), title(_title), user(""), host("")
 {
 
     SetRemoteJob(new ConsoleJob(_command));

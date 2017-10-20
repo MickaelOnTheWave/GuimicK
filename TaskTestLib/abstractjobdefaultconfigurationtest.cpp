@@ -28,10 +28,15 @@ void AbstractJobDefaultConfigurationTest::testConfigure_ShowDebugProperty()
     QFETCH(QString, propertyValue);
     QFETCH(int, expectedValue);
 
-    testConfigure_ShowDebugProperty(propertyValue.toStdString(), expectedValue);
+    TestShowDebugProperty(propertyValue.toStdString(), expectedValue);
 }
 
-void AbstractJobDefaultConfigurationTest::testConfigure_ShowDebugProperty(
+void AbstractJobDefaultConfigurationTest::testConfigure_TitleProperty()
+{
+   TestTitleProperty("blabla");
+}
+
+void AbstractJobDefaultConfigurationTest::TestShowDebugProperty(
         const string &propertyValue, const int expectedValue)
 {
     ConfigurationObject* confObject = new ConfigurationObject();
@@ -45,4 +50,19 @@ void AbstractJobDefaultConfigurationTest::testConfigure_ShowDebugProperty(
 
     delete job;
     delete confObject;
+}
+
+void AbstractJobDefaultConfigurationTest::TestTitleProperty(const string& value)
+{
+   ConfigurationObject* confObject = new ConfigurationObject();
+   if (value != "")
+       confObject->SetProperty(AbstractJobDefaultConfiguration::TitleProperty, value);
+
+   AbstractJob* job = TestConfigurationWithoutErrors(confObject);
+
+   QVERIFY(job != nullptr);
+   QVERIFY(job->GetName() == value);
+
+   delete job;
+   delete confObject;
 }

@@ -31,7 +31,7 @@ static const string gitUserName = "TaskManager";
 static const string gitUserEmail = "task@manager.com";
 
 GitFsBackupJob::GitFsBackupJob()
-    : AbstractBackupJob(), forceRawCopy(false)
+    : AbstractBackupJob("Git Filesystem Backup"), forceRawCopy(false)
 {
 }
 
@@ -39,11 +39,6 @@ GitFsBackupJob::GitFsBackupJob(const GitFsBackupJob &other)
     : AbstractBackupJob(other), forceRawCopy(other.forceRawCopy)
 {
 
-}
-
-std::string GitFsBackupJob::GetName()
-{
-    return string("Git Filesystem Backup");
 }
 
 AbstractJob *GitFsBackupJob::Clone()

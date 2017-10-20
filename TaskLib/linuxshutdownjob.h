@@ -11,8 +11,6 @@ public:
     LinuxShutdownJob(const LinuxShutdownJob& other);
     virtual ~LinuxShutdownJob();
 
-    virtual std::string GetName();
-
     virtual AbstractJob *Clone();
 
     virtual bool InitializeFromClient(Client* client);

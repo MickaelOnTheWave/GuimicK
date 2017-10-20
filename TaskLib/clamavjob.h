@@ -7,23 +7,21 @@
 class ClamAvJob : public AbstractJob
 {
 public:
-	ClamAvJob();
+   ClamAvJob();
 
-	~ClamAvJob();
+   ~ClamAvJob();
 
-	virtual std::string GetName();
-
-    virtual AbstractJob* Clone();
+   virtual AbstractJob* Clone();
 
 	virtual bool InitializeFromClient(Client *client);
 
-    virtual bool IsInitialized(void);
+   virtual bool IsInitialized(void);
 
 	virtual JobStatus* Run();
 
 protected:
-    UserConsoleJob* virusDefinitionUpdateJob;
-    UserConsoleJob* virusFullScanJob;
+   UserConsoleJob* virusDefinitionUpdateJob;
+   UserConsoleJob* virusFullScanJob;
 	std::string scanDir;
 	bool blockOnFailingUpdate;
 };

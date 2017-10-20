@@ -13,7 +13,6 @@ public:
     GitBackupJob(const std::vector<std::pair<std::string, std::string> >& repositoryList);
     virtual ~GitBackupJob();
 
-    virtual std::string GetName();
     virtual AbstractJob* Clone();
 
     bool GetWriteLogsToFile() const;

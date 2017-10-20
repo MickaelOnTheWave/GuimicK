@@ -6,18 +6,15 @@
 using namespace std;
 
 LinuxFreeSpaceCheckJob::LinuxFreeSpaceCheckJob()
-    : drive(""), isTargetLocal(true), sshUser(""), sshHost("")
+    : AbstractJob("Free space checking"),
+      drive(""), isTargetLocal(true), sshUser(""), sshHost("")
 {
 }
 
 LinuxFreeSpaceCheckJob::LinuxFreeSpaceCheckJob(const std::string &_drive)
-    : drive(_drive), isTargetLocal(true), sshUser(""), sshHost("")
+    : AbstractJob("Free space checking"),
+      drive(_drive), isTargetLocal(true), sshUser(""), sshHost("")
 {
-}
-
-std::string LinuxFreeSpaceCheckJob::GetName()
-{
-    return "Free space checking";
 }
 
 AbstractJob *LinuxFreeSpaceCheckJob::Clone()

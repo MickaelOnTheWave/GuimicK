@@ -15,7 +15,7 @@ public:
     typedef std::vector<ResultEntry> ResultCollection;
     typedef std::vector<std::pair<std::string, std::string> > BackupCollection;
 
-    AbstractBackupJob();
+    AbstractBackupJob(const std::string& _title);
     AbstractBackupJob(const AbstractBackupJob& other);
     virtual ~AbstractBackupJob();
 

@@ -2,19 +2,22 @@
 
 DummyJob::DummyJob(const std::string &_name, const int expectedCode,
                    const std::string& expectedDescription)
-    : name(_name), statusCode(expectedCode), statusDescription(expectedDescription),
+    : AbstractJob(_name),
+      statusCode(expectedCode), statusDescription(expectedDescription),
       initializationValue(true)
 {
 }
 
-std::string DummyJob::GetName()
+DummyJob::DummyJob(const DummyJob& other)
+   : AbstractJob(other),
+     statusCode(other.statusCode), statusDescription(other.statusDescription),
+     initializationValue(other.initializationValue)
 {
-    return name;
 }
 
 AbstractJob *DummyJob::Clone()
 {
-    return new DummyJob(name, statusCode, statusDescription);
+    return new DummyJob(*this);
 }
 
 bool DummyJob::InitializeFromClient(Client *)

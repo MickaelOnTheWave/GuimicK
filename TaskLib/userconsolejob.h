@@ -15,16 +15,12 @@ public:
     UserConsoleJob(const UserConsoleJob& other);
     virtual ~UserConsoleJob();
 
-    virtual std::string GetName();
-
     virtual AbstractJob* Clone();
 
     virtual void Initialize(const std::string& _command,
                             int _expectedReturnCode = 0);
 
     virtual JobStatus* Run();
-
-    virtual void SetTitle(const std::string& value);
 
     std::string GetMiniDescriptionParserCommand() const;
     void SetMiniDescriptionParserCommand(const std::string& parser);
@@ -60,7 +56,6 @@ protected:
 private:
     std::string CreateParserCommand() const;
 
-    std::string commandTitle;
     std::string parserCommand;
 
     JobStatus* currentStatus;

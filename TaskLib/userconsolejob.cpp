@@ -14,15 +14,15 @@ UserConsoleJob::UserConsoleJob()
 UserConsoleJob::UserConsoleJob(const std::string &_commandTitle,
                                const std::string &_command, const std::string& _params,
                                int _expectedReturnCode)
-    : ConsoleJob(_command, _params, _expectedReturnCode), commandTitle(_commandTitle)
+    : ConsoleJob(_command, _params, _expectedReturnCode)
 {
-    Initialize(_command, _expectedReturnCode);
+   SetName(_commandTitle);
+   Initialize(_command, _expectedReturnCode);
 }
 
 UserConsoleJob::UserConsoleJob(const UserConsoleJob &other)
     : ConsoleJob(other)
 {
-    commandTitle = other.commandTitle;
     attachOutputToStatus = other.attachOutputToStatus;
     parserCommand = other.parserCommand;
     successConditionOnStandardOutput = other.successConditionOnStandardOutput;
@@ -39,11 +39,6 @@ UserConsoleJob::UserConsoleJob(const UserConsoleJob &other)
 UserConsoleJob::~UserConsoleJob()
 {
 
-}
-
-std::string UserConsoleJob::GetName()
-{
-    return commandTitle;
 }
 
 AbstractJob *UserConsoleJob::Clone()
@@ -73,11 +68,6 @@ JobStatus *UserConsoleJob::Run()
         return debugManager->CreateStatus(JobStatus::ERROR, NotAvailableError);
 
     return ConsoleJob::Run();
-}
-
-void UserConsoleJob::SetTitle(const std::string &value)
-{
-    commandTitle = value;
 }
 
 string UserConsoleJob::GetMiniDescriptionParserCommand() const
@@ -198,7 +188,7 @@ void UserConsoleJob::RunCommandOnBuffer()
 {
     ConsoleJob::RunCommand();
     if (attachOutputToStatus && commandOutput != "")
-        currentStatus->AddFileBuffer(commandTitle + ".txt", commandOutput);
+        currentStatus->AddFileBuffer(GetAttachmentName(), commandOutput);
 }
 
 bool UserConsoleJob::IsRunOk()

@@ -6,18 +6,13 @@ using namespace std;
 
 static const string errorReportCreation = "Error creating report";
 
-RawCopyFsBackupJob::RawCopyFsBackupJob() : AbstractCopyFsBackupJob()
+RawCopyFsBackupJob::RawCopyFsBackupJob() : AbstractCopyFsBackupJob("Copy Backup")
 {
 }
 
 RawCopyFsBackupJob::RawCopyFsBackupJob(const AbstractCopyFsBackupJob &other)
     : AbstractCopyFsBackupJob(other)
 {
-}
-
-string RawCopyFsBackupJob::GetName()
-{
-    return string("Copy Backup");
 }
 
 AbstractJob *RawCopyFsBackupJob::Clone()

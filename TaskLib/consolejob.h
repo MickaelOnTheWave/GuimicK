@@ -16,50 +16,48 @@
 class ConsoleJob : public AbstractConsoleJob
 {
 public:
-    static std::string NotAvailableError;
+   static std::string NotAvailableError;
 
-    ConsoleJob(const std::string& _command = "",
-               const std::string& _params = "", int _expectedReturnCode = 0);
-    ConsoleJob(const ConsoleJob& other);
-	virtual ~ConsoleJob();
+   ConsoleJob(const std::string& _command = "",
+            const std::string& _params = "", int _expectedReturnCode = 0);
+   ConsoleJob(const ConsoleJob& other);
+   virtual ~ConsoleJob();
 
-	virtual std::string GetName();
+   virtual AbstractJob* Clone();
 
-    virtual AbstractJob* Clone();
+   virtual bool IsInitialized(void);
 
-    virtual bool IsInitialized(void);
+   virtual JobStatus* Run();
 
-	virtual JobStatus* Run();
+   static void Run(const std::string& command, const std::string& params);
 
-    static void Run(const std::string& command, const std::string& params);
+   void RunWithoutStatus();
 
-    void RunWithoutStatus();
+   virtual int GetExpectedReturnCode() const;
+   virtual void SetExpectedReturnCode(const int value);
 
-    virtual int GetExpectedReturnCode() const;
-    virtual void SetExpectedReturnCode(const int value);
+   virtual std::string GetCommand() const;
+   virtual void SetCommand(const std::string& command);
 
-    virtual std::string GetCommand() const;
-    virtual void SetCommand(const std::string& command);
+   virtual void SetCommandParameters(const std::string& parameters);
+   std::string GetCommandParameters() const;
 
-    virtual void SetCommandParameters(const std::string& parameters);
-    std::string GetCommandParameters() const;
+   virtual int GetCommandReturnCode() const;
+   virtual void SetCommandReturnCode(const int value);
 
-    virtual int GetCommandReturnCode() const;    
-    virtual void SetCommandReturnCode(const int value);
+   virtual std::string GetCommandOutput() const;
+   virtual void SetCommandOutput(const std::string& value);
 
-    virtual std::string GetCommandOutput() const;
-    virtual void SetCommandOutput(const std::string& value);
+   virtual bool IsRunOk() const;
 
-    virtual bool IsRunOk() const;
-
-    virtual bool IsCommandAvailable() const;
+   virtual bool IsCommandAvailable() const;
 
 
-    // TODO : find a better place for that. This is a global feature, not
-    // necessary related to this job.
-    static void AddAppSearchPath(const std::string& path);
-    static void ClearAppSearchPaths();
-    static std::vector<std::string> appSearchPaths;
+   // TODO : find a better place for that. This is a global feature, not
+   // necessary related to this job.
+   static void AddAppSearchPath(const std::string& path);
+   static void ClearAppSearchPaths();
+   static std::vector<std::string> appSearchPaths;
 
 protected:
 

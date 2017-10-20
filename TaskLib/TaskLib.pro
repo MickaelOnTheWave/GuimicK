@@ -79,7 +79,8 @@ SOURCES += \
     clientjobsconfiguration.cpp \
     clientconfiguration.cpp \
     resultcollectionstatus.cpp \
-    remotejobsrunnerconfiguration.cpp
+    remotejobsrunnerconfiguration.cpp \
+    AbstractConsoleJob.cpp
 
 HEADERS +=\
     abstractjob.h \

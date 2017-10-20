@@ -8,7 +8,7 @@
 using namespace std;
 
 RsnapshotSmartBackupJob::RsnapshotSmartBackupJob()
-    : AbstractBackupJob(),
+    : AbstractBackupJob("Rsnapshot Backup"),
       templateConfigurationFile(""), temporaryFile(""),
       waitBeforeRun(false), maxBackupCount(100)
 {
@@ -26,11 +26,6 @@ RsnapshotSmartBackupJob::RsnapshotSmartBackupJob(const RsnapshotSmartBackupJob &
 
 RsnapshotSmartBackupJob::~RsnapshotSmartBackupJob()
 {
-}
-
-string RsnapshotSmartBackupJob::GetName()
-{
-    return string("Rsnapshot Backup");
 }
 
 AbstractJob *RsnapshotSmartBackupJob::Clone()

@@ -14,8 +14,6 @@ public:
     RsnapshotSmartBackupJob(const RsnapshotSmartBackupJob& other);
     virtual ~RsnapshotSmartBackupJob();
 
-    virtual std::string GetName();
-
     virtual AbstractJob* Clone();
 
     virtual JobStatus* Run();

@@ -1,3 +1,11 @@
+19/10/2017 (1.4h)
+	Added title option to AbstractJob. Refactored all jobs accordingly and all configurations.
+	Updated configuration test suites and fixed remaining issues.
+Next planned work:
+	- Create feature test for title option
+	- Update production run accordingly
+	- Once production run is confirmed, update release plan
+
 18/10/2017 (0.2h)
 	Checked production run. There was an error in email sending, but run was
 	successfull :-) As email is not related (probably internet provider, internet

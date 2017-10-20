@@ -13,7 +13,8 @@ std::vector<std::string> ConsoleJob::appSearchPaths;
 
 ConsoleJob::ConsoleJob(const string &_command,
                        const string &_params, int _expectedReturnCode)
-    : command(_command), commandParams(_params), commandOutput(""),
+    : AbstractConsoleJob(""),
+      command(_command), commandParams(_params), commandOutput(""),
       expectedReturnCode(_expectedReturnCode), receivedReturnCode(-1)
 {
     string foundCommandFullName = Tools::GetCommandPath(command, appSearchPaths);
@@ -22,6 +23,7 @@ ConsoleJob::ConsoleJob(const string &_command,
 }
 
 ConsoleJob::ConsoleJob(const ConsoleJob &other)
+   : AbstractConsoleJob(other)
 {
     command = other.command;
     commandParams = other.commandParams;
@@ -32,11 +34,6 @@ ConsoleJob::ConsoleJob(const ConsoleJob &other)
 
 ConsoleJob::~ConsoleJob()
 {
-}
-
-std::string ConsoleJob::GetName()
-{
-    return "";
 }
 
 AbstractJob *ConsoleJob::Clone()

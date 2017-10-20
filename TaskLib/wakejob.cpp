@@ -10,7 +10,8 @@ using namespace std;
 static const int defaultTimeout = 120;
 static const int defaultRetries = 3;
 
-WakeJob::WakeJob() : AbstractJob(),
+WakeJob::WakeJob()
+   : AbstractJob("Wake"),
     macAddress(""), broadcastIp(""), expectedIp(""),
     timeout(defaultTimeout), maxRetries(defaultRetries)
 {
@@ -26,11 +27,6 @@ WakeJob::WakeJob(const WakeJob &other)
 
 WakeJob::~WakeJob()
 {
-}
-
-std::string WakeJob::GetName()
-{
-    return "Wake";
 }
 
 AbstractJob *WakeJob::Clone()

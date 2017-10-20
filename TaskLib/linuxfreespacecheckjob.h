@@ -11,9 +11,6 @@ public:
     LinuxFreeSpaceCheckJob();
     LinuxFreeSpaceCheckJob(const std::string& _drive);
 
-
-    virtual std::string GetName();
-
     virtual AbstractJob* Clone();
 
     virtual bool InitializeFromClient(Client* client);
