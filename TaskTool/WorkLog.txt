@@ -1,9 +1,18 @@
-22/10/2017 (18.5)
+22/10/2017 (2.4h)
 	Created feature test for title option. Spotted a configuration parser bug, added a
 	TODO for it. Also adding it to list of known bugs. Fixed a minor issue where empty
 	backup gave a trivial non-empty attachment, and where empty attachments were still being
-	attached.
-
+	attached. Updated production configuration - now waiting for production to run.
+	Now going for updating tools...
+	No update available easily through apt-get. They are already up-to-date. Possibility
+	to upgrade to 16.04 or 17.10, but they seem both to be long and complex upgrades with
+	lots of possibilities of breaking all system. Leaving such upgrade for to-come 18.04.
+	Going for downloading Qt directly.
+	Started designing an UI (using widgets)... For now created a draft with basic UI logic.
+Next planned work:
+	- Check production run. If Ok, update release plan.
+	- Install downloaded Qt/QtCreator versions and start using them
+	- Continue basic UI / check with new Qt versions if something changed
 
 19/10/2017 (1.4h)
 	Added title option to AbstractJob. Refactored all jobs accordingly and all configurations.

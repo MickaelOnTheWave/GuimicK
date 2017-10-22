@@ -6,4 +6,5 @@ SUBDIRS += \
 	 TaskTests \
 	 ReportParsers \
     TaskTestTool \
-    TaskTestLib
+    TaskTestLib \
+    TaskToolWidgetUi
