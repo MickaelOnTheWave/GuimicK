@@ -9,6 +9,7 @@ using namespace std;
 UserConsoleJob::UserConsoleJob()
     : ConsoleJob()
 {
+   SetName("Console");
 }
 
 UserConsoleJob::UserConsoleJob(const std::string &_commandTitle,
@@ -16,7 +17,7 @@ UserConsoleJob::UserConsoleJob(const std::string &_commandTitle,
                                int _expectedReturnCode)
     : ConsoleJob(_command, _params, _expectedReturnCode)
 {
-   SetName(_commandTitle);
+   SetName(_commandTitle != "" ? _commandTitle : "Console");
    Initialize(_command, _expectedReturnCode);
 }
 

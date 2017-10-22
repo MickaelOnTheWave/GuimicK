@@ -74,6 +74,7 @@ Pending bugs :
 	[008] Git FS backup doesn't work with first data report (git diff command).
 	[009] MIME email content is still buggy - some junk chars at the end of each archive. Looks like the counting is wrong in relation with message size.
 	[010] Some tests are failing in GitJob only in Release. Make all test suites pass 100% in both Debug and Release.
+	[011] Configuration parser fails to parse empty string properties. See TODO.
 
 -------------
 Release plan

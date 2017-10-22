@@ -115,7 +115,9 @@ JobStatus *BackupStatusManager::CreateSeparatedStatus(const int code)
     JobStatus* status = new JobStatus(code);
 
     status->SetDescription(CreateRepositoriesMiniDescription());
-    status->AddFileBuffer(attachmentName, CreateStatusesDescription());
+    const string attachmentContent = CreateStatusesDescription();
+    if (attachmentContent != "")
+      status->AddFileBuffer(attachmentName, attachmentContent);
     return status;
 }
 
@@ -147,7 +149,8 @@ string BackupStatusManager::CreateStatusesDescription()
         if (it->second)
             fullDescription += it->second->GetFullDescription();
     }
-    fullDescription += BuildFooter();
+    if (fullDescription != "")
+      fullDescription += BuildFooter();
     return fullDescription;
 }
 

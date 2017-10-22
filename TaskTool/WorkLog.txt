@@ -1,3 +1,10 @@
+22/10/2017 (18.5)
+	Created feature test for title option. Spotted a configuration parser bug, added a
+	TODO for it. Also adding it to list of known bugs. Fixed a minor issue where empty
+	backup gave a trivial non-empty attachment, and where empty attachments were still being
+	attached.
+
+
 19/10/2017 (1.4h)
 	Added title option to AbstractJob. Refactored all jobs accordingly and all configurations.
 	Updated configuration test suites and fixed remaining issues.
