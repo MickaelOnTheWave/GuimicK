@@ -21,7 +21,9 @@ WakeJob::WakeJob(const WakeJob &other)
     : AbstractJob(other),
       macAddress(other.macAddress),
       broadcastIp(other.broadcastIp),
-      expectedIp(other.expectedIp)
+      expectedIp(other.expectedIp),
+      timeout(other.timeout),
+      maxRetries(other.maxRetries)
 {
 }
 
