@@ -25,6 +25,7 @@ Features implemented:
 	03/09/2017 - [044] Add generic debugging option for all jobs
 	18/09/2017 - [017] Properly handle all error cases
 	18/10/2017 - [029] Split job config file into client/server files.
+	23/10/2017 - [053] Update Qt and related tools to latest ones (5.9?)
 
 Features to implement:
 	[005] Include AntiVirus scan job
@@ -52,7 +53,6 @@ Features to implement:
 	[050] Create a backup job for cloud service
 	[051] Implement a licensing system : either CD-Key or online activation. Use crypto.
 	[052] Support other compilers
-	[053] Update Qt and related tools to latest ones (5.9?)
 	[054] Make all jobs support user title
 	[055] Create a download job
 

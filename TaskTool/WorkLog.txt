@@ -1,3 +1,19 @@
+23/10/2017 (1.7h)
+	Production run failed... Wake job failed. It seems to be a software issue as wake
+	job did not wait as expected. Trying to understand (and fix) the failure.
+	Fixed issue in Wake job : copy constructor was incomplete. This might have caused
+	production issue (although it is strange that it only appeared now...).
+	Installing new version of Qt+Creator.
+	New version installed, and apparently everything is working fine. Checked basic
+	Widgets project and QtQuick one. QtQuick seems totally inappropriate for Desktop
+	UI app. One interesting thing to do would be to create custom wizards with
+	proper project folder organization. But it is not a priority. Considering tool
+	update task done.
+Next planned work:
+	- Create wake test : test that specified wait time is respected
+	- Check production run
+	- Continue UI designing
+
 22/10/2017 (2.4h)
 	Created feature test for title option. Spotted a configuration parser bug, added a
 	TODO for it. Also adding it to list of known bugs. Fixed a minor issue where empty
