@@ -56,6 +56,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new GitPorcelainReportParserTest(parsersDir);
     //QObject* testSuite = new RemoteJobsRunnerTest();
     //QObject* testSuite = new RemoteJobsRunnerConfigurationTest();
+    //QObject* testSuite = new WakeJobTest();
 
     QTest::qExec(testSuite, argc, argv);
 

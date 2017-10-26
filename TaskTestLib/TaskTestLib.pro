@@ -46,7 +46,8 @@ SOURCES += tasktestlib.cpp \
     copyfsbackupjobconfigurationstests.cpp \
     gittesttools.cpp \
     serverconfigurationtest.cpp \
-    remotejobsrunnerconfigurationtest.cpp
+    remotejobsrunnerconfigurationtest.cpp \
+    wakejobtest.cpp
 
 HEADERS += tasktestlib.h \
     gitjobtest.h \
@@ -82,7 +83,8 @@ HEADERS += tasktestlib.h \
     copyfsbackupjobconfigurationstests.h \
     gittesttools.h \
     serverconfigurationtest.h \
-    remotejobsrunnerconfigurationtest.h
+    remotejobsrunnerconfigurationtest.h \
+    wakejobtest.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

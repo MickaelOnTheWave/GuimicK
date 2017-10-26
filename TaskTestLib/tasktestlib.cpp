@@ -33,6 +33,7 @@ void GetTaskLibTests(std::vector<QObject*>& tests,
     tests.push_back(new RsyncCopyFsBackupJobConfigurationTest());
     tests.push_back(new ZipAndCopyFsBackupJobConfigurationTest());
     tests.push_back(new RemoteJobsRunnerConfigurationTest());
+    tests.push_back(new WakeJobTest());
 }
 
 

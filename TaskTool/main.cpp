@@ -1,7 +1,7 @@
 #include "curldispatcherreplacer.h"
 #include "maintoolmodule.h"
 
-static const std::string PROGRAM_VERSION = "0.86";
+static const std::string PROGRAM_VERSION = "0.87";
 
 int main(int argc, char* argv[])
 {

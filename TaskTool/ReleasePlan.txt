@@ -62,8 +62,9 @@ Abandoned features :
 	[022] Remove Screensaver script dependency
 
 Fixed bugs :
-	18-09-2017 - [002] Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
-	16-10-2017 - [006] Occasionally a test in TaskFeature test will fail. Reproduce issue, check what it is and fix it!!
+   18/09/2017 - [002] Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
+	16/10/2017 - [006] Occasionally a test in TaskFeature test will fail. Reproduce issue, check what it is and fix it!!
+	26/10/2017 - [012] Local debug option of wake job is not working.
 
 Pending bugs :
 	[001] Git report parser crashes when trying to parse a report coming from git asking for ssh password.

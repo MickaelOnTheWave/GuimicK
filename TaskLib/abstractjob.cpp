@@ -62,15 +62,9 @@ std::string AbstractJob::GetAttachmentName()
     return GetName() + ".txt";
 }
 
-bool AbstractJob::InitializeFromClient(Client *client)
+bool AbstractJob::InitializeFromClient(Client *)
 {
     debugManager->SetJobName(GetName());
-    if (client)
-    {
-        string debugProperty = client->GetProperty("showDebugInformation");
-        debugManager->SetUse(DebugOutput::GetValue(debugProperty));
-    }
-
     return true;
 }
 

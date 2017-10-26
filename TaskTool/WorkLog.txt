@@ -1,3 +1,15 @@
+26/10/2017 (12.4-14.5)
+   Production run failed again. No email sent and desktop not waked up. Going for
+	wake test creation... Create first simple test. However, it is impossible for it to
+	run by now : wake job relies on a command that is not available on apt-get. So,
+	running job on Desktop always complains about not installed command...
+	Skipping the test and leaving a note/TODO to activate it once wakelan dependency
+	has been removed. Unfortunately, issue will have to be debugged "by hand" on synology.
+	Issue disappeared after putting more data to debug output. Checking if there is some
+	uninitialized mess that could have caused this... None found.
+	Considering problem resolved. Now creating test to (try to) catch newly found issue
+	with Wake job not considering its debug option. Fixed issue and created a test for it.
+
 23/10/2017 (1.7h)
 	Production run failed... Wake job failed. It seems to be a software issue as wake
 	job did not wait as expected. Trying to understand (and fix) the failure.

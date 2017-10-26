@@ -26,5 +26,6 @@
 #include "userconsolejobtest.h"
 #include "wakejobconfigurationtest.h"
 #include "zipandcopyfsbackupjobtest.h"
+#include "wakejobtest.h"
 
 #endif // TASKTESTSUITES_H

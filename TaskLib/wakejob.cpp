@@ -59,36 +59,36 @@ bool WakeJob::IsInitialized()
 
 JobStatus *WakeJob::Run()
 {
-    const string parameters = string("-m ") + macAddress + " -b " + broadcastIp;
-    ConsoleJob wakeCommand("wakelan", parameters);
-    wakeCommand.SetParentDebugManager(debugManager);
+   debugManager->AddDataLine<int>("maxRetries", maxRetries);
+   debugManager->AddDataLine<int>("timeout", timeout);
 
-    if (!wakeCommand.IsCommandAvailable())
-        return debugManager->CreateStatus(JobStatus::ERROR, "wakelan not installed");
+   const string parameters = string("-m ") + macAddress + " -b " + broadcastIp;
+   ConsoleJob wakeCommand("wakelan", parameters);
+   wakeCommand.SetParentDebugManager(debugManager);
 
-    debugManager->AddDataLine<int>("maxRetries", maxRetries);
-    debugManager->AddDataLine<int>("timeout", timeout);
+   if (!wakeCommand.IsCommandAvailable())
+     return debugManager->CreateStatus(JobStatus::ERROR, "wakelan not installed");
 
-    for (int i=0; i<maxRetries; ++i)
-    {
-        JobStatus* status = wakeCommand.Run();
-        if (status->GetCode() != JobStatus::OK)
-            return status;
-        else
-            delete status;
+   for (int i=0; i<maxRetries; ++i)
+   {
+     JobStatus* status = wakeCommand.Run();
+     if (status->GetCode() != JobStatus::OK)
+         return status;
+     else
+         delete status;
 
-        debugManager->AddDataLine<string>("Wake Output", wakeCommand.GetCommandOutput());
+     debugManager->AddDataLine<string>("Wake Output", wakeCommand.GetCommandOutput());
 
-        int secondsToWake = WaitForComputerToGoUp();
-        if (secondsToWake < timeout)
-        {
-            debugManager->AddDataLine<int>("Retry count", i);
-            debugManager->AddDataLine<int>("seconds counter", secondsToWake);
-            return debugManager->CreateStatus(JobStatus::OK, "");
-        }
-    }
+     int secondsToWake = WaitForComputerToGoUp();
+     if (secondsToWake < timeout)
+     {
+         debugManager->AddDataLine<int>("Retry count", i);
+         debugManager->AddDataLine<int>("seconds counter", secondsToWake);
+         return debugManager->CreateStatus(JobStatus::OK, "");
+     }
+   }
 
-    return debugManager->CreateStatus(JobStatus::ERROR, "Machine still not awake");
+   return debugManager->CreateStatus(JobStatus::ERROR, "Machine still not awake");
 }
 
 int WakeJob::GetTimeout() const
@@ -98,7 +98,8 @@ int WakeJob::GetTimeout() const
 
 void WakeJob::SetTimeout(const int value)
 {
-    timeout = value;
+   debugManager->AddDataLine<int>("Setting timeout", value);
+   timeout = value;
 }
 
 int WakeJob::GetMaxRetries() const
@@ -108,7 +109,8 @@ int WakeJob::GetMaxRetries() const
 
 void WakeJob::SetMaxRetries(const int value)
 {
-    maxRetries = value;
+   debugManager->AddDataLine<int>("Setting max retries", value);
+   maxRetries = value;
 }
 
 bool WakeJob::HasMandatoryParameters() const
