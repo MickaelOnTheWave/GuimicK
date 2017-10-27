@@ -1,4 +1,4 @@
-26/10/2017 (2.8h)
+26/10/2017 (3.2h)
    Production run failed again. No email sent and desktop not waked up. Going for
 	wake test creation... Create first simple test. However, it is impossible for it to
 	run by now : wake job relies on a command that is not available on apt-get. So,
@@ -13,9 +13,11 @@
 	Looked at solutions for future implementations : List view seems implementable using
 	item widgets. Big issue with UI design tool : it seems that compiling never updates UI.
 	As UI is very simple, removing full project and restarting from scratch.
+	Created new UI. Created (empty) model that will hold "real" code. Implemented open and
+	save UI methods.
 Next planned work:
    - Check production run
-	- Continue UI designing
+	- Continue UI designing - create listwidget code. Must have custom widgets.
 
 23/10/2017 (1.7h)
 	Production run failed... Wake job failed. It seems to be a software issue as wake

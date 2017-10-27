@@ -7,4 +7,4 @@ SUBDIRS += \
 	 ReportParsers \
     TaskTestTool \
     TaskTestLib \
-    TaskToolWidgetUi
+    ConfigurationEditingTool
