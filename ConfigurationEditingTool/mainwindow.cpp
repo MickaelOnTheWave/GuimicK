@@ -8,7 +8,7 @@
 #include <QMenu>
 
 #include "configurationcheckdialog.h"
-#include "wakelistwidget.h"
+#include "wakejobdelegate.h"
 
 using namespace std;
 
@@ -17,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
    ui(new Ui::MainWindow)
 {
    ui->setupUi(this);
+
+   jobListModel.setColumnCount(1);
+   ui->jobListView->setModel(&jobListModel);
 
    OpenStandardFile();
 }
@@ -58,15 +61,21 @@ void MainWindow::on_actionClose_triggered()
 
 void MainWindow::UpdateJobListWidget()
 {
-   ui->jobListWidget->clear();
-   ui->jobListWidget->addItems(model.GetJobList());
+   jobListModel.clear();
+
+   const QStringList jobList = model.GetJobList();
+   for (auto&& it : jobList)
+      jobListModel.appendRow(new QStandardItem(it));
 }
 
-#include <QLabel>
+//#include <QLabel>
 void MainWindow::InsertNewJob(const QString& name)
-{
-   const int currentIndex = ui->jobListWidget->currentRow();
+{   
+   const int currentIndex = ui->jobListView->currentIndex().row();
+   jobListModel.insertRow(currentIndex+1, new QStandardItem(name));
+   ui->jobListView->setItemDelegateForRow(currentIndex, new WakeJobDelegate());
 
+/*
    QListWidgetItem* item = new QListWidgetItem(name);
    ui->jobListWidget->insertItem(currentIndex+1, item);
 
@@ -75,37 +84,43 @@ void MainWindow::InsertNewJob(const QString& name)
 //   auto itemWidget = new QPushButton();
 
 
-   auto itemWidget = new QWidget();
-   auto layout = new QHBoxLayout();
-   layout->addWidget(new QLabel("Wake"));
-   layout->addWidget(new QLabel("blabla"));
-   itemWidget->setLayout(layout);
+   auto itemWidget = new QFrame();
+   //auto layout = new QHBoxLayout(itemWidget);
+   auto but = new QPushButton("Wake");
+   but->setParent(itemWidget);
+   //layout->addWidget(but);
+   //layout->addWidget(new QLabel("Wake"));
+   //layout->addWidget(new QLabel("blabla"));
+   //itemWidget->setLayout(layout);
 
-
-   ui->jobListWidget->setItemWidget(item, itemWidget);
+   ui->jobListWidget->setItemWidget(item, itemWidget);*/
 }
 
+void MainWindow::MoveItem(const int currentIndex, const int newIndex)
+{
+   QStandardItem* currentItem = jobListModel.takeItem(currentIndex);
+   QStandardItem* newItem = jobListModel.takeItem(newIndex);
+   jobListModel.setItem(currentIndex, newItem);
+   jobListModel.setItem(newIndex, currentItem);
+   ui->jobListView->setCurrentIndex(currentItem->index());
+}
 
 void MainWindow::on_upButton_clicked()
 {
-   const int currentIndex = ui->jobListWidget->currentRow();
+   const int currentIndex = ui->jobListView->currentIndex().row();
    const int newIndex = (currentIndex > 0) ? currentIndex-1 : 0;
 
-   QListWidgetItem* item = ui->jobListWidget->takeItem(currentIndex);
-   ui->jobListWidget->insertItem(newIndex, item);
-   ui->jobListWidget->setCurrentRow(newIndex);
+   MoveItem(currentIndex, newIndex);
 }
 
 void MainWindow::on_downButton_clicked()
 {
-   const int currentIndex = ui->jobListWidget->currentRow();
-   const int newIndex = (currentIndex < ui->jobListWidget->count()-1)
+   const int currentIndex = ui->jobListView->currentIndex().row();
+   const int newIndex = (currentIndex < jobListModel.rowCount())
                         ? currentIndex+1
                         : currentIndex;
 
-   QListWidgetItem* item = ui->jobListWidget->takeItem(currentIndex);
-   ui->jobListWidget->insertItem(newIndex, item);
-   ui->jobListWidget->setCurrentRow(newIndex);
+   MoveItem(currentIndex, newIndex);
 }
 
 void MainWindow::on_addButton_clicked()
@@ -118,9 +133,8 @@ void MainWindow::on_addButton_clicked()
 
 void MainWindow::on_deleteButton_clicked()
 {
-   const int currentIndex = ui->jobListWidget->currentRow();
-   QListWidgetItem* item = ui->jobListWidget->takeItem(currentIndex);
-   delete item;
+   const int currentIndex = ui->jobListView->currentIndex().row();
+   jobListModel.removeRow(currentIndex);
 }
 
 void MainWindow::OpenStandardFile()

@@ -30,13 +30,15 @@ SOURCES += \
         mainwindow.cpp \
     model.cpp \
     configurationcheckdialog.cpp \
-    wakelistwidget.cpp
+    wakelistwidget.cpp \
+    wakejobdelegate.cpp
 
 HEADERS += \
         mainwindow.h \
     model.h \
     configurationcheckdialog.h \
-    wakelistwidget.h
+    wakelistwidget.h \
+    wakejobdelegate.h
 
 FORMS += \
         mainwindow.ui \

@@ -1,11 +1,33 @@
-27/10/2017 (12.2)
+27/10/2017 (1.7h)
+   Back to listWidget. Did some more testing : what seems to break custom widgets is layout.
+	However it is impossible to think about seriously creating something without them.
+	Switching to ListView with a model for testing. Finished refactoring code - now all
+	add/delete/move operations are working as expected.
+	Now going for item delegates.. Implemented first delegate that returns custom widget as editor.
+	It did not work as expected. Paint method probably needs overloading.
+Next planned work:
+   - Finish Wake delegate example and make it work as expected
+	- Refactor code to support delegates for each job type
+	- Create other job widgets/delegates as for Wake job
+
+27/10/2017 (2.4h)
    Production ran as expected. Updating release plan...
 	Changing priorities : going for integrating real code into model. Updated UI tool linking
 	it with tasklib. Added configuration into model : now loading effectively loads
 	(simple) data into listwidget. Next step : saving configuration.
 	Created basic save. It only saves job names, without parameters.
 	Now going for listwidget. Created Move up/down and delete controls, they all work as
-	expected.
+	expected. Improving UI layout. Now they are using proper layouts. Creating some
+	"Add job" commands. Now going for having proper widgets inside job list widget.
+	Created custom widget for Wake job. Tried to insert it into list widget : it is not
+	showing up as expected. Trying several tests to see where seems to be the issue.
+	It seems that listwidget will not accept a plain QWidget (or maybe a composite one?).
+Next planned work :
+   - Do some more tests to see if issue seems to be with QWidget or listWidget not accepting
+	too complex controls
+	- Resolve the issue and have custom widgets displayed, either in listWidget or in listView
+	- Create Add/Edit form to deal with real job data
+	- Create custom widgets for other jobs
 
 26/10/2017 (3.2h)
    Production run failed again. No email sent and desktop not waked up. Going for
