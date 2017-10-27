@@ -21,6 +21,8 @@ public:
    bool LoadFromConfigurationObject(ConfigurationObject* confObject,
                                     std::vector<std::string> &errorMessages);
 
+   bool SaveToFile(const std::string& filename);
+
    void GetJobList(std::list<AbstractJob*>& _jobList) const;
 
 

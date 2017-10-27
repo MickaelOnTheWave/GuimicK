@@ -26,7 +26,15 @@ private slots:
 
    void on_actionClose_triggered();
 
+   void on_upButton_clicked();
+
+   void on_downButton_clicked();
+
+   void on_deleteButton_clicked();
+
 private:
+   void UpdateJobListWidget();
+
    Ui::MainWindow *ui;
    Model model;
 };

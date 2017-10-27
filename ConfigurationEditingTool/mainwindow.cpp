@@ -37,6 +37,8 @@ void MainWindow::on_actionOpen_triggered()
       vector<string> errors;
       bool isUsable = model.LoadConfiguration(filename.toStdString(), errors);
       ConfigurationCheckDialog::Show(!isUsable, errors);
+      if (isUsable)
+         UpdateJobListWidget();
    }
 }
 
@@ -52,6 +54,41 @@ void MainWindow::on_actionSave_triggered()
 
 void MainWindow::on_actionClose_triggered()
 {
-    close();
+   close();
 }
 
+void MainWindow::UpdateJobListWidget()
+{
+   ui->jobListWidget->clear();
+   ui->jobListWidget->addItems(model.GetJobList());
+}
+
+
+void MainWindow::on_upButton_clicked()
+{
+   const int currentIndex = ui->jobListWidget->currentRow();
+   const int newIndex = (currentIndex > 0) ? currentIndex-1 : 0;
+
+   QListWidgetItem* item = ui->jobListWidget->takeItem(currentIndex);
+   ui->jobListWidget->insertItem(newIndex, item);
+   ui->jobListWidget->setCurrentRow(newIndex);
+}
+
+void MainWindow::on_downButton_clicked()
+{
+   const int currentIndex = ui->jobListWidget->currentRow();
+   const int newIndex = (currentIndex < ui->jobListWidget->count()-1)
+                        ? currentIndex+1
+                        : currentIndex;
+
+   QListWidgetItem* item = ui->jobListWidget->takeItem(currentIndex);
+   ui->jobListWidget->insertItem(newIndex, item);
+   ui->jobListWidget->setCurrentRow(newIndex);
+}
+
+void MainWindow::on_deleteButton_clicked()
+{
+   const int currentIndex = ui->jobListWidget->currentRow();
+   QListWidgetItem* item = ui->jobListWidget->takeItem(currentIndex);
+   delete item;
+}

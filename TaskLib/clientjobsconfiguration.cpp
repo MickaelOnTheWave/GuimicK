@@ -1,5 +1,7 @@
 #include "clientjobsconfiguration.h"
 
+#include <fstream>
+
 using namespace std;
 
 static const string JobListObjectName = "JobList";
@@ -24,6 +26,26 @@ bool ClientJobsConfiguration::LoadFromConfigurationObject(ConfigurationObject* c
 {
    FillJobList(confObject, errorMessages);
    return IsConfigurationConsistent(errorMessages);
+}
+
+bool ClientJobsConfiguration::SaveToFile(const string& filename)
+{
+   ofstream filestream(filename.c_str());
+   if (!filestream.is_open())
+      return false;
+
+   filestream << "JobList" << endl;
+   filestream << "{" << endl;
+
+   list<AbstractJob*>::const_iterator it = jobList.begin();
+   for (; it != jobList.end(); ++it)
+   {
+      filestream << '\t' << (*it)->GetName() << "();" << endl;
+   }
+
+   filestream << "}" << endl;
+   filestream.close();
+   return true;
 }
 
 void ClientJobsConfiguration::GetJobList(std::list<AbstractJob*>& _jobList) const
