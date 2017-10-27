@@ -3,9 +3,12 @@
 
 #include <string>
 #include <vector>
+
 #include <QFileDialog>
+#include <QMenu>
 
 #include "configurationcheckdialog.h"
+#include "wakelistwidget.h"
 
 using namespace std;
 
@@ -14,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
    ui(new Ui::MainWindow)
 {
    ui->setupUi(this);
+
+   OpenStandardFile();
 }
 
 MainWindow::~MainWindow()
@@ -33,13 +38,7 @@ void MainWindow::on_actionOpen_triggered()
                          "/home", "Configuration files (*)");
 
    if (filename != "")
-   {
-      vector<string> errors;
-      bool isUsable = model.LoadConfiguration(filename.toStdString(), errors);
-      ConfigurationCheckDialog::Show(!isUsable, errors);
-      if (isUsable)
-         UpdateJobListWidget();
-   }
+      OpenFile(filename, true);
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -61,6 +60,29 @@ void MainWindow::UpdateJobListWidget()
 {
    ui->jobListWidget->clear();
    ui->jobListWidget->addItems(model.GetJobList());
+}
+
+#include <QLabel>
+void MainWindow::InsertNewJob(const QString& name)
+{
+   const int currentIndex = ui->jobListWidget->currentRow();
+
+   QListWidgetItem* item = new QListWidgetItem(name);
+   ui->jobListWidget->insertItem(currentIndex+1, item);
+
+//   auto itemWidget = new WakeListWidget();
+//   itemWidget->Initialize(name, 3, 30);
+//   auto itemWidget = new QPushButton();
+
+
+   auto itemWidget = new QWidget();
+   auto layout = new QHBoxLayout();
+   layout->addWidget(new QLabel("Wake"));
+   layout->addWidget(new QLabel("blabla"));
+   itemWidget->setLayout(layout);
+
+
+   ui->jobListWidget->setItemWidget(item, itemWidget);
 }
 
 
@@ -86,9 +108,57 @@ void MainWindow::on_downButton_clicked()
    ui->jobListWidget->setCurrentRow(newIndex);
 }
 
+void MainWindow::on_addButton_clicked()
+{
+/*   QMenu addMenu(this);
+   addMenu.addAction("Wake");
+   addMenu.addAction("Shutdown");
+   addMenu.popup(QPoint(10,10));*/
+}
+
 void MainWindow::on_deleteButton_clicked()
 {
    const int currentIndex = ui->jobListWidget->currentRow();
    QListWidgetItem* item = ui->jobListWidget->takeItem(currentIndex);
    delete item;
+}
+
+void MainWindow::OpenStandardFile()
+{
+   const QString standardFile = QDir::homePath() + "/.taskmanager";
+   QFileInfo checkFile(standardFile);
+   if (checkFile.exists() && checkFile.isFile())
+      OpenFile(standardFile, false);
+}
+
+void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
+{
+   vector<string> errors;
+   const bool isUsable = model.LoadConfiguration(filename.toStdString(), errors);
+   const bool isStatusFullOk = (isUsable && errors.empty());
+
+   if (showStatusIfOk || !isStatusFullOk)
+      ConfigurationCheckDialog::Show(!isUsable, errors);
+   if (isUsable)
+      UpdateJobListWidget();
+}
+
+void MainWindow::on_actionWake_triggered()
+{
+   InsertNewJob("Wake");
+}
+
+void MainWindow::on_actionShutdown_triggered()
+{
+   InsertNewJob("Shutdown");
+}
+
+void MainWindow::on_actionBackup_triggered()
+{
+   InsertNewJob("Backup");
+}
+
+void MainWindow::on_actionCustom_command_triggered()
+{
+   InsertNewJob("Custom command");
 }

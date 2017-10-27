@@ -30,10 +30,25 @@ private slots:
 
    void on_downButton_clicked();
 
+   void on_addButton_clicked();
+
    void on_deleteButton_clicked();
 
+   void on_actionWake_triggered();
+
+   void on_actionShutdown_triggered();
+
+   void on_actionBackup_triggered();
+
+   void on_actionCustom_command_triggered();
+
 private:
+   void OpenStandardFile();
+   void OpenFile(const QString& filename,
+                 const bool showStatusIfOk);
    void UpdateJobListWidget();
+
+   void InsertNewJob(const QString& name);
 
    Ui::MainWindow *ui;
    Model model;

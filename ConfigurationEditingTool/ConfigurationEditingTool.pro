@@ -29,16 +29,19 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     model.cpp \
-    configurationcheckdialog.cpp
+    configurationcheckdialog.cpp \
+    wakelistwidget.cpp
 
 HEADERS += \
         mainwindow.h \
     model.h \
-    configurationcheckdialog.h
+    configurationcheckdialog.h \
+    wakelistwidget.h
 
 FORMS += \
         mainwindow.ui \
-    configurationcheckdialog.ui
+    configurationcheckdialog.ui \
+    wakelistwidget.ui
 
 contains( CONFIG, synology ) {
    BUILD_TYPE = Synology
