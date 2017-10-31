@@ -52,6 +52,7 @@ private:
    void InsertNewJob(const QString& name);
 
    void MoveItem(const int currentIndex, const int newIndex);
+   void MoveDelegates(const int currentIndex, const int newIndex);
 
    Ui::MainWindow *ui;
    Model model;

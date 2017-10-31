@@ -68,32 +68,11 @@ void MainWindow::UpdateJobListWidget()
       jobListModel.appendRow(new QStandardItem(it));
 }
 
-//#include <QLabel>
 void MainWindow::InsertNewJob(const QString& name)
 {   
    const int currentIndex = ui->jobListView->currentIndex().row();
    jobListModel.insertRow(currentIndex+1, new QStandardItem(name));
-   ui->jobListView->setItemDelegateForRow(currentIndex, new WakeJobDelegate());
-
-/*
-   QListWidgetItem* item = new QListWidgetItem(name);
-   ui->jobListWidget->insertItem(currentIndex+1, item);
-
-//   auto itemWidget = new WakeListWidget();
-//   itemWidget->Initialize(name, 3, 30);
-//   auto itemWidget = new QPushButton();
-
-
-   auto itemWidget = new QFrame();
-   //auto layout = new QHBoxLayout(itemWidget);
-   auto but = new QPushButton("Wake");
-   but->setParent(itemWidget);
-   //layout->addWidget(but);
-   //layout->addWidget(new QLabel("Wake"));
-   //layout->addWidget(new QLabel("blabla"));
-   //itemWidget->setLayout(layout);
-
-   ui->jobListWidget->setItemWidget(item, itemWidget);*/
+   ui->jobListView->setItemDelegateForRow(currentIndex+1, new WakeJobDelegate());
 }
 
 void MainWindow::MoveItem(const int currentIndex, const int newIndex)
@@ -102,7 +81,18 @@ void MainWindow::MoveItem(const int currentIndex, const int newIndex)
    QStandardItem* newItem = jobListModel.takeItem(newIndex);
    jobListModel.setItem(currentIndex, newItem);
    jobListModel.setItem(newIndex, currentItem);
+
+   MoveDelegates(currentIndex, newIndex);
+
    ui->jobListView->setCurrentIndex(currentItem->index());
+}
+
+void MainWindow::MoveDelegates(const int currentIndex, const int newIndex)
+{
+   QAbstractItemDelegate* currentDelegate = ui->jobListView->itemDelegateForRow(currentIndex);
+   QAbstractItemDelegate* newDelegate = ui->jobListView->itemDelegateForRow(newIndex);
+   ui->jobListView->setItemDelegateForRow(currentIndex, newDelegate);
+   ui->jobListView->setItemDelegateForRow(newIndex, currentDelegate);
 }
 
 void MainWindow::on_upButton_clicked()
