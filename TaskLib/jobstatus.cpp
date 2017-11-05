@@ -6,9 +6,11 @@ using namespace std;
 
 
 const int JobStatus::NOT_EXECUTED		= 0;
-const int JobStatus::OK                 = 1;
-const int JobStatus::OK_WITH_WARNINGS   = 2;
-const int JobStatus::ERROR				= 3;
+const int JobStatus::OK                = 1;
+const int JobStatus::OK_WITH_WARNINGS  = 2;
+const int JobStatus::ERROR             = 3;
+
+std::map<int, std::string> JobStatus::codeMap;
 
 JobStatus::JobStatus()
 	: code(NOT_EXECUTED),
@@ -50,33 +52,28 @@ void JobStatus::SetCode(int _code)
     code = _code;
 }
 
-// TODO : use a static map instead of these if/else chains
 string JobStatus::GetCodeDescription(int _code)
 {
-    if (_code == JobStatus::NOT_EXECUTED)
-        return "Not executed";
-    else if (_code == JobStatus::OK)
-        return "Ok";
-    else if (_code == JobStatus::ERROR)
-        return "Error";
-    if (_code == JobStatus::OK_WITH_WARNINGS)
-        return "Executed with minor errors";
-    else
-        return "Unknown status code";
+   if (codeMap.empty())
+      PopulateCodeMap();
+
+   map<int, string>::const_iterator it = codeMap.find(_code);
+   return (it != codeMap.end()) ? it->second : string("Unknown status code");
 }
 
 int JobStatus::GetCodeFromDescription(const string &_description)
 {
-    if (_description == "Not executed")
-        return JobStatus::NOT_EXECUTED;
-    else if (_description == "Ok")
-        return JobStatus::OK;
-    else if (_description == "Error")
-        return JobStatus::ERROR;
-    else if (_description == "Executed with minor errors")
-        return JobStatus::OK_WITH_WARNINGS;
-    else
-        return JobStatus::NOT_EXECUTED;
+   if (codeMap.empty())
+      PopulateCodeMap();
+
+   map<int, string>::const_iterator it = codeMap.begin();
+   for (; it != codeMap.end(); ++it)
+   {
+      if (it->second == _description)
+         return it->first;
+   }
+
+   return JobStatus::NOT_EXECUTED;
 }
 
 string JobStatus::GetCodeDescription() const
@@ -179,5 +176,13 @@ void JobStatus::GetFileBuffers(FileBufferList &_filebuffers)
 {
     FileBufferList::const_iterator it=filebuffers.begin();
     for (; it!=filebuffers.end(); ++it)
-        _filebuffers.push_back(*it);
+       _filebuffers.push_back(*it);
+}
+
+void JobStatus::PopulateCodeMap()
+{
+   codeMap[JobStatus::NOT_EXECUTED] = "Not executed";
+   codeMap[JobStatus::OK] = "Ok";
+   codeMap[JobStatus::OK_WITH_WARNINGS] = "Executed with minor errors";
+   codeMap[JobStatus::ERROR] = "Error";
 }

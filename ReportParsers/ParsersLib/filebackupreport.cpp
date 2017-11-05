@@ -91,6 +91,21 @@ void FileBackupReport::AddWithPrefix(const FileBackupReport &otherReport, const 
     CopyPrefixed(removed, otherReport.removed, prefix);
 }
 
+void FileBackupReport::GetAddedFiles(std::vector<string>& files)
+{
+   files = added;
+}
+
+void FileBackupReport::GetModifiedFiles(std::vector<string>& files)
+{
+   files = modified;
+}
+
+void FileBackupReport::GetRemovedFiles(std::vector<string>& files)
+{
+   files = removed;
+}
+
 string FileBackupReport::FileListDescription(const std::vector<string> &fileList,
                                              const string &operation) const
 {

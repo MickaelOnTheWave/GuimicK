@@ -1,3 +1,19 @@
+05/11/2017 (18)
+   Noticed small bug in production: Rsnapshot job attachments always have a wrong name.
+	Fixing it... No issue was found in code, and attempt to create a feature test showed
+	that behaviour was OK. Trying to update Production version to see if issue disappears...
+	Did two TODOs.
+
+31/10/2017 (1.1h)
+   Back to work. Now painting is working, and job name is being set. Now working on fixing the
+	wrong row issue (delegate is applied to previously selected row). Fixed row issue. Now
+	going to correctly painting selection. Selection painting resolved :-)
+	Created edition dialog for Wake job. Now it needs wiring, and for this some refactoring will
+	be needed : dialogs must get to the abstract jobs directly (no need for intermediate layers,
+	UI will never be used for other types. Strong coupling is not an issue at this level.)
+	Looking at models... it seems that a custom one needs to be implemented to hold AbstractJobs.
+
+
 27/10/2017 (1.7h)
    Back to listWidget. Did some more testing : what seems to break custom widgets is layout.
 	However it is impossible to think about seriously creating something without them.

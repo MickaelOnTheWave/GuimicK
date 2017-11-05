@@ -2,6 +2,7 @@
 #define JOBSTATUS_H
 
 #include <ctime>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -23,9 +24,9 @@ public:
 	int GetCode() const;
 	void SetCode(int _code);
 
-    static std::string GetCodeDescription(int _code);
-    static int GetCodeFromDescription(const std::string& _description);
-    std::string GetCodeDescription() const;
+   static std::string GetCodeDescription(int _code);
+   static int GetCodeFromDescription(const std::string& _description);
+   std::string GetCodeDescription() const;
 
 	std::time_t GetDuration() const;
 	void SetDuration(std::time_t duration);
@@ -64,6 +65,10 @@ protected:
 
    std::vector<std::string> externalFilenames;
    std::vector<std::pair<std::string, std::string> > filebuffers;
+
+private:
+   static void PopulateCodeMap();
+   static std::map<int, std::string> codeMap;
 };
 
 #endif // JOBSTATUS_H

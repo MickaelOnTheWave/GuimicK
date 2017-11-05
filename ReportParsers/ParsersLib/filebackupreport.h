@@ -25,8 +25,11 @@ public:
     void Add(const FileBackupReport& otherReport);
     void AddWithPrefix(const FileBackupReport& otherReport, const std::string& prefix);
 
-// TODO : make that protected
-public:
+    void GetAddedFiles(std::vector<std::string>& files);
+    void GetModifiedFiles(std::vector<std::string>& files);
+    void GetRemovedFiles(std::vector<std::string>& files);
+
+protected:
     std::vector<std::string> added;
     std::vector<std::string> modified;
     std::vector<std::string> removed;

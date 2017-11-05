@@ -55,9 +55,16 @@ void FileBackupParserAbstractTest::CheckReportDataFiles(const QStringList &added
                                                         const QStringList &modified,
                                                         const QStringList &removed)
 {
-    CheckListsAreEqual(report->added, added);
-    CheckListsAreEqual(report->modified, modified);
-    CheckListsAreEqual(report->removed, removed);
+   vector<string> listToCheck;
+
+   report->GetAddedFiles(listToCheck);
+   CheckListsAreEqual(listToCheck, added);
+
+   report->GetModifiedFiles(listToCheck);
+   CheckListsAreEqual(listToCheck, modified);
+
+   report->GetRemovedFiles(listToCheck);
+   CheckListsAreEqual(listToCheck, removed);
 }
 
 void FileBackupParserAbstractTest::CheckListsAreEqual(const vector<string> &actual,
