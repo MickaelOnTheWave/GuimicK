@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QStandardItemModel>
 
+#include "jobdatamodel.h"
 #include "model.h"
 
 namespace Ui {
@@ -43,20 +43,29 @@ private slots:
 
    void on_actionCustom_command_triggered();
 
+   void on_jobListView_doubleClicked(const QModelIndex &index);
+
 private:
    void OpenStandardFile();
    void OpenFile(const QString& filename,
                  const bool showStatusIfOk);
    void UpdateJobListWidget();
 
-   void InsertNewJob(const QString& name);
+   void InsertNewJob(AbstractJob* job);
 
    void MoveItem(const int currentIndex, const int newIndex);
    void MoveDelegates(const int currentIndex, const int newIndex);
 
+   void ForceJobListViewUpdate();
+
+   bool IsOutOfBounds(const int index) const;
+
+   void UpdateRowDelegatesFromTop(const int startingIndex);
+   void UpdateRowDelegatesFromBottom(const int startingIndex);
+
    Ui::MainWindow *ui;
    Model model;
-   QStandardItemModel jobListModel;
+   JobDataModel jobListModel;
 };
 
 #endif // MAINWINDOW_H

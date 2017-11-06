@@ -1,8 +1,17 @@
-05/11/2017 (18)
+05/11/2017 (5h)
    Noticed small bug in production: Rsnapshot job attachments always have a wrong name.
 	Fixing it... No issue was found in code, and attempt to create a feature test showed
 	that behaviour was OK. Trying to update Production version to see if issue disappears...
-	Did two TODOs.
+	Did two TODOs. Now back to UI...
+	Created custom model. Updated UI code to deal with it (and jobs directly) instead of
+	strings. Now trying to make it work. The issue was the the view that was not updated.
+	Created a hack to update it - dummy resize. Now fixing data move features. Move up/down OK,
+	checking delegates. Working too. Finished fixing issues with delegates not following data.
+Next planned work:
+   - Refactor Wake dialog to use a job instead of dummy data
+	- Make model return correct dialog type per job
+	- If necessary, refactor delegate/model code to use standard model API (and no need for
+	  ugly delegate moving)
 
 31/10/2017 (1.1h)
    Back to work. Now painting is working, and job name is being set. Now working on fixing the
@@ -12,7 +21,6 @@
 	be needed : dialogs must get to the abstract jobs directly (no need for intermediate layers,
 	UI will never be used for other types. Strong coupling is not an issue at this level.)
 	Looking at models... it seems that a custom one needs to be implemented to hold AbstractJobs.
-
 
 27/10/2017 (1.7h)
    Back to listWidget. Did some more testing : what seems to break custom widgets is layout.

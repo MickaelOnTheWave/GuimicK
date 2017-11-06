@@ -18,13 +18,9 @@ void Model::SaveConfiguration(const std::string& file)
    configuration.SaveToFile(file);
 }
 
-QStringList Model::GetJobList()
+list<AbstractJob*> Model::GetJobList()
 {
    list<AbstractJob*> rawJobList;
    configuration.GetJobList(rawJobList);
-
-   QStringList jobListInformation;
-   for (auto it : rawJobList)
-      jobListInformation.push_back(it->GetName().c_str());
-   return jobListInformation;
+   return rawJobList;
 }

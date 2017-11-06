@@ -20,15 +20,18 @@ void WakeJobDelegate::paint(QPainter* painter, const QStyleOptionViewItem& optio
    widget->Initialize(name, 3, 10);
 
    painter->save();
-   widget->resize( option.rect.size() );
    painter->translate(option.rect.topLeft());
+
+   if (option.state & QStyle::State_Selected)
+      painter->fillRect(widget->rect(), option.palette.highlight());
    widget->render(painter, QPoint(), QRegion(), QWidget::DrawChildren );
+
    painter->restore();
 }
 
 QSize WakeJobDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-   return widget->sizeHint();
+   return widget->size();
 }
 
 QWidget* WakeJobDelegate::createEditor(

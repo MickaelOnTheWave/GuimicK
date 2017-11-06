@@ -31,19 +31,24 @@ SOURCES += \
     model.cpp \
     configurationcheckdialog.cpp \
     wakelistwidget.cpp \
-    wakejobdelegate.cpp
+    wakejobdelegate.cpp \
+    editwakejobdialog.cpp \
+    jobdatamodel.cpp
 
 HEADERS += \
         mainwindow.h \
     model.h \
     configurationcheckdialog.h \
     wakelistwidget.h \
-    wakejobdelegate.h
+    wakejobdelegate.h \
+    editwakejobdialog.h \
+    jobdatamodel.h
 
 FORMS += \
         mainwindow.ui \
     configurationcheckdialog.ui \
-    wakelistwidget.ui
+    wakelistwidget.ui \
+    editwakejobdialog.ui
 
 contains( CONFIG, synology ) {
    BUILD_TYPE = Synology

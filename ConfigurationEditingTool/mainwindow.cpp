@@ -9,6 +9,12 @@
 
 #include "configurationcheckdialog.h"
 #include "wakejobdelegate.h"
+#include "editwakejobdialog.h"
+
+#include "linuxshutdownjob.h"
+#include "rawcopyfsbackupjob.h"
+#include "userconsolejob.h"
+#include "wakejob.h"
 
 using namespace std;
 
@@ -17,9 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
    ui(new Ui::MainWindow)
 {
    ui->setupUi(this);
-
-   jobListModel.setColumnCount(1);
    ui->jobListView->setModel(&jobListModel);
+   ui->jobListView->setResizeMode(QListView::Adjust);
 
    OpenStandardFile();
 }
@@ -61,30 +66,30 @@ void MainWindow::on_actionClose_triggered()
 
 void MainWindow::UpdateJobListWidget()
 {
-   jobListModel.clear();
-
-   const QStringList jobList = model.GetJobList();
-   for (auto&& it : jobList)
-      jobListModel.appendRow(new QStandardItem(it));
+   jobListModel.Clear();
+   jobListModel.AddJobs(model.GetJobList());
 }
 
-void MainWindow::InsertNewJob(const QString& name)
+void MainWindow::InsertNewJob(AbstractJob* job)
 {   
    const int currentIndex = ui->jobListView->currentIndex().row();
-   jobListModel.insertRow(currentIndex+1, new QStandardItem(name));
+   UpdateRowDelegatesFromBottom(currentIndex+1);
+   jobListModel.Insert(currentIndex+1, job);
    ui->jobListView->setItemDelegateForRow(currentIndex+1, new WakeJobDelegate());
+   ui->jobListView->setCurrentIndex(jobListModel.index(currentIndex+1));
+
+   ForceJobListViewUpdate();
 }
 
 void MainWindow::MoveItem(const int currentIndex, const int newIndex)
 {
-   QStandardItem* currentItem = jobListModel.takeItem(currentIndex);
-   QStandardItem* newItem = jobListModel.takeItem(newIndex);
-   jobListModel.setItem(currentIndex, newItem);
-   jobListModel.setItem(newIndex, currentItem);
+   if (IsOutOfBounds(currentIndex) || IsOutOfBounds(newIndex))
+      return;
 
+   jobListModel.MoveJob(currentIndex, newIndex);
    MoveDelegates(currentIndex, newIndex);
-
-   ui->jobListView->setCurrentIndex(currentItem->index());
+   ui->jobListView->setCurrentIndex(jobListModel.index(newIndex));
+   ForceJobListViewUpdate();
 }
 
 void MainWindow::MoveDelegates(const int currentIndex, const int newIndex)
@@ -93,6 +98,45 @@ void MainWindow::MoveDelegates(const int currentIndex, const int newIndex)
    QAbstractItemDelegate* newDelegate = ui->jobListView->itemDelegateForRow(newIndex);
    ui->jobListView->setItemDelegateForRow(currentIndex, newDelegate);
    ui->jobListView->setItemDelegateForRow(newIndex, currentDelegate);
+}
+
+void MainWindow::ForceJobListViewUpdate()
+{
+   QSize size = ui->jobListView->viewport()->size();
+   size.setHeight(size.height()+1);
+   ui->jobListView->viewport()->resize(size);
+
+   size.setHeight(size.height()-1);
+   ui->jobListView->viewport()->resize(size);
+}
+
+bool MainWindow::IsOutOfBounds(const int index) const
+{
+   return (index < 0 || index >= jobListModel.rowCount());
+}
+
+void MainWindow::UpdateRowDelegatesFromTop(const int startingIndex)
+{
+   for (int i=startingIndex; i<jobListModel.rowCount(); ++i)
+   {
+      if (IsOutOfBounds(i))
+         continue;
+
+      QAbstractItemDelegate* newDelegate = ui->jobListView->itemDelegateForRow(i+1);
+      ui->jobListView->setItemDelegateForRow(i, newDelegate);
+   }
+}
+
+void MainWindow::UpdateRowDelegatesFromBottom(const int startingIndex)
+{
+   for (int i=jobListModel.rowCount()-1; i>=startingIndex; --i)
+   {
+      if (IsOutOfBounds(i))
+         continue;
+
+      QAbstractItemDelegate* newDelegate = ui->jobListView->itemDelegateForRow(i-1);
+      ui->jobListView->setItemDelegateForRow(i, newDelegate);
+   }
 }
 
 void MainWindow::on_upButton_clicked()
@@ -124,7 +168,9 @@ void MainWindow::on_addButton_clicked()
 void MainWindow::on_deleteButton_clicked()
 {
    const int currentIndex = ui->jobListView->currentIndex().row();
+   UpdateRowDelegatesFromTop(currentIndex);
    jobListModel.removeRow(currentIndex);
+   ForceJobListViewUpdate();
 }
 
 void MainWindow::OpenStandardFile()
@@ -149,20 +195,26 @@ void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
 
 void MainWindow::on_actionWake_triggered()
 {
-   InsertNewJob("Wake");
+   InsertNewJob(new WakeJob());
 }
 
 void MainWindow::on_actionShutdown_triggered()
 {
-   InsertNewJob("Shutdown");
+   InsertNewJob(new LinuxShutdownJob());
 }
 
 void MainWindow::on_actionBackup_triggered()
 {
-   InsertNewJob("Backup");
+   InsertNewJob(new RawCopyFsBackupJob());
 }
 
 void MainWindow::on_actionCustom_command_triggered()
 {
-   InsertNewJob("Custom command");
+   InsertNewJob(new UserConsoleJob());
+}
+
+void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
+{
+   EditWakeJobDialog dialog;
+   dialog.exec();
 }

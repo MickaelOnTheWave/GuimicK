@@ -16,7 +16,7 @@ public:
                           std::vector<std::string>& errors);
    void SaveConfiguration(const std::string& file);
 
-   QStringList GetJobList();
+   std::list<AbstractJob*> GetJobList();
 
 private:
    ClientJobsConfiguration configuration;

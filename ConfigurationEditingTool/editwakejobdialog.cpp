@@ -12,3 +12,13 @@ EditWakeJobDialog::~EditWakeJobDialog()
 {
    delete ui;
 }
+
+void EditWakeJobDialog::on_okButton_clicked()
+{
+   accept();
+}
+
+void EditWakeJobDialog::on_cancelButton_clicked()
+{
+   reject();
+}
