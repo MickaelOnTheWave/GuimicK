@@ -98,6 +98,7 @@ JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
     RsnapshotRawBackupJob* rawBackupJob = new RsnapshotRawBackupJob(repository, configuration);
     rawBackupJob->SetParentDebugManager(debugManager);
     rawBackupJob->SetWaitBeforeRun(waitBeforeRun);
+    rawBackupJob->SetName(GetName());
 
     JobStatus* status = rawBackupJob->Run();
 

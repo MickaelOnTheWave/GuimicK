@@ -1,3 +1,7 @@
+06/11/2017 (20.6)
+   Bug with Rsnapshot attachments still present. Investigating... Found probable cause
+	for Rsnapshot bug. Fixing and committing, next production run will tell...
+
 05/11/2017 (5h)
    Noticed small bug in production: Rsnapshot job attachments always have a wrong name.
 	Fixing it... No issue was found in code, and attempt to create a feature test showed
