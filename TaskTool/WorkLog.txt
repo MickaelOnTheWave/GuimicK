@@ -1,6 +1,22 @@
-06/11/2017 (20.6)
+06/11/2017 (2.3h)
    Bug with Rsnapshot attachments still present. Investigating... Found probable cause
 	for Rsnapshot bug. Fixing and committing, next production run will tell...
+	Back to UI. Refactored Wake dialog, created abstract job dialog that is derived in
+	child dialogs for each job type. Created Shutdown job dialog and part of User console
+	job dialog too.
+	Tried to update delegate to handle all job data but there is a big problem : for that,
+	all job data needs to fit into standard Qt model structure. Which means registering
+	job types in QVariant. Trying to do that didn't work so far. Left this issue for later,
+	right now focused on creating more edit dialogs. Also created (basic) factory for
+	jobs/edit dialogs creation.
+	Found command to take webcam photo : streamer -f jpeg -o file.jpeg.
+Next planned work :
+   - Finish User Console job edit dialog
+	- Create dialog for Ssh console job
+	- Create dialog for backup jobs
+	- Create dialog for Freespace check job
+	- Find a way to use all model data into delegate. Resolve registering issue with QVariant?
+	- Add a webcam photo job in production. Probably a ConsoleJob.
 
 05/11/2017 (5h)
    Noticed small bug in production: Rsnapshot job attachments always have a wrong name.

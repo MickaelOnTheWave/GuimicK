@@ -74,6 +74,16 @@ JobStatus *LinuxShutdownJob::Run()
     return debugManager->UpdateStatus(status);
 }
 
+int LinuxShutdownJob::GetTimeout() const
+{
+   return jobTimeoutInSeconds;
+}
+
+void LinuxShutdownJob::SetTimeout(const int value)
+{
+   jobTimeoutInSeconds = value;
+}
+
 int LinuxShutdownJob::WaitForComputerToGoDown() const
 {
     int secondsCounter = 0;

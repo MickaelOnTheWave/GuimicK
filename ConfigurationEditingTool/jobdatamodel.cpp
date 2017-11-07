@@ -71,3 +71,8 @@ bool JobDataModel::removeRows(int row, int count, const QModelIndex& parent)
    return true;
 }
 
+AbstractJob* JobDataModel::GetJob(const QModelIndex& index)
+{
+   return jobs[index.row()];
+}
+

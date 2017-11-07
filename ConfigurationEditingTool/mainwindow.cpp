@@ -9,6 +9,8 @@
 
 #include "configurationcheckdialog.h"
 #include "wakejobdelegate.h"
+#include "editconsolejobdialog.h"
+#include "editshutdownjobdialog.h"
 #include "editwakejobdialog.h"
 
 #include "linuxshutdownjob.h"
@@ -139,6 +141,18 @@ void MainWindow::UpdateRowDelegatesFromBottom(const int startingIndex)
    }
 }
 
+AbstractEditJobDialog* MainWindow::CreateEditDialog(AbstractJob* job) const
+{
+   if (dynamic_cast<WakeJob*>(job))
+      return new EditWakeJobDialog(job);
+   else if (dynamic_cast<LinuxShutdownJob*>(job))
+      return new EditShutdownJobDialog(job);
+   else if (dynamic_cast<UserConsoleJob*>(job))
+      return new EditConsoleJobDialog(job);
+   else
+      return nullptr;
+}
+
 void MainWindow::on_upButton_clicked()
 {
    const int currentIndex = ui->jobListView->currentIndex().row();
@@ -215,6 +229,12 @@ void MainWindow::on_actionCustom_command_triggered()
 
 void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
 {
-   EditWakeJobDialog dialog;
-   dialog.exec();
+   AbstractJob* job = jobListModel.GetJob(index);
+   AbstractEditJobDialog* editDialog = CreateEditDialog(job);
+
+   if (editDialog)
+   {
+      editDialog->exec();
+      delete editDialog;
+   }
 }

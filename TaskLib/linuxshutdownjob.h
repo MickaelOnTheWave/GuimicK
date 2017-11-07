@@ -19,6 +19,9 @@ public:
 
     virtual JobStatus* Run();
 
+    int GetTimeout() const;
+    void SetTimeout(const int value);
+
 private:
     /**
      * @return number of seconds elapsed until computer is down

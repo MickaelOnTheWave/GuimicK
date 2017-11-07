@@ -33,7 +33,10 @@ SOURCES += \
     wakelistwidget.cpp \
     wakejobdelegate.cpp \
     editwakejobdialog.cpp \
-    jobdatamodel.cpp
+    jobdatamodel.cpp \
+    abstracteditjobdialog.cpp \
+    editshutdownjobdialog.cpp \
+    editconsolejobdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,13 +45,18 @@ HEADERS += \
     wakelistwidget.h \
     wakejobdelegate.h \
     editwakejobdialog.h \
-    jobdatamodel.h
+    jobdatamodel.h \
+    abstracteditjobdialog.h \
+    editshutdownjobdialog.h \
+    editconsolejobdialog.h
 
 FORMS += \
         mainwindow.ui \
     configurationcheckdialog.ui \
     wakelistwidget.ui \
-    editwakejobdialog.ui
+    editwakejobdialog.ui \
+    editshutdownjobdialog.ui \
+    editconsolejobdialog.ui
 
 contains( CONFIG, synology ) {
    BUILD_TYPE = Synology

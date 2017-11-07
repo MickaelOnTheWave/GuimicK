@@ -25,6 +25,8 @@ public:
    void MoveJob(const int oldIndex, const int newIndex);
    virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
+   AbstractJob* GetJob(const QModelIndex &index);
+
 private:
    std::vector<AbstractJob*> jobs;
 };
