@@ -135,6 +135,11 @@ void UserConsoleJob::SetExpectedOutput(const string &value)
     successConditionOnStandardOutput = true;
 }
 
+void UserConsoleJob::GetUserAttachments(vector<string>& attachments)
+{
+   attachments = additionalAttachments;
+}
+
 void UserConsoleJob::AddUserAttachment(const string& name)
 {
    additionalAttachments.push_back(name);

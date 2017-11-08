@@ -25,6 +25,9 @@ private Q_SLOTS:
     void testConfigure_ParserUsesBufferProperty_data();
     void testConfigure_ParserUsesBufferProperty();
 
+    void testConfigure_UserAttachment_data();
+    void testConfigure_UserAttachment();
+
 protected:
     virtual AbstractJobConfiguration* CreateNewConfiguration() const override;
 
@@ -37,12 +40,15 @@ private:
     void TestOutputFilenameProperty(const std::string &propertyValue);
     void TestParserCommandProperty(const std::string &propertyValue);
     void TestParserUsesBufferProperty(const std::string &propertyValue, const bool &expectedValue);
+    void TestUserAttachments(const QStringList& attachments);
 
     virtual void FinalCheckTitleProperty(AbstractJob* job, const std::string& expectedValue);
     virtual void FinalCheckExpectedOutputProperty(AbstractJob* job, const std::string& expectedValue);
     virtual void FinalCheckOutputFilenameProperty(AbstractJob* job, const std::string& expectedValue);
     virtual void FinalCheckParserCommandProperty(AbstractJob* job, const std::string& expectedValue);
     virtual void FinalCheckParserUsesBufferProperty(AbstractJob* job, const bool expectedValue);
+
+    void AddUserAttachmentObject(ConfigurationObject* confObject, const std::string& name);
 };
 
 #endif // USERCONSOLEJOBCONFIGURATIONTEST_H

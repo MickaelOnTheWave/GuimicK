@@ -1,6 +1,8 @@
 #include "userconsolejobconfigurationtest.h"
 
 #include <QTest>
+
+#include "testutils.h"
 #include "userconsolejob.h"
 #include "userconsolejobconfiguration.h"
 
@@ -56,6 +58,26 @@ void UserConsoleJobConfigurationTest::testConfigure_ParserUsesBufferProperty()
     QFETCH(QString, propertyValue);
     QFETCH(bool, expectedValue);
     TestParserUsesBufferProperty(propertyValue.toStdString(), expectedValue);
+}
+
+void UserConsoleJobConfigurationTest::testConfigure_UserAttachment_data()
+{
+   QTest::addColumn<QStringList>("attachments");
+
+   QTest::newRow("No Attachments") << QStringList();
+   QTest::newRow("One Attachments") << QStringList{"file01.txt"};
+   QTest::newRow("Multiple Attachments") << QStringList{
+                                            "att1.txt", "att2.txt",
+                                            "haha", "hoho"};
+   QTest::newRow("Multiple Attachments with same name")
+         << QStringList{ "att1.txt", "att2.txt",
+                         "duplicate", "duplicate"};
+}
+
+void UserConsoleJobConfigurationTest::testConfigure_UserAttachment()
+{
+   QFETCH(QStringList, attachments);
+   TestUserAttachments(attachments);
 }
 
 void UserConsoleJobConfigurationTest::testConfigure_ExpectedOutputProperty()
@@ -190,6 +212,26 @@ void UserConsoleJobConfigurationTest::TestParserUsesBufferProperty(const string 
     delete confObject;
 }
 
+void UserConsoleJobConfigurationTest::TestUserAttachments(const QStringList& attachments)
+{
+   auto confObject = new ConfigurationObject();
+   for (auto&& it : attachments)
+      AddUserAttachmentObject(confObject, it.toStdString());
+
+   AbstractJob* job = TestConfigurationWithoutErrors(confObject);
+   auto castJob = dynamic_cast<UserConsoleJob*>(job);
+
+   QVERIFY(castJob != nullptr);
+
+   vector<string> actualUserAttachments;
+   castJob->GetUserAttachments(actualUserAttachments);
+
+   TestUtils::CheckListsAreEqual(attachments, actualUserAttachments);
+
+   delete job;
+   delete confObject;
+}
+
 void UserConsoleJobConfigurationTest::FinalCheckTitleProperty(AbstractJob *job,
                                                               const string &expectedValue)
 {
@@ -228,4 +270,12 @@ void UserConsoleJobConfigurationTest::FinalCheckParserUsesBufferProperty(Abstrac
     auto castJob = dynamic_cast<UserConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
     QCOMPARE(castJob->IsParsingUsingBuffer(), expectedValue);
+}
+
+void UserConsoleJobConfigurationTest::AddUserAttachmentObject(ConfigurationObject* confObject,
+                                                              const string& name)
+{
+   auto userAttachmentObject = new ConfigurationObject(UserConsoleJobConfiguration::UserAttachmentObject);
+   userAttachmentObject->SetProperty("param0", name);
+   confObject->AddObject(userAttachmentObject);
 }
