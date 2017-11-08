@@ -1,3 +1,16 @@
+07/11/2017 (0.5h)
+   Creating Photo job in production run. This is a normal SshConsoleJob but it lacks
+	a feature to fully work : attach user-specified files. This won't be so easy :
+	first feature must be implemented for userconsolejob (seems easy) but then
+	ssh console must copy that file through ssh.
+	Implemented basic support for user-specified attachments in user console job.
+	Updating release plan : configuration checking is part of configuration editor.
+Next planned work:
+   - Create test for user specified attachments in user console job
+	- Change behaviour for ssh console jobs : user attachments must first be copied
+	- Create test for new behaviour of Ssh console job
+	- Continue previous roadmap
+
 06/11/2017 (2.3h)
    Bug with Rsnapshot attachments still present. Investigating... Found probable cause
 	for Rsnapshot bug. Fixing and committing, next production run will tell...

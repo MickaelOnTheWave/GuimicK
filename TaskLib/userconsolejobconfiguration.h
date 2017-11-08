@@ -14,6 +14,7 @@ public:
     static const std::string OutputFilenameProperty;
     static const std::string ParserCommandProperty;
     static const std::string ParserUsesBufferProperty;
+    static const std::string UserAttachmentObject;
 
     UserConsoleJobConfiguration();
     UserConsoleJobConfiguration(const std::string& tag);
@@ -23,7 +24,8 @@ protected:
     virtual void ConfigureJob(AbstractJob* job,
                               ConfigurationObject *confObject,
                               std::vector<std::string> &errorMessages);
-    void FillKnownProperties(std::vector<std::string>& properties);
+    virtual void FillKnownProperties(std::vector<std::string>& properties);
+    virtual void FillKnownSubObjects(std::vector<std::string>& objects);
 };
 
 #endif // USERCONSOLEJOBCONFIGURATION_H

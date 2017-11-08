@@ -13,6 +13,7 @@ const std::string UserConsoleJobConfiguration::ExpectedOutputProperty = "expecte
 const std::string UserConsoleJobConfiguration::OutputFilenameProperty = "outputFileName";
 const std::string UserConsoleJobConfiguration::ParserCommandProperty = "parserCommand";
 const std::string UserConsoleJobConfiguration::ParserUsesBufferProperty = "parserUsesBuffer";
+const std::string UserConsoleJobConfiguration::UserAttachmentObject = "AttachFile";
 
 UserConsoleJobConfiguration::UserConsoleJobConfiguration()
     : AbstractJobDefaultConfiguration("Console")
@@ -67,6 +68,13 @@ void UserConsoleJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationOb
 
     if (parserUsingBuffer == "true")
         castJob->SetParsingUsingBuffer(true);
+
+    list<ConfigurationObject*>::iterator it = confObject->objectList.begin();
+    for (; it != confObject->objectList.end(); ++it)
+    {
+       if ((*it)->GetName() == UserAttachmentObject)
+          castJob->AddUserAttachment((*it)->GetProperty("param0"));
+    }
 }
 
 void UserConsoleJobConfiguration::FillKnownProperties(std::vector<string> &properties)
@@ -81,4 +89,10 @@ void UserConsoleJobConfiguration::FillKnownProperties(std::vector<string> &prope
     properties.push_back(OutputFilenameProperty);
     properties.push_back(ParserCommandProperty);
     properties.push_back(ParserUsesBufferProperty);
+}
+
+void UserConsoleJobConfiguration::FillKnownSubObjects(std::vector<string>& objects)
+{
+   AbstractJobDefaultConfiguration::FillKnownSubObjects(objects);
+   objects.push_back(UserAttachmentObject);
 }

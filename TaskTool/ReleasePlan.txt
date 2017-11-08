@@ -27,6 +27,7 @@ Features implemented:
 	18/10/2017 - [029] Split job config file into client/server files.
 	23/10/2017 - [053] Update Qt and related tools to latest ones (5.9?)
 	27/10/2017 - [054] Make all jobs support user title
+	07/11/2017 - [048] Create configuration checking tool/feature
 
 Features to implement:
 	[005] Include AntiVirus scan job
@@ -49,7 +50,6 @@ Features to implement:
 	[045] Make Windows client work with (nearly) all features
 	[046] Include a Windows update job
 	[047] Have a Restore option in backup jobs
-	[048] Create configuration checking tool/feature
 	[049] Make build be at least partially static (internal dependencies static)
 	[050] Create a backup job for cloud service
 	[051] Implement a licensing system : either CD-Key or online activation. Use crypto.
@@ -107,6 +107,7 @@ v0.9 :
 	[029] Split job config file into client/server files.
 	[054] Make all jobs support user title
 	[053] Update Qt and related tools to latest ones (5.9?)
+	[048] Create configuration checking tool/feature
 	[034] Create Qt client app to create/manage backup folder configuration.
 	[047] Have a Restore option in backup jobs
 	[043] Create an archive differential File backup job

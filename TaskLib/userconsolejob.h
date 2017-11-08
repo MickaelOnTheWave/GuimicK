@@ -39,6 +39,8 @@ public:
     std::string GetExpectedOutput() const;
     void SetExpectedOutput(const std::string& value);
 
+    void AddUserAttachment(const std::string& name);
+
 protected:
     virtual bool RunCommand();
     virtual JobStatus* CreateSuccessStatus();
@@ -65,6 +67,7 @@ private:
     bool useParserWithBuffer;
     std::string outputFileName;
     std::string expectedOutput;
+    std::vector<std::string> additionalAttachments;
 };
 
 #endif // USERCONSOLEJOB_H

@@ -135,6 +135,11 @@ void UserConsoleJob::SetExpectedOutput(const string &value)
     successConditionOnStandardOutput = true;
 }
 
+void UserConsoleJob::AddUserAttachment(const string& name)
+{
+   additionalAttachments.push_back(name);
+}
+
 // @TODO resolve bug where apparently output is not correctly processed with it has some
 // special chars (like in :-) )
 bool UserConsoleJob::RunCommand()
@@ -242,6 +247,10 @@ void UserConsoleJob::FillErrorStatusFromReturnCode()
 void UserConsoleJob::FinalizeStatusCreation()
 {
     currentStatus = debugManager->UpdateStatus(currentStatus);
+
+    vector<string>::const_iterator it = additionalAttachments.begin();
+    for (; it != additionalAttachments.end(); ++it)
+       currentStatus->AddExternalFile(*it);
 }
 
 string UserConsoleJob::CreateParserCommand() const
