@@ -4,6 +4,7 @@
 
 #include "sshconsolejob.h"
 #include "sshconsolejobconfiguration.h"
+#include "testutils.h"
 
 using namespace std;
 
@@ -59,4 +60,16 @@ void SshConsoleJobConfigurationTest::FinalCheckParserUsesBufferProperty(Abstract
     auto castJob = dynamic_cast<SshConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
     QCOMPARE(castJob->IsParsingUsingBuffer(), expectedValue);
+}
+
+void SshConsoleJobConfigurationTest::FinalCheckUserAttachments(AbstractJob* job,
+                                                               const QStringList& attachments)
+{
+   auto castJob = dynamic_cast<SshConsoleJob*>(job);
+   QVERIFY(castJob != nullptr);
+
+   vector<string> actualUserAttachments;
+   castJob->GetUserAttachments(actualUserAttachments);
+
+   TestUtils::CheckListsAreEqual(attachments, actualUserAttachments);
 }

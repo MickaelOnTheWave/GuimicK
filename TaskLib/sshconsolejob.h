@@ -9,6 +9,7 @@ public:
     static std::string NoTargetError;
     static std::string InvalidTargetError;
     static std::string NoTerminalForPasswordError;
+    static std::string FailedRemoteCopyError;
 
     SshConsoleJob(AbstractConsoleJob* _job);
     SshConsoleJob(const std::string& _title, const std::string& _command = "");
@@ -48,6 +49,10 @@ public:
 
     virtual bool IsRunOk() const;
 
+    void GetUserAttachments(std::vector<std::string>& attachments);
+    void AddUserAttachment(const std::string& name);
+
+
     void SetRemoteJob(AbstractConsoleJob* _remoteJob);
 
     std::string GetExpectedOutput() const;
@@ -60,16 +65,18 @@ public:
     bool IsParsingUsingBuffer() const;
 
 private:
-    AbstractConsoleJob* CreateSshJob();
+   AbstractConsoleJob* CreateSshJob();
 
-    bool IsAskTerminalError(JobStatus* status,
-                            const std::string &message) const;
+   bool IsAskTerminalError(JobStatus* status,
+                         const std::string &message) const;
 
-    std::string title;
-	std::string user;
-	std::string host;
+   bool CopyRemoteAttachments();
 
-    AbstractConsoleJob* remoteJob;
+   std::string title;
+   std::string user;
+   std::string host;
+
+   AbstractConsoleJob* remoteJob;
 };
 
 #endif // SSHCONSOLEJOB_H

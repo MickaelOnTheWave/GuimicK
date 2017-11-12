@@ -1,5 +1,11 @@
-12/11/2017 (17.3)
+12/11/2017 (4.1h)
    Created test for UserConsoleJob. Now going for test for SshConsoleJob.
+	Created test for SshConsoleJob. Also created SshConsoleJob implementation.
+	Created a new tool in Tools and its test suite.	Also fixed a bug in Tokenize tool.
+	Fixed issues on Ssh configuration test suite. Now the user attachments feature
+	is expected to be fully operational. Waiting for production to confirm...
+Next planned work:
+   - Continue previous roadmap
 
 08/11/2017 (0.4h)
    Production run was OK - bug was fixed :-) Photo job ran but without attaching

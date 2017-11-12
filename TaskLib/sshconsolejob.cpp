@@ -10,6 +10,7 @@ using namespace std;
 string SshConsoleJob::NoTargetError = "No target specified";
 string SshConsoleJob::InvalidTargetError = "Invalid target specified";
 string SshConsoleJob::NoTerminalForPasswordError = "Password needed";
+string SshConsoleJob::FailedRemoteCopyError = "Failed to attach files";
 
 SshConsoleJob::SshConsoleJob(AbstractConsoleJob *_job)
     : AbstractConsoleJob(""), title(""), user(""), host("")
@@ -29,7 +30,7 @@ SshConsoleJob::SshConsoleJob(const SshConsoleJob &other)
 {
     user = other.user;
     host = other.host;
-    remoteJob = static_cast<ConsoleJob*>(other.remoteJob->Clone());
+    remoteJob = static_cast<AbstractConsoleJob*>(other.remoteJob->Clone());
 }
 
 SshConsoleJob::~SshConsoleJob()
@@ -86,6 +87,8 @@ JobStatus *SshConsoleJob::Run()
     debugManager->AddDataLine<string>("Child command", sshJob->GetCommand());
     debugManager->AddDataLine<string>("Child params", sshJob->GetCommandParameters());
 
+    bool remoteCopyWithoutErrors = CopyRemoteAttachments();
+
     JobStatus* status = sshJob->Run();
 
     remoteJob->SetCommandReturnCode(sshJob->GetCommandReturnCode());
@@ -93,6 +96,11 @@ JobStatus *SshConsoleJob::Run()
 
     if (IsAskTerminalError(status, sshJob->GetCommandOutput()))
         status->SetDescription(NoTerminalForPasswordError);
+    else if (!remoteCopyWithoutErrors)
+    {
+       status->SetCode(JobStatus::OK_WITH_WARNINGS);
+       status->SetDescription(FailedRemoteCopyError);
+    }
 
     delete sshJob;
     return status;
@@ -161,7 +169,21 @@ bool SshConsoleJob::IsCommandAvailable() const
 
 bool SshConsoleJob::IsRunOk() const
 {
-    return remoteJob->IsRunOk();
+   return remoteJob->IsRunOk();
+}
+
+void SshConsoleJob::GetUserAttachments(std::vector<string>& attachments)
+{
+   UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
+   if (castJob)
+      castJob->GetUserAttachments(attachments);
+}
+
+void SshConsoleJob::AddUserAttachment(const string& name)
+{
+   UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
+   if (castJob)
+      castJob->AddUserAttachment(name);
 }
 
 void SshConsoleJob::SetRemoteJob(AbstractConsoleJob *_remoteJob)
@@ -223,4 +245,38 @@ bool SshConsoleJob::IsAskTerminalError(JobStatus *status,
     const string expectedOutput = "sudo: no tty present";
     return (status->GetCode() == JobStatus::ERROR &&
             message.find(expectedOutput) == 0);
+}
+
+bool SshConsoleJob::CopyRemoteAttachments()
+{
+   const string startTag = "\"'";
+   const string endTag = "'\"";
+
+   UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
+   if (!castJob || !castJob->HasUserAttachments())
+      return true;
+
+   vector<string> userAttachments;
+   castJob->GetUserAttachments(userAttachments);
+   castJob->EmptyUserAttachments();
+
+   bool allOk = true;
+   vector<string>::const_iterator it = userAttachments.begin();
+   for (; it != userAttachments.end(); ++it)
+   {
+      string scpParams = user + "@" + host + ":";
+      if ((*it)[0] == '/')
+         scpParams += startTag + *it;
+      else
+         scpParams += string("~/") + startTag + *it;
+      scpParams += endTag + " ./";
+
+      ConsoleJob copyJob("scp", scpParams);
+      copyJob.RunWithoutStatus();
+      if (copyJob.IsRunOk())
+         castJob->AddUserAttachment(Tools::GetFilenameOnly(*it));
+      else
+         allOk = false;
+   }
+   return allOk;
 }

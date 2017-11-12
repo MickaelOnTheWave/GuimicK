@@ -39,8 +39,10 @@ public:
     std::string GetExpectedOutput() const;
     void SetExpectedOutput(const std::string& value);
 
+    bool HasUserAttachments() const;
     void GetUserAttachments(std::vector<std::string>& attachments);
     void AddUserAttachment(const std::string& name);
+    void EmptyUserAttachments();
 
 protected:
     virtual bool RunCommand();

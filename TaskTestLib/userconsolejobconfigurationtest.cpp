@@ -219,14 +219,7 @@ void UserConsoleJobConfigurationTest::TestUserAttachments(const QStringList& att
       AddUserAttachmentObject(confObject, it.toStdString());
 
    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-   auto castJob = dynamic_cast<UserConsoleJob*>(job);
-
-   QVERIFY(castJob != nullptr);
-
-   vector<string> actualUserAttachments;
-   castJob->GetUserAttachments(actualUserAttachments);
-
-   TestUtils::CheckListsAreEqual(attachments, actualUserAttachments);
+   FinalCheckUserAttachments(job, attachments);
 
    delete job;
    delete confObject;
@@ -270,6 +263,18 @@ void UserConsoleJobConfigurationTest::FinalCheckParserUsesBufferProperty(Abstrac
     auto castJob = dynamic_cast<UserConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
     QCOMPARE(castJob->IsParsingUsingBuffer(), expectedValue);
+}
+
+void UserConsoleJobConfigurationTest::FinalCheckUserAttachments(AbstractJob *job,
+                                                                const QStringList& attachments)
+{
+   auto castJob = dynamic_cast<UserConsoleJob*>(job);
+   QVERIFY(castJob != nullptr);
+
+   vector<string> actualUserAttachments;
+   castJob->GetUserAttachments(actualUserAttachments);
+
+   TestUtils::CheckListsAreEqual(attachments, actualUserAttachments);
 }
 
 void UserConsoleJobConfigurationTest::AddUserAttachmentObject(ConfigurationObject* confObject,

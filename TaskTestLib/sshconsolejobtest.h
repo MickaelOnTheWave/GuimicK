@@ -17,6 +17,7 @@ private Q_SLOTS:
     void testRun_InvalidTargetError();
     void testRun_CheckResultingCommand();
     void testRun_NoTtyError();
+    void testRun_AttachRemoteAttachments_Ok();
 
 protected:
     virtual AbstractConsoleJob* CreateDefaultJob(const std::string& command,

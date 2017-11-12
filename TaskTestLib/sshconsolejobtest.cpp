@@ -5,6 +5,7 @@
 
 #include "filetools.h"
 #include "userconsolejob.h"
+#include "tools.h"
 
 using namespace std;
 
@@ -44,6 +45,31 @@ void SshConsoleJobTest::testRun_NoTtyError()
     GetJob()->SetTarget("mickael", "Desktop");
 
     RunAndCheckNoAttachments(JobStatus::ERROR, SshConsoleJob::NoTerminalForPasswordError);
+}
+
+void SshConsoleJobTest::testRun_AttachRemoteAttachments_Ok()
+{
+   const string remoteFileName = "Documents/Internet LinhaLivre.txt";
+   job = new SshConsoleJob(new UserConsoleJob("", "echo", "blabla"));
+   GetJob()->SetTarget("mickael", "Desktop");
+   GetJob()->AddUserAttachment(remoteFileName);
+
+   RunAndCheck(JobStatus::OK, "");
+
+   vector<pair<string, string> > fileBuffers;
+   status->GetFileBuffers(fileBuffers);
+   QCOMPARE(fileBuffers.size(), 0ul);
+
+   vector<string> externalFiles;
+   status->GetExternalFilenames(externalFiles);
+   QCOMPARE(externalFiles.size(), 1ul);
+
+   const string referenceFile = string("~/") + Tools::EscapedSpaces(remoteFileName);
+   const string referenceContent = FileTools::GetTextFileContent(referenceFile);
+   const string actualContent = FileTools::GetTextFileContent(externalFiles.front());
+
+   QCOMPARE(actualContent.c_str(), referenceContent.c_str());
+
 }
 
 AbstractConsoleJob *SshConsoleJobTest::CreateDefaultJob(const std::string &command,

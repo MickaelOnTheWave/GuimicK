@@ -24,6 +24,7 @@ private:
     virtual void FinalCheckOutputFilenameProperty(AbstractJob* job, const std::string& expectedValue);
     virtual void FinalCheckParserCommandProperty(AbstractJob* job, const std::string& expectedValue);
     virtual void FinalCheckParserUsesBufferProperty(AbstractJob* job, const bool expectedValue);
+    virtual void FinalCheckUserAttachments(AbstractJob* job, const QStringList& attachments);
 };
 
 #endif // SSHCONSOLEJOBCONFIGURATIONTEST_H

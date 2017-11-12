@@ -30,6 +30,7 @@ UserConsoleJob::UserConsoleJob(const UserConsoleJob &other)
     outputFileName = other.outputFileName;
     expectedOutput = other.expectedOutput;
     useParserWithBuffer = other.useParserWithBuffer;
+    additionalAttachments = other.additionalAttachments;
 
     if (other.currentStatus)
         currentStatus = new JobStatus(*other.currentStatus);
@@ -135,6 +136,11 @@ void UserConsoleJob::SetExpectedOutput(const string &value)
     successConditionOnStandardOutput = true;
 }
 
+bool UserConsoleJob::HasUserAttachments() const
+{
+   return (!additionalAttachments.empty());
+}
+
 void UserConsoleJob::GetUserAttachments(vector<string>& attachments)
 {
    attachments = additionalAttachments;
@@ -143,6 +149,11 @@ void UserConsoleJob::GetUserAttachments(vector<string>& attachments)
 void UserConsoleJob::AddUserAttachment(const string& name)
 {
    additionalAttachments.push_back(name);
+}
+
+void UserConsoleJob::EmptyUserAttachments()
+{
+   additionalAttachments.clear();
 }
 
 // @TODO resolve bug where apparently output is not correctly processed with it has some
