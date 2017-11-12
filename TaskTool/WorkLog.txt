@@ -1,3 +1,15 @@
+12/11/2017 (17.3)
+   Created test for UserConsoleJob. Now going for test for SshConsoleJob.
+
+08/11/2017 (0.4h)
+   Production run was OK - bug was fixed :-) Photo job ran but without attaching
+	photo, as expected. Now creating test : created test for user console job configuration,
+	test works as expected. Also fixed implementation accordingly.
+Next planned work:
+   - Create test for job itself : checking that attachment is taken from filesystem
+	and its data is available in attachment.
+	- Continue previous roadmaps
+
 07/11/2017 (0.5h)
    Creating Photo job in production run. This is a normal SshConsoleJob but it lacks
 	a feature to fully work : attach user-specified files. This won't be so easy :

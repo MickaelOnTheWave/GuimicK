@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new TaskFeatureTest(taskLibDir, errorDir);
     //QObject* testSuite = new ConsoleJobTest();
     //QObject* testSuite = new GitJobTest();
-    //QObject* testSuite = new UserConsoleJobTest();
+    QObject* testSuite = new UserConsoleJobTest();
     //QObject* testSuite = new SshConsoleJobTest();
     //QObject* testSuite = new ConfigurationParserTest(toolsLibDir);
     //QObject* testSuite = new FileToolsTest(toolsLibDir);
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ChangeScreensaverJobConfigurationTest();
     //QObject* testSuite = new ClamAvJobConfigurationTest();
     //QObject* testSuite = new ShutdownJobConfigurationTest();
-    QObject* testSuite = new UserConsoleJobConfigurationTest();
+    //QObject* testSuite = new UserConsoleJobConfigurationTest();
     //QObject* testSuite = new SshConsoleJobConfigurationTest();
     //QObject* testSuite = new GitBackupJobConfigurationTest();
     //QObject* testSuite = new DiskSpaceCheckJobConfigurationTest();

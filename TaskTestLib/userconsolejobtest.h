@@ -18,6 +18,7 @@ private Q_SLOTS:
     void testRun_CheckAttachment();
     void testRun_OutputToFile_ReturnCode();
     void testRun_OutputToFile_OutputDoesNotWork();
+    void testRun_AttachUserFile();
     void testConfiguration_CheckConditions();
 
 protected:

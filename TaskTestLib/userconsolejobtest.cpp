@@ -90,6 +90,32 @@ void UserConsoleJobTest::testRun_OutputToFile_OutputDoesNotWork()
     CheckAttachmentCount(1, 0);
 }
 
+void UserConsoleJobTest::testRun_AttachUserFile()
+{
+   const string testFileName = "testFile.txt";
+   const string testFileContent = "test content";
+
+   FileTools::WriteBufferToFile(testFileName, testFileContent);
+   job = CreateDefaultJob("echo", "blabla");
+   GetJob()->AddUserAttachment(testFileName);
+
+   RunAndCheck(JobStatus::OK, "");
+   CheckAttachmentCount(1, 0);
+
+   vector<string> userAttachment;
+   status->GetExternalFilenames(userAttachment);
+
+   if (userAttachment.size() == 1)
+   {
+      QCOMPARE(userAttachment.front().c_str(), testFileName.c_str());
+
+      string retrievedContent = FileTools::GetTextFileContent(testFileName);
+      QCOMPARE(retrievedContent.c_str(), testFileContent.c_str());
+   }
+   else
+      QFAIL("Wrong number of file attachments");
+}
+
 void UserConsoleJobTest::testConfiguration_CheckConditions()
 {
     job = ConsoleJobTest::CreateDefaultJob();
