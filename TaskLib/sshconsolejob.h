@@ -52,7 +52,6 @@ public:
     void GetUserAttachments(std::vector<std::string>& attachments);
     void AddUserAttachment(const std::string& name);
 
-
     void SetRemoteJob(AbstractConsoleJob* _remoteJob);
 
     std::string GetExpectedOutput() const;

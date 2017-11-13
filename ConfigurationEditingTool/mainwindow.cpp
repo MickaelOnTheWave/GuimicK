@@ -147,7 +147,7 @@ AbstractEditJobDialog* MainWindow::CreateEditDialog(AbstractJob* job) const
       return new EditWakeJobDialog(job);
    else if (dynamic_cast<LinuxShutdownJob*>(job))
       return new EditShutdownJobDialog(job);
-   else if (dynamic_cast<UserConsoleJob*>(job))
+   else if (dynamic_cast<AbstractConsoleJob*>(job))
       return new EditConsoleJobDialog(job);
    else
       return nullptr;

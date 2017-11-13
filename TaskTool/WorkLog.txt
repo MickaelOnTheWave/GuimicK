@@ -1,6 +1,13 @@
-13/11/2017 (19.9)
+13/11/2017 (1.9h)
    Production run didn't attach photo, it seems there was a remote copy problem.
-	Adding debug information.
+	Adding debug information. Back to Console job dialog...
+	Created most of Console dialog. It has now all UI to edit User and Ssh jobs data.
+	Created most of UI logic (enabling/disabling controls).
+Next planned work:
+   - Check production output. Find issue based on debug information.
+	- Create sub dialog for adding user attachments.
+	- Implement full Ui from/to data update.
+	- Refactor SshConsole job. Should there be SshUser and SshAbstract?
 
 12/11/2017 (4.1h)
    Created test for UserConsoleJob. Now going for test for SshConsoleJob.
