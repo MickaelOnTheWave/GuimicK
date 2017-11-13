@@ -55,6 +55,7 @@ Features to implement:
 	[051] Implement a licensing system : either CD-Key or online activation. Use crypto.
 	[052] Support other compilers
 	[055] Create a download job
+	[056] Add support for attaching user specified files in Console jobs
 
 
 Abandoned features :
@@ -108,6 +109,7 @@ v0.9 :
 	[054] Make all jobs support user title
 	[053] Update Qt and related tools to latest ones (5.9?)
 	[048] Create configuration checking tool/feature
+	[056] Add support for attaching user specified files in Console jobs
 	[034] Create Qt client app to create/manage backup folder configuration.
 	[047] Have a Restore option in backup jobs
 	[043] Create an archive differential File backup job

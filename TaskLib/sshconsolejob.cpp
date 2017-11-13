@@ -253,7 +253,9 @@ bool SshConsoleJob::CopyRemoteAttachments()
    const string endTag = "'\"";
 
    UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
-   if (!castJob || !castJob->HasUserAttachments())
+   const bool hasAttachments = (!castJob || !castJob->HasUserAttachments());
+   debugManager->AddDataLine<bool>("Has User Attachments?", hasAttachments);
+   if (hasAttachments)
       return true;
 
    vector<string> userAttachments;
@@ -264,6 +266,7 @@ bool SshConsoleJob::CopyRemoteAttachments()
    vector<string>::const_iterator it = userAttachments.begin();
    for (; it != userAttachments.end(); ++it)
    {
+      debugManager->AddDataLine<string>("Copying Attachment", *it);
       string scpParams = user + "@" + host + ":";
       if ((*it)[0] == '/')
          scpParams += startTag + *it;
@@ -271,10 +274,20 @@ bool SshConsoleJob::CopyRemoteAttachments()
          scpParams += string("~/") + startTag + *it;
       scpParams += endTag + " ./";
 
+      debugManager->AddDataLine<string>("Scp parameters", scpParams);
+
       ConsoleJob copyJob("scp", scpParams);
       copyJob.RunWithoutStatus();
+
+      debugManager->AddDataLine<bool>("Scp Ok", copyJob.IsRunOk());
+      debugManager->AddDataLine<string>("Scp Output", copyJob.GetCommandOutput());
+
       if (copyJob.IsRunOk())
-         castJob->AddUserAttachment(Tools::GetFilenameOnly(*it));
+      {
+         const string localAttachment = Tools::GetFilenameOnly(*it);
+         debugManager->AddDataLine<string>("Adding Local Attachment", localAttachment);
+         castJob->AddUserAttachment(localAttachment);
+      }
       else
          allOk = false;
    }

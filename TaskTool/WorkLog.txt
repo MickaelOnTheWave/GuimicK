@@ -1,3 +1,7 @@
+13/11/2017 (19.9)
+   Production run didn't attach photo, it seems there was a remote copy problem.
+	Adding debug information.
+
 12/11/2017 (4.1h)
    Created test for UserConsoleJob. Now going for test for SshConsoleJob.
 	Created test for SshConsoleJob. Also created SshConsoleJob implementation.
