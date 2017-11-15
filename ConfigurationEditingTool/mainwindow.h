@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+#include "abstractdisplay.h"
 #include "abstracteditjobdialog.h"
 #include "jobdatamodel.h"
 #include "model.h"
@@ -65,6 +66,7 @@ private:
    void UpdateRowDelegatesFromBottom(const int startingIndex);
 
    AbstractEditJobDialog* CreateEditDialog(AbstractJob* job) const;
+   AbstractDisplay* CreateDisplay(AbstractJob* job) const;
 
    Ui::MainWindow *ui;
    Model model;

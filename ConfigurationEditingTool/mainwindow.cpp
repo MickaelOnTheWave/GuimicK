@@ -7,8 +7,12 @@
 #include <QFileDialog>
 #include <QMenu>
 
+#include "jobdelegate.h"
+
+#include "abstractjobdisplay.h"
+#include "wakejobdisplay.h"
+
 #include "configurationcheckdialog.h"
-#include "wakejobdelegate.h"
 #include "editconsolejobdialog.h"
 #include "editshutdownjobdialog.h"
 #include "editwakejobdialog.h"
@@ -26,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
    ui->setupUi(this);
    ui->jobListView->setModel(&jobListModel);
+   ui->jobListView->setItemDelegate(new JobDelegate(new AbstractJobDisplay()));
    ui->jobListView->setResizeMode(QListView::Adjust);
 
    OpenStandardFile();
@@ -77,7 +82,7 @@ void MainWindow::InsertNewJob(AbstractJob* job)
    const int currentIndex = ui->jobListView->currentIndex().row();
    UpdateRowDelegatesFromBottom(currentIndex+1);
    jobListModel.Insert(currentIndex+1, job);
-   ui->jobListView->setItemDelegateForRow(currentIndex+1, new WakeJobDelegate());
+   ui->jobListView->setItemDelegateForRow(currentIndex+1, new JobDelegate(CreateDisplay(job)));
    ui->jobListView->setCurrentIndex(jobListModel.index(currentIndex+1));
 
    ForceJobListViewUpdate();
@@ -151,6 +156,14 @@ AbstractEditJobDialog* MainWindow::CreateEditDialog(AbstractJob* job) const
       return new EditConsoleJobDialog(job);
    else
       return nullptr;
+}
+
+AbstractDisplay* MainWindow::CreateDisplay(AbstractJob* job) const
+{
+   if (dynamic_cast<WakeJob*>(job))
+      return new WakeJobDisplay();
+   else
+      return new AbstractJobDisplay();
 }
 
 void MainWindow::on_upButton_clicked()

@@ -28,6 +28,7 @@ Features implemented:
 	23/10/2017 - [053] Update Qt and related tools to latest ones (5.9?)
 	27/10/2017 - [054] Make all jobs support user title
 	07/11/2017 - [048] Create configuration checking tool/feature
+	15/11/2017 - [056] Add support for attaching user specified files in Console jobs
 
 Features to implement:
 	[005] Include AntiVirus scan job
@@ -55,7 +56,6 @@ Features to implement:
 	[051] Implement a licensing system : either CD-Key or online activation. Use crypto.
 	[052] Support other compilers
 	[055] Create a download job
-	[056] Add support for attaching user specified files in Console jobs
 
 
 Abandoned features :

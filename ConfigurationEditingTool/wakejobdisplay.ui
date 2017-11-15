@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>WakeListWidget</class>
- <widget class="QWidget" name="WakeListWidget">
+ <class>WakeJobDisplay</class>
+ <widget class="QWidget" name="WakeJobDisplay">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -25,7 +25,7 @@
         </font>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string>JobName</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

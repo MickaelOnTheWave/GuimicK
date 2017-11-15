@@ -1,6 +1,7 @@
 #include "editconsolejobdialog.h"
 #include "ui_editconsolejobdialog.h"
 
+#include "choosefiledialog.h"
 #include "sshconsolejob.h"
 #include "userconsolejob.h"
 
@@ -72,7 +73,7 @@ void EditConsoleJobDialog::UpdateUiFromJob_Ssh()
    if (!castJob)
       return;
 
-   //ui->attachOutputBox->setChecked(castJob->a);
+   //ui->attachOutputBox->setChecked(castJob->);
    ui->useParserBox->setChecked(castJob->GetMiniDescriptionParserCommand() != "");
    ui->parserEdit->setText(castJob->GetMiniDescriptionParserCommand().c_str());
    ui->parserUsesBufferBox->setChecked(castJob->IsParsingUsingBuffer());
@@ -132,9 +133,9 @@ void EditConsoleJobDialog::on_useCurrentClientBox_clicked()
 
 void EditConsoleJobDialog::on_addAttachmentButton_clicked()
 {
-   // TODO : create popup box to enter new attachment.
-   // Put a file browsing button too.
-   ui->attachmentsWidget->addItem("NewAttachment.txt");
+   ChooseFileDialog dialog;
+   if (dialog.exec() == QDialog::Accepted)
+      ui->attachmentsWidget->addItem(dialog.GetFilename());
 }
 
 void EditConsoleJobDialog::on_removeAttachmentButton_clicked()

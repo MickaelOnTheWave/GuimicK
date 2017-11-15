@@ -31,4 +31,5 @@ private:
    std::vector<AbstractJob*> jobs;
 };
 
+
 #endif // JOBDATAMODEL_H

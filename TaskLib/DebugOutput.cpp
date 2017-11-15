@@ -1,6 +1,9 @@
 #include "debugoutput.h"
 
-int DebugOutput::GetValue(const std::string& stringValue)
+namespace DebugOutput
+{
+
+int GetValue(const std::string& stringValue)
 {
     if (stringValue == "true")
         return ALWAYS;
@@ -16,4 +19,19 @@ int DebugOutput::GetValue(const std::string& stringValue)
         return NEVER;
     else
         return NEVER;
+}
+
+std::string GetDescription(const int value)
+{
+   switch (value)
+   {
+      case UNDEFINED      : return "Undefined";
+      case NEVER          : return "Never";
+      case ON_ANY_ERROR   : return "On any error";
+      case ON_FATAL_ERROR : return "On fatal error";
+      case ALWAYS         : return "Always";
+      default             : return "Unsupported value";
+   }
+}
+
 }

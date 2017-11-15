@@ -1,6 +1,7 @@
 #include "jobdatamodel.h"
 
 #include <QSize>
+#include "qtmetatypes.h"
 
 using namespace std;
 
@@ -31,7 +32,7 @@ QVariant JobDataModel::data(const QModelIndex &index, int role) const
    else if (role == Qt::DisplayRole)
    {
       AbstractJob* job = jobs[index.row()];
-      return QString(job->GetName().c_str());
+      return QVariant::fromValue<AbstractJob*>(job);
    }
    else if (role == Qt::SizeHintRole)
       return QVariant();

@@ -1,15 +1,14 @@
-#ifndef WAKEJOBDELEGATE_H
-#define WAKEJOBDELEGATE_H
+#ifndef JOBDELEGATE_H
+#define JOBDELEGATE_H
 
 #include <QStyledItemDelegate>
+#include "abstractdisplay.h"
 
-#include "wakelistwidget.h"
-
-class WakeJobDelegate : public QStyledItemDelegate
+class JobDelegate : public QStyledItemDelegate
 {
 public:
-   explicit WakeJobDelegate(QObject* parent = Q_NULLPTR);
-   virtual ~WakeJobDelegate();
+   JobDelegate(AbstractDisplay* displayWidget);
+   virtual ~JobDelegate();
 
    virtual void paint(QPainter *painter,
                       const QStyleOptionViewItem &option,
@@ -23,7 +22,7 @@ public:
          const QModelIndex &index) const override;
 
 private:
-   WakeListWidget* widget;
+   AbstractDisplay* widget;
 };
 
-#endif // WAKEJOBDELEGATE_H
+#endif // JOBDELEGATE_H

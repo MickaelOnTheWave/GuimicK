@@ -30,33 +30,42 @@ SOURCES += \
         mainwindow.cpp \
     model.cpp \
     configurationcheckdialog.cpp \
-    wakelistwidget.cpp \
-    wakejobdelegate.cpp \
     editwakejobdialog.cpp \
     jobdatamodel.cpp \
     abstracteditjobdialog.cpp \
     editshutdownjobdialog.cpp \
-    editconsolejobdialog.cpp
+    editconsolejobdialog.cpp \
+    choosefiledialog.cpp \
+    abstractjobdisplay.cpp \
+    jobdelegate.cpp \
+    abstractdisplay.cpp \
+    wakejobdisplay.cpp
 
 HEADERS += \
         mainwindow.h \
     model.h \
     configurationcheckdialog.h \
-    wakelistwidget.h \
-    wakejobdelegate.h \
     editwakejobdialog.h \
     jobdatamodel.h \
     abstracteditjobdialog.h \
     editshutdownjobdialog.h \
-    editconsolejobdialog.h
+    editconsolejobdialog.h \
+    choosefiledialog.h \
+    qtmetatypes.h \
+    abstractjobdisplay.h \
+    jobdelegate.h \
+    abstractdisplay.h \
+    wakejobdisplay.h
 
 FORMS += \
         mainwindow.ui \
     configurationcheckdialog.ui \
-    wakelistwidget.ui \
     editwakejobdialog.ui \
     editshutdownjobdialog.ui \
-    editconsolejobdialog.ui
+    editconsolejobdialog.ui \
+    choosefiledialog.ui \
+    abstractjobdisplay.ui \
+    wakejobdisplay.ui
 
 contains( CONFIG, synology ) {
    BUILD_TYPE = Synology
