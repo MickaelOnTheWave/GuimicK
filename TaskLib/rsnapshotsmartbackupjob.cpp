@@ -7,8 +7,10 @@
 
 using namespace std;
 
+static const string defaultName = "Rsnapshot Backup";
+
 RsnapshotSmartBackupJob::RsnapshotSmartBackupJob()
-    : AbstractBackupJob("Rsnapshot Backup"),
+    : AbstractBackupJob(defaultName),
       templateConfigurationFile(""), temporaryFile(""),
       waitBeforeRun(false), maxBackupCount(100)
 {
@@ -39,6 +41,11 @@ JobStatus *RsnapshotSmartBackupJob::Run()
     delete status;
 
     return RunConfiguredBackupJob();
+}
+
+string RsnapshotSmartBackupJob::GetTypeName() const
+{
+   return defaultName;
 }
 
 string RsnapshotSmartBackupJob::GetTemplateConfigurationFile() const

@@ -41,11 +41,21 @@ private slots:
 
    void on_actionShutdown_triggered();
 
-   void on_actionBackup_triggered();
-
    void on_actionCustom_command_triggered();
 
    void on_jobListView_doubleClicked(const QModelIndex &index);
+
+   void on_actionRaw_Copy_triggered();
+
+   void on_actionRsync_Copy_triggered();
+
+   void on_actionGit_Filesystems_triggered();
+
+   void on_actionGit_Repositories_triggered();
+
+   void on_actionRsnapshot_triggered();
+
+   void on_actionZip_Copy_triggered();
 
 private:
    void OpenStandardFile();

@@ -15,6 +15,8 @@ public:
 
     virtual AbstractJob* Clone();
 
+    virtual std::string GetTypeName() const;
+
     bool GetWriteLogsToFile() const;
     void SetWriteLogsToFiles(bool enabled);
 

@@ -100,9 +100,20 @@
     <property name="title">
      <string>Add Job</string>
     </property>
+    <widget class="QMenu" name="menuBackup">
+     <property name="title">
+      <string>Backup</string>
+     </property>
+     <addaction name="actionRaw_Copy"/>
+     <addaction name="actionRsync_Copy"/>
+     <addaction name="actionZip_Copy"/>
+     <addaction name="actionGit_Filesystems"/>
+     <addaction name="actionGit_Repositories"/>
+     <addaction name="actionRsnapshot"/>
+    </widget>
     <addaction name="actionWake"/>
     <addaction name="actionShutdown"/>
-    <addaction name="actionBackup"/>
+    <addaction name="menuBackup"/>
     <addaction name="actionCustom_command"/>
    </widget>
    <addaction name="menuFile"/>
@@ -150,14 +161,39 @@
     <string>Shutdown</string>
    </property>
   </action>
-  <action name="actionBackup">
-   <property name="text">
-    <string>Backup</string>
-   </property>
-  </action>
   <action name="actionCustom_command">
    <property name="text">
     <string>Custom command</string>
+   </property>
+  </action>
+  <action name="actionRaw_Copy">
+   <property name="text">
+    <string>Raw Copy</string>
+   </property>
+  </action>
+  <action name="actionRsync_Copy">
+   <property name="text">
+    <string>Rsync Copy</string>
+   </property>
+  </action>
+  <action name="actionGit_Filesystems">
+   <property name="text">
+    <string>Git (Filesystems)</string>
+   </property>
+  </action>
+  <action name="actionGit_Repositories">
+   <property name="text">
+    <string>Git (Repositories)</string>
+   </property>
+  </action>
+  <action name="actionRsnapshot">
+   <property name="text">
+    <string>Rsnapshot</string>
+   </property>
+  </action>
+  <action name="actionZip_Copy">
+   <property name="text">
+    <string>Zip + Copy</string>
    </property>
   </action>
  </widget>

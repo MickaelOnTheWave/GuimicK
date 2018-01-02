@@ -29,9 +29,10 @@ static const int gitNotConfiguredError = 128;
 
 static const string gitUserName = "TaskManager";
 static const string gitUserEmail = "task@manager.com";
+static const string defaultName = "Git Filesystem Backup";
 
 GitFsBackupJob::GitFsBackupJob()
-    : AbstractBackupJob("Git Filesystem Backup"), forceRawCopy(false)
+    : AbstractBackupJob(defaultName), forceRawCopy(false)
 {
 }
 
@@ -51,7 +52,12 @@ JobStatus *GitFsBackupJob::Run()
     if (IsGitInstalled() == false)
         return new JobStatus(JobStatus::ERROR, errorGitNotInstalled);
     else
-        return AbstractBackupJob::Run();
+       return AbstractBackupJob::Run();
+}
+
+string GitFsBackupJob::GetTypeName() const
+{
+   return defaultName;
 }
 
 void GitFsBackupJob::SetForceRawCopyUse(const bool value)

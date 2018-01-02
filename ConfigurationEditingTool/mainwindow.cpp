@@ -14,14 +14,20 @@
 #include "wakejobdisplay.h"
 
 #include "configurationcheckdialog.h"
+#include "editbackupjobdialog.h"
 #include "editconsolejobdialog.h"
 #include "editshutdownjobdialog.h"
 #include "editwakejobdialog.h"
 
+#include "gitbackupjob.h"
+#include "gitfsbackupjob.h"
 #include "linuxshutdownjob.h"
 #include "rawcopyfsbackupjob.h"
+#include "rsnapshotsmartbackupjob.h"
+#include "rsynccopyfsbackupjob.h"
 #include "userconsolejob.h"
 #include "wakejob.h"
+#include "zipandcopyfsbackupjob.h"
 
 using namespace std;
 
@@ -158,6 +164,8 @@ AbstractEditJobDialog* MainWindow::CreateEditDialog(AbstractJob* job) const
       return new EditShutdownJobDialog(job);
    else if (dynamic_cast<AbstractConsoleJob*>(job))
       return new EditConsoleJobDialog(job);
+   else if (dynamic_cast<AbstractBackupJob*>(job))
+      return new EditBackupJobDialog(job);
    else
       return nullptr;
 }
@@ -246,11 +254,6 @@ void MainWindow::on_actionShutdown_triggered()
    InsertNewJob(new LinuxShutdownJob());
 }
 
-void MainWindow::on_actionBackup_triggered()
-{
-   InsertNewJob(new RawCopyFsBackupJob());
-}
-
 void MainWindow::on_actionCustom_command_triggered()
 {
    InsertNewJob(new UserConsoleJob());
@@ -266,4 +269,34 @@ void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
       editDialog->exec();
       delete editDialog;
    }
+}
+
+void MainWindow::on_actionRaw_Copy_triggered()
+{
+    InsertNewJob(new RawCopyFsBackupJob());
+}
+
+void MainWindow::on_actionRsync_Copy_triggered()
+{
+    InsertNewJob(new RsyncCopyFsBackupJob());
+}
+
+void MainWindow::on_actionGit_Filesystems_triggered()
+{
+    InsertNewJob(new GitFsBackupJob());
+}
+
+void MainWindow::on_actionGit_Repositories_triggered()
+{
+    InsertNewJob(new GitBackupJob());
+}
+
+void MainWindow::on_actionRsnapshot_triggered()
+{
+    InsertNewJob(new RsnapshotSmartBackupJob());
+}
+
+void MainWindow::on_actionZip_Copy_triggered()
+{
+    InsertNewJob(new ZipAndCopyFsBackupJob());
 }

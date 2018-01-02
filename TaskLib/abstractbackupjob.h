@@ -24,6 +24,8 @@ public:
 
     virtual JobStatus* Run();
 
+    virtual std::string GetTypeName() const = 0;
+
     bool IsTargetLocal() const;
     void SetTargetRemote(const std::string& user = "", const std::string& host = "");
     void SetTargetLocal();

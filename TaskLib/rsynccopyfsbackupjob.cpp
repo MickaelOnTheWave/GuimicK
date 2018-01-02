@@ -5,7 +5,9 @@
 
 using namespace std;
 
-RsyncCopyFsBackupJob::RsyncCopyFsBackupJob() : AbstractCopyFsBackupJob("Rsync Copy Backup")
+static const string defaultName = "Rsync Copy Backup";
+
+RsyncCopyFsBackupJob::RsyncCopyFsBackupJob() : AbstractCopyFsBackupJob(defaultName)
 {
 }
 
@@ -16,7 +18,12 @@ RsyncCopyFsBackupJob::RsyncCopyFsBackupJob(const AbstractCopyFsBackupJob &other)
 
 AbstractJob *RsyncCopyFsBackupJob::Clone()
 {
-    return new RsyncCopyFsBackupJob(*this);
+   return new RsyncCopyFsBackupJob(*this);
+}
+
+string RsyncCopyFsBackupJob::GetTypeName() const
+{
+   return defaultName;
 }
 
 bool RsyncCopyFsBackupJob::IsAvailable()

@@ -12,9 +12,10 @@ static const string tarCommandError = "tar command failed";
 static const string cleaningError = "error cleaning destination";
 static const string copyingError = "error copying archive";
 static const string remoteCleaningError = "remote archive not cleaned";
+static const string defaultName = "ZipAndCopy Backup";
 
 ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob()
-    : AbstractBackupJob("ZipAndCopy Backup"),
+    : AbstractBackupJob(defaultName),
       localDestination("")
 {
 }
@@ -27,7 +28,12 @@ ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob(const ZipAndCopyFsBackupJob& other)
 
 AbstractJob *ZipAndCopyFsBackupJob::Clone()
 {
-    return new ZipAndCopyFsBackupJob(*this);
+   return new ZipAndCopyFsBackupJob(*this);
+}
+
+string ZipAndCopyFsBackupJob::GetTypeName() const
+{
+   return defaultName;
 }
 
 bool ZipAndCopyFsBackupJob::Restore(const string &backupFile, const string &destination)

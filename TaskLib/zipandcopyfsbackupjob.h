@@ -13,6 +13,8 @@ public:
 
     virtual AbstractJob* Clone();
 
+    virtual std::string GetTypeName() const;
+
     static bool Restore(const std::string& backupFile,
                         const std::string& destination);
 

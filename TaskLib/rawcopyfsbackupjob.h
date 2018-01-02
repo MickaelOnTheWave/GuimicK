@@ -11,6 +11,8 @@ public:
 
     virtual AbstractJob* Clone();
 
+    virtual std::string GetTypeName() const;
+
 protected:
     virtual void PrepareCopyCommand(const std::string &source,
                                     const std::string &destination,

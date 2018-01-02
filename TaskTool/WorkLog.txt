@@ -1,5 +1,12 @@
-02/01/2018 (1.1h)
+02/01/2018 (2.3h)
    Back to work! Updating copyright information. Created generic display class for backups.
+	Created basic edit dialog for backup jobs. For now it only allows display and (temporary)
+	edition of backup points. Also updated main window to allow for adding all types of backups.
+	Remaining jobs : disk space check + remote jobs runner?
+Next planned work:
+   - Add basic display+adding+editing for all remaining jobs
+	- Consider ConsoleJob refactoring as described before
+	- Implement full data update as described before
 
 15/11/2017 (2h)
    Production run worked somehow.... Updated release plan.

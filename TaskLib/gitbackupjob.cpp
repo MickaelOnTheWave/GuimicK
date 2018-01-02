@@ -20,9 +20,10 @@ static const string repositoryPullOk                    = "Repository successful
 static const string reportCreationError                 = "Failed creating report";
 
 static const string repositoryBackupMessage = "repositories backed up";
+static const string defaultName = "Git Repository Backup";
 
 GitBackupJob::GitBackupJob()
- : AbstractBackupJob("Git Repository Backup"),
+ : AbstractBackupJob(defaultName),
    writeLogsToFile(false), archiveContent("")
 {
     statusManager->SetItemBackupMessage(repositoryBackupMessage);
@@ -53,7 +54,12 @@ GitBackupJob::~GitBackupJob()
 
 AbstractJob *GitBackupJob::Clone()
 {
-    return new GitBackupJob(*this);
+   return new GitBackupJob(*this);
+}
+
+string GitBackupJob::GetTypeName() const
+{
+   return defaultName;
 }
 
 bool GitBackupJob::GetWriteLogsToFile() const

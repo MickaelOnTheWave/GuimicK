@@ -23,7 +23,7 @@ void AbstractBackupJobDisplay::Initialize(AbstractJob* job)
    if (backupJob)
    {
       ui->titleLabel->setText(backupJob->GetName().c_str());
-      ui->typeLabel->setText("AbstractBackupJob");
+      ui->typeLabel->setText(backupJob->GetTypeName().c_str());
 
       vector<pair<string,string> > backupPoints;
       backupJob->GetFolderList(backupPoints);

@@ -16,6 +16,8 @@ public:
     virtual AbstractJob* Clone();
     virtual JobStatus* Run();
 
+    virtual std::string GetTypeName() const;
+
     void SetForceRawCopyUse(const bool value);
 
 private:

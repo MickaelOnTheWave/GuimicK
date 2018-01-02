@@ -11,6 +11,8 @@ public:
 
     virtual AbstractJob* Clone();
 
+    virtual std::string GetTypeName() const;
+
     static bool IsAvailable();
 
     virtual bool IsInitialized(void);

@@ -18,6 +18,8 @@ public:
 
     virtual JobStatus* Run();
 
+    virtual std::string GetTypeName() const;
+
     std::string GetTemplateConfigurationFile() const;
     void SetTemplateConfigurationFile(const std::string& value);
 
