@@ -1,19 +1,21 @@
 #ifndef ABSTRACTBACKUPJOBDISPLAY_H
 #define ABSTRACTBACKUPJOBDISPLAY_H
 
-#include <QWidget>
+#include "abstractdisplay.h"
 
 namespace Ui {
    class AbstractBackupJobDisplay;
 }
 
-class AbstractBackupJobDisplay : public QWidget
+class AbstractBackupJobDisplay : public AbstractDisplay
 {
    Q_OBJECT
 
 public:
    explicit AbstractBackupJobDisplay(QWidget *parent = 0);
    ~AbstractBackupJobDisplay();
+
+   virtual void Initialize(AbstractJob* job) override;
 
 private:
    Ui::AbstractBackupJobDisplay *ui;

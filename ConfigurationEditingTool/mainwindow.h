@@ -67,6 +67,7 @@ private:
 
    AbstractEditJobDialog* CreateEditDialog(AbstractJob* job) const;
    AbstractDisplay* CreateDisplay(AbstractJob* job) const;
+   void CreateJobDisplayDelegates(const std::list<AbstractJob*>& jobs);
 
    Ui::MainWindow *ui;
    Model model;

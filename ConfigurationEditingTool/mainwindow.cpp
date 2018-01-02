@@ -9,6 +9,7 @@
 
 #include "jobdelegate.h"
 
+#include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
 #include "wakejobdisplay.h"
 
@@ -74,7 +75,10 @@ void MainWindow::on_actionClose_triggered()
 void MainWindow::UpdateJobListWidget()
 {
    jobListModel.Clear();
-   jobListModel.AddJobs(model.GetJobList());
+
+   const list<AbstractJob*> jobs = model.GetJobList();
+   jobListModel.AddJobs(jobs);
+   CreateJobDisplayDelegates(jobs);
 }
 
 void MainWindow::InsertNewJob(AbstractJob* job)
@@ -162,8 +166,20 @@ AbstractDisplay* MainWindow::CreateDisplay(AbstractJob* job) const
 {
    if (dynamic_cast<WakeJob*>(job))
       return new WakeJobDisplay();
+   else if (dynamic_cast<AbstractBackupJob*>(job))
+      return new AbstractBackupJobDisplay();
    else
       return new AbstractJobDisplay();
+}
+
+void MainWindow::CreateJobDisplayDelegates(const std::list<AbstractJob*>& jobs)
+{
+   int index = 0;
+   for (const auto it : jobs)
+   {
+      ui->jobListView->setItemDelegateForRow(index, new JobDelegate(CreateDisplay(it)));
+      ++index;
+   }
 }
 
 void MainWindow::on_upButton_clicked()

@@ -1,5 +1,5 @@
-02/01/2018 (12)
-   Back to work! Updating copyright information.
+02/01/2018 (1.1h)
+   Back to work! Updating copyright information. Created generic display class for backups.
 
 15/11/2017 (2h)
    Production run worked somehow.... Updated release plan.
