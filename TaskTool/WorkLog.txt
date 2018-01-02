@@ -1,3 +1,6 @@
+02/01/2018 (12)
+   Back to work! Updating copyright information.
+
 15/11/2017 (2h)
    Production run worked somehow.... Updated release plan.
 	Created subdialog to add attachments and integrated it.
