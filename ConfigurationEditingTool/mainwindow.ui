@@ -114,6 +114,7 @@
     <addaction name="actionWake"/>
     <addaction name="actionShutdown"/>
     <addaction name="menuBackup"/>
+    <addaction name="actionDisk_space_check"/>
     <addaction name="actionCustom_command"/>
    </widget>
    <addaction name="menuFile"/>
@@ -194,6 +195,11 @@
   <action name="actionZip_Copy">
    <property name="text">
     <string>Zip + Copy</string>
+   </property>
+  </action>
+  <action name="actionDisk_space_check">
+   <property name="text">
+    <string>Disk space check</string>
    </property>
   </action>
  </widget>

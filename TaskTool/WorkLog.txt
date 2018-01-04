@@ -1,3 +1,8 @@
+04/01/2018 (11.1-11.8)
+   Added basic editing+adding+displaying for disk space job. Remove job runner is out of scope
+	for now - too complex and not needed for basic features. Now going for detailed edition of
+	backup jobs.
+
 02/01/2018 (2.3h)
    Back to work! Updating copyright information. Created generic display class for backups.
 	Created basic edit dialog for backup jobs. For now it only allows display and (temporary)
@@ -5,6 +10,7 @@
 	Remaining jobs : disk space check + remote jobs runner?
 Next planned work:
    - Add basic display+adding+editing for all remaining jobs
+	- Add detailed information editing for all backup jobs
 	- Consider ConsoleJob refactoring as described before
 	- Implement full data update as described before
 

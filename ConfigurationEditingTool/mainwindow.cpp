@@ -11,16 +11,19 @@
 
 #include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
+#include "diskspacejobdisplay.h"
 #include "wakejobdisplay.h"
 
 #include "configurationcheckdialog.h"
 #include "editbackupjobdialog.h"
 #include "editconsolejobdialog.h"
+#include "editdiskspacejobdialog.h"
 #include "editshutdownjobdialog.h"
 #include "editwakejobdialog.h"
 
 #include "gitbackupjob.h"
 #include "gitfsbackupjob.h"
+#include "linuxfreespacecheckjob.h"
 #include "linuxshutdownjob.h"
 #include "rawcopyfsbackupjob.h"
 #include "rsnapshotsmartbackupjob.h"
@@ -166,6 +169,8 @@ AbstractEditJobDialog* MainWindow::CreateEditDialog(AbstractJob* job) const
       return new EditConsoleJobDialog(job);
    else if (dynamic_cast<AbstractBackupJob*>(job))
       return new EditBackupJobDialog(job);
+   else if (dynamic_cast<LinuxFreeSpaceCheckJob*>(job))
+      return new EditDiskSpaceJobDialog(job);
    else
       return nullptr;
 }
@@ -176,6 +181,8 @@ AbstractDisplay* MainWindow::CreateDisplay(AbstractJob* job) const
       return new WakeJobDisplay();
    else if (dynamic_cast<AbstractBackupJob*>(job))
       return new AbstractBackupJobDisplay();
+   else if (dynamic_cast<LinuxFreeSpaceCheckJob*>(job))
+      return new DiskSpaceJobDisplay();
    else
       return new AbstractJobDisplay();
 }
@@ -299,4 +306,9 @@ void MainWindow::on_actionRsnapshot_triggered()
 void MainWindow::on_actionZip_Copy_triggered()
 {
     InsertNewJob(new ZipAndCopyFsBackupJob());
+}
+
+void MainWindow::on_actionDisk_space_check_triggered()
+{
+    InsertNewJob(new LinuxFreeSpaceCheckJob());
 }

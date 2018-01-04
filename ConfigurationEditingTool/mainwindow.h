@@ -57,6 +57,8 @@ private slots:
 
    void on_actionZip_Copy_triggered();
 
+   void on_actionDisk_space_check_triggered();
+
 private:
    void OpenStandardFile();
    void OpenFile(const QString& filename,

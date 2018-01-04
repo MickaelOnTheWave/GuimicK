@@ -41,7 +41,9 @@ SOURCES += \
     abstractdisplay.cpp \
     wakejobdisplay.cpp \
     abstractbackupjobdisplay.cpp \
-    editbackupjobdialog.cpp
+    editbackupjobdialog.cpp \
+    diskspacejobdisplay.cpp \
+    editdiskspacejobdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -59,7 +61,9 @@ HEADERS += \
     abstractdisplay.h \
     wakejobdisplay.h \
     abstractbackupjobdisplay.h \
-    editbackupjobdialog.h
+    editbackupjobdialog.h \
+    diskspacejobdisplay.h \
+    editdiskspacejobdialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -71,7 +75,9 @@ FORMS += \
     abstractjobdisplay.ui \
     wakejobdisplay.ui \
     abstractbackupjobdisplay.ui \
-    editbackupjobdialog.ui
+    editbackupjobdialog.ui \
+    diskspacejobdisplay.ui \
+    editdiskspacejobdialog.ui
 
 contains( CONFIG, synology ) {
    BUILD_TYPE = Synology
