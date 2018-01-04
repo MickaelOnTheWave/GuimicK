@@ -15,15 +15,11 @@ public:
    explicit EditWakeJobDialog(AbstractJob* _job);
    virtual ~EditWakeJobDialog();
 
-private slots:
-   void on_okButton_clicked();
-
-   void on_cancelButton_clicked();
+protected:
+   virtual void UpdateUiFromJob() override;
+   virtual void UpdateJobFromUi() override;
 
 private:
-   void UpdateUiFromJob();
-   void UpdateJobFromUi();
-
    Ui::EditWakeJobDialog *ui;
 };
 

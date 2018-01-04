@@ -18,6 +18,7 @@
 #include "editbackupjobdialog.h"
 #include "editconsolejobdialog.h"
 #include "editdiskspacejobdialog.h"
+#include "editrsnapshotbackupjobdialog.h"
 #include "editshutdownjobdialog.h"
 #include "editwakejobdialog.h"
 
@@ -168,7 +169,12 @@ AbstractEditJobDialog* MainWindow::CreateEditDialog(AbstractJob* job) const
    else if (dynamic_cast<AbstractConsoleJob*>(job))
       return new EditConsoleJobDialog(job);
    else if (dynamic_cast<AbstractBackupJob*>(job))
-      return new EditBackupJobDialog(job);
+   {
+      if (dynamic_cast<RsnapshotSmartBackupJob*>(job))
+         return new EditRsnapshotBackupJobDialog(job);
+      else
+         return new EditBackupJobDialog(job);
+   }
    else if (dynamic_cast<LinuxFreeSpaceCheckJob*>(job))
       return new EditDiskSpaceJobDialog(job);
    else

@@ -2,6 +2,7 @@
 #define EDITBACKUPJOBDIALOG_H
 
 #include "abstracteditjobdialog.h"
+#include "editbackupjobwidget.h"
 
 namespace Ui {
    class EditBackupJobDialog;
@@ -15,27 +16,15 @@ public:
    explicit EditBackupJobDialog(AbstractJob* _job);
    virtual ~EditBackupJobDialog();
 
-private slots:
-   void on_buttonBox_accepted();
-
-   void on_buttonBox_rejected();
-
-   void on_addBackupPointButton_clicked();
-
-   void on_removeBackupPointButton_clicked();
-
-   void on_backupPointsWidget_itemSelectionChanged();
+protected:
+   virtual void UpdateUiFromJob() override;
+   virtual void UpdateJobFromUi() override;
 
 private:
-   void UpdateUiFromJob();
-   void UpdateJobFromUi();
-
-   void AddBackupPointsToUi(
-      const std::vector<std::pair<std::string,std::string> >& backupPoints
-   );
-   void AddBackupPointsToJob();
+   void CreateBasicBackupWidget();
 
    Ui::EditBackupJobDialog *ui;
+   EditBackupJobWidget* basicBackupWidget;
 };
 
 #endif // EDITBACKUPJOBDIALOG_H

@@ -8,22 +8,13 @@ EditWakeJobDialog::EditWakeJobDialog(AbstractJob* _job) :
 {
    ui->setupUi(this);
    UpdateUiFromJob();
+   connect(ui->okButton, SIGNAL(pressed()), this, SLOT(OnCloseAccepting()));
+   connect(ui->cancelButton, SIGNAL(pressed()), this, SLOT(OnCloseRejecting()));
 }
 
 EditWakeJobDialog::~EditWakeJobDialog()
 {
    delete ui;
-}
-
-void EditWakeJobDialog::on_okButton_clicked()
-{
-   UpdateJobFromUi();
-   accept();
-}
-
-void EditWakeJobDialog::on_cancelButton_clicked()
-{
-   reject();
 }
 
 void EditWakeJobDialog::UpdateUiFromJob()

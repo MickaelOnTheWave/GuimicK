@@ -30,6 +30,7 @@ public:
     void SetTargetRemote(const std::string& user = "", const std::string& host = "");
     void SetTargetLocal();
 
+    std::string GetRepository() const;
     virtual void SetRepository(const std::string& value);
     void AddFolder(const std::string& source, const std::string& destination);
     void GetFolderList(std::vector<std::pair<std::string, std::string> >& folders);

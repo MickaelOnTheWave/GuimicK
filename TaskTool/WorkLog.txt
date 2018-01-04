@@ -1,7 +1,15 @@
-04/01/2018 (11.1-11.8)
+04/01/2018 (2.6h)
    Added basic editing+adding+displaying for disk space job. Remove job runner is out of scope
 	for now - too complex and not needed for basic features. Now going for detailed edition of
-	backup jobs.
+	backup jobs. First improving existing backup UI : added field for job name changing.
+	Improved existing	controls usage.
+	Created Rsnapshot specific dialog. Refactored abstract backup interface into a reusable widget.
+	Used it in Rsnapshot dialog and refactored basic backup dialog accordingly. Both are tested and
+	working :-). Also fixed a crash when adding empty backups.
+Next planned work:
+   - Finish adding rsnapshot specific configurations : template configuration and temp file
+	- Create dialogs for other backup jobs : rsync, gitfs, zipcopy
+	- Continue previous roadmap
 
 02/01/2018 (2.3h)
    Back to work! Updating copyright information. Created generic display class for backups.

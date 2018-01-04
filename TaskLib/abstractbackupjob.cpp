@@ -78,6 +78,11 @@ void AbstractBackupJob::SetTargetLocal()
     sshHost = "";
 }
 
+string AbstractBackupJob::GetRepository() const
+{
+   return repository;
+}
+
 void AbstractBackupJob::SetRepository(const string &value)
 {
     repository = value;
