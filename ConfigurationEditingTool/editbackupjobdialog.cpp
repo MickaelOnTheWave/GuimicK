@@ -31,17 +31,20 @@ void EditBackupJobDialog::on_buttonBox_rejected()
 
 void EditBackupJobDialog::UpdateUiFromJob()
 {
-   auto backupJob = dynamic_cast<AbstractBackupJob*>(job);
-   if (!backupJob)
-      return;
+   auto backupJob = static_cast<AbstractBackupJob*>(job);
+   ui->jobNameEdit->setText(backupJob->GetName().c_str());
 
    vector<pair<string,string> > backupPoints;
    backupJob->GetFolderList(backupPoints);
    AddBackupPointsToUi(backupPoints);
+   ui->removeBackupPointButton->setEnabled(false);
 }
 
 void EditBackupJobDialog::UpdateJobFromUi()
 {
+   auto backupJob = static_cast<AbstractBackupJob*>(job);
+   backupJob->SetName(ui->jobNameEdit->text().toStdString());
+   AddBackupPointsToJob();
 }
 
 void EditBackupJobDialog::AddBackupPointsToUi(
@@ -59,12 +62,31 @@ void EditBackupJobDialog::AddBackupPointsToUi(
    ui->backupPointsWidget->resizeColumnsToContents();
 }
 
+void EditBackupJobDialog::AddBackupPointsToJob()
+{
+   auto backupJob = static_cast<AbstractBackupJob*>(job);
+   backupJob->ClearFolderList();
+   for (int i=0; i<ui->backupPointsWidget->rowCount(); ++i)
+   {
+      QTableWidgetItem* sourceItem = ui->backupPointsWidget->item(i, 0);
+      QTableWidgetItem* destinationItem = ui->backupPointsWidget->item(i, 1);
+      backupJob->AddFolder(sourceItem->text().toStdString(), destinationItem->text().toStdString());
+   }
+}
+
 void EditBackupJobDialog::on_addBackupPointButton_clicked()
 {
-   ui->backupPointsWidget->insertRow(ui->backupPointsWidget->currentRow());
+   const int currentIndex = ui->backupPointsWidget->currentRow();
+   const int addIndex = (currentIndex == -1) ? ui->backupPointsWidget->rowCount() : currentIndex+1;
+   ui->backupPointsWidget->insertRow(addIndex);
 }
 
 void EditBackupJobDialog::on_removeBackupPointButton_clicked()
 {
    ui->backupPointsWidget->removeRow(ui->backupPointsWidget->currentRow());
+}
+
+void EditBackupJobDialog::on_backupPointsWidget_itemSelectionChanged()
+{
+   ui->removeBackupPointButton->setEnabled(ui->backupPointsWidget->currentRow() != -1);
 }

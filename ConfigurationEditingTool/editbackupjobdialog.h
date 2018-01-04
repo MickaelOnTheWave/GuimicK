@@ -24,6 +24,8 @@ private slots:
 
    void on_removeBackupPointButton_clicked();
 
+   void on_backupPointsWidget_itemSelectionChanged();
+
 private:
    void UpdateUiFromJob();
    void UpdateJobFromUi();
@@ -31,6 +33,7 @@ private:
    void AddBackupPointsToUi(
       const std::vector<std::pair<std::string,std::string> >& backupPoints
    );
+   void AddBackupPointsToJob();
 
    Ui::EditBackupJobDialog *ui;
 };
