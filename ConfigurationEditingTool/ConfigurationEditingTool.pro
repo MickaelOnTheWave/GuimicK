@@ -45,7 +45,8 @@ SOURCES += \
     diskspacejobdisplay.cpp \
     editdiskspacejobdialog.cpp \
     editrsnapshotbackupjobdialog.cpp \
-    editbackupjobwidget.cpp
+    editbackupjobwidget.cpp \
+    editgitfsbackupjobdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -67,7 +68,8 @@ HEADERS += \
     diskspacejobdisplay.h \
     editdiskspacejobdialog.h \
     editrsnapshotbackupjobdialog.h \
-    editbackupjobwidget.h
+    editbackupjobwidget.h \
+    editgitfsbackupjobdialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -83,7 +85,8 @@ FORMS += \
     diskspacejobdisplay.ui \
     editdiskspacejobdialog.ui \
     editrsnapshotbackupjobdialog.ui \
-    editbackupjobwidget.ui
+    editbackupjobwidget.ui \
+    editgitfsbackupjobdialog.ui
 
 contains( CONFIG, synology ) {
    BUILD_TYPE = Synology

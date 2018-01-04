@@ -1,3 +1,10 @@
+04/01/2018 (0.4h)
+   Finished Rsnapshot configuration dialog. Now going for GitFs..
+	GitFs done. Stopping now, too much headache.
+Next planned work:
+   - Create dialogs for Rsync and ZipCopy jobs
+	- Continue previous roadmap
+
 04/01/2018 (2.6h)
    Added basic editing+adding+displaying for disk space job. Remove job runner is out of scope
 	for now - too complex and not needed for basic features. Now going for detailed edition of

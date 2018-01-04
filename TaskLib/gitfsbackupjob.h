@@ -18,6 +18,7 @@ public:
 
     virtual std::string GetTypeName() const;
 
+    bool GetForceRawCopyUse() const;
     void SetForceRawCopyUse(const bool value);
 
 private:

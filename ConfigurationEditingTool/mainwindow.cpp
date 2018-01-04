@@ -18,6 +18,7 @@
 #include "editbackupjobdialog.h"
 #include "editconsolejobdialog.h"
 #include "editdiskspacejobdialog.h"
+#include "editgitfsbackupjobdialog.h"
 #include "editrsnapshotbackupjobdialog.h"
 #include "editshutdownjobdialog.h"
 #include "editwakejobdialog.h"
@@ -172,6 +173,8 @@ AbstractEditJobDialog* MainWindow::CreateEditDialog(AbstractJob* job) const
    {
       if (dynamic_cast<RsnapshotSmartBackupJob*>(job))
          return new EditRsnapshotBackupJobDialog(job);
+      else if (dynamic_cast<GitFsBackupJob*>(job))
+         return new EditGitFsBackupJobDialog(job);
       else
          return new EditBackupJobDialog(job);
    }

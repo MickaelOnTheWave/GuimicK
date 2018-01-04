@@ -60,6 +60,11 @@ string GitFsBackupJob::GetTypeName() const
    return defaultName;
 }
 
+bool GitFsBackupJob::GetForceRawCopyUse() const
+{
+   return forceRawCopy;
+}
+
 void GitFsBackupJob::SetForceRawCopyUse(const bool value)
 {
     forceRawCopy = value;
