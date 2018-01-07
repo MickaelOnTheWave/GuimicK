@@ -18,6 +18,7 @@ public:
     static bool Restore(const std::string& backupFile,
                         const std::string& destination);
 
+    std::string GetLocalDestination() const;
     void SetLocalDestination(const std::string& value);
 
 protected:

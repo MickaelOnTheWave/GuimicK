@@ -52,6 +52,11 @@ bool ZipAndCopyFsBackupJob::Restore(const string &backupFile, const string &dest
     return (commandJob.GetCommandReturnCode() == 0);
 }
 
+string ZipAndCopyFsBackupJob::GetLocalDestination() const
+{
+   return localDestination;
+}
+
 void ZipAndCopyFsBackupJob::SetLocalDestination(const string &value)
 {
     localDestination = value;

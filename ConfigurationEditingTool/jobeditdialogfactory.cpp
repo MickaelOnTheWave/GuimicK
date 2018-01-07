@@ -19,6 +19,7 @@
 #include "editrsyncfsbackupjobdialog.h"
 #include "editshutdownjobdialog.h"
 #include "editwakejobdialog.h"
+#include "editzipcopybackupdialog.h"
 
 AbstractEditJobDialog* JobEditDialogFactory::Create(AbstractJob* job)
 {
@@ -36,6 +37,8 @@ AbstractEditJobDialog* JobEditDialogFactory::Create(AbstractJob* job)
          return new EditGitFsBackupJobDialog(job);
       else if (dynamic_cast<RsyncCopyFsBackupJob*>(job))
          return new EditRsyncFsBackupJobDialog(job);
+      else if (dynamic_cast<ZipAndCopyFsBackupJob*>(job))
+         return new EditZipCopyBackupDialog(job);
       else
          return new EditBackupJobDialog(job);
    }
