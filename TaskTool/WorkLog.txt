@@ -1,3 +1,7 @@
+04/01/2018 (12.8)
+   Created first version of Rsync dialog. Refactored code - now edit dialog creation is
+	done in a dedicated factory.
+
 04/01/2018 (0.4h)
    Finished Rsnapshot configuration dialog. Now going for GitFs..
 	GitFs done. Stopping now, too much headache.

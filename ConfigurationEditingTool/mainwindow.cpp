@@ -7,21 +7,14 @@
 #include <QFileDialog>
 #include <QMenu>
 
+#include "configurationcheckdialog.h"
 #include "jobdelegate.h"
+#include "jobeditdialogfactory.h"
 
 #include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
 #include "diskspacejobdisplay.h"
 #include "wakejobdisplay.h"
-
-#include "configurationcheckdialog.h"
-#include "editbackupjobdialog.h"
-#include "editconsolejobdialog.h"
-#include "editdiskspacejobdialog.h"
-#include "editgitfsbackupjobdialog.h"
-#include "editrsnapshotbackupjobdialog.h"
-#include "editshutdownjobdialog.h"
-#include "editwakejobdialog.h"
 
 #include "gitbackupjob.h"
 #include "gitfsbackupjob.h"
@@ -161,29 +154,6 @@ void MainWindow::UpdateRowDelegatesFromBottom(const int startingIndex)
    }
 }
 
-AbstractEditJobDialog* MainWindow::CreateEditDialog(AbstractJob* job) const
-{
-   if (dynamic_cast<WakeJob*>(job))
-      return new EditWakeJobDialog(job);
-   else if (dynamic_cast<LinuxShutdownJob*>(job))
-      return new EditShutdownJobDialog(job);
-   else if (dynamic_cast<AbstractConsoleJob*>(job))
-      return new EditConsoleJobDialog(job);
-   else if (dynamic_cast<AbstractBackupJob*>(job))
-   {
-      if (dynamic_cast<RsnapshotSmartBackupJob*>(job))
-         return new EditRsnapshotBackupJobDialog(job);
-      else if (dynamic_cast<GitFsBackupJob*>(job))
-         return new EditGitFsBackupJobDialog(job);
-      else
-         return new EditBackupJobDialog(job);
-   }
-   else if (dynamic_cast<LinuxFreeSpaceCheckJob*>(job))
-      return new EditDiskSpaceJobDialog(job);
-   else
-      return nullptr;
-}
-
 AbstractDisplay* MainWindow::CreateDisplay(AbstractJob* job) const
 {
    if (dynamic_cast<WakeJob*>(job))
@@ -278,7 +248,7 @@ void MainWindow::on_actionCustom_command_triggered()
 void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
 {
    AbstractJob* job = jobListModel.GetJob(index);
-   AbstractEditJobDialog* editDialog = CreateEditDialog(job);
+   AbstractEditJobDialog* editDialog = JobEditDialogFactory::Create(job);
 
    if (editDialog)
    {

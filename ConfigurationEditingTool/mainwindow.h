@@ -77,7 +77,6 @@ private:
    void UpdateRowDelegatesFromTop(const int startingIndex);
    void UpdateRowDelegatesFromBottom(const int startingIndex);
 
-   AbstractEditJobDialog* CreateEditDialog(AbstractJob* job) const;
    AbstractDisplay* CreateDisplay(AbstractJob* job) const;
    void CreateJobDisplayDelegates(const std::list<AbstractJob*>& jobs);
 
