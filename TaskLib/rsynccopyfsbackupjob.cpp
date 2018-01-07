@@ -34,12 +34,22 @@ bool RsyncCopyFsBackupJob::IsAvailable()
 
 bool RsyncCopyFsBackupJob::IsInitialized()
 {
-    return AbstractCopyFsBackupJob::IsInitialized() && IsAvailable();
+   return AbstractCopyFsBackupJob::IsInitialized() && IsAvailable();
+}
+
+void RsyncCopyFsBackupJob::GetExclusionList(std::vector<string>& exclusions)
+{
+   exclusions = itemsToExclude;
 }
 
 void RsyncCopyFsBackupJob::AddToExclusions(const string &item)
 {
-    itemsToExclude.push_back(item);
+   itemsToExclude.push_back(item);
+}
+
+void RsyncCopyFsBackupJob::ClearExclusionList()
+{
+   itemsToExclude.clear();
 }
 
 void RsyncCopyFsBackupJob::PrepareCopyCommand(const std::string &source,

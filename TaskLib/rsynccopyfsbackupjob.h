@@ -17,7 +17,9 @@ public:
 
     virtual bool IsInitialized(void);
 
+    void GetExclusionList(std::vector<std::string>& exclusions);
     void AddToExclusions(const std::string& item);
+    void ClearExclusionList();
 
 protected:
     virtual void PrepareCopyCommand(const std::string &source,
