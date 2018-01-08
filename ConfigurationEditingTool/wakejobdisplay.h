@@ -13,7 +13,7 @@ class WakeJobDisplay : public AbstractDisplay
 
 public:
    explicit WakeJobDisplay(QWidget *parent = 0);
-   ~WakeJobDisplay();
+   virtual ~WakeJobDisplay();
 
    virtual void Initialize(AbstractJob* job) override;
 

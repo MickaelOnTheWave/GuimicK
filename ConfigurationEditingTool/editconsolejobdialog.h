@@ -38,6 +38,7 @@ protected:
    virtual void UpdateJobFromUi() override;
 
 private:
+   void UpdateJobTypeLabel();
    void UpdateUiFromJob_Basic();
    void UpdateUiFromJob_User();
    void UpdateUiFromUserConsoleJob(UserConsoleJob* userJob);

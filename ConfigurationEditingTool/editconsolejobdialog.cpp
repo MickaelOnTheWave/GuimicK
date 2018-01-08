@@ -34,6 +34,7 @@ void EditConsoleJobDialog::on_cancelButton_clicked()
 
 void EditConsoleJobDialog::UpdateUiFromJob()
 {
+   UpdateJobTypeLabel();
    UpdateUiFromJob_Basic();
    UpdateUiFromJob_User();
 }
@@ -42,6 +43,16 @@ void EditConsoleJobDialog::UpdateJobFromUi()
 {
    UpdateJobFromUi_Basic();
    UpdateJobFromUi_User();
+}
+
+void EditConsoleJobDialog::UpdateJobTypeLabel()
+{
+   if (dynamic_cast<UserConsoleJob*>(job))
+      ui->jobTypeLabel->setText("Server Command");
+   else if (dynamic_cast<SshConsoleJob*>(job))
+      ui->jobTypeLabel->setText("Client Command");
+   else
+      ui->jobTypeLabel->setText("Internal Command");
 }
 
 void EditConsoleJobDialog::UpdateUiFromJob_Basic()

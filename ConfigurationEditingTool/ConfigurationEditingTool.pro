@@ -50,7 +50,8 @@ SOURCES += \
     editrsyncfsbackupjobdialog.cpp \
     jobeditdialogfactory.cpp \
     editzipcopybackupdialog.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    consolejobdisplay.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -77,7 +78,8 @@ HEADERS += \
     editrsyncfsbackupjobdialog.h \
     jobeditdialogfactory.h \
     editzipcopybackupdialog.h \
-    aboutdialog.h
+    aboutdialog.h \
+    consolejobdisplay.h
 
 FORMS += \
         mainwindow.ui \
@@ -97,7 +99,8 @@ FORMS += \
     editgitfsbackupjobdialog.ui \
     editrsyncfsbackupjobdialog.ui \
     editzipcopybackupdialog.ui \
-    aboutdialog.ui
+    aboutdialog.ui \
+    consolejobdisplay.ui
 
 contains( CONFIG, synology ) {
    BUILD_TYPE = Synology

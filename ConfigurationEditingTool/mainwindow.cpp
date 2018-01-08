@@ -14,6 +14,7 @@
 
 #include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
+#include "consolejobdisplay.h"
 #include "diskspacejobdisplay.h"
 #include "wakejobdisplay.h"
 
@@ -163,6 +164,8 @@ AbstractDisplay* MainWindow::CreateDisplay(AbstractJob* job) const
       return new AbstractBackupJobDisplay();
    else if (dynamic_cast<LinuxFreeSpaceCheckJob*>(job))
       return new DiskSpaceJobDisplay();
+   else if (dynamic_cast<AbstractConsoleJob*>(job))
+      return new ConsoleJobDisplay();
    else
       return new AbstractJobDisplay();
 }
@@ -193,14 +196,6 @@ void MainWindow::on_downButton_clicked()
                         : currentIndex;
 
    MoveItem(currentIndex, newIndex);
-}
-
-void MainWindow::on_addButton_clicked()
-{
-/*   QMenu addMenu(this);
-   addMenu.addAction("Wake");
-   addMenu.addAction("Shutdown");
-   addMenu.popup(QPoint(10,10));*/
 }
 
 void MainWindow::on_deleteButton_clicked()

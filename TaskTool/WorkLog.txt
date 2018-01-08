@@ -1,9 +1,11 @@
-08/01/2018 (1.4h)
+08/01/2018 (2.1h)
    Created simple About dialog. Now looking at ConsoleJob refactoring...
 	Finished ConsoleJob configuration dialog without need for refactoring jobs, only
 	a slight change in dialog to get the relevant user job if available.
 	Ssh tab was completely removed : it is ok to assume that an ssh job will be configured to be
 	on this client, not another one (for the UI - it is for "dummies").
+	Created dedicated display class for Console jobs and added tag in configuration dialog to
+	easily identify if command is client of server.
 Next planned work:
    - Implement configuration saving
 	- Check if there is something else missing for a real use of the UI. If not, update release plan.
