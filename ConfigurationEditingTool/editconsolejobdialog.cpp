@@ -12,6 +12,7 @@ EditConsoleJobDialog::EditConsoleJobDialog(AbstractJob* _job) :
    ui(new Ui::EditConsoleJobDialog)
 {
    ui->setupUi(this);
+   ui->tabWidget->removeTab(2); // Ssh jobs must be this client.
    UpdateUiFromJob();
 }
 
@@ -35,7 +36,12 @@ void EditConsoleJobDialog::UpdateUiFromJob()
 {
    UpdateUiFromJob_Basic();
    UpdateUiFromJob_User();
-   UpdateUiFromJob_Ssh();
+}
+
+void EditConsoleJobDialog::UpdateJobFromUi()
+{
+   UpdateJobFromUi_Basic();
+   UpdateJobFromUi_User();
 }
 
 void EditConsoleJobDialog::UpdateUiFromJob_Basic()
@@ -49,53 +55,80 @@ void EditConsoleJobDialog::UpdateUiFromJob_Basic()
 
 void EditConsoleJobDialog::UpdateUiFromJob_User()
 {
-/*   auto castJob = dynamic_cast<UserConsoleJob*>(job);
-   if (!castJob)
-      return;
-   ui->useParserBox->setChecked(castJob->GetMiniDescriptionParserCommand() != "");
-   ui->parserEdit->setText(castJob->GetMiniDescriptionParserCommand().c_str());
-   ui->parserUsesBufferBox->setChecked(castJob->IsParsingUsingBuffer());
-   UpdateParserUi();
-
-   ui->expectedOutputTextEdit->setPlainText(castJob->GetExpectedOutput().c_str());
-   const bool isOutputUsedAsCondition = (castJob->GetExpectedOutput() != "");
-   ui->successTypeBox->setCurrentIndex(isOutputUsedAsCondition ? 1 : 0);
-
-   vector<string> userAttachments;
-   castJob->GetUserAttachments(userAttachments);
-   for (const auto& it : userAttachments)
-      ui->attachmentsWidget->addItem(QString(it.c_str()));*/
+   UserConsoleJob* userJob = GetUserConsoleJob();
+   if (userJob)
+      UpdateUiFromUserConsoleJob(userJob);
+   else
+      ui->tabWidget->removeTab(1);
 }
 
-void EditConsoleJobDialog::UpdateUiFromJob_Ssh()
+void EditConsoleJobDialog::UpdateUiFromUserConsoleJob(UserConsoleJob* userJob)
 {
-   auto castJob = dynamic_cast<SshConsoleJob*>(job);
-   if (!castJob)
-      return;
-
-   //ui->attachOutputBox->setChecked(castJob->);
-   ui->useParserBox->setChecked(castJob->GetMiniDescriptionParserCommand() != "");
-   ui->parserEdit->setText(castJob->GetMiniDescriptionParserCommand().c_str());
-   ui->parserUsesBufferBox->setChecked(castJob->IsParsingUsingBuffer());
+   ui->useParserBox->setChecked(userJob->GetMiniDescriptionParserCommand() != "");
+   ui->parserEdit->setText(userJob->GetMiniDescriptionParserCommand().c_str());
+   ui->parserUsesBufferBox->setChecked(userJob->IsParsingUsingBuffer());
    UpdateParserUi();
 
-   ui->expectedOutputTextEdit->setPlainText(castJob->GetExpectedOutput().c_str());
-   const bool isOutputUsedAsCondition = (castJob->GetExpectedOutput() != "");
+   ui->expectedOutputTextEdit->setPlainText(userJob->GetExpectedOutput().c_str());
+   const bool isOutputUsedAsCondition = (userJob->GetExpectedOutput() != "");
    ui->successTypeBox->setCurrentIndex(isOutputUsedAsCondition ? 1 : 0);
 
+   ui->fileOutputEdit->setText(userJob->GetOutputFile().c_str());
+   const bool isOutputToFile = (userJob->GetOutputFile() != "");
+   ui->outputTypeBox->setCurrentIndex(isOutputToFile ? 1 : 0);
+   ui->fileOutputEdit->setEnabled(isOutputToFile);
+
    vector<string> userAttachments;
-   castJob->GetUserAttachments(userAttachments);
+   userJob->GetUserAttachments(userAttachments);
    for (const auto& it : userAttachments)
       ui->attachmentsWidget->addItem(QString(it.c_str()));
 }
 
-void EditConsoleJobDialog::UpdateJobFromUi()
+void EditConsoleJobDialog::UpdateJobFromUi_Basic()
 {
    auto consoleJob = static_cast<AbstractConsoleJob*>(job);
    job->SetName(ui->nameEdit->text().toStdString());
    consoleJob->SetCommand(ui->commandEdit->text().toStdString());
    consoleJob->SetCommandParameters(ui->parametersEdit->text().toStdString());
    consoleJob->SetExpectedReturnCode(ui->expectedCodeSpinBox->value());
+}
+
+void EditConsoleJobDialog::UpdateJobFromUi_User()
+{
+   UserConsoleJob* userJob = GetUserConsoleJob();
+
+   const QString parserCommand = (ui->useParserBox->isChecked()) ? ui->parserEdit->text() : QString("");
+   userJob->SetMiniDescriptionParserCommand(parserCommand.toStdString());
+   userJob->SetParsingUsingBuffer(ui->parserUsesBufferBox->isChecked());
+
+   if (ui->successTypeBox->currentIndex() == 1)
+      userJob->SetExpectedOutput(ui->expectedOutputTextEdit->toPlainText().toStdString());
+   else if (ui->successTypeBox->currentIndex() == 0)
+      userJob->SetExpectedReturnCode(ui->expectedCodeSpinBox->value());
+
+   if (ui->outputTypeBox->currentIndex() == 0)
+      userJob->SetOutputToBuffer();
+   else
+      userJob->SetOutputTofile(ui->fileOutputEdit->text().toStdString());
+
+   userJob->EmptyUserAttachments();
+   for (int i=0; i<ui->attachmentsWidget->count(); ++i)
+      userJob->AddUserAttachment(ui->attachmentsWidget->item(i)->text().toStdString());
+}
+
+UserConsoleJob* EditConsoleJobDialog::GetUserConsoleJob()
+{
+   auto userJob = dynamic_cast<UserConsoleJob*>(job);
+   if (userJob)
+      return userJob;
+   else if (auto sshJob = dynamic_cast<SshConsoleJob*>(job))
+   {
+      auto childJob = sshJob->GetRemoteJob();
+      if ((userJob = dynamic_cast<UserConsoleJob*>(childJob)) != nullptr)
+         return userJob;
+   }
+
+   return nullptr;
 }
 
 void EditConsoleJobDialog::UpdateParserUi()
@@ -112,7 +145,7 @@ void EditConsoleJobDialog::on_successTypeBox_currentIndexChanged(int index)
    ui->successTypeWidget->setCurrentIndex(index);
 }
 
-void EditConsoleJobDialog::on_successTypeBox_2_activated(const QString &arg1)
+void EditConsoleJobDialog::on_outputTypeBox_activated(const QString &arg1)
 {
     ui->fileOutputEdit->setEnabled(arg1 == "File");
 }

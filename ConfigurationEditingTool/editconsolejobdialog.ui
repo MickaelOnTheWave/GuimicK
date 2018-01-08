@@ -172,7 +172,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="successTypeBox_2">
+          <widget class="QComboBox" name="outputTypeBox">
            <item>
             <property name="text">
              <string>Buffer</string>

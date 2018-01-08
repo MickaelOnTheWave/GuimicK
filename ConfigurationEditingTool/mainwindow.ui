@@ -116,6 +116,7 @@
     <addaction name="menuBackup"/>
     <addaction name="actionDisk_space_check"/>
     <addaction name="actionCustom_command"/>
+    <addaction name="actionCustom_command_client"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAdd_Job"/>
@@ -164,7 +165,7 @@
   </action>
   <action name="actionCustom_command">
    <property name="text">
-    <string>Custom command</string>
+    <string>Custom command (server)</string>
    </property>
   </action>
   <action name="actionRaw_Copy">
@@ -200,6 +201,11 @@
   <action name="actionDisk_space_check">
    <property name="text">
     <string>Disk space check</string>
+   </property>
+  </action>
+  <action name="actionCustom_command_client">
+   <property name="text">
+    <string>Custom command (client)</string>
    </property>
   </action>
  </widget>

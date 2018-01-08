@@ -63,6 +63,8 @@ public:
 
     bool IsParsingUsingBuffer() const;
 
+    AbstractConsoleJob* GetRemoteJob();
+
 private:
    AbstractConsoleJob* CreateSshJob();
 

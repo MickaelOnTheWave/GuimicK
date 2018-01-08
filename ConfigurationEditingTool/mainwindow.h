@@ -59,6 +59,10 @@ private slots:
 
    void on_actionDisk_space_check_triggered();
 
+   void on_actionAbout_triggered();
+
+   void on_actionCustom_command_client_triggered();
+
 private:
    void OpenStandardFile();
    void OpenFile(const QString& filename,

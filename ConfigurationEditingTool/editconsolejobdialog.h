@@ -2,6 +2,7 @@
 #define EDITCONSOLEJOBDIALOG_H
 
 #include "abstracteditjobdialog.h"
+#include "userconsolejob.h"
 
 namespace Ui {
    class EditConsoleJobDialog;
@@ -22,7 +23,7 @@ private slots:
 
    void on_successTypeBox_currentIndexChanged(int index);
 
-   void on_successTypeBox_2_activated(const QString &arg1);
+   void on_outputTypeBox_activated(const QString &arg1);
 
    void on_useParserBox_clicked();
 
@@ -32,12 +33,19 @@ private slots:
 
    void on_removeAttachmentButton_clicked();
 
+protected:
+   virtual void UpdateUiFromJob() override;
+   virtual void UpdateJobFromUi() override;
+
 private:
-   void UpdateUiFromJob();
    void UpdateUiFromJob_Basic();
    void UpdateUiFromJob_User();
-   void UpdateUiFromJob_Ssh();
-   void UpdateJobFromUi();
+   void UpdateUiFromUserConsoleJob(UserConsoleJob* userJob);
+
+   void UpdateJobFromUi_Basic();
+   void UpdateJobFromUi_User();
+
+   UserConsoleJob* GetUserConsoleJob();
 
    void UpdateParserUi();
 

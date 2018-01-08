@@ -223,6 +223,11 @@ bool SshConsoleJob::IsParsingUsingBuffer() const
     return (castJob) ? castJob->IsParsingUsingBuffer() : false;
 }
 
+AbstractConsoleJob* SshConsoleJob::GetRemoteJob()
+{
+   return remoteJob;
+}
+
 AbstractConsoleJob *SshConsoleJob::CreateSshJob()
 {
     AbstractConsoleJob* sshJob = static_cast<AbstractConsoleJob*>(remoteJob->Clone());

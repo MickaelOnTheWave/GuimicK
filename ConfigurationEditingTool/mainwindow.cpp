@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QMenu>
 
+#include "aboutdialog.h"
 #include "configurationcheckdialog.h"
 #include "jobdelegate.h"
 #include "jobeditdialogfactory.h"
@@ -290,4 +291,15 @@ void MainWindow::on_actionZip_Copy_triggered()
 void MainWindow::on_actionDisk_space_check_triggered()
 {
     InsertNewJob(new LinuxFreeSpaceCheckJob());
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+   AboutDialog dialog;
+   dialog.exec();
+}
+
+void MainWindow::on_actionCustom_command_client_triggered()
+{
+   InsertNewJob(new SshConsoleJob(new UserConsoleJob));
 }
