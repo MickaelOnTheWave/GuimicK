@@ -29,6 +29,7 @@ Features implemented:
 	27/10/2017 - [054] Make all jobs support user title
 	07/11/2017 - [048] Create configuration checking tool/feature
 	15/11/2017 - [056] Add support for attaching user specified files in Console jobs
+	10/01/2018 - [034] Create Qt client app to create/manage backup folder configuration.
 
 Features to implement:
 	[005] Include AntiVirus scan job
@@ -45,7 +46,6 @@ Features to implement:
 	[026] Support multiple clients with multiple job lists
 	[027] Manage email commands
 	[032] Property handle encodings for strings
-	[034] Create Qt client app to create/manage backup folder configuration.
 	[036] Console job improvement : support a chain system.
 	[043] Create an archive differential File backup job
 	[045] Make Windows client work with (nearly) all features

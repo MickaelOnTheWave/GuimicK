@@ -2,6 +2,7 @@
 #define USERCONSOLEJOBCONFIGURATION_H
 
 #include "abstractjobdefaultconfiguration.h"
+#include "userconsolejob.h"
 
 class UserConsoleJobConfiguration : public AbstractJobDefaultConfiguration
 {
@@ -28,6 +29,9 @@ protected:
                               std::vector<std::string> &errorMessages);
     virtual void FillKnownProperties(std::vector<std::string>& properties);
     virtual void FillKnownSubObjects(std::vector<std::string>& objects);
+
+    void ConfigureObjectFromJob(ConfigurationObject* confObject,
+                                UserConsoleJob* job);
 };
 
 #endif // USERCONSOLEJOBCONFIGURATION_H

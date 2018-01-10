@@ -24,3 +24,13 @@ list<AbstractJob*> Model::GetJobList()
    configuration.GetJobList(rawJobList);
    return rawJobList;
 }
+
+void Model::SetJobs(const std::vector<AbstractJob*>& jobs)
+{
+   configuration.SetJobList(jobs);
+}
+
+void Model::ClearJobs()
+{
+   configuration.ClearJobs();
+}

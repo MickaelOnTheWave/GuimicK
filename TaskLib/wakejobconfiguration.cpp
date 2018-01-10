@@ -21,6 +21,10 @@ bool WakeJobConfiguration::IsRightJob(AbstractJob* job)
 ConfigurationObject* WakeJobConfiguration::CreateConfigurationObject(AbstractJob* job)
 {
    ConfigurationObject* confObject = AbstractJobDefaultConfiguration::CreateConfigurationObject(job);
+
+   WakeJob* wakeJob = dynamic_cast<WakeJob*>(job);
+   confObject->SetProperty(TimeoutProperty, wakeJob->GetTimeout());
+   confObject->SetProperty(MaxRetriesProperty, wakeJob->GetMaxRetries());
    return confObject;
 }
 

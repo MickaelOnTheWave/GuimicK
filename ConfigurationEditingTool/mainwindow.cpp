@@ -50,7 +50,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionNew_triggered()
 {
-
+   model.ClearJobs();
+   UpdateJobListWidget();
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -70,7 +71,10 @@ void MainWindow::on_actionSave_triggered()
                          "/home", "Configuration files (*)");
 
    if (filename != "")
+   {
+      model.SetJobs(jobListModel.GetJobs());
       model.SaveConfiguration(filename.toStdString());
+   }
 }
 
 void MainWindow::on_actionClose_triggered()
@@ -88,12 +92,15 @@ void MainWindow::UpdateJobListWidget()
 }
 
 void MainWindow::InsertNewJob(AbstractJob* job)
-{   
+{
+   const int maxIndex = jobListModel.rowCount();
    const int currentIndex = ui->jobListView->currentIndex().row();
-   UpdateRowDelegatesFromBottom(currentIndex+1);
-   jobListModel.Insert(currentIndex+1, job);
-   ui->jobListView->setItemDelegateForRow(currentIndex+1, new JobDelegate(CreateDisplay(job)));
-   ui->jobListView->setCurrentIndex(jobListModel.index(currentIndex+1));
+   const int insertIndex = (currentIndex+1 > maxIndex) ? maxIndex : currentIndex+1;
+
+   UpdateRowDelegatesFromBottom(insertIndex);
+   jobListModel.Insert(insertIndex, job);
+   ui->jobListView->setItemDelegateForRow(insertIndex, new JobDelegate(CreateDisplay(job)));
+   ui->jobListView->setCurrentIndex(jobListModel.index(insertIndex));
 
    ForceJobListViewUpdate();
 }
@@ -200,10 +207,13 @@ void MainWindow::on_downButton_clicked()
 
 void MainWindow::on_deleteButton_clicked()
 {
-   const int currentIndex = ui->jobListView->currentIndex().row();
-   UpdateRowDelegatesFromTop(currentIndex);
-   jobListModel.removeRow(currentIndex);
-   ForceJobListViewUpdate();
+   if (jobListModel.rowCount() > 0)
+   {
+      const int currentIndex = ui->jobListView->currentIndex().row();
+      UpdateRowDelegatesFromTop(currentIndex);
+      jobListModel.removeRow(currentIndex);
+      ForceJobListViewUpdate();
+   }
 }
 
 void MainWindow::OpenStandardFile()

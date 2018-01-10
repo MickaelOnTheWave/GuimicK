@@ -10,6 +10,7 @@ public:
     virtual ~SshConsoleJobConfiguration();
 
     virtual bool IsRightJob(AbstractJob* job);
+    virtual ConfigurationObject* CreateConfigurationObject(AbstractJob* job);
 
 protected:
     virtual AbstractJob* CreateConfiguredJobAfterCheck(

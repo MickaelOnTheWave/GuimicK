@@ -17,6 +17,8 @@ public:
    void SaveConfiguration(const std::string& file);
 
    std::list<AbstractJob*> GetJobList();
+   void SetJobs(const std::vector<AbstractJob*>& jobs);
+   void ClearJobs();
 
 private:
    ClientJobsConfiguration configuration;

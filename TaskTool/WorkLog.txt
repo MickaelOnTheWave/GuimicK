@@ -1,3 +1,16 @@
+10/01/2018 (1.4h)
+   Finished User and Ssh jobs saving. Return code was already OK.
+	Finished Wake job saving and fixed bug in saving where data was not updated according
+	to UI. Creating a new configuration layer would be nicer but it is not necessary, there is
+	no duplication as of today.
+	Making an overall check on the UI... Implemented "New" action and removed unused "Recent Files" one.
+	Fixed crash when adding job after a new (bad indices on insertion).
+	Fixed crash when deleting while job list is empty.
+	Added simple versioning to Configuration Editor.
+	Updated Release plan.
+Next planned work:
+   - Continue roadmap
+
 09/01/2018 (2.3h)
    Implemented saving for most jobs, and all backup jobs.
 Next planned work:

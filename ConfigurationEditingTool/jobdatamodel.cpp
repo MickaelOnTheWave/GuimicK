@@ -77,3 +77,8 @@ AbstractJob* JobDataModel::GetJob(const QModelIndex& index)
    return jobs[index.row()];
 }
 
+std::vector<AbstractJob*> JobDataModel::GetJobs()
+{
+   return jobs;
+}
+

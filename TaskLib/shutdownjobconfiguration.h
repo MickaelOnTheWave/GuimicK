@@ -3,6 +3,7 @@
 
 #include "abstractjobdefaultconfiguration.h"
 
+// TODO : add timeout property to configuration
 class ShutdownJobConfiguration : public AbstractJobDefaultConfiguration
 {
 public:

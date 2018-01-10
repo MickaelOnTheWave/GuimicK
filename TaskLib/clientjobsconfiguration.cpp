@@ -60,6 +60,22 @@ void ClientJobsConfiguration::GetJobList(std::list<AbstractJob*>& _jobList) cons
       _jobList.push_back((*it)->Clone());
 }
 
+void ClientJobsConfiguration::SetJobList(const std::vector<AbstractJob*>& jobs)
+{
+   ClearJobs();
+   vector<AbstractJob*>::const_iterator it = jobs.begin();
+   for (; it != jobs.end(); ++it)
+      jobList.push_back((*it)->Clone());
+}
+
+void ClientJobsConfiguration::ClearJobs()
+{
+   list<AbstractJob*>::iterator it = jobList.begin();
+   for (; it != jobList.end(); ++it)
+      delete *it;
+   jobList.clear();
+}
+
 void ClientJobsConfiguration::FillRootObjects(const list<ConfigurationObject*> &objectList,
                                               vector<string> &errorMessages)
 {

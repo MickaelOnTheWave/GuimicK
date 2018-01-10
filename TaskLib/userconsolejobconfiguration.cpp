@@ -1,5 +1,4 @@
 #include "userconsolejobconfiguration.h"
-#include "userconsolejob.h"
 
 #include <sstream>
 
@@ -38,21 +37,7 @@ ConfigurationObject* UserConsoleJobConfiguration::CreateConfigurationObject(Abst
 
    UserConsoleJob* userJob = dynamic_cast<UserConsoleJob*>(job);
    if (userJob)
-   {
-      if (userJob->GetExpectedOutput() != "")
-         confObject->SetProperty(ExpectedOutputProperty, userJob->GetExpectedOutput());
-      else
-         confObject->SetProperty(ReturnCodeProperty, userJob->GetExpectedReturnCode());
-
-      if (userJob->GetOutputFile() != "")
-         confObject->SetProperty(OutputFilenameProperty, userJob->GetOutputFile());
-
-      if (userJob->GetMiniDescriptionParserCommand() != "")
-      {
-         confObject->SetProperty(ParserCommandProperty, userJob->GetMiniDescriptionParserCommand());
-         confObject->SetProperty(ParserUsesBufferProperty, userJob->IsParsingUsingBuffer());
-      }
-   }
+      ConfigureObjectFromJob(confObject, userJob);
 
    return confObject;
 }
@@ -125,4 +110,33 @@ void UserConsoleJobConfiguration::FillKnownSubObjects(std::vector<string>& objec
 {
    AbstractJobDefaultConfiguration::FillKnownSubObjects(objects);
    objects.push_back(UserAttachmentObject);
+}
+
+void UserConsoleJobConfiguration::ConfigureObjectFromJob(
+      ConfigurationObject* confObject,
+      UserConsoleJob* job)
+{
+   if (job->GetExpectedOutput() != "")
+      confObject->SetProperty(ExpectedOutputProperty, job->GetExpectedOutput());
+   else
+      confObject->SetProperty(ReturnCodeProperty, job->GetExpectedReturnCode());
+
+   if (job->GetOutputFile() != "")
+      confObject->SetProperty(OutputFilenameProperty, job->GetOutputFile());
+
+   if (job->GetMiniDescriptionParserCommand() != "")
+   {
+      confObject->SetProperty(ParserCommandProperty, job->GetMiniDescriptionParserCommand());
+      confObject->SetProperty(ParserUsesBufferProperty, job->IsParsingUsingBuffer());
+   }
+
+   vector<string> attachments;
+   job->GetUserAttachments(attachments);
+   vector<string>::const_iterator it = attachments.begin();
+   for (; it != attachments.end(); ++it)
+   {
+      ConfigurationObject* attachmentObj = new ConfigurationObject(UserAttachmentObject);
+      attachmentObj->SetProperty("param0", *it);
+      confObject->AddObject(attachmentObj);
+   }
 }

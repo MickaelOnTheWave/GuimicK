@@ -26,6 +26,7 @@ public:
    virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
    AbstractJob* GetJob(const QModelIndex &index);
+   std::vector<AbstractJob*> GetJobs();
 
 private:
    std::vector<AbstractJob*> jobs;

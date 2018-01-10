@@ -25,6 +25,8 @@ public:
    bool SaveToFile(const std::string& filename);
 
    void GetJobList(std::list<AbstractJob*>& _jobList) const;
+   void SetJobList(const std::vector<AbstractJob*>& jobs);
+   void ClearJobs();
 
 
 private:
