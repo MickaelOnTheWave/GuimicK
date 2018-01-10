@@ -11,6 +11,11 @@ RawCopyFsBackupJobConfiguration::RawCopyFsBackupJobConfiguration()
 {
 }
 
+bool RawCopyFsBackupJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<RawCopyFsBackupJob*>(job) != NULL);
+}
+
 AbstractJob *RawCopyFsBackupJobConfiguration::CreateJob()
 {
     return new RawCopyFsBackupJob();
@@ -23,6 +28,11 @@ RsyncCopyFsBackupJobConfiguration::RsyncCopyFsBackupJobConfiguration()
 {
 }
 
+bool RsyncCopyFsBackupJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<RsyncCopyFsBackupJob*>(job) != NULL);
+}
+
 AbstractJob *RsyncCopyFsBackupJobConfiguration::CreateJob()
 {
     return new RsyncCopyFsBackupJob();
@@ -33,6 +43,11 @@ AbstractJob *RsyncCopyFsBackupJobConfiguration::CreateJob()
 ZipAndCopyFsBackupJobConfiguration::ZipAndCopyFsBackupJobConfiguration()
     : AbstractFsBackupJobConfiguration("ArchiveBackup")
 {
+}
+
+bool ZipAndCopyFsBackupJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<ZipAndCopyFsBackupJob*>(job) != NULL);
 }
 
 AbstractJob *ZipAndCopyFsBackupJobConfiguration::CreateJob()

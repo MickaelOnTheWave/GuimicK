@@ -13,6 +13,8 @@ public:
 
     AbstractBackupJobConfiguration(const std::string& tag);
 
+    virtual ConfigurationObject* CreateConfigurationObject(AbstractJob* job);
+
     virtual std::string GetBackupItemName() const = 0;
 
 protected:

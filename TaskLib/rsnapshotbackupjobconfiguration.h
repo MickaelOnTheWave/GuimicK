@@ -16,6 +16,9 @@ public:
 
     RsnapshotBackupJobConfiguration();
 
+    virtual bool IsRightJob(AbstractJob* job);
+    virtual ConfigurationObject* CreateConfigurationObject(AbstractJob *job);
+
 protected:
     virtual void AnalyzeConfiguration(ConfigurationObject* confObject);
     virtual AbstractJob* CreateJob();
@@ -38,6 +41,9 @@ private:
     std::string GetRepositoryValue(ConfigurationObject *confObject) const;
     bool GetWaitBeforeRunValue(ConfigurationObject *confObject) const;
     void SetMaxBackupCount(RsnapshotSmartBackupJob* job, ConfigurationObject* confObject) const;
+
+    void CreateRawConfiguration(ConfigurationObject* conf, RsnapshotRawBackupJob* job);
+    void CreateSmartConfiguration(ConfigurationObject* conf, RsnapshotSmartBackupJob* job);
 
     std::string fullConfigurationFile;
 };

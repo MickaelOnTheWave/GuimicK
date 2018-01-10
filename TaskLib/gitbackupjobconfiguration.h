@@ -10,6 +10,8 @@ public:
 
     GitBackupJobConfiguration();
 
+    virtual bool IsRightJob(AbstractJob *job);
+
 protected:
     virtual AbstractJob* CreateJob();
     virtual void ConfigureJob(AbstractJob* job,

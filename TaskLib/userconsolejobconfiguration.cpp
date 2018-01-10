@@ -5,7 +5,6 @@
 
 using namespace std;
 
-const std::string UserConsoleJobConfiguration::TitleProperty = "title";
 const std::string UserConsoleJobConfiguration::CommandProperty = "command";
 const std::string UserConsoleJobConfiguration::ParameterProperty = "params";
 const std::string UserConsoleJobConfiguration::ReturnCodeProperty = "returnCode";
@@ -25,6 +24,39 @@ UserConsoleJobConfiguration::UserConsoleJobConfiguration(const string &tag)
 {
 }
 
+bool UserConsoleJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<UserConsoleJob*>(job) != NULL);
+}
+
+ConfigurationObject* UserConsoleJobConfiguration::CreateConfigurationObject(AbstractJob* job)
+{
+   AbstractConsoleJob* consoleJob = dynamic_cast<AbstractConsoleJob*>(job);
+   ConfigurationObject* confObject = AbstractJobDefaultConfiguration::CreateConfigurationObject(job);
+   confObject->SetProperty(CommandProperty, consoleJob->GetCommand());
+   confObject->SetProperty(ParameterProperty, consoleJob->GetCommandParameters());
+
+   UserConsoleJob* userJob = dynamic_cast<UserConsoleJob*>(job);
+   if (userJob)
+   {
+      if (userJob->GetExpectedOutput() != "")
+         confObject->SetProperty(ExpectedOutputProperty, userJob->GetExpectedOutput());
+      else
+         confObject->SetProperty(ReturnCodeProperty, userJob->GetExpectedReturnCode());
+
+      if (userJob->GetOutputFile() != "")
+         confObject->SetProperty(OutputFilenameProperty, userJob->GetOutputFile());
+
+      if (userJob->GetMiniDescriptionParserCommand() != "")
+      {
+         confObject->SetProperty(ParserCommandProperty, userJob->GetMiniDescriptionParserCommand());
+         confObject->SetProperty(ParserUsesBufferProperty, userJob->IsParsingUsingBuffer());
+      }
+   }
+
+   return confObject;
+}
+
 AbstractJob *UserConsoleJobConfiguration::CreateJob()
 {
     return new UserConsoleJob();
@@ -34,8 +66,7 @@ void UserConsoleJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationOb
 {
     AbstractJobDefaultConfiguration::ConfigureJob(job, confObject, errorMessages);
 
-    const string title =          confObject->GetFirstProperty(TitleProperty, "param0");
-    const string command =        confObject->GetFirstProperty(CommandProperty, "param1");
+    const string command =        confObject->GetFirstProperty(CommandProperty, "param0");
     const string parameters =     confObject->GetFirstProperty(ParameterProperty, "param1");
     const string rawReturnCode =  confObject->GetFirstProperty(ReturnCodeProperty,"param2");
     const string expectedOutput = confObject->GetProperty(ExpectedOutputProperty);
@@ -81,7 +112,6 @@ void UserConsoleJobConfiguration::FillKnownProperties(std::vector<string> &prope
 {
     AbstractJobDefaultConfiguration::FillKnownProperties(properties);
 
-    properties.push_back(TitleProperty);
     properties.push_back(CommandProperty);
     properties.push_back(ParameterProperty);
     properties.push_back(ReturnCodeProperty);

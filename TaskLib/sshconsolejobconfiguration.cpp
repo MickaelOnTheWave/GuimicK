@@ -15,6 +15,11 @@ SshConsoleJobConfiguration::~SshConsoleJobConfiguration()
 {
 }
 
+bool SshConsoleJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<SshConsoleJob*>(job) != NULL);
+}
+
 AbstractJob *SshConsoleJobConfiguration::CreateConfiguredJobAfterCheck(
                                             ConfigurationObject *confObject,
                                             std::vector<std::string> &errorMessages)

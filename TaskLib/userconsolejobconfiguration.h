@@ -6,7 +6,6 @@
 class UserConsoleJobConfiguration : public AbstractJobDefaultConfiguration
 {
 public:
-    static const std::string TitleProperty;
     static const std::string CommandProperty;
     static const std::string ParameterProperty;
     static const std::string ReturnCodeProperty;
@@ -18,6 +17,9 @@ public:
 
     UserConsoleJobConfiguration();
     UserConsoleJobConfiguration(const std::string& tag);
+
+    virtual bool IsRightJob(AbstractJob *job);
+    virtual ConfigurationObject* CreateConfigurationObject(AbstractJob* job);
 
 protected:
     virtual AbstractJob* CreateJob();

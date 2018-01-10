@@ -10,6 +10,11 @@ GitBackupJobConfiguration::GitBackupJobConfiguration()
 {
 }
 
+bool GitBackupJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<GitBackupJob*>(job) != NULL);
+}
+
 AbstractJob *GitBackupJobConfiguration::CreateJob()
 {
     return new GitBackupJob();

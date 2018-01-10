@@ -14,6 +14,21 @@ RemoteJobsRunnerConfiguration::RemoteJobsRunnerConfiguration()
 {
 }
 
+bool RemoteJobsRunnerConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<RemoteJobsRunner*>(job) != NULL);
+}
+
+ConfigurationObject* RemoteJobsRunnerConfiguration::CreateConfigurationObject(AbstractJob* job)
+{
+   RemoteJobsRunner* castJob = static_cast<RemoteJobsRunner*>(job);
+   ConfigurationObject* confObject = new ConfigurationObject(jobTag);
+
+   confObject->SetProperty(ConfFileProperty, castJob->GetConfigurationFile());
+   confObject->SetProperty(TimedJobsProperty, castJob->GetIsWorkListTimed() ? "true" : "false");
+   return confObject;
+}
+
 AbstractJob* RemoteJobsRunnerConfiguration::CreateJob()
 {
    return new RemoteJobsRunner();

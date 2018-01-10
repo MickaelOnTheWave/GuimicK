@@ -1,3 +1,11 @@
+09/01/2018 (2.3h)
+   Implemented saving for most jobs, and all backup jobs.
+Next planned work:
+   - Finish implementing User + Ssh ConsoleJob saving. Return code and attachments are missing.
+	- Finish implementing Wake configuration saving.
+	- Consider if creating a new configuration layer is necessary (AbstractConsoleConfiguration).
+	- Make a final check on the UI, and if OK update release plan.
+
 08/01/2018 (2.1h)
    Created simple About dialog. Now looking at ConsoleJob refactoring...
 	Finished ConsoleJob configuration dialog without need for refactoring jobs, only

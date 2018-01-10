@@ -8,6 +8,8 @@ class RawCopyFsBackupJobConfiguration : public AbstractFsBackupJobConfiguration
 public:
     RawCopyFsBackupJobConfiguration();
 
+    virtual bool IsRightJob(AbstractJob *job);
+
 protected:
     virtual AbstractJob* CreateJob();
 };
@@ -17,6 +19,8 @@ class RsyncCopyFsBackupJobConfiguration : public AbstractFsBackupJobConfiguratio
 public:
     RsyncCopyFsBackupJobConfiguration();
 
+    virtual bool IsRightJob(AbstractJob *job);
+
 protected:
     virtual AbstractJob* CreateJob();
 };
@@ -25,6 +29,8 @@ class ZipAndCopyFsBackupJobConfiguration : public AbstractFsBackupJobConfigurati
 {
 public:
     ZipAndCopyFsBackupJobConfiguration();
+
+    virtual bool IsRightJob(AbstractJob *job);
 
 protected:
     virtual AbstractJob* CreateJob();

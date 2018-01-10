@@ -8,6 +8,8 @@ class GitFsBackupJobConfiguration : public AbstractBackupJobConfiguration
 public:
     GitFsBackupJobConfiguration();
 
+   virtual bool IsRightJob(AbstractJob *job);
+
 protected:
     virtual AbstractJob *CreateJob();
 

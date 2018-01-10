@@ -13,6 +13,26 @@ AbstractBackupJobConfiguration::AbstractBackupJobConfiguration(const std::string
 {
 }
 
+ConfigurationObject* AbstractBackupJobConfiguration::CreateConfigurationObject(AbstractJob* job)
+{
+   AbstractBackupJob* castJob = static_cast<AbstractBackupJob*>(job);
+   ConfigurationObject* confObject = AbstractJobDefaultConfiguration::CreateConfigurationObject(job);
+   confObject->SetProperty(TargetProperty, castJob->IsTargetLocal() ? "local" : "remote");
+   confObject->SetProperty(JoinReportsProperty, castJob->GetJoinReports() ? "true" : "false");
+
+   vector<pair<string,string> > backupPoints;
+   castJob->GetFolderList(backupPoints);
+   vector<pair<string,string> >::const_iterator it = backupPoints.begin();
+   for (; it != backupPoints.end(); ++it)
+   {
+      ConfigurationObject* subObject = new ConfigurationObject(GetBackupItemName());
+      subObject->SetProperty("source", it->first);
+      subObject->SetProperty("dest", it->second);
+      confObject->AddObject(subObject);
+   }
+   return confObject;
+}
+
 void AbstractBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &properties)
 {
     AbstractJobDefaultConfiguration::FillKnownProperties(properties);

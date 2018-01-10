@@ -10,6 +10,13 @@ AbstractJobDefaultConfiguration::AbstractJobDefaultConfiguration(const std::stri
 {
 }
 
+ConfigurationObject* AbstractJobDefaultConfiguration::CreateConfigurationObject(AbstractJob* job)
+{
+   ConfigurationObject* confObject = new ConfigurationObject(jobTag);
+   confObject->SetProperty(TitleProperty, job->GetName());
+   return confObject;
+}
+
 void AbstractJobDefaultConfiguration::ConfigureJob(AbstractJob *job,
                                                    ConfigurationObject *confObject,
                                                    std::vector<std::string> &)

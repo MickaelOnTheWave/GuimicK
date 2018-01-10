@@ -80,7 +80,8 @@ SOURCES += \
     clientconfiguration.cpp \
     resultcollectionstatus.cpp \
     remotejobsrunnerconfiguration.cpp \
-    AbstractConsoleJob.cpp
+    AbstractConsoleJob.cpp \
+    jobfactory.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -151,7 +152,8 @@ HEADERS +=\
     clientjobsconfiguration.h \
     clientconfiguration.h \
     resultcollectionstatus.h \
-    remotejobsrunnerconfiguration.h
+    remotejobsrunnerconfiguration.h \
+    jobfactory.h
 
 unix {
     target.path = /usr/lib

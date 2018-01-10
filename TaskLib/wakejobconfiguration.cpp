@@ -5,12 +5,23 @@
 
 using namespace std;
 
-const std::string WakeJobConfiguration::TimeoutProperty = "timeout";
-const std::string WakeJobConfiguration::MaxRetriesProperty = "maxRetries";
+const string WakeJobConfiguration::TimeoutProperty = "timeout";
+const string WakeJobConfiguration::MaxRetriesProperty = "maxRetries";
 
 WakeJobConfiguration::WakeJobConfiguration()
     : AbstractJobDefaultConfiguration("Wake")
 {
+}
+
+bool WakeJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<WakeJob*>(job) != NULL);
+}
+
+ConfigurationObject* WakeJobConfiguration::CreateConfigurationObject(AbstractJob* job)
+{
+   ConfigurationObject* confObject = AbstractJobDefaultConfiguration::CreateConfigurationObject(job);
+   return confObject;
 }
 
 AbstractJob *WakeJobConfiguration::CreateJob()
@@ -19,8 +30,8 @@ AbstractJob *WakeJobConfiguration::CreateJob()
 }
 
 void WakeJobConfiguration::ConfigureJob(AbstractJob *job,
-                                                  ConfigurationObject *confObject,
-                                                  std::vector<string> &errorMessages)
+                                        ConfigurationObject *confObject,
+                                        std::vector<string> &errorMessages)
 {
     AbstractJobDefaultConfiguration::ConfigureJob(job, confObject, errorMessages);
 

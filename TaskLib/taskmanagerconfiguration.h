@@ -32,9 +32,6 @@ protected:
     std::string CreateError(const std::string& message) const;
     std::string CreateMessage(const std::string& tag, const std::string& message) const;
 
-    AbstractJob *CreateJobFromObject(ConfigurationObject *object,
-                                     std::vector<std::string> &errorMessages);
-
     Client* client;
     std::list<AbstractJob*> jobList;
     bool hasFatalError;
@@ -46,17 +43,10 @@ private:
                          std::vector<std::string> &errorMessages) = 0;
     virtual bool IsConfigurationConsistent(std::vector<std::string> &errorMessages) = 0;
 
-    void FillSupportedJobsList();
-    void FreeSupportedJobsList();
-
-    AbstractJobConfiguration* GetJobConfiguration(const std::string& jobTab);
-
     void Reset();
 
     bool SetupData(const ConfigurationParser& parser,
                    std::vector<std::string> &errorMessages);
-
-    std::vector<AbstractJobConfiguration*> supportedJobs;
 };
 
 #endif // TASKMANAGERCONFIGURATION_H

@@ -17,6 +17,9 @@ public:
     AbstractJob* CreateConfiguredJob(ConfigurationObject* confObject,
                                      std::vector<std::string> &errorMessages);
 
+    virtual bool IsRightJob(AbstractJob* job) = 0;
+    virtual ConfigurationObject* CreateConfigurationObject(AbstractJob* job) = 0;
+
 protected:
     virtual AbstractJob* CreateConfiguredJobAfterCheck(
                             ConfigurationObject* confObject,
@@ -30,6 +33,8 @@ protected:
     virtual void FillKnownProperties(std::vector<std::string>& properties);
     virtual void FillKnownSubObjects(std::vector<std::string>& objects);
 
+    std::string jobTag;
+
 private:
     void CheckKnownProperties(ConfigurationObject *confObject,
                               std::vector<std::string> &errorMessages);
@@ -41,9 +46,6 @@ private:
                   const std::string& value) const;
     std::string BuildErrorMessage(const std::string& objectType,
                                   const std::string& objectName);
-
-    std::string jobTag;
-
 };
 
 #endif // ABSTRACTJOBCONFIGURATION_H

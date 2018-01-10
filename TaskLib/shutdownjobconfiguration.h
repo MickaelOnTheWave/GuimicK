@@ -8,6 +8,8 @@ class ShutdownJobConfiguration : public AbstractJobDefaultConfiguration
 public:
     ShutdownJobConfiguration();
 
+    virtual bool IsRightJob(AbstractJob *job);
+
 protected:
     virtual AbstractJob* CreateJob();
 };

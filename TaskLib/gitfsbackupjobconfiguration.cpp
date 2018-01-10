@@ -8,6 +8,11 @@ GitFsBackupJobConfiguration::GitFsBackupJobConfiguration()
 {
 }
 
+bool GitFsBackupJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<GitFsBackupJob*>(job) != NULL);
+}
+
 AbstractJob *GitFsBackupJobConfiguration::CreateJob()
 {
     return new GitFsBackupJob();

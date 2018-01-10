@@ -11,6 +11,8 @@ public:
 
     AbstractJobDefaultConfiguration(const std::string& tag);
 
+    virtual ConfigurationObject* CreateConfigurationObject(AbstractJob* job);
+
 protected:
     virtual void ConfigureJob(AbstractJob* job, ConfigurationObject* confObject,
                               std::vector<std::string> &errorMessages);

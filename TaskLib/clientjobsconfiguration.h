@@ -6,6 +6,7 @@
 
 #include "clientworkmanager.h"
 #include "configurationobject.h"
+#include "jobfactory.h"
 #include "taskmanagerconfiguration.h"
 
 class ClientJobsConfiguration : public TaskManagerConfiguration
@@ -38,6 +39,7 @@ private:
     void FillJobList(ConfigurationObject* jobListObj, std::vector<std::string> &errorMessages);
 
     int debugOption;
+    JobFactory jobFactory;
 };
 
 #endif // CLIENTJOBSCONFIGURATION_H

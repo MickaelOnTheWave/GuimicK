@@ -10,6 +10,9 @@ public:
 
     ChangeScreensaverJobConfiguration();
 
+    virtual bool IsRightJob(AbstractJob* job);
+    virtual ConfigurationObject* CreateConfigurationObject(AbstractJob *job);
+
 protected:
     virtual AbstractJob* CreateJob();
     virtual void ConfigureJob(AbstractJob* job,

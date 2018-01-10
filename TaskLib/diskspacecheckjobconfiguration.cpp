@@ -11,6 +11,11 @@ DiskSpaceCheckJobConfiguration::DiskSpaceCheckJobConfiguration()
 {
 }
 
+bool DiskSpaceCheckJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<LinuxFreeSpaceCheckJob*>(job) != NULL);
+}
+
 AbstractJob *DiskSpaceCheckJobConfiguration::CreateJob()
 {
     return new LinuxFreeSpaceCheckJob();

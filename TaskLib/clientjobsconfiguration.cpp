@@ -40,7 +40,12 @@ bool ClientJobsConfiguration::SaveToFile(const string& filename)
    list<AbstractJob*>::const_iterator it = jobList.begin();
    for (; it != jobList.end(); ++it)
    {
-      filestream << '\t' << (*it)->GetName() << "();" << endl;
+      ConfigurationObject* confObject = jobFactory.CreateConfigurationObject(*it);
+      if (confObject)
+      {
+         filestream << confObject->CreateConfigurationString(1) << endl;
+         delete confObject;
+      }
    }
 
    filestream << "}" << endl;
@@ -100,7 +105,7 @@ void ClientJobsConfiguration::FillJobList(ConfigurationObject* jobListObj,
    list<ConfigurationObject*>::iterator endJobs = jobListObj->objectList.end();
    for (; itJobs != endJobs; itJobs++)
    {
-       AbstractJob* parsedJob = CreateJobFromObject(*itJobs, errorMessages);
+       AbstractJob* parsedJob = jobFactory.CreateJob(*itJobs, errorMessages);
        if (parsedJob)
        {
           if (debugOption != DebugOutput::UNDEFINED)

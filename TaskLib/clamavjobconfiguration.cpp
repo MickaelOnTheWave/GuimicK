@@ -5,6 +5,11 @@ ClamAvJobConfiguration::ClamAvJobConfiguration() : AbstractJobDefaultConfigurati
 {
 }
 
+bool ClamAvJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<ClamAvJob*>(job) != NULL);
+}
+
 AbstractJob *ClamAvJobConfiguration::CreateJob()
 {
     return new ClamAvJob();

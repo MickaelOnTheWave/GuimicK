@@ -18,6 +18,29 @@ RsnapshotBackupJobConfiguration::RsnapshotBackupJobConfiguration()
 {
 }
 
+bool RsnapshotBackupJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   const bool isSmartJob = (dynamic_cast<RsnapshotSmartBackupJob*>(job) != NULL);
+   const bool isRawJob = (dynamic_cast<RsnapshotRawBackupJob*>(job) != NULL);
+   return isSmartJob || isRawJob;
+}
+
+ConfigurationObject* RsnapshotBackupJobConfiguration::CreateConfigurationObject(AbstractJob* job)
+{
+   ConfigurationObject* confObject = AbstractBackupJobConfiguration::CreateConfigurationObject(job);
+   RsnapshotRawBackupJob* rawJob = dynamic_cast<RsnapshotRawBackupJob*>(job);
+   if (rawJob != NULL)
+      CreateRawConfiguration(confObject, rawJob);
+   else
+   {
+      RsnapshotSmartBackupJob* smartJob = dynamic_cast<RsnapshotSmartBackupJob*>(job);
+      if (smartJob != NULL)
+         CreateSmartConfiguration(confObject, smartJob);
+   }
+
+   return confObject;
+}
+
 void RsnapshotBackupJobConfiguration::AnalyzeConfiguration(ConfigurationObject *confObject)
 {
     fullConfigurationFile = confObject->GetFirstProperty(FullConfigurationProperty, "param1");
@@ -103,4 +126,21 @@ void RsnapshotBackupJobConfiguration::SetMaxBackupCount(RsnapshotSmartBackupJob 
             job->SetMaxBackupCount(intMaxBackupCount);
         }
     }
+}
+
+void RsnapshotBackupJobConfiguration::CreateRawConfiguration(
+      ConfigurationObject* conf, RsnapshotRawBackupJob* job)
+{
+   conf->SetProperty(FullConfigurationProperty, fullConfigurationFile);
+   conf->SetProperty(RepositoryProperty, job->GetRepository());
+}
+
+void RsnapshotBackupJobConfiguration::CreateSmartConfiguration(
+      ConfigurationObject* conf, RsnapshotSmartBackupJob* job)
+{
+   conf->SetProperty(RepositoryProperty, job->GetRepository());
+
+   stringstream maxBackupCountStr;
+   maxBackupCountStr << job->GetMaxBackupCount();
+   conf->SetProperty(MaxBackupCountProperty, maxBackupCountStr.str());
 }

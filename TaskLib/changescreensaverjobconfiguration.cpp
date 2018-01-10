@@ -12,6 +12,17 @@ ChangeScreensaverJobConfiguration::ChangeScreensaverJobConfiguration()
 {
 }
 
+bool ChangeScreensaverJobConfiguration::IsRightJob(AbstractJob* job)
+{
+   return (dynamic_cast<ChangeScreensaverJob*>(job) != NULL);
+}
+
+ConfigurationObject* ChangeScreensaverJobConfiguration::CreateConfigurationObject(AbstractJob* job)
+{
+   ConfigurationObject* confObject = AbstractJobDefaultConfiguration::CreateConfigurationObject(job);
+   return confObject;
+}
+
 AbstractJob *ChangeScreensaverJobConfiguration::CreateJob()
 {
     return new ChangeScreensaverJob();

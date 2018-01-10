@@ -8,6 +8,8 @@ class ClamAvJobConfiguration : public AbstractJobDefaultConfiguration
 public:
     ClamAvJobConfiguration();
 
+    virtual bool IsRightJob(AbstractJob *job);
+
 protected:
     virtual AbstractJob* CreateJob();
 };
