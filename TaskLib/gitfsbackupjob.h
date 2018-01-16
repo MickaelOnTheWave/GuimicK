@@ -22,6 +22,8 @@ public:
     void SetForceRawCopyUse(const bool value);
 
 private:
+    virtual JobStatus* RestoreBackup(const std::string &source, const std::string &destination);
+
     void RunRepositoryBackup(const std::string& source,
                              const std::string& destination,
                              ResultCollection &results);

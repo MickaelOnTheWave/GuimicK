@@ -59,6 +59,17 @@ JobStatus *AbstractBackupJob::Run()
     return debugManager->UpdateStatus(CreateGlobalStatus(results));
 }
 
+JobStatus* AbstractBackupJob::RestoreBackup(const string& destination, const int repositoryIndex)
+{
+   if (repositoryIndex < folderList.size())
+   {
+      const string backupSource = folderList[repositoryIndex].second;
+      return RestoreBackup(backupSource, destination);
+   }
+   else
+      return new JobStatus(JobStatus::ERROR, "Invalid Repository Index");
+}
+
 bool AbstractBackupJob::IsTargetLocal() const
 {
     return isTargetLocal;

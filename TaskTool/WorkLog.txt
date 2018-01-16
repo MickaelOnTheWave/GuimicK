@@ -1,3 +1,11 @@
+15/01/2018 (1.1h)
+   Created Restore method in AbstractBackup. Implemented some starting implementations
+	and empty ones.
+Next planned work:
+   - Finish implementing empty/simple missing implementations for compiling
+	- Check Backup tests : they should be modified to use Restore method
+	- Implement real restores for every backup job
+
 10/01/2018 (1.4h)
    Finished User and Ssh jobs saving. Return code was already OK.
 	Finished Wake job saving and fixed bug in saving where data was not updated according

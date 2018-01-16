@@ -67,7 +67,16 @@ bool GitFsBackupJob::GetForceRawCopyUse() const
 
 void GitFsBackupJob::SetForceRawCopyUse(const bool value)
 {
-    forceRawCopy = value;
+   forceRawCopy = value;
+}
+
+JobStatus* GitFsBackupJob::RestoreBackup(const string& source,
+                                         const string& destination)
+{
+   // TODO : check git command to do a proper restore. Something like
+   // export? (not clone).
+   // TODO : implement
+   return new JobStatus();
 }
 
 void GitFsBackupJob::RunRepositoryBackup(const string &source,

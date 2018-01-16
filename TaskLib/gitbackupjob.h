@@ -26,6 +26,8 @@ protected:
                                      ResultCollection &results);
 
 private:
+    virtual JobStatus* RestoreBackup(const std::string &source, const std::string &destination);
+
     bool InitializeRemoteTarget(Client* client);
     bool AreSourcesConsistent() const;
 
@@ -51,7 +53,8 @@ private:
     void RunGitClone(const std::string &source,
                      const std::string &destination,
                      ResultCollection& statusList);
-    std::string BuildCloneParameters(const std::string &source, const std::string &destination) const;
+    std::string BuildCloneParameters(const std::string &source, const std::string &destination,
+                                     const bool mirror) const;
 
     bool IsInvalidSourceError(const ConsoleJob &job) const;
 

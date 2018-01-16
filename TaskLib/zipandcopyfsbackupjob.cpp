@@ -83,6 +83,13 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
     }
 }
 
+JobStatus* ZipAndCopyFsBackupJob::RestoreBackup(const string& source,
+                                                const string& destination)
+{
+   bool ok = Restore(source, destination);
+   return new JobStatus(ok ? JobStatus::OK : JobStatus::ERROR);
+}
+
 // TODO : maybe there is a better architectural option to these result collections :
 // create a JobBackupStatus that stores backup report.
 bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,

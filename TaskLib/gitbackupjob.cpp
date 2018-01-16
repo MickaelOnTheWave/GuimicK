@@ -80,7 +80,16 @@ void GitBackupJob::RunRepositoryBackup(
     if (FileTools::FolderExists(destination))
         UpdateGitRepository(destination, results);
     else
-        RunGitClone(source, destination, results);
+       RunGitClone(source, destination, results);
+}
+
+JobStatus* GitBackupJob::RestoreBackup(const string& source, const string& destination)
+{
+   ConsoleJob* gitCommand = new ConsoleJob("git", BuildCloneParameters(source, destination, false));
+   JobStatus* status = gitCommand->Run();
+   if (gitCommand->GetCommandReturnCode() == 128)
+       status->SetDescription(invalidSourceRepositoryError);
+   return status;
 }
 
 bool GitBackupJob::IsInvalidSourceError(const ConsoleJob &job) const
@@ -214,7 +223,7 @@ void GitBackupJob::RunGitClone(const string &source,
                                ResultCollection &statusList)
 {
     debugManager->AddDataLine<string>("Git Clone on", repository);
-    ConsoleJob* gitCommand = new ConsoleJob("git", BuildCloneParameters(source, destination));
+    ConsoleJob* gitCommand = new ConsoleJob("git", BuildCloneParameters(source, destination, true));
     JobStatus* status = gitCommand->Run();
     debugManager->AddDataLine<int>("Clone result", gitCommand->GetCommandReturnCode());
     debugManager->AddDataLine<string>("Clone output", gitCommand->GetCommandOutput());
@@ -230,9 +239,13 @@ void GitBackupJob::RunGitClone(const string &source,
     delete gitCommand;
 }
 
-string GitBackupJob::BuildCloneParameters(const string &source, const string &destination) const
+string GitBackupJob::BuildCloneParameters(const string &source, const string &destination,
+                                          const bool mirror) const
 {
-    string params("clone --mirror ");
+    string params("clone ");
+    if (mirror)
+       params += "--mirror ";
+
     if (isTargetLocal)
         params += source;
     else

@@ -26,6 +26,8 @@ public:
 
     virtual std::string GetTypeName() const = 0;
 
+    JobStatus* RestoreBackup(const std::string& destination, const int repositoryIndex = 0);
+
     bool IsTargetLocal() const;
     void SetTargetRemote(const std::string& user = "", const std::string& host = "");
     void SetTargetLocal();
@@ -57,6 +59,7 @@ protected:
     bool isDebugManagerParent;
 
 private:
+    virtual JobStatus* RestoreBackup(const std::string& source, const std::string& destination) = 0;
     bool IsRemoteTargetConsistent() const;
 };
 #endif // ABSTRACTBACKUPJOB_H

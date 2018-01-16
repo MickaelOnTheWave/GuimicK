@@ -38,6 +38,7 @@ protected:
                                      ResultCollection& results);
 
 private:
+    virtual JobStatus* RestoreBackup(const std::string &source, const std::string &destination);
     JobStatus* RunConfiguredBackupJob();
 
     void RemoveFile(const std::string& file); // TODO : remove this and put it in FileTools

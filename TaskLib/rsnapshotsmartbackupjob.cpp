@@ -1,5 +1,6 @@
 #include "rsnapshotsmartbackupjob.h"
 
+#include "rawcopyfsbackupjob.h"
 #include "rsnapshotconfigurationbuilder.h"
 #include "rsnapshotrawbackupjob.h"
 
@@ -92,7 +93,17 @@ void RsnapshotSmartBackupJob::RunRepositoryBackup(const string& source,
                                                   const string& destination,
                                                   AbstractBackupJob::ResultCollection &)
 {
-    dataToBackup.push_back(make_pair(source, destination));
+   dataToBackup.push_back(make_pair(source, destination));
+}
+
+JobStatus* RsnapshotSmartBackupJob::RestoreBackup(const string& source, const string& destination)
+{
+   const int backupIndex = 0;
+
+   stringstream weeklyString;
+   weeklyString << "/weekly." << backupIndex;
+   const string fullBackupSource = repository + weeklyString.str() + "/" + source;
+   return RawCopyFsBackupJob::Run(fullBackupSource, destination);
 }
 
 JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
