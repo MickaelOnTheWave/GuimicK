@@ -103,7 +103,8 @@ JobStatus* RsnapshotSmartBackupJob::RestoreBackup(const string& source, const st
    stringstream weeklyString;
    weeklyString << "/weekly." << backupIndex;
    const string fullBackupSource = repository + weeklyString.str() + "/" + source;
-   return RawCopyFsBackupJob::Run(fullBackupSource, destination);
+
+   return RunRawCopy(fullBackupSource, destination);
 }
 
 JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
@@ -127,7 +128,20 @@ JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
 
 void RsnapshotSmartBackupJob::RemoveFile(const string &file)
 {
-    remove(file.c_str());
+   remove(file.c_str());
+}
+
+JobStatus* RsnapshotSmartBackupJob::RunRawCopy(const string& source, const string& destination)
+{
+   RawCopyFsBackupJob rawCopyJob;
+   rawCopyJob.CopyTarget(*this);
+   rawCopyJob.AddFolder(source, destination);
+   JobStatus* status = rawCopyJob.Run();
+
+   if (status->IsOk())
+      return new JobStatus(JobStatus::OK);
+   else
+      return new JobStatus(JobStatus::ERROR, "Raw Copy failed");
 }
 
 

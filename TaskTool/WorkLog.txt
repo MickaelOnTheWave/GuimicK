@@ -1,3 +1,10 @@
+18/01/2018 (0.9h)
+   Finished implementing restore for all backup jobs. Now it is compiling and tests are still
+	OK.
+Next planned work:
+   - Check backup tests : update them and/or create new ones to test restore
+	- Fix implementations according to tests
+
 15/01/2018 (1.1h)
    Created Restore method in AbstractBackup. Implemented some starting implementations
 	and empty ones.

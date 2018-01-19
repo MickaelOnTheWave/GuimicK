@@ -48,6 +48,7 @@ public:
 		on its execution (ERROR or NOT_EXECUTED for example).
 	  */
 	bool IsFatal() const;
+   bool IsOk() const;
 
 	std::string ToString() const;
 

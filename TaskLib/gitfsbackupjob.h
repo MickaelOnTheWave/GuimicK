@@ -62,6 +62,8 @@ private:
 
     std::string CreateFilteredFileName(const std::string& name);
 
+    void RunGitExport(const std::string& destination, JobStatus* status);
+
     bool forceRawCopy;
 };
 

@@ -89,6 +89,13 @@ void AbstractBackupJob::SetTargetLocal()
     sshHost = "";
 }
 
+void AbstractBackupJob::CopyTarget(const AbstractBackupJob& other)
+{
+   isTargetLocal = other.isTargetLocal;
+   sshUser = other.sshUser;
+   sshHost = other.sshHost;
+}
+
 string AbstractBackupJob::GetRepository() const
 {
    return repository;

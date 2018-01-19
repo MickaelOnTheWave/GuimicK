@@ -43,6 +43,8 @@ private:
 
     void RemoveFile(const std::string& file); // TODO : remove this and put it in FileTools
 
+    JobStatus* RunRawCopy(const std::string &source, const std::string &destination);
+
     std::string templateConfigurationFile;
     std::string temporaryFile;
     BackupCollection dataToBackup;

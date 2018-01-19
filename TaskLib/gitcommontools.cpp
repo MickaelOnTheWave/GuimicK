@@ -10,14 +10,17 @@ static const string changeDirError                      = "Failed accessing fold
 bool GitCommonTools::ChangeCurrentDir(const string &newDir,
                                     AbstractBackupJob::ResultCollection &statusList)
 {
-    int returnValue = chdir(newDir.c_str());
-    const bool ok =  (returnValue == 0);
+   JobStatus* status = ChangeCurrentDir(newDir);
+   if (!status->IsOk())
+     statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
 
-    if (!ok)
-    {
-        JobStatus* status = new JobStatus(JobStatus::ERROR, changeDirError);
-        statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
-    }
-
-    return ok;
+   return status->IsOk();
 }
+
+JobStatus* GitCommonTools::ChangeCurrentDir(const string &newDir)
+{
+   int returnValue = chdir(newDir.c_str());
+   const bool ok = (returnValue == 0);
+   return (ok) ? new JobStatus(JobStatus::OK) : new JobStatus(JobStatus::ERROR, changeDirError);
+}
+

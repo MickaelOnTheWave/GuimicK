@@ -144,7 +144,12 @@ bool JobStatus::IsWorseThan(int otherCode) const
 
 bool JobStatus::IsFatal() const
 {
-	return (code == ERROR || code == NOT_EXECUTED);
+   return (code == ERROR || code == NOT_EXECUTED);
+}
+
+bool JobStatus::IsOk() const
+{
+   return (code == OK);
 }
 
 string JobStatus::GetDescription() const

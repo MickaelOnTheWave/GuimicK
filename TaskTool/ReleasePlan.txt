@@ -99,7 +99,6 @@ v1.1 :
 
 v1.0 :
 	[023] Remove wakelan executable dependency
-	[024] Remove ping executable dependency
 	[049] Make build be at least partially static (internal dependencies static)
 	[016] Create a package with binaries for easy install
 	[032] Property handle encodings for strings

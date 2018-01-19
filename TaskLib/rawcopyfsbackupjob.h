@@ -13,9 +13,6 @@ public:
 
     virtual std::string GetTypeName() const;
 
-    static JobStatus* Run(const std::string& source,
-                          const std::string& destination);
-
 protected:
     virtual void PrepareCopyCommand(const std::string &source,
                                     const std::string &destination,

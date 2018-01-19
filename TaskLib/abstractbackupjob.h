@@ -31,6 +31,7 @@ public:
     bool IsTargetLocal() const;
     void SetTargetRemote(const std::string& user = "", const std::string& host = "");
     void SetTargetLocal();
+    void CopyTarget(const AbstractBackupJob& other);
 
     std::string GetRepository() const;
     virtual void SetRepository(const std::string& value);

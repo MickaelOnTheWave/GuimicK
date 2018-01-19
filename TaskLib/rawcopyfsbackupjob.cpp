@@ -26,16 +26,9 @@ string RawCopyFsBackupJob::GetTypeName() const
    return defaultName;
 }
 
-JobStatus* RawCopyFsBackupJob::Run(const string& source, const string& destination)
-{
-   ConsoleJob copyCommand;
-   PrepareCopyCommand(source, destination, copyCommand);
-   return copyCommand.Run();
-}
-
 void RawCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
-                                              const std::string &destination,
-                                              ConsoleJob &commandJob)
+                                            const std::string &destination,
+                                            ConsoleJob &commandJob)
 {
     const string command = (isTargetLocal ? "cp" : "scp");
     string params;

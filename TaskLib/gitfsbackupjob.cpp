@@ -73,10 +73,15 @@ void GitFsBackupJob::SetForceRawCopyUse(const bool value)
 JobStatus* GitFsBackupJob::RestoreBackup(const string& source,
                                          const string& destination)
 {
-   // TODO : check git command to do a proper restore. Something like
-   // export? (not clone).
-   // TODO : implement
-   return new JobStatus();
+   string originalDirectory = FileTools::GetCurrentFullPath();
+   JobStatus* status = GitCommonTools::ChangeCurrentDir(source);
+   if (status->IsOk())
+   {
+      RunGitExport(destination, status);
+      GitCommonTools::ChangeCurrentDir(originalDirectory);
+   }
+
+   return status;
 }
 
 void GitFsBackupJob::RunRepositoryBackup(const string &source,
@@ -404,5 +409,14 @@ string GitFsBackupJob::CreateFilteredFileName(const string &name)
     if (name.length() < 2)
         return string("");
     else
-        return name.substr(2);
+       return name.substr(2);
+}
+
+void GitFsBackupJob::RunGitExport(const string& destination, JobStatus* status)
+{
+   const string params = string("checkout-index --prefix=") + destination + " -a";
+   ConsoleJob commandJob("git", params);
+   JobStatus* childStatus = commandJob.Run();
+   *status = *childStatus;
+   delete childStatus;
 }
