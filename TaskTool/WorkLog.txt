@@ -1,3 +1,12 @@
+23/01/2018 (1.3h)
+   Created new test layer for abstract backups. Created BackupAndRestore test. Checked it :
+	it is mostly working, except that it needs to be decided what is the exact expected behaviour
+	of restore. Recreate destination inside restore?
+Next planned work:
+   - Decide on Restore behaviour
+	- Finish checking Restore() on all jobs (and fix if necessary)
+	- Start modifying UI to support Restore
+
 18/01/2018 (0.9h)
    Finished implementing restore for all backup jobs. Now it is compiling and tests are still
 	OK.

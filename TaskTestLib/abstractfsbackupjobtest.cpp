@@ -8,29 +8,13 @@
 
 using namespace std;
 
-static const string repository = "repository/";
 static const string sshUser = "mickael";
 static const string sshHost = "192.168.1.101";
 
 AbstractFsBackupJobTest::AbstractFsBackupJobTest(const std::string &dataPrefix,
                                                  const string &errorPrefix)
-    : QtTestSuite(dataPrefix, errorPrefix)
+    : AbstractBackupJobTest(dataPrefix, errorPrefix)
 {
-}
-
-AbstractFsBackupJobTest::~AbstractFsBackupJobTest()
-{
-}
-
-void AbstractFsBackupJobTest::init()
-{
-    cleanup();
-}
-
-void AbstractFsBackupJobTest::cleanup()
-{
-    string unusedOutput;
-    Tools::RunExternalCommandToBuffer("rm -Rf *", unusedOutput, true);
 }
 
 void AbstractFsBackupJobTest::testRunBackup_data()
@@ -61,7 +45,7 @@ void AbstractFsBackupJobTest::ProcessingBetweenBackups()
 
 void AbstractFsBackupJobTest::CheckBackedUpDataIsOk()
 {
-    FileTestUtils::CheckFoldersHaveSameContent(repository, currentSourceFolder);
+   FileTestUtils::CheckFoldersHaveSameContent(backupRepository, currentSourceFolder);
 }
 
 JobStatus *AbstractFsBackupJobTest::RunBackupJob(const bool isRemote,
@@ -72,27 +56,6 @@ JobStatus *AbstractFsBackupJobTest::RunBackupJob(const bool isRemote,
 
     delete job;
     return status;
-}
-
-void AbstractFsBackupJobTest::LoadExternalDataSamples(const bool isRemote)
-{
-    QTest::addColumn<QString>("sourceBefore");
-    QTest::addColumn<QString>("sourceNow");
-    QTest::addColumn<QString>("description");
-    QTest::addColumn<QString>("report");
-    QTest::addColumn<bool>("remote");
-
-    QStringList testCases = FileTestUtils::GetFolderList(GetDataFolder().c_str());
-    for (auto it=testCases.begin(); it!=testCases.end(); ++it)
-    {
-        string stdString = it->toStdString();
-        QTest::newRow(stdString.c_str())
-                                << "sourceBefore"
-                                << "sourceNow"
-                                << "miniDescription.txt"
-                                << "fullReport.txt"
-                                << isRemote;
-    }
 }
 
 JobStatus* AbstractFsBackupJobTest::RunBackups(const string &folderBefore,
@@ -185,7 +148,7 @@ JobStatus *AbstractFsBackupJobTest::RunBackupJob(AbstractBackupJob *job,
                                                  const bool useDebug)
 {
     job->InitializeFromClient(nullptr);
-    job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), repository);
+    job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), backupRepository);
 
     if (isRemote)
         job->SetTargetRemote(sshUser, sshHost);

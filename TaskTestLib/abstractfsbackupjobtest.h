@@ -1,22 +1,19 @@
 #ifndef ABSTRACTFSBACKUPJOBTEST_H
 #define ABSTRACTFSBACKUPJOBTEST_H
 
-#include "abstractbackupjob.h"
+#include "abstractbackupjobtest.h"
 #include "qttestsuite.h"
 #include "jobstatus.h"
 
-class AbstractFsBackupJobTest : public QtTestSuite
+class AbstractFsBackupJobTest : public AbstractBackupJobTest
 {
     Q_OBJECT
 public:
     AbstractFsBackupJobTest(const std::string& dataPrefix,
                             const std::string& errorPrefix);
-    virtual ~AbstractFsBackupJobTest();
+    virtual ~AbstractFsBackupJobTest() = default;
 
 private Q_SLOTS:
-    void init();
-    void cleanup();
-
     void testRunBackup_data();
     void testRunBackup();
 
@@ -30,14 +27,9 @@ protected:
                                     const bool useDebug);
     virtual AbstractBackupJob* CreateNewJob() = 0;
 
-    void LoadExternalDataSamples(const bool isRemote);
-
     JobStatus *RunBackups(const std::string& folderBefore,
                           const std::string& folderNow,
                           const bool isRemote, const bool useDebug = false);
-
-    const std::string currentSourceFolder = "currentFolderToBackup";
-    std::string currentTestCaseFolder = "";
 
 private:
     JobStatus* RunBackupOnDataFolder(const std::string &folder,
@@ -57,8 +49,6 @@ private:
 
     std::string GetJobAttachmentName();
     std::string GetJobDebugName();
-
-    std::string currentTestCaseName = "";
 };
 
 #endif // ABSTRACTFSBACKUPJOBTEST_H
