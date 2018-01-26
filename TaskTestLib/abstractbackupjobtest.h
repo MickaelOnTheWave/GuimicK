@@ -34,6 +34,8 @@ private:
 
     void PrepareBackup(AbstractBackupJob* job, const std::string& folder);
 
+    virtual std::string GetBackupDestination() const;
+
     virtual AbstractBackupJob* CreateNewJob() = 0;
 };
 

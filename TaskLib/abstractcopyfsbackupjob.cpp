@@ -38,13 +38,14 @@ int AbstractCopyFsBackupJob::RunOnParameters(const string &source, const string 
 }
 
 void AbstractCopyFsBackupJob::RunRepositoryBackup(const string &source,
-                                          const string &destination,
-                                          ResultCollection &results)
+                                                  const string &destination,
+                                                  ResultCollection &results)
 {
-    if (FileTools::FolderExists(destination) == false)
-        FileTools::CreateFolder(destination);
+   const string copyDestination = repository + destination;
+   if (FileTools::FolderExists(copyDestination) == false)
+     FileTools::CreateFolder(copyDestination);
 
-    RunCopy(source, destination, results);
+   RunCopy(source, copyDestination, results);
 }
 
 JobStatus* AbstractCopyFsBackupJob::RestoreBackup(const string& source, const string& destination)

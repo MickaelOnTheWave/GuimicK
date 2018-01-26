@@ -18,8 +18,10 @@ protected:
     virtual void CheckBackedUpDataIsOk() override;
     virtual JobStatus* RunBackupJob(const bool isRemote,
                                     const bool useDebug) override;
-    virtual AbstractBackupJob* CreateNewJob() override;
 
+    virtual std::string GetBackupDestination() const override;
+
+    virtual AbstractBackupJob* CreateNewJob() override;
 };
 
 #endif // ZIPANDCOPYFSBACKUPJOBTEST_H

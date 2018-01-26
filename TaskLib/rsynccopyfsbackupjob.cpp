@@ -58,7 +58,7 @@ void RsyncCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
 {
     commandJob.SetCommand("rsync");
     string params = "-avzhi --delete " + BuildExclusions() + " ";
-    params += BuildSource(source) + " " + destination.substr(0, destination.size()-1);
+    params += BuildSource(source) + " " + destination;
     debugManager->AddDataLine<string>("Rsync params", params);
     commandJob.SetCommandParameters(params);
 }
@@ -94,7 +94,7 @@ string RsyncCopyFsBackupJob::BuildSource(const string &originalSource) const
         finalSource = originalSource;
     else
         finalSource = sshUser + "@" + sshHost + ":" + originalSource;
-    return finalSource;
+    return finalSource + "/";
 }
 
 string RsyncCopyFsBackupJob::BuildExclusions() const

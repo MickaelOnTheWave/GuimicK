@@ -66,9 +66,10 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
                                                 const std::string &destination,
                                                 AbstractBackupJob::ResultCollection &results)
 {
-    bool ok = RemovePreviousArchive(destination, results);
+   const string fullDestination = repository + destination;
+    bool ok = RemovePreviousArchive(fullDestination, results);
 
-    const string localArchive = (isTargetLocal) ? destination : localDestination;
+    const string localArchive = (isTargetLocal) ? fullDestination : localDestination;
 
     if (ok)
         ok = CreateBackupArchive(source, localArchive, results);
@@ -76,7 +77,7 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
     if (!isTargetLocal)
     {
         if (ok)
-            ok = CopyBackupArchiveToDestination(destination, results);
+            ok = CopyBackupArchiveToDestination(fullDestination, results);
 
         if (ok)
             CleanBackupArchiveFromSource(results);

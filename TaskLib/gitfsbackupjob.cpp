@@ -77,7 +77,7 @@ JobStatus* GitFsBackupJob::RestoreBackup(const string& source,
    JobStatus* status = GitCommonTools::ChangeCurrentDir(source);
    if (status->IsOk())
    {
-      RunGitExport(destination, status);
+      RunGitExport(originalDirectory + "/" + destination, status);
       GitCommonTools::ChangeCurrentDir(originalDirectory);
    }
 
@@ -88,15 +88,16 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
                                          const string &destination,
                                          ResultCollection& results)
 {
+   const string fullDestination = repository + destination;
     JobStatus* status = new JobStatus(JobStatus::OK);
-    if (FileTools::FolderExists(destination) == false)
-        CreateGitRepository(destination, status);
+    if (FileTools::FolderExists(fullDestination) == false)
+        CreateGitRepository(fullDestination, status);
 
     if (status->GetCode() == JobStatus::OK)
-        CopyData(source, destination, status);
+        CopyData(source, fullDestination, status);
 
     string originalDirectory = FileTools::GetCurrentFullPath();
-    bool ok = GitCommonTools::ChangeCurrentDir(destination, results);
+    bool ok = GitCommonTools::ChangeCurrentDir(fullDestination, results);
     if (!ok)
         return;
 

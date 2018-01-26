@@ -62,6 +62,11 @@ JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob(const bool isRemote,
     return status;
 }
 
+string ZipAndCopyFsBackupJobTest::GetBackupDestination() const
+{
+   return "SingleFolder.tar";
+}
+
 AbstractBackupJob *ZipAndCopyFsBackupJobTest::CreateNewJob()
 {
     return new ZipAndCopyFsBackupJob();

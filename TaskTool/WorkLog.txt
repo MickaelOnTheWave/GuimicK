@@ -1,3 +1,10 @@
+25/01/2018 (1.3h)
+   Fixed issues in backup jobs with repository management. This fixed Restore behaviour.
+	Checking Restore and other backup tests. All backup jobs are OK except Rsnapshot.
+Next planned work:
+   - Fix Rsnapshot implementation
+	- Begin UI changes to support Restore
+
 23/01/2018 (1.3h)
    Created new test layer for abstract backups. Created BackupAndRestore test. Checked it :
 	it is mostly working, except that it needs to be decided what is the exact expected behaviour

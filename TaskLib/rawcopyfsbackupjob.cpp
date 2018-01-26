@@ -36,7 +36,7 @@ void RawCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
         params = "-R ";
     else
         params = string("-r ") + sshUser + "@" + sshHost + ":";
-    params += source + "* " + destination;
+    params += source + "/* " + destination;
 
     commandJob.SetCommand(command);
     commandJob.SetCommandParameters(params);
