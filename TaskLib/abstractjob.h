@@ -14,7 +14,7 @@ public:
    AbstractJob(const AbstractJob& other);
    virtual ~AbstractJob();
 
-   virtual std::string GetName();
+   virtual std::string GetName() const;
    void SetName(const std::string& value);
 
    std::string GetAttachmentName();

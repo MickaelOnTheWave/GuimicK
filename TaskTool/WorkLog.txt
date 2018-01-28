@@ -1,3 +1,10 @@
+28/01/2018 (2h)
+   Finished fixing Rsnapshot implementation. Now Restore works for all implementations.
+	However, backup tests are failing for other implementations. Probably remote ones...
+Next planned work:
+   - Fix failing tests
+	- UI changes to support Restore
+
 25/01/2018 (1.3h)
    Fixed issues in backup jobs with repository management. This fixed Restore behaviour.
 	Checking Restore and other backup tests. All backup jobs are OK except Rsnapshot.

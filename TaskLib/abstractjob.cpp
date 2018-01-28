@@ -24,7 +24,7 @@ AbstractJob::~AbstractJob()
        delete debugManager;
 }
 
-string AbstractJob::GetName()
+string AbstractJob::GetName() const
 {
    return title;
 }

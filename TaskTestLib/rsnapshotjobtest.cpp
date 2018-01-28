@@ -20,7 +20,6 @@ const string suiteFolder = "Rsnapshot/";
 RsnapshotJobTest::RsnapshotJobTest(const string &dataPrefix, const string &errorPrefix)
     : AbstractFsBackupJobTest(dataPrefix + suiteFolder, errorPrefix)
 {
-    repository = FileTools::BuildFullPath("rsnapshotroot");
 }
 
 RsnapshotJobTest::~RsnapshotJobTest()
@@ -104,7 +103,7 @@ AbstractBackupJob *RsnapshotJobTest::CreateNewJob()
 {
     RsnapshotSmartBackupJob* job = new RsnapshotSmartBackupJob();
     job->SetTemplateConfigurationFile(GetDataFolder() + templateConfigurationFile);
-    job->SetRepository(repository);
+    job->SetRepository(backupRepository);
     return job;
 }
 
@@ -114,7 +113,7 @@ JobStatus *RsnapshotJobTest::RunRsnapshotJob(const string &tempConfigurationFile
     job.SetTemplateConfigurationFile(GetDataFolder() + templateConfigurationFile);
     if (tempConfigurationFile != "")
         job.SetTemporaryFile(tempConfigurationFile);
-    job.SetRepository(repository);
+    job.SetRepository(backupRepository);
 
     return job.Run();
 }
@@ -122,7 +121,7 @@ JobStatus *RsnapshotJobTest::RunRsnapshotJob(const string &tempConfigurationFile
 string RsnapshotJobTest::GetRsnapshotBackupFolder(const int number) const
 {
     stringstream stream;
-    stream << repository << "weekly." << number << "/repository";
+    stream << backupRepository << "weekly." << number << "/repository";
     return stream.str();
 }
 

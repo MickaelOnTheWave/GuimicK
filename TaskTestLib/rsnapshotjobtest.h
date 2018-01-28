@@ -39,8 +39,6 @@ private:
     std::string GetRsnapshotBackupFolder(const int number) const;
 
     unsigned int GetFileNumberInCurrentFolder();
-
-    std::string repository;
 };
 
 #endif // RNAPSHOTJOBTEST_H

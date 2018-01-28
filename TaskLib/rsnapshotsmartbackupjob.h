@@ -3,6 +3,8 @@
 
 #include "abstractbackupjob.h"
 
+#include "rsnapshotrawbackupjob.h"
+
 /**
  * This job implements the Rsnapshot backup using the standard Backup job interface.
  * It uses in the background the raw Rsnapshot backup.
@@ -19,6 +21,9 @@ public:
     virtual JobStatus* Run();
 
     virtual std::string GetTypeName() const;
+
+    virtual void SetRepository(const std::string& value);
+    virtual void AddFolder(const std::string& source, const std::string& destination);
 
     std::string GetTemplateConfigurationFile() const;
     void SetTemplateConfigurationFile(const std::string& value);
@@ -39,15 +44,22 @@ protected:
 
 private:
     virtual JobStatus* RestoreBackup(const std::string &source, const std::string &destination);
-    JobStatus* RunConfiguredBackupJob();
 
-    void RemoveFile(const std::string& file); // TODO : remove this and put it in FileTools
+    virtual std::string CreateBackupSourcePath(const std::string& backupTag) const;
+
+    JobStatus* RunConfiguredBackupJob();
 
     JobStatus* RunRawCopy(const std::string &source, const std::string &destination);
 
+    std::string AppendTrailingSlash(const std::string value) const;
+
+    std::string CreateConfiguration() const;
+
+    RsnapshotRawBackupJob* CreateRawJob(const std::string& configuration) const;
+
+
     std::string templateConfigurationFile;
     std::string temporaryFile;
-    BackupCollection dataToBackup;
     bool waitBeforeRun;
     int maxBackupCount;
 };

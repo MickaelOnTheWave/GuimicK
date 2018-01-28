@@ -1,10 +1,10 @@
 #include "rsnapshotsmartbackupjob.h"
 
+#include <cstdio>
+
+#include "filetools.h"
 #include "rawcopyfsbackupjob.h"
 #include "rsnapshotconfigurationbuilder.h"
-#include "rsnapshotrawbackupjob.h"
-
-#include <cstdio>
 
 using namespace std;
 
@@ -21,7 +21,6 @@ RsnapshotSmartBackupJob::RsnapshotSmartBackupJob(const RsnapshotSmartBackupJob &
     : AbstractBackupJob(other),
       templateConfigurationFile(other.templateConfigurationFile),
       temporaryFile(other.temporaryFile),
-      dataToBackup(other.dataToBackup),
       waitBeforeRun(other.waitBeforeRun),
       maxBackupCount(other.maxBackupCount)
 {
@@ -47,6 +46,18 @@ JobStatus *RsnapshotSmartBackupJob::Run()
 string RsnapshotSmartBackupJob::GetTypeName() const
 {
    return defaultName;
+}
+
+void RsnapshotSmartBackupJob::SetRepository(const string& value)
+{
+   const string fullRepositoryPath = FileTools::BuildFullPath(value);
+   AbstractBackupJob::SetRepository(fullRepositoryPath);
+}
+
+void RsnapshotSmartBackupJob::AddFolder(const string& source, const string& destination)
+{
+   const string fullSourcePath = FileTools::BuildFullPath(source);
+   AbstractBackupJob::AddFolder(fullSourcePath, destination);
 }
 
 string RsnapshotSmartBackupJob::GetTemplateConfigurationFile() const
@@ -89,46 +100,38 @@ void RsnapshotSmartBackupJob::SetMaxBackupCount(const int value)
     maxBackupCount = value;
 }
 
-void RsnapshotSmartBackupJob::RunRepositoryBackup(const string& source,
-                                                  const string& destination,
+void RsnapshotSmartBackupJob::RunRepositoryBackup(const string&,
+                                                  const string&,
                                                   AbstractBackupJob::ResultCollection &)
 {
-   dataToBackup.push_back(make_pair(source, destination));
 }
 
 JobStatus* RsnapshotSmartBackupJob::RestoreBackup(const string& source, const string& destination)
 {
-   const int backupIndex = 0;
+   if (!FileTools::IsFolderEmpty(source))
+      return RunRawCopy(source, destination);
+   else
+      return new JobStatus(JobStatus::OK);
+}
 
+string RsnapshotSmartBackupJob::CreateBackupSourcePath(const string& backupTag) const
+{
+   const int lastBackupIndex = 0;
    stringstream weeklyString;
-   weeklyString << "/weekly." << backupIndex;
-   const string fullBackupSource = repository + weeklyString.str() + "/" + source;
-
-   return RunRawCopy(fullBackupSource, destination);
+   weeklyString << "weekly." << lastBackupIndex;
+   return repository + weeklyString.str() + "/" + backupTag;
 }
 
 JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
 {
-    RsnapshotConfigurationBuilder builder(templateConfigurationFile);
-    builder.SetRepository(repository);
-    if (temporaryFile != "")
-        builder.SetGeneratedConfigurationFile(temporaryFile);
-    string configuration = builder.CreateConfigurationFile(dataToBackup, maxBackupCount);
-    RsnapshotRawBackupJob* rawBackupJob = new RsnapshotRawBackupJob(repository, configuration);
-    rawBackupJob->SetParentDebugManager(debugManager);
-    rawBackupJob->SetWaitBeforeRun(waitBeforeRun);
-    rawBackupJob->SetName(GetName());
+   string configuration = CreateConfiguration();
+   RsnapshotRawBackupJob* rawBackupJob = CreateRawJob(configuration);
 
-    JobStatus* status = rawBackupJob->Run();
+   JobStatus* status = rawBackupJob->Run();
 
-    delete rawBackupJob;
-    RemoveFile(configuration);
-    return status;
-}
-
-void RsnapshotSmartBackupJob::RemoveFile(const string &file)
-{
-   remove(file.c_str());
+   FileTools::RemoveFile(configuration);
+   delete rawBackupJob;
+   return status;
 }
 
 JobStatus* RsnapshotSmartBackupJob::RunRawCopy(const string& source, const string& destination)
@@ -142,6 +145,33 @@ JobStatus* RsnapshotSmartBackupJob::RunRawCopy(const string& source, const strin
       return new JobStatus(JobStatus::OK);
    else
       return new JobStatus(JobStatus::ERROR, "Raw Copy failed");
+}
+
+string RsnapshotSmartBackupJob::AppendTrailingSlash(const string value) const
+{
+   const char slash = '/';
+   string fixedValue = value;
+   if (value[value.size()-1] != slash)
+      fixedValue.push_back(slash);
+   return fixedValue;
+}
+
+string RsnapshotSmartBackupJob::CreateConfiguration() const
+{
+   RsnapshotConfigurationBuilder builder(templateConfigurationFile);
+   builder.SetRepository(repository);
+   if (temporaryFile != "")
+       builder.SetGeneratedConfigurationFile(temporaryFile);
+   return builder.CreateConfigurationFile(folderList, maxBackupCount);
+}
+
+RsnapshotRawBackupJob* RsnapshotSmartBackupJob::CreateRawJob(const string& configuration) const
+{
+   RsnapshotRawBackupJob* rawBackupJob = new RsnapshotRawBackupJob(repository, configuration);
+   rawBackupJob->SetParentDebugManager(debugManager);
+   rawBackupJob->SetWaitBeforeRun(waitBeforeRun);
+   rawBackupJob->SetName(GetName());
+   return rawBackupJob;
 }
 
 

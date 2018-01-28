@@ -63,8 +63,8 @@ JobStatus* AbstractBackupJob::RestoreBackup(const string& destination, const int
 {
    if (static_cast<unsigned int>(folderIndex) < folderList.size())
    {
-      string backupSource = folderList[folderIndex].second;
-      return RestoreBackup(repository + backupSource, destination);
+      const string backupSource = folderList[folderIndex].second;
+      return RestoreBackup(CreateBackupSourcePath(backupSource), destination);
    }
    else
       return new JobStatus(JobStatus::ERROR, "Invalid Repository Index");
@@ -140,7 +140,12 @@ bool AbstractBackupJob::Initialize()
 
 JobStatus *AbstractBackupJob::CreateGlobalStatus(const AbstractBackupJob::ResultCollection &results)
 {
-    return statusManager->CreateGlobalStatus(results, folderList);
+   return statusManager->CreateGlobalStatus(results, folderList);
+}
+
+string AbstractBackupJob::CreateBackupSourcePath(const string& backupTag) const
+{
+   return repository + backupTag;
 }
 
 bool AbstractBackupJob::IsRemoteTargetConsistent() const
