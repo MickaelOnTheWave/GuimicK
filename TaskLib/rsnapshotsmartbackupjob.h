@@ -57,6 +57,7 @@ private:
 
     RsnapshotRawBackupJob* CreateRawJob(const std::string& configuration) const;
 
+    std::string BuildFinalPath(const std::string& inputPath) const;
 
     std::string templateConfigurationFile;
     std::string temporaryFile;

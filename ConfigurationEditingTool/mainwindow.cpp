@@ -11,6 +11,7 @@
 #include "configurationcheckdialog.h"
 #include "jobdelegate.h"
 #include "jobeditdialogfactory.h"
+#include "selectbackupfolderdialog.h"
 
 #include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
@@ -39,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
    ui->jobListView->setModel(&jobListModel);
    ui->jobListView->setItemDelegate(new JobDelegate(new AbstractJobDisplay()));
    ui->jobListView->setResizeMode(QListView::Adjust);
+   ui->checkBackupsButton->setVisible(false);
 
    OpenStandardFile();
 }
@@ -307,4 +309,69 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionCustom_command_client_triggered()
 {
    InsertNewJob(new SshConsoleJob(new UserConsoleJob));
+}
+
+void MainWindow::on_jobListView_clicked(const QModelIndex &index)
+{
+   AbstractJob* job = jobListModel.GetJob(index);
+   const bool isBackupJob = (dynamic_cast<AbstractBackupJob*>(job) != nullptr);
+   ui->checkBackupsButton->setVisible(isBackupJob);
+}
+
+void MainWindow::on_checkBackupsButton_clicked()
+{
+   AbstractJob* baseJob = jobListModel.GetJob(ui->jobListView->currentIndex());
+   auto backupJob = dynamic_cast<AbstractBackupJob*>(baseJob);
+   if (!backupJob)
+      return;
+
+   const QString backupFolderToRestore = GetBackupFolder(backupJob);
+   if (backupFolderToRestore == "")
+      return;
+
+   const int backupTimeIndexToRestore = GetBackupTimeIndex(
+                                           backupJob, backupFolderToRestore);
+   if (backupTimeIndexToRestore == -1)
+      return;
+
+   RestoreBackup(backupJob, backupFolderToRestore, backupTimeIndexToRestore);
+}
+
+QString MainWindow::GetBackupFolder(AbstractBackupJob* job) const
+{
+   QString selectedBackupFolder("");
+   if (job->GetFolderCount() > 1)
+   {
+      SelectBackupFolderDialog dialog(job);
+      int result = dialog.exec();
+      if (result == QDialog::Accepted)
+         selectedBackupFolder = dialog.GetSelectedBackup();
+   }
+   else if (job->GetFolderCount() == 1)
+   {
+      vector<pair<string,string> > folders;
+      job->GetFolderList(folders);
+      selectedBackupFolder = folders.front().first.c_str();
+   }
+
+   return selectedBackupFolder;
+}
+
+int MainWindow::GetBackupTimeIndex(
+      AbstractBackupJob* job, const QString& backupFolder) const
+{
+   // TODO : implement
+   return 0;
+}
+
+void MainWindow::RestoreBackup(
+      AbstractBackupJob* job, const QString& backupFolder, const int timeIndex) const
+{
+   QString folderName = QFileDialog::getExistingDirectory(
+                           nullptr, "Choose a folder to restore Backup to",
+                           "/home");
+
+   // TODO : fix that
+   if (folderName != "")
+      job->RestoreBackup(folderName.toStdString());
 }

@@ -37,6 +37,7 @@ public:
     virtual void SetRepository(const std::string& value);
     virtual void AddFolder(const std::string& source, const std::string& destination);
     void GetFolderList(std::vector<std::pair<std::string, std::string> >& folders);
+    int GetFolderCount() const;
     void ClearFolderList(void);
 
     bool GetJoinReports() const;

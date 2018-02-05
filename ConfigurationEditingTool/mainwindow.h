@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+#include "abstractbackupjob.h"
 #include "abstractdisplay.h"
 #include "abstracteditjobdialog.h"
 #include "jobdatamodel.h"
@@ -61,6 +62,10 @@ private slots:
 
    void on_actionCustom_command_client_triggered();
 
+   void on_jobListView_clicked(const QModelIndex &index);
+
+   void on_checkBackupsButton_clicked();
+
 private:
    void OpenStandardFile();
    void OpenFile(const QString& filename,
@@ -81,6 +86,12 @@ private:
 
    AbstractDisplay* CreateDisplay(AbstractJob* job) const;
    void CreateJobDisplayDelegates(const std::list<AbstractJob*>& jobs);
+
+   QString GetBackupFolder(AbstractBackupJob* job) const;
+
+   int GetBackupTimeIndex(AbstractBackupJob* job, const QString& backupFolder) const;
+
+   void RestoreBackup(AbstractBackupJob* job, const QString& backupFolder, const int timeIndex) const;
 
    Ui::MainWindow *ui;
    Model model;

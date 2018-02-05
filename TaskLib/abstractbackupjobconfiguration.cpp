@@ -17,8 +17,10 @@ ConfigurationObject* AbstractBackupJobConfiguration::CreateConfigurationObject(A
 {
    AbstractBackupJob* castJob = static_cast<AbstractBackupJob*>(job);
    ConfigurationObject* confObject = AbstractJobDefaultConfiguration::CreateConfigurationObject(job);
-   confObject->SetProperty(TargetProperty, castJob->IsTargetLocal() ? "local" : "remote");
-   confObject->SetProperty(JoinReportsProperty, castJob->GetJoinReports() ? "true" : "false");
+
+   const string targetValue = (castJob->IsTargetLocal() ? "local" : "remote");
+   confObject->SetProperty(TargetProperty, targetValue);
+   confObject->SetProperty(JoinReportsProperty, (castJob->GetJoinReports() ? "true" : "false"));
 
    vector<pair<string,string> > backupPoints;
    castJob->GetFolderList(backupPoints);

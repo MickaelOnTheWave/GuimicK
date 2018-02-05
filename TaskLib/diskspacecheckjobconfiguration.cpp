@@ -16,6 +16,19 @@ bool DiskSpaceCheckJobConfiguration::IsRightJob(AbstractJob* job)
    return (dynamic_cast<LinuxFreeSpaceCheckJob*>(job) != NULL);
 }
 
+ConfigurationObject* DiskSpaceCheckJobConfiguration::CreateConfigurationObject(
+      AbstractJob* job)
+{
+   ConfigurationObject* confObject = AbstractJobDefaultConfiguration::CreateConfigurationObject(job);
+   LinuxFreeSpaceCheckJob* castJob = static_cast<LinuxFreeSpaceCheckJob*>(job);
+
+   confObject->SetProperty(DriveProperty, castJob->GetDrive());
+   const string targetValue = (castJob->IsTargetLocal() ? "true" : "false");
+   confObject->SetProperty(TargetProperty, targetValue);
+
+   return confObject;
+}
+
 AbstractJob *DiskSpaceCheckJobConfiguration::CreateJob()
 {
     return new LinuxFreeSpaceCheckJob();

@@ -51,7 +51,8 @@ SOURCES += \
     jobeditdialogfactory.cpp \
     editzipcopybackupdialog.cpp \
     aboutdialog.cpp \
-    consolejobdisplay.cpp
+    consolejobdisplay.cpp \
+    selectbackupfolderdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -79,7 +80,8 @@ HEADERS += \
     jobeditdialogfactory.h \
     editzipcopybackupdialog.h \
     aboutdialog.h \
-    consolejobdisplay.h
+    consolejobdisplay.h \
+    selectbackupfolderdialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -100,7 +102,8 @@ FORMS += \
     editrsyncfsbackupjobdialog.ui \
     editzipcopybackupdialog.ui \
     aboutdialog.ui \
-    consolejobdisplay.ui
+    consolejobdisplay.ui \
+    selectbackupfolderdialog.ui
 
 contains( CONFIG, synology ) {
    BUILD_TYPE = Synology

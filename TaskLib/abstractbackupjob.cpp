@@ -113,7 +113,12 @@ void AbstractBackupJob::AddFolder(const std::string &source, const std::string &
 
 void AbstractBackupJob::GetFolderList(std::vector<std::pair<string, string> > &folders)
 {
-    copy(folderList.begin(), folderList.end(), back_inserter(folders));
+   copy(folderList.begin(), folderList.end(), back_inserter(folders));
+}
+
+int AbstractBackupJob::GetFolderCount() const
+{
+   return static_cast<int>(folderList.size());
 }
 
 void AbstractBackupJob::ClearFolderList()

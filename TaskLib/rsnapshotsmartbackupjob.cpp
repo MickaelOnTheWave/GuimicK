@@ -50,14 +50,12 @@ string RsnapshotSmartBackupJob::GetTypeName() const
 
 void RsnapshotSmartBackupJob::SetRepository(const string& value)
 {
-   const string fullRepositoryPath = (value[0] != '/') ? FileTools::BuildFullPath(value) : value;
-   AbstractBackupJob::SetRepository(fullRepositoryPath);
+   AbstractBackupJob::SetRepository(BuildFinalPath(value));
 }
 
 void RsnapshotSmartBackupJob::AddFolder(const string& source, const string& destination)
 {
-   const string fullSourcePath = (source[0] != '/') ? FileTools::BuildFullPath(source) : source;
-   AbstractBackupJob::AddFolder(fullSourcePath, destination);
+   AbstractBackupJob::AddFolder(BuildFinalPath(source), destination);
 }
 
 string RsnapshotSmartBackupJob::GetTemplateConfigurationFile() const
@@ -172,6 +170,12 @@ RsnapshotRawBackupJob* RsnapshotSmartBackupJob::CreateRawJob(const string& confi
    rawBackupJob->SetWaitBeforeRun(waitBeforeRun);
    rawBackupJob->SetName(GetName());
    return rawBackupJob;
+}
+
+string RsnapshotSmartBackupJob::BuildFinalPath(const string& inputPath) const
+{
+   const bool shouldBuildPath = (isTargetLocal && inputPath[0] != '/');
+   return (shouldBuildPath) ? FileTools::BuildFullPath(inputPath) : inputPath;
 }
 
 

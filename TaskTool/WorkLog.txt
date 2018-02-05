@@ -1,4 +1,16 @@
-04/02/2017 (1.5h)
+05/02/2018 (2h)
+   Updated production version and configuration. Now going for UI...
+	Fixed bugs in job configuration saving : rsnapshot was not handling remote targets
+	correctly. Also, target tags were not handled either. Fixed missing informations for
+	free space check job. Now going for Restore feature.
+	Created UI for selecting backups. Created some logic for backup, time index and restore
+	destination selection. Backup selection is implemented, others aren't yet.
+Next planned work:
+   - Create Job logic to restore properly from server
+	- Create UI to configure backup server
+	- Refactor Restore feature to handle time index and folder properly
+
+04/02/2018 (1.5h)
    Fixed test issues : some Rsnapshot test suites had to be refactored (creating full path only worked
 	for local backups, and this also affected configuration tests). Also fixed a ProfiledJob issue with
 	virtual method signature change. Now only a Rsnapshot issue remains, probably due to timing issues (
