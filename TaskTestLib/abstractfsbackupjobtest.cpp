@@ -148,7 +148,11 @@ JobStatus *AbstractFsBackupJobTest::RunBackupJob(AbstractBackupJob *job,
                                                  const bool useDebug)
 {
     job->InitializeFromClient(nullptr);
-    job->AddFolder(currentSourceFolder, backupRepository);
+
+    const string sourceFolder = (isRemote) ?
+                                   FileTools::BuildFullPath(currentSourceFolder) :
+                                   currentSourceFolder;
+    job->AddFolder(sourceFolder, backupRepository);
 
     if (isRemote)
         job->SetTargetRemote(sshUser, sshHost);
