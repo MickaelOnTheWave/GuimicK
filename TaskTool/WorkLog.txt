@@ -1,3 +1,12 @@
+04/02/2017 (1.5h)
+   Fixed test issues : some Rsnapshot test suites had to be refactored (creating full path only worked
+	for local backups, and this also affected configuration tests). Also fixed a ProfiledJob issue with
+	virtual method signature change. Now only a Rsnapshot issue remains, probably due to timing issues (
+	modification type misdetection).
+	Fixed remaining Rsnapshot issue : it was the same path building issue.
+Next planned work:
+   - UI changes to support Restore
+
 28/01/2018 (2h)
    Finished fixing Rsnapshot implementation. Now Restore works for all implementations.
 	However, backup tests are failing for other implementations. Probably remote ones...

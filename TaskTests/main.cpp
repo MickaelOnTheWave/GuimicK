@@ -23,10 +23,10 @@ int main(int argc, char* argv[])
 
     //QObject* testSuite = new RsnapshotJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new RsnapshotErrorAnalyzerTest(taskLibDir);
-    //QObject* testSuite = new TaskFeatureTest(taskLibDir, errorDir);
+    QObject* testSuite = new TaskFeatureTest(taskLibDir, errorDir);
     //QObject* testSuite = new ConsoleJobTest();
     //QObject* testSuite = new GitJobTest();
-    //Object* testSuite = new UserConsoleJobTest();
+    //QObject* testSuite = new UserConsoleJobTest();
     //QObject* testSuite = new SshConsoleJobTest();
     //QObject* testSuite = new ConfigurationParserTest(toolsLibDir);
     //QObject* testSuite = new FileToolsTest(toolsLibDir);
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new ServerConfigurationTest(taskLibDir);
     //QObject* testSuite = new GitFsBackupJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new GitPlumbingReportParserTest(parsersDir);
-    QObject* testSuite = new RawCopyFsBackupJobTest(taskLibDir, errorDir);
+    //QObject* testSuite = new RawCopyFsBackupJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new RsyncCopyFsBackupJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new RsyncCommandParserTest(parsersDir);
     //QObject* testSuite = new ZipAndCopyFsBackupJobTest(taskLibDir, errorDir);

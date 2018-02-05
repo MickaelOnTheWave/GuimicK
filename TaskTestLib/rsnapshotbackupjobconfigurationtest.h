@@ -28,6 +28,8 @@ protected:
     virtual AbstractJobConfiguration* CreateNewConfiguration() const;
 
 private:
+    virtual void CreateBackupItemObjectsTestData() override;
+
     void TestRepositoryProperty(const std::string &propertyValue);
     void TestFullConfigurationProperty(const std::string &propertyValue);
     void TestWaitProperty(const std::string& propertyValue, const bool expected);

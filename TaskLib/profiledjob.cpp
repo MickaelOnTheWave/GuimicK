@@ -13,7 +13,7 @@ ProfiledJob::~ProfiledJob()
 	delete baseJob;
 }
 
-string ProfiledJob::GetName()
+string ProfiledJob::GetName() const
 {
     return baseJob->GetName();
 }

@@ -29,6 +29,8 @@ private Q_SLOTS:
 private:
     using BackupValues = std::vector<std::pair<std::vector<std::string>, std::vector<std::string> > >;
 
+    virtual void CreateBackupItemObjectsTestData();
+
     void testConfigure_TargetProperty(const std::string& propertyValue,
                                       const bool expectedValue);
 

@@ -10,7 +10,27 @@ using namespace std;
 
 AbstractJobConfiguration *RsnapshotBackupJobConfigurationTest::CreateNewConfiguration() const
 {
-    return new RsnapshotBackupJobConfiguration();
+   return new RsnapshotBackupJobConfiguration();
+}
+
+void RsnapshotBackupJobConfigurationTest::CreateBackupItemObjectsTestData()
+{
+   QTest::newRow("Valid backup") << QStringList{"source", "dest"}
+                                 << QStringList{"/valueSrc", "valueDst"}
+                                 << "/valueSrc" << "valueDst" << QStringList();
+
+   QTest::newRow("No source") << QStringList{"source", "dest"}
+                                 << QStringList{"", "valueDst"}
+                                 << "" << ""
+                                 << QStringList{"Error : source is invalid"};
+
+   QTest::newRow("No destination") << QStringList{"source", "dest"}
+                                 << QStringList{"/valueSrc", ""}
+                                 << "" << ""
+                                 << QStringList{"Error : destination is invalid"};
+   QTest::newRow("Unknown properties ignored") << QStringList{"source", "dest", "other"}
+                                               << QStringList{"/valueSrc", "valueDst", "otherVal"}
+                                               << "/valueSrc" << "valueDst" << QStringList();
 }
 
 void RsnapshotBackupJobConfigurationTest::testConfigure_RepositoryProperty()

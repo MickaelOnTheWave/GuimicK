@@ -50,13 +50,13 @@ string RsnapshotSmartBackupJob::GetTypeName() const
 
 void RsnapshotSmartBackupJob::SetRepository(const string& value)
 {
-   const string fullRepositoryPath = FileTools::BuildFullPath(value);
+   const string fullRepositoryPath = (value[0] != '/') ? FileTools::BuildFullPath(value) : value;
    AbstractBackupJob::SetRepository(fullRepositoryPath);
 }
 
 void RsnapshotSmartBackupJob::AddFolder(const string& source, const string& destination)
 {
-   const string fullSourcePath = FileTools::BuildFullPath(source);
+   const string fullSourcePath = (source[0] != '/') ? FileTools::BuildFullPath(source) : source;
    AbstractBackupJob::AddFolder(fullSourcePath, destination);
 }
 
