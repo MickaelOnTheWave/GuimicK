@@ -1,3 +1,8 @@
+13/02/2018 (22.1 0.2h)
+   Production stopped working - rsnapshot issue. Investigating the issue...
+	It looks like the target value is wrong. Adding debug information to check (and changing
+	some configured job).
+
 05/02/2018 (2h)
    Updated production version and configuration. Now going for UI...
 	Fixed bugs in job configuration saving : rsnapshot was not handling remote targets

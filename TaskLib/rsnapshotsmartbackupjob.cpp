@@ -122,6 +122,7 @@ string RsnapshotSmartBackupJob::CreateBackupSourcePath(const string& backupTag) 
 
 JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
 {
+   debugManager->AddDataLine<bool>("Running - IsTargetLocal", isTargetLocal);
    string configuration = CreateConfiguration();
    RsnapshotRawBackupJob* rawBackupJob = CreateRawJob(configuration);
 
@@ -174,6 +175,8 @@ RsnapshotRawBackupJob* RsnapshotSmartBackupJob::CreateRawJob(const string& confi
 
 string RsnapshotSmartBackupJob::BuildFinalPath(const string& inputPath) const
 {
+   debugManager->AddDataLine<string>("Building Path", inputPath);
+   debugManager->AddDataLine<bool>("IsTargetLocal", isTargetLocal);
    const bool shouldBuildPath = (isTargetLocal && inputPath[0] != '/');
    return (shouldBuildPath) ? FileTools::BuildFullPath(inputPath) : inputPath;
 }
