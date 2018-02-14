@@ -83,7 +83,7 @@ void GitBackupJob::RunRepositoryBackup(
        RunGitClone(source, destination, results);
 }
 
-JobStatus* GitBackupJob::RestoreBackup(const string& source, const string& destination)
+JobStatus* GitBackupJob::RestoreBackupFromServer(const string& source, const string& destination)
 {
    ConsoleJob* gitCommand = new ConsoleJob("git", BuildCloneParameters(source, destination, false));
    JobStatus* status = gitCommand->Run();

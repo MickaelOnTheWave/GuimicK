@@ -25,6 +25,9 @@ public:
     virtual void SetRepository(const std::string& value);
     virtual void AddFolder(const std::string& source, const std::string& destination);
 
+    virtual JobStatus* RestoreBackupFromClient( const BackupRestoreParameters& parameters,
+                                                const BackupRestoreTarget& target);
+
     std::string GetTemplateConfigurationFile() const;
     void SetTemplateConfigurationFile(const std::string& value);
 
@@ -43,7 +46,7 @@ protected:
                                      ResultCollection& results);
 
 private:
-    virtual JobStatus* RestoreBackup(const std::string &source, const std::string &destination);
+    virtual JobStatus* RestoreBackupFromServer(const std::string &source, const std::string &destination);
 
     virtual std::string CreateBackupSourcePath(const std::string& backupTag) const;
 

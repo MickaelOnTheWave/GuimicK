@@ -48,7 +48,7 @@ void AbstractCopyFsBackupJob::RunRepositoryBackup(const string &source,
    RunCopy(source, copyDestination, results);
 }
 
-JobStatus* AbstractCopyFsBackupJob::RestoreBackup(const string& source, const string& destination)
+JobStatus* AbstractCopyFsBackupJob::RestoreBackupFromServer(const string& source, const string& destination)
 {
    ConsoleJob copyCommand;
    PrepareCopyCommand(source, destination, copyCommand);

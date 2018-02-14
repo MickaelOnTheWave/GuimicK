@@ -8,6 +8,22 @@
 
 class BackupStatusManager;
 
+class BackupRestoreParameters
+{
+public:
+   std::string destination;
+   int folderIndex;
+   int timeIndex;
+};
+
+class BackupRestoreTarget
+{
+public:
+   std::string host;
+   std::string user;
+   std::string password;
+};
+
 class AbstractBackupJob : public AbstractJob
 {
 public:
@@ -26,7 +42,10 @@ public:
 
     virtual std::string GetTypeName() const = 0;
 
-    JobStatus* RestoreBackup(const std::string& destination, const int repositoryIndex = 0);
+    JobStatus* RestoreBackupFromServer(const std::string& destination, const int folderIndex = 0);
+
+    virtual JobStatus* RestoreBackupFromClient( const BackupRestoreParameters& parameters,
+                                                const BackupRestoreTarget& target);
 
     bool IsTargetLocal() const;
     void SetTargetRemote(const std::string& user = "", const std::string& host = "");
@@ -61,7 +80,7 @@ protected:
     bool isDebugManagerParent;
 
 private:
-    virtual JobStatus* RestoreBackup(const std::string& source, const std::string& destination) = 0;
+    virtual JobStatus* RestoreBackupFromServer(const std::string& source, const std::string& destination) = 0;
     virtual std::string CreateBackupSourcePath(const std::string& backupTag) const;
     bool IsRemoteTargetConsistent() const;
 };

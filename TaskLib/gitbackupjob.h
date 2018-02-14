@@ -26,7 +26,7 @@ protected:
                                      ResultCollection &results);
 
 private:
-    virtual JobStatus* RestoreBackup(const std::string &source, const std::string &destination);
+    virtual JobStatus* RestoreBackupFromServer(const std::string &source, const std::string &destination);
 
     bool InitializeRemoteTarget(Client* client);
     bool AreSourcesConsistent() const;

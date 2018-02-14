@@ -84,7 +84,7 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
     }
 }
 
-JobStatus* ZipAndCopyFsBackupJob::RestoreBackup(const string& source,
+JobStatus* ZipAndCopyFsBackupJob::RestoreBackupFromServer(const string& source,
                                                 const string& destination)
 {
    bool ok = Restore(source, destination);

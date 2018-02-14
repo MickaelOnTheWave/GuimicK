@@ -31,7 +31,7 @@ protected:
                               const std::string& output, ResultCollection& results) = 0;
 
 private:
-   virtual JobStatus* RestoreBackup(const std::string& source, const std::string& destination);
+   virtual JobStatus* RestoreBackupFromServer(const std::string& source, const std::string& destination);
 
     void RunCopy(const std::string& source, const std::string& destination,
                  ResultCollection& results);

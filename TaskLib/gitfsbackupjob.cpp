@@ -70,7 +70,7 @@ void GitFsBackupJob::SetForceRawCopyUse(const bool value)
    forceRawCopy = value;
 }
 
-JobStatus* GitFsBackupJob::RestoreBackup(const string& source,
+JobStatus* GitFsBackupJob::RestoreBackupFromServer(const string& source,
                                          const string& destination)
 {
    string originalDirectory = FileTools::GetCurrentFullPath();

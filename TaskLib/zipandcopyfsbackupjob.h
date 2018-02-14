@@ -27,7 +27,7 @@ protected:
                                      ResultCollection& results);
 
 private:
-    virtual JobStatus* RestoreBackup(const std::string &source,
+    virtual JobStatus* RestoreBackupFromServer(const std::string &source,
                                      const std::string &destination);
 
     bool CreateBackupArchive(const std::string& folderToBackup,

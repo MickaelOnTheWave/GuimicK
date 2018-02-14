@@ -358,7 +358,7 @@ QString MainWindow::GetBackupFolder(AbstractBackupJob* job) const
 }
 
 int MainWindow::GetBackupTimeIndex(
-      AbstractBackupJob* job, const QString& backupFolder) const
+      AbstractBackupJob*, const QString&) const
 {
    // TODO : implement
    return 0;
@@ -372,6 +372,8 @@ void MainWindow::RestoreBackup(
                            "/home");
 
    // TODO : fix that
+   const BackupRestoreParameters parameters = {folderName.toStdString(), 0, 0};
+   const BackupRestoreTarget target = {"192.168.1.102", "root", "SmS_jXf2yHM'"};
    if (folderName != "")
-      job->RestoreBackup(folderName.toStdString());
+      job->RestoreBackupFromClient(parameters, target);
 }

@@ -10,6 +10,8 @@ using namespace std;
 
 static const string defaultName = "Rsnapshot Backup";
 
+static const string errorEmptyBackup = "Backup is empty";
+
 RsnapshotSmartBackupJob::RsnapshotSmartBackupJob()
     : AbstractBackupJob(defaultName),
       templateConfigurationFile(""), temporaryFile(""),
@@ -104,12 +106,26 @@ void RsnapshotSmartBackupJob::RunRepositoryBackup(const string&,
 {
 }
 
-JobStatus* RsnapshotSmartBackupJob::RestoreBackup(const string& source, const string& destination)
+JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromServer(const string& source, const string& destination)
 {
    if (!FileTools::IsFolderEmpty(source))
       return RunRawCopy(source, destination);
    else
-      return new JobStatus(JobStatus::OK);
+      return new JobStatus(JobStatus::ERROR, errorEmptyBackup);
+}
+
+JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromClient(
+      const BackupRestoreParameters& parameters,
+      const BackupRestoreTarget& target)
+{
+   string source = CreateBackupSourcePath("");
+
+   RawCopyFsBackupJob copyJob;
+   copyJob.SetTargetRemote(target.user, target.host);
+   copyJob.AddFolder(source, parameters.destination);
+   copyJob.SetOutputDebugInformation(DebugOutput::ON_ANY_ERROR);
+   JobStatus* copyStatus = copyJob.Run();
+   return copyStatus;
 }
 
 string RsnapshotSmartBackupJob::CreateBackupSourcePath(const string& backupTag) const

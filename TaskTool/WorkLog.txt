@@ -1,7 +1,15 @@
-13/02/2018 (22.1 0.2h)
+13/02/2018 (1h)
    Production stopped working - rsnapshot issue. Investigating the issue...
 	It looks like the target value is wrong. Adding debug information to check (and changing
 	some configured job).
+	Began working on Job logic to restore from server. Created first version of new method and
+	its Rsnapshot implementation. Structure created, and it seems to (mostly) do its job but it
+	is not yet working.
+Next planned work:
+   - Resolve issue of passing password to ssh command
+	- Update architecture of new RestoreBackup method. Can reuse code from previous one?
+	- Properly use folder and time index in Restores
+	- Create UI to configure backup server
 
 05/02/2018 (2h)
    Updated production version and configuration. Now going for UI...
