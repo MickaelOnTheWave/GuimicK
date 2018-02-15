@@ -314,7 +314,8 @@ void MainWindow::on_actionCustom_command_client_triggered()
 void MainWindow::on_jobListView_clicked(const QModelIndex &index)
 {
    AbstractJob* job = jobListModel.GetJob(index);
-   const bool isBackupJob = (dynamic_cast<AbstractBackupJob*>(job) != nullptr);
+   //const bool isBackupJob = (dynamic_cast<AbstractBackupJob*>(job) != nullptr);
+   const bool isBackupJob = false; // Pending - see task [056].
    ui->checkBackupsButton->setVisible(isBackupJob);
 }
 

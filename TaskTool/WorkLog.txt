@@ -1,3 +1,14 @@
+14/02/2018 (0.5h)
+   The best way to use password authentication seems to be sshpass. However, it does not
+	seem to be a standard tool - it had to be installed. Anyway, scp won't work on production
+	because scp is not properly working on Synology (old issue).
+	The only solution seems to be sshpass... And even if implemented, it won't work on our production
+	because of Synology limitations. It seems more appropriate to leave this feature for
+	local only - and because of this, for later. When Windows porting will be done (and there will
+	be VMs for testing).
+Next planned work :
+   - Begin work on archive differential/incremental backup
+
 13/02/2018 (1h)
    Production stopped working - rsnapshot issue. Investigating the issue...
 	It looks like the target value is wrong. Adding debug information to check (and changing
