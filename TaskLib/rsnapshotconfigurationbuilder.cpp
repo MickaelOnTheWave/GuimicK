@@ -80,13 +80,14 @@ void RsnapshotConfigurationBuilder::AppendBackupData(
         string &configurationData,
         const AbstractBackupJob::BackupCollection &dataToBackup) const
 {
-    configurationData += string("\nsnapshot_root\t") + repository + "\n";
+   const string absoluteRepository = FileTools::BuildFullPathIfRelative(repository);
+    configurationData += string("\nsnapshot_root\t") + absoluteRepository + "\n";
 
     vector<pair<string,string> >::const_iterator it=dataToBackup.begin();
     for (; it!=dataToBackup.end(); ++it)
     {
-        configurationData += string("\nbackup\t") + it->first;
-        configurationData += "\t" + it->second + "\n";
+        configurationData += string("\nbackup\t") + FileTools::BuildFullPathIfRelative(it->first);
+        configurationData += "\t" + FileTools::RelativePath(it->second) + "\n";
     }
 }
 

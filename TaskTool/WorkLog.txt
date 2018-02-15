@@ -1,3 +1,8 @@
+15/02/2018 (17h)
+   Fixed Rsnapshot tests - paths and backup points were not handled correctly. Also fixed a bug
+	with a nice error message that was not standard behaviour (empty backups should be ok from a
+	test point of view).
+
 14/02/2018 (0.5h)
    The best way to use password authentication seems to be sshpass. However, it does not
 	seem to be a standard tool - it had to be installed. Anyway, scp won't work on production
@@ -7,7 +12,8 @@
 	local only - and because of this, for later. When Windows porting will be done (and there will
 	be VMs for testing).
 Next planned work :
-   - Begin work on archive differential/incremental backup
+   - Fix Rsnapshot job tests
+	- Begin work on archive differential/incremental backup
 
 13/02/2018 (1h)
    Production stopped working - rsnapshot issue. Investigating the issue...

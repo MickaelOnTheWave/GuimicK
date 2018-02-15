@@ -10,13 +10,12 @@ using namespace std;
 
 static const string defaultName = "Rsnapshot Backup";
 
-static const string errorEmptyBackup = "Backup is empty";
-
 RsnapshotSmartBackupJob::RsnapshotSmartBackupJob()
     : AbstractBackupJob(defaultName),
       templateConfigurationFile(""), temporaryFile(""),
       waitBeforeRun(false), maxBackupCount(100)
 {
+   isTargetLocal = true;
 }
 
 RsnapshotSmartBackupJob::RsnapshotSmartBackupJob(const RsnapshotSmartBackupJob &other)
@@ -111,7 +110,7 @@ JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromServer(const string& source
    if (!FileTools::IsFolderEmpty(source))
       return RunRawCopy(source, destination);
    else
-      return new JobStatus(JobStatus::ERROR, errorEmptyBackup);
+      return new JobStatus(JobStatus::OK, "");
 }
 
 JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromClient(
@@ -193,7 +192,7 @@ string RsnapshotSmartBackupJob::BuildFinalPath(const string& inputPath) const
 {
    debugManager->AddDataLine<string>("Building Path", inputPath);
    debugManager->AddDataLine<bool>("IsTargetLocal", isTargetLocal);
-   const bool shouldBuildPath = (isTargetLocal && inputPath[0] != '/');
+   const bool shouldBuildPath = (isTargetLocal && !FileTools::IsAbsolutePath(inputPath));
    return (shouldBuildPath) ? FileTools::BuildFullPath(inputPath) : inputPath;
 }
 
