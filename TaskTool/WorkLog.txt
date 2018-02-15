@@ -1,7 +1,18 @@
-15/02/2018 (17h)
+15/02/2018 (2h)
    Fixed Rsnapshot tests - paths and backup points were not handled correctly. Also fixed a bug
 	with a nice error message that was not standard behaviour (empty backups should be ok from a
 	test point of view).
+	Investigating tar backups in Linux. It is easy to do a differential one :
+	tar -cpf backupfile.tar -g backupfile.snar folder/ for base and then on each increment :
+	tar -cpf backupfile.X.tar -g backupfile.snar folder/
+	However, this is incremental and not differential. And each intermediate file only keeps
+	diffs. To do a full restore, it is necessary to restore all of them on top of each other.
+	This is not that good, some clean steps will be needed. THe only other (simple and free)
+	alternative seems 7zip, that does differential backup. Both of them seem to work only locally.
+Next planned work:
+   - Consider steps needed for a tar incremental backup (with remotes, and auto flushes...)
+	- Consider steps needed for a 7zip differential backup (with same considerations...)
+	- Start implementation
 
 14/02/2018 (0.5h)
    The best way to use password authentication seems to be sshpass. However, it does not
