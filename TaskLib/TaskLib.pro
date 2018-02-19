@@ -81,7 +81,8 @@ SOURCES += \
     resultcollectionstatus.cpp \
     remotejobsrunnerconfiguration.cpp \
     AbstractConsoleJob.cpp \
-    jobfactory.cpp
+    jobfactory.cpp \
+    tarincrementalbackup.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -153,7 +154,8 @@ HEADERS +=\
     clientconfiguration.h \
     resultcollectionstatus.h \
     remotejobsrunnerconfiguration.h \
-    jobfactory.h
+    jobfactory.h \
+    tarincrementalbackup.h
 
 unix {
     target.path = /usr/lib

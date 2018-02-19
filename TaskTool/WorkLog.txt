@@ -1,3 +1,11 @@
+19/02/2018 (1.5h)
+   Studying 7zip. The Differential backup approach is not as clever as it seemed, it is
+	an bunch of level1 incrementals : all data between incrementals is duplicated. Going for
+	the standard incremental one with tar (easiest to work with).
+	Created Tar incremental job, and implementing it.
+Next planned work:
+   - Continue implementation
+
 15/02/2018 (2h)
    Fixed Rsnapshot tests - paths and backup points were not handled correctly. Also fixed a bug
 	with a nice error message that was not standard behaviour (empty backups should be ok from a

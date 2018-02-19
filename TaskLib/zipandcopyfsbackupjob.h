@@ -5,6 +5,7 @@
 #include "backupstatusmanager.h"
 #include "AbstractConsoleJob.h"
 
+// TODO : check that the job works with multiple folders
 class ZipAndCopyFsBackupJob : public AbstractBackupJob
 {
 public:
