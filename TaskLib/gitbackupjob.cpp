@@ -246,10 +246,10 @@ string GitBackupJob::BuildCloneParameters(const string &source, const string &de
     if (mirror)
        params += "--mirror ";
 
-    if (isTargetLocal)
+    if (IsTargetLocal())
         params += source;
     else
-        params += sshUser + "@" + sshHost + ":" + source;
+        params += target.sshUser + "@" + target.sshHost + ":" + source;
 
     params += string(" 2>&1 ") + destination;
     return params;

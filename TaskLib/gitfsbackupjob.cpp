@@ -360,10 +360,10 @@ AbstractCopyFsBackupJob *GitFsBackupJob::PrepareCopy(const string &destination, 
 void GitFsBackupJob::RunCopy(AbstractCopyFsBackupJob *copyJob, const string &source,
                              const string &destination, JobStatus *status)
 {
-    if (isTargetLocal)
+    if (target.isLocal)
         copyJob->SetTargetLocal();
     else
-        copyJob->SetTargetRemote(sshUser, sshHost);
+        copyJob->SetTargetRemote(target.sshUser, target.sshHost);
 
     int returnValue = copyJob->RunOnParameters(source, destination);   
     if (returnValue == 0 || returnValue == emptyDirError)

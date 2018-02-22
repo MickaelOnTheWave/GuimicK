@@ -45,8 +45,6 @@ private:
     void AddStatusToResults(ResultCollection& results,
                             const int code, const std::string& message);
 
-    AbstractConsoleJob *CreateBackupConsoleJob(const std::string& parameters);
-
     std::string localDestination;
 };
 

@@ -30,12 +30,12 @@ void RawCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
                                             const std::string &destination,
                                             ConsoleJob &commandJob)
 {
-    const string command = (isTargetLocal ? "cp" : "scp");
+    const string command = (target.isLocal ? "cp" : "scp");
     string params;
-    if (isTargetLocal)
+    if (target.isLocal)
         params = "-R ";
     else
-        params = string("-r ") + sshUser + "@" + sshHost + ":";
+        params = string("-r ") + target.sshUser + "@" + target.sshHost + ":";
     params += source + "/* " + destination;
 
     commandJob.SetCommand(command);

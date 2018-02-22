@@ -15,7 +15,7 @@ RsnapshotSmartBackupJob::RsnapshotSmartBackupJob()
       templateConfigurationFile(""), temporaryFile(""),
       waitBeforeRun(false), maxBackupCount(100)
 {
-   isTargetLocal = true;
+   target.isLocal = true;
 }
 
 RsnapshotSmartBackupJob::RsnapshotSmartBackupJob(const RsnapshotSmartBackupJob &other)
@@ -137,7 +137,7 @@ string RsnapshotSmartBackupJob::CreateBackupSourcePath(const string& backupTag) 
 
 JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
 {
-   debugManager->AddDataLine<bool>("Running - IsTargetLocal", isTargetLocal);
+   debugManager->AddDataLine<bool>("Running - IsTargetLocal", target.isLocal);
    string configuration = CreateConfiguration();
    RsnapshotRawBackupJob* rawBackupJob = CreateRawJob(configuration);
 
@@ -191,8 +191,8 @@ RsnapshotRawBackupJob* RsnapshotSmartBackupJob::CreateRawJob(const string& confi
 string RsnapshotSmartBackupJob::BuildFinalPath(const string& inputPath) const
 {
    debugManager->AddDataLine<string>("Building Path", inputPath);
-   debugManager->AddDataLine<bool>("IsTargetLocal", isTargetLocal);
-   const bool shouldBuildPath = (isTargetLocal && !FileTools::IsAbsolutePath(inputPath));
+   debugManager->AddDataLine<bool>("IsTargetLocal", target.isLocal);
+   const bool shouldBuildPath = (target.isLocal && !FileTools::IsAbsolutePath(inputPath));
    return (shouldBuildPath) ? FileTools::BuildFullPath(inputPath) : inputPath;
 }
 

@@ -21,6 +21,7 @@
 #include "shutdownjobconfigurationtest.h"
 #include "sshconsolejobconfigurationtest.h"
 #include "sshconsolejobtest.h"
+#include "tarincrementalbackupjobtest.h"
 #include "taskfeaturetest.h"
 #include "userconsolejobconfigurationtest.h"
 #include "userconsolejobtest.h"

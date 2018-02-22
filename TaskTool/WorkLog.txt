@@ -1,3 +1,12 @@
+21/02/2018 (1.2h)
+   Continuing implementation. Created test suite for Tar job. Refactored Tar archive creation
+	from ZipAndCopy job : created TarTools to have common code. All code for archive creation
+	and report creation has been reused :-)
+	Also created JobExecution target to encapsulate target feature.
+Next planned work:
+   - Continue implementation : implement Restore to have first tests passing
+	- Implementation : implement incremental backups/restores
+
 19/02/2018 (1.5h)
    Studying 7zip. The Differential backup approach is not as clever as it seemed, it is
 	an bunch of level1 incrementals : all data between incrementals is duplicated. Going for
@@ -15,7 +24,7 @@ Next planned work:
 	tar -cpf backupfile.X.tar -g backupfile.snar folder/
 	However, this is incremental and not differential. And each intermediate file only keeps
 	diffs. To do a full restore, it is necessary to restore all of them on top of each other.
-	This is not that good, some clean steps will be needed. THe only other (simple and free)
+	This is not that good, some clean steps will be needed. The only other (simple and free)
 	alternative seems 7zip, that does differential backup. Both of them seem to work only locally.
 Next planned work:
    - Consider steps needed for a tar incremental backup (with remotes, and auto flushes...)

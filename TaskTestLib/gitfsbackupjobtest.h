@@ -2,7 +2,6 @@
 #define GITFSBACKUPJOBTEST_H
 
 #include "abstractfsbackupjobtest.h"
-#include "gitfsbackupjob.h"
 
 class GitFsBackupJobTest : public AbstractFsBackupJobTest
 {
@@ -11,7 +10,7 @@ class GitFsBackupJobTest : public AbstractFsBackupJobTest
 public:
     GitFsBackupJobTest(const std::string& dataPrefix,
                        const std::string &errorPrefix);
-    virtual ~GitFsBackupJobTest();
+    virtual ~GitFsBackupJobTest() = default;
 
 private Q_SLOTS:
     void testRunBackup_data();

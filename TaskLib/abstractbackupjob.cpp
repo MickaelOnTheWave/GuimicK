@@ -6,17 +6,15 @@ using namespace std;
 
 AbstractBackupJob::AbstractBackupJob(const string& _title)
     : AbstractJob(_title),
-      repository(""), sshUser(""), sshHost(""), isTargetLocal(false)
+      repository(""), target(false)
 {
-
     statusManager = new BackupStatusManager();
 }
 
 AbstractBackupJob::AbstractBackupJob(const AbstractBackupJob &other)
     : AbstractJob(other),
       repository(other.repository), folderList(other.folderList),
-      sshUser(other.sshUser), sshHost(other.sshHost),
-      isTargetLocal(other.isTargetLocal),
+      target(other.target),
       statusManager(new BackupStatusManager(*other.statusManager))
 {
 }
@@ -33,10 +31,10 @@ bool AbstractBackupJob::InitializeFromClient(Client *client)
         if (Initialize() == false)
             return false;
 
-        if (client && isTargetLocal == false)
+        if (client && target.isLocal == false)
         {
-            sshUser = client->GetProperty("sshuser");
-            sshHost = client->GetProperty("ip");
+            target.sshUser = client->GetProperty("sshuser");
+            target.sshHost = client->GetProperty("ip");
         }
         return IsInitialized();
     }
@@ -46,7 +44,7 @@ bool AbstractBackupJob::InitializeFromClient(Client *client)
 
 bool AbstractBackupJob::IsInitialized()
 {
-    return (isTargetLocal || IsRemoteTargetConsistent());
+    return (target.isLocal || target.IsRemoteTargetConsistent());
 }
 
 JobStatus *AbstractBackupJob::Run()
@@ -78,28 +76,26 @@ JobStatus* AbstractBackupJob::RestoreBackupFromClient(
 
 bool AbstractBackupJob::IsTargetLocal() const
 {
-    return isTargetLocal;
+    return target.isLocal;
 }
 
 void AbstractBackupJob::SetTargetRemote(const std::string &user, const std::string &host)
 {
-    isTargetLocal = false;
-    sshHost = host;
-    sshUser = user;
+    target.isLocal = false;
+    target.sshHost = host;
+    target.sshUser = user;
 }
 
 void AbstractBackupJob::SetTargetLocal()
 {
-    isTargetLocal = true;
-    sshUser = "";
-    sshHost = "";
+    target.isLocal = true;
+    target.sshUser = "";
+    target.sshHost = "";
 }
 
 void AbstractBackupJob::CopyTarget(const AbstractBackupJob& other)
 {
-   isTargetLocal = other.isTargetLocal;
-   sshUser = other.sshUser;
-   sshHost = other.sshHost;
+   target = other.target;
 }
 
 string AbstractBackupJob::GetRepository() const
@@ -157,9 +153,4 @@ JobStatus *AbstractBackupJob::CreateGlobalStatus(const AbstractBackupJob::Result
 string AbstractBackupJob::CreateBackupSourcePath(const string& backupTag) const
 {
    return repository + backupTag;
-}
-
-bool AbstractBackupJob::IsRemoteTargetConsistent() const
-{
-    return (sshUser != "" && sshHost != "");
 }

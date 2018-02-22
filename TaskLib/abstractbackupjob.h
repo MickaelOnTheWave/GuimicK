@@ -5,6 +5,7 @@
 
 #include "filebackupreport.h"
 #include "jobdebuginformationmanager.h"
+#include "jobexecutiontarget.h"
 
 class BackupStatusManager;
 
@@ -71,10 +72,7 @@ protected:
 
     std::string repository;
     BackupCollection folderList;
-
-    std::string sshUser;
-    std::string sshHost;
-    bool isTargetLocal;
+    JobExecutionTarget target;
 
     BackupStatusManager* statusManager;
     bool isDebugManagerParent;
@@ -82,6 +80,5 @@ protected:
 private:
     virtual JobStatus* RestoreBackupFromServer(const std::string& source, const std::string& destination) = 0;
     virtual std::string CreateBackupSourcePath(const std::string& backupTag) const;
-    bool IsRemoteTargetConsistent() const;
 };
 #endif // ABSTRACTBACKUPJOB_H

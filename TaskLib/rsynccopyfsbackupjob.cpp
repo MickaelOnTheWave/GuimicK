@@ -90,10 +90,10 @@ void RsyncCopyFsBackupJob::CreateReport(const std::string &,
 string RsyncCopyFsBackupJob::BuildSource(const string &originalSource) const
 {
     string finalSource;
-    if (isTargetLocal)
+    if (target.isLocal)
         finalSource = originalSource;
     else
-        finalSource = sshUser + "@" + sshHost + ":" + originalSource;
+        finalSource = target.sshUser + "@" + target.sshHost + ":" + originalSource;
     return finalSource + "/";
 }
 

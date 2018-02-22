@@ -1,7 +1,9 @@
 #include "tarincrementalbackup.h"
 
 #include <sstream>
+
 #include "consolejob.h"
+#include "tartools.h"
 
 using namespace std;
 
@@ -88,14 +90,11 @@ void TarIncrementalBackup::RunFullBackup(
    const string indexFile = destination + indexExtension;
 
    stringstream params;
-   params << "-cpf " << destination << " -g ";
+   params << "-cpzvf " << destination << " -g ";
    params << indexFile << " " << source;
 
-   ConsoleJob commandJob("tar", params.str());
-   commandJob.RunWithoutStatus();
-
-   // TODO : Check if it is OK, and if so try to run already existing
-   // tar parser.
+   TarTools tarTool(debugManager, &target);
+   tarTool.CreateArchive(params.str(), results);
 }
 
 void TarIncrementalBackup::RunIncrementalBackup(
@@ -103,6 +102,13 @@ void TarIncrementalBackup::RunIncrementalBackup(
       AbstractBackupJob::ResultCollection& results)
 {
    const string indexFile = destination + indexExtension;
+
+   stringstream params;
+   params << "-cpf " << destination << " -g ";
+   params << indexFile << " " << source;
+
+   ConsoleJob commandJob("tar", params.str());
+   commandJob.RunWithoutStatus();
 
    // TODO : implement
    //tar -cpf backupfile.X.tar -g backupfile.snar folder/
