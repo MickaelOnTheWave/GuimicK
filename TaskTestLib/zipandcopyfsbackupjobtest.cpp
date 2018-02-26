@@ -20,10 +20,6 @@ ZipAndCopyFsBackupJobTest::ZipAndCopyFsBackupJobTest(const string &dataPrefix,
 {
 }
 
-ZipAndCopyFsBackupJobTest::~ZipAndCopyFsBackupJobTest()
-{
-}
-
 void ZipAndCopyFsBackupJobTest::testRunBackup_data()
 {
     LoadExternalDataSamples(false);

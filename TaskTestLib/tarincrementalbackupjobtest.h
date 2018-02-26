@@ -3,6 +3,7 @@
 
 #include "abstractfsbackupjobtest.h"
 
+// TODO : remove duplication and ZipAndCopy test suite
 class TarIncrementalBackupJobTest : public AbstractFsBackupJobTest
 {
    Q_OBJECT
@@ -16,6 +17,12 @@ private Q_SLOTS:
     void testRunBackup_data();
 
 protected:
+    virtual void CheckBackedUpDataIsOk() override;
+    virtual JobStatus* RunBackupJob(const bool isRemote,
+                                    const bool useDebug) override;
+
+    virtual std::string GetBackupDestination() const override;
+
     virtual AbstractBackupJob* CreateNewJob();
 
 };

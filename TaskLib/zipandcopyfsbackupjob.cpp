@@ -96,7 +96,7 @@ bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
                                                 AbstractBackupJob::ResultCollection &results)
 {
    const string params = string("-cpzvf ") + archiveName + " -C " + folderToBackup + " .";
-   TarTools tarTool(debugManager, &target);
+   TarTools tarTool(&target, debugManager);
    return tarTool.CreateArchive(params, results);
 }
 

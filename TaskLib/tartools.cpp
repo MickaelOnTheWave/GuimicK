@@ -10,10 +10,10 @@ using namespace std;
 static const string reportCreationError = "Failed creating report";
 static const string tarCommandError = "tar command failed";
 
-TarTools::TarTools(JobDebugInformationManager* _parentDebugManager,
-                   JobExecutionTarget* _target)
-   : parentDebugManager(_parentDebugManager),
-     target(_target)
+TarTools::TarTools(JobExecutionTarget* _target,
+                   JobDebugInformationManager* _parentDebugManager)
+   : target(_target),
+     parentDebugManager(_parentDebugManager)
 {
 }
 
@@ -23,7 +23,8 @@ bool TarTools::CreateArchive(const string& commandLineParameters,
    JobStatus* status = new JobStatus();
 
    AbstractConsoleJob* commandJob = CreateBackupConsoleJob(commandLineParameters);
-   commandJob->SetParentDebugManager(parentDebugManager);
+   if (parentDebugManager)
+      commandJob->SetParentDebugManager(parentDebugManager);
 
    JobStatus* unusedStatus = commandJob->Run();
    delete unusedStatus;
@@ -61,6 +62,21 @@ bool TarTools::CreateArchive(const string& commandLineParameters,
 
    delete commandJob;
    return returnValue;
+}
+
+bool TarTools::ExtractArchive(const string& archiveName, const string& destination)
+{
+   string parameters = "xzvf " + archiveName + " -C " + destination;
+   parameters += " --strip-components=1";
+
+   ConsoleJob* job = new ConsoleJob("tar", parameters);
+   if (parentDebugManager)
+      job->SetParentDebugManager(parentDebugManager);
+
+   JobStatus* unusedStatus = job->Run();
+   delete unusedStatus;
+
+   return job->IsRunOk();
 }
 
 AbstractConsoleJob *TarTools::CreateBackupConsoleJob(const string &parameters)

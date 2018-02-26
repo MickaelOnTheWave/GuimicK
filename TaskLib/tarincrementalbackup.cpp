@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "consolejob.h"
+#include "filetools.h"
 #include "tartools.h"
 
 using namespace std;
@@ -64,18 +65,23 @@ void TarIncrementalBackup::RunRepositoryBackup(
 JobStatus* TarIncrementalBackup::RestoreBackupFromServer(const string& source,
                                                          const string& destination)
 {
-   // TODO : implement
-   return new JobStatus(JobStatus::ERROR, "Restore not Implemented");
+   TarTools tarTool(&target, debugManager);
+   bool result = tarTool.ExtractArchive(source, destination);
+   if (result)
+      return new JobStatus(JobStatus::OK, "");
+   else
+      return new JobStatus(JobStatus::ERROR, "Error while extracting");
 }
 
 void TarIncrementalBackup::CreateNewBackup(
       const string& source, const string& destination,
       AbstractBackupJob::ResultCollection& results)
 {
-   if (!DoesFullBackupExist(destination))
-      RunFullBackup(source, destination, results);
+   const string finalDestination = repository + destination;
+   if (!DoesFullBackupExist(finalDestination))
+      RunFullBackup(source, finalDestination, results);
    else
-      RunIncrementalBackup(source, destination, results);
+      RunIncrementalBackup(source, finalDestination, results);
 }
 
 void TarIncrementalBackup::RemoveObsoleteBackups()
@@ -93,7 +99,7 @@ void TarIncrementalBackup::RunFullBackup(
    params << "-cpzvf " << destination << " -g ";
    params << indexFile << " " << source;
 
-   TarTools tarTool(debugManager, &target);
+   TarTools tarTool(&target, debugManager);
    tarTool.CreateArchive(params.str(), results);
 }
 

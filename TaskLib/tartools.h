@@ -10,17 +10,20 @@
 class TarTools
 {
 public:
-   TarTools(JobDebugInformationManager* _parentDebugManager,
-            JobExecutionTarget* _target);
+   TarTools(JobExecutionTarget* _target = NULL,
+            JobDebugInformationManager* _parentDebugManager = NULL);
 
    bool CreateArchive(const std::string& commandLineParameters,
                       AbstractBackupJob::ResultCollection &results);
 
+   bool ExtractArchive(const std::string& archiveName,
+                       const std::string& destination);
+
 private:
    AbstractConsoleJob *CreateBackupConsoleJob(const std::string& parameters);
 
-   JobDebugInformationManager* parentDebugManager;
    JobExecutionTarget* target;
+   JobDebugInformationManager* parentDebugManager;
 };
 
 #endif // TARTOOLS_H

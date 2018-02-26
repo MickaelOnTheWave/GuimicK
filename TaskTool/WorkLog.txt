@@ -1,3 +1,13 @@
+25/02/2018 (1.4h)
+   Continuing implementation. Implemented basic restore (no incrementals). Updated test suite
+	to handle new cases, code copied from ZipCopy suite. Now backupRestore tests are Ok, focusing
+	on backup only tests.
+Next planned work:
+   - Continue implementation : fix Restore code from TarTools / test suite.
+	- Fix folder handling in backup : maybe paths need to be removed at archive creation, not extraction
+	- Create tests for multilevel backup
+	- Fix implementations to support multilevel backup/restore
+
 21/02/2018 (1.2h)
    Continuing implementation. Created test suite for Tar job. Refactored Tar archive creation
 	from ZipAndCopy job : created TarTools to have common code. All code for archive creation

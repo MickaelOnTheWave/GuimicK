@@ -9,7 +9,7 @@ class ZipAndCopyFsBackupJobTest : public AbstractFsBackupJobTest
 
 public:
     ZipAndCopyFsBackupJobTest(const std::string& dataPrefix, const std::string& errorPrefix);
-    virtual ~ZipAndCopyFsBackupJobTest();
+    virtual ~ZipAndCopyFsBackupJobTest() = default;
 
 private Q_SLOTS:
     void testRunBackup_data();
