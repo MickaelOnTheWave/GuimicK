@@ -9,7 +9,6 @@
 using namespace std;
 
 static const string defaultName = "Tar Incremental Backup";
-static const string indexExtension = ".snar";
 
 TarIncrementalBackup::TarIncrementalBackup()
    : AbstractBackupJob(defaultName),
@@ -93,11 +92,10 @@ void TarIncrementalBackup::RunFullBackup(
       const std::string& source, const std::string& destination,
       AbstractBackupJob::ResultCollection& results)
 {
-   const string indexFile = destination + indexExtension;
 
    stringstream params;
    params << "-cpzvf " << destination << " -g ";
-   params << indexFile << " " << source;
+   params << GetIndexFile(destination) << " " << source;
 
    TarTools tarTool(&target, debugManager);
    tarTool.CreateArchive(params.str(), results);
@@ -107,21 +105,27 @@ void TarIncrementalBackup::RunIncrementalBackup(
       const std::string& source, const std::string& destination,
       AbstractBackupJob::ResultCollection& results)
 {
-   const string indexFile = destination + indexExtension;
-
    stringstream params;
-   params << "-cpf " << destination << " -g ";
-   params << indexFile << " " << source;
+   params << "-cpvf " << CreateIndexedDestination(destination) << " -g ";
+   params << GetIndexFile(destination) << " " << source;
 
-   ConsoleJob commandJob("tar", params.str());
-   commandJob.RunWithoutStatus();
-
-   // TODO : implement
-   //tar -cpf backupfile.X.tar -g backupfile.snar folder/
+   TarTools tarTool(&target, debugManager);
+   tarTool.CreateIncrementalArchive(params.str(), destination, results);
 }
 
 bool TarIncrementalBackup::DoesFullBackupExist(const string& destination) const
 {
-   // TODO : implement
-   return false;
+   const bool archiveExists = FileTools::FileExists(destination);
+   const bool indexExists = FileTools::FileExists(GetIndexFile(destination));
+   return archiveExists && indexExists;
+}
+
+string TarIncrementalBackup::GetIndexFile(const string& destination) const
+{
+   return destination + ".snar";
+}
+
+string TarIncrementalBackup::CreateIndexedDestination(const string& destination) const
+{
+   return destination + ".0";
 }

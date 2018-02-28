@@ -33,8 +33,8 @@ void TarIncrementalBackupJobTest::CheckBackedUpDataIsOk()
    FileTestUtils::CheckFoldersHaveSameContent(currentSourceFolder, restoredFolder);
 }
 
-JobStatus *TarIncrementalBackupJobTest::RunBackupJob(const bool isRemote,
-                                                   const bool useDebug)
+JobStatus *TarIncrementalBackupJobTest::RunBackupJob( const bool isRemote,
+                                                      const bool useDebug)
 {
     // TODO : improve this. There are only two lines that are specific to this test suite,
     // the rest of the code should be used from parent class.

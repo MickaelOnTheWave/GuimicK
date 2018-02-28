@@ -41,6 +41,9 @@ private:
 
    bool DoesFullBackupExist(const std::string& destination) const;
 
+   std::string GetIndexFile(const std::string& destination) const;
+   std::string CreateIndexedDestination(const std::string& destination) const;
+
    int maxIncrementsPerFullBackup;
    int maxFullBackups;
 

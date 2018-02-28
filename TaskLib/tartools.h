@@ -16,6 +16,10 @@ public:
    bool CreateArchive(const std::string& commandLineParameters,
                       AbstractBackupJob::ResultCollection &results);
 
+   bool CreateIncrementalArchive(const std::string& commandLineParameters,
+                                 const std::string& referenceArchive,
+                                 AbstractBackupJob::ResultCollection &results);
+
    bool ExtractArchive(const std::string& archiveName,
                        const std::string& destination);
 

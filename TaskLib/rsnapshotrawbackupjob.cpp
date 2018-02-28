@@ -109,6 +109,10 @@ JobStatus *RsnapshotRawBackupJob::RunBackup()
                 backupStatus->SetDescription("RSnapshot executed with some warnings. See attached file.");
                 backupStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
                 backupStatus->AddFileBuffer(GetAttachmentName(), backupJob->GetCommandOutput());
+
+                const string configurationAttachment = GetName() + " - ConfigurationFile.txt";
+                const string configurationContent = FileTools::GetTextFileContent(configurationFile);
+                backupStatus->AddFileBuffer(configurationAttachment, configurationContent);
             }
             else
             {

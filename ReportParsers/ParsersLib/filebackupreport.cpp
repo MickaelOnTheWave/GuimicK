@@ -20,7 +20,7 @@ void FileBackupReport::Clear()
     removed.clear();
 }
 
-void FileBackupReport::operator=(const FileBackupReport &other)
+FileBackupReport& FileBackupReport::operator=(const FileBackupReport &other)
 {
     added.clear();
     std::copy(other.added.begin(), other.added.end(), std::back_inserter(added));
@@ -30,6 +30,8 @@ void FileBackupReport::operator=(const FileBackupReport &other)
 
     modified.clear();
     std::copy(other.modified.begin(), other.modified.end(), std::back_inserter(modified));
+
+    return *this;
 }
 
 void FileBackupReport::SortData()

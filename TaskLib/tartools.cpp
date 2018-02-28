@@ -64,6 +64,45 @@ bool TarTools::CreateArchive(const string& commandLineParameters,
    return returnValue;
 }
 
+bool TarTools::CreateIncrementalArchive(const string& commandLineParameters,
+                                        const string& referenceArchive,
+                                        AbstractBackupJob::ResultCollection& results)
+{
+   JobStatus* status = new JobStatus();
+   AbstractBackupJob::ResultCollection unusedResult;
+   bool ok = CreateArchive(commandLineParameters, unusedResult);
+
+   FileBackupReport* finalReport = NULL;
+   if (ok)
+   {
+      // TODO : first list incremental archive, and diff on that.
+      const string params = string("-tf ") + referenceArchive;
+      ConsoleJob listJob("tar", params);
+      listJob.RunWithoutStatus();
+      if (listJob.IsRunOk())
+      {
+
+         TarCommandParser parser(listJob.GetCommand());
+         bool ok = parser.ParseBuffer(listJob.GetCommandOutput());
+         if (ok)
+         {
+            FileBackupReport referenceReport;
+            parser.GetReport(referenceReport);
+            finalReport = new FileBackupReport();
+            //*finalReport = *latestResult.front().second - referenceReport;
+         }
+      }
+   }
+   else
+   {
+      status->SetCode(JobStatus::ERROR);
+      status->SetDescription("Incremental Archive not created");
+   }
+
+   results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, finalReport));
+   return ok;
+}
+
 bool TarTools::ExtractArchive(const string& archiveName, const string& destination)
 {
    string parameters = "xzvf " + archiveName + " -C " + destination;

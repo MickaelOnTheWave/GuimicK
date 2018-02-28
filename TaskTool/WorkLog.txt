@@ -1,3 +1,14 @@
+27/02/2018 (1.9h)
+   Production is not running correctly. Seeing this... Changed configuration to always include
+	debug. Also added rsnapshot configuration to attachments. This should help finding the
+	issue...
+	Back to Tar Incremental Backup : the issue right now is not with paths or restore code, it is
+	with lack of incremental support. Implementing incremental backup...
+Next planned work:
+   - Continue implementing incremental backup
+	- If finished, implement incremental restore
+	- Continue previous tasks
+
 25/02/2018 (1.4h)
    Continuing implementation. Implemented basic restore (no incrementals). Updated test suite
 	to handle new cases, code copied from ZipCopy suite. Now backupRestore tests are Ok, focusing

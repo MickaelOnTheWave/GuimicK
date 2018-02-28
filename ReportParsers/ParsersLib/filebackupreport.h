@@ -7,27 +7,29 @@
 class FileBackupReport
 {
 public:
-    FileBackupReport();
-    virtual ~FileBackupReport();
+   FileBackupReport();
+   virtual ~FileBackupReport();
 
-    virtual void Clear();
-    void operator=(const FileBackupReport& other);
-    void SortData();
+   FileBackupReport& operator=(const FileBackupReport& other);
 
-    virtual std::string GetMiniDescription() const;
-    virtual std::string GetFullDescription() const;
+   virtual void Clear();
 
-    void AddAsAdded(const std::vector<std::string>& files);
-    void AddAsAdded(const std::string& file);
-    void AddAsModified(const std::string& file);
-    void AddAsRemoved(const std::string& file);
+   void SortData();
 
-    void Add(const FileBackupReport& otherReport);
-    void AddWithPrefix(const FileBackupReport& otherReport, const std::string& prefix);
+   virtual std::string GetMiniDescription() const;
+   virtual std::string GetFullDescription() const;
 
-    void GetAddedFiles(std::vector<std::string>& files);
-    void GetModifiedFiles(std::vector<std::string>& files);
-    void GetRemovedFiles(std::vector<std::string>& files);
+   void AddAsAdded(const std::vector<std::string>& files);
+   void AddAsAdded(const std::string& file);
+   void AddAsModified(const std::string& file);
+   void AddAsRemoved(const std::string& file);
+
+   void Add(const FileBackupReport& otherReport);
+   void AddWithPrefix(const FileBackupReport& otherReport, const std::string& prefix);
+
+   void GetAddedFiles(std::vector<std::string>& files);
+   void GetModifiedFiles(std::vector<std::string>& files);
+   void GetRemovedFiles(std::vector<std::string>& files);
 
 protected:
     std::vector<std::string> added;
