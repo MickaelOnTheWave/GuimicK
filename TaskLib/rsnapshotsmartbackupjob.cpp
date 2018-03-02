@@ -15,7 +15,6 @@ RsnapshotSmartBackupJob::RsnapshotSmartBackupJob()
       templateConfigurationFile(""), temporaryFile(""),
       waitBeforeRun(false), maxBackupCount(100)
 {
-   target.isLocal = true;
 }
 
 RsnapshotSmartBackupJob::RsnapshotSmartBackupJob(const RsnapshotSmartBackupJob &other)
