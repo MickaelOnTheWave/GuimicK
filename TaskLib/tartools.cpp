@@ -1,9 +1,12 @@
 #include "tartools.h"
 
+#include <algorithm>
+
 #include "consolejob.h"
 #include "jobdebuginformationmanager.h"
 #include "sshconsolejob.h"
 #include "tarcommandparser.h"
+#include "tools.h"
 
 using namespace std;
 
@@ -65,6 +68,7 @@ bool TarTools::CreateArchive(const string& commandLineParameters,
 }
 
 bool TarTools::CreateIncrementalArchive(const string& commandLineParameters,
+                                        const string& currentArchive,
                                         const string& referenceArchive,
                                         AbstractBackupJob::ResultCollection& results)
 {
@@ -75,23 +79,8 @@ bool TarTools::CreateIncrementalArchive(const string& commandLineParameters,
    FileBackupReport* finalReport = NULL;
    if (ok)
    {
-      // TODO : first list incremental archive, and diff on that.
-      const string params = string("-tf ") + referenceArchive;
-      ConsoleJob listJob("tar", params);
-      listJob.RunWithoutStatus();
-      if (listJob.IsRunOk())
-      {
-
-         TarCommandParser parser(listJob.GetCommand());
-         bool ok = parser.ParseBuffer(listJob.GetCommandOutput());
-         if (ok)
-         {
-            FileBackupReport referenceReport;
-            parser.GetReport(referenceReport);
-            finalReport = new FileBackupReport();
-            //*finalReport = *latestResult.front().second - referenceReport;
-         }
-      }
+      finalReport = CreateReportFromArchives(referenceArchive, currentArchive);
+      status->SetCode(JobStatus::OK);
    }
    else
    {
@@ -129,4 +118,74 @@ AbstractConsoleJob *TarTools::CreateBackupConsoleJob(const string &parameters)
         remoteJob->SetTarget(target->sshUser, target->sshHost);
         return remoteJob;
     }
+}
+
+FileBackupReport*TarTools::CreateReportFromArchives(const string& referenceArchive,
+                                                    const string& currentArchive)
+{
+   vector<string> previousFileList;
+   GetArchiveFileList(referenceArchive, previousFileList);
+
+   vector<string> currentFileList;
+   GetArchiveFileList(currentArchive, currentFileList);
+
+   return CreateReportFromFileLists(previousFileList, currentFileList);
+}
+
+void TarTools::GetArchiveFileList(const string& archive, vector<string>& fileList)
+{
+   const string params = string("tf ") + archive;
+   ConsoleJob* tarJob = new ConsoleJob("tar", params);
+
+   tarJob->RunWithoutStatus();
+   if (tarJob->IsRunOk())
+   {
+      vector<string> rawFileList;
+      Tools::TokenizeString(tarJob->GetCommandOutput(), '\n', rawFileList);
+      RemovePathHeaders(rawFileList);
+      copy(rawFileList.begin(), rawFileList.end(), back_inserter(fileList));
+   }
+
+   delete tarJob;
+}
+
+void TarTools::RemovePathHeaders(vector<string>& fileList)
+{
+   if (fileList.size() < 2)
+      return;
+
+   vector<string>::iterator previousValue = fileList.begin();
+   vector<string>::iterator it = fileList.begin()+1;
+   while (it != fileList.end())
+   {
+      if (it->find(previousValue->c_str()) != string::npos)
+      {
+         previousValue = fileList.erase(previousValue);
+         it = previousValue+1;
+      }
+      else
+      {
+         previousValue = it;
+         ++it;
+      }
+   }
+}
+
+FileBackupReport* TarTools::CreateReportFromFileLists(
+      const vector<string>& baseFileList, const vector<string>& newFileList)
+{
+   vector<string> addedFiles, modifiedFiles, removedFiles;
+
+   set_difference(newFileList.begin(), newFileList.end(), baseFileList.begin(), baseFileList.end(),
+                  back_inserter(addedFiles));
+   set_intersection(newFileList.begin(), newFileList.end(), baseFileList.begin(), baseFileList.end(),
+                  back_inserter(modifiedFiles));
+   //set_difference(baseFileList.begin(), baseFileList.end(), newFileList.begin(), newFileList.end(),
+   //               back_inserter(removedFiles));
+
+   FileBackupReport* report = new FileBackupReport();
+   report->AddAsAdded(addedFiles);
+   report->AddAsModified(modifiedFiles);
+   report->AddAsRemoved(removedFiles);
+   return report;
 }

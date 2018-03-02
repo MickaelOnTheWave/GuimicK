@@ -1,5 +1,6 @@
 #include "tarincrementalbackupjobtest.h"
 
+#include <unistd.h>
 #include <QTest>
 
 #include "filetestutils.h"
@@ -22,6 +23,11 @@ TarIncrementalBackupJobTest::TarIncrementalBackupJobTest(
 void TarIncrementalBackupJobTest::testRunBackup_data()
 {
    LoadExternalDataSamples(false);
+}
+
+void TarIncrementalBackupJobTest::ProcessingBetweenBackups()
+{
+    //sleep(2);
 }
 
 void TarIncrementalBackupJobTest::CheckBackedUpDataIsOk()

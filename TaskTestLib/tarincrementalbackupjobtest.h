@@ -17,6 +17,7 @@ private Q_SLOTS:
     void testRunBackup_data();
 
 protected:
+    virtual void ProcessingBetweenBackups() override;
     virtual void CheckBackedUpDataIsOk() override;
     virtual JobStatus* RunBackupJob(const bool isRemote,
                                     const bool useDebug) override;

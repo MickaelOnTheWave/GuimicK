@@ -110,7 +110,9 @@ void TarIncrementalBackup::RunIncrementalBackup(
    params << GetIndexFile(destination) << " " << source;
 
    TarTools tarTool(&target, debugManager);
-   tarTool.CreateIncrementalArchive(params.str(), destination, results);
+   tarTool.CreateIncrementalArchive(params.str(),
+                                    CreateIndexedDestination(destination),
+                                    destination, results);
 }
 
 bool TarIncrementalBackup::DoesFullBackupExist(const string& destination) const

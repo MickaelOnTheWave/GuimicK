@@ -66,12 +66,22 @@ void FileBackupReport::AddAsAdded(const std::vector<string> &files)
 
 void FileBackupReport::AddAsAdded(const string &file)
 {
-    added.push_back(file);
+   added.push_back(file);
+}
+
+void FileBackupReport::AddAsModified(const std::vector<string>& files)
+{
+   copy(files.begin(), files.end(), back_inserter(modified));
 }
 
 void FileBackupReport::AddAsModified(const string &file)
 {
-    modified.push_back(file);
+   modified.push_back(file);
+}
+
+void FileBackupReport::AddAsRemoved(const std::vector<string>& files)
+{
+   copy(files.begin(), files.end(), back_inserter(removed));
 }
 
 void FileBackupReport::AddAsRemoved(const string &file)

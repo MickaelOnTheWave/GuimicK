@@ -1,3 +1,19 @@
+01/03/2018 (2h)
+   Check Production : there are two issues : one with creation of configuration (smart job)
+	and another one with debug option not properly considered. Updated configuration and smart job,
+	now waiting for next production run.
+	Implemented proper file listing. However one issue remains : the way the test is designed (remove
+	and copy files for each step) and the way tar is designed (take file timestamp).
+	There doesn't seem to be a command to make tar ignore times (would it be good on production anyway?).
+	Remaining options are :
+	   - Rewrite Tar test suite. No more dumb copying around. Use Rsync?
+		- Forget about Incremental Tar and create a new simpler Tar job (collection of archives?)
+	Without too much thinking, option 1 seems both easier to implement, wastes less implementation and
+	effective.
+Next planned work:
+   - Refactor backup test suites to use rsync copying instead of dumb copy-and-remove.
+	- Continue previous roadmap
+
 27/02/2018 (1.9h)
    Production is not running correctly. Seeing this... Changed configuration to always include
 	debug. Also added rsnapshot configuration to attachments. This should help finding the

@@ -17,6 +17,7 @@ public:
                       AbstractBackupJob::ResultCollection &results);
 
    bool CreateIncrementalArchive(const std::string& commandLineParameters,
+                                 const std::string& currentArchive,
                                  const std::string& referenceArchive,
                                  AbstractBackupJob::ResultCollection &results);
 
@@ -25,6 +26,19 @@ public:
 
 private:
    AbstractConsoleJob *CreateBackupConsoleJob(const std::string& parameters);
+
+   FileBackupReport* CreateReportFromArchives(const std::string& referenceArchive,
+                                              const std::string& currentArchive);
+
+   void GetArchiveFileList(const std::string& archive,
+                           std::vector<std::string>& fileList);
+
+   void RemovePathHeaders(std::vector<std::string>& fileList);
+
+   FileBackupReport* CreateReportFromFileLists(
+         const std::vector<std::string>& baseFileList,
+         const std::vector<std::string>& newFileList);
+
 
    JobExecutionTarget* target;
    JobDebugInformationManager* parentDebugManager;
