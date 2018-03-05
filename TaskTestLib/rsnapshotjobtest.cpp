@@ -102,6 +102,7 @@ void RsnapshotJobTest::CheckBackedUpDataIsOk()
 AbstractBackupJob *RsnapshotJobTest::CreateNewJob()
 {
     RsnapshotSmartBackupJob* job = new RsnapshotSmartBackupJob();
+    job->SetTargetLocal();
     job->SetTemplateConfigurationFile(GetDataFolder() + templateConfigurationFile);
     job->SetRepository(backupRepository);
     return job;

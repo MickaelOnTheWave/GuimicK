@@ -1,3 +1,8 @@
+05/03/2018 (20.1)
+   Check Production : this time all debug information is available. Issue is still the same. Checking...
+	Found the problem : Rsnapshot configuration builder always created absolute path of sources.
+	Fixed it, now checking tests. Fixed bug :-) Now committing...
+
 01/03/2018 (2h)
    Check Production : there are two issues : one with creation of configuration (smart job)
 	and another one with debug option not properly considered. Updated configuration and smart job,

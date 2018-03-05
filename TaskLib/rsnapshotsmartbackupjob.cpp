@@ -189,9 +189,9 @@ RsnapshotRawBackupJob* RsnapshotSmartBackupJob::CreateRawJob(const string& confi
 
 string RsnapshotSmartBackupJob::BuildFinalPath(const string& inputPath) const
 {
-   debugManager->AddDataLine<string>("Building Path", inputPath);
-   debugManager->AddDataLine<bool>("IsTargetLocal", target.isLocal);
+   debugManager->AddDataLine<string>("BuildFinalPath", inputPath);
    const bool shouldBuildPath = (target.isLocal && !FileTools::IsAbsolutePath(inputPath));
+   debugManager->AddDataLine<bool>("WillBuildAbsolutePath", shouldBuildPath);
    return (shouldBuildPath) ? FileTools::BuildFullPath(inputPath) : inputPath;
 }
 
