@@ -1,7 +1,29 @@
-05/03/2018 (20.1)
+12/03/2018 (20h)
+   The issue was only a mistake with filenames. Fixed. Now going for tar.
+	No way was found to make Tar behave like other backup jobs. Unfortunately, the only way to solve
+	this is to have it create data programatically, something that is not done at all on current
+	architecture. This means changing the whole test suite for Tar...
+
+
+07/03/2018 (2h)
+   Production fixed :-)
+	Fixed tests, they were tiny adjustments and a real fix! (previous Rsnapshot test case was validating
+	wrong data). Now moving to Tar implementation...
+	Fixed the same issue, but on backup/restore tests. It seems to work.
+Next planned work:
+   - Check Rsnapshot error.
+	- Check current issues in Tar. Still about change times? If so, consider touching test data or
+	creating a property in tar job to follow (or not) symlinks.
+
+05/03/2018 (1.5h)
    Check Production : this time all debug information is available. Issue is still the same. Checking...
 	Found the problem : Rsnapshot configuration builder always created absolute path of sources.
-	Fixed it, now checking tests. Fixed bug :-) Now committing...
+	Fixed it, now checking tests. Fixed bug :-) Now committing... And back to Tar job.
+	Changing Backup jobs tests : instead of copying files around, they now use the original folder
+	to backup data. There are two jobs that are not passing tests anymore.
+Next planned work:
+   - Check current failures. If they are tiny adjustments, move one. If not, roll back and make
+	full custom tests for Tar implementation.
 
 01/03/2018 (2h)
    Check Production : there are two issues : one with creation of configuration (smart job)
