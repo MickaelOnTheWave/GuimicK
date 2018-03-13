@@ -75,17 +75,8 @@ JobStatus *AbstractFsBackupJobTest::RunBackupOnDataFolder(const string &folder,
                                                           const bool isRemote,
                                                           const bool useDebug)
 {
-    string unusedOutput;
-    string command = string("rm -Rf ") + currentSourceFolder;
-    Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
-
-    command = string("mkdir ") + currentSourceFolder;
-    Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
-
-    command = string("cp -R ") + folder + "/* " + currentSourceFolder;
-    Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
-
-    return RunBackupJob(isRemote, useDebug);
+   currentSourceFolder = folder;
+   return RunBackupJob(isRemote, useDebug);
 }
 
 void AbstractFsBackupJobTest::CheckStatus(JobStatus *status)
@@ -148,11 +139,7 @@ JobStatus *AbstractFsBackupJobTest::RunBackupJob(AbstractBackupJob *job,
                                                  const bool useDebug)
 {
     job->InitializeFromClient(nullptr);
-
-    const string sourceFolder = (isRemote) ?
-                                   FileTools::BuildFullPath(currentSourceFolder) :
-                                   currentSourceFolder;
-    job->AddFolder(sourceFolder, backupRepository);
+    job->AddFolder(currentSourceFolder, backupRepository);
 
     if (isRemote)
         job->SetTargetRemote(sshUser, sshHost);

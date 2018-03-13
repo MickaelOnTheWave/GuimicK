@@ -17,7 +17,7 @@ protected:
    void LoadExternalDataSamples(const bool isRemote);
 
    const std::string backupRepository = "repository/";
-   const std::string currentSourceFolder = "currentFolderToBackup";
+   std::string currentSourceFolder = "currentFolderToBackup";
    std::string currentTestCaseFolder = "";
    std::string currentTestCaseName = "";
 

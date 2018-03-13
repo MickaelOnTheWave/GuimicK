@@ -41,7 +41,7 @@ JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob(const bool isRemote,
     // the rest of the code should be used from parent class.
     ZipAndCopyFsBackupJob* job = new ZipAndCopyFsBackupJob();
     job->InitializeFromClient(nullptr);
-    job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), archiveName);
+    job->AddFolder(FileTools::BuildFullPathIfRelative(currentSourceFolder), archiveName);
 
     job->SetLocalDestination(localArchive);
 

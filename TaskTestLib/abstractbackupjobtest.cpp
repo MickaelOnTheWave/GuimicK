@@ -89,8 +89,7 @@ void AbstractBackupJobTest::PrepareBackup(AbstractBackupJob* job,
                                           const string& folder)
 {
    QCOMPARE(FileTools::CreateFolder(backupRepository), true);
-   QCOMPARE(FileTools::CreateFolder(currentSourceFolder), true);
-   FileTestUtils::CopyFolderContent(folder, currentSourceFolder);
+   currentSourceFolder = folder;
    job->SetRepository(backupRepository);
    job->AddFolder(currentSourceFolder, GetBackupDestination());
 }

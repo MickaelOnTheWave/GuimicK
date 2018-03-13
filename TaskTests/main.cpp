@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
         FileTools::CreateFolder(testingFolder);
     chdir(testingFolder.c_str());
 
-    QObject* testSuite = new RsnapshotJobTest(taskLibDir, errorDir);
+    //QObject* testSuite = new RsnapshotJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new RsnapshotErrorAnalyzerTest(taskLibDir);
     //QObject* testSuite = new TaskFeatureTest(taskLibDir, errorDir);
     //QObject* testSuite = new ConsoleJobTest();
@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new RemoteJobsRunnerTest();
     //QObject* testSuite = new RemoteJobsRunnerConfigurationTest();
     //QObject* testSuite = new WakeJobTest();
-    //QObject* testSuite = new TarIncrementalBackupJobTest(taskLibDir, errorDir);
+    QObject* testSuite = new TarIncrementalBackupJobTest(taskLibDir, errorDir);
 
     QTest::qExec(testSuite, argc, argv);
 

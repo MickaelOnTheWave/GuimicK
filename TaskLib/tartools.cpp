@@ -94,7 +94,7 @@ bool TarTools::CreateIncrementalArchive(const string& commandLineParameters,
 
 bool TarTools::ExtractArchive(const string& archiveName, const string& destination)
 {
-   string parameters = "xzvf " + archiveName + " -C " + destination;
+   string parameters = "xvf " + archiveName + " -C " + destination;
    parameters += " --strip-components=1";
 
    ConsoleJob* job = new ConsoleJob("tar", parameters);

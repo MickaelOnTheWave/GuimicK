@@ -1,8 +1,7 @@
 1 files added
 	/repository/HomepageEsperancajpg
 
-3 files modified
-	/repository/6232100495809.sav
+2 files modified
 	/repository/GamerProfile.xml
 	/repository/ex1_description.txt
 
@@ -10,4 +9,4 @@
 	/repository/TODOs
 	/repository/TODOs (2016)
 
-2.55 Mb added, 1.79 Mb removed, and overall 786.15 Kb taken
+789.02 Kb added, 2.87 Kb removed, and overall 786.15 Kb taken

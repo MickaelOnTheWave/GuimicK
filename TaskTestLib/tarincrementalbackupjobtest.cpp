@@ -10,7 +10,7 @@
 
 using namespace std;
 
-const string suitePrefix = "GitFsBackup/";
+const string suitePrefix = "TarIncrementalBackup/";
 const string archiveName = "backupArchive.tar";
 const string restoredFolder = "restore";
 
@@ -46,7 +46,7 @@ JobStatus *TarIncrementalBackupJobTest::RunBackupJob( const bool isRemote,
     // the rest of the code should be used from parent class.
     TarIncrementalBackup* job = new TarIncrementalBackup();
     job->InitializeFromClient(nullptr);
-    job->AddFolder(FileTools::BuildFullPath(currentSourceFolder), archiveName);
+    job->AddFolder(FileTools::BuildFullPathIfRelative(currentSourceFolder), archiveName);
 
     //job->SetLocalDestination(localArchive);
 

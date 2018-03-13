@@ -94,8 +94,8 @@ void TarIncrementalBackup::RunFullBackup(
 {
 
    stringstream params;
-   params << "-cpzvf " << destination << " -g ";
-   params << GetIndexFile(destination) << " " << source;
+   params << "cpvfh " << destination << " -g ";
+   params << GetIndexFile(destination) << " -C " << source << " .";
 
    TarTools tarTool(&target, debugManager);
    tarTool.CreateArchive(params.str(), results);
@@ -106,8 +106,8 @@ void TarIncrementalBackup::RunIncrementalBackup(
       AbstractBackupJob::ResultCollection& results)
 {
    stringstream params;
-   params << "-cpvf " << CreateIndexedDestination(destination) << " -g ";
-   params << GetIndexFile(destination) << " " << source;
+   params << "cpvfh " << CreateIndexedDestination(destination) << " -g ";
+   params << GetIndexFile(destination) << " -C " << source << " .";
 
    TarTools tarTool(&target, debugManager);
    tarTool.CreateIncrementalArchive(params.str(),
