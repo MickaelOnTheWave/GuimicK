@@ -1,10 +1,12 @@
 #ifndef TARINCREMENTALBACKUPJOBTEST_H
 #define TARINCREMENTALBACKUPJOBTEST_H
 
-#include "abstractfsbackupjobtest.h"
+#include "qttestsuite.h"
+
+#include "abstractbackupjob.h"
 
 // TODO : remove duplication and ZipAndCopy test suite
-class TarIncrementalBackupJobTest : public AbstractFsBackupJobTest
+class TarIncrementalBackupJobTest : public QtTestSuite
 {
    Q_OBJECT
 
@@ -14,17 +16,17 @@ public:
     virtual ~TarIncrementalBackupJobTest() = default;
 
 private Q_SLOTS:
-    void testRunBackup_data();
+    void testRunBackup_Added();
+    void testRunBackup_Modified();
+    //void testRunBackup_Removed();
+    void testRunBackup_Mixed();
 
-protected:
-    virtual void ProcessingBetweenBackups() override;
-    virtual void CheckBackedUpDataIsOk() override;
-    virtual JobStatus* RunBackupJob(const bool isRemote,
-                                    const bool useDebug) override;
+private:
+    void CreateInitialData();
 
-    virtual std::string GetBackupDestination() const override;
+    void RunInitialBackup(AbstractBackupJob* job);
 
-    virtual AbstractBackupJob* CreateNewJob();
+    AbstractBackupJob* CreateInitializedJob();
 
 };
 

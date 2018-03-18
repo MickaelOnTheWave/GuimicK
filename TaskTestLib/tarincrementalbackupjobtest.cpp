@@ -1,6 +1,5 @@
 #include "tarincrementalbackupjobtest.h"
 
-#include <unistd.h>
 #include <QTest>
 
 #include "filetestutils.h"
@@ -10,26 +9,71 @@
 
 using namespace std;
 
-const string suitePrefix = "TarIncrementalBackup/";
+const string folderToBackup = "folderToBackup";
 const string archiveName = "backupArchive.tar";
-const string restoredFolder = "restore";
 
 TarIncrementalBackupJobTest::TarIncrementalBackupJobTest(
       const string& dataPrefix, const string& errorPrefix)
-   : AbstractFsBackupJobTest(dataPrefix + suitePrefix, errorPrefix)
+   : QtTestSuite(dataPrefix, errorPrefix)
 {
 }
 
-void TarIncrementalBackupJobTest::testRunBackup_data()
+void TarIncrementalBackupJobTest::testRunBackup_Added()
 {
-   LoadExternalDataSamples(false);
+   auto backupJob = CreateInitializedJob();
+   CreateInitialData();
+   RunInitialBackup(backupJob);
+
+   // Change data
+   QStringList filesToAdd = {"added0.txt", "added1.txt"};
+
+
+   JobStatus* status = backupJob->Run();
+   QVERIFY(status->GetCode() == JobStatus::OK);
+   // Check that report is as expected
+   QFAIL("Implementation not finished");
+
+   delete backupJob;
 }
 
-void TarIncrementalBackupJobTest::ProcessingBetweenBackups()
+void TarIncrementalBackupJobTest::testRunBackup_Modified()
 {
-    //sleep(2);
+   QFAIL("Not Implemented yet");
+
 }
 
+void TarIncrementalBackupJobTest::testRunBackup_Mixed()
+{
+   QFAIL("Not Implemented yet");
+}
+
+void TarIncrementalBackupJobTest::CreateInitialData()
+{
+   QStringList initialFiles = {
+      "initialFile01.txt", "initialFile02.txt", "initialFile03.txt"
+   };
+   FileTestUtils::CreatePopulatedFolder(folderToBackup, initialFiles);
+}
+
+void TarIncrementalBackupJobTest::RunInitialBackup(AbstractBackupJob* job)
+{
+   JobStatus* status = job->Run();
+   QVERIFY(status->GetCode() == JobStatus::OK);
+   // Check added data
+   delete status;
+}
+
+AbstractBackupJob* TarIncrementalBackupJobTest::CreateInitializedJob()
+{
+   auto job = new TarIncrementalBackup();
+   job->InitializeFromClient(nullptr);
+   job->AddFolder(FileTools::BuildFullPathIfRelative(folderToBackup), archiveName);
+   job->SetTargetLocal();
+   job->SetOutputDebugInformation(DebugOutput::NEVER);
+   return job;
+}
+
+/*
 void TarIncrementalBackupJobTest::CheckBackedUpDataIsOk()
 {
    TarTools tarTool;
@@ -52,7 +96,7 @@ JobStatus *TarIncrementalBackupJobTest::RunBackupJob( const bool isRemote,
 
     /*if (isRemote)
         job->SetTargetRemote(sshUser, sshHost);
-    else*/
+    else*
         job->SetTargetLocal();
 
     job->SetOutputDebugInformation(useDebug ? DebugOutput::ALWAYS : DebugOutput::NEVER);
@@ -71,4 +115,4 @@ string TarIncrementalBackupJobTest::GetBackupDestination() const
 AbstractBackupJob* TarIncrementalBackupJobTest::CreateNewJob()
 {
    return new TarIncrementalBackup();
-}
+}*/

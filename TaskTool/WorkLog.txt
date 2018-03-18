@@ -1,9 +1,15 @@
-12/03/2018 (20h)
+18/03/2018 (0.5h)
+   Started writing Add test case. Created files proceduraly, now organizing everything as it should be.
+Next planned work:
+   - Finish Add test case
+
+12/03/2018 (1.5h)
    The issue was only a mistake with filenames. Fixed. Now going for tar.
 	No way was found to make Tar behave like other backup jobs. Unfortunately, the only way to solve
 	this is to have it create data programatically, something that is not done at all on current
 	architecture. This means changing the whole test suite for Tar...
-
+Next planned work:
+   - Continue rewriting Tar test suite
 
 07/03/2018 (2h)
    Production fixed :-)
