@@ -6,6 +6,7 @@
 #include "filetools.h"
 #include "tarincrementalbackup.h"
 #include "tartools.h"
+#include "tools.h"
 
 using namespace std;
 
@@ -18,20 +19,28 @@ TarIncrementalBackupJobTest::TarIncrementalBackupJobTest(
 {
 }
 
+void TarIncrementalBackupJobTest::init()
+{
+    cleanup();
+}
+
+void TarIncrementalBackupJobTest::cleanup()
+{
+    string unusedOutput;
+    Tools::RunExternalCommandToBuffer("rm -Rf *", unusedOutput, true);
+}
+
 void TarIncrementalBackupJobTest::testRunBackup_Added()
 {
    auto backupJob = CreateInitializedJob();
    CreateInitialData();
    RunInitialBackup(backupJob);
 
-   // Change data
-   QStringList filesToAdd = {"added0.txt", "added1.txt"};
-
+   const QStringList filesToAdd = {"added0.txt", "added1.txt"};
+   AddFiles(filesToAdd);
 
    JobStatus* status = backupJob->Run();
-   QVERIFY(status->GetCode() == JobStatus::OK);
-   // Check that report is as expected
-   QFAIL("Implementation not finished");
+   CheckStatusAdded(status, filesToAdd);
 
    delete backupJob;
 }
@@ -71,6 +80,42 @@ AbstractBackupJob* TarIncrementalBackupJobTest::CreateInitializedJob()
    job->SetTargetLocal();
    job->SetOutputDebugInformation(DebugOutput::NEVER);
    return job;
+}
+
+void TarIncrementalBackupJobTest::AddFiles(const QStringList& filesToAdd)
+{
+   for (auto it : filesToAdd)
+   {
+      const string currentFile = folderToBackup + "/" + it.toStdString();
+      FileTools::WriteBufferToFile(currentFile, "lalala");
+   }
+}
+
+void TarIncrementalBackupJobTest::CheckStatusAdded(
+   JobStatus* status,
+   const QStringList& addedFiles
+)
+{
+   QVERIFY(status->GetCode() == JobStatus::OK);
+
+   FileBackupReport expectedReport;
+   for (auto it : addedFiles)
+      expectedReport.AddAsAdded(it.toStdString());
+   CheckReport(status, expectedReport);
+}
+
+void TarIncrementalBackupJobTest::CheckReport(JobStatus* status,
+                                              const FileBackupReport& expectedReport)
+{
+   JobStatus::FileBufferList attachments;
+   status->GetFileBuffers(attachments);
+   QCOMPARE(attachments.size(), 1ul);
+   if (attachments.front().second != expectedReport.GetFullDescription())
+   {
+      FileTools::WriteBufferToFile(GetErrorFolder()+"Added_Expected", expectedReport.GetFullDescription());
+      FileTools::WriteBufferToFile(GetErrorFolder()+"Added_Resulted", attachments.front().second);
+      QFAIL("Report different than expected");
+   }
 }
 
 /*

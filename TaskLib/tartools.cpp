@@ -120,7 +120,7 @@ AbstractConsoleJob *TarTools::CreateBackupConsoleJob(const string &parameters)
     }
 }
 
-FileBackupReport*TarTools::CreateReportFromArchives(const string& referenceArchive,
+FileBackupReport* TarTools::CreateReportFromArchives(const string& referenceArchive,
                                                     const string& currentArchive)
 {
    vector<string> previousFileList;

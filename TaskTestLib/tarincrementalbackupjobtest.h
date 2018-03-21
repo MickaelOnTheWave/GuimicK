@@ -16,6 +16,9 @@ public:
     virtual ~TarIncrementalBackupJobTest() = default;
 
 private Q_SLOTS:
+    void init();
+    void cleanup();
+
     void testRunBackup_Added();
     void testRunBackup_Modified();
     //void testRunBackup_Removed();
@@ -27,6 +30,12 @@ private:
     void RunInitialBackup(AbstractBackupJob* job);
 
     AbstractBackupJob* CreateInitializedJob();
+
+    void AddFiles(const QStringList& filesToAdd);
+
+    void CheckStatusAdded(JobStatus* status, const QStringList& addedFiles);
+
+    void CheckReport(JobStatus* status, const FileBackupReport& expectedReport);
 
 };
 
