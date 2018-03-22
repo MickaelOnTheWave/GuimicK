@@ -112,8 +112,8 @@ void TarIncrementalBackupJobTest::CheckReport(JobStatus* status,
    QCOMPARE(attachments.size(), 1ul);
    if (attachments.front().second != expectedReport.GetFullDescription())
    {
-      FileTools::WriteBufferToFile(GetErrorFolder()+"Added_Expected", expectedReport.GetFullDescription());
-      FileTools::WriteBufferToFile(GetErrorFolder()+"Added_Resulted", attachments.front().second);
+      FileTools::WriteBufferToFile(GetErrorFolder()+"ExpectedReport", expectedReport.GetFullDescription());
+      FileTools::WriteBufferToFile(GetErrorFolder()+"ResultedReport", attachments.front().second);
       QFAIL("Report different than expected");
    }
 }

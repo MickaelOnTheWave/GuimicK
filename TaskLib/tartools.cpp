@@ -143,6 +143,7 @@ void TarTools::GetArchiveFileList(const string& archive, vector<string>& fileLis
       vector<string> rawFileList;
       Tools::TokenizeString(tarJob->GetCommandOutput(), '\n', rawFileList);
       RemovePathHeaders(rawFileList);
+      RemoveCurrentDirTag(rawFileList);
       copy(rawFileList.begin(), rawFileList.end(), back_inserter(fileList));
    }
 
@@ -168,6 +169,17 @@ void TarTools::RemovePathHeaders(vector<string>& fileList)
          previousValue = it;
          ++it;
       }
+   }
+}
+
+void TarTools::RemoveCurrentDirTag(vector<string>& fileList)
+{
+   const string currentDirTag = "./";
+   vector<string>::iterator it=fileList.begin();
+   for (; it!=fileList.end(); ++it)
+   {
+      if (it->find(currentDirTag) == 0)
+         *it = it->substr(currentDirTag.length());
    }
 }
 

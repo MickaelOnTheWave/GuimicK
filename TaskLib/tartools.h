@@ -35,6 +35,8 @@ private:
 
    void RemovePathHeaders(std::vector<std::string>& fileList);
 
+   void RemoveCurrentDirTag(std::vector<std::string>& fileList);
+
    FileBackupReport* CreateReportFromFileLists(
          const std::vector<std::string>& baseFileList,
          const std::vector<std::string>& newFileList);

@@ -1,3 +1,7 @@
+22/03/2018 (19.2)
+   Fixed add test case : added file name filtering on archive creation to remove unwanted current dir
+	tag in file name.
+
 20/03/2018 (0.7h)
    Nearly finished Add test case. Error remaining is about report : path is shown on result.
 Next planned work:
