@@ -12,7 +12,7 @@ class TarIncrementalBackupJobTest : public QtTestSuite
 
 public:
     TarIncrementalBackupJobTest( const std::string& dataPrefix,
-                                 const std::string &errorPrefix);
+                                 const std::string& errorPrefix);
     virtual ~TarIncrementalBackupJobTest() = default;
 
 private Q_SLOTS:
@@ -21,10 +21,17 @@ private Q_SLOTS:
 
     void testRunBackup_Added();
     void testRunBackup_Modified();
-    //void testRunBackup_Removed();
     void testRunBackup_Mixed();
+    void testBackupAndRestoreMultipleLevels();
 
 private:
+    void testRunBackup(const QStringList& toAdd, const QStringList& toModify);
+
+    JobStatus* RunBackupStage(AbstractBackupJob* job,
+                              const QStringList& toAdd, const QStringList& toModify);
+    void RunBackupStageWithoutStatus(AbstractBackupJob* job,
+                                     const QStringList& toAdd, const QStringList& toModify);
+
     void CreateInitialData();
 
     void RunInitialBackup(AbstractBackupJob* job);
@@ -33,7 +40,10 @@ private:
 
     void AddFiles(const QStringList& filesToAdd);
 
-    void CheckStatusAdded(JobStatus* status, const QStringList& addedFiles);
+    void ModifyFiles(const QStringList& filesToModify);
+
+    void CheckStatus(JobStatus* status, const QStringList& addedFiles,
+                     const QStringList& modifiedFiles);
 
     void CheckReport(JobStatus* status, const FileBackupReport& expectedReport);
 

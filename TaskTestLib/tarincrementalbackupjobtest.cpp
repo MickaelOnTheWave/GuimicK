@@ -1,6 +1,8 @@
 #include "tarincrementalbackupjobtest.h"
 
+#include <memory>
 #include <QTest>
+#include <unistd.h>
 
 #include "filetestutils.h"
 #include "filetools.h"
@@ -32,28 +34,69 @@ void TarIncrementalBackupJobTest::cleanup()
 
 void TarIncrementalBackupJobTest::testRunBackup_Added()
 {
-   auto backupJob = CreateInitializedJob();
-   CreateInitialData();
-   RunInitialBackup(backupJob);
-
    const QStringList filesToAdd = {"added0.txt", "added1.txt"};
-   AddFiles(filesToAdd);
-
-   JobStatus* status = backupJob->Run();
-   CheckStatusAdded(status, filesToAdd);
-
-   delete backupJob;
+   testRunBackup(filesToAdd, QStringList());
 }
 
 void TarIncrementalBackupJobTest::testRunBackup_Modified()
 {
-   QFAIL("Not Implemented yet");
-
+   const QStringList toModify({"initialFile01.txt", "initialFile02.txt"});
+   testRunBackup(QStringList(), toModify);
 }
 
 void TarIncrementalBackupJobTest::testRunBackup_Mixed()
 {
-   QFAIL("Not Implemented yet");
+   const QStringList filesToAdd = {"mixAdd0.txt", "mixAdd1.txt", "mixAdd2.txt"};
+   const QStringList filesToModify = {"initialFile01.txt"};
+   testRunBackup(filesToAdd, filesToModify);
+}
+
+void TarIncrementalBackupJobTest::testBackupAndRestoreMultipleLevels()
+{
+   auto backupJob = CreateInitializedJob();
+   CreateInitialData();
+   RunInitialBackup(backupJob);
+
+   const QStringList addStage1 = {"add0St1.txt", "add1St1.txt"};
+   RunBackupStageWithoutStatus(backupJob, addStage1, QStringList());
+
+   const QStringList modifyStage2 = {"initial01.txt", "add1St1.txt"};
+   RunBackupStageWithoutStatus(backupJob, QStringList(), modifyStage2);
+
+   const QStringList addStage3 = {"add0St3.txt"};
+   const QStringList modifyStage3 = {"initial01.txt", "add0St1.txt"};
+   RunBackupStageWithoutStatus(backupJob, addStage3, modifyStage3);
+
+   QFAIL("Implement Restore tests");
+}
+
+void TarIncrementalBackupJobTest::testRunBackup(const QStringList& toAdd, const QStringList& toModify)
+{
+   auto backupJob = CreateInitializedJob();
+   CreateInitialData();
+   RunInitialBackup(backupJob);
+
+   JobStatus* status = RunBackupStage(backupJob, toAdd, toModify);
+   CheckStatus(status, toAdd, toModify);
+
+   delete backupJob;
+}
+
+JobStatus* TarIncrementalBackupJobTest::RunBackupStage(AbstractBackupJob* job,
+                                                       const QStringList& toAdd,
+                                                       const QStringList& toModify)
+{
+   AddFiles(toAdd);
+   ModifyFiles(toModify);
+   return job->Run();
+}
+
+void TarIncrementalBackupJobTest::RunBackupStageWithoutStatus(AbstractBackupJob* job,
+                                                              const QStringList& toAdd,
+                                                              const QStringList& toModify)
+{
+   JobStatus* status = RunBackupStage(job, toAdd, toModify);
+   delete status;
 }
 
 void TarIncrementalBackupJobTest::CreateInitialData()
@@ -68,7 +111,6 @@ void TarIncrementalBackupJobTest::RunInitialBackup(AbstractBackupJob* job)
 {
    JobStatus* status = job->Run();
    QVERIFY(status->GetCode() == JobStatus::OK);
-   // Check added data
    delete status;
 }
 
@@ -91,16 +133,27 @@ void TarIncrementalBackupJobTest::AddFiles(const QStringList& filesToAdd)
    }
 }
 
-void TarIncrementalBackupJobTest::CheckStatusAdded(
-   JobStatus* status,
-   const QStringList& addedFiles
-)
+void TarIncrementalBackupJobTest::ModifyFiles(const QStringList& filesToModify)
+{
+   sleep(2);
+   for (auto it : filesToModify)
+   {
+      const string currentFile = folderToBackup + "/" + it.toStdString();
+      FileTools::WriteBufferToFile(currentFile, "lololo");
+   }
+}
+
+void TarIncrementalBackupJobTest::CheckStatus(JobStatus* status,
+                                              const QStringList& addedFiles,
+                                              const QStringList& modifiedFiles)
 {
    QVERIFY(status->GetCode() == JobStatus::OK);
 
    FileBackupReport expectedReport;
    for (auto it : addedFiles)
       expectedReport.AddAsAdded(it.toStdString());
+   for (auto it : modifiedFiles)
+      expectedReport.AddAsModified(it.toStdString());
    CheckReport(status, expectedReport);
 }
 
@@ -118,46 +171,3 @@ void TarIncrementalBackupJobTest::CheckReport(JobStatus* status,
    }
 }
 
-/*
-void TarIncrementalBackupJobTest::CheckBackedUpDataIsOk()
-{
-   TarTools tarTool;
-   bool ok = tarTool.ExtractArchive(archiveName, restoredFolder);
-   QCOMPARE(ok, true);
-
-   FileTestUtils::CheckFoldersHaveSameContent(currentSourceFolder, restoredFolder);
-}
-
-JobStatus *TarIncrementalBackupJobTest::RunBackupJob( const bool isRemote,
-                                                      const bool useDebug)
-{
-    // TODO : improve this. There are only two lines that are specific to this test suite,
-    // the rest of the code should be used from parent class.
-    TarIncrementalBackup* job = new TarIncrementalBackup();
-    job->InitializeFromClient(nullptr);
-    job->AddFolder(FileTools::BuildFullPathIfRelative(currentSourceFolder), archiveName);
-
-    //job->SetLocalDestination(localArchive);
-
-    /*if (isRemote)
-        job->SetTargetRemote(sshUser, sshHost);
-    else*
-        job->SetTargetLocal();
-
-    job->SetOutputDebugInformation(useDebug ? DebugOutput::ALWAYS : DebugOutput::NEVER);
-
-    JobStatus* status = job->Run();
-
-    delete job;
-    return status;
-}
-
-string TarIncrementalBackupJobTest::GetBackupDestination() const
-{
-   return "SingleFolder.tar";
-}
-
-AbstractBackupJob* TarIncrementalBackupJobTest::CreateNewJob()
-{
-   return new TarIncrementalBackup();
-}*/

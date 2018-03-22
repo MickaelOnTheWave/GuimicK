@@ -129,5 +129,16 @@ string TarIncrementalBackup::GetIndexFile(const string& destination) const
 
 string TarIncrementalBackup::CreateIndexedDestination(const string& destination) const
 {
-   return destination + ".0";
+   int index = 0;
+   string currentDestination;
+   do
+   {
+      stringstream stream;
+      stream << destination << "." << index;
+      currentDestination = stream.str();
+      ++index;
+   }
+   while (FileTools::FileExists(currentDestination));
+   return currentDestination;
 }
+

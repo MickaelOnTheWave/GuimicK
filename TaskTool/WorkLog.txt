@@ -1,6 +1,9 @@
-22/03/2018 (19.2)
+22/03/2018 (1.5)
    Fixed add test case : added file name filtering on archive creation to remove unwanted current dir
-	tag in file name.
+	tag in file name. Implemented other backup cases too.
+	Now doing a final complete test : multiple stage backup with restore of each.
+Next planned work:
+   - Finish final test
 
 20/03/2018 (0.7h)
    Nearly finished Add test case. Error remaining is about report : path is shown on result.
