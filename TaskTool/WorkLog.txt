@@ -1,3 +1,8 @@
+25/03/2018 (1.2h)
+   Finished test. Now proper Restore implementation needs to be done.
+Next planned work:
+   - Implement proper Restore with time index
+
 22/03/2018 (1.5)
    Fixed add test case : added file name filtering on archive creation to remove unwanted current dir
 	tag in file name. Implemented other backup cases too.

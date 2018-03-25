@@ -15,13 +15,15 @@ public:
                                  const std::string& errorPrefix);
     virtual ~TarIncrementalBackupJobTest() = default;
 
+    void testRunBackup_Added();
+    void testRunBackup_Modified();
+    void testRunBackup_Mixed();
+
+
 private Q_SLOTS:
     void init();
     void cleanup();
 
-    void testRunBackup_Added();
-    void testRunBackup_Modified();
-    void testRunBackup_Mixed();
     void testBackupAndRestoreMultipleLevels();
 
 private:
@@ -46,6 +48,10 @@ private:
                      const QStringList& modifiedFiles);
 
     void CheckReport(JobStatus* status, const FileBackupReport& expectedReport);
+
+    void RestoreAndCheck(AbstractBackupJob* job,
+                         const int timeIndex,
+                         const QStringList& expectedFiles);
 
 };
 

@@ -15,6 +15,11 @@ using namespace std;
 const string folderToBackup = "folderToBackup";
 const string archiveName = "backupArchive.tar";
 
+const QStringList initialTestFiles = {
+   "initialFile01.txt", "initialFile02.txt", "initialFile03.txt"
+};
+
+
 TarIncrementalBackupJobTest::TarIncrementalBackupJobTest(
       const string& dataPrefix, const string& errorPrefix)
    : QtTestSuite(dataPrefix, errorPrefix)
@@ -67,6 +72,16 @@ void TarIncrementalBackupJobTest::testBackupAndRestoreMultipleLevels()
    const QStringList modifyStage3 = {"initial01.txt", "add0St1.txt"};
    RunBackupStageWithoutStatus(backupJob, addStage3, modifyStage3);
 
+   RestoreAndCheck(backupJob, 0, initialTestFiles);
+
+   const QStringList stage1Files = {"add0St1.txt", "add1St1.txt"};
+   RestoreAndCheck(backupJob, 1, initialTestFiles + stage1Files);
+
+   RestoreAndCheck(backupJob, 2, stage1Files);
+
+   const QStringList stage3Files = {"add0St1.txt", "add1St1.txt", "add0St3.txt"};
+   RestoreAndCheck(backupJob, 3, initialTestFiles + stage3Files);
+
    QFAIL("Implement Restore tests");
 }
 
@@ -101,10 +116,7 @@ void TarIncrementalBackupJobTest::RunBackupStageWithoutStatus(AbstractBackupJob*
 
 void TarIncrementalBackupJobTest::CreateInitialData()
 {
-   QStringList initialFiles = {
-      "initialFile01.txt", "initialFile02.txt", "initialFile03.txt"
-   };
-   FileTestUtils::CreatePopulatedFolder(folderToBackup, initialFiles);
+   FileTestUtils::CreatePopulatedFolder(folderToBackup, initialTestFiles);
 }
 
 void TarIncrementalBackupJobTest::RunInitialBackup(AbstractBackupJob* job)
@@ -169,5 +181,18 @@ void TarIncrementalBackupJobTest::CheckReport(JobStatus* status,
       FileTools::WriteBufferToFile(GetErrorFolder()+"ResultedReport", attachments.front().second);
       QFAIL("Report different than expected");
    }
+}
+
+void TarIncrementalBackupJobTest::RestoreAndCheck(AbstractBackupJob* job, const int timeIndex,
+                                                  const QStringList& expectedFiles)
+{
+   const string restoreFolder = "Restore";
+   FileTools::CreateFolder(restoreFolder);
+
+   JobStatus* status = job->RestoreBackupFromServer(restoreFolder, timeIndex);
+   QCOMPARE(status->GetCode(), JobStatus::OK);
+   FileTestUtils::CheckFolderContent(restoreFolder, expectedFiles);
+
+   FileTools::RemoveFolder(restoreFolder, false);
 }
 
