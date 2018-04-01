@@ -107,6 +107,25 @@ bool TarTools::ExtractArchive(const string& archiveName, const string& destinati
    return job->IsRunOk();
 }
 
+bool TarTools::ExtractIncrementalArchive(const string& baseArchiveName,
+                                         const int archiveIndex,
+                                         const string& destination)
+{
+   bool result = ExtractArchive(baseArchiveName, destination);
+   if (result)
+   {
+      for (int i=0; i<=archiveIndex; ++i)
+      {
+         stringstream archiveName;
+         archiveName << baseArchiveName << "." << i;
+         result = ExtractArchive(archiveName.str(), destination);
+         if (result == false)
+            break;
+      }
+   }
+   return result;
+}
+
 AbstractConsoleJob *TarTools::CreateBackupConsoleJob(const string &parameters)
 {
     ConsoleJob* job = new ConsoleJob("tar", parameters);

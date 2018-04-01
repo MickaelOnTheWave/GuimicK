@@ -72,15 +72,15 @@ void TarIncrementalBackupJobTest::testBackupAndRestoreMultipleLevels()
    const QStringList modifyStage3 = {"initial01.txt", "add0St1.txt"};
    RunBackupStageWithoutStatus(backupJob, addStage3, modifyStage3);
 
-   RestoreAndCheck(backupJob, 0, initialTestFiles);
+   RestoreAndCheck(backupJob, 3, initialTestFiles);
 
    const QStringList stage1Files = {"add0St1.txt", "add1St1.txt"};
-   RestoreAndCheck(backupJob, 1, initialTestFiles + stage1Files);
+   RestoreAndCheck(backupJob, 2, initialTestFiles + stage1Files);
 
-   RestoreAndCheck(backupJob, 2, stage1Files);
+   RestoreAndCheck(backupJob, 1, stage1Files);
 
    const QStringList stage3Files = {"add0St1.txt", "add1St1.txt", "add0St3.txt"};
-   RestoreAndCheck(backupJob, 3, initialTestFiles + stage3Files);
+   RestoreAndCheck(backupJob, 0, initialTestFiles + stage3Files);
 
    QFAIL("Implement Restore tests");
 }
@@ -189,7 +189,7 @@ void TarIncrementalBackupJobTest::RestoreAndCheck(AbstractBackupJob* job, const 
    const string restoreFolder = "Restore";
    FileTools::CreateFolder(restoreFolder);
 
-   JobStatus* status = job->RestoreBackupFromServer(restoreFolder, timeIndex);
+   JobStatus* status = job->RestoreBackupFromServer(restoreFolder, 0, timeIndex);
    QCOMPARE(status->GetCode(), JobStatus::OK);
    FileTestUtils::CheckFolderContent(restoreFolder, expectedFiles);
 

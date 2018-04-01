@@ -1,3 +1,8 @@
+01/04/2018 (1.5h)
+   Implemented Restore with time index. First two backup tests are ok but not next ones.
+Next planned work:
+   - Fix bug with other backup stages in test
+
 25/03/2018 (1.2h)
    Finished test. Now proper Restore implementation needs to be done.
 Next planned work:

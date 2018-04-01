@@ -68,6 +68,13 @@ JobStatus* AbstractBackupJob::RestoreBackupFromServer(const string& destination,
       return new JobStatus(JobStatus::ERROR, "Invalid Repository Index");
 }
 
+JobStatus* AbstractBackupJob::RestoreBackupFromServer(const string& destination,
+                                                      const int folderIndex,
+                                                      const int)
+{
+   return RestoreBackupFromServer(destination, folderIndex, 0);
+}
+
 JobStatus* AbstractBackupJob::RestoreBackupFromClient(
       const BackupRestoreParameters& , const BackupRestoreTarget& )
 {

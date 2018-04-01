@@ -24,6 +24,10 @@ public:
    bool ExtractArchive(const std::string& archiveName,
                        const std::string& destination);
 
+   bool ExtractIncrementalArchive(const std::string& baseArchiveName,
+                                  const int archiveIndex,
+                                  const std::string& destination);
+
 private:
    AbstractConsoleJob *CreateBackupConsoleJob(const std::string& parameters);
 

@@ -33,6 +33,29 @@ std::string TarIncrementalBackup::GetTypeName() const
    return defaultName;
 }
 
+JobStatus* TarIncrementalBackup::RestoreBackupFromServer(
+      const string& destination,
+      const int folderIndex,
+      const int timeIndex)
+{
+   if (static_cast<unsigned int>(folderIndex) < folderList.size())
+   {
+      const string backupSource = CreateBackupSourcePath(folderList[folderIndex].second);
+      const int lastArchiveIndex = FindArchiveLastBackupIndex(backupSource);
+      const string archiveName = CreateIncrementalArchiveName(backupSource, timeIndex, lastArchiveIndex);
+
+      TarTools tarTool(&target, debugManager);
+      const int archiveIndex = lastArchiveIndex - timeIndex;
+      const bool result = tarTool.ExtractIncrementalArchive(backupSource, archiveIndex, destination);
+      if (result)
+         return new JobStatus(JobStatus::OK, "");
+      else
+         return new JobStatus(JobStatus::ERROR, "Error while extracting");
+   }
+   else
+      return new JobStatus(JobStatus::ERROR, "Invalid Repository Index");
+}
+
 int TarIncrementalBackup::GetMaxIncrementsCount() const
 {
    return maxIncrementsPerFullBackup;
@@ -65,7 +88,7 @@ JobStatus* TarIncrementalBackup::RestoreBackupFromServer(const string& source,
                                                          const string& destination)
 {
    TarTools tarTool(&target, debugManager);
-   bool result = tarTool.ExtractArchive(source, destination);
+   const bool result = tarTool.ExtractArchive(source, destination);
    if (result)
       return new JobStatus(JobStatus::OK, "");
    else
@@ -140,5 +163,39 @@ string TarIncrementalBackup::CreateIndexedDestination(const string& destination)
    }
    while (FileTools::FileExists(currentDestination));
    return currentDestination;
+}
+
+unsigned int TarIncrementalBackup::FindArchiveLastBackupIndex(const string& backupArchive) const
+{
+   int index = -1;
+   while (true)
+   {
+      const string currentArchiveName = CreateArchiveName(backupArchive, index+1);
+      if (FileTools::FileExists(currentArchiveName))
+         ++index;
+      else
+         break;
+   }
+
+   return index;
+}
+
+string TarIncrementalBackup::CreateIncrementalArchiveName(const string& backupArchive,
+                                                          const int timeIndex,
+                                                          const int lastArchiveIndex) const
+{
+   const int archiveIndex = lastArchiveIndex - timeIndex;
+   if (archiveIndex < 0)
+      return backupArchive;
+   else
+      return CreateArchiveName(backupArchive, archiveIndex);
+}
+
+string TarIncrementalBackup::CreateArchiveName(const string& baseArchive,
+                                               const int archiveIndex) const
+{
+   stringstream archive;
+   archive << baseArchive << "." << archiveIndex;
+   return archive.str();
 }
 

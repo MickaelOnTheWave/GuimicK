@@ -45,6 +45,10 @@ public:
 
     JobStatus* RestoreBackupFromServer(const std::string& destination, const int folderIndex = 0);
 
+    virtual JobStatus* RestoreBackupFromServer(const std::string& destination,
+                                               const int folderIndex,
+                                               const int timeIndex);
+
     virtual JobStatus* RestoreBackupFromClient( const BackupRestoreParameters& parameters,
                                                 const BackupRestoreTarget& target);
 
@@ -70,6 +74,8 @@ protected:
                                      ResultCollection& results) = 0;
     virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
 
+    virtual std::string CreateBackupSourcePath(const std::string& backupTag) const;
+
     std::string repository;
     BackupCollection folderList;
     JobExecutionTarget target;
@@ -79,6 +85,5 @@ protected:
 
 private:
     virtual JobStatus* RestoreBackupFromServer(const std::string& source, const std::string& destination) = 0;
-    virtual std::string CreateBackupSourcePath(const std::string& backupTag) const;
 };
 #endif // ABSTRACTBACKUPJOB_H

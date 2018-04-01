@@ -13,6 +13,10 @@ public:
 
    virtual std::string GetTypeName() const;
 
+   virtual JobStatus* RestoreBackupFromServer(const std::string& destination,
+                                              const int folderIndex,
+                                              const int timeIndex);
+
    int GetMaxIncrementsCount() const;
    void SetMaxIncrementsCount(const int value);
 
@@ -43,6 +47,13 @@ private:
 
    std::string GetIndexFile(const std::string& destination) const;
    std::string CreateIndexedDestination(const std::string& destination) const;
+
+   unsigned int FindArchiveLastBackupIndex(const std::string& backupArchive) const;
+   std::string CreateIncrementalArchiveName(const std::string& backupArchive,
+                                            const int timeIndex,
+                                            const int lastArchiveIndex) const;
+   std::string CreateArchiveName(const std::string& baseArchive,
+                                 const int archiveIndex) const;
 
    int maxIncrementsPerFullBackup;
    int maxFullBackups;
