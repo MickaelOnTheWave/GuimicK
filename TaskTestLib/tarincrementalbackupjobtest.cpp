@@ -18,6 +18,9 @@ const string archiveName = "backupArchive.tar";
 const QStringList initialTestFiles = {
    "initialFile01.txt", "initialFile02.txt", "initialFile03.txt"
 };
+const QStringList initialTestFilesContents = {
+   "woo\nhoo", "waaaaahaaaaa", "wiiiihiiiiii"
+};
 
 
 TarIncrementalBackupJobTest::TarIncrementalBackupJobTest(
@@ -40,20 +43,24 @@ void TarIncrementalBackupJobTest::cleanup()
 void TarIncrementalBackupJobTest::testRunBackup_Added()
 {
    const QStringList filesToAdd = {"added0.txt", "added1.txt"};
-   testRunBackup(filesToAdd, QStringList());
+   const QStringList contentsToAdd = {"addContent0", "add content for file 1"};
+   testRunBackup(filesToAdd, contentsToAdd, QStringList(), QStringList());
 }
 
 void TarIncrementalBackupJobTest::testRunBackup_Modified()
 {
-   const QStringList toModify({"initialFile01.txt", "initialFile02.txt"});
-   testRunBackup(QStringList(), toModify);
+   const QStringList names({"initialFile01.txt", "initialFile02.txt"});
+   const QStringList contents({"\nappend content to 1", "\nappend more content to file 2"});
+   testRunBackup(QStringList(), QStringList(), names, contents);
 }
 
 void TarIncrementalBackupJobTest::testRunBackup_Mixed()
 {
-   const QStringList filesToAdd = {"mixAdd0.txt", "mixAdd1.txt", "mixAdd2.txt"};
-   const QStringList filesToModify = {"initialFile01.txt"};
-   testRunBackup(filesToAdd, filesToModify);
+   const QStringList addNames = {"mixAdd0.txt", "mixAdd1.txt", "mixAdd2.txt"};
+   const QStringList addContents = {"cont0", "cont1", "cont2"};
+   const QStringList modifyNames = {"initialFile01.txt"};
+   const QStringList modifyContents = {"\nhopefully this has been added\n"};
+   testRunBackup(addNames, addContents, modifyNames, modifyContents);
 }
 
 void TarIncrementalBackupJobTest::testBackupAndRestoreMultipleLevels()
@@ -63,60 +70,92 @@ void TarIncrementalBackupJobTest::testBackupAndRestoreMultipleLevels()
    RunInitialBackup(backupJob);
 
    const QStringList addStage1 = {"add0St1.txt", "add1St1.txt"};
-   RunBackupStageWithoutStatus(backupJob, addStage1, QStringList());
+   const QStringList addContentStage1 = {"blablabla1", "blobloblo2"};
+   RunBackupStageWithoutStatus(backupJob, addStage1, addContentStage1,
+                               QStringList(), QStringList());
 
-   const QStringList modifyStage2 = {"initial01.txt", "add1St1.txt"};
-   RunBackupStageWithoutStatus(backupJob, QStringList(), modifyStage2);
+   const QStringList modifyStage2 = {"initialFile01.txt", "add1St1.txt"};
+   const QStringList modifyContentStage2 = {"woo\nhaaaahaaaioiljk", "mymodifiedcontent"};
+   RunBackupStageWithoutStatus(backupJob, QStringList(), QStringList(),
+                               modifyStage2, modifyContentStage2);
 
    const QStringList addStage3 = {"add0St3.txt"};
-   const QStringList modifyStage3 = {"initial01.txt", "add0St1.txt"};
-   RunBackupStageWithoutStatus(backupJob, addStage3, modifyStage3);
+   const QStringList addContentStage3 = {"mynewcontent"};
+   const QStringList modifyStage3 = {"initialFile01.txt", "add0St1.txt"};
+   const QStringList modifyContentStage3 = {"\nchange me again", "\ni want some changes too"};
+   RunBackupStageWithoutStatus(backupJob, addStage3, addContentStage1,
+                               modifyStage3, modifyContentStage3);
 
-   RestoreAndCheck(backupJob, 3, initialTestFiles);
+   RestoreAndCheck(backupJob, 3, initialTestFiles, initialTestFilesContents);
 
    const QStringList stage1Files = {"add0St1.txt", "add1St1.txt"};
-   RestoreAndCheck(backupJob, 2, initialTestFiles + stage1Files);
+   RestoreAndCheck(backupJob, 2, initialTestFiles + stage1Files,
+                   initialTestFilesContents + addContentStage1);
 
-   RestoreAndCheck(backupJob, 1, stage1Files);
+   QStringList contentStage2 = initialTestFilesContents + addContentStage1;
+   contentStage2[0] += modifyContentStage2[0];
+   contentStage2[4] += modifyContentStage2[1];
+   RestoreAndCheck(backupJob, 1, initialTestFiles + stage1Files,
+                   contentStage2);
 
    const QStringList stage3Files = {"add0St1.txt", "add1St1.txt", "add0St3.txt"};
-   RestoreAndCheck(backupJob, 0, initialTestFiles + stage3Files);
-
-   QFAIL("Implement Restore tests");
+   QStringList contentStage3 = contentStage2;
+   contentStage3.append(addContentStage3.first());
+   contentStage3[0] += modifyContentStage3[0];
+   contentStage3[3] += modifyContentStage3[1];
+   RestoreAndCheck(backupJob, 0, initialTestFiles + stage3Files,
+                   contentStage3);
 }
 
-void TarIncrementalBackupJobTest::testRunBackup(const QStringList& toAdd, const QStringList& toModify)
+void TarIncrementalBackupJobTest::testRunBackup(const QStringList& addNames,
+                                                const QStringList& addContents,
+                                                const QStringList& modifyNames,
+                                                const QStringList& modifyContents)
 {
    auto backupJob = CreateInitializedJob();
    CreateInitialData();
    RunInitialBackup(backupJob);
 
-   JobStatus* status = RunBackupStage(backupJob, toAdd, toModify);
-   CheckStatus(status, toAdd, toModify);
+   JobStatus* status = RunBackupStage(backupJob, addNames, addContents,
+                                      modifyNames, modifyContents);
+   CheckStatus(status, addNames, modifyNames);
 
    delete backupJob;
 }
 
 JobStatus* TarIncrementalBackupJobTest::RunBackupStage(AbstractBackupJob* job,
-                                                       const QStringList& toAdd,
-                                                       const QStringList& toModify)
+                                                       const QStringList& addNames,
+                                                       const QStringList& addContents,
+                                                       const QStringList& modifyNames,
+                                                       const QStringList& modifyContents)
 {
-   AddFiles(toAdd);
-   ModifyFiles(toModify);
+   AddFiles(addNames, addContents);
+   ModifyFiles(modifyNames, modifyContents);
    return job->Run();
 }
 
 void TarIncrementalBackupJobTest::RunBackupStageWithoutStatus(AbstractBackupJob* job,
-                                                              const QStringList& toAdd,
-                                                              const QStringList& toModify)
+                                                              const QStringList& addNames,
+                                                              const QStringList& addContents,
+                                                              const QStringList& modifyNames,
+                                                              const QStringList& modifyContents)
 {
-   JobStatus* status = RunBackupStage(job, toAdd, toModify);
+   JobStatus* status = RunBackupStage(job, addNames, addContents,
+                                      modifyNames, modifyContents);
    delete status;
 }
 
 void TarIncrementalBackupJobTest::CreateInitialData()
 {
-   FileTestUtils::CreatePopulatedFolder(folderToBackup, initialTestFiles);
+   FileTools::CreateFolder(folderToBackup);
+
+   auto itName = initialTestFiles.begin();
+   auto itContent = initialTestFilesContents.begin();
+   for (; itName != initialTestFiles.end(); ++itName, ++itContent)
+   {
+       const string filename = folderToBackup + "/" + itName->toStdString();
+       FileTools::WriteBufferToFile(filename, itContent->toStdString());
+   }
 }
 
 void TarIncrementalBackupJobTest::RunInitialBackup(AbstractBackupJob* job)
@@ -136,22 +175,29 @@ AbstractBackupJob* TarIncrementalBackupJobTest::CreateInitializedJob()
    return job;
 }
 
-void TarIncrementalBackupJobTest::AddFiles(const QStringList& filesToAdd)
+void TarIncrementalBackupJobTest::AddFiles(const QStringList& names,
+                                           const QStringList& contents)
 {
-   for (auto it : filesToAdd)
+   auto itName = names.begin();
+   auto itContent = contents.begin();
+   for (; itName != names.end(); ++itName, ++itContent)
    {
-      const string currentFile = folderToBackup + "/" + it.toStdString();
-      FileTools::WriteBufferToFile(currentFile, "lalala");
+      const string currentFile = folderToBackup + "/" + itName->toStdString();
+      FileTools::WriteBufferToFile(currentFile, itContent->toStdString());
    }
 }
 
-void TarIncrementalBackupJobTest::ModifyFiles(const QStringList& filesToModify)
+void TarIncrementalBackupJobTest::ModifyFiles(const QStringList& names,
+                                              const QStringList& contents)
 {
    sleep(2);
-   for (auto it : filesToModify)
+   auto itName = names.begin();
+   auto itContent = contents.begin();
+   for (; itName != names.end(); ++itName, ++itContent)
    {
-      const string currentFile = folderToBackup + "/" + it.toStdString();
-      FileTools::WriteBufferToFile(currentFile, "lololo");
+      const string currentFile = folderToBackup + "/" + itName->toStdString();
+      const string currentContent = FileTools::GetTextFileContent(currentFile);
+      FileTools::WriteBufferToFile(currentFile, currentContent + itContent->toStdString());
    }
 }
 
@@ -184,14 +230,15 @@ void TarIncrementalBackupJobTest::CheckReport(JobStatus* status,
 }
 
 void TarIncrementalBackupJobTest::RestoreAndCheck(AbstractBackupJob* job, const int timeIndex,
-                                                  const QStringList& expectedFiles)
+                                                  const QStringList& expectedFiles,
+                                                  const QStringList& expectedContents)
 {
    const string restoreFolder = "Restore";
    FileTools::CreateFolder(restoreFolder);
 
    JobStatus* status = job->RestoreBackupFromServer(restoreFolder, 0, timeIndex);
    QCOMPARE(status->GetCode(), JobStatus::OK);
-   FileTestUtils::CheckFolderContent(restoreFolder, expectedFiles);
+   FileTestUtils::CheckFolderContent(restoreFolder, expectedFiles, expectedContents);
 
    FileTools::RemoveFolder(restoreFolder, false);
 }

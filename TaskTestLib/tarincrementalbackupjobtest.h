@@ -27,12 +27,19 @@ private Q_SLOTS:
     void testBackupAndRestoreMultipleLevels();
 
 private:
-    void testRunBackup(const QStringList& toAdd, const QStringList& toModify);
+    void testRunBackup(const QStringList& addNames, const QStringList& addContents,
+                       const QStringList& modifyNames, const QStringList& modifyContents);
 
     JobStatus* RunBackupStage(AbstractBackupJob* job,
-                              const QStringList& toAdd, const QStringList& toModify);
+                              const QStringList& addNames,
+                              const QStringList& addContents,
+                              const QStringList& modifyNames,
+                              const QStringList& modifyContents);
     void RunBackupStageWithoutStatus(AbstractBackupJob* job,
-                                     const QStringList& toAdd, const QStringList& toModify);
+                                     const QStringList& addNames,
+                                     const QStringList& addContents,
+                                     const QStringList& modifyNames,
+                                     const QStringList& modifyContents);
 
     void CreateInitialData();
 
@@ -40,9 +47,11 @@ private:
 
     AbstractBackupJob* CreateInitializedJob();
 
-    void AddFiles(const QStringList& filesToAdd);
+    void AddFiles(const QStringList& names,
+                  const QStringList& contents);
 
-    void ModifyFiles(const QStringList& filesToModify);
+    void ModifyFiles(const QStringList& names,
+                     const QStringList& contents);
 
     void CheckStatus(JobStatus* status, const QStringList& addedFiles,
                      const QStringList& modifiedFiles);
@@ -51,7 +60,8 @@ private:
 
     void RestoreAndCheck(AbstractBackupJob* job,
                          const int timeIndex,
-                         const QStringList& expectedFiles);
+                         const QStringList& expectedFiles,
+                         const QStringList& expectedContents);
 
 };
 
