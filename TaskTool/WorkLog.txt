@@ -1,3 +1,14 @@
+05/04/2018 (20.1-20.9)
+   Bug was in test suite. Fixed it and everything is OK now :-))
+	Added Tar test suite to global tests.
+
+03/04/2018 (1.5h)
+   Fixed bug in tests, it was a mistake. Implemented content testing in tests.
+	Now checking results : all are ok minus last test.
+Next planned work:
+   - Fix last bug in tests
+	- Update production to use tar job in archive backup
+
 01/04/2018 (1.5h)
    Implemented Restore with time index. First two backup tests are ok but not next ones.
 Next planned work:

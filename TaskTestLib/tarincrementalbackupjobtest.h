@@ -11,19 +11,16 @@ class TarIncrementalBackupJobTest : public QtTestSuite
    Q_OBJECT
 
 public:
-    TarIncrementalBackupJobTest( const std::string& dataPrefix,
-                                 const std::string& errorPrefix);
+    TarIncrementalBackupJobTest();
     virtual ~TarIncrementalBackupJobTest() = default;
-
-    void testRunBackup_Added();
-    void testRunBackup_Modified();
-    void testRunBackup_Mixed();
-
 
 private Q_SLOTS:
     void init();
     void cleanup();
 
+    void testRunBackup_Added();
+    void testRunBackup_Modified();
+    void testRunBackup_Mixed();
     void testBackupAndRestoreMultipleLevels();
 
 private:

@@ -23,9 +23,8 @@ const QStringList initialTestFilesContents = {
 };
 
 
-TarIncrementalBackupJobTest::TarIncrementalBackupJobTest(
-      const string& dataPrefix, const string& errorPrefix)
-   : QtTestSuite(dataPrefix, errorPrefix)
+TarIncrementalBackupJobTest::TarIncrementalBackupJobTest()
+   : QtTestSuite("", "")
 {
 }
 
@@ -83,7 +82,7 @@ void TarIncrementalBackupJobTest::testBackupAndRestoreMultipleLevels()
    const QStringList addContentStage3 = {"mynewcontent"};
    const QStringList modifyStage3 = {"initialFile01.txt", "add0St1.txt"};
    const QStringList modifyContentStage3 = {"\nchange me again", "\ni want some changes too"};
-   RunBackupStageWithoutStatus(backupJob, addStage3, addContentStage1,
+   RunBackupStageWithoutStatus(backupJob, addStage3, addContentStage3,
                                modifyStage3, modifyContentStage3);
 
    RestoreAndCheck(backupJob, 3, initialTestFiles, initialTestFilesContents);
