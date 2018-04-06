@@ -1,6 +1,10 @@
-05/04/2018 (20.1-20.9)
+05/04/2018 (1.6h)
    Bug was in test suite. Fixed it and everything is OK now :-))
-	Added Tar test suite to global tests.
+	Added Tar test suite to global tests. Created configuration class with its
+	test suite and added to global tests. Updated production to include Archives backup,
+	but it is unlikely that it will work : tar job is unprepared for remote backup.
+Next planned work:
+   - Add remote target support and tests for Tar job
 
 03/04/2018 (1.5h)
    Fixed bug in tests, it was a mistake. Implemented content testing in tests.
