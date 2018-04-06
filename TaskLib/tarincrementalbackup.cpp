@@ -108,7 +108,7 @@ void TarIncrementalBackup::CreateNewBackup(
 
 void TarIncrementalBackup::RemoveObsoleteBackups()
 {
-
+   // TODO : implement removing obsolete backups
 }
 
 void TarIncrementalBackup::RunFullBackup(

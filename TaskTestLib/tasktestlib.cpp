@@ -35,6 +35,7 @@ void GetTaskLibTests(std::vector<QObject*>& tests,
     tests.push_back(new RemoteJobsRunnerConfigurationTest());
     tests.push_back(new WakeJobTest());
     tests.push_back(new TarIncrementalBackupJobTest());
+    tests.push_back(new TarIncrementalBackupJobConfigurationTest());
 }
 
 

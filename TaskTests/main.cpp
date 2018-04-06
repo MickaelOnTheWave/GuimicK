@@ -57,7 +57,8 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new RemoteJobsRunnerTest();
     //QObject* testSuite = new RemoteJobsRunnerConfigurationTest();
     //QObject* testSuite = new WakeJobTest();
-    QObject* testSuite = new TarIncrementalBackupJobTest();
+    //QObject* testSuite = new TarIncrementalBackupJobTest();
+    QObject* testSuite = new TarIncrementalBackupJobConfigurationTest();
 
     QTest::qExec(testSuite, argc, argv);
 

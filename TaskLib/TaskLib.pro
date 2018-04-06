@@ -83,7 +83,8 @@ SOURCES += \
     AbstractConsoleJob.cpp \
     jobfactory.cpp \
     tarincrementalbackup.cpp \
-    tartools.cpp
+    tartools.cpp \
+    tarincrementalbackupjobconfiguration.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -158,7 +159,8 @@ HEADERS +=\
     jobfactory.h \
     tarincrementalbackup.h \
     tartools.h \
-    jobexecutiontarget.h
+    jobexecutiontarget.h \
+    tarincrementalbackupjobconfiguration.h
 
 unix {
     target.path = /usr/lib
