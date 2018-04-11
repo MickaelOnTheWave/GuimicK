@@ -1,3 +1,14 @@
+10/04/2018 (1.5h)
+   Production backup worked as expected, even without explicit handling of
+	remote targets. It worked because of a mistake : rsnapshot backup was selected.
+	Updating it... Meanwhile, having a look at known bugs/todos.
+	Trying to fix attachments issue. There seems to be too much data encoded. It seems
+	that the boundary line being added at the end of content is the issue. Removing it
+	solved for buffer attachments but apparently not for file.
+Next planned work:
+   - Check Tar job result in production
+	- Finish investigation on MIME bug and fix it
+
 05/04/2018 (1.6h)
    Bug was in test suite. Fixed it and everything is OK now :-))
 	Added Tar test suite to global tests. Created configuration class with its
