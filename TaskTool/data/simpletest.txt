@@ -36,4 +36,4 @@ Report
 
 MasterEmail = "mickael.dacruz@gmail.com";
 SendReportByEmail = true;
-ShutdownOnFinish = true;
+ShutdownOnFinish = false;

@@ -1,3 +1,9 @@
+15/04/2018 (0.7h)
+   Production ignored Tar job. Production version was outdated. Updating it...
+	Having problems with debugging to solve issue. It really seems that it is with boundary line.
+Next planned work:
+   - Solve the issue
+
 10/04/2018 (1.5h)
    Production backup worked as expected, even without explicit handling of
 	remote targets. It worked because of a mistake : rsnapshot backup was selected.
