@@ -25,6 +25,13 @@ Client
 			params = "./";
 			AttachFile("smallattachment.txt");
 		}
+		Console
+		{
+			title = "Attachments 2";
+			command = "ls";
+			params = "../";
+			AttachFile("smallattachment2.txt");
+		}
 	}
 }
 
@@ -35,5 +42,5 @@ Report
 }
 
 MasterEmail = "mickael.dacruz@gmail.com";
-SendReportByEmail = true;
+ReportDispatching = "email";
 ShutdownOnFinish = false;

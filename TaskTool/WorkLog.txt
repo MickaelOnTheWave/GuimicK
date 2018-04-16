@@ -1,8 +1,12 @@
-15/04/2018 (0.7h)
+15/04/2018 (2.2h)
    Production ignored Tar job. Production version was outdated. Updating it...
 	Having problems with debugging to solve issue. It really seems that it is with boundary line.
+	Issue solved : there were too much boundary lines and they needed to be in new line to be
+	effective. Waiting for production run to confirm the fix.
 Next planned work:
-   - Solve the issue
+   - Confirm fix in production run
+	- Check tar job output in production run
+	- Begin next task/fix/todo
 
 10/04/2018 (1.5h)
    Production backup worked as expected, even without explicit handling of
