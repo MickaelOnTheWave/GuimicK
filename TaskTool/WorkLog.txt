@@ -1,5 +1,12 @@
-16/04/2018 (21)
+16/04/2018 (0.8h)
    MIME bug is solved. However, tar job is still now appearing. Investigating...
+	Found the issue with configuration tool : configuration class was not in
+	supported list. Fixed that. Now waiting for next production run to see the results...
+	Created class for WakeOnLan feature. Copied code from Internet. Not finished yet, and
+	not tested either.
+Next planned work:
+   - Check production run with tar job
+	- Continue WakeOnLan implementation and test it
 
 15/04/2018 (2.2h)
    Production ignored Tar job. Production version was outdated. Updating it...
