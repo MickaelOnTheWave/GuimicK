@@ -67,6 +67,7 @@ Fixed bugs :
    18/09/2017 - [002] Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
 	16/10/2017 - [006] Occasionally a test in TaskFeature test will fail. Reproduce issue, check what it is and fix it!!
 	26/10/2017 - [012] Local debug option of wake job is not working.
+	16/04/2018 - [009] MIME email content is still buggy - some junk chars at the end of each archive. Looks like the counting is wrong in relation with message size.
 
 Pending bugs :
 	[001] Git report parser crashes when trying to parse a report coming from git asking for ssh password.
@@ -75,7 +76,6 @@ Pending bugs :
 	[005] Some bad configurations make app crash. See confbackuponly.txt in Synology.
 	[007] Rsnapshot fails at ignoring unmodified files in tests. Create/modify tests to fit this test case.
 	[008] Git FS backup doesn't work with first data report (git diff command).
-	[009] MIME email content is still buggy - some junk chars at the end of each archive. Looks like the counting is wrong in relation with message size.
 	[010] Some tests are failing in GitJob only in Release. Make all test suites pass 100% in both Debug and Release.
 	[011] Configuration parser fails to parse empty string properties. See TODO.
 	[012] Debug flag is not handled as it should. Check that global one works as default and can be overridden by local ones.

@@ -10,6 +10,7 @@
 #include "rsnapshotbackupjobconfiguration.h"
 #include "shutdownjobconfiguration.h"
 #include "sshconsolejobconfiguration.h"
+#include "tarincrementalbackupjobconfiguration.h"
 #include "userconsolejobconfiguration.h"
 #include "wakejobconfiguration.h"
 
@@ -87,6 +88,7 @@ void JobFactory::FillSupportedJobsList()
    supportedJobs.push_back(new RsyncCopyFsBackupJobConfiguration());
    supportedJobs.push_back(new ZipAndCopyFsBackupJobConfiguration());
    supportedJobs.push_back(new RemoteJobsRunnerConfiguration());
+   supportedJobs.push_back(new TarIncrementalBackupJobConfiguration());
 }
 
 void JobFactory::FreeSupportedJobsList()

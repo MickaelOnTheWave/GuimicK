@@ -1,3 +1,6 @@
+16/04/2018 (21)
+   MIME bug is solved. However, tar job is still now appearing. Investigating...
+
 15/04/2018 (2.2h)
    Production ignored Tar job. Production version was outdated. Updating it...
 	Having problems with debugging to solve issue. It really seems that it is with boundary line.
