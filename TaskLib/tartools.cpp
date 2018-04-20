@@ -128,15 +128,7 @@ bool TarTools::ExtractIncrementalArchive(const string& baseArchiveName,
 
 AbstractConsoleJob *TarTools::CreateBackupConsoleJob(const string &parameters)
 {
-    ConsoleJob* job = new ConsoleJob("tar", parameters);
-    if (target->isLocal)
-        return job;
-    else
-    {
-        SshConsoleJob* remoteJob = new SshConsoleJob(job);
-        remoteJob->SetTarget(target->sshUser, target->sshHost);
-        return remoteJob;
-    }
+    return new ConsoleJob("tar", parameters);
 }
 
 FileBackupReport* TarTools::CreateReportFromArchives(const string& referenceArchive,

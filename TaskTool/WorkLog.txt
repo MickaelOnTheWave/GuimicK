@@ -1,3 +1,19 @@
+19/04/2018 (1h)
+   Production tar failed. Investigating... maybe tar on Synology is different?
+	There was a mistake in job creation : no ssh job is necessary, only console job.
+	Fixed that. There still another issue : Synology tar is different than desktop.
+	As Synology is a very restricted target, it is not worth spending time on it anymore.
+	Discarting the whole feature and considering 0.9 version finished. Now moving to
+	Wake feature...
+	First implementation of Wake finished. Also updated Network tester to have a mean
+	of testing. Test doesn't crash, but there need to be a real test for that.
+Next planned work:
+   - Test Wake using WireShark : first capture a "real" wake packet, and compare it to
+	current implementation packet.
+	- Test Wake using Synology : compile networkTester for Synology and configure it
+	with cron to run wake on desktop.
+	- Finish Wake and once finished, updated WakeJob to use it instead of command
+
 16/04/2018 (0.8h)
    MIME bug is solved. However, tar job is still now appearing. Investigating...
 	Found the issue with configuration tool : configuration class was not in

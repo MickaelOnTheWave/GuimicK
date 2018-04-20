@@ -107,14 +107,13 @@ v1.0 :
 	[016] Create a package with binaries for easy install
 	[032] Property handle encodings for strings
 
-v0.9 :
+v0.9 : 19/04/2017
 	[029] Split job config file into client/server files.
 	[054] Make all jobs support user title
 	[053] Update Qt and related tools to latest ones (5.9?)
 	[048] Create configuration checking tool/feature
 	[056] Add support for attaching user specified files in Console jobs
 	[034] Create Qt client app to create/manage backup folder configuration.
-	[043] Create an archive differential File backup job
 
 v0.8 : 18/09/2017
 	[003] Use Curl lib instead of command line
