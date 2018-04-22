@@ -1,3 +1,8 @@
+22/04/2018 (17.5)
+   Analyzing wakeonlan tool and actual implementation with WireShark. Both create
+	different packets, however Wireshark recognizes implementation one as a WOL protocol.
+	Moving on to step 2...
+
 19/04/2018 (1h)
    Production tar failed. Investigating... maybe tar on Synology is different?
 	There was a mistake in job creation : no ssh job is necessary, only console job.
