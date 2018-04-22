@@ -1,7 +1,12 @@
-22/04/2018 (17.5)
+22/04/2018 (1.8h)
    Analyzing wakeonlan tool and actual implementation with WireShark. Both create
 	different packets, however Wireshark recognizes implementation one as a WOL protocol.
 	Moving on to step 2...
+	Updated build script to build synology version of network tester. Copied it manually
+	to SYnology, but it asks for dynamic library.
+Next planned work:
+   - Resolve dynamic linking error (static build? update lib path?)
+	- Continue previous roadmap
 
 19/04/2018 (1h)
    Production tar failed. Investigating... maybe tar on Synology is different?
