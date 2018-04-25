@@ -8,7 +8,7 @@
 #include "rsnapshotsmartbackupjob.h"
 #include "rsynccopyfsbackupjob.h"
 #include "userconsolejob.h"
-#include "wakejob.h"
+#include "abstractwakejob.h"
 #include "zipandcopyfsbackupjob.h"
 
 #include "editbackupjobdialog.h"
@@ -23,7 +23,7 @@
 
 AbstractEditJobDialog* JobEditDialogFactory::Create(AbstractJob* job)
 {
-   if (dynamic_cast<WakeJob*>(job))
+   if (dynamic_cast<AbstractWakeJob*>(job))
       return new EditWakeJobDialog(job);
    else if (dynamic_cast<LinuxShutdownJob*>(job))
       return new EditShutdownJobDialog(job);

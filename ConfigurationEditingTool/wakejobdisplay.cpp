@@ -1,7 +1,7 @@
 #include "wakejobdisplay.h"
 #include "ui_wakejobdisplay.h"
 
-#include "wakejob.h"
+#include "abstractwakejob.h"
 
 WakeJobDisplay::WakeJobDisplay(QWidget *parent) :
    AbstractDisplay(parent),
@@ -17,7 +17,7 @@ WakeJobDisplay::~WakeJobDisplay()
 
 void WakeJobDisplay::Initialize(AbstractJob* job)
 {
-   auto wakeJob = dynamic_cast<WakeJob*>(job);
+   auto wakeJob = dynamic_cast<AbstractWakeJob*>(job);
    if (wakeJob)
    {
       ui->nameLabel->setText(wakeJob->GetName().c_str());

@@ -1,7 +1,8 @@
 #include "wakejobconfiguration.h"
 
 #include <stdlib.h>
-#include "wakejob.h"
+#include "consolewakejob.h"
+#include "libwakejob.h"
 
 using namespace std;
 
@@ -15,14 +16,14 @@ WakeJobConfiguration::WakeJobConfiguration()
 
 bool WakeJobConfiguration::IsRightJob(AbstractJob* job)
 {
-   return (dynamic_cast<WakeJob*>(job) != NULL);
+   return (dynamic_cast<AbstractWakeJob*>(job) != NULL);
 }
 
 ConfigurationObject* WakeJobConfiguration::CreateConfigurationObject(AbstractJob* job)
 {
    ConfigurationObject* confObject = AbstractJobDefaultConfiguration::CreateConfigurationObject(job);
 
-   WakeJob* wakeJob = dynamic_cast<WakeJob*>(job);
+   AbstractWakeJob* wakeJob = dynamic_cast<AbstractWakeJob*>(job);
    confObject->SetProperty(TimeoutProperty, wakeJob->GetTimeout());
    confObject->SetProperty(MaxRetriesProperty, wakeJob->GetMaxRetries());
    return confObject;
@@ -30,7 +31,7 @@ ConfigurationObject* WakeJobConfiguration::CreateConfigurationObject(AbstractJob
 
 AbstractJob *WakeJobConfiguration::CreateJob()
 {
-    return new WakeJob();
+    return new ConsoleWakeJob();
 }
 
 void WakeJobConfiguration::ConfigureJob(AbstractJob *job,
@@ -42,7 +43,7 @@ void WakeJobConfiguration::ConfigureJob(AbstractJob *job,
     const string timeout = confObject->GetFirstProperty(TimeoutProperty, "param0");
     const string maxRetries = confObject->GetProperty(MaxRetriesProperty);
 
-    WakeJob* castJob = static_cast<WakeJob*>(job);
+    AbstractWakeJob* castJob = static_cast<AbstractWakeJob*>(job);
 
     int timeoutValue = atoi(timeout.c_str());
     if (timeoutValue > 0)

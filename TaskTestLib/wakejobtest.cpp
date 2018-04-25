@@ -2,7 +2,7 @@
 
 #include <QTest>
 #include "client.h"
-#include "wakejob.h"
+#include "libwakejob.h"
 
 WakeJobTest::WakeJobTest()
    : QtTestSuite("", "")

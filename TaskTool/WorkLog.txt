@@ -1,3 +1,13 @@
+23/04/2018 (2.2h)
+   Network tool successfully waked Desktop :-) Now updating wake job.
+	Refactored wake job into architecture to keep console wake and have lib wake.
+	Both use the same code base. Right now it is still using console wake.
+	Also updated production config : tar job won't be used as it is unfinished.
+Next planned work:
+   - Check that production is running OK with refactored console wake
+	- If it is the case, change it to use lib wake
+	- Activate wake job test (it is disabled with a TODO at the moment)
+
 22/04/2018 (1.8h)
    Analyzing wakeonlan tool and actual implementation with WireShark. Both create
 	different packets, however Wireshark recognizes implementation one as a WOL protocol.

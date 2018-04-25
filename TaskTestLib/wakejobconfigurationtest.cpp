@@ -1,7 +1,7 @@
 #include "wakejobconfigurationtest.h"
 
 #include <QTest>
-#include "wakejob.h"
+#include "abstractwakejob.h"
 #include "wakejobconfiguration.h"
 
 using namespace std;
@@ -58,7 +58,7 @@ void WakeJobConfigurationTest::TestTimeoutProperty(const std::string &propertyVa
                 WakeJobConfiguration::TimeoutProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-    auto castJob = dynamic_cast<WakeJob*>(job);
+    auto castJob = dynamic_cast<AbstractWakeJob*>(job);
 
     QVERIFY(castJob != nullptr);
     QVERIFY(castJob->GetTimeout() == expectedValue);
@@ -74,7 +74,7 @@ void WakeJobConfigurationTest::TestRetriesProperty(const std::string &propertyVa
                 WakeJobConfiguration::MaxRetriesProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
-    auto castJob = dynamic_cast<WakeJob*>(job);
+    auto castJob = dynamic_cast<AbstractWakeJob*>(job);
 
     QVERIFY(castJob != nullptr);
     QVERIFY(castJob->GetMaxRetries() == expectedValue);

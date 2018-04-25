@@ -1,6 +1,6 @@
 #include "editwakejobdialog.h"
 #include "ui_editwakejobdialog.h"
-#include "wakejob.h"
+#include "abstractwakejob.h"
 
 EditWakeJobDialog::EditWakeJobDialog(AbstractJob* _job) :
    AbstractEditJobDialog(_job),
@@ -19,7 +19,7 @@ EditWakeJobDialog::~EditWakeJobDialog()
 
 void EditWakeJobDialog::UpdateUiFromJob()
 {
-   auto wakeJob = static_cast<WakeJob*>(job);
+   auto wakeJob = static_cast<AbstractWakeJob*>(job);
    ui->nameEdit->setText(job->GetName().c_str());
    ui->retriesBox->setValue(wakeJob->GetMaxRetries());
    ui->timeoutBox->setValue(wakeJob->GetTimeout());
@@ -27,7 +27,7 @@ void EditWakeJobDialog::UpdateUiFromJob()
 
 void EditWakeJobDialog::UpdateJobFromUi()
 {
-   auto wakeJob = static_cast<WakeJob*>(job);
+   auto wakeJob = static_cast<AbstractWakeJob*>(job);
    job->SetName(ui->nameEdit->text().toStdString());
    wakeJob->SetMaxRetries(ui->retriesBox->value());
    wakeJob->SetTimeout(ui->timeoutBox->value());

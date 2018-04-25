@@ -27,7 +27,7 @@
 #include "rsnapshotsmartbackupjob.h"
 #include "rsynccopyfsbackupjob.h"
 #include "userconsolejob.h"
-#include "wakejob.h"
+#include "libwakejob.h"
 #include "zipandcopyfsbackupjob.h"
 
 using namespace std;
@@ -167,7 +167,7 @@ void MainWindow::UpdateRowDelegatesFromBottom(const int startingIndex)
 
 AbstractDisplay* MainWindow::CreateDisplay(AbstractJob* job) const
 {
-   if (dynamic_cast<WakeJob*>(job))
+   if (dynamic_cast<AbstractWakeJob*>(job))
       return new WakeJobDisplay();
    else if (dynamic_cast<AbstractBackupJob*>(job))
       return new AbstractBackupJobDisplay();
@@ -240,7 +240,7 @@ void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
 
 void MainWindow::on_actionWake_triggered()
 {
-   InsertNewJob(new WakeJob());
+   InsertNewJob(new LibWakeJob());
 }
 
 void MainWindow::on_actionShutdown_triggered()

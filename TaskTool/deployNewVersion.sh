@@ -73,6 +73,7 @@ ssh -t mickael@Desktop "cd $TASKTOOLPATH ; ./MakeSynologyBuild.sh"
 scp mickael@Desktop:$BINARIESPATH/TaskTool ./$UNTESTED_TASKTOOL
 mv $UNTESTED_TASKTOOL tasktool
 scp mickael@Desktop:$BINARIESPATH/CommandLineTool ./reportparser
+scp mickael@Desktop:$BINARIESPATH/NetworkTester ./networktester
 scp mickael@Desktop:$CSSFILE ./report.css
 
 

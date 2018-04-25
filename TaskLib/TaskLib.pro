@@ -34,7 +34,6 @@ SOURCES += \
     abstractreportcreator.cpp \
     userconsolejob.cpp \
     rsnapshoterroranalyzer.cpp \
-    wakejob.cpp \
     jobdebuginformationmanager.cpp \
     linuxfreespacecheckjob.cpp \
     rsnapshotsmartbackupjob.cpp \
@@ -84,7 +83,10 @@ SOURCES += \
     jobfactory.cpp \
     tarincrementalbackup.cpp \
     tartools.cpp \
-    tarincrementalbackupjobconfiguration.cpp
+    tarincrementalbackupjobconfiguration.cpp \
+    abstractwakejob.cpp \
+    libwakejob.cpp \
+    consolewakejob.cpp
 
 HEADERS +=\
     abstractjob.h \
@@ -109,7 +111,6 @@ HEADERS +=\
     abstractreportcreator.h \
     userconsolejob.h \
     rsnapshoterroranalyzer.h \
-    wakejob.h \
     jobdebuginformationmanager.h \
     linuxfreespacecheckjob.h \
     rsnapshotsmartbackupjob.h \
@@ -160,7 +161,10 @@ HEADERS +=\
     tarincrementalbackup.h \
     tartools.h \
     jobexecutiontarget.h \
-    tarincrementalbackupjobconfiguration.h
+    tarincrementalbackupjobconfiguration.h \
+    abstractwakejob.h \
+    libwakejob.h \
+    consolewakejob.h
 
 unix {
     target.path = /usr/lib

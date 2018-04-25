@@ -1,16 +1,15 @@
-#ifndef WAKEJOB_H
-#define WAKEJOB_H
+#ifndef ABSTRACTWAKEJOB_H
+#define ABSTRACTWAKEJOB_H
 
 #include "abstractjob.h"
 
-class WakeJob : public AbstractJob
+class AbstractWakeJob : public AbstractJob
 {
 public:
-    WakeJob();
-    WakeJob(const WakeJob& other);
-    virtual ~WakeJob();
+    AbstractWakeJob();
+    AbstractWakeJob(const AbstractWakeJob& other);
+    virtual ~AbstractWakeJob();
 
-    virtual AbstractJob* Clone();
     virtual bool InitializeFromClient(Client* client);
     virtual bool IsInitialized(void);
     virtual JobStatus* Run();
@@ -21,7 +20,13 @@ public:
     int GetMaxRetries() const;
     void SetMaxRetries(const int value);
 
+protected:
+    std::string macAddress;
+    std::string broadcastIp;
+
 private:
+    virtual JobStatus* SetupWaker() = 0;
+    virtual JobStatus* RunWaker() = 0;
 
     bool HasMandatoryParameters(void) const;
     /**
@@ -29,11 +34,9 @@ private:
      */
     int WaitForComputerToGoUp(void) const;
 
-    std::string macAddress;
-    std::string broadcastIp;
     std::string expectedIp;
     int timeout;
     int maxRetries;
 };
 
-#endif // WAKEJOB_H
+#endif // ABSTRACTWAKEJOB_H
