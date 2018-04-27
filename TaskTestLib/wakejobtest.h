@@ -2,6 +2,7 @@
 #define WAKEJOBTEST_H
 
 #include "client.h"
+#include "jobstatus.h"
 #include "qttestsuite.h"
 
 class WakeJobTest : public QtTestSuite
@@ -13,10 +14,14 @@ public:
 
 private Q_SLOTS:
 
-    void testWake_FailsWakingInvalidMachine();
+   void testWake_OkOnSelf();
+   void testWake_FailsWakingInvalidMachine();
 
 private:
-    Client* CreateInvalidClient();
+   void TestWake(Client* client,
+                 JobStatus* expectedStatus);
+   Client* CreateSelfClient();
+   Client* CreateInvalidClient();
 };
 
 #endif // WAKEJOBTEST_H

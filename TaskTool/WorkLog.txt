@@ -1,3 +1,11 @@
+26/04/2018 (0.9h)
+   Production ran OK. Now moving to lib wake. Also removed wakelan executable from
+	Synology to make sure it can't be used and hide an error in libwake.
+	Activated wake job test.
+Next planned work:
+   - Check if production is OK. If so, update release plan.
+	- Move to next feature : partial static build
+
 23/04/2018 (2.2h)
    Network tool successfully waked Desktop :-) Now updating wake job.
 	Refactored wake job into architecture to keep console wake and have lib wake.

@@ -31,7 +31,7 @@ ConfigurationObject* WakeJobConfiguration::CreateConfigurationObject(AbstractJob
 
 AbstractJob *WakeJobConfiguration::CreateJob()
 {
-    return new ConsoleWakeJob();
+    return new LibWakeJob();
 }
 
 void WakeJobConfiguration::ConfigureJob(AbstractJob *job,

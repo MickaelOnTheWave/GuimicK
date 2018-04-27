@@ -102,12 +102,11 @@ v1.1 :
 
 v1.0 :
 	[023] Remove wakelan executable dependency
-	[056] Create VMs for testing remote jobs and wake
 	[049] Make build be at least partially static (internal dependencies static)
 	[016] Create a package with binaries for easy install
 	[032] Property handle encodings for strings
 
-v0.9 : 19/04/2017
+v0.9 : 19/04/2018
 	[029] Split job config file into client/server files.
 	[054] Make all jobs support user title
 	[053] Update Qt and related tools to latest ones (5.9?)
