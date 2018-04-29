@@ -1,3 +1,11 @@
+29/04/2018 (1.3h)
+   Production ran OK, release plan updated ;-). Now going to create partial static build.
+	Creating script. Building in different folder is OK, now trying to find out what is the
+	error. It looks like there is a final link step that should not be there.
+	Chosen to use the ar path to do the linking.
+Next planned work:
+   - Finish Partial static build script
+
 26/04/2018 (0.9h)
    Production ran OK. Now moving to lib wake. Also removed wakelan executable from
 	Synology to make sure it can't be used and hide an error in libwake.
