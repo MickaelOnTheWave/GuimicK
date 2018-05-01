@@ -1,3 +1,9 @@
+01/05/2018 (1.2h)
+   Resolved the linking and copying steps, now the final packaging one seems not
+	working yet.
+Next planned work:
+   - Finish Partial static build script
+
 29/04/2018 (1.3h)
    Production ran OK, release plan updated ;-). Now going to create partial static build.
 	Creating script. Building in different folder is OK, now trying to find out what is the
