@@ -1,3 +1,10 @@
+10/05/2018 (1h)
+   Fixed packaging step ; the command was incorrect. Found a good one.
+Next planned work:
+   - Build the executable with the static lib
+	- Check that partial static build is working correctly
+	- Move on to next feature
+
 01/05/2018 (1.2h)
    Resolved the linking and copying steps, now the final packaging one seems not
 	working yet.

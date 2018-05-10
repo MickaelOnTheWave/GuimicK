@@ -62,12 +62,23 @@ extractModule()
 
 linkEverything()
 {
-	createFolderIfNotPresent $FINAL_LINK_PATH
-	cd $FINAL_LINK_PATH
-	extractModule "ToolsLib"
-	extractModule "ParsersLib"
-	extractModule "TaskLib"
-	/usr/bin/ar -c libTaskManager.a *.o	
+	#createFolderIfNotPresent $FINAL_LINK_PATH
+	cd $TARGET_DIRECTORY
+	#extractModule "ToolsLib"
+	#extractModule "ParsersLib"
+	#extractModule "TaskLib"
+	#/usr/bin/ar -c libTaskManager.a *.o	
+	#/usr/bin/ar --help
+	
+	ar -M <<EOM
+	CREATE libTaskManager.a
+	ADDLIB ParsersLib/libParsersLib.a
+	ADDLIB TaskLib/libTaskLib.a
+	ADDLIB ToolsLib/libToolsLib.a
+	SAVE
+	END
+EOM
+ranlib libTaskManager.a
 }
 
 buildModule "ToolsLib" $TOOLSLIB_PATH
