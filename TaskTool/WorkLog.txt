@@ -1,3 +1,16 @@
+31/05/2018 (2.4h)
+   Continued work. Pro file was modified and script too, however final link didn't work:
+	missing references. Trying another approach : all lib projects only build statically
+	and tool uses curl dynamically.
+Next planned work:
+   - Finish second approach
+
+22/05/2018 (0.5h)
+   Updated .pro file to have the partial static option. Began updating the script file too.
+Next planned work:
+   - Finish pro file modifications : manual link to taskmanagerlib is missing
+	- Finish script file : call qmake
+
 10/05/2018 (1h)
    Fixed packaging step ; the command was incorrect. Found a good one.
 Next planned work:

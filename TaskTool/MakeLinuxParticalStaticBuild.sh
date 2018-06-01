@@ -81,10 +81,21 @@ EOM
 ranlib libTaskManager.a
 }
 
-buildModule "ToolsLib" $TOOLSLIB_PATH
+createTaskManagerLib()
+{
+	buildModule "ToolsLib" $TOOLSLIB_PATH
+	buildModule "ParsersLib" $PARSERSLIB_PATH
+	buildTaskModule
+	linkEverything
+}
 
-buildModule "ParsersLib" $PARSERSLIB_PATH
+buildTaskManagerExe()
+{
+	MAKEFILE="MyMakefile"
+	#qmake -o $MAKEFILE "CONFIG+=PartialStatic" $TASKTOOL_PATH"TaskTool.pro"
+	qmake -o $MAKEFILE "CONFIG+=PartialStatic" $TASKTOOL_PATH"TaskTool.pro"
+	make -f $MAKEFILE
+}
 
-buildTaskModule
-
-linkEverything
+#createTaskManagerLib
+buildTaskManagerExe
