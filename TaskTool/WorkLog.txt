@@ -1,3 +1,23 @@
+13/06/2018 (0.4)
+   Trying to fix compilation. Static/dynamic linking will be left for another
+	time to solve. Solved, it was only a test project compilation issue.
+	It seems that static/dynamic linking issue won't be resolved with qmake. If second
+	approach doesn't work, try migrating to Cmake. Meanwhile starting with encoding issue.
+	Changed name string to have accent characters, but it seems to work well. Without internet
+	to check anyway, the issue won't be resolved now. Going for config tool.
+	Config tool seems to work fine. Moved its output to production, now waiting for next run to
+	see result. Fixed small bug where console job didn't have all its properties managed.
+Next planned work :
+   - Check production run result : if ok, config tool is considered working :-)
+	- Finish tests with second approach (Qmake). If no solution is found, consider moving
+	to Cmake
+	- Identify and resolve encoding issue
+
+06/06/2018 (1h)
+   Continued work...
+Next planned work:
+   - Continue work
+
 31/05/2018 (2.4h)
    Continued work. Pro file was modified and script too, however final link didn't work:
 	missing references. Trying another approach : all lib projects only build statically

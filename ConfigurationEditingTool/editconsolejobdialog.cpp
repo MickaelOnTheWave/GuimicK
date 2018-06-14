@@ -122,6 +122,8 @@ void EditConsoleJobDialog::UpdateJobFromUi_User()
    else
       userJob->SetOutputTofile(ui->fileOutputEdit->text().toStdString());
 
+   userJob->SetAttachOutput(ui->attachOutputBox->isChecked());
+
    userJob->EmptyUserAttachments();
    for (int i=0; i<ui->attachmentsWidget->count(); ++i)
       userJob->AddUserAttachment(ui->attachmentsWidget->item(i)->text().toStdString());
