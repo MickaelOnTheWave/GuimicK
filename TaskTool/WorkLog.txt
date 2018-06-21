@@ -1,3 +1,10 @@
+21/06/2018 (18.7)
+   First, it seems that build scripts need some cleaning. Created script to build Release
+	version.
+
+08/06/2018 (0.5h)
+   Production run is OK, so config tool is considered ok!
+
 13/06/2018 (0.4)
    Trying to fix compilation. Static/dynamic linking will be left for another
 	time to solve. Solved, it was only a test project compilation issue.
