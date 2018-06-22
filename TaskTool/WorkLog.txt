@@ -1,6 +1,6 @@
-21/06/2018 (18.7)
+21/06/2018 (18.7-19.3 22.3)
    First, it seems that build scripts need some cleaning. Created script to build Release
-	version.
+	version. Created script for Debug version and refactored them to share common code.
 
 08/06/2018 (0.5h)
    Production run is OK, so config tool is considered ok!
