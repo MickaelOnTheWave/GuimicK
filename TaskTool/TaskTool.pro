@@ -9,12 +9,6 @@ contains( CONFIG, UseCurlLib ) {
 else {
 	QMAKE_LFLAGS += -static
 }
-#contains( CONFIG, Shared ) {
-#	message("Shared build")
-#}
-#else {
-#	message("Static build")
-#}
 
 SOURCES += main.cpp \
 	 emaildispatcherfactory.cpp \
@@ -25,46 +19,53 @@ contains( CONFIG, UseCurlLib ) {
 	HEADERS += curllibreportdispatcher.h
 }
 
+isEmpty(BUILD_TYPE){
+   contains( CONFIG, synology ) {
+      BUILD_TYPE = Synology
+   }
+   else:CONFIG(debug, debug|release) {
+      BUILD_TYPE = Debug
+   }
+   else {
+      BUILD_TYPE = Release
+   }
+}
 
-contains( CONFIG, synology ) {
-	BUILD_TYPE = Synology
-}
-else:CONFIG(debug, debug|release) {
-	BUILD_TYPE = Debug
-}
-else {
-	BUILD_TYPE = Release
-}
+ROOTPATH = /home/mickael/Prog
+TASKMANAGERPATH = $$ROOTPATH/TaskManager
+TOOLSPATH = $$ROOTPATH/Tools
 
 # linking TaskLib
-TASK_LIB_PATH = /home/mickael/Prog/TaskManager/bin/$$BUILD_TYPE/TaskLib/
-TASK_INCLUDE_PATH = /home/mickael/Prog/TaskManager/TaskLib/
+TASK_LIB_PATH = $$TASKMANAGERPATH/bin/$$BUILD_TYPE/TaskLib/
+TASK_INCLUDE_PATH = $$TASKMANAGERPATH/TaskLib/
 LIBS += -L$$TASK_LIB_PATH -lTaskLib
 INCLUDEPATH += $$TASK_INCLUDE_PATH
 DEPENDPATH += $$TASK_INCLUDE_PATH
 
 # linking ParsersLib
-PARSERS_LIB_PATH = /home/mickael/Prog/TaskManager/bin/$$BUILD_TYPE/ReportParsers/ParsersLib/
-PARSERS_INCLUDE_PATH = /home/mickael/Prog/TaskManager/ReportParsers/ParsersLib/
+PARSERS_LIB_PATH = $$TASKMANAGERPATH/bin/$$BUILD_TYPE/ReportParsers/ParsersLib/
+PARSERS_INCLUDE_PATH = $$TASKMANAGERPATH/ReportParsers/ParsersLib/
 unix:!macx: LIBS += -L$$PARSERS_LIB_PATH -lParsersLib
 INCLUDEPATH += $$PARSERS_INCLUDE_PATH
 DEPENDPATH += $$PARSERS_INCLUDE_PATH
 
+# linking ToolsLib
+TOOLS_LIB_PATH = $$TOOLSPATH/bin/$$BUILD_TYPE/ToolsLib
+TOOLS_INCLUDE_PATH = $$TOOLSPATH/ToolsLib/
+LIBS += -L$$TOOLS_LIB_PATH  -lToolsLib
+INCLUDEPATH += $$TOOLS_INCLUDE_PATH
+DEPENDPATH += $$TOOLS_INCLUDE_PATH
+
+
 contains( CONFIG, UseCurlLib ) {
 	# linking NetworkToolsLib
-	NETWORKTOOLS_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/NetworkToolsLib/
-	NETWORKTOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/NetworkToolsLib/
-	LIBS += -L$$NETWORKTOOLS_LIB_PATH -lNetworkToolsLib -lcurl
+   NETWORKTOOLS_LIB_PATH = $$TOOLSPATH/bin/$$BUILD_TYPE/NetworkToolsLib
+   NETWORKTOOLS_INCLUDE_PATH = $$TOOLSPATH/NetworkToolsLib/
+   LIBS += -L$$NETWORKTOOLS_LIB_PATH -lNetworkToolsLib #-lcurl
 	INCLUDEPATH += $$NETWORKTOOLS_INCLUDE_PATH
 	DEPENDPATH += $$NETWORKTOOLS_INCLUDE_PATH
 }
 
-# linking ToolsLib
-TOOLS_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/ToolsLib
-TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
-LIBS += -L$$TOOLS_LIB_PATH  -lToolsLib
-INCLUDEPATH += $$TOOLS_INCLUDE_PATH
-DEPENDPATH += $$TOOLS_INCLUDE_PATH
 
 OTHER_FILES += \
     data/configuration.txt \

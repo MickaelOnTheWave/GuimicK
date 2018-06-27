@@ -1,3 +1,13 @@
+26/06/2018 (2.7h)
+   Changed build scripts to properly support build types. Trying to fix CurlLib configuration -
+	without success so far. Strangely, ld doesn't seem to find NetworkLib. Manual link showed
+	that anyway, curl is not available.
+Next planned work:
+   - Try to fix link issue with ToolsLib within NetworkLib
+	- If no solution is found, consider moving everything to CMake
+	- If CMake migration is too expensive / not strictly necessary, consider postponing partial
+	build feature
+
 21/06/2018 (2.1h)
    First, it seems that build scripts need some cleaning. Created script to build Release
 	version. Created script for Debug version and refactored them to share common code.

@@ -9,7 +9,12 @@ QT       -= core gui
 TARGET = TaskLib
 TEMPLATE = lib
 
-CONFIG += shared_and_static build_all
+contains( CONFIG, UseCurlLib ) {
+   CONFIG += staticlib
+}
+else {
+   CONFIG += shared_and_static build_all
+}
 
 DEFINES += TASKLIB_LIBRARY
 
@@ -172,14 +177,16 @@ unix {
 }
 
 
-contains( CONFIG, synology ) {
-	BUILD_TYPE = Synology
-}
-else:CONFIG(debug, debug|release) {
-	BUILD_TYPE = Debug
-}
-else {
-	BUILD_TYPE = Release
+isEmpty(BUILD_TYPE){
+   contains( CONFIG, synology ) {
+      BUILD_TYPE = Synology
+   }
+   else:CONFIG(debug, debug|release) {
+      BUILD_TYPE = Debug
+   }
+   else {
+      BUILD_TYPE = Release
+   }
 }
 
 # linking ToolsLib

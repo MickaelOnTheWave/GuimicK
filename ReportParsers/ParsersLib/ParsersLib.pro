@@ -9,7 +9,12 @@ QT       -= core gui
 TARGET = ParsersLib
 TEMPLATE = lib
 
-CONFIG += shared_and_static build_all
+contains( CONFIG, UseCurlLib ) {
+   CONFIG += staticlib
+}
+else {
+   CONFIG += shared_and_static build_all
+}
 
 DEFINES += PARSERSLIB_LIBRARY
 

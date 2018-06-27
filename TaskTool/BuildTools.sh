@@ -44,8 +44,9 @@ qmakeBuildCommand()
 	NAME=$1
 	LIBPATH=$2
 	MAKEFILE=$NAME"Makefile"
+	BUILDVAR="BUILD_TYPE=$TARGET_TYPE"
 	
-	qmake -o $MAKEFILE $QMAKE_CONFIG $LIBPATH/$NAME".pro"
+	qmake -o $MAKEFILE $QMAKE_CONFIG $LIBPATH/$NAME".pro" $BUILDVAR
 }
 
 buildModule()
@@ -73,14 +74,18 @@ buildAll()
 	createFolderIfNotPresent $TASKMANAGER_BUILD_PATH
 	buildModule "ToolsLib" $TOOLSLIB_PATH $TOOLSLIB_BIN_PATH
 
-	#buildModule "NetworkToolsLib" $NETWORKTOOLSLIB_PATH $NETWORKTOOLSLIB_BIN_PATH
-
 	createFolderIfNotPresent $PARSERSLIB_BIN_PATH_ROOT
 	buildModule "ParsersLib" $PARSERSLIB_PATH $PARSERSLIB_BIN_PATH
 	buildModule "TaskLib" $TASKLIB_PATH $TASKLIB_BIN_PATH
 	buildModule "TaskTool" $TASKTOOL_PATH $TASKTOOL_BIN_PATH 
 	buildModule "CommandLineTool" $PARSERTOOL_PATH $PARSERTOOL_BIN_PATH
 	buildModule "NetworkTester" $NETWORKTESTER_PATH $NETWORKTESTER_BIN_PATH
+}
+
+buildAllWithNetworkLib()
+{
+	buildAll $1 $2 $3
+	buildModule "NetworkToolsLib" $NETWORKTOOLSLIB_PATH $NETWORKTOOLSLIB_BIN_PATH
 }
 
 
