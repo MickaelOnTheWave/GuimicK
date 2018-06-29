@@ -1,3 +1,21 @@
+28/06/2018 (1.6h)
+   Finished basic configuration. Now trying to add support for multiple build types, including
+	progresscounter for non-Synology builds.
+	CMakeLists files can't seem to reference each other. Didn't find a good example on Internet.
+	See tomorrow at work how CMake files reference each other.
+Next planned work:
+   - See previous roadmap
+
+27/06/2018 (1.4h)
+   CMake seems the way to go on the long run. It has good support for Linux and Windows,
+	seems to work flawlessly with QtCreator and is recommended for complex projects.
+	Starting migration... Starting with ToolsLib and ExternalCommandTest. Changed their folder
+	structure to remove QtCreator warning and prepare for CMake configuration. Created simple
+	CMake for them, but it is not complete yet.
+Next planned work:
+   - Finish Cmake configurations for ToolsLib and ExternalCommandTester
+	- Once done, extend migration to other Tools modules
+
 26/06/2018 (2.7h)
    Changed build scripts to properly support build types. Trying to fix CurlLib configuration -
 	without success so far. Strangely, ld doesn't seem to find NetworkLib. Manual link showed

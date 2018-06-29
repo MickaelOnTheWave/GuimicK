@@ -189,9 +189,12 @@ isEmpty(BUILD_TYPE){
    }
 }
 
+ROOTPATH = /home/mickael/Prog
+
 # linking ToolsLib
-TOOLS_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/ToolsLib
-TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
+TOOLSLIB_ROOT = $$ROOTPATH/Tools/ToolsLib
+TOOLS_LIB_PATH = $$TOOLSLIB_ROOT/bin/$$BUILD_TYPE
+TOOLS_INCLUDE_PATH = $$TOOLSLIB_ROOT/src
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
 INCLUDEPATH += $$TOOLS_INCLUDE_PATH
 DEPENDPATH += $$TOOLS_INCLUDE_PATH
