@@ -192,8 +192,9 @@ isEmpty(BUILD_TYPE){
 ROOTPATH = /home/mickael/Prog
 
 # linking ToolsLib
-TOOLSLIB_ROOT = $$ROOTPATH/Tools/ToolsLib
-TOOLS_LIB_PATH = $$TOOLSLIB_ROOT/bin/$$BUILD_TYPE
+TOOLS_ROOT = /home/mickael/Prog/Tools
+TOOLSLIB_ROOT = $$TOOLS_ROOT/ToolsLib
+TOOLS_LIB_PATH = $$TOOLS_ROOT/bin/$$BUILD_TYPE/ToolsLib/proj/qmake
 TOOLS_INCLUDE_PATH = $$TOOLSLIB_ROOT/src
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
 INCLUDEPATH += $$TOOLS_INCLUDE_PATH

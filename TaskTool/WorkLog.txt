@@ -1,3 +1,12 @@
+02/07/2018 (1.8h)
+   Found the way to integrate newly organized project into Qt project structure. However, linking
+	is broken. Trying to fix that... Fixed all Tools projects. Now going for CMake.
+	Build scripts are broken. But it seems difficult to fix them. Focusing on Cmake, but
+	still no commits are "allowed" :-(
+	CMake build done for ToolsLib and ExternalCommandTester! :-)
+Next planned work:
+   - Refactor all Tools project and create their Cmake build
+
 28/06/2018 (1.6h)
    Finished basic configuration. Now trying to add support for multiple build types, including
 	progresscounter for non-Synology builds.
