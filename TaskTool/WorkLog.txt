@@ -1,3 +1,12 @@
+04/07/2018 (1.4h)
+   Refactored all Tools projects. Added Cmake build for ConfigurationParser, FileGenerator,
+	NetworkTester and NetworkToolsLib. Missing projects for Cmake build are ToolsTest,
+	ToolsTestLib and EmailUI. They all require external dependencies that make Cmake build
+	a little more complex.
+Next planned work:
+   - Refactor QtTools projects with their Cmake builds
+	- Finish missing Tools projects Cmake builds
+
 02/07/2018 (1.8h)
    Found the way to integrate newly organized project into Qt project structure. However, linking
 	is broken. Trying to fix that... Fixed all Tools projects. Now going for CMake.
