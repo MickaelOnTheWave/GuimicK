@@ -1,3 +1,9 @@
+10/07/2018 (1h)
+   Refactored QtTools and QtToolsTestLib. Created their Cmake builds.
+Next planned work:
+   - Finish missing Tools projects
+	- Begin TaskManager projects
+
 04/07/2018 (1.4h)
    Refactored all Tools projects. Added Cmake build for ConfigurationParser, FileGenerator,
 	NetworkTester and NetworkToolsLib. Missing projects for Cmake build are ToolsTest,
