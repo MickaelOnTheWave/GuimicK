@@ -1,3 +1,9 @@
+11/07/2018 (1h)
+   Finished QtToolsLib. ToolsTest is not working yet.
+Next planned work:
+   - Fix ToolsTest
+	- Finish all Tools project
+
 10/07/2018 (1h)
    Refactored QtTools and QtToolsTestLib. Created their Cmake builds.
 Next planned work:
