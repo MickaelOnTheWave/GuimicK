@@ -2,6 +2,6 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     ParsersLib/proj/qmake/ParsersLib.pro \
-    UnitTests \
+    UnitTests/proj/qmake/UnitTests.pro \
     CommandLineTool/proj/qmake/CommandLineTool.pro \
-    ParsersTestLib
+    ParsersTestLib/proj/qmake/ParsersTestLib.pro

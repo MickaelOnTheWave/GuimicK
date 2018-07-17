@@ -1,3 +1,6 @@
+17/07/2018 (20.5)
+   Finished refactoring Parsers qmake projects. Now going for their Cmake builds.
+
 16/07/2018 (0.7h)
    EmailUI qmake was already refactored. Finished Cmake build. Now going
 	for TaskManager projects.. Beginning with Parsers one.

@@ -17,7 +17,7 @@ TEMPLATE = app
 
 
 SOURCES += \
-	 main.cpp
+	 ../../src/main.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 CONFIG(debug, debug|release) {
@@ -27,33 +27,39 @@ else {
 	BUILD_TYPE = Release
 }
 
+TASKMANAGER_ROOT = /home/mickael/Prog/TaskManager
+PARSERS_ROOT = $$TASKMANAGER_ROOT/ReportParsers
+PARSERS_BIN_ROOT = $$TASKMANAGER_ROOT/bin/$$BUILD_TYPE/ReportParsers
+
 # linking ParsersTestLib
-PARSERS_TEST_LIB_PATH = /home/mickael/Prog/TaskManager/bin/$$BUILD_TYPE/ReportParsers/ParsersTestLib/
-PARSERS_TEST_INCLUDE_PATH = /home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/
+PARSERS_TEST_LIB_PATH = $$PARSERS_BIN_ROOT/ParsersTestLib/proj/qmake
+PARSERS_TEST_INCLUDE_PATH = $$PARSERS_ROOT/ParsersTestLib/src/
 unix:!macx: LIBS += -L$$PARSERS_TEST_LIB_PATH -lParsersTestLib
 INCLUDEPATH += $$PARSERS_TEST_INCLUDE_PATH
 DEPENDPATH += $$PARSERS_TEST_INCLUDE_PATH
 
 # linking ParsersLib
-PARSERS_LIB_PATH = /home/mickael/Prog/TaskManager/bin/$$BUILD_TYPE/ReportParsers/ParsersLib/
-PARSERS_INCLUDE_PATH = /home/mickael/Prog/TaskManager/ReportParsers/ParsersLib/
+PARSERS_LIB_PATH = $$PARSERS_BIN_ROOT/ParsersLib/proj/qmake
+PARSERS_INCLUDE_PATH = $$PARSERS_ROOT/ParsersLib/src
 unix:!macx: LIBS += -L$$PARSERS_LIB_PATH -lParsersLib
 INCLUDEPATH += $$PARSERS_INCLUDE_PATH
 DEPENDPATH += $$PARSERS_INCLUDE_PATH
 
 # linking ToolsLib
-TOOLS_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/ToolsLib/
-TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
+TOOLS_ROOT = /home/mickael/Prog/Tools
+TOOLSLIB_ROOT = $$TOOLS_ROOT/ToolsLib
+TOOLS_LIB_PATH = $$TOOLS_ROOT/bin/$$BUILD_TYPE/ToolsLib/proj/qmake
+TOOLS_INCLUDE_PATH = $$TOOLSLIB_ROOT/src
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
+INCLUDEPATH += $$TOOLS_INCLUDE_PATH
+DEPENDPATH += $$TOOLS_INCLUDE_PATH
 
-# linking QtToolsLib
-QTTOOLS_LIB_PATH = /home/mickael/Prog/QtTools/bin/$$BUILD_TYPE/QtTools
-QTTOOLS_INCLUDE_PATH = /home/mickael/Prog/QtTools/QtTools/
+# linking QtTools
+QTTOOLSLIB_ROOT = /home/mickael/Prog/QtTools
+QTTOOLS_LIB_PATH = $$QTTOOLSLIB_ROOT/bin/$$BUILD_TYPE/QtTools/proj/qmake
+QTTOOLS_INCLUDE_PATH = $$QTTOOLSLIB_ROOT/QtTools/src
 LIBS += -L$$QTTOOLS_LIB_PATH -lQtTools
 INCLUDEPATH += $$QTTOOLS_INCLUDE_PATH
 DEPENDPATH += $$QTTOOLS_INCLUDE_PATH
-
-INCLUDEPATH += $$TOOLS_INCLUDE_PATH
-DEPENDPATH += $$TOOLS_INCLUDE_PATH
 
 HEADERS +=
