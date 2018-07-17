@@ -1,0 +1,15 @@
+cmake_minimum_required (VERSION 3.2)
+
+project (ParsersLib)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+
+add_subdirectory ("../../../../../Tools/ToolsLib/proj/cmake" "./ToolsLib") 
+
+file(GLOB SOURCES "../../src/*")
+
+set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src/")
+
+add_library(ParsersLib ${SOURCES}) 
+set_target_properties(ParsersLib PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${INCLUDE_DIR}")
+target_link_libraries (ParsersLib ToolsLib)
