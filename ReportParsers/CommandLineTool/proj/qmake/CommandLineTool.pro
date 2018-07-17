@@ -4,7 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 CONFIG += static
 
-SOURCES += main.cpp
+SOURCES += ../../src/main.cpp
 
 contains( CONFIG, synology ) {
 	BUILD_TYPE = Synology
@@ -17,15 +17,18 @@ else {
 }
 
 # linking ParsersLib
-PARSERS_LIB_PATH = /home/mickael/Prog/TaskManager/bin/$$BUILD_TYPE/ReportParsers/ParsersLib/
-PARSERS_INCLUDE_PATH = /home/mickael/Prog/TaskManager/ReportParsers/ParsersLib/
+TASKMANAGER_ROOT = /home/mickael/Prog/TaskManager
+PARSERS_LIB_PATH = $$TASKMANAGER_ROOT/bin/$$BUILD_TYPE/ReportParsers/ParsersLib/proj/qmake
+PARSERS_INCLUDE_PATH = $$TASKMANAGER_ROOT/ReportParsers/ParsersLib/src
 unix:!macx: LIBS += -L$$PARSERS_LIB_PATH -lParsersLib
 INCLUDEPATH += $$PARSERS_INCLUDE_PATH
 DEPENDPATH += $$PARSERS_INCLUDE_PATH
 
 # linking ToolsLib
-TOOLS_LIB_PATH = /home/mickael/Prog/Tools/bin/$$BUILD_TYPE/ToolsLib
-TOOLS_INCLUDE_PATH = /home/mickael/Prog/Tools/ToolsLib/
+TOOLS_ROOT = /home/mickael/Prog/Tools
+TOOLSLIB_ROOT = $$TOOLS_ROOT/ToolsLib
+TOOLS_LIB_PATH = $$TOOLS_ROOT/bin/$$BUILD_TYPE/ToolsLib/proj/qmake
+TOOLS_INCLUDE_PATH = $$TOOLSLIB_ROOT/src
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
 INCLUDEPATH += $$TOOLS_INCLUDE_PATH
 DEPENDPATH += $$TOOLS_INCLUDE_PATH

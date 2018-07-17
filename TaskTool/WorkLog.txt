@@ -1,7 +1,11 @@
-16/07/2018 (21.1)
+16/07/2018 (0.7h)
    EmailUI qmake was already refactored. Finished Cmake build. Now going
 	for TaskManager projects.. Beginning with Parsers one.
-	Refactored ParsersLib, qmake and cmake.
+	Refactored ParsersLib, qmake and cmake. Refactored CommandLineTool,
+	qmake and cmake.
+Next planned work:
+   - Finish refactoring TaskManager projects
+	- Start checking how to create Release and Debug builds
 
 12/07/2018 (0.8h)
    Fixed linking issue in QtToolsLib. Finished ToolsTest, now both
