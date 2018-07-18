@@ -10,9 +10,9 @@ else {
 	QMAKE_LFLAGS += -static
 }
 
-SOURCES += main.cpp \
-	 emaildispatcherfactory.cpp \
-    curldispatcherreplacer.cpp
+SOURCES += ../../src/main.cpp \
+	 ../../src/emaildispatcherfactory.cpp \
+    ../../src/curldispatcherreplacer.cpp
 
 contains( CONFIG, UseCurlLib ) {
 	SOURCES += curllibreportdispatcher.cpp
@@ -36,22 +36,22 @@ TASKMANAGERPATH = $$ROOTPATH/TaskManager
 TOOLSPATH = $$ROOTPATH/Tools
 
 # linking TaskLib
-TASK_LIB_PATH = $$TASKMANAGERPATH/bin/$$BUILD_TYPE/TaskLib/
-TASK_INCLUDE_PATH = $$TASKMANAGERPATH/TaskLib/
+TASK_LIB_PATH = $$TASKMANAGERPATH/bin/$$BUILD_TYPE/TaskLib/proj/qmake
+TASK_INCLUDE_PATH = $$TASKMANAGERPATH/TaskLib/src
 LIBS += -L$$TASK_LIB_PATH -lTaskLib
 INCLUDEPATH += $$TASK_INCLUDE_PATH
 DEPENDPATH += $$TASK_INCLUDE_PATH
 
 # linking ParsersLib
-PARSERS_LIB_PATH = $$TASKMANAGERPATH/bin/$$BUILD_TYPE/ReportParsers/ParsersLib/
-PARSERS_INCLUDE_PATH = $$TASKMANAGERPATH/ReportParsers/ParsersLib/
+PARSERS_LIB_PATH = $$TASKMANAGERPATH/bin/$$BUILD_TYPE/ReportParsers/ParsersLib/proj/qmake
+PARSERS_INCLUDE_PATH = $$TASKMANAGERPATH/ReportParsers/ParsersLib/src
 unix:!macx: LIBS += -L$$PARSERS_LIB_PATH -lParsersLib
 INCLUDEPATH += $$PARSERS_INCLUDE_PATH
 DEPENDPATH += $$PARSERS_INCLUDE_PATH
 
 # linking ToolsLib
 TOOLS_ROOT = /home/mickael/Prog/Tools
-TOOLSLIB_ROOT = $$TOOLS_ROOT/ToolsLib
+TOOLSLIB_ROOT = $$TOOLS_ROOT/ToolsLib/
 TOOLS_LIB_PATH = $$TOOLS_ROOT/bin/$$BUILD_TYPE/ToolsLib/proj/qmake
 TOOLS_INCLUDE_PATH = $$TOOLSLIB_ROOT/src
 LIBS += -L$$TOOLS_LIB_PATH -lToolsLib
@@ -70,17 +70,17 @@ contains( CONFIG, UseCurlLib ) {
 
 
 OTHER_FILES += \
-    data/configuration.txt \
-    data/apt-upgrade.txt \
-    MakeSynologyBuild.sh \
-    ReleasePlan.txt \
-    WorkLog.txt \
-    deployNewVersion.sh \
-    data/rsnapshot.conf \
-    data/realconf.txt \
-    data/git.txt \
-    data/report.css \
-    data/currentProductionConfig.txt
+    ../../data/configuration.txt \
+    ../../data/apt-upgrade.txt \
+    ../../MakeSynologyBuild.sh \
+    ../../ReleasePlan.txt \
+    ../../WorkLog.txt \
+    ../../deployNewVersion.sh \
+    ../../data/rsnapshot.conf \
+    ../../data/realconf.txt \
+    ../../data/git.txt \
+    ../../data/report.css \
+    ../../data/currentProductionConfig.txt
 
 HEADERS += \
 	 emaildispatcherfactory.h \

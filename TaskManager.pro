@@ -1,8 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    TaskLib \
-    TaskTool \
+    TaskLib/proj/qmake/TaskLib.pro \
+    TaskTool/proj/qmake/TaskTool.pro \
 	 TaskTests \
 	 ReportParsers \
     TaskTestTool \
