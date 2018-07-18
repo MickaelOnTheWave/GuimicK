@@ -73,8 +73,6 @@ OTHER_FILES += \
     ../../data/configuration.txt \
     ../../data/apt-upgrade.txt \
     ../../MakeSynologyBuild.sh \
-    ../../ReleasePlan.txt \
-    ../../WorkLog.txt \
     ../../deployNewVersion.sh \
     ../../data/rsnapshot.conf \
     ../../data/realconf.txt \
@@ -85,4 +83,15 @@ OTHER_FILES += \
 HEADERS += \
 	 emaildispatcherfactory.h \
     curldispatcherreplacer.h
+
+DISTFILES += \
+    ../ReleasePlan.txt \
+    ../WorkLog.txt \
+    ../../data/scripts/backupConfiguration.sh \
+    ../../data/scripts/BuildTools.sh \
+    ../../data/scripts/deployNewVersion.sh \
+    ../../data/scripts/MakeDebugBuild.sh \
+    ../../data/scripts/MakeReleaseBuild.sh \
+    ../../data/scripts/MakeReleaseBuildWithCurl.sh \
+    ../../data/scripts/MakeSynologyBuild.sh
 

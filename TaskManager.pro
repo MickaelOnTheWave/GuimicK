@@ -3,7 +3,7 @@ TEMPLATE = subdirs
 SUBDIRS += \
     TaskLib/proj/qmake/TaskLib.pro \
     TaskTool/proj/qmake/TaskTool.pro \
-	 TaskTests \
+    TaskTests/proj/qmake/TaskTests.pro \
 	 ReportParsers \
     TaskTestTool \
     TaskTestLib/proj/qmake/TaskTestLib.pro \
