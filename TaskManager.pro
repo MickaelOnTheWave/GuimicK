@@ -7,4 +7,4 @@ SUBDIRS += \
 	 ReportParsers \
     TaskTestTool \
     TaskTestLib \
-    ConfigurationEditingTool
+    ConfigurationEditingTool/proj/qmake/ConfigurationEditingTool.pro
