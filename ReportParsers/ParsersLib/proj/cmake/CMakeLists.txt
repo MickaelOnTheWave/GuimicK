@@ -4,8 +4,6 @@ project (ParsersLib)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
-add_subdirectory ("../../../../../Tools/ToolsLib/proj/cmake" "./ToolsLib") 
-
 file(GLOB SOURCES "../../src/*")
 
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src/")
