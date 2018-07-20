@@ -1,5 +1,11 @@
-19/07/2018 (0.1 21.5)
+19/07/2018 (0.9h)
    Finished qmake refactoring of TaskTestTool. Now going for cmake builds.
+	Created Cmake build for TaskLib, now creating for Configuration Editing tool.
+	However there is a strange compilation error, some std template that compiler
+	can't seem to resolve.
+Next planned work:
+   - Resolve compilation error for Cmake ConfigurationEditingTool
+	- Finish remaining Cmake builds
 
 17/07/2018 (1.7h)
    Finished refactoring Parsers qmake projects. Now going for their Cmake builds.
