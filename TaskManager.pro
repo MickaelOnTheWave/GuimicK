@@ -5,6 +5,6 @@ SUBDIRS += \
     TaskTool/proj/qmake/TaskTool.pro \
     TaskTests/proj/qmake/TaskTests.pro \
 	 ReportParsers \
-    TaskTestTool \
+    TaskTestTool/proj/qmake/TaskTestTool.pro \
     TaskTestLib/proj/qmake/TaskTestLib.pro \
     ConfigurationEditingTool/proj/qmake/ConfigurationEditingTool.pro
