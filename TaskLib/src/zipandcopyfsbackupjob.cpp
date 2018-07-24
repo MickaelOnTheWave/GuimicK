@@ -150,5 +150,5 @@ void ZipAndCopyFsBackupJob::AddStatusToResults(AbstractBackupJob::ResultCollecti
                                                const int code, const string &message)
 {
     JobStatus* status = new JobStatus(code, message);
-    results.push_back(make_pair<JobStatus*, FileBackupReport*>(status, NULL));
+    results.push_back(pair<JobStatus*, FileBackupReport*>(status, NULL));
 }

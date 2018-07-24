@@ -12,10 +12,10 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5Widgets REQUIRED)
 
-add_subdirectory ("../../../TaskLib/proj/cmake" "./ParsersLib") 
+add_subdirectory ("../../../TaskLib/proj/cmake" "./TaskLib") 
 
 file(GLOB SOURCES "../../src/*")
 
 add_executable(ConfigurationEditingTool ${SOURCES}) 
-target_link_libraries (ConfigurationEditingTool TaskLib ParsersLib ToolsLib Qt5::Widgets)
+target_link_libraries (ConfigurationEditingTool TaskLib Qt5::Widgets)
 
