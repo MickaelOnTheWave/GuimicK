@@ -1,7 +1,14 @@
-24/07/2018 (17.3)
+24/07/2018 (2.1h)
    Fixing compilation issues. They were due to std::pair syntax creation that
 	changed with newer versions of C++. Changed it to an old and new compatible
 	syntax. ConfigurationEditingTool now works with Cmake.
+	Created Cmake build for TaskTool and TaskTestTool. TaskTool is working as expected,
+	TaskTestTool still has linking issues. Updated most projects to allow for
+	including in any project. This means putting all subdirectories in final target.
+	Tried to play around with Debug/Release flags from Cmake, without success so far.
+Next planned work:
+   - Resolve linking errors with TaskTestTool
+	- Create TaskTest cmake build
 
 19/07/2018 (0.9h)
    Finished qmake refactoring of TaskTestTool. Now going for cmake builds.
