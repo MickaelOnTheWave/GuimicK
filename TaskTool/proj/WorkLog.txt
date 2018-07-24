@@ -1,3 +1,13 @@
+24/07/2018 (0.7h)
+   Updated some more Cmake projects trying to find the linking issue. Without success.
+	Created TaskSingleTestTool Cmake build. With same issue as TaskTestTool.
+	Cmake files are almost the same. Analyzing main files for test suites. Faulty ones
+	aren't using QCoreApplication. Trying to put it into TaskTest, without success.
+	Played around with multi core build, it was OK (using make instead of cmake).
+Next planned work:
+   - Resolve linking errors
+	- Once done, create one-shot build scripts.
+
 24/07/2018 (2.1h)
    Fixing compilation issues. They were due to std::pair syntax creation that
 	changed with newer versions of C++. Changed it to an old and new compatible

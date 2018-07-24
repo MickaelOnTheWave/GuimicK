@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.2)
 
-project (TaskTestTool)
+project (TaskSingleTestTool)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 14)
@@ -22,6 +22,6 @@ add_subdirectory ("${QTTOOLS_ROOT}/QtToolsTestLib/proj/cmake" "./QtToolsTestLib"
 
 file(GLOB SOURCES "../../src/*")
 
-add_executable(TaskTestTool ${SOURCES}) 
-target_link_libraries (TaskTestTool TaskTestLib TaskLib ParsersTestLib QtToolsTestLib ToolsTestLib)
+add_executable(TaskSingleTestTool ${SOURCES}) 
+target_link_libraries (TaskSingleTestTool TaskTestLib TaskLib ParsersTestLib QtToolsTestLib ToolsTestLib)
 

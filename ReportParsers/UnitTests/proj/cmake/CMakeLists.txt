@@ -14,8 +14,5 @@ add_subdirectory ("../../../../../Tools/ToolsLib/proj/cmake" "./ToolsLib")
 
 file(GLOB SOURCES "../../src/*")
 
-set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src/")
-
 add_executable(UnitTests ${SOURCES}) 
-set_target_properties(UnitTests PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${INCLUDE_DIR}")
 target_link_libraries (UnitTests ParsersTestLib)
