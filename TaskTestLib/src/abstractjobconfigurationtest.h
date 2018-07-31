@@ -10,7 +10,7 @@ class AbstractJobConfigurationTest : public QtTestSuite
     Q_OBJECT
 public:
     AbstractJobConfigurationTest();
-    virtual ~AbstractJobConfigurationTest();
+    virtual ~AbstractJobConfigurationTest() = default;
 
 private Q_SLOTS:
     void testConfigure_NullConfiguration();

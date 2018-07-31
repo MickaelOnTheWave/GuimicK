@@ -5,7 +5,6 @@
 AbstractOutputParserTest::AbstractOutputParserTest(const std::string &dataPrefix)
     : QtTestSuite(dataPrefix)
 {
-
 }
 
 void AbstractOutputParserTest::test_ParseFile_InvalidFile()

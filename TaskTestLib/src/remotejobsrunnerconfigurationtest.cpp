@@ -4,14 +4,10 @@
 #include "remotejobsrunner.h"
 #include "remotejobsrunnerconfiguration.h"
 
-RemoteJobsRunnerConfigurationTest::RemoteJobsRunnerConfigurationTest()
-   : AbstractJobConfigurationTest()
+/*RemoteJobsRunnerConfigurationTest::RemoteJobsRunnerConfigurationTest()
+ : AbstractJobConfigurationTest()
 {
-}
-
-RemoteJobsRunnerConfigurationTest::~RemoteJobsRunnerConfigurationTest()
-{
-}
+}*/
 
 void RemoteJobsRunnerConfigurationTest::testConfigure_ConfFileProperty()
 {

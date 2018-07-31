@@ -15,10 +15,6 @@ AbstractJobConfigurationTest::AbstractJobConfigurationTest()
 {
 }
 
-AbstractJobConfigurationTest::~AbstractJobConfigurationTest()
-{
-}
-
 void AbstractJobConfigurationTest::testConfigure_NullConfiguration()
 {
     vector<string> expectedErrors = {nullConfigurationError};

@@ -1,3 +1,13 @@
+30/07/2018 (1.8h)
+   The linking issue is happening inside TaskTestLib : it TaskTests compiles a test
+	suite from ParsersTestLib, it links well.
+	Checked for virtuals not defined, none were found. Checked internet about similar
+	issues, nothing that seems to solve.
+	Creating a question on StackOverflow on this issue.
+Next planned work:
+   - Check StackOverflow for an anwer
+	- Find a way to resolve this
+
 24/07/2018 (0.7h)
    Updated some more Cmake projects trying to find the linking issue. Without success.
 	Created TaskSingleTestTool Cmake build. With same issue as TaskTestTool.
