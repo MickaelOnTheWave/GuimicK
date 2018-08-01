@@ -1,3 +1,29 @@
+31/07/2018 (4.4h)
+   No clues from StackOverflow. Checking once more the code : nothing. Creating a
+	test project copied from ReportParser unit test : it worked on parser tests
+	and failed on tools one. It was found that the linking issue affects both Task tests
+	and Tools tests. In fact, only Parser tests seem imune to it.
+	The issue seems to be on the project itself. Cmake files are mirrored. No hidden
+	trick or specific feature was found on test suites themself.
+	Next bets :
+	   1. The libs themself are different : ToolsLib, ParsersLib...
+		2. Alter Tools test suites from simpler to actual until they fail again. Maybe start
+		with a nude QtTestSuite?
+		3. Recreate a whole test suite from scratch mirrored from Parsers and make it look
+		like test until it fails
+	Starting with 1. ToolsLib is very different, so it is hard to compare. Trying with
+	TaskLib : didn't change anything. Going for 2. Now problem has been understood but
+	not solved yet : even though Cmake files are the same, Cmake fails at generating
+	moc files for ToolsTest and TaskTest. Investigating...
+	Investigation revealed that it is probably the CMAKE_AUTOMOC feature that is failing
+	to detect files that need a moc. Found some instructions on how to do this manually.
+	This had some effect but the issue is still not resolved : although a moc file is
+	generated, it is generated in the wrong place and compilation stops. Asked a
+	StackOverflow question about this.
+Next planned work:
+   - Check StackOverflow for an anwer
+	- Find a way to resolve this
+
 30/07/2018 (1.8h)
    The linking issue is happening inside TaskTestLib : it TaskTests compiles a test
 	suite from ParsersTestLib, it links well.
