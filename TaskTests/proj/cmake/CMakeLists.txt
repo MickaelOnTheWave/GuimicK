@@ -23,5 +23,4 @@ add_subdirectory ("${QTTOOLS_ROOT}/QtToolsTestLib/proj/cmake" "./QtToolsTestLib"
 file(GLOB SOURCES "../../src/*")
 
 add_executable(TaskSingleTestTool ${SOURCES}) 
-target_link_libraries (TaskSingleTestTool TaskTestLib TaskLib ParsersTestLib QtToolsTestLib ToolsTestLib)
-
+target_link_libraries (TaskSingleTestTool TaskTestLib ParsersTestLib QtToolsTestLib ToolsTestLib)

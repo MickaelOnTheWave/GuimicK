@@ -11,6 +11,8 @@
 
 using namespace std;
 
+// @TODO : Make these folders relative and update Cmake to have an install target
+// that copies test data to binary dir.
 const string taskLibDir  = "/home/mickael/Prog/TaskManager/TaskTestLib/data/";
 const string parsersDir  = "/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/";
 const string toolsLibDir = "/home/mickael/Prog/Tools/ToolsTestLib/data/";
@@ -21,8 +23,9 @@ const string testingFolder = "TaskManagerTestSuites/";
 int main(int argc, char* argv[])
 {
     if (FileTools::FolderExists(testingFolder) == false)
-        FileTools::CreateFolder(testingFolder);
+       FileTools::CreateFolder(testingFolder);
     chdir(testingFolder.c_str());
+
 
     const int ALL_OK = 0;
     const int ERRORS = 1;

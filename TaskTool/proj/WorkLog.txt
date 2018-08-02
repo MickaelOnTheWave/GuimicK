@@ -1,3 +1,15 @@
+02/08/2018 (2.5h)
+   No answer on new question from StackOverflow. Little ideas left... Nothing from
+	AltoQi Cmake files. Having another trip on Internet to check for solutions...
+	Solution found! :-))) Now all test suites compile fine.
+	TaskFeature tests are freezing the whole test suite. This needs to be addressed.
+Next planned work:
+   - Fix issue with TaskFeatureTests
+   - Create bat scripts
+	- Add Release/Debug modes
+	- Add Synology compilation
+	- Improve Cmake files and architecture. Create include/ public dir for libs.
+
 31/07/2018 (4.4h)
    No clues from StackOverflow. Checking once more the code : nothing. Creating a
 	test project copied from ReportParser unit test : it worked on parser tests
