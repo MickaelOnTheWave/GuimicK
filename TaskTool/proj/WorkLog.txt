@@ -1,3 +1,11 @@
+07/08/2018 (2.4h)
+   Fixed issue in ToolsLib makefile with file removal. Build without C++11
+	now works. Also implemented the UseCurlLib mode in Cmake, preparing
+	for Synology build. All this now works.
+Next planned work:
+   - Add time measurement of compilations (check AltoQi case)
+	- Check CrossCompilation for arm (synology build tools)
+
 06/08/2018 (0.8h)
    Created build scripts for Debug and Release builds. And found out how to
 	properly create debug/release builds ;-)

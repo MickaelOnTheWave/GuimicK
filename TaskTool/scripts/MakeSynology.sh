@@ -3,5 +3,5 @@
 source BuildTools.sh
 
 prepareForBuild "Synology"
-cmake ../../proj/cmake -DCMAKE_BUILD_TYPE=RELEASE
+cmake ../../proj/cmake -DCMAKE_BUILD_TYPE=RELEASE -DUSE_OLD_COMPILER=TRUE
 build

@@ -16,6 +16,12 @@ prepareForBuild()
 	cd $BUILDNAME
 }
 
+runCmakeForLinux()
+{
+	MODE=$1
+	cmake ../../proj/cmake -DCMAKE_BUILD_TYPE=$MODE -DUSE_CURL_LIB=TRUE
+}
+
 build()
 {
 	make -j8

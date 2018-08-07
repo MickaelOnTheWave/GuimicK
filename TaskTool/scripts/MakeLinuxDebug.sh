@@ -3,5 +3,5 @@
 source BuildTools.sh
 
 prepareForBuild "LinuxDebug"
-cmake ../../proj/cmake
+runCmakeForLinux "DEBUG"
 build
