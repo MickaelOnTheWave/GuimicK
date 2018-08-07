@@ -1,3 +1,10 @@
+06/08/2018 (0.8h)
+   Created build scripts for Debug and Release builds. And found out how to
+	properly create debug/release builds ;-)
+Next planned work:
+   - Add time measurement of compilations
+	- Add Synology compilation
+
 02/08/2018 (2.5h)
    No answer on new question from StackOverflow. Little ideas left... Nothing from
 	AltoQi Cmake files. Having another trip on Internet to check for solutions...
