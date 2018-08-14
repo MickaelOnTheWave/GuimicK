@@ -17,7 +17,9 @@ set(TOOLS_ROOT "../../../../Tools")
 add_subdirectory ("${TASKMANAGER_ROOT}/TaskLib/proj/cmake" "./TaskLib")
 add_subdirectory ("${TASKMANAGER_ROOT}/ReportParsers/ParsersLib/proj/cmake" "./ParsersLib")
 add_subdirectory ("${TOOLS_ROOT}/ToolsLib/proj/cmake" "./ToolsLib")
-add_subdirectory ("${TOOLS_ROOT}/NetworkToolsLib/proj/cmake" "./NetworkToolsLib") 
+if (USE_CURL_LIB)
+	add_subdirectory ("${TOOLS_ROOT}/NetworkToolsLib/proj/cmake" "./NetworkToolsLib") 
+endif (USE_CURL_LIB)
 
 file(GLOB SOURCES "../../src/*")
 

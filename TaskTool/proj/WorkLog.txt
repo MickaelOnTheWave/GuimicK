@@ -1,3 +1,15 @@
+13/08/2018 (1.5h)
+   Checked AltoQi script : measurement comes from VC compiler, so no (easy) way
+	to put it into TaskManager scripts. Leaving this and going for cross
+	compilation.
+	Changed Cmake script and created toolchain file for cross compiling synology.
+	It worked!! Tested on Synology, and worked too :-))
+	Made a manual deploy.
+Next planned work:
+   - Check production run : it should run as before.
+	- if OK, clean up Synology script : remove absolute path for toolchain file.
+	- Update deploy script and config backup script.
+
 07/08/2018 (2.4h)
    Fixed issue in ToolsLib makefile with file removal. Build without C++11
 	now works. Also implemented the UseCurlLib mode in Cmake, preparing
