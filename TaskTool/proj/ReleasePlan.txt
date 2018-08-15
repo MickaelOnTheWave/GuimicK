@@ -88,23 +88,17 @@ v1.2 :
 	[051] Implement a licensing system : either CD-Key or online activation. Use crypto.
 	[055] Create a download job
 	[026] Support multiple clients with multiple job lists
-	[025] Use libssh instead of using command line
 	[010] Implement all TODOs in code
 
 v1.1 :
 	[045] Make Windows client work with (nearly) all features
-	[005] Include AntiVirus scan job
-	[006] Include Harddrive check job
-	[007] Include Defragmentation job
 	[046] Include a Windows update job
 	[047] Have a Restore option in backup jobs
-	[050] Create a backup job for cloud service
 
 v1.0 :
 	[023] Remove wakelan executable dependency
 	[049] Make build be at least partially static (internal dependencies static)
-	[016] Create a package with binaries for easy install
-	[032] Property handle encodings for strings
+	[025] Use libssh instead of using command line
 
 v0.9 : 19/04/2018
 	[029] Split job config file into client/server files.

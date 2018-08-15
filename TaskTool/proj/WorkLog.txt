@@ -1,3 +1,7 @@
+15/08/2018 (19.8)
+   Production run was ok. Cleaned Synology build script.
+	Going for updating scripts...
+
 13/08/2018 (1.5h)
    Checked AltoQi script : measurement comes from VC compiler, so no (easy) way
 	to put it into TaskManager scripts. Leaving this and going for cross
