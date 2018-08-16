@@ -13,10 +13,12 @@ using namespace std;
 
 // @TODO : Make these folders relative and update Cmake to have an install target
 // that copies test data to binary dir.
-const string taskLibDir  = "/home/mickael/Prog/TaskManager/TaskTestLib/data/";
-const string parsersDir  = "/home/mickael/Prog/TaskManager/ReportParsers/ParsersTestLib/data/";
-const string toolsLibDir = "/home/mickael/Prog/Tools/ToolsTestLib/data/";
-const string errorDir    = "/home/mickael/Prog/TaskManager/TaskTestLib/data/errors/";
+const string progDir = "/home/mickael/Prog";
+const string taskManagerDir = progDir + "/TaskManager";
+const string taskLibDir  = taskManagerDir + "/TaskTestLib/data/";
+const string parsersDir  = taskManagerDir + "/ReportParsers/ParsersTestLib/data/";
+const string toolsLibDir = progDir + "/Tools/ToolsTestLib/data/";
+const string errorDir    = taskManagerDir + "/TaskTestLib/data/errors/";
 
 const string testingFolder = "TaskManagerTestSuites/";
 
