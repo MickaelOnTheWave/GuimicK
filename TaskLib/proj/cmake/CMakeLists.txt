@@ -2,10 +2,13 @@ cmake_minimum_required (VERSION 3.2)
 
 project (TaskLib)
 
-file(GLOB SOURCES "../../src/*")
+set(includeDir "../../include")
 
-set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src/")
+file(GLOB sources "../../src/*")
+file(GLOB includes "${includeDir}/*")
 
-add_library(TaskLib ${SOURCES}) 
-set_target_properties(TaskLib PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${INCLUDE_DIR}")
+add_library(TaskLib ${sources})
+add_custom_target(dummyTaskLibIncludes SOURCES ${includes})
+
+target_include_directories(TaskLib PUBLIC ${includeDir})
 target_link_libraries (TaskLib ParsersLib ToolsLib)
