@@ -1,7 +1,13 @@
-15/08/2018 (19.8)
+15/08/2018 (1.6h)
    Production run was ok. Cleaned Synology build script.
 	Going for updating scripts... Updated Deploy script.
-	Now going for backup one...
+	Nothing needs to be done for backup script.
+	Started using include/ dirs for libs. Did this for ToolsLib, NetworkToolsLib
+	and QtToolsLib. Missing ones are taskmanager libs and all test libs.
+Next planned work:
+   - Try using Cmake projects directly in Qt Creator
+	- Continue include/ dir implementation for lib targets
+	- Start next task : implement libssh use
 
 13/08/2018 (1.5h)
    Checked AltoQi script : measurement comes from VC compiler, so no (easy) way

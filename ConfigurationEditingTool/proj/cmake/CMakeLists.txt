@@ -12,7 +12,12 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5Widgets REQUIRED)
 
-add_subdirectory ("../../../TaskLib/proj/cmake" "./TaskLib") 
+set (TASKMANAGER_ROOT "../../..")
+set (TOOLS_ROOT "/home/mickael/Prog/Tools")
+
+add_subdirectory ("${TASKMANAGER_ROOT}/TaskLib/proj/cmake" "./TaskLib")
+add_subdirectory ("${TASKMANAGER_ROOT}/ReportParsers/ParsersLib/proj/cmake" "./ParsersLib")
+add_subdirectory ("${TOOLS_ROOT}/ToolsLib/proj/cmake" "./ToolsLib") 
 
 file(GLOB SOURCES "../../src/*")
 
