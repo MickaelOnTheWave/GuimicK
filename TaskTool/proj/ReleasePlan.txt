@@ -89,6 +89,7 @@ v1.2 :
 	[055] Create a download job
 	[026] Support multiple clients with multiple job lists
 	[010] Implement all TODOs in code
+	[025] Use libssh instead of using command line
 
 v1.1 :
 	[045] Make Windows client work with (nearly) all features
@@ -98,7 +99,6 @@ v1.1 :
 v1.0 :
 	[023] Remove wakelan executable dependency
 	[049] Make build be at least partially static (internal dependencies static)
-	[025] Use libssh instead of using command line
 
 v0.9 : 19/04/2018
 	[029] Split job config file into client/server files.

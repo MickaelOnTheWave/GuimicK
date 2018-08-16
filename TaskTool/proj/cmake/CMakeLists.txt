@@ -32,9 +32,18 @@ endif (USE_CURL_LIB)
 
 add_executable(TaskTool ${SOURCES}) 
 
+add_custom_target(ProjectFiles SOURCES
+	"../WorkLog.txt"
+	"../ReleasePlan.txt")
+
+file(GLOB DataFiles "../../data/*")
+add_custom_target(Data SOURCES ${DataFiles})
+
 if (USE_CURL_LIB)
 	target_link_libraries (TaskTool TaskLib NetworkToolsLib curl)
 else (USE_CURL_LIB)	
 	target_link_libraries (TaskTool TaskLib)
 endif (USE_CURL_LIB)
+
+
 

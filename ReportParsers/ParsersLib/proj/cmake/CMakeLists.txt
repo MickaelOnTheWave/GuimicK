@@ -2,10 +2,13 @@ cmake_minimum_required (VERSION 3.2)
 
 project (ParsersLib)
 
-file(GLOB SOURCES "../../src/*")
+set(includeDir "../../include")
 
-set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src/")
+file(GLOB sources "../../src/*")
+file(GLOB includes "${includeDir}/*")
 
-add_library(ParsersLib ${SOURCES}) 
-set_target_properties(ParsersLib PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${INCLUDE_DIR}")
+add_library(ParsersLib ${sources})
+add_custom_target(dummyParsersLibIncludes SOURCES ${includes})
+
+target_include_directories(ParsersLib PUBLIC ${includeDir})
 target_link_libraries (ParsersLib ToolsLib)
