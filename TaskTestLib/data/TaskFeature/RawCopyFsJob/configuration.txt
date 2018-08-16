@@ -1,0 +1,44 @@
+Agent
+{
+	 Name = "Testing Agent";
+	 Email = "invalid.email@provider.com";
+	 Password = "itisabadhabittostoreaclearpassword";
+	 SmtpAddress = "smtp.provider.com";
+	 SmtpPort = 123;
+	 UseSSL = true;
+}
+
+Client
+{
+	Name = "Testing computer";
+	ip = "192.168.1.101";
+	sshuser = "mickael";
+	JobList
+	{
+		CopyBackup
+		{
+			target = "local";
+			joinReports = true;
+			Folder
+			{
+				source = "Source1/";
+				dest = "Destination1/";
+			}
+			Folder
+			{
+				source = "Source2/";
+				dest = "Destination2/";
+			}
+		}
+	}
+}
+
+Report
+{
+  type = "html";
+  timed = "false";
+  css = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/report.css";
+}
+
+ReportDispatching = "file";
+ShutdownOnFinish = false;

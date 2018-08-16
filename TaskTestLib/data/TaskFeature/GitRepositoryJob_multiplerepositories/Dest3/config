@@ -1,0 +1,8 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[remote "origin"]
+	url = /home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/GitRepositoryJob_multiplerepositories/Source3
+	fetch = +refs/*:refs/*
+	mirror = true

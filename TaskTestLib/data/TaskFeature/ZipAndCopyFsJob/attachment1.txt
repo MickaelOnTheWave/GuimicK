@@ -1,0 +1,28 @@
+--- Destination1.tar ---
+3 files added
+	CD Surf 1.m3u
+	TODOs
+	vlcsnap-2016-11-10-21h12m21s240.png
+
+0 files modified
+
+0 files removed
+
+--- Destination2.tar ---
+10 files added
+	SubFolder/
+	SubFolder/RsnapshotNewConf_report.html
+	SubFolder/GitFsJob_remote_report.html
+	SubFolder/GitFsJob_multiplerepositories_separated_report.html
+	SubFolder/GitFsJob_multiplerepositories_joined_report.html
+	SubFolder/RsnapshotNewConf_attachment1.txt
+	SubFolder/GitFsJob_multiplerepositories_separated_attachment1.txt
+	Keep it Simple.jpg
+	TODOs
+	vlcsnap-2016-11-10-21h12m21s240.png
+
+0 files modified
+
+0 files removed
+
+------------------

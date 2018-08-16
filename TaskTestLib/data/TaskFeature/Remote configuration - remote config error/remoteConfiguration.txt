@@ -1,0 +1,14 @@
+JobList
+{
+	Console
+	{
+		title = "Client Command 1";
+		command = "echo";
+		params = "ClientEcho1";
+	}
+	Console
+	{
+		title = "Client Command 2";
+		command = "echo";
+
+}

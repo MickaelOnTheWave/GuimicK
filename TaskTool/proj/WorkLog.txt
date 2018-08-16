@@ -1,4 +1,4 @@
-16/08/2018 (16.5-16.7 18.3)
+16/08/2018 (2.5h)
 	Cmake projects can readily be used directly in Qt Creator. Updated Release
 	plan - there is no need for libssh in near future.
 	Didn't found a way to properly organize and display sources but found the
@@ -6,6 +6,12 @@
 	implementation... Implemented include dir for all except test libs.
 	For some reason it did not work out of the box, and more than one hour
 	has been lost on this. Leaving the old src/ only architecture for them.
+	Now back to fixing failing tests... Freezing test is WakeJob_LocalDebug.
+	Freezing was due to WakeJob test waiting for 2 minutes due to configuration.
+	Updated configuration.
+Next planned work:
+   - Fix failing tests
+	- Start work on Windows migration. VM installing?
 
 15/08/2018 (1.6h)
    Production run was ok. Cleaned Synology build script.

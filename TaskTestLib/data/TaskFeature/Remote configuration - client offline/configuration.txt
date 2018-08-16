@@ -1,0 +1,45 @@
+Agent
+{
+	 Name = "Testing Agent";
+	 Email = "invalid.email@provider.com";
+	 Password = "itisabadhabittostoreaclearpassword";
+	 SmtpAddress = "smtp.provider.com";
+	 SmtpPort = 123;
+	 UseSSL = true;
+}
+
+Client
+{
+	Name = "Testing computer";
+	ip = "1.2.3.4";
+	sshuser = "mickael";
+	JobList
+	{
+		Console
+		{
+			title = "Server Initial Command";
+			command = "echo";
+			params = "InitServerEcho";
+		}
+		RemoteRunner
+		{
+			conffile = "~/nonexistentfile";
+		}
+		Console
+		{
+			title = "Server Final Command";
+			command = "echo";
+			params = "FinalServerEcho";
+		}
+	}
+}
+
+Report
+{
+	type = "html";
+	timed = "false";
+	css = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/report.css";
+}
+
+ReportDispatching = "file";
+ShutdownOnFinish = false;

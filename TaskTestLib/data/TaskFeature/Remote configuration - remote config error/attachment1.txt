@@ -1,0 +1,2 @@
+The following errors occured while loading client configuration :
+	Syntax error : missing }

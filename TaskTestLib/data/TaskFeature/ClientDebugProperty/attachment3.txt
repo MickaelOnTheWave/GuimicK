@@ -1,0 +1,3 @@
+Rsync params : -avzhi --delete  Source2// Destination2/
+Statuses to handle : 1
+Creating Single status

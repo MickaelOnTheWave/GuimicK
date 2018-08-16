@@ -1,0 +1,36 @@
+Agent
+{
+	 Name = "Testing Agent";
+	 Email = "invalid.email@provider.com";
+	 Password = "itisabadhabittostoreaclearpassword";
+	 SmtpAddress = "smtp.provider.com";
+	 SmtpPort = 123;
+	 UseSSL = true;
+}
+
+Client
+{
+	Name = "Invalid Client";
+	ip = "0.168.1.101";
+	broadcast = "invalidBroadcast";
+	mac = "invalidMac";
+	sshuser = "user";
+	JobList
+	{
+		Wake
+		{
+			showDebugInformation = "always";
+			timeout = 2;
+		}
+	}
+}
+
+Report
+{
+  type = "html";
+  timed = "false";
+  css = "/home/mickael/Prog/TaskManager/TaskTestLib/data/TaskFeature/report.css";
+}
+
+ReportDispatching = "file";
+ShutdownOnFinish = false;

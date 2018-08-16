@@ -1,0 +1,29 @@
+--- Dest1 ---
+--- Dest2 ---
+4 files added
+	GitRepositoryJob_multiplerepositories_attachment1 1.txt
+	GitRepositoryJob_multiplerepositories_attachment1 2.txt
+	GitRepositoryJob_updateexisting_attachment1 1.txt
+	GitRepositoryJob_updateexisting_attachment1 2.txt
+
+1 files modified
+	GitRepositoryJob_multiplerepositories_attachment1.txt
+
+1 files removed
+	GitRepositoryJob_updateexisting_report.html
+
+--- Dest3 ---
+6 files added
+	GitRepositoryJob_multiplerepositories_attachment1 1.txt
+	GitRepositoryJob_multiplerepositories_attachment1 2.txt
+	GitRepositoryJob_multiplerepositories_attachment1 3.txt
+	GitRepositoryJob_updateexisting_attachment1 1.txt
+	GitRepositoryJob_updateexisting_attachment1 2.txt
+	GitRepositoryJob_updateexisting_attachment1 3.txt
+
+0 files modified
+
+1 files removed
+	GitRepositoryJob_updateexisting_report.html
+
+------------------
