@@ -41,7 +41,6 @@ Features to implement:
 	[010] Implement all TODOs in code
 	[014] Log jobs data in a database for future report/statistics use
 	[015] Make a stat job for longer time level (yearly?)
-	[016] Create a package with binaries for easy install
 	[024] Remove ping executable dependency
 	[025] Use libssh instead of using command line
 	[026] Support multiple clients with multiple job lists
@@ -99,6 +98,7 @@ v1.1 :
 v1.0 :
 	[023] Remove wakelan executable dependency
 	[049] Make build be at least partially static (internal dependencies static)
+	[016] Create a package with binaries for easy install
 
 v0.9 : 19/04/2018
 	[029] Split job config file into client/server files.

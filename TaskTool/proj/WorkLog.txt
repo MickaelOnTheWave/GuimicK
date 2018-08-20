@@ -1,3 +1,8 @@
+20/08/2018 (17.8)
+   Updated Release plan : it is possible to do a simple deb packaging for
+	TaskManager, so this will be done for this version. Going now for
+	fixing failing tests...
+
 16/08/2018 (2.5h)
 	Cmake projects can readily be used directly in Qt Creator. Updated Release
 	plan - there is no need for libssh in near future.
