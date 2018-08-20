@@ -8,6 +8,14 @@ createFolderIfNotPresent()
 	fi
 }
 
+removeFolderIfPresent()
+{
+	FOLDER=$1	
+	if [ -d "$FOLDER" ]; then
+	rm -Rf $FOLDER
+	fi
+}
+
 prepareForBuild()
 {
 	BUILDNAME=$1

@@ -1,7 +1,13 @@
-20/08/2018 (17.8)
+20/08/2018 (2.4h)
    Updated Release plan : it is possible to do a simple deb packaging for
 	TaskManager, so this will be done for this version. Going now for
-	fixing failing tests...
+	fixing failing tests... All failing tests fixed (except for Release ones,
+	there is a bug for this).
+	Now going for deb installer... Created package creation script. Tested,
+	and it seems that all is OK :-)
+	Finished version 1.0! :-))
+Next planned work:
+   - Start work on Windows migration. VM installing?
 
 16/08/2018 (2.5h)
 	Cmake projects can readily be used directly in Qt Creator. Updated Release
