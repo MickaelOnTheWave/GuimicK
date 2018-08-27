@@ -1,3 +1,12 @@
+27/08/2018 (1.4h)
+   Instead of installing VM, going first for Windows cross compiling.
+	Set up first cmake file for Windows compilation. Now making code
+	cross-platform. Did modifications for compiling on Windows.
+	Now trying to solve the linking issue with windows sockets...
+Next planned work:
+   - Resolve linking issue with sockets in MinGW
+	- Finish generating windows version
+
 20/08/2018 (2.4h)
    Updated Release plan : it is possible to do a simple deb packaging for
 	TaskManager, so this will be done for this version. Going now for

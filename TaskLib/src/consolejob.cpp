@@ -140,7 +140,11 @@ bool ConsoleJob::RunCommand()
 {
     string commandToRun = command + " " + commandParams;
     int rawCode = Tools::RunExternalCommandToBuffer(commandToRun, commandOutput, true);
+#ifdef __linux__
     receivedReturnCode = WEXITSTATUS(rawCode);
+#elif _WIN32
+    receivedReturnCode = rawCode;
+#endif
     return (receivedReturnCode == expectedReturnCode);
 }
 

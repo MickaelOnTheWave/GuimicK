@@ -202,7 +202,11 @@ void UserConsoleJob::RunCommandOnFile()
 {
     string commandToRun = command + " " + commandParams;
     int rawCode = Tools::RunExternalCommandToFile(commandToRun, outputFileName, true);
+#ifdef __linux__
     receivedReturnCode = WEXITSTATUS(rawCode);
+#elif _WIN32
+    receivedReturnCode = rawCode;
+#endif
     currentStatus->AddExternalFile(outputFileName);
 }
 
