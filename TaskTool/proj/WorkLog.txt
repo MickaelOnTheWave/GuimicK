@@ -1,3 +1,11 @@
+29/08/2018 (1h)
+   Trying to find a way to link winsock. Nothing was found, asking
+	a question on StackOverflow... Some material could be interesting
+	if no answer is provided :
+	https://stackoverflow.com/questions/12059463/detecting-winsock-on-i686-w64-mingw32msvc-linux?rq=1
+Next planned work:
+   - Check StackOverflow for an answer
+
 27/08/2018 (1.4h)
    Instead of installing VM, going first for Windows cross compiling.
 	Set up first cmake file for Windows compilation. Now making code
