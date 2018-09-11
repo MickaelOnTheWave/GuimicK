@@ -1,3 +1,21 @@
+11/09/2018 (1.3h)
+   Toolchain file did not work. Looking more closely, the error is the
+	same whether the linker is set or not. And as standalone example works
+	without specific linker, it sould not be needed there. Manual inspection
+	of generated Makefiles by Cmake was not productive. Back to tweaking Cmake file...
+	Tried to set linker flags manually, without exit. It seems that lib file is
+	found but does not attend to use, something that is strange as standalone
+	example worked with same lib. Trying to link manually to windows-copied libs.
+	Looking at example from AltoQi to include specific manual library. Still
+	trying to achieve it... No way found so far.
+	Trying it on a smaller target : NetworkTester. Fixing small issue in its
+	Cmake file, adding it to workspace and trying to link it.
+	It linked and generated the executable! For some reason, it was not possible
+	to execute/copy it in the Windows VM.
+Next planned work:
+   - Find a way to test the executable in the VM
+	- "Beautify" the solution and make it for TaskTool
+
 10/09/2018 (2.1h)
    Imported targets did not work. Back to link_directories :
 	no success either. Moving to a different approach : try to make
