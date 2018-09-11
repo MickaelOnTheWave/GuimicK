@@ -1,3 +1,36 @@
+10/09/2018 (2.1h)
+   Imported targets did not work. Back to link_directories :
+	no success either. Moving to a different approach : try to make
+	a simple manual case work (manual gcc calling). It doesn't work straight;
+	found what is missing :
+	1. Call compiler with -static-libgcc -static-libstdc++ to not need
+	runtime when executing.
+	2. Add libpthread.dll to exe folder
+	With this, simple example (no sockets) runs in Windows. Now back to sockets
+	linking issue... Found out that where were dll files. Copied them to Linux, and
+	testing back linking.
+	FOUND OUT!! :-)
+	No need to copy around libs from Windows, mingw already provides it. Just use the
+	-lws2_32 and it works. Now back to Cmake.
+	Still having issue with linking. Trying to set the linker in the toolchain file...
+Next planned work:
+   - See previous roadmap
+
+06/09/2018 (0.3h)
+   Trying a simple modification to Cmake to include libs, but it
+	didn't work. After reading some more material, it seems that the
+	appropriate is creating an imported target.
+Next planned work:
+   - See previous roadmap
+
+03/09/2018 (2.4h)
+   Installing Windows 7 Virtual Machine, as it will be needed anyway...
+	Installed it, updated it and installed Windows SDK. Found a way
+	to share network between host and guest. Copied the 2 windows
+	socket libs to host.
+Next planned work:
+   - Link windows socket lib in Cmake Windows build
+
 29/08/2018 (1h)
    Trying to find a way to link winsock. Nothing was found, asking
 	a question on StackOverflow... Some material could be interesting

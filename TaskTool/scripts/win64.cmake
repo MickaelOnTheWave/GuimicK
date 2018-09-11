@@ -6,6 +6,9 @@ SET(CMAKE_SYSTEM_NAME Windows)
 # specify the cross compiler
 SET(CMAKE_C_COMPILER   /usr/bin/i686-w64-mingw32-gcc)
 SET(CMAKE_CXX_COMPILER /usr/bin/i686-w64-mingw32-g++)
+SET(CMAKE_CXX_LINK_EXECUTABLE  /usr/bin/i686-w64-mingw32-ld)
+
+#SET(CMAKE_FIND_ROOT_PATH  /opt/eldk-2007-01-19/ppc_74xx /home/alex/eldk-ppc74xx-inst)
 
 # where is the target environment
 #SET(CMAKE_FIND_ROOT_PATH  /opt/eldk-2007-01-19/ppc_74xx /home/alex/eldk-ppc74xx-inst)

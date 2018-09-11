@@ -11,8 +11,9 @@ endif(NOT USE_OLD_COMPILER)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -O2")
 
-set(TASKMANAGER_ROOT "../../..")
-set(TOOLS_ROOT "../../../../Tools")
+set(PROJECT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../..")
+set(TASKMANAGER_ROOT "${PROJECT_ROOT}/..")
+set(TOOLS_ROOT "${TASKMANAGER_ROOT}/../Tools")
 
 add_subdirectory ("${TASKMANAGER_ROOT}/TaskLib/proj/cmake" "./TaskLib")
 add_subdirectory ("${TASKMANAGER_ROOT}/ReportParsers/ParsersLib/proj/cmake" "./ParsersLib")
@@ -26,7 +27,7 @@ file(GLOB SOURCES "../../src/*")
 if (USE_CURL_LIB)
 	add_definitions(-DUSE_CURL_LIB)
 else (USE_CURL_LIB)
-	set(srcCurlLibDispatcher "${CMAKE_CURRENT_SOURCE_DIR}/../../src/curllibreportdispatcher")
+	set(srcCurlLibDispatcher "${PROJECT_ROOT}/src/curllibreportdispatcher")
 	list(REMOVE_ITEM SOURCES "${srcCurlLibDispatcher}.cpp" "${srcCurlLibDispatcher}.h")
 endif (USE_CURL_LIB)
 
@@ -36,14 +37,24 @@ add_custom_target(ProjectFiles SOURCES
 	"../WorkLog.txt"
 	"../ReleasePlan.txt")
 
-file(GLOB DataFiles "../../data/*")
+file(GLOB DataFiles "${PROJECT_ROOT}/data/*")
 add_custom_target(Data SOURCES ${DataFiles})
 
+#find_library(lib2 ws2_32)
+
+#message("${lib1}  ${lib2}")
+
+target_link_libraries (TaskTool TaskLib)
 if (USE_CURL_LIB)
-	target_link_libraries (TaskTool TaskLib NetworkToolsLib curl)
-else (USE_CURL_LIB)	
-	target_link_libraries (TaskTool TaskLib)
+	target_link_libraries (TaskTool NetworkToolsLib curl)
 endif (USE_CURL_LIB)
+if (WIN32)
+	#add_library(windowssockets STATIC IMPORTED)
+	#set_property(TARGET windowssockets PROPERTY IMPORTED_LOCATION "${PROJECT_ROOT}/lib/WS2_32.lib")
+	#target_link_libraries (TaskTool windowssockets)
+	#link_directories("${PROJECT_ROOT}/lib")
+	target_link_libraries (TaskTool ws2_32)
+endif(WIN32)
 
 
 
