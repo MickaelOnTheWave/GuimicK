@@ -1,3 +1,9 @@
+13/09/2018 (19.6)
+   Made NetworkTester fully build for Windows. Also updated TaskTool - what was
+	missing was just putting ToolsLib explicitly on the link dependencies!!
+	Also cleaned the mess out of Cmake files. Now wsock lib is in Tools - much
+	better than TaskTool.
+
 11/09/2018 (1.3h)
    Toolchain file did not work. Looking more closely, the error is the
 	same whether the linker is set or not. And as standalone example works

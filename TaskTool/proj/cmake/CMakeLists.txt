@@ -40,20 +40,13 @@ add_custom_target(ProjectFiles SOURCES
 file(GLOB DataFiles "${PROJECT_ROOT}/data/*")
 add_custom_target(Data SOURCES ${DataFiles})
 
-#find_library(lib2 ws2_32)
-
-#message("${lib1}  ${lib2}")
-
 target_link_libraries (TaskTool TaskLib)
 if (USE_CURL_LIB)
 	target_link_libraries (TaskTool NetworkToolsLib curl)
 endif (USE_CURL_LIB)
 if (WIN32)
-	#add_library(windowssockets STATIC IMPORTED)
-	#set_property(TARGET windowssockets PROPERTY IMPORTED_LOCATION "${PROJECT_ROOT}/lib/WS2_32.lib")
-	#target_link_libraries (TaskTool windowssockets)
-	#link_directories("${PROJECT_ROOT}/lib")
-	target_link_libraries (TaskTool ws2_32)
+	target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
+	target_link_libraries (TaskTool "-static-libgcc" "-static-libstdc++")
 endif(WIN32)
 
 
