@@ -1,8 +1,20 @@
-13/09/2018 (19.6)
+13/09/2018 (1.7h)
    Made NetworkTester fully build for Windows. Also updated TaskTool - what was
 	missing was just putting ToolsLib explicitly on the link dependencies!!
 	Also cleaned the mess out of Cmake files. Now wsock lib is in Tools - much
-	better than TaskTool.
+	better than TaskTool. Building for Windows is not working!!
+	Now created a Windows package script. It seems to work fine, but Configuration
+	Editor did not cross-compile straight. It seems that Qt needs special care.
+   Next step : make key features	RUN on windows. Key features are :
+	   - Windows Update
+		- Backup as Simple Copy
+		- Backup as Zip archives collection
+		- Run commands.
+Next planned work:
+   - Cross-compile ConfigurationEditor
+	- Refine building scripts. There are duplications.
+	- Finish Windows Package : building and running
+	- Go for Windows key features
 
 11/09/2018 (1.3h)
    Toolchain file did not work. Looking more closely, the error is the
