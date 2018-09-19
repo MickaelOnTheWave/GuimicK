@@ -123,7 +123,11 @@ bool ConsoleJob::IsRunOk() const
 
 bool ConsoleJob::IsCommandAvailable() const
 {
+#ifdef _WIN32
+    return true;
+#else
     return (Tools::GetCommandPath(command, appSearchPaths) != string(""));
+#endif
 }
 
 void ConsoleJob::AddAppSearchPath(const string &path)
