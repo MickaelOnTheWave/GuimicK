@@ -23,6 +23,7 @@ public:
     std::string GetReportContent(void) const;
     void GetAssociatedFiles(std::vector<std::string>& _externalFiles,
                             std::vector<std::pair<std::string,std::string> >& _fileBuffers);
+    bool HasAttachments() const;
 protected:
     std::vector<std::string> externalFiles;
     std::vector<std::pair<std::string,std::string> > fileBuffers;

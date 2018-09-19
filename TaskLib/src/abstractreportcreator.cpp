@@ -32,3 +32,8 @@ void AbstractReportCreator::GetAssociatedFiles(vector<string> &_externalFiles,
     _fileBuffers.clear();
     copy(fileBuffers.begin(), fileBuffers.end(), back_inserter(_fileBuffers));
 }
+
+bool AbstractReportCreator::HasAttachments() const
+{
+   return (!externalFiles.empty() || !fileBuffers.empty());
+}
