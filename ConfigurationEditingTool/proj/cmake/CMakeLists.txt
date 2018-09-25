@@ -12,8 +12,9 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5Widgets REQUIRED)
 
-set (TASKMANAGER_ROOT "../../..")
-set (TOOLS_ROOT "/home/mickael/Prog/Tools")
+set (PROG_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../../..")
+set (TASKMANAGER_ROOT "${PROG_ROOT}/TaskManager")
+set (TOOLS_ROOT "${PROG_ROOT}/Tools")
 
 add_subdirectory ("${TASKMANAGER_ROOT}/TaskLib/proj/cmake" "./TaskLib")
 add_subdirectory ("${TASKMANAGER_ROOT}/ReportParsers/ParsersLib/proj/cmake" "./ParsersLib")
@@ -23,4 +24,7 @@ file(GLOB SOURCES "../../src/*")
 
 add_executable(ConfigurationEditingTool ${SOURCES}) 
 target_link_libraries (ConfigurationEditingTool TaskLib Qt5::Widgets)
+if (WIN32)
+	target_link_libraries (ConfigurationEditingTool "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
+endif(WIN32)
 

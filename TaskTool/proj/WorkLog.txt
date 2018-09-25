@@ -1,3 +1,32 @@
+24/08/2018 (2.6h)
+   Installed Git, Cmake and other dependencies in VM. Succeeded in compiling
+	ConfigurationEditor on VM, changing some details in Cmake file.
+Next step :
+   - Back to programming key Windows features :
+	- Windows Update
+	- Backup as Simple Copy
+	- Backup as Zip archives collection
+	- Run commands.
+
+18/09/2018 (1.7h)
+   Downloading Qt inside VM failed. It is possible that the whole system will
+	be reinstalled (Ubuntu) in a not-so-distant future, so preparing for it,
+	moving VMs out of system SSD.
+	Once done, strategy for having ConfigurationEditor on Windows is :
+	1. Try once more installing Qt in VM
+	2. Meanvhile/ if 1 fails, cross-compile Qt on Linux.
+	Managed to move VM. Back to downloading Qt on Windows. Now there is a partition
+	space issue... Resolved the issue, installing Qt.
+Next planned work:
+   - Install sources on VM
+	- Compile ConfigurationEditor on VM
+
+17/09/2018 (1h)
+   As seen on Internet, cross-compiling Qt seems complicated. Checking if it is
+	readily available. Not found, so going for Windows compilation first.
+	Installing development environment on Windows VM. As it is very long,
+	it might be usefull to do something else on Linux..
+
 13/09/2018 (1.7h)
    Made NetworkTester fully build for Windows. Also updated TaskTool - what was
 	missing was just putting ToolsLib explicitly on the link dependencies!!
