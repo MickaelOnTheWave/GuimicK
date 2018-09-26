@@ -1,3 +1,22 @@
+26/09/2018 (3.1h)
+   Fixed issues in ConfigurationEditor Cmake file. Now that it runs OK, found out
+	that an install step will be needed to be useful out of QtCreator : Qt dlls
+	must be copied. Maybe it is a good idea to install cross-Qt after all?
+	Anyway, ignoring this for now and focusing on Windows features.
+	First Windows issue : configuration syntax apparently does not allow for ":".
+	Checking this...
+	Refactored configurations so that common properties are accessible.
+	Refactored Configuration tool to support both client and server
+	configurations. Added an UI description to easily check which version
+	is running. Tested and working!!
+	Configuration is saved as Server, however it is still not "valid" enough
+	for tool to use it.
+Next planned work:
+   - Refactor (once more) configurations. Are job lists duplicated between
+	client and base class?
+	- Create proper option in Client to allow clean use of standalone
+	- Go on Windows jobs, starting with simple backups.
+
 24/08/2018 (2.6h)
    Installed Git, Cmake and other dependencies in VM. Succeeded in compiling
 	ConfigurationEditor on VM, changing some details in Cmake file.
