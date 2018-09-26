@@ -8,7 +8,10 @@
 #include <QMenu>
 
 #include "aboutdialog.h"
+#include "clientjobsconfiguration.h"
 #include "configurationcheckdialog.h"
+#include "serverconfiguration.h"
+
 #include "jobdelegate.h"
 #include "jobeditdialogfactory.h"
 #include "selectbackupfolderdialog.h"
@@ -32,15 +35,22 @@
 
 using namespace std;
 
-MainWindow::MainWindow(QWidget *parent) :
+const string version = "0.6";
+
+MainWindow::MainWindow(const bool _isServerMode,
+                       QWidget *parent) :
    QMainWindow(parent),
-   ui(new Ui::MainWindow)
+   ui(new Ui::MainWindow),
+   isServerMode(_isServerMode)
 {
    ui->setupUi(this);
    ui->jobListView->setModel(&jobListModel);
    ui->jobListView->setItemDelegate(new JobDelegate(new AbstractJobDisplay()));
    ui->jobListView->setResizeMode(QListView::Adjust);
    ui->checkBackupsButton->setVisible(false);
+
+   model.SetConfigurationManager(CreateConfigurationManager());
+   model.SetDefaultServerOptions();
 
    OpenStandardFile();
 }
@@ -302,7 +312,7 @@ void MainWindow::on_actionDisk_space_check_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-   AboutDialog dialog;
+   AboutDialog dialog(version, isServerMode);
    dialog.exec();
 }
 
@@ -377,4 +387,12 @@ void MainWindow::RestoreBackup(
    const BackupRestoreTarget target = {"192.168.1.102", "root", "SmS_jXf2yHM'"};
    if (folderName != "")
       job->RestoreBackupFromClient(parameters, target);
+}
+
+TaskManagerConfiguration* MainWindow::CreateConfigurationManager()
+{
+   if (isServerMode)
+      return new ServerConfiguration();
+   else
+      return new ClientJobsConfiguration();
 }

@@ -6,7 +6,6 @@
 
 #include "clientworkmanager.h"
 #include "configurationobject.h"
-#include "jobfactory.h"
 #include "taskmanagerconfiguration.h"
 
 class ClientJobsConfiguration : public TaskManagerConfiguration
@@ -22,13 +21,6 @@ public:
    bool LoadFromConfigurationObject(ConfigurationObject* confObject,
                                     std::vector<std::string> &errorMessages);
 
-   bool SaveToFile(const std::string& filename);
-
-   void GetJobList(std::list<AbstractJob*>& _jobList) const;
-   void SetJobList(const std::vector<AbstractJob*>& jobs);
-   void ClearJobs();
-
-
 private:
     virtual void FillRootObjects(const std::list<ConfigurationObject*>& objectList,
                          std::vector<std::string> &errorMessages);
@@ -36,12 +28,13 @@ private:
                          std::vector<std::string> &errorMessages);
     virtual bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
 
+    virtual void SaveContentToOpenedFile(std::ofstream& file);
+
     ConfigurationObject* FindJobListObject(const std::list<ConfigurationObject*>& objectList);
 
     void FillJobList(ConfigurationObject* jobListObj, std::vector<std::string> &errorMessages);
 
     int debugOption;
-    JobFactory jobFactory;
 };
 
 #endif // CLIENTJOBSCONFIGURATION_H

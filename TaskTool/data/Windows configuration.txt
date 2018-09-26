@@ -1,0 +1,30 @@
+JobList
+{
+	CopyBackup
+	{
+		joinReports = "true";
+		target = "remote";
+		title = "Simple Copy on Windows";
+		Folder
+		{
+			dest = "C:/temp/Dest";
+			source = "C:/temp/Source";
+		}
+	}
+
+	DiskSpaceCheck
+	{
+		drive = "C:/";
+		localTarget = "true";
+		title = "Free space checking";
+	}
+
+	Console
+	{
+		command = "ipconfig";
+		params = "";
+		returnCode = "0";
+		title = "Console on Windows";
+	}
+
+}

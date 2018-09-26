@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
    Q_OBJECT
 
 public:
-   explicit MainWindow(QWidget *parent = 0);
+   explicit MainWindow(const bool _isServerMode, QWidget *parent = 0);
    ~MainWindow();
 
 private slots:
@@ -93,9 +93,12 @@ private:
 
    void RestoreBackup(AbstractBackupJob* job, const QString& backupFolder, const int timeIndex) const;
 
+   TaskManagerConfiguration* CreateConfigurationManager();
+
    Ui::MainWindow *ui;
    Model model;
    JobDataModel jobListModel;
+   const bool isServerMode;
 };
 
 #endif // MAINWINDOW_H

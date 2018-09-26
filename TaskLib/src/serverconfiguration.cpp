@@ -26,6 +26,8 @@
 
 using namespace std;
 
+const string tab = "\t";
+
 string ServerConfiguration::MsgNoPassword = "Client requires password";
 string ServerConfiguration::MsgNoConfigFile = "Client configuration file missing";
 string ServerConfiguration::MsgClientConfigAccessError = "Error trying to access Client configuration";
@@ -39,10 +41,10 @@ string ServerConfiguration::MsgOneClientSupported = "only one client is supporte
 
 ServerConfiguration::ServerConfiguration()
     : TaskManagerConfiguration(),
-      self(NULL), reportCreator(NULL), masterEmail("")
+      self(NULL), reportCreator(NULL),
+      reportType(""), cssFile(""),
+      masterEmail(""), reportDispatching("email"), shutdown(true)
 {
-    reportDispatching = "email";
-	shutdown = true;
 }
 
 ServerConfiguration::~ServerConfiguration()
@@ -97,20 +99,22 @@ void ServerConfiguration::CreateAgent(ConfigurationObject *confObject, vector<st
 
 void ServerConfiguration::CreateReport(ConfigurationObject *confObject, vector<string> &errorMessages)
 {
-    string reportType = confObject->GetFirstProperty("type", "param0");
+    reportType = confObject->GetFirstProperty("type", "param0");
     reportCreator = CreateReportObject(reportType);
     if (reportCreator == NULL)
     {
-        reportCreator = new TextReportCreator();
         string message = "Warning : unsupported \"";
         message += reportType + "\" report type. Defaulting to text";
         errorMessages.push_back(message);
+
+        reportCreator = new TextReportCreator();
+        reportType = "text";
     }
 
     string useProfiling = confObject->GetFirstProperty("timed", "param1");
     reportCreator->UseProfileColumn(useProfiling != "false");
 
-    string cssFile = confObject->GetProperty("css");
+    cssFile = confObject->GetProperty("css");
     if (cssFile != "")
     {
         HtmlReportCreator* htmlReportCreator = dynamic_cast<HtmlReportCreator*>(reportCreator);
@@ -129,7 +133,14 @@ bool ServerConfiguration::GetBooleanValue(const string &strValue, vector<string>
 	std::string error("Warning : ");
     error += strValue + " is not a valid boolean value. Defaulting to false";
 	errorMessages.push_back(error);
-    return false;
+   return false;
+}
+
+void ServerConfiguration::SaveStringValueToFile(ofstream& file,
+                                                const string& name,
+                                                const string& value)
+{
+   file << tab << name << " = \"" << value << "\";" << endl;
 }
 
 AbstractReportCreator *ServerConfiguration::GetReportCreator() const
@@ -165,7 +176,12 @@ AbstractReportCreator *ServerConfiguration::CreateReportObject(const string& typ
 
 const SelfIdentity *ServerConfiguration::GetAgent() const
 {
-    return self;
+   return self;
+}
+
+void ServerConfiguration::SetAgent(SelfIdentity* agent)
+{
+   self = agent;
 }
 
 string ServerConfiguration::GetMasterEmail() const
@@ -279,7 +295,60 @@ bool ServerConfiguration::IsConfigurationConsistent(vector<string> &errorMessage
         return true;
     }
     else
-        return true;
+       return true;
+}
+
+void ServerConfiguration::SaveContentToOpenedFile(ofstream& file)
+{
+   SaveAgentToOpenedFile(file);
+   SaveClientToOpenedFile(file);
+   SaveReportOptionsToOpenedFile(file);
+   SaveGlobalPropertiesToOpenedFile(file);
+}
+
+void ServerConfiguration::SaveAgentToOpenedFile(ofstream& file)
+{
+   file << "Agent" << endl;
+   file << "{" << endl;
+   file << tab << "Name = \"" << self->name << "\";" << endl;
+   if (self->HasValidEmailData())
+   {
+      file << tab << "Email = \"" << self->email << "\";" << endl;
+      file << tab << "Password = \"" << self->emailPassword << "\";" << endl;
+      file << tab << "SmtpAddress = \"" << self->emailSmtpServer << "\";" << endl;
+      file << tab << "SmtpPort = " << self->emailSmtpPort << ";" << endl;
+      file << tab << "UseSSL = " << self->emailUseSsl << ";" << endl;
+   }
+
+   file << "}" << endl;
+}
+
+void ServerConfiguration::SaveClientToOpenedFile(ofstream& file)
+{
+   file << "Client" << endl;
+   file << "{" << endl;
+   SaveStringValueToFile(file, "Name", "Client");
+   SaveStringValueToFile(file, "showDebugInformation", "never");
+
+   SaveJobListToOpenedFile(file);
+
+   file << "}" << endl;
+}
+
+void ServerConfiguration::SaveReportOptionsToOpenedFile(ofstream& file)
+{
+   file << "Report" << endl;
+   file << "{" << endl;
+   SaveStringValueToFile(file, "type", reportType);
+   SaveStringValueToFile(file, "css", cssFile);
+   file << "}" << endl;
+}
+
+void ServerConfiguration::SaveGlobalPropertiesToOpenedFile(ofstream& file)
+{
+   file << "MasterEmail = \"" << masterEmail << "\";" << endl;
+   file << "ReportDispatching = \"" << reportDispatching << "\";" << endl;
+   file << "ShutdownOnFinish = " << shutdown << ";" << endl;
 }
 
 bool ServerConfiguration::IsEmailDataComplete() const

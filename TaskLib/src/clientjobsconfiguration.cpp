@@ -28,54 +28,6 @@ bool ClientJobsConfiguration::LoadFromConfigurationObject(ConfigurationObject* c
    return IsConfigurationConsistent(errorMessages);
 }
 
-bool ClientJobsConfiguration::SaveToFile(const string& filename)
-{
-   ofstream filestream(filename.c_str());
-   if (!filestream.is_open())
-      return false;
-
-   filestream << "JobList" << endl;
-   filestream << "{" << endl;
-
-   list<AbstractJob*>::const_iterator it = jobList.begin();
-   for (; it != jobList.end(); ++it)
-   {
-      ConfigurationObject* confObject = jobFactory.CreateConfigurationObject(*it);
-      if (confObject)
-      {
-         filestream << confObject->CreateConfigurationString(1) << endl;
-         delete confObject;
-      }
-   }
-
-   filestream << "}" << endl;
-   filestream.close();
-   return true;
-}
-
-void ClientJobsConfiguration::GetJobList(std::list<AbstractJob*>& _jobList) const
-{
-   list<AbstractJob*>::const_iterator it = jobList.begin();
-   for (; it != jobList.end(); ++it)
-      _jobList.push_back((*it)->Clone());
-}
-
-void ClientJobsConfiguration::SetJobList(const std::vector<AbstractJob*>& jobs)
-{
-   ClearJobs();
-   vector<AbstractJob*>::const_iterator it = jobs.begin();
-   for (; it != jobs.end(); ++it)
-      jobList.push_back((*it)->Clone());
-}
-
-void ClientJobsConfiguration::ClearJobs()
-{
-   list<AbstractJob*>::iterator it = jobList.begin();
-   for (; it != jobList.end(); ++it)
-      delete *it;
-   jobList.clear();
-}
-
 void ClientJobsConfiguration::FillRootObjects(const list<ConfigurationObject*> &objectList,
                                               vector<string> &errorMessages)
 {
@@ -98,7 +50,12 @@ void ClientJobsConfiguration::FillGlobalProperties(ConfigurationObject *, vector
 
 bool ClientJobsConfiguration::IsConfigurationConsistent(std::vector<string> &)
 {
-    return true;
+   return true;
+}
+
+void ClientJobsConfiguration::SaveContentToOpenedFile(ofstream& file)
+{
+   SaveJobListToOpenedFile(file);
 }
 
 ConfigurationObject* ClientJobsConfiguration::FindJobListObject(

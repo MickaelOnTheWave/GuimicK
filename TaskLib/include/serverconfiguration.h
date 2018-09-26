@@ -33,6 +33,7 @@ public:
     AbstractReportDispatcher* CreateReportDispatcher(const bool commandLinePreventsEmail) const;
 
     const SelfIdentity *GetAgent() const;
+    void SetAgent(SelfIdentity *agent);
 
 	std::string GetMasterEmail() const;
 
@@ -49,6 +50,13 @@ private:
                          std::vector<std::string> &errorMessages);
     virtual bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
 
+    virtual void SaveContentToOpenedFile(std::ofstream& file);
+
+    void SaveAgentToOpenedFile(std::ofstream& file);
+    void SaveClientToOpenedFile(std::ofstream& file);
+    void SaveReportOptionsToOpenedFile(std::ofstream& file);
+    void SaveGlobalPropertiesToOpenedFile(std::ofstream& file);
+
     bool IsEmailDataComplete() const;
 
     bool CreateClient(ConfigurationObject* confObject, std::vector<std::string> &errorMessages);
@@ -59,8 +67,13 @@ private:
 
     bool GetBooleanValue(const std::string& strValue, std::vector<std::string>& errorMessages) const;
 
+    void SaveStringValueToFile(std::ofstream& file,
+                               const std::string& name, const std::string& value);
+
 	SelfIdentity* self;
    AbstractReportCreator* reportCreator;
+   std::string reportType;
+   std::string cssFile;
 	std::string masterEmail;
    std::string reportDispatching;
 	bool shutdown;

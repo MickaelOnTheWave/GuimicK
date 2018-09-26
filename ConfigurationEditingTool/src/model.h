@@ -6,11 +6,15 @@
 #include <vector>
 
 #include "clientjobsconfiguration.h"
+#include "SelfIdentity.h"
 
 class Model
 {
 public:
    Model();
+   virtual ~Model();
+
+   void SetConfigurationManager(TaskManagerConfiguration* _configuration);
 
    bool LoadConfiguration(const std::string& file,
                           std::vector<std::string>& errors);
@@ -18,10 +22,15 @@ public:
 
    std::list<AbstractJob*> GetJobList();
    void SetJobs(const std::vector<AbstractJob*>& jobs);
+
+   void SetDefaultServerOptions();
+
    void ClearJobs();
 
 private:
-   ClientJobsConfiguration configuration;
+   SelfIdentity* CreateDefaultAgent();
+
+   TaskManagerConfiguration* configuration;
 
 };
 

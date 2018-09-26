@@ -12,10 +12,13 @@ class AboutDialog : public QDialog
    Q_OBJECT
 
 public:
-   explicit AboutDialog(QWidget *parent = 0);
+   explicit AboutDialog(const std::string versionInfo, const bool isServerMode,
+                        QWidget *parent = 0);
    ~AboutDialog();
 
 private:
+   void SetExeInfo(const std::string versionInfo, const bool isServerMode);
+
    Ui::AboutDialog *ui;
 };
 
