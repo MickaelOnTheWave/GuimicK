@@ -384,7 +384,7 @@ void MainWindow::RestoreBackup(
 
    // TODO : fix that
    const BackupRestoreParameters parameters = {folderName.toStdString(), 0, 0};
-   const BackupRestoreTarget target = {"192.168.1.102", "root", "SmS_jXf2yHM'"};
+   const BackupRestoreTarget target = {"192.168.1.256", "user", "userPassword"};
    if (folderName != "")
       job->RestoreBackupFromClient(parameters, target);
 }
