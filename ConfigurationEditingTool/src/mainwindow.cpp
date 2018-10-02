@@ -101,6 +101,7 @@ void MainWindow::UpdateJobListWidget()
    const list<AbstractJob*> jobs = model.GetJobList();
    jobListModel.AddJobs(jobs);
    CreateJobDisplayDelegates(jobs);
+   ForceJobListViewUpdate();
 }
 
 void MainWindow::InsertNewJob(AbstractJob* job)
