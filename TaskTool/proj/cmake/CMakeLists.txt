@@ -33,10 +33,6 @@ endif (USE_CURL_LIB)
 
 add_executable(TaskTool ${SOURCES}) 
 
-add_custom_target(ProjectFiles SOURCES
-	"../WorkLog.txt"
-	"../ReleasePlan.txt")
-
 file(GLOB DataFiles "${PROJECT_ROOT}/data/*")
 add_custom_target(Data SOURCES ${DataFiles})
 
@@ -49,5 +45,14 @@ if (WIN32)
 	target_link_libraries (TaskTool "-static-libgcc" "-static-libstdc++")
 endif(WIN32)
 
+### Fake Projects, only for display in IDE
+add_custom_target(ProjectFiles SOURCES
+	"../WorkLog.txt"
+	"../ReleasePlan.txt")
 
-
+add_custom_target(BuildScripts SOURCES
+	"../../scripts/BuildTools.sh"
+	"../../scripts/MakeLinuxDebug.sh"
+	"../../scripts/MakeLinuxRelease.sh"
+)
+###

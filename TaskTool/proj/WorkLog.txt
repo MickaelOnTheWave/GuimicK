@@ -1,3 +1,24 @@
+02/10/2018 (17.5)
+   Added dialog for choosing configuration type when creating new configuration.
+	Added possible restriction to only standalone mode. Refactored code accordingly.
+
+01/10/2018 (0.5h)
+   There is duplication between Client object and job list attribute in
+	TaskConfiguration. However, another refactor is only possible with a
+	proper standalone configuration.
+	Created standalone configuration class. But the architecture needs to be
+	different :
+	Server is a specialization of Standalone (with only ssh/ip info...)
+	joblist attribute would need to be in client configuration.
+	Client attribute would need to be in Standalone configuration.
+	Their access would be by virtual members?
+	Anyway, maybe it is more important to start with GUI changes for standalone
+	mode.
+Next planned work:
+   - Add dialogs for editing standalone information (agent, client name...)
+	- Check that Configuration tool works fine as standalone
+	- Go on refactoring configuration classes
+
 26/09/2018 (3.1h)
    Fixed issues in ConfigurationEditor Cmake file. Now that it runs OK, found out
 	that an install step will be needed to be useful out of QtCreator : Qt dlls

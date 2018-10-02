@@ -6,6 +6,7 @@
 #include "abstractbackupjob.h"
 #include "abstractdisplay.h"
 #include "abstracteditjobdialog.h"
+#include "configurationtype.h"
 #include "jobdatamodel.h"
 #include "model.h"
 
@@ -18,8 +19,10 @@ class MainWindow : public QMainWindow
    Q_OBJECT
 
 public:
-   explicit MainWindow(const bool _isServerMode, QWidget *parent = 0);
+   explicit MainWindow(QWidget *parent = 0);
    ~MainWindow();
+
+   void RestrictToStandaloneMode();
 
 private slots:
    void on_actionNew_triggered();
@@ -95,10 +98,13 @@ private:
 
    TaskManagerConfiguration* CreateConfigurationManager();
 
+   ConfigurationType ChooseConfigurationType() const;
+
    Ui::MainWindow *ui;
    Model model;
    JobDataModel jobListModel;
-   const bool isServerMode;
+   ConfigurationType configurationType;
+   bool restrictToStandaloneMode = false;
 };
 
 #endif // MAINWINDOW_H

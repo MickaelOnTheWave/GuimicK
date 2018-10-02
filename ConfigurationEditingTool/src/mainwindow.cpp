@@ -10,11 +10,12 @@
 #include "aboutdialog.h"
 #include "clientjobsconfiguration.h"
 #include "configurationcheckdialog.h"
-#include "serverconfiguration.h"
-
+#include "configurationtype.h"
+#include "configurationtypedialog.h"
 #include "jobdelegate.h"
 #include "jobeditdialogfactory.h"
 #include "selectbackupfolderdialog.h"
+#include "serverconfiguration.h"
 
 #include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
@@ -37,11 +38,10 @@ using namespace std;
 
 const string version = "0.6";
 
-MainWindow::MainWindow(const bool _isServerMode,
-                       QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent) :
    QMainWindow(parent),
    ui(new Ui::MainWindow),
-   isServerMode(_isServerMode)
+   configurationType(ConfigurationType::Standalone)
 {
    ui->setupUi(this);
    ui->jobListView->setModel(&jobListModel);
@@ -60,10 +60,16 @@ MainWindow::~MainWindow()
    delete ui;
 }
 
+void MainWindow::RestrictToStandaloneMode()
+{
+   restrictToStandaloneMode = true;
+}
+
 void MainWindow::on_actionNew_triggered()
 {
    model.ClearJobs();
    UpdateJobListWidget();
+   configurationType = ChooseConfigurationType();
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -313,7 +319,7 @@ void MainWindow::on_actionDisk_space_check_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-   AboutDialog dialog(version, isServerMode);
+   AboutDialog dialog(version, configurationType);
    dialog.exec();
 }
 
@@ -392,8 +398,20 @@ void MainWindow::RestoreBackup(
 
 TaskManagerConfiguration* MainWindow::CreateConfigurationManager()
 {
-   if (isServerMode)
+   if (configurationType == ConfigurationType::Server)
       return new ServerConfiguration();
    else
       return new ClientJobsConfiguration();
+}
+
+ConfigurationType MainWindow::ChooseConfigurationType() const
+{
+   if (restrictToStandaloneMode)
+      return ConfigurationType::Standalone;
+   else
+   {
+      ConfigurationTypeDialog dialog;
+      dialog.exec();
+      return dialog.GetChosenType();
+   }
 }
