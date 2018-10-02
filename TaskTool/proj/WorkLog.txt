@@ -1,6 +1,13 @@
-02/10/2018 (17.5)
+02/10/2018 (2.4h)
    Added dialog for choosing configuration type when creating new configuration.
 	Added possible restriction to only standalone mode. Refactored code accordingly.
+	Started refactoring Configuration. TaskManagerConfiguration will still parse
+	the file and find what configuration type is it.
+	ConfigurationType will be set by a different class, of which standalone and
+	client will be child.
+Next planned work:
+   - Finish new TaskManagerConfiguration architecture
+	- Create dialogs to edit Agent and Client data
 
 01/10/2018 (0.5h)
    There is duplication between Client object and job list attribute in
