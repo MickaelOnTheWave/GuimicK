@@ -1,3 +1,33 @@
+08/10/2018 (1.5h)
+   Resolving compile errors. Most of them are now resolved, but there is one
+	strange link error.
+Next planned work:
+   - Resolve link error with static members
+	- Get Editor and Tool compiled and running
+
+03/10/2018 (0.7h)
+   Finished modifications in MainToolModule. Also reworked ClientJobsConfiguration.
+	However, there are still errors to be resolved..
+Next planned work:
+   - Finish refactor of new architecture, all must compile and run.
+
+03/10/2018 (1.4h)
+   Continuing refactoring... Refactored ClientConfiguration into two classes,
+	for changing what is considered a valid client. Most errors are now resolved.
+	Here are remaining errors to be addressed in next steps.
+Next planned work:
+   - Make TaskManager give access to internal AbstractTypeConfiguration,
+	to be able to create worklists and such
+	- MainToolModule will need to cast its type configuration to standalone/server
+	configuration, which will be needed as there is no sense in running it with
+	a client config.
+
+02/10/2018 (1.1h)
+   Continuing refactoring TaskManagerConfiguration. Moving code from Server to
+	Standalone..
+Next planned work:
+   - Finish new TaskManagerConfiguration architecture
+
 02/10/2018 (2.4h)
    Added dialog for choosing configuration type when creating new configuration.
 	Added possible restriction to only standalone mode. Refactored code accordingly.
