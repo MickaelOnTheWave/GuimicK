@@ -4,11 +4,11 @@
 #include <string>
 #include <vector>
 
+#include "abstracttypeconfiguration.h"
 #include "clientworkmanager.h"
 #include "configurationobject.h"
-#include "taskmanagerconfiguration.h"
 
-class ClientJobsConfiguration : public TaskManagerConfiguration
+class ClientJobsConfiguration : public AbstractTypeConfiguration
 {
 public:
    static std::string MsgNoJobList;
@@ -16,7 +16,15 @@ public:
 
    ClientJobsConfiguration(const int _debugOption = DebugOutput::UNDEFINED);
 
-   virtual ClientWorkManager* BuildWorkList(const bool withProfiling) const;
+   bool LoadFromBuffer(const std::string& buffer, std::vector<std::string> &errorMessages);
+
+   virtual void SaveToOpenedFile(std::ofstream& fileStream);
+
+   virtual void GetJobList(std::list<AbstractJob*>& _jobList);
+
+   virtual void SetJobList(const std::vector<AbstractJob*>& _jobList);
+
+   virtual void ClearJobList();
 
    bool LoadFromConfigurationObject(ConfigurationObject* confObject,
                                     std::vector<std::string> &errorMessages);
@@ -28,12 +36,11 @@ private:
                          std::vector<std::string> &errorMessages);
     virtual bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
 
-    virtual void SaveContentToOpenedFile(std::ofstream& file);
-
     ConfigurationObject* FindJobListObject(const std::list<ConfigurationObject*>& objectList);
 
     void FillJobList(ConfigurationObject* jobListObj, std::vector<std::string> &errorMessages);
 
+    std::list<AbstractJob*> jobList;
     int debugOption;
 };
 

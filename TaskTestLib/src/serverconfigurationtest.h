@@ -4,6 +4,7 @@
 #include "qttestsuite.h"
 
 #include "serverconfiguration.h"
+#include "taskmanagerconfiguration.h"
 
 class ServerConfigurationTest : public QtTestSuite
 {
@@ -37,7 +38,9 @@ private:
     void LoadFromFile(const QString& file, const bool expectedResult,
                       const QStringList& expectedErrors);
 
-    ServerConfiguration* configuration;
+    ServerConfiguration* GetTypedConfiguration();
+
+    TaskManagerConfiguration* configuration;
 };
 
 #endif // SERVERCONFIGURATIONTEST_H

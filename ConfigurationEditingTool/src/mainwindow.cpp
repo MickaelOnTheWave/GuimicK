@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
    ui->jobListView->setResizeMode(QListView::Adjust);
    ui->checkBackupsButton->setVisible(false);
 
-   model.SetConfigurationManager(CreateConfigurationManager());
+   model.SetConfigurationManager(new TaskManagerConfiguration());//CreateConfigurationManager());
    model.SetDefaultServerOptions();
 
    OpenStandardFile();
@@ -396,11 +396,13 @@ void MainWindow::RestoreBackup(
       job->RestoreBackupFromClient(parameters, target);
 }
 
-TaskManagerConfiguration* MainWindow::CreateConfigurationManager()
+AbstractTypeConfiguration* MainWindow::CreateConfigurationManager()
 {
    if (configurationType == ConfigurationType::Server)
       return new ServerConfiguration();
-   else
+   else if (configurationType == ConfigurationType::Standalone)
+      return new StandaloneConfiguration();
+   else // Client
       return new ClientJobsConfiguration();
 }
 

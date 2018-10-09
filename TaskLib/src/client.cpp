@@ -59,21 +59,21 @@ void Client::GetJobList(std::list<AbstractJob*>& _jobList) const
 
 void Client::SetJobList(const std::list<AbstractJob*>& _jobList)
 {
-   FreeJobList();
+   ClearJobList();
    list<AbstractJob*>::const_iterator it = _jobList.begin();
    for (; it != _jobList.end(); ++it)
       jobList.push_back((*it)->Clone());
 }
 
-void Client::AddJob(AbstractJob* job)
-{
-   jobList.push_back(job);
-}
-
-void Client::FreeJobList()
+void Client::ClearJobList()
 {
    list<AbstractJob*>::const_iterator it = jobList.begin();
    for (; it != jobList.end(); ++it)
       delete (*it);
    jobList.clear();
+}
+
+void Client::AddJob(AbstractJob* job)
+{
+   jobList.push_back(job);
 }

@@ -68,9 +68,12 @@ JobStatus *RemoteJobsRunner::Run()
     if (!usable)
         return CreateConfigurationErrorStatus(configurationErrors);
 
-    configuration.SetClient(originalClient->Clone());
-    ClientWorkManager* workManager = configuration.BuildWorkList(isWorkListTimed);
+    list<AbstractJob*> clientJobs;
+    configuration.GetJobList(clientJobs);
+    ClientWorkManager* workManager = new ClientWorkManager(originalClient);
+    workManager->AddJobs(clientJobs, isWorkListTimed);
     WorkResultData* remoteResults = workManager->RunWorkList();
+    delete workManager;
     return new ResultCollectionStatus(remoteResults);
 }
 

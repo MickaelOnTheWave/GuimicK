@@ -32,13 +32,13 @@ void Model::SaveConfiguration(const std::string& file)
 list<AbstractJob*> Model::GetJobList()
 {
    list<AbstractJob*> rawJobList;
-   configuration->GetJobList(rawJobList);
+   configuration->GetTypeConfiguration()->GetJobList(rawJobList);
    return rawJobList;
 }
 
 void Model::SetJobs(const std::vector<AbstractJob*>& jobs)
 {
-   configuration->SetJobList(jobs);
+   configuration->GetTypeConfiguration()->SetJobList(jobs);
 }
 
 void Model::SetDefaultServerOptions()
@@ -50,7 +50,7 @@ void Model::SetDefaultServerOptions()
 
 void Model::ClearJobs()
 {
-   configuration->ClearJobs();
+   configuration->GetTypeConfiguration()->ClearJobList();
 }
 
 SelfIdentity* Model::CreateDefaultAgent()

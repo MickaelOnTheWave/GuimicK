@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "clientjobsconfiguration.h"
+#include "taskmanagerconfiguration.h"
 #include "SelfIdentity.h"
 
 class Model

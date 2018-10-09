@@ -27,12 +27,11 @@ public:
 
     void GetJobList(std::list<AbstractJob*>& _jobList) const;
     void SetJobList(const std::list<AbstractJob*>& _jobList);
+    void ClearJobList();
 
     void AddJob(AbstractJob* job);
 
 protected:
-    void FreeJobList();
-
     std::string name;
     std::map<std::string, std::string> propertyMap;
     std::list<AbstractJob*> jobList;

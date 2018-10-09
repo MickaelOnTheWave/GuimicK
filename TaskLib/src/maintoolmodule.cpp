@@ -4,6 +4,8 @@
 #include "consolejob.h"
 #include "filereportdispatcher.h"
 #include "filetools.h"
+#include "standaloneconfiguration.h"
+#include "taskmanagerconfiguration.h"
 
 using namespace std;
 
@@ -71,7 +73,7 @@ int MainToolModule::Run(CommandLineManager &commandLine)
         return CONFIGURATION_ERROR;
     }
 
-    ServerConfiguration configuration;
+    TaskManagerConfiguration configuration;
     vector<string> configurationErrors;
     bool configurationIsUsable = configuration.LoadFromFile(configurationFile, configurationErrors);
     if (configurationIsUsable == false)
@@ -81,15 +83,17 @@ int MainToolModule::Run(CommandLineManager &commandLine)
         return CONFIGURATION_ERROR;
     }
 
-    ClientWorkManager* workList = configuration.BuildWorkList(timedRuns);
-    bool localShutdown = SetupShutdownOptions(configuration.GetLocalShutdown(),
+
+    StandaloneConfiguration* typedConfiguration = dynamic_cast<StandaloneConfiguration*>(configuration.GetTypeConfiguration());
+    ClientWorkManager* workList = typedConfiguration->BuildWorkList(timedRuns);
+    bool localShutdown = SetupShutdownOptions(typedConfiguration->GetLocalShutdown(),
                                               commandLine.HasParameter(noShutdownCommand),
                                               workList);
 
     SetupSingleJobOption(workList, commandLine);
 
-    AbstractReportCreator* reportCreator = RunWorkList(workList, configuration, configurationErrors);
-    DispatchReport(reportCreator, configuration, commandLine);
+    AbstractReportCreator* reportCreator = RunWorkList(workList, *typedConfiguration, configurationErrors);
+    DispatchReport(reportCreator, *typedConfiguration, commandLine);
     delete reportCreator;
 
     bool ok = RunLocalShutdown(localShutdown);
@@ -148,7 +152,7 @@ void MainToolModule::SetupSingleJobOption(ClientWorkManager* workList,
 }
 
 AbstractReportCreator* MainToolModule::RunWorkList(ClientWorkManager* workList,
-                                                   const ServerConfiguration& configuration,
+                                                   const StandaloneConfiguration& configuration,
                                                    const vector<string>& configurationErrors)
 {
     WorkResultData* workResult = workList->RunWorkList();
@@ -160,7 +164,7 @@ AbstractReportCreator* MainToolModule::RunWorkList(ClientWorkManager* workList,
 }
 
 void MainToolModule::DispatchReport(AbstractReportCreator* reportCreator,
-                    const ServerConfiguration& configuration,
+                    const StandaloneConfiguration& configuration,
                     const CommandLineManager& commandLine)
 {
     AbstractReportDispatcher* reportDispatcher = configuration.CreateReportDispatcher(

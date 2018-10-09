@@ -96,7 +96,7 @@ private:
 
    void RestoreBackup(AbstractBackupJob* job, const QString& backupFolder, const int timeIndex) const;
 
-   TaskManagerConfiguration* CreateConfigurationManager();
+   AbstractTypeConfiguration* CreateConfigurationManager();
 
    ConfigurationType ChooseConfigurationType() const;
 

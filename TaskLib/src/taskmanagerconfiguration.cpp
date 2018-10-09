@@ -1,45 +1,35 @@
 #include "taskmanagerconfiguration.h"
 
+#include "clientjobsconfiguration.h"
 #include "configurationparser.h"
 #include "profiledjob.h"
+#include "serverconfiguration.h"
+#include "standaloneconfiguration.h"
 
 using namespace std;
 
 TaskManagerConfiguration::TaskManagerConfiguration()
-    : client(NULL), hasFatalError(false)
+    : typeConfiguration(NULL)
 {
 }
 
 TaskManagerConfiguration::~TaskManagerConfiguration()
 {
-   delete client;
+   delete typeConfiguration;
 }
 
 bool TaskManagerConfiguration::LoadFromFile(const string &fileName, vector<string> &errorMessages)
 {
     errorMessages.clear();
-    Reset();
-
-    ConfigurationParser parser;
+    parser.ResetData();
     bool result = parser.ParseFile(fileName, errorMessages);
     if (!result)
         return false;
 
-    return SetupData(parser, errorMessages);
+    CreateTypeConfiguration();
+    return typeConfiguration->Load(parser, errorMessages);
 }
 
-bool TaskManagerConfiguration::LoadFromBuffer(const string &content, vector<string> &errorMessages)
-{
-    errorMessages.clear();
-    Reset();
-
-    ConfigurationParser parser;
-    bool result = parser.ParseBuffer(content, errorMessages);
-    if (!result)
-        return false;
-
-    return SetupData(parser, errorMessages);
-}
 
 bool TaskManagerConfiguration::SaveToFile(const string& filename)
 {
@@ -47,98 +37,62 @@ bool TaskManagerConfiguration::SaveToFile(const string& filename)
    if (!filestream.is_open())
       return false;
 
-   SaveContentToOpenedFile(filestream);
+   typeConfiguration->SaveToOpenedFile(filestream);
 
    filestream.close();
    return true;
 }
 
-void TaskManagerConfiguration::GetJobList(std::list<AbstractJob*>& _jobList) const
+AbstractTypeConfiguration* TaskManagerConfiguration::GetTypeConfiguration()
 {
-   list<AbstractJob*>::const_iterator it = jobList.begin();
-   for (; it != jobList.end(); ++it)
-      _jobList.push_back((*it)->Clone());
+   return typeConfiguration;
 }
 
-
-void TaskManagerConfiguration::SetJobList(const std::vector<AbstractJob*>& jobs)
+void TaskManagerConfiguration::CreateTypeConfiguration()
 {
-   ClearJobs();
-   vector<AbstractJob*>::const_iterator it = jobs.begin();
-   for (; it != jobs.end(); ++it)
-      jobList.push_back((*it)->Clone());
+   const ConfigurationType type = FindConfigurationType();
+   delete typeConfiguration;
+   typeConfiguration = CreateConfigurationManager(type);
 }
 
-void TaskManagerConfiguration::ClearJobs()
+ConfigurationType TaskManagerConfiguration::FindConfigurationType()
 {
-   list<AbstractJob*>::iterator it = jobList.begin();
-   for (; it != jobList.end(); ++it)
-      delete *it;
-   jobList.clear();
+   if (HasOnlyJobList())
+      return ConfigurationType::Client;
+   else if (parser.anonymousObject)
+      return GetTypeByConfiguration();
+   else // How would I know?
+      return ConfigurationType::Standalone;
 }
 
-bool TaskManagerConfiguration::HasClient() const
+bool TaskManagerConfiguration::HasOnlyJobList() const
 {
-    return (client != NULL);
+   return (parser.objectList.size() == 1 &&
+           parser.objectList.front()->GetName() == "JobList");
 }
 
-Client* TaskManagerConfiguration::GetClient() const
+ConfigurationType TaskManagerConfiguration::GetTypeByConfiguration() const
 {
-   return client;
+   const string configurationTypeString = parser.anonymousObject->GetProperty("Type");
+   if (configurationTypeString == "Client")
+      return ConfigurationType::Client;
+   else if (configurationTypeString == "Server")
+      return ConfigurationType::Server;
+   else //if (configurationTypeString == "Standalone")
+      return ConfigurationType::Standalone;
 }
 
-void TaskManagerConfiguration::SetClient(Client* _client)
+AbstractTypeConfiguration* TaskManagerConfiguration::CreateConfigurationManager(
+      const ConfigurationType& type
+      )
 {
-   client = _client;
-}
-
-string TaskManagerConfiguration::CreateWarning(const string &message) const
-{
-    return CreateMessage("Warning", message);
-}
-
-string TaskManagerConfiguration::CreateError(const string &message) const
-{
-    return CreateMessage("Error", message);
-}
-
-string TaskManagerConfiguration::CreateMessage(const string &tag, const string &message) const
-{
-    if (message != "")
-        return tag + " : " + message;
-    else
-       return string("");
-}
-
-void TaskManagerConfiguration::SaveJobListToOpenedFile(ofstream& file)
-{
-   file << "JobList" << endl;
-   file << "{" << endl;
-
-   list<AbstractJob*>::const_iterator it = jobList.begin();
-   for (; it != jobList.end(); ++it)
+   switch (type)
    {
-      ConfigurationObject* confObject = jobFactory.CreateConfigurationObject(*it);
-      if (confObject)
-      {
-         file << confObject->CreateConfigurationString(1) << endl;
-         delete confObject;
-      }
+      case ConfigurationType::Client :
+         return new ClientJobsConfiguration();
+      case ConfigurationType::Server :
+         return new ServerConfiguration();
+      default :
+         return new StandaloneConfiguration();
    }
-
-   file << "}" << endl;
-}
-
-void TaskManagerConfiguration::Reset()
-{
-   jobList.clear();
-   hasFatalError = false;
-}
-
-bool TaskManagerConfiguration::SetupData(const ConfigurationParser &parser,
-                                         std::vector<string> &errorMessages)
-{
-    FillRootObjects(parser.objectList, errorMessages);
-    FillGlobalProperties(parser.anonymousObject, errorMessages);
-    return IsConfigurationConsistent(errorMessages);
 }

@@ -115,7 +115,7 @@ QStringList TaskFeatureTest::GetAttachmentFiles(const string &folder)
     return currentDir.entryList(QStringList({"attachment*.txt"}), QDir::Files);
 }
 
-void TaskFeatureTest::ReadConfiguration(ServerConfiguration &configuration)
+void TaskFeatureTest::ReadConfiguration(TaskManagerConfiguration& configuration)
 {
     QFETCH(QString, configurationFile);
 

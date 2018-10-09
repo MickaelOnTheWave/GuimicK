@@ -2,7 +2,7 @@
 
 #include <QTest>
 
-#include "clientconfiguration.h"
+#include "localclientconfiguration.h"
 #include "testutils.h"
 
 using namespace std;
@@ -16,7 +16,7 @@ ServerConfigurationTest::ServerConfigurationTest(const string &dataPrefix) :
 
 void ServerConfigurationTest::init()
 {
-    configuration = new ServerConfiguration();
+    configuration = new TaskManagerConfiguration();
 }
 
 void ServerConfigurationTest::cleanup()
@@ -53,7 +53,7 @@ void ServerConfigurationTest::testLoadFromFile_Agent_Valid()
 {
     LoadFromFile("valid.txt", true, QStringList());
 
-    const SelfIdentity* identity = configuration->GetAgent();
+    const SelfIdentity* identity = GetTypedConfiguration()->GetAgent();
 
     QCOMPARE(identity->name.c_str(), "Testing Agent");
     QCOMPARE(identity->email.c_str(), "invalid.email@provider.com");
@@ -67,7 +67,7 @@ void ServerConfigurationTest::testLoadFromFile_Client_Valid()
 {
     LoadFromFile("valid.txt", true, QStringList());
 
-    Client* client = configuration->GetClient();
+    Client* client = GetTypedConfiguration()->GetClient();
 
     QCOMPARE(client->GetName().c_str(), "Machine to manage");
     QCOMPARE(client->GetProperty("mac").c_str(), "00:11:22:33:44:55");
@@ -81,7 +81,7 @@ void ServerConfigurationTest::testBuildSimpleWorkList()
     LoadFromFile("valid.txt", true, QStringList());
 
     vector<AbstractJob*> jobList;
-    ClientWorkManager* manager = configuration->BuildWorkList(false);
+    ClientWorkManager* manager = GetTypedConfiguration()->BuildWorkList(false);
     manager->GetJobList(jobList);
 
     QCOMPARE(jobList.size(), 5ul);
@@ -182,7 +182,7 @@ void ServerConfigurationTest::LoadClientExamples()
     QTest::newRow("Client - No job list")
                             << "client - no job list.txt"
                             << true
-                            << QStringList({QString(ClientConfiguration::MsgClientWithoutJobs.c_str())});
+                            << QStringList({QString(LocalClientConfiguration::MsgClientWithoutJobs.c_str())});
     QTest::newRow("Client - empty job list")
                             << "client - empty job list.txt"
                             << true
@@ -250,4 +250,9 @@ void ServerConfigurationTest::LoadFromFile(const QString &file, const bool expec
     bool result = configuration->LoadFromFile(fullFilename, errors);
     QCOMPARE(result, expectedResult);
     TestUtils::CheckListsAreEqual(expectedErrors, errors);
+}
+
+ServerConfiguration* ServerConfigurationTest::GetTypedConfiguration()
+{
+   return dynamic_cast<ServerConfiguration*>(configuration->GetTypeConfiguration());
 }

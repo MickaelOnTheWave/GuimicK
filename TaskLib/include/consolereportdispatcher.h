@@ -9,7 +9,7 @@ class ConsoleReportDispatcher : public AbstractReportDispatcher
 {
 public:
     virtual std::string GetName(void) const;
-    virtual void Initialize(const ServerConfiguration* configuration);
+    virtual void Initialize(const AbstractTypeConfiguration* configuration);
     virtual bool Dispatch(AbstractReportCreator* reportCreator);
 
 private:

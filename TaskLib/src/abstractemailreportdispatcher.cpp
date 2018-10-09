@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include "serverconfiguration.h"
+#include "standaloneconfiguration.h"
 
 using namespace std;
 
@@ -21,20 +22,27 @@ string AbstractEmailReportDispatcher::GetName() const
     return string("Email");
 }
 
-void AbstractEmailReportDispatcher::Initialize(const ServerConfiguration* configuration)
+void AbstractEmailReportDispatcher::Initialize(
+   const AbstractTypeConfiguration* configuration
+)
 {
-    const SelfIdentity* self = configuration->GetAgent();
-    displayName = self->name;
-    emailAddress = self->email;
-    smtpServer = self->emailSmtpServer;
-    smtpPort = self->emailSmtpPort;
-    password = self->emailPassword;
-    useSsl = self->emailUseSsl;
+   const StandaloneConfiguration* standaloneConfiguration =
+         dynamic_cast<const StandaloneConfiguration*>(configuration);
+   if (standaloneConfiguration)
+   {
+      const SelfIdentity* self = standaloneConfiguration->GetAgent();
+      displayName = self->name;
+      emailAddress = self->email;
+      smtpServer = self->emailSmtpServer;
+      smtpPort = self->emailSmtpPort;
+      password = self->emailPassword;
+      useSsl = self->emailUseSsl;
 
-    isHtml = configuration->IsReportHtml();
-    destEmail = configuration->GetMasterEmail();
-    cc = string("");
-    bcc = string("");
+      isHtml = standaloneConfiguration->IsReportHtml();
+      destEmail = standaloneConfiguration->GetMasterEmail();
+      cc = string("");
+      bcc = string("");
+   }
 }
 
 void AbstractEmailReportDispatcher::SetOutputDebugInformationOnFailure(const bool value)
