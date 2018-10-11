@@ -14,7 +14,7 @@ public:
    Model();
    virtual ~Model();
 
-   void SetConfigurationManager(TaskManagerConfiguration* _configuration);
+   void SetConfigurationType(const ConfigurationType& type);
 
    bool LoadConfiguration(const std::string& file,
                           std::vector<std::string>& errors);

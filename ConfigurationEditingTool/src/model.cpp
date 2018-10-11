@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Model::Model() : configuration(NULL)
+Model::Model() : configuration(new TaskManagerConfiguration())
 {
 }
 
@@ -14,9 +14,9 @@ Model::~Model()
    delete configuration;
 }
 
-void Model::SetConfigurationManager(TaskManagerConfiguration* _configuration)
+void Model::SetConfigurationType(const ConfigurationType& type)
 {
-   configuration = _configuration;
+   configuration->ChangeConfigurationType(type);
 }
 
 bool Model::LoadConfiguration(const std::string& file, std::vector<std::string>& errors)

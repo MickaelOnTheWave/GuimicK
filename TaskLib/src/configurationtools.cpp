@@ -1,6 +1,5 @@
 #include "configurationtools.h"
 
-#include <fstream>
 #include "configurationobject.h"
 #include "jobfactory.h"
 
@@ -35,15 +34,6 @@ void ConfigurationTools::SaveJobListToFile(ofstream& file,
    }
 
    file << "}" << endl;
-}
-
-template <class T>
-void ConfigurationTools::SaveValueToFile(ofstream& file,
-                                         const std::string& name,
-                                         const T value)
-{
-   const string tab = "\t";
-   file << tab << name << " = \"" << value << "\";" << endl;
 }
 
 bool ConfigurationTools::GetBooleanValue(const string &strValue,

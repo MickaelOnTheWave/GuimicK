@@ -6,6 +6,10 @@ AbstractTypeConfiguration::AbstractTypeConfiguration() : hasFatalError(false)
 {
 }
 
+AbstractTypeConfiguration::~AbstractTypeConfiguration()
+{
+}
+
 bool AbstractTypeConfiguration::Load(ConfigurationParser& parser,
                                      vector<string>& errorMessages)
 {

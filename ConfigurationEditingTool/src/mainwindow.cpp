@@ -49,7 +49,6 @@ MainWindow::MainWindow(QWidget *parent) :
    ui->jobListView->setResizeMode(QListView::Adjust);
    ui->checkBackupsButton->setVisible(false);
 
-   model.SetConfigurationManager(new TaskManagerConfiguration());//CreateConfigurationManager());
    model.SetDefaultServerOptions();
 
    OpenStandardFile();
@@ -70,6 +69,7 @@ void MainWindow::on_actionNew_triggered()
    model.ClearJobs();
    UpdateJobListWidget();
    configurationType = ChooseConfigurationType();
+   model.SetConfigurationType(configurationType);
 }
 
 void MainWindow::on_actionOpen_triggered()

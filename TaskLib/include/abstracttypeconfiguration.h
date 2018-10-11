@@ -11,6 +11,7 @@ class AbstractTypeConfiguration
 {
 public:
    AbstractTypeConfiguration();
+   virtual ~AbstractTypeConfiguration();
 
    virtual bool Load(ConfigurationParser& parser,
                      std::vector<std::string> &errorMessages);

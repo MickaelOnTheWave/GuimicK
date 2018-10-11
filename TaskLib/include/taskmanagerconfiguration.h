@@ -25,6 +25,7 @@ public:
 
    AbstractTypeConfiguration* GetTypeConfiguration();
 
+   void ChangeConfigurationType(const ConfigurationType& type);
 
 private:
    void CreateTypeConfiguration();

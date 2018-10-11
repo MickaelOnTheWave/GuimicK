@@ -1,3 +1,11 @@
+10/10/2018 (1.5h)
+   Compile errors resolved. Also resolved a crash with jobs being deleted twice.
+	Now there is an issue where configuration is always client... Resolve the issue.
+	There is now a crash with StandaloneConfiguration without valid client...
+Next planned work:
+   - Resolve crashes and check Editor works as expected
+	- Check Tool : should compile and run
+
 08/10/2018 (1.5h)
    Resolving compile errors. Most of them are now resolved, but there is one
 	strange link error.

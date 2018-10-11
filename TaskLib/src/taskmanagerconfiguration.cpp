@@ -48,11 +48,16 @@ AbstractTypeConfiguration* TaskManagerConfiguration::GetTypeConfiguration()
    return typeConfiguration;
 }
 
+void TaskManagerConfiguration::ChangeConfigurationType(const ConfigurationType& type)
+{
+   delete typeConfiguration;
+   typeConfiguration = CreateConfigurationManager(type);
+}
+
 void TaskManagerConfiguration::CreateTypeConfiguration()
 {
    const ConfigurationType type = FindConfigurationType();
-   delete typeConfiguration;
-   typeConfiguration = CreateConfigurationManager(type);
+   ChangeConfigurationType(type);
 }
 
 ConfigurationType TaskManagerConfiguration::FindConfigurationType()

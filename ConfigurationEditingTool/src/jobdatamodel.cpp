@@ -42,8 +42,6 @@ QVariant JobDataModel::data(const QModelIndex &index, int role) const
 
 void JobDataModel::Clear()
 {
-   for (auto it : jobs)
-      delete it;
    jobs.clear();
 }
 

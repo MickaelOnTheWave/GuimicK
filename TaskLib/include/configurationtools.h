@@ -1,6 +1,7 @@
 #ifndef CONFIGURATIONTOOLS_H
 #define CONFIGURATIONTOOLS_H
 
+#include <fstream>
 #include <list>
 #include <string>
 
@@ -15,7 +16,11 @@ public:
    template <class T>
    static void SaveValueToFile(std::ofstream& file,
                                const std::string& name,
-                               const T value);
+                               const T value)
+   {
+      const std::string tab = "\t";
+      file << tab << name << " = \"" << value << "\";" << std::endl;
+   }
 
    static void SaveJobListToFile(std::ofstream& file,
                                  const std::list<AbstractJob*>& jobList);
