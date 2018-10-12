@@ -1,3 +1,7 @@
+12/10/2018 (10.6)
+   Fixed crashes. Editor is now working :-)
+
+
 10/10/2018 (1.5h)
    Compile errors resolved. Also resolved a crash with jobs being deleted twice.
 	Now there is an issue where configuration is always client... Resolve the issue.

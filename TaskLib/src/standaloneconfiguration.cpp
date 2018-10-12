@@ -20,7 +20,7 @@ string StandaloneConfiguration::MsgOneClientSupported = "only one client is supp
 
 StandaloneConfiguration::StandaloneConfiguration()
    : AbstractTypeConfiguration(),
-     reportCreator(NULL), self(NULL), client(NULL),
+     client(NULL), reportCreator(NULL), self(NULL),
      reportType(""), cssFile(""),
      masterEmail(""), reportDispatching("email"), shutdown(true)
 {
@@ -46,6 +46,9 @@ void StandaloneConfiguration::GetJobList(std::list<AbstractJob*>& _jobList)
 
 void StandaloneConfiguration::SetJobList(const std::vector<AbstractJob*>& _jobList)
 {
+   if (client == NULL)
+      CreateDefaultClient();
+
    client->ClearJobList();
 
    vector<AbstractJob*>::const_iterator it=_jobList.begin();
@@ -221,6 +224,9 @@ bool StandaloneConfiguration::IsConfigurationConsistent(vector<string>& errorMes
 
 void StandaloneConfiguration::SaveAgentToOpenedFile(ofstream& file)
 {
+   if (self == NULL)
+      CreateDefaultSelfIdentity();
+
    file << "Agent" << endl;
    file << "{" << endl;
    ConfigurationTools::SaveValueToFile(file, "Name", self->name);
@@ -238,7 +244,6 @@ void StandaloneConfiguration::SaveAgentToOpenedFile(ofstream& file)
 
 void StandaloneConfiguration::SaveClientToOpenedFile(ofstream& file)
 {
-   ConfigurationTools evadeLinkError;
    file << "Client" << endl;
    file << "{" << endl;
    ConfigurationTools::SaveValueToFile(file, "Name", "Client"); //TODO : put real name
@@ -334,5 +339,16 @@ AbstractReportCreator *StandaloneConfiguration::CreateReportObject(const string&
 
 bool StandaloneConfiguration::IsEmailDataComplete() const
 {
-    return (self->HasValidEmailData() && masterEmail != "");
+   return (self->HasValidEmailData() && masterEmail != "");
+}
+
+void StandaloneConfiguration::CreateDefaultClient()
+{
+   client = new Client("Default Client");
+}
+
+void StandaloneConfiguration::CreateDefaultSelfIdentity()
+{
+   self = new SelfIdentity();
+   self->name = "DefaultAgent";
 }

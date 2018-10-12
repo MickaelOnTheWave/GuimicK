@@ -72,6 +72,9 @@ private:
 
    bool IsEmailDataComplete() const;
 
+   void CreateDefaultClient();
+   void CreateDefaultSelfIdentity();
+
    AbstractReportCreator* reportCreator;
    SelfIdentity* self;
    std::string reportType;
