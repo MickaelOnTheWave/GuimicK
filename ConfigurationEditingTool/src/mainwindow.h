@@ -31,7 +31,9 @@ private slots:
 
    void on_actionSave_triggered();
 
-   void on_actionClose_triggered();
+   void on_actionSave_As_triggered();
+
+   void on_actionQuit_triggered();
 
    void on_upButton_clicked();
 
@@ -70,9 +72,13 @@ private slots:
    void on_checkBackupsButton_clicked();
 
 private:
+   void MoveToScreenCenter();
+
    void OpenStandardFile();
    void OpenFile(const QString& filename,
                  const bool showStatusIfOk);
+   void SaveFile(const QString& filename);
+
    void UpdateJobListWidget();
 
    void InsertNewJob(AbstractJob* job);
@@ -100,11 +106,18 @@ private:
 
    ConfigurationType ChooseConfigurationType() const;
 
+   void UpdateModificationStatus();
+
+   QString CreateWindowTitle() const;
+
    Ui::MainWindow *ui;
    Model model;
    JobDataModel jobListModel;
    ConfigurationType configurationType;
    bool restrictToStandaloneMode = false;
+
+   bool hasConfigurationChanged = false;
+   QString currentConfigurationFile = "";
 };
 
 #endif // MAINWINDOW_H

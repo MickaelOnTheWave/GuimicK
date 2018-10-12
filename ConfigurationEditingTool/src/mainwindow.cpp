@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMenu>
 
@@ -49,6 +50,8 @@ MainWindow::MainWindow(QWidget *parent) :
    ui->jobListView->setResizeMode(QListView::Adjust);
    ui->checkBackupsButton->setVisible(false);
 
+   MoveToScreenCenter();
+
    model.SetDefaultServerOptions();
 
    OpenStandardFile();
@@ -70,13 +73,17 @@ void MainWindow::on_actionNew_triggered()
    UpdateJobListWidget();
    configurationType = ChooseConfigurationType();
    model.SetConfigurationType(configurationType);
+
+   currentConfigurationFile = "";
+   hasConfigurationChanged = false;
+   UpdateModificationStatus();
 }
 
 void MainWindow::on_actionOpen_triggered()
 {
    QString filename = QFileDialog::getOpenFileName(
                          this, "Choose a configuration file to open",
-                         "/home", "Configuration files (*)");
+                         QDir::homePath(), "Configuration files (*)");
 
    if (filename != "")
       OpenFile(filename, true);
@@ -84,18 +91,26 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_triggered()
 {
+   if (currentConfigurationFile != "")
+      SaveFile(currentConfigurationFile);
+   else
+      on_actionSave_As_triggered();
+}
+
+void MainWindow::on_actionSave_As_triggered()
+{
    QString filename = QFileDialog::getSaveFileName(
                          this, "Choose a file to save",
-                         "/home", "Configuration files (*)");
+                         QDir::homePath(), "Configuration files (*)");
 
    if (filename != "")
    {
-      model.SetJobs(jobListModel.GetJobs());
-      model.SaveConfiguration(filename.toStdString());
+      currentConfigurationFile = filename;
+      SaveFile(filename);
    }
 }
 
-void MainWindow::on_actionClose_triggered()
+void MainWindow::on_actionQuit_triggered()
 {
    close();
 }
@@ -122,6 +137,8 @@ void MainWindow::InsertNewJob(AbstractJob* job)
    ui->jobListView->setCurrentIndex(jobListModel.index(insertIndex));
 
    ForceJobListViewUpdate();
+   hasConfigurationChanged = true;
+   UpdateModificationStatus();
 }
 
 void MainWindow::MoveItem(const int currentIndex, const int newIndex)
@@ -133,6 +150,8 @@ void MainWindow::MoveItem(const int currentIndex, const int newIndex)
    MoveDelegates(currentIndex, newIndex);
    ui->jobListView->setCurrentIndex(jobListModel.index(newIndex));
    ForceJobListViewUpdate();
+   hasConfigurationChanged = true;
+   UpdateModificationStatus();
 }
 
 void MainWindow::MoveDelegates(const int currentIndex, const int newIndex)
@@ -232,6 +251,8 @@ void MainWindow::on_deleteButton_clicked()
       UpdateRowDelegatesFromTop(currentIndex);
       jobListModel.removeRow(currentIndex);
       ForceJobListViewUpdate();
+      hasConfigurationChanged = true;
+      UpdateModificationStatus();
    }
 }
 
@@ -251,11 +272,23 @@ void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
 
    if (showStatusIfOk || !isStatusFullOk)
       ConfigurationCheckDialog::Show(!isUsable, errors);
+
    if (isUsable)
    {
       UpdateJobListWidget();
       configurationType = model.GetConfigurationType();
+      currentConfigurationFile = filename;
+      hasConfigurationChanged = false;
+      UpdateModificationStatus();
    }
+}
+
+void MainWindow::SaveFile(const QString& filename)
+{
+   model.SetJobs(jobListModel.GetJobs());
+   model.SaveConfiguration(filename.toStdString());
+   hasConfigurationChanged = false;
+   UpdateModificationStatus();
 }
 
 void MainWindow::on_actionWake_triggered()
@@ -358,6 +391,15 @@ void MainWindow::on_checkBackupsButton_clicked()
    RestoreBackup(backupJob, backupFolderToRestore, backupTimeIndexToRestore);
 }
 
+void MainWindow::MoveToScreenCenter()
+{
+   QDesktopWidget desktop;
+   const QRect screenArea = desktop.availableGeometry();
+   const QRect mainWindowArea = geometry();
+   const QPoint targetPosition = screenArea.center() - mainWindowArea.center();
+   move(targetPosition);
+}
+
 QString MainWindow::GetBackupFolder(AbstractBackupJob* job) const
 {
    QString selectedBackupFolder("");
@@ -420,3 +462,27 @@ ConfigurationType MainWindow::ChooseConfigurationType() const
       return dialog.GetChosenType();
    }
 }
+
+void MainWindow::UpdateModificationStatus()
+{
+   ui->actionSave->setEnabled(hasConfigurationChanged);
+   setWindowTitle(CreateWindowTitle());
+}
+
+QString MainWindow::CreateWindowTitle() const
+{
+   const QString separator = " - ";
+   const QString modificationMarker = "*";
+   QString newWindowTitle = "Configuration Editing Tool";
+   const bool isValidFile = (currentConfigurationFile != "");
+   if (hasConfigurationChanged || isValidFile)
+   {
+      newWindowTitle += separator;
+      if (isValidFile)
+         newWindowTitle += currentConfigurationFile;
+      if (hasConfigurationChanged)
+         newWindowTitle += modificationMarker;
+   }
+   return newWindowTitle;
+}
+
