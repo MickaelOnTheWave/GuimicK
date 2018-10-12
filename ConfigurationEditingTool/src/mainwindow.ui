@@ -130,8 +130,15 @@
     <addaction name="actionCustom_command"/>
     <addaction name="actionCustom_command_client"/>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionGeneral"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAdd_Job"/>
+   <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -223,6 +230,11 @@
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionGeneral">
+   <property name="text">
+    <string>General</string>
    </property>
   </action>
  </widget>

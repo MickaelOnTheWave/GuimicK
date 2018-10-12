@@ -1,4 +1,4 @@
-12/10/2018 (10.6)
+12/10/2018 (4.3h)
    Fixed crashes. Editor is now working :-) Fixed some minor bugs in it too.
 	Now going for some GUI improvements in Editor Tool. First, opening a file
 	should be more explicit, along with having to save modifications.
@@ -9,6 +9,13 @@
 	Trying to find out... Fixed it, an improper add reference instead of clone.
 	Now adding change detection for property changing in jobs.
 	Added change detection and proper close handler for when pressing "X" button.
+	Created proper Settings dialog, saving data and only available when applicable
+	(not in Client mode). Tested and working : it saves data as expected :-)
+Next planned work:
+   - Resolved crash in global test suite
+	- Check Tool : compile & run
+	- Check Editor & Tool on Windows
+	- Add support for Windows jobs
 
 10/10/2018 (1.5h)
    Compile errors resolved. Also resolved a crash with jobs being deleted twice.

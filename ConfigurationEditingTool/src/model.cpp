@@ -58,6 +58,22 @@ void Model::ClearJobs()
    configuration->GetTypeConfiguration()->ClearJobList();
 }
 
+SelfIdentity* Model::GetAgent()
+{
+   auto typedConf = dynamic_cast<StandaloneConfiguration*>(
+                       configuration->GetTypeConfiguration()
+                       );
+   return (typedConf) ? typedConf->GetAgent() : nullptr;
+}
+
+Client*Model::GetClient()
+{
+   auto typedConf = dynamic_cast<StandaloneConfiguration*>(
+                       configuration->GetTypeConfiguration()
+                       );
+   return (typedConf) ? typedConf->GetClient() : nullptr;
+}
+
 SelfIdentity* Model::CreateDefaultAgent()
 {
    SelfIdentity* agent = new SelfIdentity();

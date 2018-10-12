@@ -38,6 +38,10 @@ private slots:
 
    void on_actionQuit_triggered();
 
+   void on_actionGeneral_triggered();
+
+   void on_actionAbout_triggered();
+
    void on_upButton_clicked();
 
    void on_downButton_clicked();
@@ -65,8 +69,6 @@ private slots:
    void on_actionZip_Copy_triggered();
 
    void on_actionDisk_space_check_triggered();
-
-   void on_actionAbout_triggered();
 
    void on_actionCustom_command_client_triggered();
 
@@ -113,6 +115,8 @@ private:
    void UpdateModificationStatus();
 
    QString CreateWindowTitle() const;
+
+   void UpdateUiOnFileChange(const QString& newFile);
 
    Ui::MainWindow *ui;
    Model model;

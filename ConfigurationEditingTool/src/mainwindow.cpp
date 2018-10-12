@@ -18,6 +18,7 @@
 #include "jobeditdialogfactory.h"
 #include "selectbackupfolderdialog.h"
 #include "serverconfiguration.h"
+#include "settingsdialog.h"
 
 #include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
@@ -79,14 +80,11 @@ void MainWindow::on_actionNew_triggered()
    if (!proceed)
       return;
 
-   model.ClearJobs();
-   UpdateJobListWidget();
    configurationType = ChooseConfigurationType();
    model.SetConfigurationType(configurationType);
+   model.ClearJobs();
 
-   currentConfigurationFile = "";
-   hasConfigurationChanged = false;
-   UpdateModificationStatus();
+   UpdateUiOnFileChange("");
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -127,6 +125,18 @@ void MainWindow::on_actionSave_As_triggered()
 void MainWindow::on_actionQuit_triggered()
 {
    QuitApplication();
+}
+
+void MainWindow::on_actionGeneral_triggered()
+{
+   SettingsDialog dialog(model.GetClient(), model.GetAgent(), this);
+   dialog.exec();
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+   AboutDialog dialog(version, configurationType);
+   dialog.exec();
 }
 
 void MainWindow::UpdateJobListWidget()
@@ -289,11 +299,8 @@ void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
 
    if (isUsable)
    {
-      UpdateJobListWidget();
       configurationType = model.GetConfigurationType();
-      currentConfigurationFile = filename;
-      hasConfigurationChanged = false;
-      UpdateModificationStatus();
+      UpdateUiOnFileChange(filename);
    }
 }
 
@@ -377,12 +384,6 @@ void MainWindow::on_actionZip_Copy_triggered()
 void MainWindow::on_actionDisk_space_check_triggered()
 {
     InsertNewJob(new LinuxFreeSpaceCheckJob());
-}
-
-void MainWindow::on_actionAbout_triggered()
-{
-   AboutDialog dialog(version, configurationType);
-   dialog.exec();
 }
 
 void MainWindow::on_actionCustom_command_client_triggered()
@@ -518,3 +519,13 @@ QString MainWindow::CreateWindowTitle() const
    return newWindowTitle;
 }
 
+void MainWindow::UpdateUiOnFileChange(const QString& newFile)
+{
+   UpdateJobListWidget();
+   const bool isMenuVisible = (configurationType != ConfigurationType::Client);
+   ui->menuSettings->menuAction()->setVisible(isMenuVisible);
+
+   currentConfigurationFile = newFile;
+   hasConfigurationChanged = false;
+   UpdateModificationStatus();
+}

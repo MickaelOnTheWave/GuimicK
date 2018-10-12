@@ -20,7 +20,7 @@ string StandaloneConfiguration::MsgOneClientSupported = "only one client is supp
 
 StandaloneConfiguration::StandaloneConfiguration()
    : AbstractTypeConfiguration(),
-     client(NULL), reportCreator(NULL), self(NULL),
+     client(new Client()), reportCreator(NULL), self(new SelfIdentity()),
      reportType(""), cssFile(""),
      masterEmail(""), reportDispatching("email"), shutdown(true)
 {
@@ -51,9 +51,6 @@ void StandaloneConfiguration::GetJobList(std::list<AbstractJob*>& _jobList)
 
 void StandaloneConfiguration::SetJobList(const std::vector<AbstractJob*>& _jobList)
 {
-   if (client == NULL)
-      CreateDefaultClient();
-
    client->ClearJobList();
 
    vector<AbstractJob*>::const_iterator it=_jobList.begin();
@@ -94,7 +91,7 @@ AbstractReportCreator *StandaloneConfiguration::GetReportCreator() const
     return reportCreator;
 }
 
-const SelfIdentity *StandaloneConfiguration::GetAgent() const
+SelfIdentity *StandaloneConfiguration::GetAgent() const
 {
    return self;
 }
@@ -133,6 +130,11 @@ bool StandaloneConfiguration::IsReportHtml() const
 void StandaloneConfiguration::FillRootObjects(const list<ConfigurationObject*>& objectList,
                                               vector<string>& errorMessages)
 {
+   delete client;
+   delete self;
+   client = NULL;
+   self = NULL;
+
    list<ConfigurationObject*>::const_iterator it = objectList.begin();
    list<ConfigurationObject*>::const_iterator end = objectList.end();
    for (; it!=end; it++)
@@ -229,9 +231,6 @@ bool StandaloneConfiguration::IsConfigurationConsistent(vector<string>& errorMes
 
 void StandaloneConfiguration::SaveAgentToOpenedFile(ofstream& file)
 {
-   if (self == NULL)
-      CreateDefaultSelfIdentity();
-
    file << "Agent" << endl;
    file << "{" << endl;
    ConfigurationTools::SaveValueToFile(file, "Name", self->name);
@@ -345,15 +344,4 @@ AbstractReportCreator *StandaloneConfiguration::CreateReportObject(const string&
 bool StandaloneConfiguration::IsEmailDataComplete() const
 {
    return (self->HasValidEmailData() && masterEmail != "");
-}
-
-void StandaloneConfiguration::CreateDefaultClient()
-{
-   client = new Client("Default Client");
-}
-
-void StandaloneConfiguration::CreateDefaultSelfIdentity()
-{
-   self = new SelfIdentity();
-   self->name = "DefaultAgent";
 }

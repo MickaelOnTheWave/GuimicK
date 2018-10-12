@@ -38,7 +38,7 @@ public:
 
    AbstractReportCreator* GetReportCreator(void) const;
 
-   const SelfIdentity *GetAgent() const;
+   SelfIdentity* GetAgent() const;
    void SetAgent(SelfIdentity *agent);
 
    Client* GetClient();
@@ -73,9 +73,6 @@ private:
    AbstractReportCreator* CreateReportObject(const std::string& type) const;
 
    bool IsEmailDataComplete() const;
-
-   void CreateDefaultClient();
-   void CreateDefaultSelfIdentity();
 
    AbstractReportCreator* reportCreator;
    SelfIdentity* self;

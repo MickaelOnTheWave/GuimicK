@@ -28,6 +28,9 @@ public:
 
    void ClearJobs();
 
+   SelfIdentity* GetAgent();
+   Client* GetClient();
+
 private:
    SelfIdentity* CreateDefaultAgent();
 
