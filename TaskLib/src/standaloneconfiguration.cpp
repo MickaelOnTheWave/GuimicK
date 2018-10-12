@@ -59,7 +59,7 @@ void StandaloneConfiguration::SetJobList(const std::vector<AbstractJob*>& _jobLi
    vector<AbstractJob*>::const_iterator it=_jobList.begin();
    vector<AbstractJob*>::const_iterator end=_jobList.end();
    for (; it!=end; ++it)
-      client->AddJob(*it);
+      client->AddJob((*it)->Clone());
 }
 
 void StandaloneConfiguration::ClearJobList()

@@ -45,7 +45,7 @@ void JobDataModel::Clear()
    jobs.clear();
 }
 
-void JobDataModel::AddJobs(const std::list<AbstractJob*>& _jobs)
+void JobDataModel::AddJobs(const list<AbstractJob*>& _jobs)
 {
    copy(_jobs.begin(), _jobs.end(), back_inserter(jobs));
 }
