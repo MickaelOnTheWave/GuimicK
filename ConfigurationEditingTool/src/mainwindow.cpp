@@ -68,6 +68,11 @@ void MainWindow::RestrictToStandaloneMode()
    restrictToStandaloneMode = true;
 }
 
+void MainWindow::closeEvent(QCloseEvent*)
+{
+   QuitApplication();
+}
+
 void MainWindow::on_actionNew_triggered()
 {
    const bool proceed = ShouldDiscardCurrentChanges();
@@ -121,9 +126,7 @@ void MainWindow::on_actionSave_As_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-   const bool proceed = ShouldDiscardCurrentChanges();
-   if (proceed)
-      close();
+   QuitApplication();
 }
 
 void MainWindow::UpdateJobListWidget()
@@ -302,6 +305,13 @@ void MainWindow::SaveFile(const QString& filename)
    UpdateModificationStatus();
 }
 
+void MainWindow::QuitApplication()
+{
+   const bool proceed = ShouldDiscardCurrentChanges();
+   if (proceed)
+      close();
+}
+
 void MainWindow::on_actionWake_triggered()
 {
    InsertNewJob(new LibWakeJob());
@@ -324,7 +334,12 @@ void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
 
    if (editDialog)
    {
-      editDialog->exec();
+      const int result = editDialog->exec();
+      if (result == QDialog::Accepted)
+      {
+         hasConfigurationChanged = true;
+         UpdateModificationStatus();
+      }
       delete editDialog;
    }
 }

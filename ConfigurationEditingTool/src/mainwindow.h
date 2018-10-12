@@ -24,6 +24,9 @@ public:
 
    void RestrictToStandaloneMode();
 
+protected:
+   void closeEvent(QCloseEvent *event) override;
+
 private slots:
    void on_actionNew_triggered();
 
@@ -80,6 +83,7 @@ private:
    void OpenFile(const QString& filename,
                  const bool showStatusIfOk);
    void SaveFile(const QString& filename);
+   void QuitApplication();
 
    void UpdateJobListWidget();
 

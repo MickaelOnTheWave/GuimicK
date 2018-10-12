@@ -6,8 +6,9 @@
 	Improved window placement.
 	There is a crash on second save, this is a memory issue with lists of jobs.
 	There is a reference somewhere where a copy should be done.
-	Trying to find out...
-
+	Trying to find out... Fixed it, an improper add reference instead of clone.
+	Now adding change detection for property changing in jobs.
+	Added change detection and proper close handler for when pressing "X" button.
 
 10/10/2018 (1.5h)
    Compile errors resolved. Also resolved a crash with jobs being deleted twice.
