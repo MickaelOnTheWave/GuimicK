@@ -1,5 +1,12 @@
 12/10/2018 (10.6)
-   Fixed crashes. Editor is now working :-)
+   Fixed crashes. Editor is now working :-) Fixed some minor bugs in it too.
+	Now going for some GUI improvements in Editor Tool. First, opening a file
+	should be more explicit, along with having to save modifications.
+	Implemented first change/name detection. Added Save As command.
+	Improved window placement.
+	There is a crash on second save, this is a memory issue with lists of jobs.
+	There is a reference somewhere where a copy should be done.
+	Trying to find out...
 
 
 10/10/2018 (1.5h)

@@ -74,6 +74,8 @@ private slots:
 private:
    void MoveToScreenCenter();
 
+   bool ShouldDiscardCurrentChanges();
+
    void OpenStandardFile();
    void OpenFile(const QString& filename,
                  const bool showStatusIfOk);
@@ -101,8 +103,6 @@ private:
    int GetBackupTimeIndex(AbstractBackupJob* job, const QString& backupFolder) const;
 
    void RestoreBackup(AbstractBackupJob* job, const QString& backupFolder, const int timeIndex) const;
-
-   AbstractTypeConfiguration* CreateConfigurationManager();
 
    ConfigurationType ChooseConfigurationType() const;
 

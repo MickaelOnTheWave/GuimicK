@@ -7,6 +7,7 @@
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMenu>
+#include <QMessageBox>
 
 #include "aboutdialog.h"
 #include "clientjobsconfiguration.h"
@@ -69,6 +70,10 @@ void MainWindow::RestrictToStandaloneMode()
 
 void MainWindow::on_actionNew_triggered()
 {
+   const bool proceed = ShouldDiscardCurrentChanges();
+   if (!proceed)
+      return;
+
    model.ClearJobs();
    UpdateJobListWidget();
    configurationType = ChooseConfigurationType();
@@ -81,6 +86,10 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
+   const bool proceed = ShouldDiscardCurrentChanges();
+   if (!proceed)
+      return;
+
    QString filename = QFileDialog::getOpenFileName(
                          this, "Choose a configuration file to open",
                          QDir::homePath(), "Configuration files (*)");
@@ -112,7 +121,9 @@ void MainWindow::on_actionSave_As_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-   close();
+   const bool proceed = ShouldDiscardCurrentChanges();
+   if (proceed)
+      close();
 }
 
 void MainWindow::UpdateJobListWidget()
@@ -400,6 +411,22 @@ void MainWindow::MoveToScreenCenter()
    move(targetPosition);
 }
 
+bool MainWindow::ShouldDiscardCurrentChanges()
+{
+   if (hasConfigurationChanged)
+   {
+      const int button = QMessageBox::warning(this, tr("Configuration Editing Tool"),
+                                     tr("Current changes will be discared.\n"
+                                        "Do you want to continue?"),
+                                     QMessageBox::Yes | QMessageBox::No,
+                                     QMessageBox::No
+                                     );
+      return (button == QMessageBox::Yes);
+   }
+   else
+      return true;
+}
+
 QString MainWindow::GetBackupFolder(AbstractBackupJob* job) const
 {
    QString selectedBackupFolder("");
@@ -439,16 +466,6 @@ void MainWindow::RestoreBackup(
    const BackupRestoreTarget target = {"192.168.1.256", "user", "userPassword"};
    if (folderName != "")
       job->RestoreBackupFromClient(parameters, target);
-}
-
-AbstractTypeConfiguration* MainWindow::CreateConfigurationManager()
-{
-   if (configurationType == ConfigurationType::Server)
-      return new ServerConfiguration();
-   else if (configurationType == ConfigurationType::Standalone)
-      return new StandaloneConfiguration();
-   else // Client
-      return new ClientJobsConfiguration();
 }
 
 ConfigurationType MainWindow::ChooseConfigurationType() const
