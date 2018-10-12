@@ -31,6 +31,11 @@ StandaloneConfiguration::~StandaloneConfiguration()
    delete self;
 }
 
+ConfigurationType StandaloneConfiguration::GetType() const
+{
+   return ConfigurationType::Standalone;
+}
+
 void StandaloneConfiguration::SaveToOpenedFile(ofstream& fileStream)
 {
    SaveAgentToOpenedFile(fileStream);

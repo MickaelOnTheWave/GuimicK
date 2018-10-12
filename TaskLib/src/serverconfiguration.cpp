@@ -39,6 +39,11 @@ ServerConfiguration::~ServerConfiguration()
 {
 }
 
+ConfigurationType ServerConfiguration::GetType() const
+{
+   return ConfigurationType::Server;
+}
+
 void ServerConfiguration::CreateAgent(ConfigurationObject* confObject,
                                       std::vector<string>& errorMessages)
 {

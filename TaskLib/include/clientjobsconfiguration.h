@@ -16,6 +16,8 @@ public:
 
    ClientJobsConfiguration(const int _debugOption = DebugOutput::UNDEFINED);
 
+   virtual ConfigurationType GetType() const;
+
    bool LoadFromBuffer(const std::string& buffer, std::vector<std::string> &errorMessages);
 
    virtual void SaveToOpenedFile(std::ofstream& fileStream);

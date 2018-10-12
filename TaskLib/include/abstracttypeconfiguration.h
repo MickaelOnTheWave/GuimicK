@@ -6,12 +6,15 @@
 
 #include "abstractjob.h"
 #include "configurationparser.h"
+#include "configurationtype.h"
 
 class AbstractTypeConfiguration
 {
 public:
    AbstractTypeConfiguration();
    virtual ~AbstractTypeConfiguration();
+
+   virtual ConfigurationType GetType() const = 0;
 
    virtual bool Load(ConfigurationParser& parser,
                      std::vector<std::string> &errorMessages);

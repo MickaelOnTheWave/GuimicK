@@ -21,6 +21,8 @@ public:
     ServerConfiguration();
     virtual ~ServerConfiguration();
 
+    virtual ConfigurationType GetType() const;
+
 protected:
     virtual void CreateAgent(ConfigurationObject* confObject,
                              std::vector<std::string>& errorMessages);

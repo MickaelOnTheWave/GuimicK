@@ -10,6 +10,7 @@ UserConsoleJob::UserConsoleJob()
     : ConsoleJob()
 {
    SetName("Console");
+   Initialize("", 0);
 }
 
 UserConsoleJob::UserConsoleJob(const std::string &_commandTitle,

@@ -16,6 +16,11 @@ ClientJobsConfiguration::ClientJobsConfiguration(const int _debugOption)
 {
 }
 
+ConfigurationType ClientJobsConfiguration::GetType() const
+{
+   return ConfigurationType::Client;
+}
+
 bool ClientJobsConfiguration::LoadFromBuffer(const string& buffer,
                                              std::vector<string>& errorMessages)
 {

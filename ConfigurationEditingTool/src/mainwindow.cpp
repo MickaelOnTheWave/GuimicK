@@ -36,7 +36,7 @@
 
 using namespace std;
 
-const string version = "0.6";
+const string version = "0.7";
 
 MainWindow::MainWindow(QWidget *parent) :
    QMainWindow(parent),
@@ -252,7 +252,10 @@ void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
    if (showStatusIfOk || !isStatusFullOk)
       ConfigurationCheckDialog::Show(!isUsable, errors);
    if (isUsable)
+   {
       UpdateJobListWidget();
+      configurationType = model.GetConfigurationType();
+   }
 }
 
 void MainWindow::on_actionWake_triggered()

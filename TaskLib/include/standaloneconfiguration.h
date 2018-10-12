@@ -18,6 +18,8 @@ public:
    StandaloneConfiguration();
    virtual ~StandaloneConfiguration();
 
+   virtual ConfigurationType GetType() const;
+
    virtual void SaveToOpenedFile(std::ofstream& fileStream);
 
    virtual void GetJobList(std::list<AbstractJob*>& _jobList);

@@ -14,6 +14,11 @@ Model::~Model()
    delete configuration;
 }
 
+ConfigurationType Model::GetConfigurationType() const
+{
+   return configuration->GetTypeConfiguration()->GetType();
+}
+
 void Model::SetConfigurationType(const ConfigurationType& type)
 {
    configuration->ChangeConfigurationType(type);

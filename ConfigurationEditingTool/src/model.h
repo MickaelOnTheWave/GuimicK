@@ -14,6 +14,7 @@ public:
    Model();
    virtual ~Model();
 
+   ConfigurationType GetConfigurationType() const;
    void SetConfigurationType(const ConfigurationType& type);
 
    bool LoadConfiguration(const std::string& file,
