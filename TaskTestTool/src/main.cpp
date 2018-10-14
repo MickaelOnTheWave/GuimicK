@@ -1,3 +1,4 @@
+#include <iostream>
 #include <unistd.h>
 
 #include "commandlinemanager.h"
@@ -26,12 +27,17 @@ int main(int argc, char* argv[])
 {
     if (FileTools::FolderExists(testingFolder) == false)
        FileTools::CreateFolder(testingFolder);
-    chdir(testingFolder.c_str());
-
 
     const int ALL_OK = 0;
     const int ERRORS = 1;
-    const int DID_NOT_RAN = 2;
+    const int DID_NOT_RUN = 2;
+
+    int result = chdir(testingFolder.c_str());
+    if (result != 0)
+    {
+       cout << "Can't chdir to folder " << testingFolder << endl;
+       return DID_NOT_RUN;
+    }
 
     CommandLineManager commandLine(argc, argv);
     commandLine.AddParameter("silent", "Runs in silent mode, no output on console.");
@@ -39,9 +45,9 @@ int main(int argc, char* argv[])
     commandLine.EnableHelpCommand();
 
     if (commandLine.HandleUnknownParameters())
-        return DID_NOT_RAN;
+        return DID_NOT_RUN;
     else if (commandLine.HandleHelpCommand())
-        return DID_NOT_RAN;
+        return DID_NOT_RUN;
 
     vector<QObject*> tests;
     tests.reserve(100); // Some mysterious bug seems to happen if vector needs to be redimensioned
