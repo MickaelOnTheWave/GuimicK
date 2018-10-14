@@ -4,7 +4,7 @@
 #include <QDialog>
 
 #include "client.h"
-#include "SelfIdentity.h"
+#include "standaloneconfiguration.h"
 
 namespace Ui {
    class SettingsDialog;
@@ -15,7 +15,7 @@ class SettingsDialog : public QDialog
    Q_OBJECT
 
 public:
-   explicit SettingsDialog(Client* _client, SelfIdentity* _agent,
+   explicit SettingsDialog(StandaloneConfiguration* _configuration,
                            QWidget *parent = 0);
    ~SettingsDialog();
 
@@ -26,15 +26,22 @@ private slots:
 
 private:
    void SetDefaultValues();
+
+   void UpdateConfigurationFromUi();
    void UpdateAgentFromUi();
    void UpdateClientFromUi();
+   void UpdateReportTypeFromUi();
+   void UpdateReportDispatchingFromUi();
+
+   void UpdateUiFromConfiguration();
    void UpdateUiFromAgent();
    void UpdateUiFromClient();
+   void UpdateReportTypeFromConfiguration();
+   void UpdateReportDispatchingFromConfiguration();
 
    Ui::SettingsDialog *ui;
 
-   Client* client = nullptr;
-   SelfIdentity* agent = nullptr;
+   StandaloneConfiguration* configuration = nullptr;
 };
 
 #endif // SETTINGSDIALOG_H

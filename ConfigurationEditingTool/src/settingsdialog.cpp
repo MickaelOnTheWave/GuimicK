@@ -16,16 +16,15 @@ namespace
    }
 }
 
-SettingsDialog::SettingsDialog(Client* _client, SelfIdentity* _agent,
+SettingsDialog::SettingsDialog(StandaloneConfiguration* _configuration,
                                QWidget *parent) :
    QDialog(parent),
-   client(_client), agent(_agent),
+   configuration(_configuration),
    ui(new Ui::SettingsDialog)
 {
    ui->setupUi(this);
    SetDefaultValues();
-   UpdateUiFromAgent();
-   UpdateUiFromClient();
+   UpdateUiFromConfiguration();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -35,8 +34,7 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::on_exitButtonBox_accepted()
 {
-   UpdateAgentFromUi();
-   UpdateClientFromUi();
+   UpdateConfigurationFromUi();
    accept();
 }
 
@@ -47,14 +45,28 @@ void SettingsDialog::on_exitButtonBox_rejected()
 
 void SettingsDialog::SetDefaultValues()
 {
+   Client* client = configuration->GetClient();
+   SelfIdentity* agent = configuration->GetAgent();
    if (client->GetName() == "")
       client->SetName("Local Client");
    if (agent->name == "")
       agent->name = "Task Manager Agent";
 }
 
+void SettingsDialog::UpdateConfigurationFromUi()
+{
+   UpdateAgentFromUi();
+   UpdateClientFromUi();
+
+   UpdateReportTypeFromUi();
+   UpdateReportDispatchingFromUi();
+   configuration->SetLocalShutdown(ui->shutdownCheckBox->isChecked());
+   configuration->SetMasterEmail(GetValue(ui->masterEmailEdit));
+}
+
 void SettingsDialog::UpdateAgentFromUi()
 {
+   SelfIdentity* agent = configuration->GetAgent();
    agent->name = GetValue(ui->agentNameEdit);
    agent->email = GetValue(ui->emailEdit);
    agent->emailPassword = GetValue(ui->passwordEdit);
@@ -65,11 +77,47 @@ void SettingsDialog::UpdateAgentFromUi()
 
 void SettingsDialog::UpdateClientFromUi()
 {
-   client->SetName(GetValue(ui->clientNameEdit));
+   configuration->GetClient()->SetName(GetValue(ui->clientNameEdit));
+}
+
+void SettingsDialog::UpdateReportTypeFromUi()
+{
+   const QString uiReportType = ui->reportFormatBox->currentText();
+   string confReportType;
+   if (uiReportType == "HTML")
+      confReportType = "html";
+   else// if (uiReportType == "Plain Text")
+      confReportType = "text";
+
+   configuration->SetReportType(confReportType);
+}
+
+void SettingsDialog::UpdateReportDispatchingFromUi()
+{
+   const QString uiReportDispatching = ui->reportDispatchBox->currentText();
+   string confReportDispatching;
+   if (uiReportDispatching == "Email")
+      confReportDispatching = "email";
+   else// if (uiReportDispatching == "Console")
+      confReportDispatching = "console";
+
+   configuration->SetReportDispatching(confReportDispatching);
+}
+
+void SettingsDialog::UpdateUiFromConfiguration()
+{
+   UpdateUiFromAgent();
+   UpdateUiFromClient();
+
+   UpdateReportTypeFromConfiguration();
+   UpdateReportDispatchingFromConfiguration();
+   ui->shutdownCheckBox->setChecked(configuration->GetLocalShutdown());
+   SetValue(ui->masterEmailEdit, configuration->GetMasterEmail());
 }
 
 void SettingsDialog::UpdateUiFromAgent()
 {
+   SelfIdentity* agent = configuration->GetAgent();
    SetValue(ui->agentNameEdit, agent->name);
    SetValue(ui->emailEdit, agent->email);
    SetValue(ui->passwordEdit, agent->emailPassword);
@@ -80,5 +128,25 @@ void SettingsDialog::UpdateUiFromAgent()
 
 void SettingsDialog::UpdateUiFromClient()
 {
-   SetValue(ui->clientNameEdit, client->GetName());
+   SetValue(ui->clientNameEdit, configuration->GetClient()->GetName());
+}
+
+void SettingsDialog::UpdateReportTypeFromConfiguration()
+{
+   const string reportType = configuration->GetReportType();
+   if (reportType == "html")
+      ui->reportFormatBox->setCurrentIndex(1);
+   else // if (reportType == "text")
+      ui->reportFormatBox->setCurrentIndex(0);
+}
+
+void SettingsDialog::UpdateReportDispatchingFromConfiguration()
+{
+   const string reportDispatching = configuration->GetReportDispatching();
+   if (reportDispatching == "email")
+      ui->reportDispatchBox->setCurrentIndex(1);
+   else if (reportDispatching == "console")
+      ui->reportDispatchBox->setCurrentIndex(0);
+   else
+      ui->reportDispatchBox->setCurrentIndex(0);
 }

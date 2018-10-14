@@ -7,6 +7,7 @@
 
 #include "taskmanagerconfiguration.h"
 #include "SelfIdentity.h"
+#include "standaloneconfiguration.h"
 
 class Model
 {
@@ -30,6 +31,8 @@ public:
 
    SelfIdentity* GetAgent();
    Client* GetClient();
+
+   StandaloneConfiguration* GetTmpConfiguration();
 
 private:
    SelfIdentity* CreateDefaultAgent();

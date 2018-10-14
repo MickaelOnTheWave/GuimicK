@@ -21,7 +21,7 @@ string StandaloneConfiguration::MsgOneClientSupported = "only one client is supp
 StandaloneConfiguration::StandaloneConfiguration()
    : AbstractTypeConfiguration(),
      client(new Client()), reportCreator(NULL), self(new SelfIdentity()),
-     reportType(""), cssFile(""),
+     reportType("html"), cssFile(""),
      masterEmail(""), reportDispatching("email"), shutdown(true)
 {
 }
@@ -76,14 +76,40 @@ string StandaloneConfiguration::GetMasterEmail() const
    return masterEmail;
 }
 
+void StandaloneConfiguration::SetMasterEmail(const string& value)
+{
+   masterEmail = value;
+}
+
 bool StandaloneConfiguration::GetLocalShutdown() const
 {
    return shutdown;
 }
 
+void StandaloneConfiguration::SetLocalShutdown(const bool value)
+{
+   shutdown = value;
+}
+
 std::string StandaloneConfiguration::GetReportDispatching() const
 {
-    return reportDispatching;
+   return reportDispatching;
+}
+
+void StandaloneConfiguration::SetReportDispatching(const string& value)
+{
+   reportDispatching = value;
+}
+
+string StandaloneConfiguration::GetReportType() const
+{
+   return reportType;
+}
+
+void StandaloneConfiguration::SetReportType(const string& value)
+{
+   reportType = value;
+   ChangeReportCreator();
 }
 
 AbstractReportCreator *StandaloneConfiguration::GetReportCreator() const
@@ -274,7 +300,7 @@ void StandaloneConfiguration::SaveGlobalPropertiesToOpenedFile(ofstream& file)
 {
    file << "MasterEmail = \"" << masterEmail << "\";" << endl;
    file << "ReportDispatching = \"" << reportDispatching << "\";" << endl;
-   file << "ShutdownOnFinish = " << shutdown << ";" << endl;
+   file << "ShutdownOnFinish = " << (shutdown ? "true" : "false") << ";" << endl;
 }
 
 bool StandaloneConfiguration::CreateClient(ConfigurationObject *confObject,
@@ -307,7 +333,7 @@ void StandaloneConfiguration::CreateReport(ConfigurationObject *confObject,
                                            vector<string> &errorMessages)
 {
     reportType = confObject->GetFirstProperty("type", "param0");
-    reportCreator = CreateReportObject(reportType);
+    ChangeReportCreator();
     if (reportCreator == NULL)
     {
         string message = "Warning : unsupported \"";
@@ -330,14 +356,15 @@ void StandaloneConfiguration::CreateReport(ConfigurationObject *confObject,
     }
 }
 
-AbstractReportCreator *StandaloneConfiguration::CreateReportObject(const string& type) const
+void StandaloneConfiguration::ChangeReportCreator()
 {
-    if (type == "text")
-      return new TextReportCreator();
-    else if (type == "html")
-        return new HtmlReportCreator();
+   delete reportCreator;
+   if (reportType == "text")
+      reportCreator = new TextReportCreator();
+   else if (reportType == "html")
+      reportCreator = new HtmlReportCreator();
    else
-        return NULL;
+      reportCreator = NULL;
 }
 
 

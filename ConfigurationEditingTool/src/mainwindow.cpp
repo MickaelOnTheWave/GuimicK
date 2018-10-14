@@ -129,8 +129,13 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::on_actionGeneral_triggered()
 {
-   SettingsDialog dialog(model.GetClient(), model.GetAgent(), this);
-   dialog.exec();
+   SettingsDialog dialog(model.GetTmpConfiguration(), this);
+   const int result = dialog.exec();
+   if (result == QDialog::Accepted)
+   {
+      hasConfigurationChanged = true;
+      UpdateModificationStatus();
+   }
 }
 
 void MainWindow::on_actionAbout_triggered()

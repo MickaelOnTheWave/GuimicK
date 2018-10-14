@@ -31,11 +31,16 @@ public:
    virtual ClientWorkManager* BuildWorkList(const bool withProfiling) const;
 
    std::string GetMasterEmail() const;
+   void SetMasterEmail(const std::string& value);
 
    bool GetLocalShutdown() const;
+   void SetLocalShutdown(const bool value);
 
    std::string GetReportDispatching() const;
+   void SetReportDispatching(const std::string& value);
 
+   std::string GetReportType() const;
+   void SetReportType(const std::string& value);
    AbstractReportCreator* GetReportCreator(void) const;
 
    SelfIdentity* GetAgent() const;
@@ -70,7 +75,7 @@ private:
    void CreateReport(ConfigurationObject* confObject,
                      std::vector<std::string>& errorMessages);
 
-   AbstractReportCreator* CreateReportObject(const std::string& type) const;
+   void ChangeReportCreator();
 
    bool IsEmailDataComplete() const;
 

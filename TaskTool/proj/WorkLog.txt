@@ -1,3 +1,24 @@
+14/10/2018 (3.5h)
+   Crash is in TaskFeature tests. Removed a warning in test suite project,
+	and going for the crash. The crash is because ssh keypass is no longer
+	asked via separate window, so the ssh copy silently fails.
+	As ssh won't be used for the starter version, tests were simply disabled
+	and a TODO was created.
+	Going for tool now... Tool is working as expected.
+	Now checking Editor on Windows. It works fine. However, there are warnings
+	(Linux and Windows) that should be fixed : default reporttype should be html
+	and not empty, boolean should be true and not 1, emailsending should be set.
+	Refactoring settings window : using configuration instead of client/agent.
+	Adding access and setters.
+	Finished adding configuration for missing properties. Only ones missing now
+	are client properties, but they are not needed at the moment, they only
+	are usefull for server mode.
+Next planned work:
+   - Refactor : consider removing Model class and using Configuration directly
+	- Check tool on Windows. It should read & run correctly configurations
+	created by Tool (on Linux and Windows).
+	- Add support for Windows jobs
+
 12/10/2018 (4.3h)
    Fixed crashes. Editor is now working :-) Fixed some minor bugs in it too.
 	Now going for some GUI improvements in Editor Tool. First, opening a file
@@ -12,7 +33,7 @@
 	Created proper Settings dialog, saving data and only available when applicable
 	(not in Client mode). Tested and working : it saves data as expected :-)
 Next planned work:
-   - Resolved crash in global test suite
+   - Resolve crash in global test suite
 	- Check Tool : compile & run
 	- Check Editor & Tool on Windows
 	- Add support for Windows jobs

@@ -74,6 +74,14 @@ Client*Model::GetClient()
    return (typedConf) ? typedConf->GetClient() : nullptr;
 }
 
+StandaloneConfiguration*Model::GetTmpConfiguration()
+{
+   auto typedConf = dynamic_cast<StandaloneConfiguration*>(
+                       configuration->GetTypeConfiguration()
+                       );
+   return typedConf;
+}
+
 SelfIdentity* Model::CreateDefaultAgent()
 {
    SelfIdentity* agent = new SelfIdentity();
