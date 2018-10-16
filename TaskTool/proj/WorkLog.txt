@@ -7,7 +7,7 @@
 	- Find a better way for VM WIndows and Linux gits to communicate
 	- Create bat scripts to build windows versions
 	- Choose/use an installer for Windows
-	Checking git throught ssh...
+	Checking git throught ssh... It seems ok. Testing commit from Windows : 
 
 
 15/10/2018 (2.1h)
