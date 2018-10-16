@@ -1,10 +1,24 @@
-24/10/2018 (17.8-19.8)
+31/10/2018 (17.7)
+
+30/10/2018 (0.6h)
+   Added start menu entries with uninstall feature.
+
+29/10/2018 (0.6h)
+   Going for uninstall feature of Windows installer. Installed uninstall
+	feature, now trying to add Start menu entries.
+
+24/10/2018 (2.2h)
    Previous try with Windows SDK did not work. Reinstalled Cmake, did not
 	work either. Leaving this for now and going for installer.
 	Best candidates seem to be NSIS and InnoSetup. Going for for NSIS..
 	Created first simple install script. It copies binaries, and works!
 	Added Windows script to copy all required files, run nsis compiler
-	and create final installation package!
+	and create final installation package! Updated license with realistic data.
+Next planned work:
+   - Add TaskManager path to PATH env var in Windows install script
+	- Create uninstaller and proper start menu/reg entries
+	- Remove command line window from Editor on Windows
+	- Back to compiling from command line on Windows
 
 16/10/2018 (3.6h)
    It was easily possible to compile both tool and editor directly on
