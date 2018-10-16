@@ -16,9 +16,9 @@ ConfigurationTypeDialog::~ConfigurationTypeDialog()
 ConfigurationType ConfigurationTypeDialog::GetChosenType() const
 {
    if (ui->serverButton->isChecked())
-      return ConfigurationType::Server;
+      return ServerConfigurationType;
    else if (ui->clientButton->isChecked())
-      return ConfigurationType::Client;
+      return ClientConfigurationType;
    else //if (ui->standaloneButton->isChecked())
-      return ConfigurationType::Standalone;
+      return StandaloneConfigurationType;
 }

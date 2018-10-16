@@ -8,6 +8,11 @@
 	- Create bat scripts to build windows versions
 	- Choose/use an installer for Windows
 	Checking git throught ssh... It seems ok. Testing commit from Windows : 
+	Ok, but not as easy as first thought. Local version needs to be in
+	other branch while push is being done.
+	Now first improving current scripts organization... Moved global build
+	scripts to TaskManager script folder. Fixed issue with Synology
+	compilation (C++11 features in main code).
 
 
 15/10/2018 (2.1h)

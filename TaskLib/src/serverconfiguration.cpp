@@ -41,7 +41,7 @@ ServerConfiguration::~ServerConfiguration()
 
 ConfigurationType ServerConfiguration::GetType() const
 {
-   return ConfigurationType::Server;
+   return ServerConfigurationType;
 }
 
 void ServerConfiguration::CreateAgent(ConfigurationObject* confObject,

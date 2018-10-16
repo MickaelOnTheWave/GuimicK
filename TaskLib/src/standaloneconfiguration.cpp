@@ -33,7 +33,7 @@ StandaloneConfiguration::~StandaloneConfiguration()
 
 ConfigurationType StandaloneConfiguration::GetType() const
 {
-   return ConfigurationType::Standalone;
+   return StandaloneConfigurationType;
 }
 
 void StandaloneConfiguration::SaveToOpenedFile(ofstream& fileStream)
