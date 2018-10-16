@@ -9,11 +9,11 @@
 #include "SelfIdentity.h"
 #include "standaloneconfiguration.h"
 
-class Model
+class TooledConfiguration
 {
 public:
-   Model();
-   virtual ~Model();
+   TooledConfiguration();
+   virtual ~TooledConfiguration();
 
    ConfigurationType GetConfigurationType() const;
    void SetConfigurationType(const ConfigurationType& type);

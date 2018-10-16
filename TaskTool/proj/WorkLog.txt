@@ -1,3 +1,9 @@
+15/10/2018 (17.3)
+   Model class has relevance, even if it is very limited. Renamed it to
+	TooledConfiguration for better understanding.
+	Improved ConsoleDispatcher to have attachments written to filesystem.
+	Checking tool : it works as expected on Linux. Now testing on Windows...
+
 14/10/2018 (3.5h)
    Crash is in TaskFeature tests. Removed a warning in test suite project,
 	and going for the crash. The crash is because ssh keypass is no longer

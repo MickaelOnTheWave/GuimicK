@@ -1,6 +1,7 @@
 #include "consolereportdispatcher.h"
 
 #include <iostream>
+#include "filetools.h"
 
 using namespace std;
 
@@ -33,5 +34,12 @@ void ConsoleReportDispatcher::ShowAttachments(AbstractReportCreator *reportCreat
 
     vector<pair<string,string> >::const_iterator itBuffers = buffers.begin();
     for (; itBuffers != buffers.end(); ++itBuffers)
-        cout << "\t" << itBuffers->first << endl;
+    {
+        cout << "\t" << itBuffers->first;
+        const bool ok = FileTools::WriteBufferToFile(itBuffers->first,
+                                                         itBuffers->second);
+        if (ok == false)
+           cout << " (Error trying to create attachment)";
+        cout << endl;
+    }
 }

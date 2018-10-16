@@ -1,64 +1,64 @@
-#include "model.h"
+#include "tooledconfiguration.h"
 
 #include <list>
 #include "serverconfiguration.h"
 
 using namespace std;
 
-Model::Model() : configuration(new TaskManagerConfiguration())
+TooledConfiguration::TooledConfiguration() : configuration(new TaskManagerConfiguration())
 {
 }
 
-Model::~Model()
+TooledConfiguration::~TooledConfiguration()
 {
    delete configuration;
 }
 
-ConfigurationType Model::GetConfigurationType() const
+ConfigurationType TooledConfiguration::GetConfigurationType() const
 {
    return configuration->GetTypeConfiguration()->GetType();
 }
 
-void Model::SetConfigurationType(const ConfigurationType& type)
+void TooledConfiguration::SetConfigurationType(const ConfigurationType& type)
 {
    configuration->ChangeConfigurationType(type);
 }
 
-bool Model::LoadConfiguration(const std::string& file, std::vector<std::string>& errors)
+bool TooledConfiguration::LoadConfiguration(const std::string& file, std::vector<std::string>& errors)
 {
    return configuration->LoadFromFile(file, errors);
 }
 
-void Model::SaveConfiguration(const std::string& file)
+void TooledConfiguration::SaveConfiguration(const std::string& file)
 {
    configuration->SaveToFile(file);
 }
 
-list<AbstractJob*> Model::GetJobList()
+list<AbstractJob*> TooledConfiguration::GetJobList()
 {
    list<AbstractJob*> rawJobList;
    configuration->GetTypeConfiguration()->GetJobList(rawJobList);
    return rawJobList;
 }
 
-void Model::SetJobs(const std::vector<AbstractJob*>& jobs)
+void TooledConfiguration::SetJobs(const std::vector<AbstractJob*>& jobs)
 {
    configuration->GetTypeConfiguration()->SetJobList(jobs);
 }
 
-void Model::SetDefaultServerOptions()
+void TooledConfiguration::SetDefaultServerOptions()
 {
    ServerConfiguration* serverConfiguration = dynamic_cast<ServerConfiguration*>(configuration);
    if (serverConfiguration)
       serverConfiguration->SetAgent(CreateDefaultAgent());
 }
 
-void Model::ClearJobs()
+void TooledConfiguration::ClearJobs()
 {
    configuration->GetTypeConfiguration()->ClearJobList();
 }
 
-SelfIdentity* Model::GetAgent()
+SelfIdentity* TooledConfiguration::GetAgent()
 {
    auto typedConf = dynamic_cast<StandaloneConfiguration*>(
                        configuration->GetTypeConfiguration()
@@ -66,7 +66,7 @@ SelfIdentity* Model::GetAgent()
    return (typedConf) ? typedConf->GetAgent() : nullptr;
 }
 
-Client*Model::GetClient()
+Client*TooledConfiguration::GetClient()
 {
    auto typedConf = dynamic_cast<StandaloneConfiguration*>(
                        configuration->GetTypeConfiguration()
@@ -74,7 +74,7 @@ Client*Model::GetClient()
    return (typedConf) ? typedConf->GetClient() : nullptr;
 }
 
-StandaloneConfiguration*Model::GetTmpConfiguration()
+StandaloneConfiguration* TooledConfiguration::GetTmpConfiguration()
 {
    auto typedConf = dynamic_cast<StandaloneConfiguration*>(
                        configuration->GetTypeConfiguration()
@@ -82,7 +82,7 @@ StandaloneConfiguration*Model::GetTmpConfiguration()
    return typedConf;
 }
 
-SelfIdentity* Model::CreateDefaultAgent()
+SelfIdentity* TooledConfiguration::CreateDefaultAgent()
 {
    SelfIdentity* agent = new SelfIdentity();
    agent->name = "TaskManager Agent";

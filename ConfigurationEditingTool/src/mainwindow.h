@@ -8,7 +8,7 @@
 #include "abstracteditjobdialog.h"
 #include "configurationtype.h"
 #include "jobdatamodel.h"
-#include "model.h"
+#include "tooledconfiguration.h"
 
 namespace Ui {
    class MainWindow;
@@ -119,7 +119,7 @@ private:
    void UpdateUiOnFileChange(const QString& newFile);
 
    Ui::MainWindow *ui;
-   Model model;
+   TooledConfiguration model;
    JobDataModel jobListModel;
    ConfigurationType configurationType;
    bool restrictToStandaloneMode = false;
