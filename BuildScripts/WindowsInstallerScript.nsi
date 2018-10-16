@@ -29,7 +29,6 @@ PageEx license
 	LicenseForceSelection checkbox "I Accept"
 PageExEnd
 
-Page license
 Page directory
 Page instfiles
 
