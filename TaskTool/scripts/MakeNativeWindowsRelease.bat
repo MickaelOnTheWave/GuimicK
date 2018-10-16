@@ -1,6 +1,11 @@
 
+cd ../bin
+IF NOT EXIST WindowsRelease (
+	mkdir WindowsRelease
+)
+cd ../bin/WindowsRelease
 
-REM SCRIPTDIR=$PWD
-REM prepareForBuild "WindowsRelease"
-REM cmake ../../proj/cmake -DCMAKE_BUILD_TYPE=RELEASE -DUSE_CURL_LIB=FALSE -DCMAKE_TOOLCHAIN_FILE=$SCRIPTDIR/win64.cmake
-REM build
+cmake ../../proj/cmake -DCMAKE_BUILD_TYPE=RELEASE -DUSE_CURL_LIB=FALSE -G "MinGW Makefiles"
+
+
+REM -DCMAKE_TOOLCHAIN_FILE=../../scripts/winNative.cmake
