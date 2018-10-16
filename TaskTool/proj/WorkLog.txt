@@ -1,4 +1,12 @@
-16/10/2018 (10.7)
+24/10/2018 (17.8-19.8)
+   Previous try with Windows SDK did not work. Reinstalled Cmake, did not
+	work either. Leaving this for now and going for installer.
+	Best candidates seem to be NSIS and InnoSetup. Going for for NSIS..
+	Created first simple install script. It copies binaries, and works!
+	Added Windows script to copy all required files, run nsis compiler
+	and create final installation package!
+
+16/10/2018 (3.6h)
    It was easily possible to compile both tool and editor directly on
 	Windows. Therefore, it should be better to create bat scripts that
 	run on Windows that will generate windows packages natively. In order
@@ -13,7 +21,14 @@
 	Now first improving current scripts organization... Moved global build
 	scripts to TaskManager script folder. Fixed issue with Synology
 	compilation (C++11 features in main code).
-
+	Now trying to create build scripts for Windows. Failed having cmake compile
+	on command line : it was not possible to make it use QtCreator's MinGW.
+	It didn't detect standalone MinGW either. Trying to install Windows SDK and
+	its required Net Framework 4.
+Next planned work:
+   - Finish try with Windows SDK
+	- Finish try with command line cmake in Windows
+	- Choose an installer for Windows to use
 
 15/10/2018 (2.1h)
    Model class has relevance, even if it is very limited. Renamed it to
