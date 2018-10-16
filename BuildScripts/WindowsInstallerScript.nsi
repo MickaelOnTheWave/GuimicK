@@ -49,4 +49,28 @@ Section "" ;No components page, name is not important
   File Qt5Gui.dll
   File Qt5Widgets.dll
   
+  WriteUninstaller "uninstall.exe"
+  
 SectionEnd ; end the section
+
+Section "Start Menu Shortcuts"
+  CreateDirectory "$SMPROGRAMS\TaskManager"
+  CreateShortcut "$SMPROGRAMS\TaskManager\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+  CreateShortcut "$SMPROGRAMS\TaskManager\TaskTool.lnk" "$INSTDIR\TaskTool.exe" "" "$INSTDIR\TaskTool.exe" 0
+  CreateShortcut "$SMPROGRAMS\TaskManager\Configuration Editor.lnk" "$INSTDIR\ConfigurationEditingTool.exe" "" "$INSTDIR\ConfigurationEditingTool.exe" 0
+SectionEnd
+
+Section "Uninstall"
+  
+  Delete $INSTDIR\TaskTool.exe
+  Delete $INSTDIR\ConfigurationEditingTool.exe
+  Delete $INSTDIR\libstdc++-6.dll
+  Delete $INSTDIR\libwinpthread-1.dll
+  Delete $INSTDIR\Qt5Core.dll
+  Delete $INSTDIR\Qt5Gui.dll
+  Delete $INSTDIR\Qt5Widgets.dll
+  Delete $INSTDIR\uninstall.exe
+
+  RMDir "$INSTDIR"
+
+SectionEnd
