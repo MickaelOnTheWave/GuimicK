@@ -1,9 +1,18 @@
-15/10/2018 (17.3)
+15/10/2018 (1.1h)
    Model class has relevance, even if it is very limited. Renamed it to
 	TooledConfiguration for better understanding.
 	Improved ConsoleDispatcher to have attachments written to filesystem.
 	Checking tool : it works as expected on Linux. Now testing on Windows...
 	Working too :-) Now going for Windows support for jobs...
+	First trying to add support for Console job. The pipe OS commands used
+	do not work on Windows, replacing them with _popen and _pclose.
+	Issue not resolved, trying to compile Debug version natively on
+	Windows to step by step debug.
+	Found the issue : Linux command detection that does not apply to Windows.
+	Disabled it for Windows. Now commands are running fine :-))
+Next planned work:
+   - Add Windows command for detecting HD free space
+	- Add Windows Simple copy backup
 
 14/10/2018 (3.5h)
    Crash is in TaskFeature tests. Removed a warning in test suite project,
