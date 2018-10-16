@@ -124,9 +124,9 @@ bool ConsoleJob::IsRunOk() const
 bool ConsoleJob::IsCommandAvailable() const
 {
 #ifdef _WIN32
-    return true;
+   return true;
 #else
-    return (Tools::GetCommandPath(command, appSearchPaths) != string(""));
+   return (Tools::GetCommandPath(command, appSearchPaths) != string(""));
 #endif
 }
 

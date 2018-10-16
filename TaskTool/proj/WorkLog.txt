@@ -1,9 +1,30 @@
-15/10/2018 (17.3)
+16/10/2018 (10.7)
+   It was easily possible to compile both tool and editor directly on
+	Windows. Therefore, it should be better to create bat scripts that
+	run on Windows that will generate windows packages natively. In order
+	to do that, a better way of having gits communicating has to be found.
+	Here is the updated roadmap :
+	- Find a better way for VM WIndows and Linux gits to communicate
+	- Create bat scripts to build windows versions
+	- Choose/use an installer for Windows
+	Checking git throught ssh... It seems ok. Testing commit from Windows : 
+
+
+15/10/2018 (2.1h)
    Model class has relevance, even if it is very limited. Renamed it to
 	TooledConfiguration for better understanding.
 	Improved ConsoleDispatcher to have attachments written to filesystem.
 	Checking tool : it works as expected on Linux. Now testing on Windows...
 	Working too :-) Now going for Windows support for jobs...
+	First trying to add support for Console job. The pipe OS commands used
+	do not work on Windows, replacing them with _popen and _pclose.
+	Issue not resolved, trying to compile Debug version natively on
+	Windows to step by step debug.
+	Found the issue : Linux command detection that does not apply to Windows.
+	Disabled it for Windows. Now commands are running fine :-))
+Next planned work:
+   - Add Windows command for detecting HD free space
+	- Add Windows Simple copy backup
 
 14/10/2018 (3.5h)
    Crash is in TaskFeature tests. Removed a warning in test suite project,
