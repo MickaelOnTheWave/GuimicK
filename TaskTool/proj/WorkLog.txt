@@ -3,6 +3,7 @@
 	TooledConfiguration for better understanding.
 	Improved ConsoleDispatcher to have attachments written to filesystem.
 	Checking tool : it works as expected on Linux. Now testing on Windows...
+	Working too :-) Now going for Windows support for jobs...
 
 14/10/2018 (3.5h)
    Crash is in TaskFeature tests. Removed a warning in test suite project,

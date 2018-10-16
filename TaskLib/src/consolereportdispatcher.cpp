@@ -17,8 +17,11 @@ void ConsoleReportDispatcher::Initialize(const AbstractTypeConfiguration*)
 bool ConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 {
     cout << reportCreator->GetReportContent() << endl;
-    cout << "Attachments:" << endl;
-    ShowAttachments(reportCreator);
+    if (reportCreator->HasAttachments())
+    {
+       cout << "Attachments:" << endl;
+       ShowAttachments(reportCreator);
+    }
     return true;
 }
 
