@@ -7,7 +7,7 @@
 
 ;--------------------------------
 
-!define VERSION "0.9.1"
+!define VERSION "0.9.2"
 ; The name of the installer
 Name "Task Manager ${VERSION}"
 
@@ -48,6 +48,21 @@ Section "" ;No components page, name is not important
   File Qt5Core.dll
   File Qt5Gui.dll
   File Qt5Widgets.dll
+
+  ; Start menu shortcuts
+  CreateDirectory "$SMPROGRAMS\TaskManager"
+  CreateShortcut "$SMPROGRAMS\TaskManager\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+  CreateShortcut "$SMPROGRAMS\TaskManager\TaskTool.lnk" "$INSTDIR\TaskTool.exe" "" "$INSTDIR\TaskTool.exe" 0
+  CreateShortcut "$SMPROGRAMS\TaskManager\Configuration Editor.lnk" "$INSTDIR\ConfigurationEditingTool.exe" "" "$INSTDIR\ConfigurationEditingTool.exe" 0
+  
+  ; Reg Keys
+  WriteRegStr HKLM "Software\TaskManager" "Install_Dir" "$INSTDIR"
+  
+  ; Write the uninstall keys for Windows
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "DisplayName" "Task Manager"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "UninstallString" '"$INSTDIR\uninstall.exe"'
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "NoModify" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "NoRepair" 1  
   
   WriteUninstaller "uninstall.exe"
   
@@ -72,5 +87,13 @@ Section "Uninstall"
   Delete $INSTDIR\uninstall.exe
 
   RMDir "$INSTDIR"
-
+  
+  ; Remove Start menu shortcuts
+  Delete "$SMPROGRAMS\TaskManager\*.*"
+  RMDir "$SMPROGRAMS\TaskManager"  
+  
+  ; Remove registry keys
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager"
+  DeleteRegKey HKLM "Software\TaskManager"
+  
 SectionEnd
