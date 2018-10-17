@@ -1,0 +1,6 @@
+
+
+REM SCRIPTDIR=$PWD
+REM prepareForBuild "WindowsRelease"
+REM cmake ../../proj/cmake -DCMAKE_BUILD_TYPE=RELEASE -DUSE_CURL_LIB=FALSE -DCMAKE_TOOLCHAIN_FILE=$SCRIPTDIR/win64.cmake
+REM build
