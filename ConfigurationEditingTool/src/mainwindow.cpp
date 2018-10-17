@@ -44,7 +44,7 @@ const string version = "0.7";
 MainWindow::MainWindow(QWidget *parent) :
    QMainWindow(parent),
    ui(new Ui::MainWindow),
-   configurationType(ConfigurationType::Standalone)
+   configurationType(StandaloneConfigurationType)
 {
    ui->setupUi(this);
    ui->jobListView->setModel(&jobListModel);
@@ -492,7 +492,7 @@ void MainWindow::RestoreBackup(
 ConfigurationType MainWindow::ChooseConfigurationType() const
 {
    if (restrictToStandaloneMode)
-      return ConfigurationType::Standalone;
+      return StandaloneConfigurationType;
    else
    {
       ConfigurationTypeDialog dialog;
@@ -527,7 +527,7 @@ QString MainWindow::CreateWindowTitle() const
 void MainWindow::UpdateUiOnFileChange(const QString& newFile)
 {
    UpdateJobListWidget();
-   const bool isMenuVisible = (configurationType != ConfigurationType::Client);
+   const bool isMenuVisible = (configurationType != ClientConfigurationType);
    ui->menuSettings->menuAction()->setVisible(isMenuVisible);
 
    currentConfigurationFile = newFile;

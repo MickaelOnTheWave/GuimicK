@@ -1,11 +1,12 @@
 #ifndef CONFIGURATIONTYPE_H
 #define CONFIGURATIONTYPE_H
 
-enum class ConfigurationType
+
+enum ConfigurationType
 {
-	Server,
-	Client,
-	Standalone
+   ServerConfigurationType,
+   ClientConfigurationType,
+   StandaloneConfigurationType
 };
 
 #endif // CONFIGURATIONTYPE_H

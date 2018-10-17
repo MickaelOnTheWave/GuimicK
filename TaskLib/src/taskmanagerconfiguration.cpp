@@ -63,11 +63,11 @@ void TaskManagerConfiguration::CreateTypeConfiguration()
 ConfigurationType TaskManagerConfiguration::FindConfigurationType()
 {
    if (HasOnlyJobList())
-      return ConfigurationType::Client;
+      return ClientConfigurationType;
    else if (parser.anonymousObject)
       return GetTypeByConfiguration();
    else // How would I know?
-      return ConfigurationType::Standalone;
+      return StandaloneConfigurationType;
 }
 
 bool TaskManagerConfiguration::HasOnlyJobList() const
@@ -80,11 +80,11 @@ ConfigurationType TaskManagerConfiguration::GetTypeByConfiguration() const
 {
    const string configurationTypeString = parser.anonymousObject->GetProperty("Type");
    if (configurationTypeString == "Client")
-      return ConfigurationType::Client;
+      return ClientConfigurationType;
    else if (configurationTypeString == "Server")
-      return ConfigurationType::Server;
+      return ServerConfigurationType;
    else //if (configurationTypeString == "Standalone")
-      return ConfigurationType::Standalone;
+      return StandaloneConfigurationType;
 }
 
 AbstractTypeConfiguration* TaskManagerConfiguration::CreateConfigurationManager(
@@ -93,9 +93,9 @@ AbstractTypeConfiguration* TaskManagerConfiguration::CreateConfigurationManager(
 {
    switch (type)
    {
-      case ConfigurationType::Client :
+      case ClientConfigurationType :
          return new ClientJobsConfiguration();
-      case ConfigurationType::Server :
+      case ServerConfigurationType :
          return new ServerConfiguration();
       default :
          return new StandaloneConfiguration();

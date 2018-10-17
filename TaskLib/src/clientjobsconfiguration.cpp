@@ -18,7 +18,7 @@ ClientJobsConfiguration::ClientJobsConfiguration(const int _debugOption)
 
 ConfigurationType ClientJobsConfiguration::GetType() const
 {
-   return ConfigurationType::Client;
+   return ClientConfigurationType;
 }
 
 bool ClientJobsConfiguration::LoadFromBuffer(const string& buffer,

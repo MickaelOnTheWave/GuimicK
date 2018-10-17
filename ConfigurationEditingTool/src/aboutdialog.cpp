@@ -29,9 +29,9 @@ QString AboutDialog::CreateModeString(const ConfigurationType configurationType)
 {
    switch (configurationType)
    {
-      case ConfigurationType::Server : return "Server";
-      case ConfigurationType::Client : return "Client";
-      case ConfigurationType::Standalone : return "Standalone";
+      case ServerConfigurationType : return "Server";
+      case ClientConfigurationType : return "Client";
+      case StandaloneConfigurationType : return "Standalone";
       default : return "Unsupported";
    }
 }
