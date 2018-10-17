@@ -1,4 +1,16 @@
-15/10/2018 (1.1h)
+16/10/2018 (10.7)
+   It was easily possible to compile both tool and editor directly on
+	Windows. Therefore, it should be better to create bat scripts that
+	run on Windows that will generate windows packages natively. In order
+	to do that, a better way of having gits communicating has to be found.
+	Here is the updated roadmap :
+	- Find a better way for VM WIndows and Linux gits to communicate
+	- Create bat scripts to build windows versions
+	- Choose/use an installer for Windows
+	Checking git throught ssh...
+
+
+15/10/2018 (2.1h)
    Model class has relevance, even if it is very limited. Renamed it to
 	TooledConfiguration for better understanding.
 	Improved ConsoleDispatcher to have attachments written to filesystem.
