@@ -17,6 +17,10 @@ OutFile "..\TaskManagerSetup-${VERSION}.exe"
 ; The default installation directory
 InstallDir $PROGRAMFILES32\TaskManager
 
+; Registry key to check for directory (so if you install again, it will 
+; overwrite the old one automatically)
+InstallDirRegKey HKLM "Software\TaskManager" "Install_Dir"
+
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
 
@@ -58,6 +62,9 @@ Section "" ;No components page, name is not important
   ; Reg Keys
   WriteRegStr HKLM "Software\TaskManager" "Install_Dir" "$INSTDIR"
   
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\App Paths\TaskTool.exe" "" "$INSTDIR\TaskTool.exe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\App Paths\TaskTool.exe" "Path" "$INSTDIR"
+  
   ; Write the uninstall keys for Windows
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "DisplayName" "Task Manager"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "UninstallString" '"$INSTDIR\uninstall.exe"'
@@ -67,13 +74,6 @@ Section "" ;No components page, name is not important
   WriteUninstaller "uninstall.exe"
   
 SectionEnd ; end the section
-
-Section "Start Menu Shortcuts"
-  CreateDirectory "$SMPROGRAMS\TaskManager"
-  CreateShortcut "$SMPROGRAMS\TaskManager\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortcut "$SMPROGRAMS\TaskManager\TaskTool.lnk" "$INSTDIR\TaskTool.exe" "" "$INSTDIR\TaskTool.exe" 0
-  CreateShortcut "$SMPROGRAMS\TaskManager\Configuration Editor.lnk" "$INSTDIR\ConfigurationEditingTool.exe" "" "$INSTDIR\ConfigurationEditingTool.exe" 0
-SectionEnd
 
 Section "Uninstall"
   
@@ -93,6 +93,7 @@ Section "Uninstall"
   RMDir "$SMPROGRAMS\TaskManager"  
   
   ; Remove registry keys
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\App Paths\TaskTool.exe"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager"
   DeleteRegKey HKLM "Software\TaskManager"
   

@@ -22,7 +22,12 @@ add_subdirectory ("${TOOLS_ROOT}/ToolsLib/proj/cmake" "./ToolsLib")
 
 file(GLOB SOURCES "../../src/*")
 
-add_executable(ConfigurationEditingTool ${SOURCES}) 
+if(WIN32)
+    set(GUI_TYPE WIN32)
+endif(WIN32)
+
+add_executable(ConfigurationEditingTool ${GUI_TYPE} ${SOURCES})
+
 target_link_libraries (ConfigurationEditingTool TaskLib ToolsLib Qt5::Widgets)
 if(WIN32)
 	target_link_libraries (ConfigurationEditingTool "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
