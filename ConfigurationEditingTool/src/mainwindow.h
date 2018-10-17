@@ -24,6 +24,8 @@ public:
 
    void RestrictToStandaloneMode();
 
+   void OpenDefaultFile();
+
 protected:
    void closeEvent(QCloseEvent *event) override;
 
@@ -81,7 +83,7 @@ private:
 
    bool ShouldDiscardCurrentChanges();
 
-   void OpenStandardFile();
+   void CreateNewFile();
    void OpenFile(const QString& filename,
                  const bool showStatusIfOk);
    void SaveFile(const QString& filename);

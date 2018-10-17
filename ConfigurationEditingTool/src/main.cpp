@@ -9,6 +9,8 @@ int main(int argc, char *argv[])
 #ifdef _WIN32
    w.RestrictToStandaloneMode();
 #endif
+
+   w.OpenDefaultFile();
    w.show();
    return a.exec();
 }

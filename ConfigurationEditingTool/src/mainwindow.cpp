@@ -55,8 +55,6 @@ MainWindow::MainWindow(QWidget *parent) :
    MoveToScreenCenter();
 
    model.SetDefaultServerOptions();
-
-   OpenStandardFile();
 }
 
 MainWindow::~MainWindow()
@@ -80,11 +78,7 @@ void MainWindow::on_actionNew_triggered()
    if (!proceed)
       return;
 
-   configurationType = ChooseConfigurationType();
-   model.SetConfigurationType(configurationType);
-   model.ClearJobs();
-
-   UpdateUiOnFileChange("");
+   CreateNewFile();
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -285,12 +279,23 @@ void MainWindow::on_deleteButton_clicked()
    }
 }
 
-void MainWindow::OpenStandardFile()
+void MainWindow::OpenDefaultFile()
 {
    const QString standardFile = QDir::homePath() + "/.taskmanager";
    QFileInfo checkFile(standardFile);
    if (checkFile.exists() && checkFile.isFile())
       OpenFile(standardFile, false);
+   else
+      CreateNewFile();
+}
+
+void MainWindow::CreateNewFile()
+{
+    configurationType = ChooseConfigurationType();
+    model.SetConfigurationType(configurationType);
+    model.ClearJobs();
+
+    UpdateUiOnFileChange("");
 }
 
 void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
