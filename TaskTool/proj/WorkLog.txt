@@ -1,3 +1,11 @@
+24/10/2018 (17.8-19.8)
+   Previous try with Windows SDK did not work. Reinstalled Cmake, did not
+	work either. Leaving this for now and going for installer.
+	Best candidates seem to be NSIS and InnoSetup. Going for for NSIS..
+	Created first simple install script. It copies binaries, and works!
+	Added Windows script to copy all required files, run nsis compiler
+	and create final installation package!
+
 16/10/2018 (3.6h)
    It was easily possible to compile both tool and editor directly on
 	Windows. Therefore, it should be better to create bat scripts that
