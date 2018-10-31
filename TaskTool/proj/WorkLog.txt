@@ -1,9 +1,14 @@
-31/10/2018 (17.7)
+31/10/2018 (2h)
    Registry keys were OK, just not in the same place (they are in
 	Wow3264 nodes as app is 32bit and OS is 64). Now going for
 	PATH variable.. Skipping it for now, maybe it won't be that
 	usefull. Going for removing command line window on Editor..
 	Removed it. Now back to having a full script on Windows...
+	Added data from Qt Creator to windows cmake file. Still not
+	compiling...
+Next planned work:
+   - Make Windows command line compiling work
+	- Start working on Windows jobs : shutdown and backup
 
 30/10/2018 (0.6h)
    Added start menu entries with uninstall feature.
