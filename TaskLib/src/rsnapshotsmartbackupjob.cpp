@@ -3,7 +3,7 @@
 #include <cstdio>
 
 #include "filetools.h"
-#include "rawcopyfsbackupjob.h"
+#include "linuxcopyfsbackupjob.h"
 #include "rsnapshotconfigurationbuilder.h"
 
 using namespace std;
@@ -118,7 +118,7 @@ JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromClient(
 {
    string source = CreateBackupSourcePath("");
 
-   RawCopyFsBackupJob copyJob;
+   LinuxCopyFsBackupJob copyJob;
    copyJob.SetTargetRemote(target.user, target.host);
    copyJob.AddFolder(source, parameters.destination);
    copyJob.SetOutputDebugInformation(DebugOutput::ON_ANY_ERROR);
@@ -149,7 +149,7 @@ JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
 
 JobStatus* RsnapshotSmartBackupJob::RunRawCopy(const string& source, const string& destination)
 {
-   RawCopyFsBackupJob rawCopyJob;
+   LinuxCopyFsBackupJob rawCopyJob;
    rawCopyJob.CopyTarget(*this);
    rawCopyJob.AddFolder(source, destination);
    JobStatus* status = rawCopyJob.Run();

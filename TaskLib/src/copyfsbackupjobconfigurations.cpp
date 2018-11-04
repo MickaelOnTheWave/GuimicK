@@ -1,6 +1,10 @@
 #include "copyfsbackupjobconfigurations.h"
 
-#include "rawcopyfsbackupjob.h"
+#ifdef _WIN32
+   #include "WindowsCopyFsBackupJob.h"
+#else
+   #include "linuxcopyfsbackupjob.h"
+#endif
 #include "rsynccopyfsbackupjob.h"
 #include "zipandcopyfsbackupjob.h"
 
@@ -13,12 +17,16 @@ RawCopyFsBackupJobConfiguration::RawCopyFsBackupJobConfiguration()
 
 bool RawCopyFsBackupJobConfiguration::IsRightJob(AbstractJob* job)
 {
-   return (dynamic_cast<RawCopyFsBackupJob*>(job) != NULL);
+   return (dynamic_cast<AbstractRawCopyFsBackupJob*>(job) != NULL);
 }
 
 AbstractJob *RawCopyFsBackupJobConfiguration::CreateJob()
 {
-    return new RawCopyFsBackupJob();
+#ifdef _WIN32
+   return new WindowsCopyFsBackupJob();
+#else
+   return new LinuxCopyFsBackupJob();
+#endif
 }
 
 //-------------------------------------------------------------------------//

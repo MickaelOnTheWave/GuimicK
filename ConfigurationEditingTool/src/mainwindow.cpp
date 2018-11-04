@@ -358,7 +358,7 @@ void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_actionRaw_Copy_triggered()
 {
-    InsertNewJob(new RawCopyFsBackupJob());
+    InsertNewJob(new AbstractRawCopyFsBackupJob());
 }
 
 void MainWindow::on_actionRsync_Copy_triggered()

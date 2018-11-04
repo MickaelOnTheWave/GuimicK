@@ -1,6 +1,6 @@
 #include "rawcopyfsbackupjobtest.h"
 
-#include "rawcopyfsbackupjob.h"
+#include "oscopyfsbackupjob.h"
 
 const std::string suitePrefix = "RawCopyFsBackup/";
 
@@ -16,5 +16,9 @@ RawCopyFsBackupJobTest::~RawCopyFsBackupJobTest()
 
 AbstractBackupJob *RawCopyFsBackupJobTest::CreateNewJob()
 {
-    return new RawCopyFsBackupJob();
+#ifdef _WIN32
+   return new WindowsCopyFsBackupJob();
+#else
+   return new LinuxCopyFsBackupJob();
+#endif
 }

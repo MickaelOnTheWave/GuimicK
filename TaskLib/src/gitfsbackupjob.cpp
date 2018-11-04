@@ -9,7 +9,7 @@
 #include "filetools.h"
 #include "gitplumbingreportparser.h"
 #include "gitcommontools.h"
-#include "rawcopyfsbackupjob.h"
+#include "linuxcopyfsbackupjob.h"
 #include "rsynccopyfsbackupjob.h"
 #include "tools.h"
 
@@ -341,7 +341,7 @@ AbstractCopyFsBackupJob *GitFsBackupJob::PrepareCopy(const string &destination, 
 
     AbstractCopyFsBackupJob* copyJob;
     if (usingRawCopy)
-        copyJob = new RawCopyFsBackupJob();
+        copyJob = new LinuxCopyFsBackupJob();
     else
         copyJob = new RsyncCopyFsBackupJob();
 
