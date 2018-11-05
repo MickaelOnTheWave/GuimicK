@@ -3,7 +3,7 @@
 
 AbstractJobConfiguration *RawCopyFsBackupJobConfigurationTest::CreateNewConfiguration() const
 {
-    return new RawCopyFsBackupJobConfiguration();
+    return new OsCopyFsBackupJobConfiguration();
 }
 
 AbstractJobConfiguration *RsyncCopyFsBackupJobConfigurationTest::CreateNewConfiguration() const

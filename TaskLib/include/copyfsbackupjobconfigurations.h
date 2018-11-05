@@ -3,10 +3,10 @@
 
 #include "abstractfsbackupjobconfiguration.h"
 
-class RawCopyFsBackupJobConfiguration : public AbstractFsBackupJobConfiguration
+class OsCopyFsBackupJobConfiguration : public AbstractFsBackupJobConfiguration
 {
 public:
-    RawCopyFsBackupJobConfiguration();
+    OsCopyFsBackupJobConfiguration();
 
     virtual bool IsRightJob(AbstractJob *job);
 

@@ -84,7 +84,7 @@ void JobFactory::FillSupportedJobsList()
    supportedJobs.push_back(new GitBackupJobConfiguration);
    supportedJobs.push_back(new DiskSpaceCheckJobConfiguration);
    supportedJobs.push_back(new GitFsBackupJobConfiguration);
-   supportedJobs.push_back(new RawCopyFsBackupJobConfiguration());
+   supportedJobs.push_back(new OsCopyFsBackupJobConfiguration());
    supportedJobs.push_back(new RsyncCopyFsBackupJobConfiguration());
    supportedJobs.push_back(new ZipAndCopyFsBackupJobConfiguration());
    supportedJobs.push_back(new RemoteJobsRunnerConfiguration());
