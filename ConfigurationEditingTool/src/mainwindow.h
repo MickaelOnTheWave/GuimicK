@@ -78,6 +78,10 @@ private slots:
 
    void on_checkBackupsButton_clicked();
 
+   void on_actionRun_triggered();
+
+   void on_actionTask_Tool_triggered();
+
 private:
    void MoveToScreenCenter();
 
@@ -119,6 +123,8 @@ private:
    QString CreateWindowTitle() const;
 
    void UpdateUiOnFileChange(const QString& newFile);
+
+   bool ResolveCurrentConfigurationSaveStatus();
 
    Ui::MainWindow *ui;
    TooledConfiguration model;

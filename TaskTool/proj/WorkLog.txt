@@ -1,7 +1,15 @@
-05/11/2018 (17.5)
+05/11/2018 (2.1h)
    Updated Editor to use copy backup jobs according to OS. Updated
-	uses to remove ifdefs.
-
+	uses to remove ifdefs. Fixed bugs while working on Editor on Windows.
+	First test failed. Improving Editor UI for easy use/test...
+	Created menu options for running task tool on current configuration
+	and for task tool settings. Created some basic status check that will
+	need to be modified.
+Next planned work:
+   - Create Task Tool settings window
+	- Finish Task Runner window
+	- Update status check : no more saving is required, everything in temp files.
+	- Implement running TaskTool
 
 04/11/2018 (1.4h)
    Leaving for now command line compilation. Back to Shutdown job...

@@ -19,6 +19,7 @@
 #include "selectbackupfolderdialog.h"
 #include "serverconfiguration.h"
 #include "settingsdialog.h"
+#include "tasktoolrundialog.h"
 
 #include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
@@ -442,7 +443,7 @@ bool MainWindow::ShouldDiscardCurrentChanges()
    if (hasConfigurationChanged)
    {
       const int button = QMessageBox::warning(this, tr("Configuration Editing Tool"),
-                                     tr("Current changes will be discared.\n"
+                                     tr("Current changes will be discarded.\n"
                                         "Do you want to continue?"),
                                      QMessageBox::Yes | QMessageBox::No,
                                      QMessageBox::No
@@ -534,8 +535,53 @@ void MainWindow::UpdateUiOnFileChange(const QString& newFile)
    UpdateJobListWidget();
    const bool isMenuVisible = (configurationType != ClientConfigurationType);
    ui->menuSettings->menuAction()->setVisible(isMenuVisible);
+   ui->menuTask_Tool->menuAction()->setVisible(isMenuVisible);
 
    currentConfigurationFile = newFile;
    hasConfigurationChanged = false;
    UpdateModificationStatus();
+}
+
+bool MainWindow::ResolveCurrentConfigurationSaveStatus()
+{
+   bool canRun = true;
+   if (hasConfigurationChanged) {
+      canRun = false;
+      const int button = QMessageBox::warning(this, tr("Configuration Editing Tool"),
+                                     tr("Configuration needs to be saved first.\n"
+                                        "Proceed?"),
+                                     QMessageBox::Yes | QMessageBox::No,
+                                     QMessageBox::No
+                                     );
+      if (button == QMessageBox::Yes)
+      {
+         if (currentConfigurationFile != "")
+         {
+            SaveFile(currentConfigurationFile);
+            canRun = true;
+         }
+         else
+         {
+            on_actionSave_As_triggered();
+            canRun = (currentConfigurationFile != "");
+         }
+      }
+   }
+   return canRun;
+}
+
+void MainWindow::on_actionRun_triggered()
+{
+   const bool canRun = ResolveCurrentConfigurationSaveStatus();
+   if (!canRun)
+      return;
+
+   TaskToolRunDialog dialog(this);
+   dialog.exec();
+
+}
+
+void MainWindow::on_actionTask_Tool_triggered()
+{
+   QMessageBox::warning(this, "TODO", "Implement Task Tool Settings Here", QMessageBox::Ok);
 }

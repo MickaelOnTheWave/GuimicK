@@ -135,9 +135,17 @@
      <string>Settings</string>
     </property>
     <addaction name="actionGeneral"/>
+    <addaction name="actionTask_Tool"/>
+   </widget>
+   <widget class="QMenu" name="menuTask_Tool">
+    <property name="title">
+     <string>Task Tool</string>
+    </property>
+    <addaction name="actionRun"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAdd_Job"/>
+   <addaction name="menuTask_Tool"/>
    <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -235,6 +243,16 @@
   <action name="actionGeneral">
    <property name="text">
     <string>General</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="text">
+    <string>Run</string>
+   </property>
+  </action>
+  <action name="actionTask_Tool">
+   <property name="text">
+    <string>Task Tool</string>
    </property>
   </action>
  </widget>
