@@ -30,7 +30,7 @@
 #include "gitfsbackupjob.h"
 #include "linuxfreespacecheckjob.h"
 #include "linuxshutdownjob.h"
-#include "rawcopyfsbackupjob.h"
+#include "oscopyfsbackupjob.h"
 #include "rsnapshotsmartbackupjob.h"
 #include "rsynccopyfsbackupjob.h"
 #include "userconsolejob.h"
@@ -358,7 +358,7 @@ void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_actionRaw_Copy_triggered()
 {
-    InsertNewJob(new AbstractRawCopyFsBackupJob());
+   InsertNewJob(new OsCopyFsBackupJob());
 }
 
 void MainWindow::on_actionRsync_Copy_triggered()

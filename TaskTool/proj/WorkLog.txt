@@ -1,3 +1,7 @@
+05/11/2018 (17.5)
+   Updated Editor to use copy backup jobs according to OS.
+
+
 04/11/2018 (1.4h)
    Leaving for now command line compilation. Back to Shutdown job...
 	Shutdown job is a special case (there is only client mode in Windows!)
