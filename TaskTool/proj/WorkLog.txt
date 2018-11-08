@@ -1,3 +1,5 @@
+08/11/2018 (20.9)
+
 05/11/2018 (2.1h)
    Updated Editor to use copy backup jobs according to OS. Updated
 	uses to remove ifdefs. Fixed bugs while working on Editor on Windows.

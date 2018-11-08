@@ -8,6 +8,8 @@
 #include <QFileDialog>
 #include <QMenu>
 #include <QMessageBox>
+#include <QSettings>
+#include <QStandardPaths>
 
 #include "aboutdialog.h"
 #include "clientjobsconfiguration.h"
@@ -20,6 +22,7 @@
 #include "serverconfiguration.h"
 #include "settingsdialog.h"
 #include "tasktoolrundialog.h"
+#include "tasktoolsettingsdialog.h"
 
 #include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
@@ -542,6 +545,7 @@ void MainWindow::UpdateUiOnFileChange(const QString& newFile)
    UpdateModificationStatus();
 }
 
+// TODO : if no one uses, remove it.
 bool MainWindow::ResolveCurrentConfigurationSaveStatus()
 {
    bool canRun = true;
@@ -572,16 +576,44 @@ bool MainWindow::ResolveCurrentConfigurationSaveStatus()
 
 void MainWindow::on_actionRun_triggered()
 {
-   const bool canRun = ResolveCurrentConfigurationSaveStatus();
-   if (!canRun)
-      return;
-
+   //SaveCurrentConfigurationToTempLocation();
    TaskToolRunDialog dialog(this);
    dialog.exec();
+}
 
+QString GetTempFolder(const QSettings& settings)
+{
+   const QStringList defaultTemps = QStandardPaths::standardLocations(QStandardPaths::TempLocation);
+   QVariant keyValue = settings.value("tempFolder", defaultTemps.first());
+   if (keyValue.isValid())
+      return keyValue.toString();
+   else
+      return QString("");
+}
+
+QString GetTaskToolExecutable(const QSettings& settings)
+{
+   const QString defaultTaskTool = "/usr/local/bin/taskmanagerTool";
+   QVariant keyValue = settings.value("taskTool", defaultTaskTool);
+   if (keyValue.isValid())
+      return keyValue.toString();
+   else
+      return QString("");
 }
 
 void MainWindow::on_actionTask_Tool_triggered()
 {
-   QMessageBox::warning(this, "TODO", "Implement Task Tool Settings Here", QMessageBox::Ok);
+   TaskToolSettingsDialog dialog(this);
+
+   QSettings settings;
+
+   dialog.SetConfigurationTempPath(GetTempFolder(settings));
+   dialog.SetTaskToolExecutable(GetTaskToolExecutable(settings));
+
+   int result = dialog.exec();
+   if (result == QDialog::Accepted)
+   {
+      settings.setValue("tempFolder", dialog.GetConfigurationTempPath());
+      settings.setValue("taskTool", dialog.GetTaskToolExecutablePath());
+   }
 }
