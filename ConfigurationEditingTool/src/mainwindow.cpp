@@ -320,10 +320,18 @@ void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
 
 void MainWindow::SaveFile(const QString& filename)
 {
-   model.SetJobs(jobListModel.GetJobs());
-   model.SaveConfiguration(filename.toStdString());
+   // TODO : check that it still runs as expected
+   SaveConfigurationToFile(model, filename);
    hasConfigurationChanged = false;
    UpdateModificationStatus();
+}
+
+void MainWindow::SaveConfigurationToFile(TooledConfiguration& customConfig,
+                                         const QString& filename)
+{
+   // TODO : check that it runs as expected
+   customConfig.SetJobs(jobListModel.GetJobs());
+   customConfig.SaveConfiguration(filename.toStdString());
 }
 
 void MainWindow::QuitApplication()
@@ -574,15 +582,9 @@ bool MainWindow::ResolveCurrentConfigurationSaveStatus()
    return canRun;
 }
 
-void MainWindow::on_actionRun_triggered()
+QString MainWindow::GetTempFolder() const
 {
-   //SaveCurrentConfigurationToTempLocation();
-   TaskToolRunDialog dialog(this);
-   dialog.exec();
-}
-
-QString GetTempFolder(const QSettings& settings)
-{
+   QSettings settings;
    const QStringList defaultTemps = QStandardPaths::standardLocations(QStandardPaths::TempLocation);
    QVariant keyValue = settings.value("tempFolder", defaultTemps.first());
    if (keyValue.isValid())
@@ -591,8 +593,37 @@ QString GetTempFolder(const QSettings& settings)
       return QString("");
 }
 
-QString GetTaskToolExecutable(const QSettings& settings)
+QString MainWindow::GetTempConfigFilename() const
 {
+   return GetTempFolder() + "tempConfiguration.txt";
+}
+
+QString MainWindow::GetTempReportFolder() const
+{
+   return GetTempFolder() + "tempReport/";
+}
+
+void MainWindow::SaveConfigurationToTempLocation()
+{
+   // TODO : check that it runs as expected
+   TooledConfiguration tempModel(model);
+   tempModel.GetTmpConfiguration()->SetLocalShutdown(false);
+   tempModel.GetTmpConfiguration()->SetReportDispatching("localfolder");
+   tempModel.GetClient()->AddProperty("reportfolder", GetTempReportFolder().toStdString());
+
+   SaveConfigurationToFile(tempModel, GetTempConfigFilename());
+}
+
+void MainWindow::on_actionRun_triggered()
+{
+   SaveConfigurationToTempLocation();
+   TaskToolRunDialog dialog(this);
+   dialog.exec();
+}
+
+QString GetTaskToolExecutable()
+{
+   QSettings settings;
    const QString defaultTaskTool = "/usr/local/bin/taskmanagerTool";
    QVariant keyValue = settings.value("taskTool", defaultTaskTool);
    if (keyValue.isValid())
@@ -605,14 +636,13 @@ void MainWindow::on_actionTask_Tool_triggered()
 {
    TaskToolSettingsDialog dialog(this);
 
-   QSettings settings;
-
-   dialog.SetConfigurationTempPath(GetTempFolder(settings));
-   dialog.SetTaskToolExecutable(GetTaskToolExecutable(settings));
+   dialog.SetConfigurationTempPath(GetTempFolder());
+   dialog.SetTaskToolExecutable(GetTaskToolExecutable());
 
    int result = dialog.exec();
    if (result == QDialog::Accepted)
    {
+      QSettings settings;
       settings.setValue("tempFolder", dialog.GetConfigurationTempPath());
       settings.setValue("taskTool", dialog.GetTaskToolExecutablePath());
    }

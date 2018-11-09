@@ -66,7 +66,7 @@ SelfIdentity* TooledConfiguration::GetAgent()
    return (typedConf) ? typedConf->GetAgent() : nullptr;
 }
 
-Client*TooledConfiguration::GetClient()
+Client* TooledConfiguration::GetClient()
 {
    auto typedConf = dynamic_cast<StandaloneConfiguration*>(
                        configuration->GetTypeConfiguration()

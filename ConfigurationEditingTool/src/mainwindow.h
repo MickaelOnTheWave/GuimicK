@@ -91,6 +91,8 @@ private:
    void OpenFile(const QString& filename,
                  const bool showStatusIfOk);
    void SaveFile(const QString& filename);
+   void SaveConfigurationToFile(TooledConfiguration& customConfig,
+                                const QString& filename);
    void QuitApplication();
 
    void UpdateJobListWidget();
@@ -125,6 +127,11 @@ private:
    void UpdateUiOnFileChange(const QString& newFile);
 
    bool ResolveCurrentConfigurationSaveStatus();
+
+   QString GetTempFolder() const;
+   QString GetTempConfigFilename() const;
+   QString GetTempReportFolder() const;
+   void SaveConfigurationToTempLocation();
 
    Ui::MainWindow *ui;
    TooledConfiguration model;

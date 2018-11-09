@@ -1,4 +1,11 @@
-08/11/2018 (20.9)
+08/11/2018 (1.4h)
+   Created Task Tool settings window, with its folder buttons and
+	global settings. Removed status check. Began implementation
+	of saving temp configuration with modifications.
+Next planned work:
+   - Check and finish temp config saving
+	- Finish Task Runner window
+	- Implement running TaskTool
 
 05/11/2018 (2.1h)
    Updated Editor to use copy backup jobs according to OS. Updated
