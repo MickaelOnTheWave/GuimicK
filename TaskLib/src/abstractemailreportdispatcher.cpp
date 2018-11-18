@@ -30,13 +30,9 @@ void AbstractEmailReportDispatcher::Initialize(
          dynamic_cast<const StandaloneConfiguration*>(configuration);
    if (standaloneConfiguration)
    {
-      const SelfIdentity* self = standaloneConfiguration->GetAgent();
-      displayName = self->name;
-      emailAddress = self->email;
-      smtpServer = self->emailSmtpServer;
-      smtpPort = self->emailSmtpPort;
-      password = self->emailPassword;
-      useSsl = self->emailUseSsl;
+      const Agent* agent = standaloneConfiguration->GetAgent();
+      displayName = agent->GetName();
+      emailData = agent->GetEmailData();
 
       isHtml = standaloneConfiguration->IsReportHtml();
       destEmail = standaloneConfiguration->GetMasterEmail();
@@ -58,9 +54,9 @@ void AbstractEmailReportDispatcher::SetVerboseMode()
 string AbstractEmailReportDispatcher::GetSmtpUrl() const
 {
 	string smtpUrl("smtp://");
-	smtpUrl += smtpServer + ":";
+   smtpUrl += emailData.GetSmtpServer() + ":";
 	stringstream s;
-	s << smtpPort;
+   s << emailData.GetSmtpPort();
 	smtpUrl += s.str();
 	return smtpUrl;
 }

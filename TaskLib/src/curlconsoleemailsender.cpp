@@ -57,10 +57,10 @@ string CurlConsoleReportDispatcher::BuildCurlParams(const string &mailFilename) 
 {
     string params;
     params += " --url \"" + GetSmtpUrl() + "\" --ssl-reqd ";
-    params += "--mail-from \"" + emailAddress + "\" ";
+    params += "--mail-from \"" + emailData.GetAddress() + "\" ";
     params += "--mail-rcpt \"" + destEmail + "\" ";
     params += "--upload-file " + mailFilename + " ";
-    params += "--user \"" + emailAddress + ":" + password + "\" ";
+    params += "--user \"" + emailData.GetAddress() + ":" + emailData.GetPassword() + "\" ";
     params += "--insecure --show-error ";
     params += isVerbose ? "--verbose" : "--silent";
     return params;
@@ -77,7 +77,7 @@ void CurlConsoleReportDispatcher::WriteReportContentToFile(AbstractReportCreator
 
     ofstream mailFile;
     mailFile.open(filename.c_str());
-    mailFile << mimeCreator.CreateEmailContent(isHtml, displayName, emailAddress,
+    mailFile << mimeCreator.CreateEmailContent(isHtml, displayName, emailData.GetAddress(),
                                                destEmail, cc, bcc,
                                                subject, reportCreator->GetReportContent(),
                                                externalFiles, fileBuffers);

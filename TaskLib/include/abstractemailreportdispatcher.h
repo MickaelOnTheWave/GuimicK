@@ -2,7 +2,9 @@
 #define ABSTRACTEMAILREPORTDISPATCHER_H
 
 #include <string>
+
 #include "AbstractReportDispatcher.h"
+#include "emaildata.h"
 
 class ServerConfiguration;
 
@@ -22,19 +24,15 @@ protected:
     std::string GetSmtpUrl() const;
 
 	std::string displayName;
-	std::string emailAddress;
-	std::string password;
-	std::string smtpServer;
-	int smtpPort;
-	bool useSsl;
-    bool outputDebugInformation;
-    bool isVerbose;
+   EmailData emailData;
+   bool outputDebugInformation;
+   bool isVerbose;
 
-    bool isHtml;
-    std::string destEmail;
-    std::string cc;
-    std::string bcc;
-    static const std::string subject;
+   bool isHtml;
+   std::string destEmail;
+   std::string cc;
+   std::string bcc;
+   static const std::string subject;
 };
 
 #endif // ABSTRACTEMAILREPORTDISPATCHER_H

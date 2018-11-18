@@ -12,8 +12,14 @@ public:
     virtual void Initialize(const AbstractTypeConfiguration* configuration);
     virtual bool Dispatch(AbstractReportCreator* reportCreator);
 
+    void SetFolderName(const std::string& value);
+    void SetFileName(const std::string& value);
+
 private:
     bool WriteAttachments(AbstractReportCreator* reportCreator);
+
+    std::string reportFolder;
+    std::string reportFile;
 };
 
 #endif // FILEREPORTDISPATCHER_H

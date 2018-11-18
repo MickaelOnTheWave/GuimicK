@@ -1,29 +1,38 @@
-#ifndef SELFIDENTITY_H
-#define SELFIDENTITY_H
+#ifndef AGENT_H
+#define AGENT_H
 
+#include <fstream>
 #include <string>
 #include <vector>
 
 #include "configurationobject.h"
+#include "emaildata.h"
 
-class SelfIdentity
+class Agent
 {
 public:
-    SelfIdentity();
-    SelfIdentity(const SelfIdentity& other);
-    SelfIdentity(ConfigurationObject *confObject, std::vector<std::string> &errorMessages);
+    Agent();
+    Agent(const Agent& other);
+    Agent(ConfigurationObject *confObject, std::vector<std::string> &errorMessages);
 
+    void SaveToOpenedFile(std::ofstream& fileStream);
+
+    std::string GetName() const;
+
+    std::string GetReportFile() const;
+    std::string GetReportFolder() const;
+
+    EmailData GetEmailData() const;
     bool HasValidEmailData() const;
-
-	std::string name;
-	std::string email;
-	std::string emailPassword;
-	std::string emailSmtpServer;
-	bool emailUseSsl;
-	int emailSmtpPort;
 
 private:
     std::string BuildUnhandledPropertyMessage(const std::string& property) const;
+
+    // TODO : change all this to a property map, like Client.
+    std::string name;
+    std::string reportFile;
+    std::string reportFolder;
+    EmailData emailData;
 };
 
-#endif // SELFIDENTITY_H
+#endif // AGENT_H

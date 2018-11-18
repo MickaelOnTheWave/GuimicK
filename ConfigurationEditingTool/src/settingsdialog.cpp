@@ -46,7 +46,7 @@ void SettingsDialog::on_exitButtonBox_rejected()
 void SettingsDialog::SetDefaultValues()
 {
    Client* client = configuration->GetClient();
-   SelfIdentity* agent = configuration->GetAgent();
+   Agent* agent = configuration->GetAgent();
    if (client->GetName() == "")
       client->SetName("Local Client");
    if (agent->name == "")
@@ -66,7 +66,7 @@ void SettingsDialog::UpdateConfigurationFromUi()
 
 void SettingsDialog::UpdateAgentFromUi()
 {
-   SelfIdentity* agent = configuration->GetAgent();
+   Agent* agent = configuration->GetAgent();
    agent->name = GetValue(ui->agentNameEdit);
    agent->email = GetValue(ui->emailEdit);
    agent->emailPassword = GetValue(ui->passwordEdit);
@@ -117,7 +117,7 @@ void SettingsDialog::UpdateUiFromConfiguration()
 
 void SettingsDialog::UpdateUiFromAgent()
 {
-   SelfIdentity* agent = configuration->GetAgent();
+   Agent* agent = configuration->GetAgent();
    SetValue(ui->agentNameEdit, agent->name);
    SetValue(ui->emailEdit, agent->email);
    SetValue(ui->passwordEdit, agent->emailPassword);

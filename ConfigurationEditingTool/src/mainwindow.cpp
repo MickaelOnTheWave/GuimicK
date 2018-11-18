@@ -619,7 +619,7 @@ void MainWindow::SaveConfigurationToTempLocation()
 {
    TooledConfiguration tempModel(model);
    tempModel.GetTmpConfiguration()->SetLocalShutdown(false);
-   tempModel.GetTmpConfiguration()->SetReportDispatching("localfolder");
+   tempModel.GetTmpConfiguration()->SetReportDispatching("file");
    tempModel.GetClient()->AddProperty("reportfolder", GetTempReportFolder().toStdString());
 
    SaveConfigurationToFile(tempModel, GetTempConfigFilename());

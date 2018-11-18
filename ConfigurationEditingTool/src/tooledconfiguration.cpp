@@ -63,7 +63,7 @@ void TooledConfiguration::ClearJobs()
    configuration->GetTypeConfiguration()->ClearJobList();
 }
 
-SelfIdentity* TooledConfiguration::GetAgent()
+Agent* TooledConfiguration::GetAgent()
 {
    auto typedConf = dynamic_cast<StandaloneConfiguration*>(
                        configuration->GetTypeConfiguration()
@@ -87,9 +87,9 @@ StandaloneConfiguration* TooledConfiguration::GetTmpConfiguration()
    return typedConf;
 }
 
-SelfIdentity* TooledConfiguration::CreateDefaultAgent()
+Agent* TooledConfiguration::CreateDefaultAgent()
 {
-   SelfIdentity* agent = new SelfIdentity();
+   Agent* agent = new Agent();
    agent->name = "TaskManager Agent";
    return agent;
 }

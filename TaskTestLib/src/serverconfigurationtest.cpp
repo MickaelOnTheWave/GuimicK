@@ -53,14 +53,15 @@ void ServerConfigurationTest::testLoadFromFile_Agent_Valid()
 {
     LoadFromFile("valid.txt", true, QStringList());
 
-    const SelfIdentity* identity = GetTypedConfiguration()->GetAgent();
+    const Agent* agent = GetTypedConfiguration()->GetAgent();
+    QCOMPARE(agent->GetName().c_str(), "Testing Agent");
 
-    QCOMPARE(identity->name.c_str(), "Testing Agent");
-    QCOMPARE(identity->email.c_str(), "invalid.email@provider.com");
-    QCOMPARE(identity->emailPassword.c_str(), "itisabadhabittostoreaclearpassword");
-    QCOMPARE(identity->emailSmtpServer.c_str(), "smtp.provider.com");
-    QCOMPARE(identity->emailSmtpPort, 123);
-    QCOMPARE(identity->emailUseSsl, true);
+    const EmailData emailData = agent->GetEmailData();
+    QCOMPARE(emailData.GetAddress().c_str(), "invalid.email@provider.com");
+    QCOMPARE(emailData.GetPassword().c_str(), "itisabadhabittostoreaclearpassword");
+    QCOMPARE(emailData.GetSmtpServer().c_str(), "smtp.provider.com");
+    QCOMPARE(emailData.GetSmtpPort(), 123);
+    QCOMPARE(emailData.GetUseSsl(), true);
 }
 
 void ServerConfigurationTest::testLoadFromFile_Client_Valid()

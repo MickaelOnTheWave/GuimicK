@@ -20,7 +20,7 @@ string StandaloneConfiguration::MsgOneClientSupported = "only one client is supp
 
 StandaloneConfiguration::StandaloneConfiguration()
    : AbstractTypeConfiguration(),
-     client(new Client()), reportCreator(NULL), self(new SelfIdentity()),
+     client(new Client()), reportCreator(NULL), agent(new Agent()),
      reportType("html"), cssFile(""),
      masterEmail(""), reportDispatching("email"), shutdown(true)
 {
@@ -32,13 +32,13 @@ StandaloneConfiguration::StandaloneConfiguration(const StandaloneConfiguration& 
      reportDispatching(other.reportDispatching), shutdown(other.shutdown)
 {
    client = new Client(*other.client);
-   self = new SelfIdentity(*other.self);
+   agent = new Agent(*other.agent);
    reportCreator = (other.reportCreator) ? other.reportCreator->Copy() : NULL;
 }
 
 StandaloneConfiguration::~StandaloneConfiguration()
 {
-   delete self;
+   delete agent;
 }
 
 ConfigurationType StandaloneConfiguration::GetType() const
@@ -53,7 +53,7 @@ AbstractTypeConfiguration* StandaloneConfiguration::Copy() const
 
 void StandaloneConfiguration::SaveToOpenedFile(ofstream& fileStream)
 {
-   SaveAgentToOpenedFile(fileStream);
+   agent->SaveToOpenedFile(fileStream);
    SaveClientToOpenedFile(fileStream);
    SaveReportOptionsToOpenedFile(fileStream);
    SaveGlobalPropertiesToOpenedFile(fileStream);
@@ -132,14 +132,14 @@ AbstractReportCreator *StandaloneConfiguration::GetReportCreator() const
     return reportCreator;
 }
 
-SelfIdentity *StandaloneConfiguration::GetAgent() const
+Agent *StandaloneConfiguration::GetAgent() const
 {
-   return self;
+   return agent;
 }
 
-void StandaloneConfiguration::SetAgent(SelfIdentity* agent)
+void StandaloneConfiguration::SetAgent(Agent* agent)
 {
-   self = agent;
+   agent = agent;
 }
 
 Client*StandaloneConfiguration::GetClient()
@@ -172,9 +172,9 @@ void StandaloneConfiguration::FillRootObjects(const list<ConfigurationObject*>& 
                                               vector<string>& errorMessages)
 {
    delete client;
-   delete self;
+   delete agent;
    client = NULL;
-   self = NULL;
+   agent = NULL;
 
    list<ConfigurationObject*>::const_iterator it = objectList.begin();
    list<ConfigurationObject*>::const_iterator end = objectList.end();
@@ -236,7 +236,7 @@ bool StandaloneConfiguration::IsConfigurationConsistent(vector<string>& errorMes
 {
    if (hasFatalError)
        return false;
-   else if (self == NULL)
+   else if (agent == NULL)
    {
        errorMessages.push_back(ConfigurationTools::CreateError(MsgMissingAgent));
        return false;
@@ -268,23 +268,6 @@ bool StandaloneConfiguration::IsConfigurationConsistent(vector<string>& errorMes
    }
    else
       return true;
-}
-
-void StandaloneConfiguration::SaveAgentToOpenedFile(ofstream& file)
-{
-   file << "Agent" << endl;
-   file << "{" << endl;
-   ConfigurationTools::SaveValueToFile(file, "Name", self->name);
-   if (self->HasValidEmailData())
-   {
-      ConfigurationTools::SaveValueToFile(file, "Email", self->email);
-      ConfigurationTools::SaveValueToFile(file, "Password", self->emailPassword);
-      ConfigurationTools::SaveValueToFile(file, "SmtpAddress", self->emailSmtpServer);
-      ConfigurationTools::SaveValueToFile(file, "SmtpPort", self->emailSmtpPort);
-      ConfigurationTools::SaveValueToFile(file, "UseSSL", self->emailUseSsl);
-   }
-
-   file << "}" << endl;
 }
 
 void StandaloneConfiguration::SaveClientToOpenedFile(ofstream& file)
@@ -335,13 +318,13 @@ bool StandaloneConfiguration::CreateClient(ConfigurationObject *confObject,
 void StandaloneConfiguration::CreateAgent(ConfigurationObject *confObject,
                                           vector<string> &errorMessages)
 {
-    if (self != NULL)
+    if (agent != NULL)
     {
         errorMessages.push_back("Warning : redefining SelfIdentity object");
-        delete self;
+        delete agent;
     }
 
-    self = new SelfIdentity(confObject, errorMessages);
+    agent = new Agent(confObject, errorMessages);
 }
 
 void StandaloneConfiguration::CreateReport(ConfigurationObject *confObject,
@@ -385,5 +368,5 @@ void StandaloneConfiguration::ChangeReportCreator()
 
 bool StandaloneConfiguration::IsEmailDataComplete() const
 {
-   return (self->HasValidEmailData() && masterEmail != "");
+   return (agent->HasValidEmailData() && masterEmail != "");
 }

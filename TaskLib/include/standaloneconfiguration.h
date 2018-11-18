@@ -46,8 +46,8 @@ public:
    void SetReportType(const std::string& value);
    AbstractReportCreator* GetReportCreator(void) const;
 
-   SelfIdentity* GetAgent() const;
-   void SetAgent(SelfIdentity *agent);
+   Agent* GetAgent() const;
+   void SetAgent(Agent *agent);
 
    Client* GetClient();
 
@@ -70,7 +70,6 @@ private:
                                    std::vector<std::string> &errorMessages);
    virtual bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
 
-   void SaveAgentToOpenedFile(std::ofstream& file);
    void SaveClientToOpenedFile(std::ofstream& file);
    void SaveReportOptionsToOpenedFile(std::ofstream& file);
    void SaveGlobalPropertiesToOpenedFile(std::ofstream& file);
@@ -83,7 +82,7 @@ private:
    bool IsEmailDataComplete() const;
 
    AbstractReportCreator* reportCreator;
-   SelfIdentity* self;
+   Agent* agent;
    std::string reportType;
    std::string cssFile;
    std::string masterEmail;

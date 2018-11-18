@@ -1,3 +1,7 @@
+18/11/2018 (15.5)
+   Localfolder report dispatching was already implemented, its name is "file".
+	Added options to configure it. Refactored code to better management of email data.
+
 18/11/2018 (2.1h)
    Fixed issues with false copies and double deletes. Now creating temp configuration
 	works as expected.

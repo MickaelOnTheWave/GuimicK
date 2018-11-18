@@ -2,15 +2,16 @@
 
 #include <stdio.h>
 #include "filetools.h"
+#include "standaloneconfiguration.h"
 
 using namespace std;
 
-// TODO : make this configurable. Maybe consider a .log default?
-// or check if it is html or not?
-static const string reportFolder = "report/";
-static const string reportFile = "report.html";
+static const string defaultReportFolder = "report/";
+static const string defaultReportFile = "report.log";
 
 FileReportDispatcher::FileReportDispatcher()
+   : reportFolder(defaultReportFolder),
+     reportFile(defaultReportFile)
 {
 }
 
@@ -19,8 +20,16 @@ string FileReportDispatcher::GetName() const
     return string("File");
 }
 
-void FileReportDispatcher::Initialize(const AbstractTypeConfiguration*)
+void FileReportDispatcher::Initialize(const AbstractTypeConfiguration* configuration)
 {
+   const StandaloneConfiguration* standaloneConfiguration =
+         dynamic_cast<const StandaloneConfiguration*>(configuration);
+   if (standaloneConfiguration)
+   {
+      const Agent* self = standaloneConfiguration->GetAgent();
+      reportFolder = self->GetReportFolder();
+      reportFile = self->GetReportFile();
+   }
 }
 
 bool FileReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
@@ -35,6 +44,16 @@ bool FileReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
         ok = WriteAttachments(reportCreator);
 
     return ok;
+}
+
+void FileReportDispatcher::SetFolderName(const string& value)
+{
+   reportFolder = value;
+}
+
+void FileReportDispatcher::SetFileName(const string& value)
+{
+   reportFile = value;
 }
 
 bool FileReportDispatcher::WriteAttachments(AbstractReportCreator *reportCreator)

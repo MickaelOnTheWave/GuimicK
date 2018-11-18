@@ -30,13 +30,13 @@ public:
 
    void ClearJobs();
 
-   SelfIdentity* GetAgent();
+   Agent* GetAgent();
    Client* GetClient();
 
    StandaloneConfiguration* GetTmpConfiguration();
 
 private:
-   SelfIdentity* CreateDefaultAgent();
+   Agent* CreateDefaultAgent();
 
    TaskManagerConfiguration* configuration;
 };
