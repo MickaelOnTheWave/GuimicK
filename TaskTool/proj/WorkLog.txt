@@ -1,6 +1,13 @@
-18/11/2018 (10)
+18/11/2018 (2.1h)
    Fixed issues with false copies and double deletes. Now creating temp configuration
 	works as expected.
+	Implemented Task tool running with proper error checking / reporting and
+	showing console output on window.
+Next planned work:
+   - Implement localfolder report dispatching
+	- Implement html viewer in Report window
+	- Implement easy way to access/visualize report files from report window
+	- Implement progress bar / wait bar while tool is running
 
 08/11/2018 (1.4h)
    Created Task Tool settings window, with its folder buttons and

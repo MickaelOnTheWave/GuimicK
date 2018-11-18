@@ -43,7 +43,21 @@
 
 using namespace std;
 
-const string version = "0.7";
+namespace
+{
+   const string version = "0.7";
+
+   QString GetTaskToolExecutable()
+   {
+      QSettings settings;
+      const QString defaultTaskTool = "/usr/local/bin/taskmanagerTool";
+      QVariant keyValue = settings.value("taskTool", defaultTaskTool);
+      if (keyValue.isValid())
+         return keyValue.toString();
+      else
+         return QString("");
+   }
+}
 
 MainWindow::MainWindow(QWidget *parent) :
    QMainWindow(parent),
@@ -320,7 +334,6 @@ void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
 
 void MainWindow::SaveFile(const QString& filename)
 {
-   // TODO : check that it still runs as expected
    SaveConfigurationToFile(model, filename);
    hasConfigurationChanged = false;
    UpdateModificationStatus();
@@ -329,7 +342,6 @@ void MainWindow::SaveFile(const QString& filename)
 void MainWindow::SaveConfigurationToFile(TooledConfiguration& customConfig,
                                          const QString& filename)
 {
-   // TODO : check that it runs as expected
    customConfig.SetJobs(jobListModel.GetJobs());
    customConfig.SaveConfiguration(filename.toStdString());
 }
@@ -617,18 +629,10 @@ void MainWindow::on_actionRun_triggered()
 {
    SaveConfigurationToTempLocation();
    TaskToolRunDialog dialog(this);
+   dialog.SetRunPath(GetTempFolder());
+   dialog.SetConfigurationFile(GetTempConfigFilename());
+   dialog.SetToolExecutable(GetTaskToolExecutable());
    dialog.exec();
-}
-
-QString GetTaskToolExecutable()
-{
-   QSettings settings;
-   const QString defaultTaskTool = "/usr/local/bin/taskmanagerTool";
-   QVariant keyValue = settings.value("taskTool", defaultTaskTool);
-   if (keyValue.isValid())
-      return keyValue.toString();
-   else
-      return QString("");
 }
 
 void MainWindow::on_actionTask_Tool_triggered()
