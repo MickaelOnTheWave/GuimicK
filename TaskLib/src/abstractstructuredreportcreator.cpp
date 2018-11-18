@@ -9,6 +9,12 @@ AbstractStructuredReportCreator::AbstractStructuredReportCreator()
 {
 }
 
+AbstractStructuredReportCreator::AbstractStructuredReportCreator(const AbstractStructuredReportCreator& other)
+   : AbstractReportCreator(other),
+     globalCode(other.globalCode), globalDuration(other.globalDuration)
+{
+}
+
 AbstractStructuredReportCreator::~AbstractStructuredReportCreator()
 {
 }

@@ -17,6 +17,7 @@ class TaskManagerConfiguration
 {
 public:
    TaskManagerConfiguration();
+   TaskManagerConfiguration(const TaskManagerConfiguration& other);
    virtual ~TaskManagerConfiguration();
 
    bool LoadFromFile(const std::string& fileName,

@@ -7,6 +7,7 @@ class AbstractStructuredReportCreator : public AbstractReportCreator
 {
 public:
     AbstractStructuredReportCreator();
+    AbstractStructuredReportCreator(const AbstractStructuredReportCreator& other);
     virtual ~AbstractStructuredReportCreator();
 
     virtual void Generate(WorkResultData* data,

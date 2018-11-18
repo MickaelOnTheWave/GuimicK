@@ -1,3 +1,7 @@
+18/11/2018 (10)
+   Fixed issues with false copies and double deletes. Now creating temp configuration
+	works as expected.
+
 08/11/2018 (1.4h)
    Created Task Tool settings window, with its folder buttons and
 	global settings. Removed status check. Began implementation

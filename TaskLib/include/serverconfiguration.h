@@ -23,6 +23,8 @@ public:
 
     virtual ConfigurationType GetType() const;
 
+    virtual AbstractTypeConfiguration* Copy() const;
+
 protected:
     virtual void CreateAgent(ConfigurationObject* confObject,
                              std::vector<std::string>& errorMessages);

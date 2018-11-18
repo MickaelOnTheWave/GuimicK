@@ -10,8 +10,18 @@ HtmlReportCreator::HtmlReportCreator()
 {
 }
 
+HtmlReportCreator::HtmlReportCreator(const HtmlReportCreator& other)
+   : AbstractStructuredReportCreator(other), cssFile(other.cssFile)
+{
+}
+
 HtmlReportCreator::~HtmlReportCreator()
 {
+}
+
+AbstractReportCreator* HtmlReportCreator::Copy() const
+{
+   return new HtmlReportCreator(*this);
 }
 
 void HtmlReportCreator::UpdateWithDispatchError(const string &failedDispatcher,

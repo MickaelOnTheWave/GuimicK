@@ -595,7 +595,7 @@ QString MainWindow::GetTempFolder() const
 
 QString MainWindow::GetTempConfigFilename() const
 {
-   return GetTempFolder() + "tempConfiguration.txt";
+   return GetTempFolder() + "/tempConfiguration.txt";
 }
 
 QString MainWindow::GetTempReportFolder() const
@@ -605,7 +605,6 @@ QString MainWindow::GetTempReportFolder() const
 
 void MainWindow::SaveConfigurationToTempLocation()
 {
-   // TODO : check that it runs as expected
    TooledConfiguration tempModel(model);
    tempModel.GetTmpConfiguration()->SetLocalShutdown(false);
    tempModel.GetTmpConfiguration()->SetReportDispatching("localfolder");

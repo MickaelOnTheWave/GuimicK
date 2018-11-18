@@ -10,6 +10,7 @@ class SelfIdentity
 {
 public:
     SelfIdentity();
+    SelfIdentity(const SelfIdentity& other);
     SelfIdentity(ConfigurationObject *confObject, std::vector<std::string> &errorMessages);
 
     bool HasValidEmailData() const;

@@ -11,8 +11,18 @@ TextReportCreator::TextReportCreator()
 {
 }
 
+TextReportCreator::TextReportCreator(const TextReportCreator& other)
+   : AbstractStructuredReportCreator(other), nameCellSize(other.nameCellSize)
+{
+}
+
 TextReportCreator::~TextReportCreator()
 {
+}
+
+AbstractReportCreator* TextReportCreator::Copy() const
+{
+   return new TextReportCreator(*this);
 }
 
 void TextReportCreator::UpdateWithDispatchError(const std::string& failedDispatcher,

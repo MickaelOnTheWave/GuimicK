@@ -13,6 +13,7 @@ class TooledConfiguration
 {
 public:
    TooledConfiguration();
+   TooledConfiguration(const TooledConfiguration& other);
    virtual ~TooledConfiguration();
 
    ConfigurationType GetConfigurationType() const;
@@ -38,7 +39,6 @@ private:
    SelfIdentity* CreateDefaultAgent();
 
    TaskManagerConfiguration* configuration;
-
 };
 
 #endif // MODEL_H

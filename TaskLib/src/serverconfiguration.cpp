@@ -44,6 +44,11 @@ ConfigurationType ServerConfiguration::GetType() const
    return ServerConfigurationType;
 }
 
+AbstractTypeConfiguration* ServerConfiguration::Copy() const
+{
+   return new ServerConfiguration();
+}
+
 void ServerConfiguration::CreateAgent(ConfigurationObject* confObject,
                                       std::vector<string>& errorMessages)
 {

@@ -26,6 +26,16 @@ StandaloneConfiguration::StandaloneConfiguration()
 {
 }
 
+StandaloneConfiguration::StandaloneConfiguration(const StandaloneConfiguration& other)
+   : AbstractTypeConfiguration(other),
+     reportType(other.reportType), cssFile(other.cssFile), masterEmail(other.masterEmail),
+     reportDispatching(other.reportDispatching), shutdown(other.shutdown)
+{
+   client = new Client(*other.client);
+   self = new SelfIdentity(*other.self);
+   reportCreator = (other.reportCreator) ? other.reportCreator->Copy() : NULL;
+}
+
 StandaloneConfiguration::~StandaloneConfiguration()
 {
    delete self;
@@ -34,6 +44,11 @@ StandaloneConfiguration::~StandaloneConfiguration()
 ConfigurationType StandaloneConfiguration::GetType() const
 {
    return StandaloneConfigurationType;
+}
+
+AbstractTypeConfiguration* StandaloneConfiguration::Copy() const
+{
+   return new StandaloneConfiguration(*this);
 }
 
 void StandaloneConfiguration::SaveToOpenedFile(ofstream& fileStream)

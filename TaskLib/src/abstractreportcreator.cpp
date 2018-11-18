@@ -8,6 +8,12 @@ AbstractReportCreator::AbstractReportCreator()
 {
 }
 
+AbstractReportCreator::AbstractReportCreator(const AbstractReportCreator& other)
+   : fullReport(other.fullReport), reportCore(""), dispatchErrors(""),
+     programVersion(""), useProfiling(other.useProfiling)
+{
+}
+
 void AbstractReportCreator::UseProfileColumn(const bool value)
 {
     useProfiling = value;

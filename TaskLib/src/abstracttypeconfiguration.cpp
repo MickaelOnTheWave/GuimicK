@@ -6,6 +6,11 @@ AbstractTypeConfiguration::AbstractTypeConfiguration() : hasFatalError(false)
 {
 }
 
+AbstractTypeConfiguration::AbstractTypeConfiguration(const AbstractTypeConfiguration& other)
+   : hasFatalError(other.hasFatalError)
+{
+}
+
 AbstractTypeConfiguration::~AbstractTypeConfiguration()
 {
 }

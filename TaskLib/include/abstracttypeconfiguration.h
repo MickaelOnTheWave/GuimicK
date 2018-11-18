@@ -12,9 +12,12 @@ class AbstractTypeConfiguration
 {
 public:
    AbstractTypeConfiguration();
+   AbstractTypeConfiguration(const AbstractTypeConfiguration& other);
    virtual ~AbstractTypeConfiguration();
 
    virtual ConfigurationType GetType() const = 0;
+
+   virtual AbstractTypeConfiguration* Copy() const = 0;
 
    virtual bool Load(ConfigurationParser& parser,
                      std::vector<std::string> &errorMessages);

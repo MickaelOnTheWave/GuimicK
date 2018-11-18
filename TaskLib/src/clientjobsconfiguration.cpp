@@ -16,9 +16,22 @@ ClientJobsConfiguration::ClientJobsConfiguration(const int _debugOption)
 {
 }
 
+ClientJobsConfiguration::ClientJobsConfiguration(const ClientJobsConfiguration& other)
+   : AbstractTypeConfiguration(other),
+     debugOption(other.debugOption)
+{
+   for (const auto it : other.jobList)
+      jobList.push_back(it->Clone());
+}
+
 ConfigurationType ClientJobsConfiguration::GetType() const
 {
    return ClientConfigurationType;
+}
+
+AbstractTypeConfiguration* ClientJobsConfiguration::Copy() const
+{
+   return new ClientJobsConfiguration(*this);
 }
 
 bool ClientJobsConfiguration::LoadFromBuffer(const string& buffer,

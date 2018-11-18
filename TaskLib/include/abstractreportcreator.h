@@ -8,32 +8,35 @@
 class AbstractReportCreator
 {
 public:
-    AbstractReportCreator();
-	virtual ~AbstractReportCreator() {}
+   AbstractReportCreator();
+   AbstractReportCreator(const AbstractReportCreator& other);
+   virtual ~AbstractReportCreator() {}
 
-    void UseProfileColumn(const bool value);
-    void Generate(WorkResultData* data, const std::string& version);
+   virtual AbstractReportCreator* Copy() const = 0;
 
-    virtual void Generate(WorkResultData* data,
-                          const std::vector<std::string>& configErrors,
-                          const std::string& version) = 0;
-    virtual void UpdateWithDispatchError(const std::string& failedDispatcher,
-                                         const std::string& fallbackDispatcher) = 0;
+   void UseProfileColumn(const bool value);
+   void Generate(WorkResultData* data, const std::string& version);
 
-    std::string GetReportContent(void) const;
-    void GetAssociatedFiles(std::vector<std::string>& _externalFiles,
-                            std::vector<std::pair<std::string,std::string> >& _fileBuffers);
-    bool HasAttachments() const;
+   virtual void Generate(WorkResultData* data,
+                       const std::vector<std::string>& configErrors,
+                       const std::string& version) = 0;
+   virtual void UpdateWithDispatchError(const std::string& failedDispatcher,
+                                      const std::string& fallbackDispatcher) = 0;
+
+   std::string GetReportContent(void) const;
+   void GetAssociatedFiles(std::vector<std::string>& _externalFiles,
+                         std::vector<std::pair<std::string,std::string> >& _fileBuffers);
+   bool HasAttachments() const;
 protected:
-    std::vector<std::string> externalFiles;
-    std::vector<std::pair<std::string,std::string> > fileBuffers;
+   std::vector<std::string> externalFiles;
+   std::vector<std::pair<std::string,std::string> > fileBuffers;
 
-    std::string fullReport;
-    std::stringstream reportCore;
-    std::stringstream dispatchErrors;
-    std::stringstream programVersion;
+   std::string fullReport;
+   std::stringstream reportCore;
+   std::stringstream dispatchErrors;
+   std::stringstream programVersion;
 
-    bool useProfiling;
+   bool useProfiling;
 };
 
 #endif // ABSTRACTREPORT_H

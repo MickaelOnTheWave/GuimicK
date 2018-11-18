@@ -9,7 +9,10 @@ class HtmlReportCreator : public AbstractStructuredReportCreator
 {
 public:
     HtmlReportCreator();
+    HtmlReportCreator(const HtmlReportCreator& other);
     virtual ~HtmlReportCreator();
+
+    virtual AbstractReportCreator* Copy() const;
 
     virtual void UpdateWithDispatchError(const std::string& failedDispatcher,
                                          const std::string& fallbackDispatcher);

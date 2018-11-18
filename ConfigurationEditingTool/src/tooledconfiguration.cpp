@@ -9,6 +9,11 @@ TooledConfiguration::TooledConfiguration() : configuration(new TaskManagerConfig
 {
 }
 
+TooledConfiguration::TooledConfiguration(const TooledConfiguration& other)
+   : configuration(new TaskManagerConfiguration(*other.configuration))
+{
+}
+
 TooledConfiguration::~TooledConfiguration()
 {
    delete configuration;

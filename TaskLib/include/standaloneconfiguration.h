@@ -16,9 +16,12 @@ public:
    static std::string MsgOneClientSupported;
 
    StandaloneConfiguration();
+   StandaloneConfiguration(const StandaloneConfiguration& other);
    virtual ~StandaloneConfiguration();
 
    virtual ConfigurationType GetType() const;
+
+   virtual AbstractTypeConfiguration* Copy() const;
 
    virtual void SaveToOpenedFile(std::ofstream& fileStream);
 

@@ -14,6 +14,16 @@ SelfIdentity::SelfIdentity()
     emailSmtpPort = -1;
 }
 
+SelfIdentity::SelfIdentity(const SelfIdentity& other)
+   : name(other.name),
+     email(other.email),
+     emailPassword(other.emailPassword),
+     emailSmtpServer(other.emailSmtpServer),
+     emailUseSsl(other.emailUseSsl),
+     emailSmtpPort(other.emailSmtpPort)
+{
+}
+
 SelfIdentity::SelfIdentity(ConfigurationObject *confObject,
                            vector<string> &errorMessages)
 {

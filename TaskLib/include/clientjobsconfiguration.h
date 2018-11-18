@@ -15,8 +15,11 @@ public:
    static std::string MsgUnsupportedObjects;
 
    ClientJobsConfiguration(const int _debugOption = DebugOutput::UNDEFINED);
+   ClientJobsConfiguration(const ClientJobsConfiguration& other);
 
    virtual ConfigurationType GetType() const;
+
+   virtual AbstractTypeConfiguration* Copy() const;
 
    bool LoadFromBuffer(const std::string& buffer, std::vector<std::string> &errorMessages);
 

@@ -13,6 +13,11 @@ TaskManagerConfiguration::TaskManagerConfiguration()
 {
 }
 
+TaskManagerConfiguration::TaskManagerConfiguration(const TaskManagerConfiguration& other)
+{
+   typeConfiguration = (other.typeConfiguration) ? other.typeConfiguration->Copy() : NULL;
+}
+
 TaskManagerConfiguration::~TaskManagerConfiguration()
 {
    delete typeConfiguration;

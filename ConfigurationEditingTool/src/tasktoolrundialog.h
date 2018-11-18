@@ -15,6 +15,9 @@ public:
    explicit TaskToolRunDialog(QWidget *parent = 0);
    ~TaskToolRunDialog();
 
+private slots:
+   void on_runButton_clicked();
+
 private:
    Ui::TaskToolRunDialog *ui;
 };
