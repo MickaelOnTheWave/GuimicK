@@ -131,7 +131,7 @@ private:
    QString GetTempFolder() const;
    QString GetTempConfigFilename() const;
    QString GetTempReportFolder() const;
-   void SaveConfigurationToTempLocation();
+   std::string SaveConfigurationToTempLocation();
 
    Ui::MainWindow *ui;
    TooledConfiguration model;

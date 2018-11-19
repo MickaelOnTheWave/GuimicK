@@ -1,6 +1,19 @@
-18/11/2018 (15.5)
+19/11/2018 (1.1h)
+   Investigating issue... TaskTool on its own works as expected.
+	Issue resolved : binary used for running was an outdated version.
+	Now going for Html viewer.. Implemented Report viewing with Html
+	control.
+Next planned work:
+   - Implement proper detection of report type (html/text) and
+	manage it correctly
+	- Implement css inclusion, in viewer and in report
+	- Implement file list in report viewer
+
+18/11/2018 (2h)
    Localfolder report dispatching was already implemented, its name is "file".
 	Added options to configure it. Refactored code to better management of email data.
+	Trying to fix bug where configuration data is not considered by TaskTool when
+	run from configuration tool.
 
 18/11/2018 (2.1h)
    Fixed issues with false copies and double deletes. Now creating temp configuration

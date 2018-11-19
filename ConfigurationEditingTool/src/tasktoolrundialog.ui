@@ -70,12 +70,17 @@
    <item>
     <widget class="QTabWidget" name="taskWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabReport">
       <attribute name="title">
        <string>Report</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTextBrowser" name="textBrowser"/>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="tabOutput">
       <attribute name="title">

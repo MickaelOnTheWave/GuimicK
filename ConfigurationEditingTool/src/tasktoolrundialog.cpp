@@ -32,6 +32,11 @@ void TaskToolRunDialog::SetToolExecutable(const QString& value)
    taskToolExecutable = value;
 }
 
+void TaskToolRunDialog::SetReportFile(const QString& value)
+{
+   reportFile = value;
+}
+
 void TaskToolRunDialog::on_runButton_clicked()
 {
    ui->outputTextEdit->setPlainText("");
@@ -53,7 +58,8 @@ void TaskToolRunDialog::on_runButton_clicked()
    else
       outputText = CreateChdirErrorMessage();
 
-   ui->outputTextEdit->setPlainText(outputText);
+   ui->outputTextEdit->setPlainText(outputText);   
+   SetupReportDisplay();
 }
 
 std::string TaskToolRunDialog::CreateTaskToolCommand() const
@@ -78,4 +84,17 @@ QString TaskToolRunDialog::CreateExecutionErrorMessage(const int returnValue) co
    errorMessage += "\tExecutable : " + taskToolExecutable + "\n";
    errorMessage += "\tConfiguration file : " + configurationFile + "\n";
    return errorMessage;
+}
+
+void TaskToolRunDialog::SetupReportDisplay()
+{
+   const std::string reportContent = FileTools::GetTextFileContent(reportFile.toStdString());
+   const bool isHtml = true;
+   if (isHtml)
+   {
+      ui->textBrowser->setHtml(reportContent.c_str());
+      //ui->textBrowser->setStyleSheet();
+   }
+   else
+      ui->textBrowser->setPlainText(reportContent.c_str());
 }

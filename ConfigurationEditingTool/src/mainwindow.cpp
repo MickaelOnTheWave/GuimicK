@@ -57,6 +57,18 @@ namespace
       else
          return QString("");
    }
+
+   string CreateReportFile(const string& type)
+   {
+      string filename = "report.";
+      if (type == "html")
+         filename += "html";
+      else if (type == "text")
+         filename += "txt";
+      else
+         filename += "log";
+      return filename;
+   }
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -612,26 +624,37 @@ QString MainWindow::GetTempConfigFilename() const
 
 QString MainWindow::GetTempReportFolder() const
 {
-   return GetTempFolder() + "tempReport/";
+   return GetTempFolder() + "/TaskManagerReport/";
 }
 
-void MainWindow::SaveConfigurationToTempLocation()
+string MainWindow::SaveConfigurationToTempLocation()
 {
    TooledConfiguration tempModel(model);
    tempModel.GetTmpConfiguration()->SetLocalShutdown(false);
    tempModel.GetTmpConfiguration()->SetReportDispatching("file");
-   tempModel.GetClient()->AddProperty("reportfolder", GetTempReportFolder().toStdString());
+
+   const string reportFile = CreateReportFile(tempModel.GetTmpConfiguration()->GetReportType());
+   const string reportFolder = GetTempReportFolder().toStdString();
+   tempModel.GetAgent()->SetReportFile(reportFile);
+   tempModel.GetAgent()->SetReportFolder(reportFolder);
 
    SaveConfigurationToFile(tempModel, GetTempConfigFilename());
+   return reportFolder+reportFile;
 }
 
 void MainWindow::on_actionRun_triggered()
 {
-   SaveConfigurationToTempLocation();
+   const string reportFile = SaveConfigurationToTempLocation();
+
    TaskToolRunDialog dialog(this);
    dialog.SetRunPath(GetTempFolder());
    dialog.SetConfigurationFile(GetTempConfigFilename());
    dialog.SetToolExecutable(GetTaskToolExecutable());
+   dialog.SetReportFile(reportFile.c_str());
+
+   // TODO : implement this
+   //dialog.SetReportType();
+   //dialog.SetReportCss();
    dialog.exec();
 }
 
