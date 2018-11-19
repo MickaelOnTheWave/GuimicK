@@ -49,8 +49,8 @@ void SettingsDialog::SetDefaultValues()
    Agent* agent = configuration->GetAgent();
    if (client->GetName() == "")
       client->SetName("Local Client");
-   if (agent->name == "")
-      agent->name = "Task Manager Agent";
+   if (agent->GetName() == "")
+      agent->SetName("Task Manager Agent");
 }
 
 void SettingsDialog::UpdateConfigurationFromUi()
@@ -67,12 +67,14 @@ void SettingsDialog::UpdateConfigurationFromUi()
 void SettingsDialog::UpdateAgentFromUi()
 {
    Agent* agent = configuration->GetAgent();
-   agent->name = GetValue(ui->agentNameEdit);
-   agent->email = GetValue(ui->emailEdit);
-   agent->emailPassword = GetValue(ui->passwordEdit);
-   agent->emailSmtpServer = GetValue(ui->smtpServerEdit);
-   agent->emailSmtpPort = ui->smtpPortBox->value();
-   agent->emailUseSsl = ui->smtpSslCheckBox->isChecked();
+   agent->SetName(GetValue(ui->agentNameEdit));
+
+   EmailData newEmailData;
+   newEmailData.SetAddress(GetValue(ui->emailEdit));
+   newEmailData.SetPassword(GetValue(ui->passwordEdit));
+   newEmailData.SetSmtpServer(GetValue(ui->smtpServerEdit));
+   newEmailData.SetSmtpPort(ui->smtpPortBox->value());
+   newEmailData.SetUseSsl(ui->smtpSslCheckBox->isChecked());
 }
 
 void SettingsDialog::UpdateClientFromUi()
@@ -118,12 +120,14 @@ void SettingsDialog::UpdateUiFromConfiguration()
 void SettingsDialog::UpdateUiFromAgent()
 {
    Agent* agent = configuration->GetAgent();
-   SetValue(ui->agentNameEdit, agent->name);
-   SetValue(ui->emailEdit, agent->email);
-   SetValue(ui->passwordEdit, agent->emailPassword);
-   SetValue(ui->smtpServerEdit, agent->emailSmtpServer);
-   ui->smtpPortBox->setValue(agent->emailSmtpPort);
-   ui->smtpSslCheckBox->setChecked(agent->emailUseSsl);
+   SetValue(ui->agentNameEdit, agent->GetName());
+
+   const EmailData emailData = agent->GetEmailData();
+   SetValue(ui->emailEdit, emailData.GetAddress());
+   SetValue(ui->passwordEdit, emailData.GetPassword());
+   SetValue(ui->smtpServerEdit, emailData.GetSmtpServer());
+   ui->smtpPortBox->setValue(emailData.GetSmtpPort());
+   ui->smtpSslCheckBox->setChecked(emailData.GetUseSsl());
 }
 
 void SettingsDialog::UpdateUiFromClient()

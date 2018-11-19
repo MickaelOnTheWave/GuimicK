@@ -33,6 +33,7 @@ public:
    Agent* GetAgent();
    Client* GetClient();
 
+   // TODO : remove this GetTmpConfig()
    StandaloneConfiguration* GetTmpConfiguration();
 
 private:

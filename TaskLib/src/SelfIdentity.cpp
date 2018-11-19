@@ -51,8 +51,9 @@ void Agent::SaveToOpenedFile(ofstream& fileStream)
    fileStream << "Agent" << endl;
    fileStream << "{" << endl;
    ConfigurationTools::SaveValueToFile(fileStream, "Name", name);
+   ConfigurationTools::SaveValueToFile(fileStream, "ReportFile", reportFile);
+   ConfigurationTools::SaveValueToFile(fileStream, "ReportFolder", reportFolder);
    emailData.SaveToOpenedFile(fileStream);
-
    fileStream << "}" << endl;
 }
 
@@ -61,9 +62,19 @@ string Agent::GetName() const
    return name;
 }
 
+void Agent::SetName(const string& value)
+{
+   name = value;
+}
+
 string Agent::GetReportFile() const
 {
    return reportFile;
+}
+
+void Agent::SetReportFile(const string& value)
+{
+   reportFile = value;
 }
 
 string Agent::GetReportFolder() const
@@ -71,9 +82,19 @@ string Agent::GetReportFolder() const
    return reportFolder;
 }
 
+void Agent::SetReportFolder(const string& value)
+{
+   reportFolder = value;
+}
+
 EmailData Agent::GetEmailData() const
 {
    return emailData;
+}
+
+void Agent::SetEmailData(const EmailData& value)
+{
+   emailData = value;
 }
 
 bool Agent::HasValidEmailData() const

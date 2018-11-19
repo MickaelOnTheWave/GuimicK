@@ -18,11 +18,16 @@ public:
     void SaveToOpenedFile(std::ofstream& fileStream);
 
     std::string GetName() const;
+    void SetName(const std::string& value);
 
     std::string GetReportFile() const;
+    void SetReportFile(const std::string& value);
+
     std::string GetReportFolder() const;
+    void SetReportFolder(const std::string& value);
 
     EmailData GetEmailData() const;
+    void SetEmailData(const EmailData& value);
     bool HasValidEmailData() const;
 
 private:

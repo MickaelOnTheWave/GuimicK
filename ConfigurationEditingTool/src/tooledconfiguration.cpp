@@ -90,6 +90,6 @@ StandaloneConfiguration* TooledConfiguration::GetTmpConfiguration()
 Agent* TooledConfiguration::CreateDefaultAgent()
 {
    Agent* agent = new Agent();
-   agent->name = "TaskManager Agent";
+   agent->SetName("TaskManager Agent");
    return agent;
 }
