@@ -2,6 +2,9 @@
 #include "ui_tasktoolrundialog.h"
 
 #include <unistd.h>
+#include <QDir>
+#include <QLabel>
+
 #include "filetools.h"
 #include "tools.h"
 
@@ -37,6 +40,16 @@ void TaskToolRunDialog::SetReportFile(const QString& value)
    reportFile = value;
 }
 
+void TaskToolRunDialog::SetReportFolder(const QString& value)
+{
+   reportFolder = value;
+}
+
+void TaskToolRunDialog::SetReportType(const std::string& value)
+{
+   reportType = value;
+}
+
 void TaskToolRunDialog::on_runButton_clicked()
 {
    ui->outputTextEdit->setPlainText("");
@@ -60,6 +73,7 @@ void TaskToolRunDialog::on_runButton_clicked()
 
    ui->outputTextEdit->setPlainText(outputText);   
    SetupReportDisplay();
+   SetupReportFilesDisplay();
 }
 
 std::string TaskToolRunDialog::CreateTaskToolCommand() const
@@ -88,8 +102,10 @@ QString TaskToolRunDialog::CreateExecutionErrorMessage(const int returnValue) co
 
 void TaskToolRunDialog::SetupReportDisplay()
 {
-   const std::string reportContent = FileTools::GetTextFileContent(reportFile.toStdString());
-   const bool isHtml = true;
+   const QString reportFileFullName = reportFolder + reportFile;
+   const std::string reportContent = FileTools::GetTextFileContent(
+                                        reportFileFullName.toStdString());
+   const bool isHtml = (reportType == "html");
    if (isHtml)
    {
       ui->textBrowser->setHtml(reportContent.c_str());
@@ -97,4 +113,47 @@ void TaskToolRunDialog::SetupReportDisplay()
    }
    else
       ui->textBrowser->setPlainText(reportContent.c_str());
+}
+
+void TaskToolRunDialog::SetupReportFilesDisplay()
+{
+   ClearFileBox();
+   QStringList reportFiles = FindReportFiles();
+   for (const auto& it : reportFiles)
+      AddFileLink(it);
+}
+
+void TaskToolRunDialog::ClearFileBox()
+{
+   QLayoutItem* item;
+   while ((item = ui->filesBox->layout()->takeAt(0)) != 0)
+   {
+      if (item->widget())
+         item->widget()->setParent(nullptr);
+      delete item;
+   }
+}
+
+QStringList TaskToolRunDialog::FindReportFiles() const
+{
+   QDir directory(reportFolder);
+   QStringList allFiles = directory.entryList(QDir::Files);
+   allFiles.removeAll(reportFile);
+   return allFiles;
+}
+
+void TaskToolRunDialog::AddFileLink(const QString& file)
+{
+   auto fileLabel = new QLabel(this);
+   fileLabel->setOpenExternalLinks(true);
+   fileLabel->setText(BuildTextLabel(file));
+   ui->filesBox->layout()->addWidget(fileLabel);
+}
+
+QString TaskToolRunDialog::BuildTextLabel(const QString& file) const
+{
+   const QString fullFileName = "file://" + reportFolder + file;
+   QString label = "<a href=\"" + fullFileName;
+   label += QString("\">") + file + "</a>";
+   return label;
 }

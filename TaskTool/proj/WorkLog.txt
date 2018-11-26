@@ -1,3 +1,14 @@
+26/11/2018 (1h)
+   Added file list in report viewer.
+Next planned work:
+   - Implement css inclusion, in viewer and in report
+
+21/11/2018 (0.2h)
+   Added support for report type.
+Next planned work:
+   - Implement css inclusion, in viewer and in report
+	- Implement file list in report viewer
+
 19/11/2018 (1.1h)
    Investigating issue... TaskTool on its own works as expected.
 	Issue resolved : binary used for running was an outdated version.
@@ -6,8 +17,6 @@
 Next planned work:
    - Implement proper detection of report type (html/text) and
 	manage it correctly
-	- Implement css inclusion, in viewer and in report
-	- Implement file list in report viewer
 
 18/11/2018 (2h)
    Localfolder report dispatching was already implemented, its name is "file".

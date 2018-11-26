@@ -639,7 +639,7 @@ string MainWindow::SaveConfigurationToTempLocation()
    tempModel.GetAgent()->SetReportFolder(reportFolder);
 
    SaveConfigurationToFile(tempModel, GetTempConfigFilename());
-   return reportFolder+reportFile;
+   return reportFile;
 }
 
 void MainWindow::on_actionRun_triggered()
@@ -651,9 +651,10 @@ void MainWindow::on_actionRun_triggered()
    dialog.SetConfigurationFile(GetTempConfigFilename());
    dialog.SetToolExecutable(GetTaskToolExecutable());
    dialog.SetReportFile(reportFile.c_str());
+   dialog.SetReportFolder(GetTempReportFolder());
 
    // TODO : implement this
-   //dialog.SetReportType();
+   dialog.SetReportType(model.GetTmpConfiguration()->GetReportType());
    //dialog.SetReportCss();
    dialog.exec();
 }

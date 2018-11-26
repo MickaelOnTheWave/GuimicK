@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>369</width>
-    <height>377</height>
+    <width>444</width>
+    <height>546</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -76,9 +76,17 @@
       <attribute name="title">
        <string>Report</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QTextBrowser" name="textBrowser"/>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="filesBox">
+         <property name="title">
+          <string>Report Files</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2"/>
+        </widget>
        </item>
       </layout>
      </widget>
