@@ -28,6 +28,10 @@ private slots:
 
    void on_reportFormatBox_currentIndexChanged(const QString &arg1);
 
+   void on_reportDispatchBox_currentIndexChanged(int index);
+
+   void on_reportFolderButton_clicked();
+
 private:
    void SetDefaultValues();
 
@@ -44,6 +48,7 @@ private:
    void UpdateReportDispatchingFromConfiguration();
 
    void SetCssControlsVisible(const bool value);
+   void SetReportDispatchControls(const int index);
 
    Ui::SettingsDialog *ui;
 

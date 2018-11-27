@@ -1,6 +1,11 @@
-27/11/2018 (18.6) -0.5
+27/11/2018 (1.3h)
    Implemented css specification in settings for editor. They work
 	as expected, and report also works without any modification!
+	Now going for proper configuration for File dispatcher.
+	Updated UI and started wiring it to configuration.
+Next planned work:
+   - Create Qt component for file/folder selector and use it in settings
+	- Finish wiring Report File/Folder to configuration
 
 26/11/2018 (1h)
    Added file list in report viewer.

@@ -153,11 +153,13 @@ void SettingsDialog::UpdateReportDispatchingFromConfiguration()
 {
    const string reportDispatching = configuration->GetReportDispatching();
    if (reportDispatching == "email")
-      ui->reportDispatchBox->setCurrentIndex(1);
+      SetReportDispatchControls(1);
    else if (reportDispatching == "console")
-      ui->reportDispatchBox->setCurrentIndex(0);
+      SetReportDispatchControls(0);
+   else if (reportDispatching == "file")
+      SetReportDispatchControls(2);
    else
-      ui->reportDispatchBox->setCurrentIndex(0);
+      SetReportDispatchControls(0);
 }
 
 void SettingsDialog::SetCssControlsVisible(const bool value)
@@ -165,6 +167,12 @@ void SettingsDialog::SetCssControlsVisible(const bool value)
    ui->cssLabel->setVisible(value);
    ui->cssEdit->setVisible(value);
    ui->cssButton->setVisible(value);
+}
+
+void SettingsDialog::SetReportDispatchControls(const int index)
+{
+   ui->reportDispatchBox->setCurrentIndex(index);
+   ui->dispatcherWidget->setCurrentIndex(index);
 }
 
 void SettingsDialog::on_cssButton_clicked()
@@ -183,4 +191,20 @@ void SettingsDialog::on_cssButton_clicked()
 void SettingsDialog::on_reportFormatBox_currentIndexChanged(const QString &arg1)
 {
    SetCssControlsVisible(arg1 == "HTML");
+}
+
+void SettingsDialog::on_reportDispatchBox_currentIndexChanged(int index)
+{
+   ui->dispatcherWidget->setCurrentIndex(index);
+}
+
+void SettingsDialog::on_reportFolderButton_clicked()
+{
+   const QString defaultFolder = "";
+   QString foldername = QFileDialog::getExistingDirectory(
+                         this, "Choose a folder where the report will be created",
+                         defaultFolder,
+                         QFileDialog::ShowDirsOnly);
+   if (foldername != "")
+      ui->reportFolderEdit->setText(foldername);
 }
