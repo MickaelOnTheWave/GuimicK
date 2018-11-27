@@ -1,3 +1,7 @@
+27/11/2018 (18.6) -0.5
+   Implemented css specification in settings for editor. They work
+	as expected, and report also works without any modification!
+
 26/11/2018 (1h)
    Added file list in report viewer.
 Next planned work:

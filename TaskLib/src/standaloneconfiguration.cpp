@@ -129,7 +129,17 @@ void StandaloneConfiguration::SetReportType(const string& value)
 
 AbstractReportCreator *StandaloneConfiguration::GetReportCreator() const
 {
-    return reportCreator;
+   return reportCreator;
+}
+
+string StandaloneConfiguration::GetReportCss() const
+{
+   return cssFile;
+}
+
+void StandaloneConfiguration::SetReportCss(const string& value)
+{
+   cssFile = value;
 }
 
 Agent *StandaloneConfiguration::GetAgent() const

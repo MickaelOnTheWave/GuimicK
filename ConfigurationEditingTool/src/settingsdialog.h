@@ -24,6 +24,10 @@ private slots:
 
    void on_exitButtonBox_rejected();
 
+   void on_cssButton_clicked();
+
+   void on_reportFormatBox_currentIndexChanged(const QString &arg1);
+
 private:
    void SetDefaultValues();
 
@@ -38,6 +42,8 @@ private:
    void UpdateUiFromClient();
    void UpdateReportTypeFromConfiguration();
    void UpdateReportDispatchingFromConfiguration();
+
+   void SetCssControlsVisible(const bool value);
 
    Ui::SettingsDialog *ui;
 

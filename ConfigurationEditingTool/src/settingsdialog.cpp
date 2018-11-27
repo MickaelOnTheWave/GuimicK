@@ -1,6 +1,8 @@
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 
+#include <QFileDialog>
+
 using namespace std;
 
 namespace
@@ -25,6 +27,7 @@ SettingsDialog::SettingsDialog(StandaloneConfiguration* _configuration,
    ui->setupUi(this);
    SetDefaultValues();
    UpdateUiFromConfiguration();
+   SetCssControlsVisible(true);
 }
 
 SettingsDialog::~SettingsDialog()
@@ -92,6 +95,7 @@ void SettingsDialog::UpdateReportTypeFromUi()
       confReportType = "text";
 
    configuration->SetReportType(confReportType);
+   configuration->SetReportCss(ui->cssEdit->text().toStdString());
 }
 
 void SettingsDialog::UpdateReportDispatchingFromUi()
@@ -138,10 +142,11 @@ void SettingsDialog::UpdateUiFromClient()
 void SettingsDialog::UpdateReportTypeFromConfiguration()
 {
    const string reportType = configuration->GetReportType();
-   if (reportType == "html")
-      ui->reportFormatBox->setCurrentIndex(1);
-   else // if (reportType == "text")
-      ui->reportFormatBox->setCurrentIndex(0);
+   const bool isReportTypeHtml = (reportType == "html");
+   SetCssControlsVisible(isReportTypeHtml);
+   ui->reportFormatBox->setCurrentIndex(isReportTypeHtml ? 1 : 0);
+
+   ui->cssEdit->setText(configuration->GetReportCss().c_str());
 }
 
 void SettingsDialog::UpdateReportDispatchingFromConfiguration()
@@ -153,4 +158,29 @@ void SettingsDialog::UpdateReportDispatchingFromConfiguration()
       ui->reportDispatchBox->setCurrentIndex(0);
    else
       ui->reportDispatchBox->setCurrentIndex(0);
+}
+
+void SettingsDialog::SetCssControlsVisible(const bool value)
+{
+   ui->cssLabel->setVisible(value);
+   ui->cssEdit->setVisible(value);
+   ui->cssButton->setVisible(value);
+}
+
+void SettingsDialog::on_cssButton_clicked()
+{
+   const QString fileFilter = "Css file (*.css)";
+   const QString defaultFolder = "";
+   const QString filename = QFileDialog::getOpenFileName(
+                         this, "Select Css File",
+                         defaultFolder,
+                         fileFilter
+                         );
+   if (filename != "")
+      ui->cssEdit->setText(filename);
+}
+
+void SettingsDialog::on_reportFormatBox_currentIndexChanged(const QString &arg1)
+{
+   SetCssControlsVisible(arg1 == "HTML");
 }

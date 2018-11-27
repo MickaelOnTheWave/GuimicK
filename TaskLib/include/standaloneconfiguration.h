@@ -46,6 +46,10 @@ public:
    void SetReportType(const std::string& value);
    AbstractReportCreator* GetReportCreator(void) const;
 
+   std::string GetReportCss() const;
+   void SetReportCss(const std::string& value);
+
+
    Agent* GetAgent() const;
    void SetAgent(Agent *agent);
 
