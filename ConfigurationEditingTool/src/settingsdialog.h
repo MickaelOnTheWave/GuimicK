@@ -24,8 +24,6 @@ private slots:
 
    void on_exitButtonBox_rejected();
 
-   void on_cssButton_clicked();
-
    void on_reportFormatBox_currentIndexChanged(const QString &arg1);
 
    void on_reportDispatchBox_currentIndexChanged(int index);
@@ -34,6 +32,8 @@ private slots:
 
 private:
    void SetDefaultValues();
+   void InitializeCssSelectionWidget();
+   void InitializeReportFolderSelectionWidget();
 
    void UpdateConfigurationFromUi();
    void UpdateAgentFromUi();

@@ -1,3 +1,12 @@
+29/11/2018 (1.3h)
+   Created Qt component in QtTools for file/folder selection.
+	Used it in TaskTool settings, and it worked! Now updating
+	General settings dialog.
+Next planned work:
+   - Finish updating component use
+	- Finish wiring Report File/Folder to configuration
+	- Check Windows use : editor should be used as in Linux.
+
 27/11/2018 (1.3h)
    Implemented css specification in settings for editor. They work
 	as expected, and report also works without any modification!

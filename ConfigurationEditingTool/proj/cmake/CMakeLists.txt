@@ -19,6 +19,7 @@ set (TOOLS_ROOT "${PROG_ROOT}/Tools")
 add_subdirectory ("${TASKMANAGER_ROOT}/TaskLib/proj/cmake" "./TaskLib")
 add_subdirectory ("${TASKMANAGER_ROOT}/ReportParsers/ParsersLib/proj/cmake" "./ParsersLib")
 add_subdirectory ("${TOOLS_ROOT}/ToolsLib/proj/cmake" "./ToolsLib") 
+add_subdirectory ("${PROG_ROOT}/QtTools/QtTools/proj/cmake" "./QtTools")
 
 file(GLOB SOURCES "../../src/*")
 
@@ -28,7 +29,7 @@ endif(WIN32)
 
 add_executable(ConfigurationEditingTool ${GUI_TYPE} ${SOURCES})
 
-target_link_libraries (ConfigurationEditingTool TaskLib ToolsLib Qt5::Widgets)
+target_link_libraries (ConfigurationEditingTool TaskLib ToolsLib QtToolsLib Qt5::Widgets)
 if(WIN32)
 	target_link_libraries (ConfigurationEditingTool "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
 endif(WIN32)

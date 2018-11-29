@@ -21,11 +21,9 @@ public:
    QString GetConfigurationTempPath() const;
    void SetConfigurationTempPath(const QString& value);
 
-private slots:
-   void on_tempFolderButton_clicked();
-   void on_taskToolButton_clicked();
-
 private:
+   void InitializePathWidgets();
+
    Ui::TaskToolSettingsDialog *ui;
 };
 

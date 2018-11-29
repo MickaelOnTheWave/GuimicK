@@ -27,6 +27,9 @@ SettingsDialog::SettingsDialog(StandaloneConfiguration* _configuration,
    ui->setupUi(this);
    SetDefaultValues();
    UpdateUiFromConfiguration();
+   InitializeCssSelectionWidget();
+   InitializeReportFolderSelectionWidget();
+
    SetCssControlsVisible(true);
 }
 
@@ -54,6 +57,28 @@ void SettingsDialog::SetDefaultValues()
       client->SetName("Local Client");
    if (agent->GetName() == "")
       agent->SetName("Task Manager Agent");
+}
+
+void SettingsDialog::InitializeCssSelectionWidget()
+{
+   const QString fileFilter = "Css file (*.css)";
+   const QString defaultFile = "";
+   ui->cssWidget->InitializeAsFile("Css File",
+                                   "Select Css File",
+                                   defaultFile,
+                                   fileFilter);
+}
+
+void SettingsDialog::InitializeReportFolderSelectionWidget()
+{
+/*   const QString defaultFolder = "";
+   QString foldername = QFileDialog::getExistingDirectory(
+                         this, "Choose a folder where the report will be created",
+                         defaultFolder,
+                         QFileDialog::ShowDirsOnly);
+   if (foldername != "")
+      ui->reportFolderEdit->setText(foldername);*/
+
 }
 
 void SettingsDialog::UpdateConfigurationFromUi()
@@ -95,7 +120,7 @@ void SettingsDialog::UpdateReportTypeFromUi()
       confReportType = "text";
 
    configuration->SetReportType(confReportType);
-   configuration->SetReportCss(ui->cssEdit->text().toStdString());
+   configuration->SetReportCss(ui->cssWidget->GetPath().toStdString());
 }
 
 void SettingsDialog::UpdateReportDispatchingFromUi()
@@ -146,7 +171,7 @@ void SettingsDialog::UpdateReportTypeFromConfiguration()
    SetCssControlsVisible(isReportTypeHtml);
    ui->reportFormatBox->setCurrentIndex(isReportTypeHtml ? 1 : 0);
 
-   ui->cssEdit->setText(configuration->GetReportCss().c_str());
+   ui->cssWidget->SetPath(configuration->GetReportCss().c_str());
 }
 
 void SettingsDialog::UpdateReportDispatchingFromConfiguration()
@@ -164,28 +189,16 @@ void SettingsDialog::UpdateReportDispatchingFromConfiguration()
 
 void SettingsDialog::SetCssControlsVisible(const bool value)
 {
-   ui->cssLabel->setVisible(value);
+/*   ui->cssLabel->setVisible(value);
    ui->cssEdit->setVisible(value);
-   ui->cssButton->setVisible(value);
+   ui->cssButton->setVisible(value);*/
+   ui->cssWidget->setVisible(value);
 }
 
 void SettingsDialog::SetReportDispatchControls(const int index)
 {
    ui->reportDispatchBox->setCurrentIndex(index);
    ui->dispatcherWidget->setCurrentIndex(index);
-}
-
-void SettingsDialog::on_cssButton_clicked()
-{
-   const QString fileFilter = "Css file (*.css)";
-   const QString defaultFolder = "";
-   const QString filename = QFileDialog::getOpenFileName(
-                         this, "Select Css File",
-                         defaultFolder,
-                         fileFilter
-                         );
-   if (filename != "")
-      ui->cssEdit->setText(filename);
 }
 
 void SettingsDialog::on_reportFormatBox_currentIndexChanged(const QString &arg1)
@@ -200,11 +213,4 @@ void SettingsDialog::on_reportDispatchBox_currentIndexChanged(int index)
 
 void SettingsDialog::on_reportFolderButton_clicked()
 {
-   const QString defaultFolder = "";
-   QString foldername = QFileDialog::getExistingDirectory(
-                         this, "Choose a folder where the report will be created",
-                         defaultFolder,
-                         QFileDialog::ShowDirsOnly);
-   if (foldername != "")
-      ui->reportFolderEdit->setText(foldername);
 }
