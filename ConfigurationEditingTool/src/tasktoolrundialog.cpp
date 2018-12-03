@@ -157,7 +157,7 @@ void TaskToolRunDialog::AddFileLink(const QString& file)
 
 QString TaskToolRunDialog::BuildTextLabel(const QString& file) const
 {
-   const QString fullFileName = "file://" + reportFolder + file;
+   const QString fullFileName = "file:///" + reportFolder + file;
    QString label = "<a href=\"" + fullFileName;
    label += QString("\">") + file + "</a>";
    return label;
