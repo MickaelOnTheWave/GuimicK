@@ -3,6 +3,7 @@
 	This level of configuration is irrelevant for now.
 	Refactored Settings dialog : created classes for ui/configuration
 	updating.
+	Now checking on Windows...
 
 02/12/2018 (1h)
    Component use updated. Now finishing wiring...

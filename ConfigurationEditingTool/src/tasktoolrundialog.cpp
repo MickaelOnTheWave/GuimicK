@@ -69,7 +69,10 @@ void TaskToolRunDialog::on_runButton_clicked()
       outputText = (result > -1) ? commandOutput.c_str() : CreateExecutionErrorMessage(result);
    }
    else
+   {
       outputText = CreateChdirErrorMessage();
+      ui->taskWidget->setCurrentIndex(1);
+   }
 
    ui->outputTextEdit->setPlainText(outputText);   
    SetupReportDisplay();
