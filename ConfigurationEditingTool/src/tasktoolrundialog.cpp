@@ -66,7 +66,7 @@ void TaskToolRunDialog::on_runButton_clicked()
 
       chdir(currentDirectory.c_str());
 
-      outputText = (result > -1) ? commandOutput.c_str() : CreateExecutionErrorMessage(result);
+      outputText = (result > -1) ? commandOutput.c_str() : CreateExecutionErrorMessage(result, commandOutput);
    }
    else
    {
@@ -93,10 +93,12 @@ QString TaskToolRunDialog::CreateChdirErrorMessage() const
    return errorMessage;
 }
 
-QString TaskToolRunDialog::CreateExecutionErrorMessage(const int returnValue) const
+QString TaskToolRunDialog::CreateExecutionErrorMessage(const int returnValue,
+                                                       const std::string& output) const
 {
    QString errorMessage = "Error running Task tool command.\n";
    errorMessage += "\tError code : " + QString::number(returnValue) + "\n";
+   errorMessage += "\tOutput : " + QString(output.c_str()) + "\n";
    errorMessage += "\tRun Path : " + runPath + "\n";
    errorMessage += "\tExecutable : " + taskToolExecutable + "\n";
    errorMessage += "\tConfiguration file : " + configurationFile + "\n";

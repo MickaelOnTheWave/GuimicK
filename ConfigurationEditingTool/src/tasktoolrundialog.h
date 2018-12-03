@@ -28,7 +28,8 @@ private slots:
 private:
    std::string CreateTaskToolCommand() const;
    QString CreateChdirErrorMessage() const;
-   QString CreateExecutionErrorMessage(const int returnValue) const;
+   QString CreateExecutionErrorMessage(const int returnValue,
+                                       const std::string& output) const;
    void SetupReportDisplay();
 
    void SetupReportFilesDisplay();
