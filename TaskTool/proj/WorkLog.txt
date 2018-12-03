@@ -1,4 +1,4 @@
-03/12/2018 (17.2-19.4)
+03/12/2018 (2.2h)
    No need for report file name edit, default file name is file.
 	This level of configuration is irrelevant for now.
 	Refactored Settings dialog : created classes for ui/configuration
