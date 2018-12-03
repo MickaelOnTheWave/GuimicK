@@ -1,3 +1,12 @@
+02/12/2018 (1h)
+   Component use updated. Now finishing wiring...
+	Finished wiring and resolved bug with widget values
+	being overwritten.
+Next planned work:
+   - Put a report file name edit in configuration
+	- (Maybe) reorganize code for settings dialog
+	- Check Windows use : editor should be used as in Linux.
+
 29/11/2018 (1.3h)
    Created Qt component in QtTools for file/folder selection.
 	Used it in TaskTool settings, and it worked! Now updating

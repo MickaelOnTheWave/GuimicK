@@ -28,8 +28,6 @@ private slots:
 
    void on_reportDispatchBox_currentIndexChanged(int index);
 
-   void on_reportFolderButton_clicked();
-
 private:
    void SetDefaultValues();
    void InitializeCssSelectionWidget();

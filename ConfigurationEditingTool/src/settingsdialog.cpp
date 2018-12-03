@@ -26,9 +26,9 @@ SettingsDialog::SettingsDialog(StandaloneConfiguration* _configuration,
 {
    ui->setupUi(this);
    SetDefaultValues();
-   UpdateUiFromConfiguration();
    InitializeCssSelectionWidget();
    InitializeReportFolderSelectionWidget();
+   UpdateUiFromConfiguration();
 
    SetCssControlsVisible(true);
 }
@@ -71,14 +71,12 @@ void SettingsDialog::InitializeCssSelectionWidget()
 
 void SettingsDialog::InitializeReportFolderSelectionWidget()
 {
-/*   const QString defaultFolder = "";
-   QString foldername = QFileDialog::getExistingDirectory(
-                         this, "Choose a folder where the report will be created",
-                         defaultFolder,
-                         QFileDialog::ShowDirsOnly);
-   if (foldername != "")
-      ui->reportFolderEdit->setText(foldername);*/
-
+   const QString defaultFolder = "";
+   ui->reportFolderWidget->InitializeAsFolder(
+            "Report Folder",
+            "Choose a folder where the report will be created",
+            defaultFolder
+            );
 }
 
 void SettingsDialog::UpdateConfigurationFromUi()
@@ -103,6 +101,10 @@ void SettingsDialog::UpdateAgentFromUi()
    newEmailData.SetSmtpServer(GetValue(ui->smtpServerEdit));
    newEmailData.SetSmtpPort(ui->smtpPortBox->value());
    newEmailData.SetUseSsl(ui->smtpSslCheckBox->isChecked());
+   agent->SetEmailData(newEmailData);
+
+   agent->SetReportFile("hardcodedFile.html");
+   agent->SetReportFolder(ui->reportFolderWidget->GetPath().toStdString());
 }
 
 void SettingsDialog::UpdateClientFromUi()
@@ -129,8 +131,10 @@ void SettingsDialog::UpdateReportDispatchingFromUi()
    string confReportDispatching;
    if (uiReportDispatching == "Email")
       confReportDispatching = "email";
-   else// if (uiReportDispatching == "Console")
+   else if (uiReportDispatching == "Console")
       confReportDispatching = "console";
+   else // if (uiReportDispatching == "Local files")
+      confReportDispatching = "file";
 
    configuration->SetReportDispatching(confReportDispatching);
 }
@@ -157,6 +161,8 @@ void SettingsDialog::UpdateUiFromAgent()
    SetValue(ui->smtpServerEdit, emailData.GetSmtpServer());
    ui->smtpPortBox->setValue(emailData.GetSmtpPort());
    ui->smtpSslCheckBox->setChecked(emailData.GetUseSsl());
+
+   ui->reportFolderWidget->SetPath(agent->GetReportFolder().c_str());
 }
 
 void SettingsDialog::UpdateUiFromClient()
@@ -189,9 +195,6 @@ void SettingsDialog::UpdateReportDispatchingFromConfiguration()
 
 void SettingsDialog::SetCssControlsVisible(const bool value)
 {
-/*   ui->cssLabel->setVisible(value);
-   ui->cssEdit->setVisible(value);
-   ui->cssButton->setVisible(value);*/
    ui->cssWidget->setVisible(value);
 }
 
@@ -211,6 +214,3 @@ void SettingsDialog::on_reportDispatchBox_currentIndexChanged(int index)
    ui->dispatcherWidget->setCurrentIndex(index);
 }
 
-void SettingsDialog::on_reportFolderButton_clicked()
-{
-}
