@@ -33,24 +33,10 @@ private:
    void InitializeCssSelectionWidget();
    void InitializeReportFolderSelectionWidget();
 
-   void UpdateConfigurationFromUi();
-   void UpdateAgentFromUi();
-   void UpdateClientFromUi();
-   void UpdateReportTypeFromUi();
-   void UpdateReportDispatchingFromUi();
-
-   void UpdateUiFromConfiguration();
-   void UpdateUiFromAgent();
-   void UpdateUiFromClient();
-   void UpdateReportTypeFromConfiguration();
-   void UpdateReportDispatchingFromConfiguration();
-
-   void SetCssControlsVisible(const bool value);
-   void SetReportDispatchControls(const int index);
-
    Ui::SettingsDialog *ui;
-
    StandaloneConfiguration* configuration = nullptr;
 };
+
+
 
 #endif // SETTINGSDIALOG_H

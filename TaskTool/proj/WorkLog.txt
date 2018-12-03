@@ -1,3 +1,9 @@
+03/12/2018 (17.2)
+   No need for report file name edit, default file name is file.
+	This level of configuration is irrelevant for now.
+	Refactored Settings dialog : created classes for ui/configuration
+	updating.
+
 02/12/2018 (1h)
    Component use updated. Now finishing wiring...
 	Finished wiring and resolved bug with widget values
