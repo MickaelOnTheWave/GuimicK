@@ -6,7 +6,7 @@ using namespace std;
 
 AbstractBackupJob::AbstractBackupJob(const string& _title)
     : AbstractJob(_title),
-      repository(""), target(false)
+      repository("")
 {
     statusManager = new BackupStatusManager();
 }

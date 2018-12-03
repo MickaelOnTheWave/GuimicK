@@ -1,9 +1,18 @@
-03/12/2018 (17.2)
+03/12/2018 (17.2-19.4)
    No need for report file name edit, default file name is file.
 	This level of configuration is irrelevant for now.
 	Refactored Settings dialog : created classes for ui/configuration
 	updating.
-	Now checking on Windows...
+	Now checking on Windows... Doing some small fixes, and now it works
+	:-) Now back to TaskTool and Windows Backup job.
+	Simple backup is WORKING!!! issue was with bad previous configuration
+	that enabled remotes.
+Next planned work:
+   - Improve backup job UI : use folder controls.
+	- Improve defaults : console / file dispatch to avoid error on opening.
+	- Hide/Disable jobs that are not relevant/ready on Windows
+	- Create Windows Archive backup job
+	- Start a (Windows) Antivirus job
 
 02/12/2018 (1h)
    Component use updated. Now finishing wiring...
