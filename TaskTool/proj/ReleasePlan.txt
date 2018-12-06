@@ -57,7 +57,7 @@ Features to implement:
 	[052] Support other compilers
 	[055] Create a download job
 	[056] Create VMs for testing remote jobs and wake
-
+	[057] Support translations and create default ones (EN/PT/FR)
 
 Abandoned features :
 	[020] Check/repair Screensaver modification from script
@@ -68,6 +68,7 @@ Fixed bugs :
 	16/10/2017 - [006] Occasionally a test in TaskFeature test will fail. Reproduce issue, check what it is and fix it!!
 	26/10/2017 - [012] Local debug option of wake job is not working.
 	16/04/2018 - [009] MIME email content is still buggy - some junk chars at the end of each archive. Looks like the counting is wrong in relation with message size.
+	26/09/2018 - [011] Configuration parser fails to parse empty string properties. See TODO.
 
 Pending bugs :
 	[001] Git report parser crashes when trying to parse a report coming from git asking for ssh password.
@@ -77,24 +78,41 @@ Pending bugs :
 	[007] Rsnapshot fails at ignoring unmodified files in tests. Create/modify tests to fit this test case.
 	[008] Git FS backup doesn't work with first data report (git diff command).
 	[010] Some tests are failing in GitJob only in Release. Make all test suites pass 100% in both Debug and Release.
-	[011] Configuration parser fails to parse empty string properties. See TODO.
 	[012] Debug flag is not handled as it should. Check that global one works as default and can be overridden by local ones.
 
 -------------
 Release plan
 -------------
 
-v1.2 :
-	[051] Implement a licensing system : either CD-Key or online activation. Use crypto.
-	[055] Create a download job
-	[026] Support multiple clients with multiple job lists
+v2.0 :
+   [027] Manage email commands
+	[015] Make a stat job for longer time level (yearly?)
+
+v1.4 (Server/Client Version) :
+   [026] Support multiple clients with multiple job lists
 	[010] Implement all TODOs in code
 	[025] Use libssh instead of using command line
+	[024] Remove ping executable dependency
+	[056] Create VMs for testing remote jobs and wake
 
-v1.1 :
+v1.3 :
+   [047] Have a Restore option in backup jobs
+	[007] Include Defragmentation job
+	[008] Use another time level of backup for other jobs (monly/yearly...)
+	[052] Support other compilers
+
+v1.2 (Final Paid Version) :
+	[051] Implement a licensing system : either CD-Key or online activation. Use crypto.
+	[046] Include a Windows update job
+	[050] Create a backup job for cloud service
+	[043] Create an archive differential File backup job
+	[006] Include Harddrive check job
+	[055] Create a download job
+
+v1.1 (Final Free Version) :
 	[045] Make Windows client work with (nearly) all features
 	[005] Include AntiVirus scan job
-	[047] Have a Restore option in backup jobs
+	[057] Support translations and create default ones (EN/PT/FR)
 
 v1.0 : 20/08/2018
 	[023] Remove wakelan executable dependency

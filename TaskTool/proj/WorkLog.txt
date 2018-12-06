@@ -1,3 +1,6 @@
+06/12/2018 (0.1h)
+   Updating Release Plan.
+
 06/12/2018 (2h)
    Defaults improved : now default is console for report dispatching.
 	Also added check for file dispatching data.
