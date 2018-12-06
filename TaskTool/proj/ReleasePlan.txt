@@ -93,6 +93,7 @@ v1.2 :
 
 v1.1 :
 	[045] Make Windows client work with (nearly) all features
+	[005] Include AntiVirus scan job
 	[047] Have a Restore option in backup jobs
 
 v1.0 : 20/08/2018
