@@ -64,6 +64,8 @@ private:
    void MoveToScreenCenter();
 
    void SetupAddJobMenu();
+   void SetupWindowsAddJobMenu();
+   void SetupLinuxAddJobMenu();
 
    void AddJobMenuEntry(const QString& title,
                         AbstractJob* job);
@@ -112,6 +114,8 @@ private:
    QString CreateWindowTitle() const;
 
    void UpdateUiOnFileChange(const QString& newFile);
+
+   void UpdateAddJobMenuEntries();
 
    QString GetTempFolder() const;
    QString GetTempConfigFilename() const;

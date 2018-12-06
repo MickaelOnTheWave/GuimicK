@@ -421,8 +421,26 @@ void MainWindow::MoveToScreenCenter()
 
 void MainWindow::SetupAddJobMenu()
 {
-   AddJobMenuEntry("Wake", new LibWakeJob);
-   AddJobMenuEntry("Shutdown", new LinuxShutdownJob);
+#ifdef _WIN32
+   SetupWindowsAddJobMenu();
+#else
+   SetupLinuxAddJobMenu();
+#endif
+}
+
+void MainWindow::SetupWindowsAddJobMenu()
+{
+   AddJobMenuEntry("Simple Copy Backup", new OsCopyFsBackupJob);
+   AddJobMenuEntry("Custom command", new UserConsoleJob);
+}
+
+void MainWindow::SetupLinuxAddJobMenu()
+{
+   if (configurationType == ServerConfigurationType)
+   {
+      AddJobMenuEntry("Wake", new LibWakeJob);
+      AddJobMenuEntry("Shutdown", new LinuxShutdownJob);
+   }
 
    QMenu* subMenuBackup = new QMenu("Backup");
    AddJobMenuEntry(subMenuBackup, "Raw Copy", new OsCopyFsBackupJob);
@@ -434,8 +452,13 @@ void MainWindow::SetupAddJobMenu()
    ui->menuAdd_Job->addMenu(subMenuBackup);
 
    AddJobMenuEntry("Disk Space Check", new LinuxFreeSpaceCheckJob);
-   AddJobMenuEntry("Custom command (server)", new UserConsoleJob);
-   AddJobMenuEntry("Custom command (client)", new SshConsoleJob(new UserConsoleJob));
+   if (configurationType != StandaloneConfigurationType)
+   {
+      AddJobMenuEntry("Custom command (server)", new UserConsoleJob);
+      AddJobMenuEntry("Custom command (client)", new SshConsoleJob(new UserConsoleJob));
+   }
+   else
+      AddJobMenuEntry("Custom command", new UserConsoleJob);
 }
 
 void MainWindow::AddJobMenuEntry(const QString& title, AbstractJob* job)
@@ -553,6 +576,13 @@ void MainWindow::UpdateUiOnFileChange(const QString& newFile)
    currentConfigurationFile = newFile;
    hasConfigurationChanged = false;
    UpdateModificationStatus();
+   UpdateAddJobMenuEntries();
+}
+
+void MainWindow::UpdateAddJobMenuEntries()
+{
+   ui->menuAdd_Job->clear();
+   SetupAddJobMenu();
 }
 
 QString MainWindow::GetTempFolder() const

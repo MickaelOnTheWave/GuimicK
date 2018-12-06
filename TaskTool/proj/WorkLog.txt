@@ -1,6 +1,8 @@
 06/12/2018 (19)
    Defaults improved : now default is console for report dispatching.
 	Also added check for file dispatching data.
+	Refactored Add Job menu : now it is fully programmatic, preparing
+	for OS/feature customization. Changed menu options for modes and OS.
 
 03/12/2018 (2.2h)
    No need for report file name edit, default file name is file.
