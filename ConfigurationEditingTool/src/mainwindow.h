@@ -50,29 +50,7 @@ private slots:
 
    void on_deleteButton_clicked();
 
-   void on_actionWake_triggered();
-
-   void on_actionShutdown_triggered();
-
-   void on_actionCustom_command_triggered();
-
    void on_jobListView_doubleClicked(const QModelIndex &index);
-
-   void on_actionRaw_Copy_triggered();
-
-   void on_actionRsync_Copy_triggered();
-
-   void on_actionGit_Filesystems_triggered();
-
-   void on_actionGit_Repositories_triggered();
-
-   void on_actionRsnapshot_triggered();
-
-   void on_actionZip_Copy_triggered();
-
-   void on_actionDisk_space_check_triggered();
-
-   void on_actionCustom_command_client_triggered();
 
    void on_jobListView_clicked(const QModelIndex &index);
 
@@ -84,6 +62,15 @@ private slots:
 
 private:
    void MoveToScreenCenter();
+
+   void SetupAddJobMenu();
+
+   void AddJobMenuEntry(const QString& title,
+                        AbstractJob* job);
+
+   void AddJobMenuEntry(QMenu* subMenu,
+                        const QString& title,
+                        AbstractJob* job);
 
    bool ShouldDiscardCurrentChanges();
 
@@ -125,8 +112,6 @@ private:
    QString CreateWindowTitle() const;
 
    void UpdateUiOnFileChange(const QString& newFile);
-
-   bool ResolveCurrentConfigurationSaveStatus();
 
    QString GetTempFolder() const;
    QString GetTempConfigFilename() const;

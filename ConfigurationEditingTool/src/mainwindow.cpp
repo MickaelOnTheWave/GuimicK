@@ -85,6 +85,7 @@ MainWindow::MainWindow(QWidget *parent) :
    MoveToScreenCenter();
 
    model.SetDefaultServerOptions();
+   SetupAddJobMenu();
 }
 
 MainWindow::~MainWindow()
@@ -365,21 +366,6 @@ void MainWindow::QuitApplication()
       close();
 }
 
-void MainWindow::on_actionWake_triggered()
-{
-   InsertNewJob(new LibWakeJob());
-}
-
-void MainWindow::on_actionShutdown_triggered()
-{
-   InsertNewJob(new LinuxShutdownJob());
-}
-
-void MainWindow::on_actionCustom_command_triggered()
-{
-   InsertNewJob(new UserConsoleJob());
-}
-
 void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
 {
    AbstractJob* job = jobListModel.GetJob(index);
@@ -395,46 +381,6 @@ void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
       }
       delete editDialog;
    }
-}
-
-void MainWindow::on_actionRaw_Copy_triggered()
-{
-   InsertNewJob(new OsCopyFsBackupJob());
-}
-
-void MainWindow::on_actionRsync_Copy_triggered()
-{
-    InsertNewJob(new RsyncCopyFsBackupJob());
-}
-
-void MainWindow::on_actionGit_Filesystems_triggered()
-{
-    InsertNewJob(new GitFsBackupJob());
-}
-
-void MainWindow::on_actionGit_Repositories_triggered()
-{
-    InsertNewJob(new GitBackupJob());
-}
-
-void MainWindow::on_actionRsnapshot_triggered()
-{
-    InsertNewJob(new RsnapshotSmartBackupJob());
-}
-
-void MainWindow::on_actionZip_Copy_triggered()
-{
-    InsertNewJob(new ZipAndCopyFsBackupJob());
-}
-
-void MainWindow::on_actionDisk_space_check_triggered()
-{
-    InsertNewJob(new LinuxFreeSpaceCheckJob());
-}
-
-void MainWindow::on_actionCustom_command_client_triggered()
-{
-   InsertNewJob(new SshConsoleJob(new UserConsoleJob));
 }
 
 void MainWindow::on_jobListView_clicked(const QModelIndex &index)
@@ -472,6 +418,38 @@ void MainWindow::MoveToScreenCenter()
    const QPoint targetPosition = screenArea.center() - mainWindowArea.center();
    move(targetPosition);
 }
+
+void MainWindow::SetupAddJobMenu()
+{
+   AddJobMenuEntry("Wake", new LibWakeJob);
+   AddJobMenuEntry("Shutdown", new LinuxShutdownJob);
+
+   QMenu* subMenuBackup = new QMenu("Backup");
+   AddJobMenuEntry(subMenuBackup, "Raw Copy", new OsCopyFsBackupJob);
+   AddJobMenuEntry(subMenuBackup, "Rsync Copy", new RsyncCopyFsBackupJob);
+   AddJobMenuEntry(subMenuBackup, "Zip + Copy", new ZipAndCopyFsBackupJob);
+   AddJobMenuEntry(subMenuBackup, "Git (filesystems)", new GitFsBackupJob);
+   AddJobMenuEntry(subMenuBackup, "Git (repositories)", new GitBackupJob);
+   AddJobMenuEntry(subMenuBackup, "Rsnapshot", new RsnapshotSmartBackupJob);
+   ui->menuAdd_Job->addMenu(subMenuBackup);
+
+   AddJobMenuEntry("Disk Space Check", new LinuxFreeSpaceCheckJob);
+   AddJobMenuEntry("Custom command (server)", new UserConsoleJob);
+   AddJobMenuEntry("Custom command (client)", new SshConsoleJob(new UserConsoleJob));
+}
+
+void MainWindow::AddJobMenuEntry(const QString& title, AbstractJob* job)
+{
+   AddJobMenuEntry(ui->menuAdd_Job, title, job);
+}
+
+void MainWindow::AddJobMenuEntry(QMenu* subMenu,
+                                 const QString& title,
+                                 AbstractJob* job)
+{
+   subMenu->addAction(title, [this, job](){InsertNewJob(job);});
+}
+
 
 bool MainWindow::ShouldDiscardCurrentChanges()
 {
@@ -575,35 +553,6 @@ void MainWindow::UpdateUiOnFileChange(const QString& newFile)
    currentConfigurationFile = newFile;
    hasConfigurationChanged = false;
    UpdateModificationStatus();
-}
-
-// TODO : if no one uses, remove it.
-bool MainWindow::ResolveCurrentConfigurationSaveStatus()
-{
-   bool canRun = true;
-   if (hasConfigurationChanged) {
-      canRun = false;
-      const int button = QMessageBox::warning(this, tr("Configuration Editing Tool"),
-                                     tr("Configuration needs to be saved first.\n"
-                                        "Proceed?"),
-                                     QMessageBox::Yes | QMessageBox::No,
-                                     QMessageBox::No
-                                     );
-      if (button == QMessageBox::Yes)
-      {
-         if (currentConfigurationFile != "")
-         {
-            SaveFile(currentConfigurationFile);
-            canRun = true;
-         }
-         else
-         {
-            on_actionSave_As_triggered();
-            canRun = (currentConfigurationFile != "");
-         }
-      }
-   }
-   return canRun;
 }
 
 QString MainWindow::GetTempFolder() const
