@@ -1,3 +1,7 @@
+06/12/2018 (19)
+   Defaults improved : now default is console for report dispatching.
+	Also added check for file dispatching data.
+
 03/12/2018 (2.2h)
    No need for report file name edit, default file name is file.
 	This level of configuration is irrelevant for now.

@@ -74,6 +74,8 @@ private:
                                    std::vector<std::string> &errorMessages);
    virtual bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
 
+   void CheckReportDispatchingErrors(std::vector<std::string> &errorMessages);
+
    void SaveClientToOpenedFile(std::ofstream& file);
    void SaveReportOptionsToOpenedFile(std::ofstream& file);
    void SaveGlobalPropertiesToOpenedFile(std::ofstream& file);
@@ -84,6 +86,7 @@ private:
    void ChangeReportCreator();
 
    bool IsEmailDataComplete() const;
+   bool IsFileDataComplete() const;
 
    AbstractReportCreator* reportCreator;
    Agent* agent;

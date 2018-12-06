@@ -41,7 +41,7 @@
        <item row="7" column="0" colspan="3">
         <widget class="QStackedWidget" name="dispatcherWidget">
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="emptyPage"/>
          <widget class="QWidget" name="emailPage">
@@ -146,11 +146,8 @@
          </widget>
          <widget class="QWidget" name="filePage">
           <layout class="QGridLayout" name="gridLayout">
-           <item row="1" column="0">
-            <widget class="PathSelectionControl" name="reportFolderWidget" native="true"/>
-           </item>
            <item row="0" column="0">
-            <widget class="PathSelectionControl" name="reportFileWidget" native="true"/>
+            <widget class="PathSelectionControl" name="reportFolderWidget" native="true"/>
            </item>
           </layout>
          </widget>

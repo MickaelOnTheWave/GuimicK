@@ -22,7 +22,7 @@ StandaloneConfiguration::StandaloneConfiguration()
    : AbstractTypeConfiguration(),
      client(new Client()), reportCreator(NULL), agent(new Agent()),
      reportType("html"), cssFile(""),
-     masterEmail(""), reportDispatching("email"), shutdown(true)
+     masterEmail(""), reportDispatching("console"), shutdown(true)
 {
 }
 
@@ -256,28 +256,42 @@ bool StandaloneConfiguration::IsConfigurationConsistent(vector<string>& errorMes
        errorMessages.push_back(ConfigurationTools::CreateError(MsgMissingClient));
        return false;
    }
-   else if (reportCreator == NULL)
+
+   if (reportCreator == NULL)
    {
        reportCreator = new TextReportCreator();
        errorMessages.push_back("Warning : missing Report configuration. Defaulting to text");
-       return true;
    }
-   else if (reportDispatching != "email" && reportDispatching != "file" &&
-            reportDispatching != "console")
+
+   CheckReportDispatchingErrors(errorMessages);
+   return true;
+}
+
+void StandaloneConfiguration::CheckReportDispatchingErrors(
+   std::vector<string>& errorMessages
+)
+{
+   const bool isReportDispatchingValid = (reportDispatching == "email" ||
+                                          reportDispatching == "file" ||
+                                          reportDispatching == "console");
+   if (!isReportDispatchingValid)
    {
        stringstream message;
        message << "Warning : unknown " << reportDispatching << " dispatching.";
        message << "Defaulting to console.";
+       reportDispatching = "console";
        errorMessages.push_back(message.str());
-       return true;
    }
    else if (reportDispatching == "email" && !IsEmailDataComplete())
    {
        errorMessages.push_back("Error : missing data for email sending. Defaulting to console.");
-       return true;
+       reportDispatching = "console";
    }
-   else
-      return true;
+   else if (reportDispatching == "file" && !IsFileDataComplete())
+   {
+       errorMessages.push_back("Error : missing data for file storage. Defaulting to console.");
+       reportDispatching = "console";
+   }
 }
 
 void StandaloneConfiguration::SaveClientToOpenedFile(ofstream& file)
@@ -379,4 +393,9 @@ void StandaloneConfiguration::ChangeReportCreator()
 bool StandaloneConfiguration::IsEmailDataComplete() const
 {
    return (agent->HasValidEmailData() && masterEmail != "");
+}
+
+bool StandaloneConfiguration::IsFileDataComplete() const
+{
+   return (agent->GetReportFolder() != "");
 }
