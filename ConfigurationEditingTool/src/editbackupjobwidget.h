@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "abstractbackupjob.h"
+#include "pathselectioncontrol.h"
 
 namespace Ui {
    class EditBackupJobWidget;
@@ -27,11 +28,17 @@ private slots:
 
    void on_backupPointsWidget_itemSelectionChanged();
 
+   void OnFinishedSourceEditing(const QString& value);
+   void OnFinishedDestinationEditing(const QString& value);
+
 private:
    void AddBackupPointsToUi(
       const std::vector<std::pair<std::string,std::string> >& backupPoints
    );
    void AddBackupPointsToJob(AbstractBackupJob* job) const;
+
+   void SetFolderWidgetValue(PathSelectionControl* widget,
+                             const int rowIndex, const int columnIndex);
 
    Ui::EditBackupJobWidget *ui;
 };

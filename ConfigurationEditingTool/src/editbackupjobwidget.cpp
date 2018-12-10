@@ -8,6 +8,12 @@ EditBackupJobWidget::EditBackupJobWidget(QWidget *parent) :
    ui(new Ui::EditBackupJobWidget)
 {
    ui->setupUi(this);
+   ui->sourceWidget->InitializeAsFolder("Source", "Select folder to backup", "");
+   connect(ui->sourceWidget, SIGNAL(PathChanged(QString)),
+           this, SLOT(OnFinishedSourceEditing(QString)));
+   ui->destinationWidget->InitializeAsFolder("Destination", "Select backup destination", "");
+   connect(ui->destinationWidget, SIGNAL(PathChanged(QString)),
+           this, SLOT(OnFinishedDestinationEditing(QString)));
 }
 
 EditBackupJobWidget::~EditBackupJobWidget()
@@ -67,6 +73,7 @@ void EditBackupJobWidget::on_addBackupPointButton_clicked()
    const int currentIndex = ui->backupPointsWidget->currentRow();
    const int addIndex = (currentIndex == -1) ? ui->backupPointsWidget->rowCount() : currentIndex+1;
    ui->backupPointsWidget->insertRow(addIndex);
+   ui->backupPointsWidget->selectRow(addIndex);
 }
 
 void EditBackupJobWidget::on_removeBackupPointButton_clicked()
@@ -76,5 +83,36 @@ void EditBackupJobWidget::on_removeBackupPointButton_clicked()
 
 void EditBackupJobWidget::on_backupPointsWidget_itemSelectionChanged()
 {
-   ui->removeBackupPointButton->setEnabled(ui->backupPointsWidget->currentRow() != -1);
+   const int currentRowIndex = ui->backupPointsWidget->currentRow();
+   const bool isIndexValid = (currentRowIndex != -1);
+   ui->removeBackupPointButton->setEnabled(isIndexValid);
+   if (isIndexValid)
+   {
+      SetFolderWidgetValue(ui->sourceWidget, currentRowIndex, 0);
+      SetFolderWidgetValue(ui->destinationWidget, currentRowIndex, 1);
+   }
 }
+
+void EditBackupJobWidget::OnFinishedSourceEditing(const QString& value)
+{
+   const int currentRow = ui->backupPointsWidget->currentRow();
+   if (currentRow != -1)
+      ui->backupPointsWidget->setItem(currentRow, 0, new QTableWidgetItem(value));
+}
+
+void EditBackupJobWidget::OnFinishedDestinationEditing(const QString& value)
+{
+   const int currentRow = ui->backupPointsWidget->currentRow();
+   if (currentRow != -1)
+      ui->backupPointsWidget->setItem(currentRow, 1, new QTableWidgetItem(value));
+}
+
+void EditBackupJobWidget::SetFolderWidgetValue(
+      PathSelectionControl* widget,
+      const int rowIndex, const int columnIndex)
+{
+   QTableWidgetItem* tableItem = ui->backupPointsWidget->item(rowIndex, columnIndex);
+   const QString value = (tableItem) ? tableItem->text() : QString("");
+   widget->SetPath(value);
+}
+

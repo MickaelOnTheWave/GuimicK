@@ -1,3 +1,12 @@
+10/12/2018 (20.2)
+   Fixed controls behaviour.
+
+09/12/2018 (1.4h)
+   Changing UI. Added folder controls and half-wired them.
+Next planned work:
+   - Finish backup job UI.
+	- Create Windows Archive backup job
+
 06/12/2018 (0.1h)
    Updating Release Plan.
 
