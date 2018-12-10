@@ -14,6 +14,9 @@ EditBackupJobWidget::EditBackupJobWidget(QWidget *parent) :
    ui->destinationWidget->InitializeAsFolder("Destination", "Select backup destination", "");
    connect(ui->destinationWidget, SIGNAL(PathChanged(QString)),
            this, SLOT(OnFinishedDestinationEditing(QString)));
+
+   QHeaderView* header = ui->backupPointsWidget->horizontalHeader();
+   header->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 EditBackupJobWidget::~EditBackupJobWidget()

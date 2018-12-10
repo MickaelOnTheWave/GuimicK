@@ -1,5 +1,6 @@
-10/12/2018 (20.2)
-   Fixed controls behaviour.
+10/12/2018 (20.2-20.8)
+   Fixed controls behaviour. Fixed backup UI
+	column size. Now backup job UI is ok.
 
 09/12/2018 (1.4h)
    Changing UI. Added folder controls and half-wired them.
