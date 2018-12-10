@@ -1,6 +1,9 @@
-10/12/2018 (20.2-20.8)
+10/12/2018 (1.1h)
    Fixed controls behaviour. Fixed backup UI
-	column size. Now backup job UI is ok.
+	column size. Now backup job UI is ok. Tested on
+	Windows : OK, with minor bugs. They have been reported.
+Next planned work:
+   - Create Windows Archive backup job
 
 09/12/2018 (1.4h)
    Changing UI. Added folder controls and half-wired them.
