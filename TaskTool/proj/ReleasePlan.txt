@@ -69,6 +69,7 @@ Fixed bugs :
 	26/10/2017 - [012] Local debug option of wake job is not working.
 	16/04/2018 - [009] MIME email content is still buggy - some junk chars at the end of each archive. Looks like the counting is wrong in relation with message size.
 	26/09/2018 - [011] Configuration parser fails to parse empty string properties. See TODO.
+	13/12/2018 - [013] Configuration Editor Backup UI : folder controls should be disabled when no selection
 
 Pending bugs :
 	[001] Git report parser crashes when trying to parse a report coming from git asking for ssh password.
@@ -79,7 +80,6 @@ Pending bugs :
 	[008] Git FS backup doesn't work with first data report (git diff command).
 	[010] Some tests are failing in GitJob only in Release. Make all test suites pass 100% in both Debug and Release.
 	[012] Debug flag is not handled as it should. Check that global one works as default and can be overridden by local ones.
-	[013] Configuration Editor Backup UI : folder controls should be disabled when no selection
 	[014] There should be error reporting when simple copy backup fails (see on windows, using system folder)
 
 -------------

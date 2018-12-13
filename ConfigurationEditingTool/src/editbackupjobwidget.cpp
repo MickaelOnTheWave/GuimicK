@@ -8,15 +8,8 @@ EditBackupJobWidget::EditBackupJobWidget(QWidget *parent) :
    ui(new Ui::EditBackupJobWidget)
 {
    ui->setupUi(this);
-   ui->sourceWidget->InitializeAsFolder("Source", "Select folder to backup", "");
-   connect(ui->sourceWidget, SIGNAL(PathChanged(QString)),
-           this, SLOT(OnFinishedSourceEditing(QString)));
-   ui->destinationWidget->InitializeAsFolder("Destination", "Select backup destination", "");
-   connect(ui->destinationWidget, SIGNAL(PathChanged(QString)),
-           this, SLOT(OnFinishedDestinationEditing(QString)));
-
-   QHeaderView* header = ui->backupPointsWidget->horizontalHeader();
-   header->setSectionResizeMode(QHeaderView::Stretch);
+   InitializeControls();
+   EnableControls(false);
 }
 
 EditBackupJobWidget::~EditBackupJobWidget()
@@ -88,7 +81,7 @@ void EditBackupJobWidget::on_backupPointsWidget_itemSelectionChanged()
 {
    const int currentRowIndex = ui->backupPointsWidget->currentRow();
    const bool isIndexValid = (currentRowIndex != -1);
-   ui->removeBackupPointButton->setEnabled(isIndexValid);
+   EnableControls(isIndexValid);
    if (isIndexValid)
    {
       SetFolderWidgetValue(ui->sourceWidget, currentRowIndex, 0);
@@ -117,5 +110,25 @@ void EditBackupJobWidget::SetFolderWidgetValue(
    QTableWidgetItem* tableItem = ui->backupPointsWidget->item(rowIndex, columnIndex);
    const QString value = (tableItem) ? tableItem->text() : QString("");
    widget->SetPath(value);
+}
+
+void EditBackupJobWidget::InitializeControls()
+{
+   ui->sourceWidget->InitializeAsFolder("Source", "Select folder to backup", "");
+   connect(ui->sourceWidget, SIGNAL(PathChanged(QString)),
+           this, SLOT(OnFinishedSourceEditing(QString)));
+   ui->destinationWidget->InitializeAsFolder("Destination", "Select backup destination", "");
+   connect(ui->destinationWidget, SIGNAL(PathChanged(QString)),
+           this, SLOT(OnFinishedDestinationEditing(QString)));
+
+   QHeaderView* header = ui->backupPointsWidget->horizontalHeader();
+   header->setSectionResizeMode(QHeaderView::Stretch);
+}
+
+void EditBackupJobWidget::EnableControls(const bool value)
+{
+   ui->removeBackupPointButton->setEnabled(value);
+   ui->sourceWidget->Enable(value);
+   ui->destinationWidget->Enable(value);
 }
 

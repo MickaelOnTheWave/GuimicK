@@ -40,6 +40,9 @@ private:
    void SetFolderWidgetValue(PathSelectionControl* widget,
                              const int rowIndex, const int columnIndex);
 
+   void InitializeControls();
+   void EnableControls(const bool value);
+
    Ui::EditBackupJobWidget *ui;
 };
 
