@@ -432,6 +432,7 @@ void MainWindow::SetupAddJobMenu()
 void MainWindow::SetupWindowsAddJobMenu()
 {
    AddJobMenuEntry("Simple Copy Backup", new OsCopyFsBackupJob);
+   AddJobMenuEntry("Archive Backup", new ZipAndCopyFsBackupJob);
    AddJobMenuEntry("Custom command", new UserConsoleJob);
 }
 
