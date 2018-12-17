@@ -18,6 +18,8 @@ public:
    explicit EditBackupJobWidget(QWidget *parent = 0);
    ~EditBackupJobWidget();
 
+   void SetupDestinationAsFile(const QString& message, const QString& fileFilter);
+
    void UpdateUiFromJob(AbstractBackupJob* job);
    void UpdateJobFromUi(AbstractBackupJob* job) const;
 

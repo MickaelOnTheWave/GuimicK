@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "abstractjob.h"
+#include "configurationtype.h"
 
 class AbstractEditJobDialog : public QDialog
 {
@@ -11,6 +12,8 @@ class AbstractEditJobDialog : public QDialog
 public:
    AbstractEditJobDialog(AbstractJob* _job);
    virtual ~AbstractEditJobDialog() = default;
+
+   virtual void SetupFor(const ConfigurationType& type);
 
 protected slots:
    void OnCloseAccepting();

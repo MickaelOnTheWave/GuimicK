@@ -16,6 +16,8 @@ public:
    explicit EditZipCopyBackupDialog(AbstractJob* _job);
    virtual ~EditZipCopyBackupDialog();
 
+   void SetupFor(const ConfigurationType& type) override;
+
 protected:
    virtual void UpdateUiFromJob() override;
    virtual void UpdateJobFromUi() override;

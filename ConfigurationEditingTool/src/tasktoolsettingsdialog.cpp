@@ -49,7 +49,7 @@ void TaskToolSettingsDialog::InitializePathWidgets()
    const QString fileFilter = "Executable file (*)";
 #endif
 
-   ui->executableSelectionWidget->InitializeAsFile(
+   ui->executableSelectionWidget->InitializeAsExistingFile(
             "TaskTool Executable",
             "Select Task tool Executable",
             GetTaskToolExecutablePath(),

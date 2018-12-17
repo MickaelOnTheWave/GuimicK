@@ -53,7 +53,7 @@ void SettingsDialog::InitializeCssSelectionWidget()
 {
    const QString fileFilter = "Css file (*.css)";
    const QString defaultFile = "";
-   ui->cssWidget->InitializeAsFile("Css File",
+   ui->cssWidget->InitializeAsExistingFile("Css File",
                                    "Select Css File",
                                    defaultFile,
                                    fileFilter);

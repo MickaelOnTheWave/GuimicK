@@ -7,8 +7,10 @@
 class JobEditDialogFactory
 {
 public:
-
    static AbstractEditJobDialog* Create(AbstractJob* job);
+
+private:
+   static AbstractEditJobDialog* CreateBackupDialog(AbstractJob* job);
 };
 
 #endif // JOBEDITDIALOGFACTORY_H

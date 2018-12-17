@@ -3,6 +3,15 @@
 
 #include "zipandcopyfsbackupjob.h"
 
+namespace
+{
+#ifdef _WIN32
+   const QString fileSuffix = "zip";
+#else
+   const QString fileSuffix = "tar";
+#endif
+}
+
 EditZipCopyBackupDialog::EditZipCopyBackupDialog(AbstractJob* _job) :
    AbstractEditJobDialog(_job),
    ui(new Ui::EditZipCopyBackupDialog)
@@ -21,6 +30,12 @@ EditZipCopyBackupDialog::~EditZipCopyBackupDialog()
    delete basicBackupWidget;
 }
 
+void EditZipCopyBackupDialog::SetupFor(const ConfigurationType& type)
+{
+   if (type != ClientConfigurationType)
+      ui->zipCopyBox->setVisible(false);
+}
+
 void EditZipCopyBackupDialog::UpdateUiFromJob()
 {
    auto zipCopyJob = static_cast<ZipAndCopyFsBackupJob*>(job);
@@ -37,7 +52,10 @@ void EditZipCopyBackupDialog::UpdateJobFromUi()
 
 void EditZipCopyBackupDialog::CreateBasicBackupWidget()
 {
+   const QString fileFilter = "Archive files (*." + fileSuffix + ")";
    basicBackupWidget = new EditBackupJobWidget();
+   basicBackupWidget->SetupDestinationAsFile("Choose Destination Archive",
+                                             fileFilter);
 
    auto layout = new QVBoxLayout();
    layout->addWidget(basicBackupWidget);

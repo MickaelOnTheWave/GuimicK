@@ -370,6 +370,7 @@ void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
 {
    AbstractJob* job = jobListModel.GetJob(index);
    AbstractEditJobDialog* editDialog = JobEditDialogFactory::Create(job);
+   editDialog->SetupFor(configurationType);
 
    if (editDialog)
    {

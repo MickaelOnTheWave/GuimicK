@@ -17,6 +17,12 @@ EditBackupJobWidget::~EditBackupJobWidget()
    delete ui;
 }
 
+void EditBackupJobWidget::SetupDestinationAsFile(const QString& message,
+                                                 const QString& fileFilter)
+{
+   ui->destinationWidget->InitializeAsFile("Destination", message, "", fileFilter);
+}
+
 void EditBackupJobWidget::UpdateUiFromJob(AbstractBackupJob* job)
 {
    auto backupJob = static_cast<AbstractBackupJob*>(job);

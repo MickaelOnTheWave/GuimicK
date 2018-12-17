@@ -1,4 +1,10 @@
-13/12/2018 (19.6)
+17/12/2018 (2.4h)
+   Fixed UI to be easily understandable for standalone backups.
+Next planned work:
+   - Fix ZipCopy job : it is now working at current state.
+	- Refactor it to support other tools (Windows Zip)
+
+13/12/2018 (0.4h)
    Fixed UI minor bug. Now going for Windows archive backup.
 
 10/12/2018 (1.1h)

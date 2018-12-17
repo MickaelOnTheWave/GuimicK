@@ -30,20 +30,23 @@ AbstractEditJobDialog* JobEditDialogFactory::Create(AbstractJob* job)
    else if (dynamic_cast<AbstractConsoleJob*>(job))
       return new EditConsoleJobDialog(job);
    else if (dynamic_cast<AbstractBackupJob*>(job))
-   {
-      if (dynamic_cast<RsnapshotSmartBackupJob*>(job))
-         return new EditRsnapshotBackupJobDialog(job);
-      else if (dynamic_cast<GitFsBackupJob*>(job))
-         return new EditGitFsBackupJobDialog(job);
-      else if (dynamic_cast<RsyncCopyFsBackupJob*>(job))
-         return new EditRsyncFsBackupJobDialog(job);
-      else if (dynamic_cast<ZipAndCopyFsBackupJob*>(job))
-         return new EditZipCopyBackupDialog(job);
-      else
-         return new EditBackupJobDialog(job);
-   }
+      return CreateBackupDialog(job);
    else if (dynamic_cast<LinuxFreeSpaceCheckJob*>(job))
       return new EditDiskSpaceJobDialog(job);
    else
       return nullptr;
+}
+
+AbstractEditJobDialog* JobEditDialogFactory::CreateBackupDialog(AbstractJob* job)
+{
+   if (dynamic_cast<RsnapshotSmartBackupJob*>(job))
+      return new EditRsnapshotBackupJobDialog(job);
+   else if (dynamic_cast<GitFsBackupJob*>(job))
+      return new EditGitFsBackupJobDialog(job);
+   else if (dynamic_cast<RsyncCopyFsBackupJob*>(job))
+      return new EditRsyncFsBackupJobDialog(job);
+   else if (dynamic_cast<ZipAndCopyFsBackupJob*>(job))
+      return new EditZipCopyBackupDialog(job);
+   else
+      return new EditBackupJobDialog(job);
 }

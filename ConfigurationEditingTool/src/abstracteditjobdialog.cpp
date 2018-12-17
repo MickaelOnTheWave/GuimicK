@@ -5,6 +5,10 @@ AbstractEditJobDialog::AbstractEditJobDialog(AbstractJob* _job)
 {
 }
 
+void AbstractEditJobDialog::SetupFor(const ConfigurationType&)
+{
+}
+
 void AbstractEditJobDialog::OnCloseAccepting()
 {
    UpdateJobFromUi();
