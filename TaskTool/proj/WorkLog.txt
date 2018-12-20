@@ -1,7 +1,17 @@
+20/12/2018 (0.9h)
+   Debugging : tar toolset doesn't seem to work. As it is too
+	complicated and linked with TaskManager code, creating a
+	brand new ArchiveTool architecture. Starting "from scratch"...
+	Created ArchiteTool interface and TarTool implementation.
+Next planned work:
+   - Test current code : it should be working
+	- Implement error reporting in TarTool
+	- Update ZipAndCopy job to use new implementation
+
 17/12/2018 (2.4h)
    Fixed UI to be easily understandable for standalone backups.
 Next planned work:
-   - Fix ZipCopy job : it is now working at current state.
+   - Fix ZipCopy job : it isn't working at current state.
 	- Refactor it to support other tools (Windows Zip)
 
 13/12/2018 (0.4h)
