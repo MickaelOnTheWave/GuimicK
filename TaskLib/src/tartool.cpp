@@ -1,5 +1,6 @@
 #include "tartool.h"
 
+#include "tarcommandparser.h"
 #include "tools.h"
 
 using namespace std;
@@ -14,41 +15,59 @@ void TarTool::SetGzipCompression(const bool value)
    useGzipCompression = value;
 }
 
-bool TarTool::CreateArchive(const string& pathData, ErrorList& errors)
+void TarTool::CreateArchive(const string& pathData, ArchiveToolResult& result)
 {
-   string output;
    const string command = "tar " + TarCreateFlags() + " " + filename + " " + pathData;
-   int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
-   return (returnValue == 0);
+   RunTarCommand(command, result);
 }
 
-bool TarTool::AddToArchive(const string& pathToAdd, ErrorList& errors)
+void TarTool::AddToArchive(const string& pathToAdd, ArchiveToolResult& result)
 {
-   string output;
    const string command = "tar " + TarUpdateFlags() + " " + filename + " " + pathToAdd;
-   int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
-   return (returnValue == 0);
+   RunTarCommand(command, result);
 }
 
-bool TarTool::ExtractArchive(const string& destinationPath, ErrorList& errors)
+void TarTool::ExtractArchive(const string& destinationPath, ArchiveToolResult& result)
+{
+   const string command = "tar -xvf " + filename + " -C " + destinationPath;
+   RunTarCommand(command, result);
+}
+
+void TarTool::RunTarCommand(const string& command, ArchiveToolResult& result)
 {
    string output;
-   const string command = "tar -xvf " + filename + " -C " + destinationPath;
    int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
-   return (returnValue == 0);
+   ParseOutput(output, returnValue, result);
+}
+
+void TarTool::ParseOutput(const string& output,
+                          const int returnValue,
+                          ArchiveToolResult& result) const
+{
+   result.isOk = (returnValue == 0);
+
+   TarCommandParser parser("tar");
+   parser.ParseBuffer(output);
+   ConvertToArchiveResult(parser, result);
 }
 
 string TarTool::TarCreateFlags() const
 {
-   return AddCompressionFlag("-cpvf");
+   return (useGzipCompression) ? "-cpzvf" : "-cpvf";
 }
 
 string TarTool::TarUpdateFlags() const
 {
-   return AddCompressionFlag("-uvf");
+   return (useGzipCompression) ? "-uzvf" : "-uvf";
 }
 
-string TarTool::AddCompressionFlag(const string& baseFlags) const
+void TarTool::ConvertToArchiveResult(TarCommandParser& parser,
+                                     ArchiveToolResult& result) const
 {
-   return (useGzipCompression) ? baseFlags + "z" : baseFlags;
+   FileBackupReport report;
+   parser.GetReport(report);
+
+   vector<string> addedFiles;
+   report.GetAddedFiles(addedFiles);
+   result.FileList = addedFiles;
 }

@@ -3,7 +3,9 @@
 #include "consolejob.h"
 #include "filetools.h"
 #include "sshconsolejob.h"
-#include "tartools.h"
+
+#include "tartool.h"
+//#include "tartools.h"
 
 using namespace std;
 
@@ -64,22 +66,12 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
                                                 const std::string &destination,
                                                 AbstractBackupJob::ResultCollection &results)
 {
-   const string fullDestination = repository + destination;
-    bool ok = RemovePreviousArchive(fullDestination, results);
-
-    const string localArchive = (target.isLocal) ? fullDestination : localDestination;
-
-    if (ok)
-        ok = CreateBackupArchive(source, localArchive, results);
-
-    if (!target.isLocal)
-    {
-        if (ok)
-            ok = CopyBackupArchiveToDestination(fullDestination, results);
-
-        if (ok)
-            CleanBackupArchiveFromSource(results);
-    }
+   if (target.isLocal)
+      UpdateBackupArchive(source, destination, results);
+   else
+   {
+      // TODO : do it
+   }
 }
 
 JobStatus* ZipAndCopyFsBackupJob::RestoreBackupFromServer(const string& source,
@@ -89,15 +81,29 @@ JobStatus* ZipAndCopyFsBackupJob::RestoreBackupFromServer(const string& source,
    return new JobStatus(ok ? JobStatus::OK : JobStatus::ERROR);
 }
 
+void AddResultToCollection(const ArchiveToolResult& result,
+                           AbstractBackupJob::ResultCollection &results)
+{
+   JobStatus* jobStatus = new JobStatus();
+   jobStatus->SetCode(result.isOk ? JobStatus::OK : JobStatus::ERROR);
+
+   FileBackupReport* backupReport = new FileBackupReport();
+   backupReport->AddAsAdded(result.FileList);
+   results.push_back(make_pair(jobStatus, backupReport));
+}
+
 // TODO : maybe there is a better architectural option to these result collections :
 // create a JobBackupStatus that stores backup report.
-bool ZipAndCopyFsBackupJob::CreateBackupArchive(const string &folderToBackup,
+bool ZipAndCopyFsBackupJob::UpdateBackupArchive(const string &folderToBackup,
                                                 const string &archiveName,
                                                 AbstractBackupJob::ResultCollection &results)
 {
-   const string params = string("-cpzvf ") + archiveName + " -C " + folderToBackup + " .";
-   TarTools tarTool(&target, debugManager);
-   return tarTool.CreateArchive(params, results);
+   ArchiveTool* archiveTool = CreateArchiveTool(archiveName);
+   ArchiveToolResult result;
+   archiveTool->AddToArchive(folderToBackup, result);
+   AddResultToCollection(result, results);
+   delete archiveTool;
+   return result.isOk;
 }
 
 bool ZipAndCopyFsBackupJob::RemovePreviousArchive(const string &destination,
@@ -151,4 +157,11 @@ void ZipAndCopyFsBackupJob::AddStatusToResults(AbstractBackupJob::ResultCollecti
 {
     JobStatus* status = new JobStatus(code, message);
     results.push_back(pair<JobStatus*, FileBackupReport*>(status, NULL));
+}
+
+ArchiveTool* ZipAndCopyFsBackupJob::CreateArchiveTool(const string& filename) const
+{
+   TarTool* tool = new TarTool(filename);
+   tool->SetGzipCompression(false);
+   return tool;
 }

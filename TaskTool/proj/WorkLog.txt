@@ -1,8 +1,37 @@
+26/12/2018 (17.7)
+   After some thought, it has been decided to drop refactorings. Code is working
+	as it is, and it should be priority to release a working version.	Moving to Windows...
+
+25/12/2018 (0.9h)
+   Going back on refactoring : FileBackupReport is for jobs, not for archive
+	tool. Sticked to ArchiveToolResult, however there is a double conversion
+	at the moment. This needs to change. Test worked as expected.
+	Refactoring : creating JobBackupStatus.
+Next planned work:
+   - Finish JobBackupStatus
+	- Refactor backup jobs to use JobBackupStatus (and remove ResultEntry from
+	AbstractBackupJob)
+	- Continue with ZipCopy job refactoring
+
+24/12/2018 (1.3h)
+   Current tar toolset tested and working - fixed some minor issues in it.
+	Reviewing architecture options for reporting...
+	Created structure for ArchiveToolResult. However, it seems wrong after
+	trying to implement it. Best option is probably to have errorlist with
+	FileBackupReport, so that command parsers are used as is.
+Next planned work:
+   - Remove/Refactor ArchiveToolResult, replace it with FileBackupReport
+	- Finish implementing use of TarCommandParser
+	- Check if parser can be part of ArchiveTool architecture. Maybe
+	create intermediate class?
+	- Finish Tar tool reporting
+	- Finish updating ZipAndCopy job use of archive tools
+
 20/12/2018 (0.9h)
    Debugging : tar toolset doesn't seem to work. As it is too
 	complicated and linked with TaskManager code, creating a
 	brand new ArchiveTool architecture. Starting "from scratch"...
-	Created ArchiteTool interface and TarTool implementation.
+	Created ArchiveTool interface and TarTool implementation.
 Next planned work:
    - Test current code : it should be working
 	- Implement error reporting in TarTool

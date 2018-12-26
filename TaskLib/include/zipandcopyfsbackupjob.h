@@ -2,8 +2,10 @@
 #define ZIPANDCOPYFSBACKUPJOB_H
 
 #include "abstractbackupjob.h"
-#include "backupstatusmanager.h"
 #include "AbstractConsoleJob.h"
+#include "archivetool.h"
+#include "backupstatusmanager.h"
+
 
 // TODO : check that the job works with multiple folders
 class ZipAndCopyFsBackupJob : public AbstractBackupJob
@@ -31,7 +33,7 @@ private:
     virtual JobStatus* RestoreBackupFromServer(const std::string &source,
                                      const std::string &destination);
 
-    bool CreateBackupArchive(const std::string& folderToBackup,
+    bool UpdateBackupArchive(const std::string& folderToBackup,
                              const std::string& archiveName,
                              ResultCollection& results);
     bool RemovePreviousArchive(const std::string& destination,
@@ -44,6 +46,8 @@ private:
 
     void AddStatusToResults(ResultCollection& results,
                             const int code, const std::string& message);
+
+    ArchiveTool* CreateArchiveTool(const std::string& filename) const;
 
     std::string localDestination;
 };

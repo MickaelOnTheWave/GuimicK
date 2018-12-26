@@ -2,7 +2,7 @@
 #define TARTOOL_H
 
 #include "archivetool.h"
-
+#include "tarcommandparser.h"
 
 class TarTool : public ArchiveTool
 {
@@ -11,19 +11,28 @@ public:
 
    void SetGzipCompression(const bool value);
 
-   virtual bool CreateArchive(const std::string& pathData,
-                              ErrorList& errors) = 0;
+   virtual void CreateArchive(const std::string& pathData,
+                              ArchiveToolResult& result);
 
-   virtual bool AddToArchive(const std::string& pathToAdd,
-                             ErrorList& errors) = 0;
+   virtual void AddToArchive(const std::string& pathToAdd,
+                             ArchiveToolResult& result);
 
-   virtual bool ExtractArchive(const std::string& destinationPath,
-                               ErrorList& errors) = 0;
+   virtual void ExtractArchive(const std::string& destinationPath,
+                               ArchiveToolResult& result);
+
 
 private:
+   void RunTarCommand(const std::string& command, ArchiveToolResult& result);
+
+   void ParseOutput(const std::string& commandOutput,
+                    const int returnValue,
+                    ArchiveToolResult& result) const;
+
    std::string TarCreateFlags() const;
    std::string TarUpdateFlags() const;
-   std::string AddCompressionFlag(const std::string& baseFlags) const;
+
+   void ConvertToArchiveResult(TarCommandParser& parser,
+                               ArchiveToolResult& result) const;
 
    bool useGzipCompression;
 };

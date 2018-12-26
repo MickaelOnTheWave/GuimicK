@@ -4,7 +4,13 @@
 #include <string>
 #include <vector>
 
-typedef std::vector<std::string> ErrorList;
+class ArchiveToolResult
+{
+public:
+   std::vector<std::string> ErrorList;
+   std::vector<std::string> FileList;
+   bool isOk;
+};
 
 class ArchiveTool
 {
@@ -12,14 +18,14 @@ public:
    ArchiveTool(const std::string& _filename) : filename(_filename) {}
    virtual ~ArchiveTool() {}
 
-   virtual bool CreateArchive(const std::string& pathData,
-                              ErrorList& errors) = 0;
+   virtual void CreateArchive(const std::string& pathData,
+                              ArchiveToolResult& result) = 0;
 
-   virtual bool AddToArchive(const std::string& pathToAdd,
-                             ErrorList& errors) = 0;
+   virtual void AddToArchive(const std::string& pathToAdd,
+                             ArchiveToolResult& result) = 0;
 
-   virtual bool ExtractArchive(const std::string& destinationPath,
-                               ErrorList& errors) = 0;
+   virtual void ExtractArchive(const std::string& destinationPath,
+                               ArchiveToolResult& result) = 0;
 
 protected:
    const std::string filename;
