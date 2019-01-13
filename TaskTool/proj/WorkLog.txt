@@ -1,6 +1,32 @@
-26/12/2018 (17.7)
+13/01/2019 (2h)
+    Still updating VM...
+
+13/01/2019 (1.3h)
+    Installed Additions to have higher resolution in VM. Fixed network issue. Now
+    updating Windows and going for activation. Installed more updates.
+Next planned work:
+    - Install firefox
+    - Install remaining updates/SPs
+    - Install VisualStudio/git/cmake
+    - Compile TaskManager in VM
+
+10/01/2019 (0.7h)
+    Back to work. Reinstalled whole OS and setup development environment. Now recreating
+    Windows VM...
+
+26/12/2018 (17.7-18.5)
    After some thought, it has been decided to drop refactorings. Code is working
 	as it is, and it should be priority to release a working version.	Moving to Windows...
+	Checked again the issue of zipping/unzipping natively on Windows from command line.
+	Apparently, it really isn't possible. Alternatives are :
+	- Use 3rd party (7zip) externally (require its installation)
+	- Use powershell (requires powershell presence/installation)
+	- Write .NET program that uses Windows built-in feature (requires framework not
+	present in VM + installing Visual Studio + programming something else)
+	- Use 7zip internally
+	Going for last solution : license permits its usage as is, and it doesn't require
+	installation of something else.
+	Checking command line usage and creating toolset for it.
 
 25/12/2018 (0.9h)
    Going back on refactoring : FileBackupReport is for jobs, not for archive

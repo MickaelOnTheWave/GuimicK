@@ -5,6 +5,8 @@
 
 using namespace std;
 
+const string tarCommand = "tar";
+
 TarTool::TarTool(const string& _filename)
    : ArchiveTool(_filename), useGzipCompression(true)
 {
@@ -17,19 +19,19 @@ void TarTool::SetGzipCompression(const bool value)
 
 void TarTool::CreateArchive(const string& pathData, ArchiveToolResult& result)
 {
-   const string command = "tar " + TarCreateFlags() + " " + filename + " " + pathData;
+   const string command = tarCommand + " " + TarCreateFlags() + " " + filename + " " + pathData;
    RunTarCommand(command, result);
 }
 
 void TarTool::AddToArchive(const string& pathToAdd, ArchiveToolResult& result)
 {
-   const string command = "tar " + TarUpdateFlags() + " " + filename + " " + pathToAdd;
+   const string command = tarCommand + " " + TarUpdateFlags() + " " + filename + " " + pathToAdd;
    RunTarCommand(command, result);
 }
 
 void TarTool::ExtractArchive(const string& destinationPath, ArchiveToolResult& result)
 {
-   const string command = "tar -xvf " + filename + " -C " + destinationPath;
+   const string command = tarCommand + " -xvf " + filename + " -C " + destinationPath;
    RunTarCommand(command, result);
 }
 
