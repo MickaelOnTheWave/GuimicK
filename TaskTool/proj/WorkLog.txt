@@ -1,3 +1,26 @@
+23/01/2019 (18.2)
+    Fixed compilation issues in Visual Studio due to not being
+    able to use POSIX features, created ifdefs and
+    crossplatform utilities to hide native code.
+
+21/01/2019 (2.3h)
+    Cloned git repositories. Ssh issue was only with relative path,
+    absolute path worked. Created VS project for TaskTool, however
+    Qt was not installed. Installing it... Installed finished, but
+    Cmake is still not detecting Qt.
+Next planned work:
+    - Fix Cmake-Qt detection
+    - Compile Configuration tool
+    - Back to 7zip implementation
+
+20/01/2019 (3h)
+    Found out how to resize VM's HD. Now installing Visual Studio...
+    Finished installation along with Git and Cmake.
+Next planned work:
+    - Clone git from desktop (requires configuring ssh)
+    - Compile TaskManager project in Visual Studio
+    - Back to 7zip implementation
+
 13/01/2019 (2h)
     Still updating VM...
 
