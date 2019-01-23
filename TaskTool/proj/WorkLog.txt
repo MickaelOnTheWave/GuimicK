@@ -1,7 +1,13 @@
-23/01/2019 (18.2)
+23/01/2019 (2.4h)
     Fixed compilation issues in Visual Studio due to not being
     able to use POSIX features, created ifdefs and
     crossplatform utilities to hide native code.
+    Configuration Tool is now compiling, but there is still a
+    linking issue (32bit linking to 64bit)
+Next planned work:
+    - Fix linking issue
+    - Back to 7zip implementation
+
 
 21/01/2019 (2.3h)
     Cloned git repositories. Ssh issue was only with relative path,

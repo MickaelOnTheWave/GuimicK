@@ -34,19 +34,19 @@ AbstractJob *ClamAvJob::Clone()
 
 bool ClamAvJob::InitializeFromClient(Client *client)
 {
-    virusDefinitionUpdateJob->InitializeFromClient(client);
-    if (!virusFullScanJob->InitializeFromClient(client))
-        return false;
+   virusDefinitionUpdateJob->InitializeFromClient(client);
+   if (!virusFullScanJob->InitializeFromClient(client))
+     return false;
 
-	if (!client->HasProperty("avscandir"))
-		return false;
+   if (!client->HasProperty("avscandir"))
+      return false;
 
-	scanDir = client->GetProperty("avscandir");
-    string command("clamscan.exe --verbose --recursive ");
-    command += scanDir;
-    virusFullScanJob->Initialize(command);
-	blockOnFailingUpdate = (client->GetProperty("avmandatoryupdate") == "true");
-    return true;
+   scanDir = client->GetProperty("avscandir");
+   string command("clamscan.exe --verbose --recursive ");
+   command += scanDir;
+   virusFullScanJob->Initialize(command);
+   blockOnFailingUpdate = (client->GetProperty("avmandatoryupdate") == "true");
+   return true;
 }
 
 bool ClamAvJob::IsInitialized()
