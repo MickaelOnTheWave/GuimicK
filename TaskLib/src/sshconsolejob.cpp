@@ -78,9 +78,9 @@ bool SshConsoleJob::IsInitialized()
 JobStatus *SshConsoleJob::Run()
 {
     if (IsInitialized() == false)
-        return new JobStatus(JobStatus::ERROR, NoTargetError);
+        return new JobStatus(JobStatus::Error, NoTargetError);
     else if (Tools::IsComputerAlive(host) == false)
-        return new JobStatus(JobStatus::ERROR, InvalidTargetError);
+        return new JobStatus(JobStatus::Error, InvalidTargetError);
 
     AbstractConsoleJob* sshJob = CreateSshJob();
 
@@ -98,7 +98,7 @@ JobStatus *SshConsoleJob::Run()
         status->SetDescription(NoTerminalForPasswordError);
     else if (!remoteCopyWithoutErrors)
     {
-       status->SetCode(JobStatus::OK_WITH_WARNINGS);
+       status->SetCode(JobStatus::OkWithWarnings);
        status->SetDescription(FailedRemoteCopyError);
     }
 
@@ -248,7 +248,7 @@ bool SshConsoleJob::IsAskTerminalError(JobStatus *status,
                                        const string& message) const
 {
     const string expectedOutput = "sudo: no tty present";
-    return (status->GetCode() == JobStatus::ERROR &&
+    return (status->GetCode() == JobStatus::Error &&
             message.find(expectedOutput) == 0);
 }
 

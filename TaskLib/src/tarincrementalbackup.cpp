@@ -48,12 +48,12 @@ JobStatus* TarIncrementalBackup::RestoreBackupFromServer(
       const int archiveIndex = lastArchiveIndex - timeIndex;
       const bool result = tarTool.ExtractIncrementalArchive(backupSource, archiveIndex, destination);
       if (result)
-         return new JobStatus(JobStatus::OK, "");
+         return new JobStatus(JobStatus::Ok, "");
       else
-         return new JobStatus(JobStatus::ERROR, "Error while extracting");
+         return new JobStatus(JobStatus::Error, "Error while extracting");
    }
    else
-      return new JobStatus(JobStatus::ERROR, "Invalid Repository Index");
+      return new JobStatus(JobStatus::Error, "Invalid Repository Index");
 }
 
 int TarIncrementalBackup::GetMaxIncrementsCount() const
@@ -90,9 +90,9 @@ JobStatus* TarIncrementalBackup::RestoreBackupFromServer(const string& source,
    TarTools tarTool(&target, debugManager);
    const bool result = tarTool.ExtractArchive(source, destination);
    if (result)
-      return new JobStatus(JobStatus::OK, "");
+      return new JobStatus(JobStatus::Ok, "");
    else
-      return new JobStatus(JobStatus::ERROR, "Error while extracting");
+      return new JobStatus(JobStatus::Error, "Error while extracting");
 }
 
 void TarIncrementalBackup::CreateNewBackup(

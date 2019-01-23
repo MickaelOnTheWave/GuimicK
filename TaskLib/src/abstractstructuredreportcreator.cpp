@@ -5,7 +5,7 @@
 using namespace std;
 
 AbstractStructuredReportCreator::AbstractStructuredReportCreator()
-   : globalCode(JobStatus::NOT_EXECUTED), globalDuration(0)
+   : globalCode(JobStatus::NotExecuted), globalDuration(0)
 {
 }
 
@@ -38,7 +38,7 @@ void AbstractStructuredReportCreator::Generate(WorkResultData *data,
 
         AddClientHeaderData(clientData);
 
-        globalCode = JobStatus::NOT_EXECUTED;
+        globalCode = JobStatus::NotExecuted;
         globalDuration = 0;
 
         AddJobResultData(clientData);

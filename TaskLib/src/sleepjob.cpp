@@ -1,10 +1,5 @@
 #include "sleepjob.h"
-
-#ifdef __WIN32__
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif
+#include "tools.h"
 
 SleepJob::SleepJob(int _sleepTime)
    : AbstractJob("SleepJob"), sleepTime(_sleepTime)
@@ -13,11 +8,6 @@ SleepJob::SleepJob(int _sleepTime)
 
 JobStatus *SleepJob::Run()
 {
-#ifdef __WIN32__
-	Sleep(sleepTime*1000);
-#else
-	usleep(static_cast<useconds_t>(sleepTime)*1000*1000);
-#endif
-
-	return new JobStatus(JobStatus::OK);
+   Tools::Wait(sleepTime);
+	return new JobStatus(JobStatus::Ok);
 }

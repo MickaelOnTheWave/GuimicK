@@ -2,7 +2,6 @@
 
 #include <filetools.h>
 #include <sstream>
-#include <unistd.h>
 
 #include "backupstatusmanager.h"
 #include "consolejob.h"
@@ -160,7 +159,7 @@ bool GitBackupJob::FetchUpdates(const string &repository,
         else
             errorMessage = fetchUpdateError;
 
-        JobStatus* status = new JobStatus(JobStatus::ERROR, invalidSourceRepositoryError);
+        JobStatus* status = new JobStatus(JobStatus::Error, invalidSourceRepositoryError);
         statusList.push_back(make_pair(status, new FileBackupReport()));
         AddToAttachedArchive(repository, command.GetCommandOutput());
     }
@@ -196,14 +195,14 @@ void GitBackupJob::CreateReport(
     {
         FileBackupReport* report = new FileBackupReport();
         parser.GetReport(*report);
-        JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
+        JobStatus* status = new JobStatus(JobStatus::Ok, parser.GetMiniDescription());
         AddToAttachedArchive(repository, report->GetFullDescription());
         statusList.push_back(make_pair(status, report));
     }
     else
     {
         debugManager->AddDataLine<string>("Parser input", commandOutput);
-        JobStatus* status = new JobStatus(JobStatus::OK_WITH_WARNINGS, reportCreationError);
+        JobStatus* status = new JobStatus(JobStatus::OkWithWarnings, reportCreationError);
         AddToAttachedArchive(repository, commandOutput);
         statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
     }

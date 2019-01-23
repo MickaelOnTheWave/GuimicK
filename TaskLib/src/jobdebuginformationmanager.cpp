@@ -69,9 +69,9 @@ void JobDebugInformationManager::WriteToFile() const
 
 bool JobDebugInformationManager::ShouldAttachDebugInformation(const int statusCode) const
 {
-    const bool isStatusOk = (statusCode == JobStatus::OK);
-    const bool isStatusNotExecuted = (statusCode == JobStatus::NOT_EXECUTED);
-    const bool isStatusError = (statusCode == JobStatus::ERROR);
+    const bool isStatusOk = (statusCode == JobStatus::Ok);
+    const bool isStatusNotExecuted = (statusCode == JobStatus::NotExecuted);
+    const bool isStatusError = (statusCode == JobStatus::Error);
 
     switch (debugUse)
     {

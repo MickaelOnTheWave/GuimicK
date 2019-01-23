@@ -109,7 +109,7 @@ JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromServer(const string& source
    if (!FileTools::IsFolderEmpty(source))
       return RunRawCopy(source, destination);
    else
-      return new JobStatus(JobStatus::OK, "");
+      return new JobStatus(JobStatus::Ok, "");
 }
 
 JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromClient(
@@ -155,9 +155,9 @@ JobStatus* RsnapshotSmartBackupJob::RunRawCopy(const string& source, const strin
    JobStatus* status = rawCopyJob.Run();
 
    if (status->IsOk())
-      return new JobStatus(JobStatus::OK);
+      return new JobStatus(JobStatus::Ok);
    else
-      return new JobStatus(JobStatus::ERROR, "Raw Copy failed");
+      return new JobStatus(JobStatus::Error, "Raw Copy failed");
 }
 
 string RsnapshotSmartBackupJob::AppendTrailingSlash(const string value) const

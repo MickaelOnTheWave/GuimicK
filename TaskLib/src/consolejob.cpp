@@ -154,10 +154,10 @@ bool ConsoleJob::RunCommand()
 
 JobStatus *ConsoleJob::CreateSuccessStatus()
 {
-    return new JobStatus(JobStatus::OK, "");
+    return new JobStatus(JobStatus::Ok, "");
 }
 
 JobStatus *ConsoleJob::CreateErrorStatus()
 {
-    return new JobStatus(JobStatus::ERROR, "");
+    return new JobStatus(JobStatus::Error, "");
 }

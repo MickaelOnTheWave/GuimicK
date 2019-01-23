@@ -5,15 +5,15 @@
 using namespace std;
 
 
-const int JobStatus::NOT_EXECUTED		= 0;
-const int JobStatus::OK                = 1;
-const int JobStatus::OK_WITH_WARNINGS  = 2;
-const int JobStatus::ERROR             = 3;
+const int JobStatus::NotExecuted		= 0;
+const int JobStatus::Ok                = 1;
+const int JobStatus::OkWithWarnings  = 2;
+const int JobStatus::Error             = 3;
 
 std::map<int, std::string> JobStatus::codeMap;
 
 JobStatus::JobStatus()
-	: code(NOT_EXECUTED),
+	: code(NotExecuted),
 	  elapsedTime(0),
 	  description("")
 {
@@ -41,7 +41,7 @@ JobStatus::~JobStatus()
 
 void JobStatus::Reset()
 {
-	code = NOT_EXECUTED;
+	code = NotExecuted;
 	description = "";
     externalFilenames.clear();
     filebuffers.clear();
@@ -73,7 +73,7 @@ int JobStatus::GetCodeFromDescription(const string &_description)
          return it->first;
    }
 
-   return JobStatus::NOT_EXECUTED;
+   return JobStatus::NotExecuted;
 }
 
 string JobStatus::GetCodeDescription() const
@@ -144,12 +144,12 @@ bool JobStatus::IsWorseThan(int otherCode) const
 
 bool JobStatus::IsFatal() const
 {
-   return (code == ERROR || code == NOT_EXECUTED);
+   return (code == Error || code == NotExecuted);
 }
 
 bool JobStatus::IsOk() const
 {
-   return (code == OK);
+   return (code == Ok);
 }
 
 string JobStatus::GetDescription() const
@@ -186,8 +186,8 @@ void JobStatus::GetFileBuffers(FileBufferList &_filebuffers)
 
 void JobStatus::PopulateCodeMap()
 {
-   codeMap[JobStatus::NOT_EXECUTED] = "Not executed";
-   codeMap[JobStatus::OK] = "Ok";
-   codeMap[JobStatus::OK_WITH_WARNINGS] = "Executed with minor errors";
-   codeMap[JobStatus::ERROR] = "Error";
+   codeMap[JobStatus::NotExecuted] = "Not executed";
+   codeMap[JobStatus::Ok] = "Ok";
+   codeMap[JobStatus::OkWithWarnings] = "Executed with minor errors";
+   codeMap[JobStatus::Error] = "Error";
 }

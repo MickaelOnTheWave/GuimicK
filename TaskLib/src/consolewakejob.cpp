@@ -29,19 +29,19 @@ JobStatus* ConsoleWakeJob::SetupWaker()
    wakeCommand.SetParentDebugManager(debugManager);
 
    if (wakeCommand.IsCommandAvailable())
-      return new JobStatus(JobStatus::OK);
+      return new JobStatus(JobStatus::Ok);
    else
-      return new JobStatus(JobStatus::ERROR, "wakelan not installed");
+      return new JobStatus(JobStatus::Error, "wakelan not installed");
 }
 
 JobStatus* ConsoleWakeJob::RunWaker()
 {
    JobStatus* status = wakeCommand.Run();
-   if (status->GetCode() != JobStatus::OK)
+   if (status->GetCode() != JobStatus::Ok)
        return status;
    else
        delete status;
 
    debugManager->AddDataLine<string>("Wake Output", wakeCommand.GetCommandOutput());
-   return new JobStatus(JobStatus::OK);
+   return new JobStatus(JobStatus::Ok);
 }

@@ -58,7 +58,7 @@ JobStatus *LinuxFreeSpaceCheckJob::Run()
     debugManager->AddDataLine<string>("Parameters", job->GetCommandParameters());
 
     JobStatus* status = job->Run();
-    if (status->GetCode() == JobStatus::OK)
+    if (status->GetCode() == JobStatus::Ok)
     {
         DfCommandParser parser;
         string reportContent = "";
@@ -70,7 +70,7 @@ JobStatus *LinuxFreeSpaceCheckJob::Run()
         }
         else
         {
-            status->SetCode(JobStatus::OK_WITH_WARNINGS);
+            status->SetCode(JobStatus::OkWithWarnings);
             status->SetDescription("Failed to parse output");
             reportContent = job->GetCommandOutput();
         }

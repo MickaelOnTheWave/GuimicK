@@ -60,10 +60,10 @@ JobStatus *BackupStatusManager::CreateGlobalStatus(
         return CreateSingleStatus();
     else
     {
-        if (AreAllStatusesEqual(JobStatus::OK))
+        if (AreAllStatusesEqual(JobStatus::Ok))
             return CreateAllOkStatus();
         else
-            return CreateSeparatedStatus(JobStatus::ERROR);
+            return CreateSeparatedStatus(JobStatus::Error);
     }
 }
 
@@ -82,12 +82,12 @@ JobStatus *BackupStatusManager::CreateSingleStatus()
 
 JobStatus *BackupStatusManager::CreateAllOkStatus()
 {
-    JobStatus* status = new JobStatus(JobStatus::OK);
+    JobStatus* status = new JobStatus(JobStatus::Ok);
 
     if (joinReports)
         return CreateJoinedStatus();
     else
-        return CreateSeparatedStatus(JobStatus::OK);
+        return CreateSeparatedStatus(JobStatus::Ok);
 
     return status;
 }
@@ -99,7 +99,7 @@ JobStatus *BackupStatusManager::CreateJoinedStatus()
 
     FileBackupReport* globalReport = CreateGlobalReport();
 
-    JobStatus* status = new JobStatus(JobStatus::OK);
+    JobStatus* status = new JobStatus(JobStatus::Ok);
     status->SetDescription(CreateRepositoriesMiniDescription());
     status->AddFileBuffer(attachmentName, globalReport->GetFullDescription());
 
@@ -178,7 +178,7 @@ int BackupStatusManager::ComputeSuccessCount() const
     AbstractBackupJob::ResultCollection::const_iterator it = resultCollection->begin();
     for (; it!=resultCollection->end(); ++it)
     {
-        if (it->first->GetCode() == JobStatus::OK)
+        if (it->first->GetCode() == JobStatus::Ok)
             ++count;
     }
     return count;
@@ -198,8 +198,8 @@ string BackupStatusManager::GetCorrectMiniDescription(
         const AbstractBackupJob::ResultEntry &result) const
 {
     const int statusCode = result.first->GetCode();
-    const bool isStatusCodeAcceptable = (statusCode == JobStatus::OK ||
-                                         statusCode == JobStatus::OK_WITH_WARNINGS);
+    const bool isStatusCodeAcceptable = (statusCode == JobStatus::Ok ||
+                                         statusCode == JobStatus::OkWithWarnings);
     string description;
     if (isStatusCodeAcceptable && result.second != NULL)
         description = result.second->GetMiniDescription();

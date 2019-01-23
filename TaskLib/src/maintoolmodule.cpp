@@ -201,7 +201,7 @@ bool MainToolModule::RunLocalShutdown(const bool isLocalShutdownEnabled)
 
     ConsoleJob finalShutdown("/sbin/poweroff");
     JobStatus* status = finalShutdown.Run();
-    const bool shutdownError = (status->GetCode() != JobStatus::OK);
+    const bool shutdownError = (status->GetCode() != JobStatus::Ok);
     if (shutdownError)
         cout << "Local shutdown failed : " << status->GetDescription() << endl;
 

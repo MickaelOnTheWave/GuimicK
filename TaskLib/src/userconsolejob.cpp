@@ -68,7 +68,7 @@ void UserConsoleJob::Initialize(const string &_command, int _expectedReturnCode)
 JobStatus *UserConsoleJob::Run()
 {
     if (IsCommandAvailable() == false)
-        return debugManager->CreateStatus(JobStatus::ERROR, NotAvailableError);
+        return debugManager->CreateStatus(JobStatus::Error, NotAvailableError);
 
     return ConsoleJob::Run();
 }
@@ -182,7 +182,7 @@ JobStatus *UserConsoleJob::CreateSuccessStatus()
     if (parserCommand != "")
         FillStatusFromParsing();
     else
-        currentStatus->SetCode(JobStatus::OK);
+        currentStatus->SetCode(JobStatus::Ok);
 
     FinalizeStatusCreation();
     return currentStatus;
@@ -234,19 +234,19 @@ void UserConsoleJob::FillStatusFromParsing()
     int returnValue = Tools::RunExternalCommandToBuffer(CreateParserCommand(), miniDescription, true);
     if (returnValue != -1)
     {
-        currentStatus->SetCode(JobStatus::OK);
+        currentStatus->SetCode(JobStatus::Ok);
         currentStatus->SetDescription(miniDescription);
     }
     else
     {
-        currentStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
+        currentStatus->SetCode(JobStatus::OkWithWarnings);
         currentStatus->SetDescription("Parsing error");
     }
 }
 
 void UserConsoleJob::FillErrorStatusFromOutput()
 {
-    currentStatus->SetCode(JobStatus::ERROR);
+    currentStatus->SetCode(JobStatus::Error);
 
     stringstream message;
     message << "Received <" << commandOutput << "> - expected <" << expectedOutput << ">" << endl;
@@ -255,7 +255,7 @@ void UserConsoleJob::FillErrorStatusFromOutput()
 
 void UserConsoleJob::FillErrorStatusFromReturnCode()
 {
-    currentStatus->SetCode(JobStatus::ERROR);
+    currentStatus->SetCode(JobStatus::Error);
 
     stringstream message;
     message << "Return value : " << receivedReturnCode << " - expected : " << expectedReturnCode << endl;

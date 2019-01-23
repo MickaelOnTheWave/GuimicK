@@ -1,7 +1,6 @@
 #include "rsnapshotconfigurationbuilder.h"
 
 #include <sstream>
-#include <unistd.h>
 
 #include "filetools.h"
 #include "rsnapshotsmartbackupjob.h"

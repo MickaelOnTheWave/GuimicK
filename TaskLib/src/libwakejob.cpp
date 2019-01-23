@@ -22,15 +22,15 @@ AbstractJob* LibWakeJob::Clone()
 
 JobStatus* LibWakeJob::SetupWaker()
 {
-   return new JobStatus(JobStatus::OK);
+   return new JobStatus(JobStatus::Ok);
 }
 
 JobStatus* LibWakeJob::RunWaker()
 {
    const bool ok = NetworkWaker::Wake(macAddress, broadcastIp);
    if (ok)
-      return new JobStatus(JobStatus::OK);
+      return new JobStatus(JobStatus::Ok);
    else
-      return new JobStatus(JobStatus::ERROR, "Wake failed");
+      return new JobStatus(JobStatus::Error, "Wake failed");
 }
 

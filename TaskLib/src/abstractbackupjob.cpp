@@ -65,7 +65,7 @@ JobStatus* AbstractBackupJob::RestoreBackupFromServer(const string& destination,
       return RestoreBackupFromServer(CreateBackupSourcePath(backupSource), destination);
    }
    else
-      return new JobStatus(JobStatus::ERROR, "Invalid Repository Index");
+      return new JobStatus(JobStatus::Error, "Invalid Repository Index");
 }
 
 JobStatus* AbstractBackupJob::RestoreBackupFromServer(const string& destination,
@@ -78,7 +78,7 @@ JobStatus* AbstractBackupJob::RestoreBackupFromServer(const string& destination,
 JobStatus* AbstractBackupJob::RestoreBackupFromClient(
       const BackupRestoreParameters& , const BackupRestoreTarget& )
 {
-   return new JobStatus(JobStatus::ERROR, "Not yet Implemented");
+   return new JobStatus(JobStatus::Error, "Not yet Implemented");
 }
 
 bool AbstractBackupJob::IsTargetLocal() const

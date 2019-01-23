@@ -52,13 +52,13 @@ void LinuxCopyFsBackupJob::CreateReport(const std::string &destination,
         Tools::TokenizeString(lsCommand.GetCommandOutput(), '\n', fileList);
 
         report->AddAsAdded(fileList);
-        status->SetCode(JobStatus::OK);
+        status->SetCode(JobStatus::Ok);
         status->SetDescription(report->GetMiniDescription());
         status->AddFileBuffer(GetAttachmentName(), report->GetFullDescription());
     }
     else
     {
-        status->SetCode(JobStatus::OK_WITH_WARNINGS);
+        status->SetCode(JobStatus::OkWithWarnings);
         status->SetDescription(errorReportCreation);
         status->AddFileBuffer(GetAttachmentName(), lsCommand.GetCommandOutput());
     }

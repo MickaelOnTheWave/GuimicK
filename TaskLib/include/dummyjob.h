@@ -8,7 +8,7 @@ class DummyJob : public AbstractJob
 {
 public:
     DummyJob(const std::string& _name = "DummyJob",
-             const int expectedCode = JobStatus::OK,
+             const int expectedCode = JobStatus::Ok,
              const std::string& _expectedDescription = "");
     DummyJob(const DummyJob& other);
 

@@ -106,7 +106,7 @@ bool RemoteJobsRunner::RetrieveRemoteConfiguration(string& output)
 
    JobStatus* status = remoteRetrieveJob.Run();
 
-   const bool success = (status->GetCode() == JobStatus::OK);
+   const bool success = (status->GetCode() == JobStatus::Ok);
    const string commandOutput = remoteRetrieveJob.GetCommandOutput();
    if (success)
      output = commandOutput;
@@ -123,12 +123,12 @@ bool RemoteJobsRunner::RetrieveRemoteConfiguration(string& output)
 
 JobStatus *RemoteJobsRunner::CreateErrorStatus(const string &message)
 {
-    return debugManager->CreateStatus(JobStatus::ERROR, message);
+    return debugManager->CreateStatus(JobStatus::Error, message);
 }
 
 JobStatus *RemoteJobsRunner::CreateConfigurationErrorStatus(const std::vector<string>& errors)
 {
-   JobStatus* status = new JobStatus(JobStatus::ERROR, "Errors in remote configuration");
+   JobStatus* status = new JobStatus(JobStatus::Error, "Errors in remote configuration");
    status->AddFileBuffer(GetAttachmentName(), CreateConfigurationErrorDescription(errors));
    return status;
 }

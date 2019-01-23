@@ -1,7 +1,5 @@
 #include "abstractwakejob.h"
 
-#include <unistd.h>
-
 #include "consolejob.h"
 #include "tools.h"
 
@@ -58,13 +56,13 @@ JobStatus* AbstractWakeJob::Run()
    debugManager->AddDataLine<int>("timeout", timeout);
 
    JobStatus* setupStatus = SetupWaker();
-   if (setupStatus->GetCode() == JobStatus::ERROR)
+   if (setupStatus->GetCode() == JobStatus::Error)
       return debugManager->UpdateStatus(setupStatus);
 
    for (int i=0; i<maxRetries; ++i)
    {
       JobStatus* wakeStatus = RunWaker();
-      if (wakeStatus->GetCode() == JobStatus::ERROR)
+      if (wakeStatus->GetCode() == JobStatus::Error)
          return debugManager->UpdateStatus(wakeStatus);
 
      int secondsToWake = WaitForComputerToGoUp();
@@ -72,11 +70,11 @@ JobStatus* AbstractWakeJob::Run()
      {
          debugManager->AddDataLine<int>("Retry count", i);
          debugManager->AddDataLine<int>("seconds counter", secondsToWake);
-         return debugManager->CreateStatus(JobStatus::OK, "");
+         return debugManager->CreateStatus(JobStatus::Ok, "");
      }
    }
 
-   return debugManager->CreateStatus(JobStatus::ERROR, "Machine still not awake");
+   return debugManager->CreateStatus(JobStatus::Error, "Machine still not awake");
 }
 
 int AbstractWakeJob::GetTimeout() const
@@ -108,11 +106,11 @@ bool AbstractWakeJob::HasMandatoryParameters() const
 
 int AbstractWakeJob::WaitForComputerToGoUp() const
 {
-    int secondsElapsed = 0;
-    while (!Tools::IsComputerAlive(expectedIp) && secondsElapsed < timeout)
-    {
-        sleep(1);
-        ++secondsElapsed;
-    }
-    return secondsElapsed;
+   int secondsElapsed = 0;
+   while (!Tools::IsComputerAlive(expectedIp) && secondsElapsed < timeout)
+   {
+      Tools::Wait(1);
+      ++secondsElapsed;
+   }
+   return secondsElapsed;
 }

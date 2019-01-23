@@ -1,7 +1,6 @@
 #include "gitfsbackupjob.h"
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <sstream>
 
 #include "consolejob.h"
@@ -50,7 +49,7 @@ AbstractJob *GitFsBackupJob::Clone()
 JobStatus *GitFsBackupJob::Run()
 {
     if (IsGitInstalled() == false)
-        return new JobStatus(JobStatus::ERROR, errorGitNotInstalled);
+        return new JobStatus(JobStatus::Error, errorGitNotInstalled);
     else
        return AbstractBackupJob::Run();
 }
@@ -89,11 +88,11 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
                                          ResultCollection& results)
 {
    const string fullDestination = repository + destination;
-    JobStatus* status = new JobStatus(JobStatus::OK);
+    JobStatus* status = new JobStatus(JobStatus::Ok);
     if (FileTools::FolderExists(fullDestination) == false)
         CreateGitRepository(fullDestination, status);
 
-    if (status->GetCode() == JobStatus::OK)
+    if (status->GetCode() == JobStatus::Ok)
         CopyData(source, fullDestination, status);
 
     string originalDirectory = FileTools::GetCurrentFullPath();
@@ -106,14 +105,14 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
     debugManager->AddDataLine<bool>("Changes detected", hasChanges);
     if (hasChanges)
     {
-        if (status->GetCode() == JobStatus::OK)
+        if (status->GetCode() == JobStatus::Ok)
             AddData(status);
 
         string commitId("");
-        if (status->GetCode() == JobStatus::OK)
+        if (status->GetCode() == JobStatus::Ok)
             commitId = CommitData(status);
 
-        if (status->GetCode() == JobStatus::OK)
+        if (status->GetCode() == JobStatus::Ok)
             CreateReport(commitId, status, *report);
     }
 
@@ -135,10 +134,10 @@ void GitFsBackupJob::CreateGitRepository(const string &path, JobStatus *status)
     debugManager->AddDataLine<string>("Create repository output", commandJob.GetCommandOutput());
     debugManager->AddDataLine<int>("Create repository value", commandJob.GetCommandReturnCode());
     if (commandJob.GetCommandReturnCode() == 0)
-        status->SetCode(JobStatus::OK);
+        status->SetCode(JobStatus::Ok);
     else
     {
-        status->SetCode(JobStatus::ERROR);
+        status->SetCode(JobStatus::Error);
         status->SetDescription(errorCreatingRepository);
     }
 }
@@ -157,10 +156,10 @@ void GitFsBackupJob::CleanDestination(const string &destination, JobStatus *stat
     debugManager->AddDataLine<string>("Clean output", commandJob.GetCommandOutput());
     debugManager->AddDataLine<int>("Clean value", commandJob.GetCommandReturnCode());
     if (commandJob.GetCommandReturnCode() == 0)
-        status->SetCode(JobStatus::OK);
+        status->SetCode(JobStatus::Ok);
     else
     {
-        status->SetCode(JobStatus::ERROR);
+        status->SetCode(JobStatus::Error);
         status->SetDescription(errorCleaning);
     }
 }
@@ -170,7 +169,7 @@ void GitFsBackupJob::CopyData(const string &source, const string &destination,
 {
     debugManager->AddTagLine("Copying data");
     AbstractCopyFsBackupJob* copyJob = PrepareCopy(destination, status);
-    if (status->GetCode() == JobStatus::OK)
+    if (status->GetCode() == JobStatus::Ok)
         RunCopy(copyJob, source, destination, status);
     delete copyJob;
 }
@@ -183,10 +182,10 @@ void GitFsBackupJob::AddData(JobStatus *status)
     debugManager->AddDataLine<string>("Add output", commandJob.GetCommandOutput());
     debugManager->AddDataLine<int>("Add value", commandJob.GetCommandReturnCode());
     if (commandJob.GetCommandReturnCode() == 0)
-        status->SetCode(JobStatus::OK);
+        status->SetCode(JobStatus::Ok);
     else
     {
-        status->SetCode(JobStatus::ERROR);
+        status->SetCode(JobStatus::Error);
         status->SetDescription(errorAddingData);
     }
 }
@@ -208,7 +207,7 @@ string GitFsBackupJob::CommitData(JobStatus *status)
         return GetCommitId(commandJob.GetCommandOutput());
     else
     {
-        status->SetCode(JobStatus::ERROR);
+        status->SetCode(JobStatus::Error);
         status->SetDescription(errorCommitingData);
         return string("");
     }
@@ -260,7 +259,7 @@ void GitFsBackupJob::CreateInitialReport(JobStatus *status, FileBackupReport &re
     LogDebugCommand("Initial report command", commandJob);
     if (commandJob.GetCommandReturnCode() != 0)
     {
-        status->SetCode(JobStatus::OK_WITH_WARNINGS);
+        status->SetCode(JobStatus::OkWithWarnings);
 
         string content = "Error while trying to create report. Here is output data:\n";
         content += commandJob.GetCommandOutput();
@@ -279,7 +278,7 @@ void GitFsBackupJob::CreateInitialReport(JobStatus *status, FileBackupReport &re
             if (*it != ".")
                 report.AddAsAdded(CreateFilteredFileName(*it));
         }
-        status->SetCode(JobStatus::OK);
+        status->SetCode(JobStatus::Ok);
     }
 }
 
@@ -296,13 +295,13 @@ void GitFsBackupJob::CreateDifferentialReport(const string &commitId, JobStatus 
         bool ok = parser.ParseBuffer(commandJob.GetCommandOutput());
         if (ok)
         {
-            status->SetCode(JobStatus::OK);
+            status->SetCode(JobStatus::Ok);
             parser.GetReport(report);
             return;
         }
     }
 
-    status->SetCode(JobStatus::OK_WITH_WARNINGS);
+    status->SetCode(JobStatus::OkWithWarnings);
 }
 
 string GitFsBackupJob::GetCommitId(const string &output)
@@ -367,10 +366,10 @@ void GitFsBackupJob::RunCopy(AbstractCopyFsBackupJob *copyJob, const string &sou
 
     int returnValue = copyJob->RunOnParameters(source, destination);   
     if (returnValue == 0 || returnValue == emptyDirError)
-        status->SetCode(JobStatus::OK);
+        status->SetCode(JobStatus::Ok);
     else
     {
-        status->SetCode(JobStatus::ERROR);
+        status->SetCode(JobStatus::Error);
         status->SetDescription(errorCopyingData);
     }
 }

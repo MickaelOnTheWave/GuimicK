@@ -62,7 +62,7 @@ void AbstractCopyFsBackupJob::RunCopy(const string &source, const string &destin
     PrepareCopyCommand(source, destination, copyCommand);
     JobStatus* status = copyCommand.Run();
 
-    if (status->GetCode() == JobStatus::OK)
+    if (status->GetCode() == JobStatus::Ok)
         CreateReport(destination, copyCommand.GetCommandOutput(), results);
     else
         CreateCopyErrorReport(copyCommand.GetCommandOutput(), results);
@@ -70,7 +70,7 @@ void AbstractCopyFsBackupJob::RunCopy(const string &source, const string &destin
 
 void AbstractCopyFsBackupJob::CreateCopyErrorReport(const std::string& message, AbstractBackupJob::ResultCollection &results)
 {
-    JobStatus* status = new JobStatus(JobStatus::ERROR, errorCopyCommand);
+    JobStatus* status = new JobStatus(JobStatus::Error, errorCopyCommand);
     status->AddFileBuffer(GetAttachmentName(), message);
     results.push_back(make_pair(status, new FileBackupReport()));
 }

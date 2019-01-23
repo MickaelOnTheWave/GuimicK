@@ -67,7 +67,7 @@ void RsyncCopyFsBackupJob::CreateReport(const std::string &,
                                         const std::string &output,
                                         AbstractBackupJob::ResultCollection &results)
 {
-    JobStatus* status = new JobStatus(JobStatus::OK);
+    JobStatus* status = new JobStatus(JobStatus::Ok);
     FileBackupReport* report = new FileBackupReport();
 
     RsyncCommandParser parser;
@@ -81,7 +81,7 @@ void RsyncCopyFsBackupJob::CreateReport(const std::string &,
     }
     else
     {
-        status->SetCode(JobStatus::OK_WITH_WARNINGS);
+        status->SetCode(JobStatus::OkWithWarnings);
         status->SetDescription("Report parsing failed");
         results.push_back(make_pair(status, new FileBackupReport()));
     }

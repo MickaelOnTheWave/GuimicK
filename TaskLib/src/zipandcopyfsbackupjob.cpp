@@ -78,14 +78,14 @@ JobStatus* ZipAndCopyFsBackupJob::RestoreBackupFromServer(const string& source,
                                                 const string& destination)
 {
    bool ok = Restore(source, destination);
-   return new JobStatus(ok ? JobStatus::OK : JobStatus::ERROR);
+   return new JobStatus(ok ? JobStatus::Ok : JobStatus::Error);
 }
 
 void AddResultToCollection(const ArchiveToolResult& result,
                            AbstractBackupJob::ResultCollection &results)
 {
    JobStatus* jobStatus = new JobStatus();
-   jobStatus->SetCode(result.isOk ? JobStatus::OK : JobStatus::ERROR);
+   jobStatus->SetCode(result.isOk ? JobStatus::Ok : JobStatus::Error);
 
    FileBackupReport* backupReport = new FileBackupReport();
    backupReport->AddAsAdded(result.FileList);
@@ -114,7 +114,7 @@ bool ZipAndCopyFsBackupJob::RemovePreviousArchive(const string &destination,
 
     const bool ok = !FileTools::FileExists(destination);
     if (!ok)
-        AddStatusToResults(results, JobStatus::ERROR, cleaningError);
+        AddStatusToResults(results, JobStatus::Error, cleaningError);
     return ok;
 }
 
@@ -130,7 +130,7 @@ bool ZipAndCopyFsBackupJob::CopyBackupArchiveToDestination(
 
     const bool isRunOk = scpCommand.IsRunOk();
     if (!isRunOk)
-        AddStatusToResults(results, JobStatus::ERROR, copyingError);
+        AddStatusToResults(results, JobStatus::Error, copyingError);
 
     return isRunOk;
 }
@@ -146,7 +146,7 @@ bool ZipAndCopyFsBackupJob::CleanBackupArchiveFromSource(AbstractBackupJob::Resu
 
     const bool isOk = (remoteJob->GetCommandReturnCode() == 0);
     if (!isOk)
-        AddStatusToResults(results, JobStatus::OK_WITH_WARNINGS, remoteCleaningError);
+        AddStatusToResults(results, JobStatus::OkWithWarnings, remoteCleaningError);
 
     delete remoteJob;
     return isOk;

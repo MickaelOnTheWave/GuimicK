@@ -58,7 +58,7 @@ JobStatus *ClamAvJob::Run()
 {
 	JobStatus* updateStatus = virusDefinitionUpdateJob->Run();
     updateStatus->AddFileBuffer(UPDATE_LOG_FILE, virusDefinitionUpdateJob->GetCommandOutput());
-	if (blockOnFailingUpdate && updateStatus->GetCode() != JobStatus::OK)
+	if (blockOnFailingUpdate && updateStatus->GetCode() != JobStatus::Ok)
 	{
 		bool blockingError = true;
 		string description;
@@ -93,7 +93,7 @@ JobStatus *ClamAvJob::Run()
 
 	JobStatus* scanStatus = virusFullScanJob->Run();
     scanStatus->AddFileBuffer(SCAN_LOG_FILE, virusFullScanJob->GetCommandOutput());
-	if (scanStatus->GetCode() != JobStatus::OK)
+	if (scanStatus->GetCode() != JobStatus::Ok)
 	{
 		string description("Error on virus scan. Return code : ");
 		stringstream stream;
@@ -103,7 +103,7 @@ JobStatus *ClamAvJob::Run()
 		return scanStatus;
 	}
 
-	JobStatus* finalStatus = new JobStatus(JobStatus::OK);
+	JobStatus* finalStatus = new JobStatus(JobStatus::Ok);
     finalStatus->AddAllFilesFromStatus(updateStatus);
 
     ClamAvReportParser parser;

@@ -1,12 +1,18 @@
 #include "tasktoolrundialog.h"
 #include "ui_tasktoolrundialog.h"
 
-#include <unistd.h>
 #include <QDir>
 #include <QLabel>
 
 #include "filetools.h"
 #include "tools.h"
+
+#ifdef _MSC_VER
+   #include <direct.h>
+   #define _chdir chdir
+#else
+   #include <unistd.h>
+#endif
 
 TaskToolRunDialog::TaskToolRunDialog(QWidget *parent) :
    QDialog(parent),

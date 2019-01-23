@@ -90,7 +90,7 @@ WorkResultData *ClientWorkManager::RunWorkList()
          status = currentJob->Run();
       else
       {
-         status = new JobStatus(JobStatus::NOT_EXECUTED, "Initialization failed");
+         status = new JobStatus(JobStatus::NotExecuted, "Initialization failed");
          status->SetDuration(0);
       }
 

@@ -31,7 +31,7 @@ bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
     debugInfo.AddDataLine<string>("Params", curlParams);
     ConsoleJob curl("curl", curlParams);
     JobStatus* status = curl.Run();
-    if (status->GetCode() == JobStatus::OK)
+    if (status->GetCode() == JobStatus::Ok)
         remove(mailFileName.c_str());
     else
     {
@@ -43,7 +43,7 @@ bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
     }
 
 
-    return (status->GetCode() == JobStatus::OK);
+    return (status->GetCode() == JobStatus::Ok);
 }
 
 string CurlConsoleReportDispatcher::GetCurlVersion() const

@@ -1,7 +1,6 @@
 #include "rsnapshotrawbackupjob.h"
 
 #include <sstream>
-#include <unistd.h>
 
 #include "filetools.h"
 #include "rsnapshoterroranalyzer.h"
@@ -45,10 +44,10 @@ bool RsnapshotRawBackupJob::IsInitialized()
 JobStatus *RsnapshotRawBackupJob::Run()
 {
     if (waitBeforeRun)
-        sleep(1);
+        Tools::Wait(1);
 
     JobStatus* backupStatus = RunBackup();
-    if (backupStatus->GetCode() != JobStatus::OK)
+    if (backupStatus->GetCode() != JobStatus::Ok)
         return backupStatus;
     else
         delete backupStatus;
@@ -89,7 +88,7 @@ JobStatus *RsnapshotRawBackupJob::RunBackup()
     {
         backupStatus = backupJob->Run();
         debugManager->AddDataLine<string>("Full command output", backupJob->GetCommandOutput());
-        if (backupStatus->GetCode() != JobStatus::OK)
+        if (backupStatus->GetCode() != JobStatus::Ok)
         {
             if (backupJob->GetCommandReturnCode() == 1)
             {
@@ -107,7 +106,7 @@ JobStatus *RsnapshotRawBackupJob::RunBackup()
             else if (backupJob->GetCommandReturnCode() == 2)
             {
                 backupStatus->SetDescription("RSnapshot executed with some warnings. See attached file.");
-                backupStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
+                backupStatus->SetCode(JobStatus::OkWithWarnings);
                 backupStatus->AddFileBuffer(GetAttachmentName(), backupJob->GetCommandOutput());
 
                 const string configurationAttachment = GetName() + " - ConfigurationFile.txt";
@@ -126,7 +125,7 @@ JobStatus *RsnapshotRawBackupJob::RunBackup()
         }
     }
     else
-        backupStatus = new JobStatus(JobStatus::ERROR, "Rsnapshot not installed");
+        backupStatus = new JobStatus(JobStatus::Error, "Rsnapshot not installed");
 
     delete backupJob;
     return debugManager->UpdateStatus(backupStatus);
@@ -139,7 +138,7 @@ JobStatus *RsnapshotRawBackupJob::RunReportCreation()
     else
     {
         JobStatus* status = RunRsnapshotDiffReportCreation();
-        if (status->GetCode() == JobStatus::OK)
+        if (status->GetCode() == JobStatus::Ok)
         {
             delete status;
             return CreateParsedReportStatus();
@@ -158,14 +157,14 @@ JobStatus *RsnapshotRawBackupJob::RunRecursiveListReportCreation()
     {
         FileBackupReport report;
         report.AddAsAdded(fileList);
-        JobStatus* status = new JobStatus(JobStatus::OK, report.GetMiniDescription());
+        JobStatus* status = new JobStatus(JobStatus::Ok, report.GetMiniDescription());
         status->AddFileBuffer(GetAttachmentName(), report.GetFullDescription());
         return debugManager->UpdateStatus(status);
     }
     else
     {
         debugManager->AddDataLine<string>("Backup folder not found", backupFolder);
-        return debugManager->CreateStatus(JobStatus::OK_WITH_WARNINGS, "Report could not be created");
+        return debugManager->CreateStatus(JobStatus::OkWithWarnings, "Report could not be created");
     }
 }
 
@@ -177,7 +176,7 @@ JobStatus *RsnapshotRawBackupJob::RunRsnapshotDiffReportCreation()
     {
         reportStatus = reportJob->Run();
         debugManager->AddDataLine<string>("Full report output", reportJob->GetCommandOutput());
-        if (reportStatus->GetCode() == JobStatus::OK)
+        if (reportStatus->GetCode() == JobStatus::Ok)
             reportJobOutput = reportJob->GetCommandOutput();
         else
         {
@@ -186,12 +185,12 @@ JobStatus *RsnapshotRawBackupJob::RunRsnapshotDiffReportCreation()
             stream << reportJob->GetCommandReturnCode();
             description += stream.str();
             reportStatus->SetDescription(description);
-            reportStatus->SetCode(JobStatus::OK_WITH_WARNINGS);
+            reportStatus->SetCode(JobStatus::OkWithWarnings);
             reportStatus->AddFileBuffer(GetAttachmentName(), reportJob->GetCommandOutput());
         }
     }
     else
-        reportStatus = new JobStatus(JobStatus::OK_WITH_WARNINGS, "Rsnapshot reporting not available");
+        reportStatus = new JobStatus(JobStatus::OkWithWarnings, "Rsnapshot reporting not available");
 
     delete reportJob;
     return reportStatus;
@@ -202,7 +201,7 @@ JobStatus *RsnapshotRawBackupJob::CreateParsedReportStatus()
     RSnapshotReportParser parser;
     parser.ParseBuffer(reportJobOutput);
 
-    JobStatus* status = new JobStatus(JobStatus::OK, parser.GetMiniDescription());
+    JobStatus* status = new JobStatus(JobStatus::Ok, parser.GetMiniDescription());
     status->AddFileBuffer(GetAttachmentName(), parser.GetFullDescription());
     return debugManager->UpdateStatus(status);
 }

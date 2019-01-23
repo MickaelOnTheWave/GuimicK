@@ -1,7 +1,5 @@
 #include "linuxshutdownjob.h"
 
-#include <unistd.h>
-
 #include "jobdebuginformationmanager.h"
 #include "tools.h"
 
@@ -58,12 +56,12 @@ JobStatus *LinuxShutdownJob::Run()
 
     debugManager->AddDataLine<int>("Return code", shutdownJob->GetCommandReturnCode());
     debugManager->AddDataLine<string>("Output", shutdownJob->GetCommandOutput());
-    if (status->GetCode() != JobStatus::ERROR)
+    if (status->GetCode() != JobStatus::Error)
     {
         int secondsToShutdown = WaitForComputerToGoDown();
         if (secondsToShutdown > jobTimeoutInSeconds)
         {
-            status->SetCode(JobStatus::ERROR);
+            status->SetCode(JobStatus::Error);
             status->SetDescription("Machine still running");
         }
 
@@ -89,7 +87,7 @@ int LinuxShutdownJob::WaitForComputerToGoDown() const
     int secondsCounter = 0;
     while (Tools::IsComputerAlive(computer) && secondsCounter < jobTimeoutInSeconds)
     {
-        sleep(1);
+        Tools::Wait(1);
         ++secondsCounter;
     }
 

@@ -9,10 +9,10 @@
 class JobStatus
 {
 public:
-    static const int NOT_EXECUTED;
-    static const int OK;
-    static const int OK_WITH_WARNINGS;
-    static const int ERROR;
+    static const int NotExecuted;
+    static const int Ok;
+    static const int OkWithWarnings;
+    static const int Error;
 
 	JobStatus();
 	JobStatus(int _code, const std::string& _description = "");
@@ -45,7 +45,7 @@ public:
 
 	/**
 		A status is considered fatal if no processing can be done based
-		on its execution (ERROR or NOT_EXECUTED for example).
+		on its execution (Error or NotExecuted for example).
 	  */
 	bool IsFatal() const;
    bool IsOk() const;
