@@ -1,7 +1,22 @@
-23/01/2019 (18.2)
+24/01/2019 (21-22)
+    Created batch script for building Configuration editor
+    on Windows 64 with Visual Studio. However build is still failing.
+    The problem now is with libsock for windows, we are linking against
+    the 32bit version when we need the 64 bit one.
+Next planned work:
+    - Install Windows SDK 64bit
+    - Resolve linking issue
+    - Back to 7zip implementation
+
+23/01/2019 (2.4h)
     Fixed compilation issues in Visual Studio due to not being
     able to use POSIX features, created ifdefs and
     crossplatform utilities to hide native code.
+    Configuration Tool is now compiling, but there is still a
+    linking issue (32bit linking to 64bit)
+Next planned work:
+    - Fix linking issue
+    - Back to 7zip implementation
 
 21/01/2019 (2.3h)
     Cloned git repositories. Ssh issue was only with relative path,
