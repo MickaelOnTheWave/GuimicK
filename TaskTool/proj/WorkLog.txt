@@ -1,7 +1,10 @@
-28/01/2018 (19.3-21.3)
+28/01/2018 (2h)
     Installed Windows SDK. Now there is a 64-bit ws2_32.lib.
     Ajusted Cmake to link to it. Still same issue.
-    Removing existing warnings from ToolsLib.
+    Removing some warnings from ToolsLib. There are too much of them
+    to be all cleaned up. So, this cleaning task must be abandoned.
+Next planned work:
+    - Resolve linking issue
 
 24/01/2019 (1h)
     Created batch script for building Configuration editor
