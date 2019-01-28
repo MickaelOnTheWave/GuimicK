@@ -1,4 +1,9 @@
-24/01/2019 (21-22)
+28/01/2018 (19.3-21.3)
+    Installed Windows SDK. Now there is a 64-bit ws2_32.lib.
+    Ajusted Cmake to link to it. Still same issue.
+    Removing existing warnings from ToolsLib.
+
+24/01/2019 (1h)
     Created batch script for building Configuration editor
     on Windows 64 with Visual Studio. However build is still failing.
     The problem now is with libsock for windows, we are linking against
