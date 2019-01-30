@@ -5,6 +5,9 @@
     to TaskManager.
     Apparently, current lib is OK (tested with tutorial). The problem
     is with Cmake that chooses the wrong version...
+    Fixed Cmake compiler detection, now it all works :-))
+    Updated global install script (Windows) to use 64bit VS builds.
+    Made it call builds.
 
 28/01/2018 (2h)
     Installed Windows SDK. Now there is a 64-bit ws2_32.lib.
