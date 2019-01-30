@@ -1,14 +1,27 @@
+cd ../
+set ROOT=%CD%
 
-cd ../bin
+IF NOT EXIST bin (
+	mkdir bin
+)
+cd bin
+
 IF NOT EXIST WindowsInstallPackage (
 	mkdir WindowsInstallPackage
 )
-cd ../bin/WindowsInstallPackage
+cd WindowsInstallPackage
 
-REM call command-line build for tasktool and editor
-copy ..\..\BuildScripts\WindowsInstallerScript.nsi WindowsInstallerScript.nsi
-copy ..\..\TaskTool\bin\Release\TaskTool.exe TaskTool.exe
-copy ..\..\ConfigurationEditingTool\bin\Release\ConfigurationEditingTool.exe ConfigurationEditingTool.exe
-copy ..\..\data\license.txt license.txt
-xcopy ..\..\lib
-"c:\Program Files (x86)\NSIS\Bin\makensis.exe" WindowsInstallerScript.nsi
+cd %ROOT%\TaskTool\scripts
+CALL MakeWin64VsRelease.bat
+cd %ROOT%\ConfigurationEditingTool\scripts
+CALL BuildWin64VsRelease.bat
+
+cd %ROOT%\bin\WindowsInstallPackage
+copy %ROOT%\BuildScripts\WindowsInstallerScript.nsi WindowsInstallerScript.nsi
+copy %ROOT%\TaskTool\bin\Win64VsRelease\TaskTool.exe TaskTool.exe
+copy %ROOT%\ConfigurationEditingTool\bin\Win64VsRelease\ConfigurationEditingTool.exe ConfigurationEditingTool.exe
+copy %ROOT%\data\license.txt license.txt
+xcopy %ROOT%\lib /Y
+"c:\Program Files (x86)\NSIS\Bin\makensis.exe" %ROOT%\bin\WindowsInstallPackage\WindowsInstallerScript.nsi
+
+pause
