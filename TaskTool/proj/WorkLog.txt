@@ -1,3 +1,11 @@
+30/01/2019 (17.5)
+    As linking issue is a real problem, changed strategy :
+    First creating a simple C++ tutorial for windows sockets,
+    and onde it works checking its needs to "export" them
+    to TaskManager.
+    Apparently, current lib is OK (tested with tutorial). The problem
+    is with Cmake that chooses the wrong version...
+
 28/01/2018 (2h)
     Installed Windows SDK. Now there is a 64-bit ws2_32.lib.
     Ajusted Cmake to link to it. Still same issue.
