@@ -1,4 +1,20 @@
-24/01/2019 (21-22)
+30/01/2019 (17.5)
+    As linking issue is a real problem, changed strategy :
+    First creating a simple C++ tutorial for windows sockets,
+    and onde it works checking its needs to "export" them
+    to TaskManager.
+    Apparently, current lib is OK (tested with tutorial). The problem
+    is with Cmake that chooses the wrong version...
+
+28/01/2018 (2h)
+    Installed Windows SDK. Now there is a 64-bit ws2_32.lib.
+    Ajusted Cmake to link to it. Still same issue.
+    Removing some warnings from ToolsLib. There are too much of them
+    to be all cleaned up. So, this cleaning task must be abandoned.
+Next planned work:
+    - Resolve linking issue
+
+24/01/2019 (1h)
     Created batch script for building Configuration editor
     on Windows 64 with Visual Studio. However build is still failing.
     The problem now is with libsock for windows, we are linking against
