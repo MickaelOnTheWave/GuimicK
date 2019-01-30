@@ -1,4 +1,4 @@
-30/01/2019 (17.5)
+30/01/2019 (2.5h)
     As linking issue is a real problem, changed strategy :
     First creating a simple C++ tutorial for windows sockets,
     and onde it works checking its needs to "export" them
@@ -8,6 +8,9 @@
     Fixed Cmake compiler detection, now it all works :-))
     Updated global install script (Windows) to use 64bit VS builds.
     Made it call builds.
+Next planned work:
+    - Fix remaining error in nsi script
+    - Back to 7zip implementation
 
 28/01/2018 (2h)
     Installed Windows SDK. Now there is a 64-bit ws2_32.lib.
