@@ -1,3 +1,9 @@
+04/02/2019 (20.1)
+    Fixed remaining issues. Most were with wrong directory management
+    in TaskTool and Editor scripts. Updated Qt Dlls for installation
+    and removed obsoleted dlls (winpthread and libstdc++, for MinGW
+    compiles). Now whole build works from scratch on Windows :-))
+
 30/01/2019 (2.5h)
     As linking issue is a real problem, changed strategy :
     First creating a simple C++ tutorial for windows sockets,
@@ -9,7 +15,7 @@
     Updated global install script (Windows) to use 64bit VS builds.
     Made it call builds.
 Next planned work:
-    - Fix remaining error in nsi script
+    - Fix remaining error in nsis script
     - Back to 7zip implementation
 
 28/01/2018 (2h)
