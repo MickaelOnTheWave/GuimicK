@@ -18,8 +18,8 @@ CALL BuildWin64VsRelease.bat
 
 cd %ROOT%\bin\WindowsInstallPackage
 copy %ROOT%\BuildScripts\WindowsInstallerScript.nsi WindowsInstallerScript.nsi
-copy %ROOT%\TaskTool\bin\Win64VsRelease\TaskTool.exe TaskTool.exe
-copy %ROOT%\ConfigurationEditingTool\bin\Win64VsRelease\ConfigurationEditingTool.exe ConfigurationEditingTool.exe
+copy %ROOT%\TaskTool\bin\Win64VsRelease\Release\TaskTool.exe TaskTool.exe
+copy %ROOT%\ConfigurationEditingTool\bin\Win64VsRelease\Release\ConfigurationEditingTool.exe ConfigurationEditingTool.exe
 copy %ROOT%\data\license.txt license.txt
 xcopy %ROOT%\lib /Y
 "c:\Program Files (x86)\NSIS\Bin\makensis.exe" %ROOT%\bin\WindowsInstallPackage\WindowsInstallerScript.nsi

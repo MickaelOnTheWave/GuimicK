@@ -1,13 +1,6 @@
-; example1.nsi
-;
-; This script is perhaps one of the simplest NSIs you can make. All of the
-; optional settings are left to their default settings. The installer simply 
-; prompts the user asking them where to install, and drops a copy of example1.nsi
-; there. 
-
 ;--------------------------------
 
-!define VERSION "0.9.2"
+!define VERSION "0.9.3"
 ; The name of the installer
 Name "Task Manager ${VERSION}"
 
@@ -15,7 +8,7 @@ Name "Task Manager ${VERSION}"
 OutFile "..\TaskManagerSetup-${VERSION}.exe"
 
 ; The default installation directory
-InstallDir $PROGRAMFILES32\TaskManager
+InstallDir $PROGRAMFILES64\TaskManager
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
@@ -47,8 +40,6 @@ Section "" ;No components page, name is not important
   ; Put file there
   File TaskTool.exe
   File ConfigurationEditingTool.exe
-  File libstdc++-6.dll
-  File libwinpthread-1.dll
   File Qt5Core.dll
   File Qt5Gui.dll
   File Qt5Widgets.dll
@@ -79,8 +70,6 @@ Section "Uninstall"
   
   Delete $INSTDIR\TaskTool.exe
   Delete $INSTDIR\ConfigurationEditingTool.exe
-  Delete $INSTDIR\libstdc++-6.dll
-  Delete $INSTDIR\libwinpthread-1.dll
   Delete $INSTDIR\Qt5Core.dll
   Delete $INSTDIR\Qt5Gui.dll
   Delete $INSTDIR\Qt5Widgets.dll
