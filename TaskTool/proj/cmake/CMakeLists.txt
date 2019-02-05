@@ -47,7 +47,7 @@ if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")
 elseif (WIN32)
 	target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
 	target_link_libraries (TaskTool "-static-libgcc" "-static-libstdc++")
-endif(WIN32)
+endif("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")
 
 ### Fake Projects, only for display in IDE
 add_custom_target(ProjectFiles SOURCES

@@ -11,7 +11,10 @@ CurlLibReportDispatcher::CurlLibReportDispatcher()
 bool CurlLibReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 {
     CurlLibEmailSender sender;
-    sender.SetSenderData(displayName, emailAddress, password, smtpServer, smtpPort, useSsl);
+    sender.SetSenderData(displayName,
+                         emailData.GetAddress(), emailData.GetPassword(),
+                         emailData.GetSmtpServer(), emailData.GetSmtpPort(),
+                         emailData.GetUseSsl());
 
     vector<string> externalFiles;
     vector<pair<string,string> > fileBuffers;

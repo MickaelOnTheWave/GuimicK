@@ -1,8 +1,16 @@
-04/02/2019 (20.1)
+04/02/2019 (2.1h)
     Fixed remaining issues. Most were with wrong directory management
     in TaskTool and Editor scripts. Updated Qt Dlls for installation
     and removed obsoleted dlls (winpthread and libstdc++, for MinGW
     compiles). Now whole build works from scratch on Windows :-))
+    Trying to setup ssh server on VM : didn't work.
+    Maybe trying later...
+    Now checking Linux build scripts... fixing issues in CurlLib build.
+    There are still errors in Editor build.
+Next planned work:
+    - Fix remaining compilation errors in Linux Configuration Editor
+    - Rename build scripts to be all consistent
+    - Back to 7zip implementation
 
 30/01/2019 (2.5h)
     As linking issue is a real problem, changed strategy :
