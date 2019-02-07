@@ -3,6 +3,7 @@
     build script, all is OK. Refactored linux build scripts.
     It was current QtCreator-made project that was faulty,
     removing them and regenerating project from scratch resolved the issue.
+    Updating TaskTool linux build scripts.
 
 04/02/2019 (2.1h)
     Fixed remaining issues. Most were with wrong directory management

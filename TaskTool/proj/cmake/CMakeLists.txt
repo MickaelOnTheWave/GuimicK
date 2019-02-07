@@ -56,7 +56,7 @@ add_custom_target(ProjectFiles SOURCES
 
 add_custom_target(BuildScripts SOURCES
 	"../../scripts/BuildTools.sh"
-	"../../scripts/MakeLinuxDebug.sh"
-	"../../scripts/MakeLinuxRelease.sh"
+        "../../scripts/MakeLinuxGccDebug.sh"
+        "../../scripts/MakeLinuxGccRelease.sh"
 )
 ###

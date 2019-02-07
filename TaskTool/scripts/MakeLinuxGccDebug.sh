@@ -2,6 +2,6 @@
 
 source BuildTools.sh
 
-prepareForBuild "LinuxDebug"
+prepareForBuild "LinuxGccDebug"
 runCmakeForLinux "DEBUG"
 build

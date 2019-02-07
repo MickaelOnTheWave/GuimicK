@@ -1,36 +1,9 @@
 #!/bin/sh
 
-createFolderIfNotPresent()
-{
-	FOLDER=$1	
-	if [ ! -d "$FOLDER" ]; then
-	mkdir $FOLDER
-	fi
-}
-
-removeFolderIfPresent()
-{
-	FOLDER=$1	
-	if [ -d "$FOLDER" ]; then
-	rm -Rf $FOLDER
-	fi
-}
-
-prepareForBuild()
-{
-	BUILDNAME=$1
-	cd ../bin
-	createFolderIfNotPresent $BUILDNAME
-	cd $BUILDNAME
-}
+source ../../scripts/BuildTools.sh
 
 runCmakeForLinux()
 {
 	MODE=$1
 	cmake ../../proj/cmake -DCMAKE_BUILD_TYPE=$MODE -DUSE_CURL_LIB=TRUE
-}
-
-build()
-{
-	make -j8
 }
