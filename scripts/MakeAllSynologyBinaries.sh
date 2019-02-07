@@ -2,7 +2,7 @@
 
 TASKSCRIPTS=$PWD"/../TaskTool/scripts"
 
-source "$TASKSCRIPTS/BuildTools.sh"
+source "BuildTools.sh"
 
 SCRIPTDIR=$PWD
 TASKMANAGERROOT=$SCRIPTDIR"/.."

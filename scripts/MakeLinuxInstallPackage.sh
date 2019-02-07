@@ -1,11 +1,9 @@
 #!/bin/bash
 
-TASKSCRIPTS="$PWD/../TaskTool/scripts"
-
-source "$TASKSCRIPTS/BuildTools.sh"
+source "BuildTools.sh"
 
 TASKMANAGER_VERSION=1.0
-PACKAGE_VERSION=1
+PACKAGE_VERSION=2
 PACKAGE_NAME=taskmanager_$TASKMANAGER_VERSION-$PACKAGE_VERSION
 
 TASKMANAGER_ROOT=$PWD/..
@@ -14,26 +12,18 @@ CONTROL_FOLDER=$PACKAGE_NAME/DEBIAN
 TASKTOOL_BIN_FOLDER=$TASKMANAGER_ROOT/TaskTool/bin
 CONFTOOL_BIN_FOLDER=$TASKMANAGER_ROOT/ConfigurationEditingTool/bin
 
-buildTaskTool()
+buildSubProject()
 {
 	CURRENTFOLDER=$PWD
-	cd $TASKSCRIPTS
-	./MakeLinuxRelease.sh
+	PROJECTSCRIPTS="$PWD/../$1/scripts"
+	cd $PROJECTSCRIPTS
+	./MakeLinuxGccRelease.sh
 	cd $CURRENTFOLDER
-}
-
-buildConfigurationEditor()
-{
-	cd $CONFTOOL_BIN_FOLDER
-	createFolderIfNotPresent Release
-	cd Release
-	cmake ../../proj/cmake -DCMAKE_BUILD_TYPE=Release
-	make -j8
 }
 
 createPackageStructure()
 {
-	cd $TASKMANAGER_ROOT/bin
+    cdAndCreateIfNotPresent $TASKMANAGER_ROOT/bin
 	removeFolderIfPresent $PACKAGE_NAME
 	mkdir $PACKAGE_NAME
 	mkdir $PACKAGE_NAME/usr
@@ -44,8 +34,8 @@ createPackageStructure()
 
 copyFilesToStructure()
 {
-	cp $TASKTOOL_BIN_FOLDER/LinuxRelease/TaskTool $BIN_FOLDER/taskmanagerTool
-	cp $CONFTOOL_BIN_FOLDER/Release/ConfigurationEditingTool $BIN_FOLDER/taskmanagerEditor
+	cp $TASKTOOL_BIN_FOLDER/LinuxGccRelease/TaskTool $BIN_FOLDER/taskmanagerTool
+	cp $CONFTOOL_BIN_FOLDER/LinuxGccRelease/ConfigurationEditingTool $BIN_FOLDER/taskmanagerEditor
 }
 
 createDebianControlFile()
@@ -69,8 +59,8 @@ createPackage()
 	dpkg-deb --build $PACKAGE_NAME
 }
 
-buildTaskTool
-buildConfigurationEditor
+buildSubProject "TaskTool"
+buildSubProject "ConfigurationEditingTool"
 createPackageStructure
 copyFilesToStructure
 createDebianControlFile

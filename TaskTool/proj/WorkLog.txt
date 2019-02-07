@@ -3,7 +3,12 @@
     build script, all is OK. Refactored linux build scripts.
     It was current QtCreator-made project that was faulty,
     removing them and regenerating project from scratch resolved the issue.
-    Updating TaskTool linux build scripts.
+    Updating TaskTool linux build scripts. Updated global deb package
+    build script. Now only build missing is Synology...
+Next planned work:
+    - Remove duplication in windows scripts using same architecture as
+    Linux scripts (global in TaskManager, specialized in subprojects)
+    - Back to 7zip implementation
 
 04/02/2019 (2.1h)
     Fixed remaining issues. Most were with wrong directory management
