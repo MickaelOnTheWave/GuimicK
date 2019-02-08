@@ -1,14 +1,16 @@
-07/02/2019 (20.9)
+07/02/2019 (1.5h)
     Compilation errors are only form within Qt Creator. From
     build script, all is OK. Refactored linux build scripts.
     It was current QtCreator-made project that was faulty,
     removing them and regenerating project from scratch resolved the issue.
     Updating TaskTool linux build scripts. Updated global deb package
     build script. Now only build missing is Synology...
+    Removed warnings and updated Windows buildscripts names.
 Next planned work:
     - Remove duplication in windows scripts using same architecture as
     Linux scripts (global in TaskManager, specialized in subprojects)
     - Back to 7zip implementation
+    - Configure Windows SSH to stop pushing and only pull
 
 04/02/2019 (2.1h)
     Fixed remaining issues. Most were with wrong directory management
