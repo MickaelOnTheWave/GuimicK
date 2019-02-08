@@ -37,7 +37,7 @@ elseif(WIN32)
 endif("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")
 
 if(MSVC)
-  target_compile_options(ConfigurationEditingTool PRIVATE /W4 /WX)
+  target_compile_options(ConfigurationEditingTool PRIVATE /W4)
 else(MSVC)
   target_compile_options(ConfigurationEditingTool PRIVATE -Wall -Wextra -pedantic)
 endif(MSVC)

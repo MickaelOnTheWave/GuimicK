@@ -55,7 +55,8 @@ void TextReportCreator::AddJobData(const string &jobName, JobStatus *status)
 {
     string stringOutput(status->GetDescription());
 
-    reportCore << "\t" << jobName << Tools::Spaces(nameCellSize-jobName.size()) << status->GetCodeDescription();
+    const string spaces = Tools::Spaces(nameCellSize - static_cast<int>(jobName.size()));
+    reportCore << "\t" << jobName << spaces << status->GetCodeDescription();
     if (useProfiling)
         reportCore << "\t" << Tools::FormatTimeString(status->GetDuration());
     reportCore << endl;
@@ -66,8 +67,9 @@ void TextReportCreator::AddJobData(const string &jobName, JobStatus *status)
 
 void TextReportCreator::AddSummaryData(const int code, const time_t duration)
 {
+    const string spaces = Tools::Spaces(nameCellSize - static_cast<int>(overallString.size()));
     reportCore << endl;
-    reportCore << "\t" << overallString << Tools::Spaces(nameCellSize-overallString.size());
+    reportCore << "\t" << overallString << spaces;
     reportCore << JobStatus::GetCodeDescription(code);
     if (useProfiling)
         reportCore << "\t" << Tools::FormatTimeString(duration) << endl;
@@ -92,7 +94,7 @@ void TextReportCreator::AddProgramData(const string &version)
 
 void TextReportCreator::UpdateNameCellSize(ClientJobResults *data)
 {
-    nameCellSize = overallString.size();
+    nameCellSize = static_cast<int>(overallString.size());
 
     ClientJobResults::iterator itJob=data->begin();
     ClientJobResults::iterator endJob=data->end();
@@ -100,7 +102,7 @@ void TextReportCreator::UpdateNameCellSize(ClientJobResults *data)
     {
         pair<string, JobStatus*> jobData = *itJob;
         if (jobData.first.size() > nameCellSize)
-            nameCellSize = jobData.first.size();
+            nameCellSize = static_cast<int>(jobData.first.size());
     }
 
     nameCellSize += 3;

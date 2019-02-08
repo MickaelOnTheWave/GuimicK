@@ -94,9 +94,9 @@ void AbstractJobConfiguration::CheckKnownSubObjects(ConfigurationObject *confObj
 
 void AbstractJobConfiguration::FillNumberedProperties(std::vector<string> &objects)
 {
-    unsigned int supportedPropertiesCount = objects.size();
+    const size_t supportedPropertiesCount = objects.size();
 
-    for (unsigned int i=0; i<supportedPropertiesCount; ++i)
+    for (size_t i=0; i<supportedPropertiesCount; ++i)
     {
         stringstream numberedProperty;
         numberedProperty << "param" << i;

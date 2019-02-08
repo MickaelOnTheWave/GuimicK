@@ -37,8 +37,8 @@ bool RsnapshotErrorAnalyzer::IsInvalidFolderError() const
 
 int RsnapshotErrorAnalyzer::GetRsyncErrorCode(const string &line) const
 {
-    int endPos = line.rfind(')');
-    int startPos = line.rfind('(', endPos);
+    const size_t endPos = line.rfind(')');
+    const size_t startPos = line.rfind('(', endPos);
     string codeString = line.substr(startPos+1, endPos-1);
     return atoi(codeString.c_str());
 }
