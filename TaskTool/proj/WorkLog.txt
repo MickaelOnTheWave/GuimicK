@@ -1,5 +1,9 @@
 11/02/2018 (18.5)
-    Removed ALL warnings from ToolsLib.
+    Removed ALL warnings from ToolsLib. Also removed nearly all
+    warnings from TaskTool and dependencies. Only ones remaining are
+    from 7zip, and implementation will be done next!
+    Going first in Configuration Editor. Fixed window size for
+    configuration type choice.
 
 10/02/2018 (1.3h)
     No practical way found to use a batch library, current dir
