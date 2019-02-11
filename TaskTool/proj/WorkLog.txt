@@ -1,3 +1,20 @@
+11/02/2018 (18.5)
+    Removed ALL warnings from ToolsLib.
+
+10/02/2018 (1.3h)
+    No practical way found to use a batch library, current dir
+    is evaluated at call-time and this breaks function for changing dir.
+    Creating a function and leaving it duplicated across batch files.
+    Now trying to remove stupid warnings from msvc. They seem to be in
+    ToolsLib, first we need to find where they are appearing.
+    Not ToolsLib, now trying TaskLib. TaskLib not compilable, back to
+    TaskTool. Checking if if/else block is being correctly processed...
+    Found a way to remove flood of warnings on MSVC.
+Next planned work:
+    - Finish organizing Cmake file for warning removal
+    - Back to 7zip implementation
+    - Configure Windows SSH to stop pushing and only pull
+
 07/02/2019 (1.5h)
     Compilation errors are only form within Qt Creator. From
     build script, all is OK. Refactored linux build scripts.
