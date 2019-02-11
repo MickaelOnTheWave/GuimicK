@@ -114,23 +114,23 @@ bool GitBackupJob::AreSourcesConsistent() const
     return true;
 }
 
-void GitBackupJob::UpdateGitRepository(const string &repository,
+void GitBackupJob::UpdateGitRepository(const string &gitRepository,
                                        AbstractBackupJob::ResultCollection &statusList)
 {
-    debugManager->AddDataLine<string>("Updating Git repository", repository);
+    debugManager->AddDataLine<string>("Updating Git repository", gitRepository);
     string originalDirectory = FileTools::GetCurrentFullPath();
 
-    bool ok = GitCommonTools::ChangeCurrentDir(repository, statusList);
+    bool ok = GitCommonTools::ChangeCurrentDir(gitRepository, statusList);
     if (!ok)
         return;
 
     // TODO : try again to use exceptions here
     const string oldHeadId = GetRepositoryHeadId();
-    ok = FetchUpdates(repository, statusList);
+    ok = FetchUpdates(gitRepository, statusList);
     if (ok)
     {
         const string newHeadId = GetRepositoryHeadId();
-        ComputeChanges(repository, oldHeadId, newHeadId, statusList);
+        ComputeChanges(gitRepository, oldHeadId, newHeadId, statusList);
     }
 
     GitCommonTools::ChangeCurrentDir(originalDirectory, statusList);
@@ -146,7 +146,7 @@ string GitBackupJob::GetRepositoryHeadId() const
         return string("");
 }
 
-bool GitBackupJob::FetchUpdates(const string &repository,
+bool GitBackupJob::FetchUpdates(const string &gitRepository,
                                 ResultCollection &statusList)
 {
     ConsoleJob command("git", "remote update");
@@ -161,14 +161,14 @@ bool GitBackupJob::FetchUpdates(const string &repository,
 
         JobStatus* status = new JobStatus(JobStatus::Error, invalidSourceRepositoryError);
         statusList.push_back(make_pair(status, new FileBackupReport()));
-        AddToAttachedArchive(repository, command.GetCommandOutput());
+        AddToAttachedArchive(gitRepository, command.GetCommandOutput());
     }
 
     return command.IsRunOk();
 }
 
 void GitBackupJob::ComputeChanges(
-        const string& repository,
+        const string& gitRepository,
         const string &oldCommitId, const string &newCommitId,
         AbstractBackupJob::ResultCollection &statusList)
 {
@@ -177,14 +177,14 @@ void GitBackupJob::ComputeChanges(
     ConsoleJob command("git", params);
     command.RunWithoutStatus();
     if (command.IsRunOk())
-        CreateReport(repository, command.GetCommandOutput(), statusList);
+        CreateReport(gitRepository, command.GetCommandOutput(), statusList);
     else
         throw command.GetCommandOutput();
 
 }
 
 void GitBackupJob::CreateReport(
-        const std::string& repository,
+        const std::string& gitRepository,
         const std::string& commandOutput,
         AbstractBackupJob::ResultCollection &statusList)
 {
@@ -196,23 +196,23 @@ void GitBackupJob::CreateReport(
         FileBackupReport* report = new FileBackupReport();
         parser.GetReport(*report);
         JobStatus* status = new JobStatus(JobStatus::Ok, parser.GetMiniDescription());
-        AddToAttachedArchive(repository, report->GetFullDescription());
+        AddToAttachedArchive(gitRepository, report->GetFullDescription());
         statusList.push_back(make_pair(status, report));
     }
     else
     {
         debugManager->AddDataLine<string>("Parser input", commandOutput);
         JobStatus* status = new JobStatus(JobStatus::OkWithWarnings, reportCreationError);
-        AddToAttachedArchive(repository, commandOutput);
+        AddToAttachedArchive(gitRepository, commandOutput);
         statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
     }
 }
 
 void GitBackupJob::AddToAttachedArchive(
-        const std::string& repository,
+        const std::string& gitRepository,
         const std::string& content)
 {
-    const string repositoryName = FileTools::GetFilenameFromUnixPath(repository);
+    const string repositoryName = FileTools::GetFilenameFromUnixPath(gitRepository);
     archiveContent += string("\nReport for ") + repositoryName + "\n";
     archiveContent += content;
 }

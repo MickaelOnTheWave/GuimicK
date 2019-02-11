@@ -55,7 +55,7 @@ JobStatus *BackupStatusManager::CreateGlobalStatus(
     backupCollection = &backups;
 
     if (debugManager)
-        debugManager->AddDataLine<int>("Statuses to handle", resultCollection->size());
+        debugManager->AddDataLine<size_t>("Statuses to handle", resultCollection->size());
     if (resultCollection->size() == 1)
         return CreateSingleStatus();
     else
@@ -82,14 +82,10 @@ JobStatus *BackupStatusManager::CreateSingleStatus()
 
 JobStatus *BackupStatusManager::CreateAllOkStatus()
 {
-    JobStatus* status = new JobStatus(JobStatus::Ok);
-
     if (joinReports)
         return CreateJoinedStatus();
     else
         return CreateSeparatedStatus(JobStatus::Ok);
-
-    return status;
 }
 
 JobStatus *BackupStatusManager::CreateJoinedStatus()
@@ -157,7 +153,7 @@ string BackupStatusManager::CreateStatusesDescription()
 string BackupStatusManager::CreateRepositoriesMiniDescription()
 {
     const int successCount = ComputeSuccessCount();
-    const int failureCount = resultCollection->size() - successCount;
+    const int failureCount = static_cast<int>(resultCollection->size()) - successCount;
 
     stringstream miniDescription;
     if (successCount > 0)

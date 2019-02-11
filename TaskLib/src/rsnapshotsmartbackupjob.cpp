@@ -114,12 +114,12 @@ JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromServer(const string& source
 
 JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromClient(
       const BackupRestoreParameters& parameters,
-      const BackupRestoreTarget& target)
+      const BackupRestoreTarget& restoreTarget)
 {
    string source = CreateBackupSourcePath("");
 
    LinuxCopyFsBackupJob copyJob;
-   copyJob.SetTargetRemote(target.user, target.host);
+   copyJob.SetTargetRemote(restoreTarget.user, restoreTarget.host);
    copyJob.AddFolder(source, parameters.destination);
    copyJob.SetOutputDebugInformation(DebugOutput::ON_ANY_ERROR);
    JobStatus* copyStatus = copyJob.Run();

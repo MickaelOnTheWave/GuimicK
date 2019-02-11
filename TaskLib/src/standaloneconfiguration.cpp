@@ -147,9 +147,9 @@ Agent *StandaloneConfiguration::GetAgent() const
    return agent;
 }
 
-void StandaloneConfiguration::SetAgent(Agent* agent)
+void StandaloneConfiguration::SetAgent(Agent* _agent)
 {
-   agent = agent;
+   agent = _agent;
 }
 
 Client*StandaloneConfiguration::GetClient()

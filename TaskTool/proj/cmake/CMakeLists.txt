@@ -8,8 +8,14 @@ if(NOT USE_OLD_COMPILER)
 	set(CMAKE_CXX_EXTENSIONS OFF)
 endif(NOT USE_OLD_COMPILER)
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -O2")
+
+if(MSVC)
+  add_definitions("/W4 /wd4514")
+else(MSVC)
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -O2")
+endif(MSVC)
+
 
 set(PROJECT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 set(TASKMANAGER_ROOT "${PROJECT_ROOT}/..")
@@ -43,11 +49,15 @@ endif (USE_CURL_LIB)
 
 if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")
 	target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_64.lib")
-	target_link_libraries (TaskTool "-static-libgcc" "-static-libstdc++")
 elseif (WIN32)
 	target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
 	target_link_libraries (TaskTool "-static-libgcc" "-static-libstdc++")
 endif("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")
+
+if(MSVC)
+else(MSVC)
+  target_compile_options(TaskTool PRIVATE -Wall -Wextra -pedantic)
+endif(MSVC)
 
 ### Fake Projects, only for display in IDE
 add_custom_target(ProjectFiles SOURCES

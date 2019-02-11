@@ -119,7 +119,7 @@ void GitPorcelainReportParser::CreateFileList(const std::vector<string> &linesLi
 
 void GitPorcelainReportParser::FillReportData(const std::vector<string> &files,
                                      const std::vector<string> &informationLines,
-                                     FileBackupReport &reportData)
+                                     FileBackupReport &report)
 {
     const string createModeString = "create mode";
     const string deleteModeString = "delete mode";
@@ -129,11 +129,11 @@ void GitPorcelainReportParser::FillReportData(const std::vector<string> &files,
     {
         string informationLine = GetLineWithSubstring(*it, informationLines);
         if (informationLine.find(createModeString) != string::npos)
-            reportData.AddAsAdded(*it);
+           report.AddAsAdded(*it);
         else if (informationLine.find(deleteModeString) != string::npos)
-            reportData.AddAsRemoved(*it);
+           report.AddAsRemoved(*it);
         else
-            reportData.AddAsModified(*it);
+           report.AddAsModified(*it);
 
     }
 }

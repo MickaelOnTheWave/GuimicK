@@ -51,7 +51,7 @@ public:
 
 
    Agent* GetAgent() const;
-   void SetAgent(Agent *agent);
+   void SetAgent(Agent *_agent);
 
    Client* GetClient();
 

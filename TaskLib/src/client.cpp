@@ -35,19 +35,19 @@ void Client::SetName(const string& _name)
 	name = _name;
 }
 
-void Client::AddProperty(const std::string &name, const std::string &value)
+void Client::AddProperty(const std::string &propertyName, const std::string &value)
 {
-    propertyMap[name] = value;
+    propertyMap[propertyName] = value;
 }
 
-bool Client::HasProperty(const std::string &name)
+bool Client::HasProperty(const std::string &propertyName)
 {
-    return (propertyMap.count(name) > 0);
+    return (propertyMap.count(propertyName) > 0);
 }
 
-std::string Client::GetProperty(const std::string &name)
+std::string Client::GetProperty(const std::string &propertyName)
 {
-   return propertyMap[name];
+   return propertyMap[propertyName];
 }
 
 void Client::GetJobList(std::list<AbstractJob*>& _jobList) const

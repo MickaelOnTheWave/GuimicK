@@ -1,14 +1,14 @@
 set buildname="Win64VsRelease"
 
-IF NOT EXIST ..\bin (
-	mkdir ..\bin
-)
-cd ..\bin
-
-IF NOT EXIST %buildname% (
-	mkdir %buildname%
-)
-cd %buildname%
+call :CreateAndCd "..\bin"
+call :CreateAndCd %buildname%
 
 cmake ../../proj/cmake -DUSE_CURL_LIB=FALSE -G "Visual Studio 15 2017 Win64"
 cmake --build . --config Release -j 8
+
+:CreateAndCd
+	IF NOT EXIST %~1 (
+		mkdir %~1
+	)
+	cd %~1
+	goto EOF

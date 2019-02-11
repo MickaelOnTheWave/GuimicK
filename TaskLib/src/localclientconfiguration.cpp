@@ -71,8 +71,7 @@ void LocalClientConfiguration::SetAllClientProperties(ConfigurationObject* objec
 }
 
 bool LocalClientConfiguration::AreClientPropertiesConsistent(
-      ConfigurationObject *object, std::vector<string> &errorMessages
-      )
+   ConfigurationObject*, std::vector<string> &errorMessages)
 {
 	if (client->GetName() == "")
 	{

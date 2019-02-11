@@ -374,12 +374,12 @@ void GitFsBackupJob::RunCopy(AbstractCopyFsBackupJob *copyJob, const string &sou
     }
 }
 
-void GitFsBackupJob::LogDebugCommand(const string &title, const ConsoleJob &job)
+void GitFsBackupJob::LogDebugCommand(const string &name, const ConsoleJob &job)
 {
-    debugManager->AddDataLine<string>(title + " command", job.GetCommand());
-    debugManager->AddDataLine<string>(title + " params", job.GetCommandParameters());
-    debugManager->AddDataLine<string>(title + " output", job.GetCommandOutput());
-    debugManager->AddDataLine<int>(title + " return value", job.GetCommandReturnCode());
+    debugManager->AddDataLine<string>(name + " command", job.GetCommand());
+    debugManager->AddDataLine<string>(name + " params", job.GetCommandParameters());
+    debugManager->AddDataLine<string>(name + " output", job.GetCommandOutput());
+    debugManager->AddDataLine<int>(name + " return value", job.GetCommandReturnCode());
 }
 
 bool GitFsBackupJob::ConfigureGitRepository()

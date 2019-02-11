@@ -27,7 +27,7 @@ void WindowsCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
     commandJob.SetCommandParameters(params);
 }
 
-void WindowsCopyFsBackupJob::CreateReport(const std::string &destination,
+void WindowsCopyFsBackupJob::CreateReport(const std::string&,
                                         const std::string &output,
                                         AbstractBackupJob::ResultCollection &results)
 {
