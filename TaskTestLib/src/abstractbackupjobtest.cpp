@@ -73,7 +73,7 @@ void AbstractBackupJobTest::RunBackup(AbstractBackupJob* job, const string& fold
    PrepareBackup(job, folder);
    job->SetTargetLocal();
    JobStatus* status = job->Run();
-   QCOMPARE(status->GetCode(), JobStatus::OK);
+   QCOMPARE(status->GetCode(), JobStatus::Ok);
    delete status;
 }
 
@@ -81,7 +81,7 @@ void AbstractBackupJobTest::RunRestore(AbstractBackupJob* job, const string& fol
 {
    QCOMPARE(FileTools::CreateFolder(folder), true);
    JobStatus* status = job->RestoreBackupFromServer(folder);
-   QCOMPARE(status->GetCode(), JobStatus::OK);
+   QCOMPARE(status->GetCode(), JobStatus::Ok);
    delete status;
 }
 

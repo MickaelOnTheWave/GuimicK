@@ -2,14 +2,14 @@ cmake_minimum_required (VERSION 3.2)
 
 project (TaskSingleTestTool)
 
-set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(TASKMANAGER_ROOT "../../..")
-set(QTTOOLS_ROOT "../../../../QtTools")
-set(TOOLS_ROOT "../../../../Tools")
+set(SRC_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../../..")
+set(TASKMANAGER_ROOT "${SRC_ROOT}/TaskManager")
+set(QTTOOLS_ROOT "${SRC_ROOT}/QtTools")
+set(TOOLS_ROOT "${SRC_ROOT}/Tools")
 
 add_subdirectory ("${TASKMANAGER_ROOT}/ReportParsers/ParsersTestLib/proj/cmake" "./ParsersTestLib") 
 add_subdirectory ("${TASKMANAGER_ROOT}/ReportParsers/ParsersLib/proj/cmake" "./ParsersLib")

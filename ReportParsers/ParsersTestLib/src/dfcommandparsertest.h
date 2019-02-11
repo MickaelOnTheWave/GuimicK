@@ -1,6 +1,7 @@
 #ifndef DFCOMMANDPARSERTEST_H
 #define DFCOMMANDPARSERTEST_H
 
+#include <functional>
 #include "qttestsuite.h"
 
 #include "dfcommandparser.h"

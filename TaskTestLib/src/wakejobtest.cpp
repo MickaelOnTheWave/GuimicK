@@ -12,13 +12,13 @@ WakeJobTest::WakeJobTest()
 void WakeJobTest::testWake_OkOnSelf()
 {
    TestWake(CreateSelfClient(),
-            new JobStatus(JobStatus::OK, ""));
+            new JobStatus(JobStatus::Ok, ""));
 }
 
 void WakeJobTest::testWake_FailsWakingInvalidMachine()
 {
    TestWake(CreateInvalidClient(),
-            new JobStatus(JobStatus::ERROR, "Machine still not awake"));
+            new JobStatus(JobStatus::Error, "Machine still not awake"));
 }
 
 void WakeJobTest::TestWake(Client* client, JobStatus* expectedStatus)

@@ -28,18 +28,18 @@ void ConsoleJobTest::cleanup()
 void ConsoleJobTest::testRunOk()
 {
     job = CreateDefaultJob();
-    RunAndCheckNoAttachments(JobStatus::OK,
+    RunAndCheckNoAttachments(JobStatus::Ok,
                              GetExpectedOkDescription());
 
     job->SetExpectedReturnCode(1);
-    RunAndCheckNoAttachments(JobStatus::ERROR,
+    RunAndCheckNoAttachments(JobStatus::Error,
                              GetExpectedErrorDescription(1, 0));
 }
 
 void ConsoleJobTest::testRunError()
 {
     job = CreateDefaultJob("ls", "nonexistingfolder");
-    RunAndCheckNoAttachments(JobStatus::ERROR,
+    RunAndCheckNoAttachments(JobStatus::Error,
                              GetExpectedErrorDescription(0, 2));
 }
 
@@ -136,10 +136,10 @@ void ConsoleJobTest::CheckAttachmentCount(const unsigned long fileCount,
 
 void ConsoleJobTest::TestCommandWithAppendedParameter()
 {
-    TestCommandWithParameter(JobStatus::OK, "", "my super content", true);
+    TestCommandWithParameter(JobStatus::Ok, "", "my super content", true);
 }
 
 void ConsoleJobTest::TestCommandWithSeparatedParameter()
 {
-    TestCommandWithParameter(JobStatus::OK, "", "my super content", false);
+    TestCommandWithParameter(JobStatus::Ok, "", "my super content", false);
 }

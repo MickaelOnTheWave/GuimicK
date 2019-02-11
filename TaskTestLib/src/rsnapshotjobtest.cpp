@@ -33,7 +33,7 @@ void RsnapshotJobTest::testCreate_InvalidSource()
     JobStatus* status = job->Run();
     delete job;
 
-    QCOMPARE(status->GetCode(), JobStatus::ERROR);
+    QCOMPARE(status->GetCode(), JobStatus::Error);
     const string expectedMessage = "Tried to backup invalid folder";
     QCOMPARE(status->GetDescription(), expectedMessage);
 

@@ -17,7 +17,7 @@ void SshConsoleJobTest::testRun_NoTargetError()
 {
     job = new SshConsoleJob("", "ls");
 
-    RunAndCheckNoAttachments(JobStatus::ERROR, SshConsoleJob::NoTargetError);
+    RunAndCheckNoAttachments(JobStatus::Error, SshConsoleJob::NoTargetError);
 }
 
 void SshConsoleJobTest::testRun_InvalidTargetError()
@@ -25,7 +25,7 @@ void SshConsoleJobTest::testRun_InvalidTargetError()
     job = new SshConsoleJob("", "ls");
     GetJob()->SetTarget("invalidUser", "invalidHost");
 
-    RunAndCheckNoAttachments(JobStatus::ERROR, SshConsoleJob::InvalidTargetError);
+    RunAndCheckNoAttachments(JobStatus::Error, SshConsoleJob::InvalidTargetError);
 }
 
 void SshConsoleJobTest::testRun_CheckResultingCommand()
@@ -36,7 +36,7 @@ void SshConsoleJobTest::testRun_CheckResultingCommand()
 
     CreateRemoteCatJob(filename);
 
-    RunAndCheckOneAttachment(JobStatus::OK, "", contentToWrite);
+    RunAndCheckOneAttachment(JobStatus::Ok, "", contentToWrite);
 }
 
 void SshConsoleJobTest::testRun_NoTtyError()
@@ -44,7 +44,7 @@ void SshConsoleJobTest::testRun_NoTtyError()
     job = new SshConsoleJob("", "sudo ls /");
     GetJob()->SetTarget("mickael", "Desktop");
 
-    RunAndCheckNoAttachments(JobStatus::ERROR, SshConsoleJob::NoTerminalForPasswordError);
+    RunAndCheckNoAttachments(JobStatus::Error, SshConsoleJob::NoTerminalForPasswordError);
 }
 
 void SshConsoleJobTest::testRun_AttachRemoteAttachments_Ok()
@@ -54,7 +54,7 @@ void SshConsoleJobTest::testRun_AttachRemoteAttachments_Ok()
    GetJob()->SetTarget("mickael", "Desktop");
    GetJob()->AddUserAttachment(remoteFileName);
 
-   RunAndCheck(JobStatus::OK, "");
+   RunAndCheck(JobStatus::Ok, "");
 
    vector<pair<string, string> > fileBuffers;
    status->GetFileBuffers(fileBuffers);
@@ -96,7 +96,7 @@ void SshConsoleJobTest::CreateRemoteCatJob(const string &fileToTest)
 
 void SshConsoleJobTest::TestCommandWithAppendedParameter()
 {
-    TestCommandWithParameter(JobStatus::OK, "", "my super content", true);
+    TestCommandWithParameter(JobStatus::Ok, "", "my super content", true);
 }
 
 void SshConsoleJobTest::TestCommandWithSeparatedParameter()

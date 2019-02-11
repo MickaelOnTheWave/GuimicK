@@ -35,7 +35,7 @@ void GitJobTest::cleanup()
 void GitJobTest::testCreate_InvalidSource()
 {
     RunGitBackup(invalidRepository.toStdString(), destinationRepository.toStdString());
-    CheckGitJobReturn(JobStatus::ERROR, 0, messageInvalidSource);
+    CheckGitJobReturn(JobStatus::Error, 0, messageInvalidSource);
     FileTestUtils::CheckFolderExistence(invalidRepository, false);
     FileTestUtils::CheckFolderExistence(destinationRepository, false);
 }
@@ -43,7 +43,7 @@ void GitJobTest::testCreate_InvalidSource()
 void GitJobTest::testCreateOne_Ok()
 {
     RunGitBackup(sourceRepository.toStdString(), destinationRepository.toStdString());
-    CheckGitJobReturn(JobStatus::OK, 0, "Repository cloned successfully");
+    CheckGitJobReturn(JobStatus::Ok, 0, "Repository cloned successfully");
     FileTestUtils::CheckFolderExistence(sourceRepository, true);
     FileTestUtils::CheckFolderExistence(destinationRepository, true);
     CheckGitHeadContent(destinationRepository.toStdString(), defaultRepositoryContent);
@@ -90,7 +90,7 @@ void GitJobTest::testUpdate_MultipleRepositories()
     CreateInitialRepositoryData(repositories);
 
     RunGitBackup(CreateRepositoryListForBackup(repositories));
-    CheckGitJobReturn(JobStatus::OK, 1, BuildMultiDescriptionString(repositories));
+    CheckGitJobReturn(JobStatus::Ok, 1, BuildMultiDescriptionString(repositories));
 
     for (auto it=repositories.begin(); it!=repositories.end(); ++it)
     {
@@ -114,7 +114,7 @@ void GitJobTest::testUpdate_InvalidSource()
     dir.removeRecursively();
     RunGitBackup(stdSource, stdDestination);
 
-    CheckGitJobReturn(JobStatus::ERROR, 1, QString(errorInvalidTarget.c_str()));
+    CheckGitJobReturn(JobStatus::Error, 1, QString(errorInvalidTarget.c_str()));
 }
 
 std::vector<GitRepository*> GitJobTest::CreateMultipleRepositories()
@@ -191,12 +191,12 @@ void GitJobTest::RunGitBackup(const std::vector<std::pair<std::string, std::stri
 
 void GitJobTest::CheckGitJobReturnsError(const QString& description)
 {
-    CheckGitJobReturn(JobStatus::ERROR, 0, description);
+    CheckGitJobReturn(JobStatus::Error, 0, description);
 }
 
 void GitJobTest::CheckGitJobReturnsOk(const QString &description)
 {
-    CheckGitJobReturn(JobStatus::OK, 1, description);
+    CheckGitJobReturn(JobStatus::Ok, 1, description);
 }
 
 void GitJobTest::CheckGitJobReturn(const int expectedStatus,

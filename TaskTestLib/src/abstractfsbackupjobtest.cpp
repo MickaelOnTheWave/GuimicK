@@ -82,7 +82,7 @@ JobStatus *AbstractFsBackupJobTest::RunBackupOnDataFolder(const string &folder,
 void AbstractFsBackupJobTest::CheckStatus(JobStatus *status)
 {
     QVERIFY(status != nullptr);
-    QCOMPARE(status->GetCode(), JobStatus::OK);
+    QCOMPARE(status->GetCode(), JobStatus::Ok);
 
     QFETCH(QString, description);
     CheckTextContent(status->GetDescription(), description);

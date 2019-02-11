@@ -14,13 +14,13 @@ void UserConsoleJobTest::testRun_InvalidCommand()
 {
     job = CreateDefaultJob("nonexistentcommand");
 
-    RunAndCheckNoAttachments(JobStatus::ERROR, ConsoleJob::NotAvailableError);
+    RunAndCheckNoAttachments(JobStatus::Error, ConsoleJob::NotAvailableError);
 
     GetJob()->SetAttachOutput(true);
 
     // Even though job is marked to attach output, as command is invalid,
     // nothing is attached.
-    RunAndCheckNoAttachments(JobStatus::ERROR, ConsoleJob::NotAvailableError);
+    RunAndCheckNoAttachments(JobStatus::Error, ConsoleJob::NotAvailableError);
 }
 
 void UserConsoleJobTest::testRun_CheckReturnCode()
@@ -28,10 +28,10 @@ void UserConsoleJobTest::testRun_CheckReturnCode()
     job = ConsoleJobTest::CreateDefaultJob();
 
     job->SetExpectedReturnCode(0);
-    RunAndCheckNoAttachments(JobStatus::OK, "");
+    RunAndCheckNoAttachments(JobStatus::Ok, "");
 
     job->SetExpectedReturnCode(1);
-    RunAndCheckNoAttachments(JobStatus::ERROR, GetExpectedErrorDescription(1, 0));
+    RunAndCheckNoAttachments(JobStatus::Error, GetExpectedErrorDescription(1, 0));
 }
 
 void UserConsoleJobTest::testRun_CheckOutput()
@@ -40,10 +40,10 @@ void UserConsoleJobTest::testRun_CheckOutput()
     job = ConsoleJobTest::CreateDefaultJob();
 
     GetJob()->SetExpectedOutput("testFile");
-    RunAndCheckNoAttachments(JobStatus::OK, "");
+    RunAndCheckNoAttachments(JobStatus::Ok, "");
 
     GetJob()->SetExpectedOutput("Output is not that");
-    RunAndCheckNoAttachments(JobStatus::ERROR, GetExpectedErrorDescription("Output is not that", "testFile"));
+    RunAndCheckNoAttachments(JobStatus::Error, GetExpectedErrorDescription("Output is not that", "testFile"));
 }
 
 void UserConsoleJobTest::testRun_CheckAttachment()
@@ -51,10 +51,10 @@ void UserConsoleJobTest::testRun_CheckAttachment()
     FileTools::WriteBufferToFile("testFile", "test content");
     job = ConsoleJobTest::CreateDefaultJob();
 
-    RunAndCheckNoAttachments(JobStatus::OK, "");
+    RunAndCheckNoAttachments(JobStatus::Ok, "");
 
     GetJob()->SetAttachOutput(true);
-    RunAndCheckOneAttachment(JobStatus::OK, "", "testFile");
+    RunAndCheckOneAttachment(JobStatus::Ok, "", "testFile");
 }
 
 void UserConsoleJobTest::testRun_OutputToFile_ReturnCode()
@@ -63,7 +63,7 @@ void UserConsoleJobTest::testRun_OutputToFile_ReturnCode()
     job = CreateDefaultJob("ls",  "testFile");
     GetJob()->SetOutputTofile("outputFile");
 
-    RunAndCheck(JobStatus::OK, "");
+    RunAndCheck(JobStatus::Ok, "");
     CheckAttachmentCount(1, 0);
 
     string content = FileTools::GetTextFileContent("outputFile");
@@ -81,12 +81,12 @@ void UserConsoleJobTest::testRun_OutputToFile_OutputDoesNotWork()
     GetJob()->SetOutputTofile(outputFileName);
 
     GetJob()->SetExpectedOutput(testFileContent);
-    RunAndCheck(JobStatus::ERROR, GetExpectedErrorDescription(testFileContent, ""));
+    RunAndCheck(JobStatus::Error, GetExpectedErrorDescription(testFileContent, ""));
     CheckAttachmentCount(1, 0);
 
     const string wrongContent = "wrong content";
     GetJob()->SetExpectedOutput(wrongContent);
-    RunAndCheck(JobStatus::ERROR, GetExpectedErrorDescription(wrongContent, ""));
+    RunAndCheck(JobStatus::Error, GetExpectedErrorDescription(wrongContent, ""));
     CheckAttachmentCount(1, 0);
 }
 
@@ -99,7 +99,7 @@ void UserConsoleJobTest::testRun_AttachUserFile()
    job = CreateDefaultJob("echo", "blabla");
    GetJob()->AddUserAttachment(testFileName);
 
-   RunAndCheck(JobStatus::OK, "");
+   RunAndCheck(JobStatus::Ok, "");
    CheckAttachmentCount(1, 0);
 
    vector<string> userAttachment;
@@ -165,7 +165,7 @@ void UserConsoleJobTest::CheckJobConditions(const int expectedCode,
 
 void UserConsoleJobTest::TestCommandWithAppendedParameter()
 {
-    TestCommandWithParameter(JobStatus::ERROR, ConsoleJob::NotAvailableError, "", true);
+    TestCommandWithParameter(JobStatus::Error, ConsoleJob::NotAvailableError, "", true);
 
 }
 

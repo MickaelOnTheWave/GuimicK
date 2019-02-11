@@ -1,9 +1,19 @@
-11/02/2018 (18.5)
+11/02/2018 (2.6h)
     Removed ALL warnings from ToolsLib. Also removed nearly all
     warnings from TaskTool and dependencies. Only ones remaining are
     from 7zip, and implementation will be done next!
     Going first in Configuration Editor. Fixed window size for
     configuration type choice.
+    Back to 7zip archiving job. Archiving tool already exists and ZipCopy
+    job seems ready to support any archiving tool. Back to test suites
+    for checking... Resolving compilation issues, now on linking issues.
+Next planned work:
+    - Resolve linking issues for test suites project
+    - Run & check ZipCopy job test suite
+    - Create new test suites for archiving tools
+    - Run & check 7zip tool on test suite
+    - Create ZipCopy job with 7zip, run it and check
+    - Configure Windows SSH to stop pushing and only pull
 
 10/02/2018 (1.3h)
     No practical way found to use a batch library, current dir

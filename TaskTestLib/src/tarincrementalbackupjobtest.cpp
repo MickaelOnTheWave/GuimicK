@@ -160,7 +160,7 @@ void TarIncrementalBackupJobTest::CreateInitialData()
 void TarIncrementalBackupJobTest::RunInitialBackup(AbstractBackupJob* job)
 {
    JobStatus* status = job->Run();
-   QVERIFY(status->GetCode() == JobStatus::OK);
+   QVERIFY(status->GetCode() == JobStatus::Ok);
    delete status;
 }
 
@@ -204,7 +204,7 @@ void TarIncrementalBackupJobTest::CheckStatus(JobStatus* status,
                                               const QStringList& addedFiles,
                                               const QStringList& modifiedFiles)
 {
-   QVERIFY(status->GetCode() == JobStatus::OK);
+   QVERIFY(status->GetCode() == JobStatus::Ok);
 
    FileBackupReport expectedReport;
    for (auto it : addedFiles)
@@ -236,7 +236,7 @@ void TarIncrementalBackupJobTest::RestoreAndCheck(AbstractBackupJob* job, const 
    FileTools::CreateFolder(restoreFolder);
 
    JobStatus* status = job->RestoreBackupFromServer(restoreFolder, 0, timeIndex);
-   QCOMPARE(status->GetCode(), JobStatus::OK);
+   QCOMPARE(status->GetCode(), JobStatus::Ok);
    FileTestUtils::CheckFolderContent(restoreFolder, expectedFiles, expectedContents);
 
    FileTools::RemoveFolder(restoreFolder, false);

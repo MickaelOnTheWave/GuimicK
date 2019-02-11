@@ -8,7 +8,6 @@ if(NOT USE_OLD_COMPILER)
 	set(CMAKE_CXX_EXTENSIONS OFF)
 endif(NOT USE_OLD_COMPILER)
 
-
 if(MSVC)
   add_definitions("/W4 /wd4514")
 else(MSVC)
