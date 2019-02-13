@@ -2,9 +2,10 @@ cmake_minimum_required (VERSION 3.2)
 
 project (TaskLib)
 
-set(includeDir "../../include")
+set(projectRoot "../..")
+set(includeDir "${projectRoot}/include")
 
-file(GLOB sources "../../src/*")
+file(GLOB sources "${projectRoot}/src/*")
 file(GLOB includes "${includeDir}/*")
 
 add_library(TaskLib ${sources})

@@ -1,3 +1,15 @@
+13/02/2018 (2.1h)
+    Trying to figure out this linking issue. It is not about
+    ZipAndCopy test suite, it is about QtTestSuite. However it is
+    still not understood : there are no undefined virtual methods.
+    Changed the project standard to have include/ and src/.
+    No way to solve the issue. Trying to copy cmake features from
+    Configuration Editor, but without luck so far. Leaving for later...
+Next planned work:
+    - Think about other ways to solve link issue
+    - Abandon solving linking issues and focus on having 7zip job running
+    - Update ConfigurationEditor to have 7zip job available
+
 11/02/2018 (2.6h)
     Removed ALL warnings from ToolsLib. Also removed nearly all
     warnings from TaskTool and dependencies. Only ones remaining are
