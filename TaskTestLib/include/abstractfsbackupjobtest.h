@@ -25,7 +25,6 @@ protected:
     virtual void CheckBackedUpDataIsOk();
     virtual JobStatus* RunBackupJob(const bool isRemote,
                                     const bool useDebug);
-    virtual AbstractBackupJob* CreateNewJob() = 0;
 
     JobStatus *RunBackups(const std::string& folderBefore,
                           const std::string& folderNow,

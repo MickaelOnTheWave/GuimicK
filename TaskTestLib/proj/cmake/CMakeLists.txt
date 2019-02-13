@@ -4,10 +4,12 @@ project (TaskTestLib)
 
 find_package(Qt5Test REQUIRED)
 
-file(GLOB SOURCES "../../src/*")
+set(projectRoot "${CMAKE_CURRENT_SOURCE_DIR}/../..")
+set(sourceDir "${projectRoot}/src/")
+set(includeDir "${projectRoot}/include/")
+file(GLOB sources "${sourceDir}/*")
 
-set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../src/")
-
-add_library(TaskTestLib ${SOURCES}) 
-set_target_properties(TaskTestLib PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${INCLUDE_DIR}")
+add_library(TaskTestLib ${sources})
+target_include_directories(TaskTestLib PRIVATE ${sourceDir}
+                                       PUBLIC ${includeDir})
 target_link_libraries (TaskTestLib TaskLib QtToolsLib ToolsLib Qt5::Test)

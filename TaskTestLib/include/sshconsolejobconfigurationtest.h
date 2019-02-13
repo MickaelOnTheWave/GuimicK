@@ -16,7 +16,7 @@ private Q_SLOTS:
     void testJobIsSsh();
 
 protected:
-    virtual AbstractJobConfiguration* CreateNewConfiguration() const override;
+    //virtual AbstractJobConfiguration* CreateNewConfiguration() const override;
 
 private:
     virtual void FinalCheckTitleProperty(AbstractJob* job, const std::string& expectedValue);

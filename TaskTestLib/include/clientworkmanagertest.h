@@ -11,6 +11,7 @@ class ClientWorkManagerTest : public QtTestSuite
     Q_OBJECT
 public:
     ClientWorkManagerTest();
+    virtual ~ClientWorkManagerTest() {}
 
 private Q_SLOTS:
     void init();

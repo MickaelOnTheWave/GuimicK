@@ -2,7 +2,7 @@
 #define ZIPANDCOPYFSBACKUPJOBTEST_H
 
 #include "abstractfsbackupjobtest.h"
-
+/*
 class ZipAndCopyFsBackupJobTest : public AbstractFsBackupJobTest
 {
     Q_OBJECT
@@ -23,5 +23,5 @@ protected:
 
     virtual AbstractBackupJob* CreateNewJob() override;
 };
-
+*/
 #endif // ZIPANDCOPYFSBACKUPJOBTEST_H

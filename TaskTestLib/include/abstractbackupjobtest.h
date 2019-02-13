@@ -13,8 +13,10 @@ public:
                          const std::string& errorPrefix);
    virtual ~AbstractBackupJobTest() = default;
 
-protected:
+protected:   
    void LoadExternalDataSamples(const bool isRemote);
+
+   virtual AbstractBackupJob* CreateNewJob() = 0;
 
    const std::string backupRepository = "repository/";
    std::string currentSourceFolder = "currentFolderToBackup";
@@ -35,8 +37,6 @@ private:
     void PrepareBackup(AbstractBackupJob* job, const std::string& folder);
 
     virtual std::string GetBackupDestination() const;
-
-    virtual AbstractBackupJob* CreateNewJob() = 0;
 };
 
 #endif // ABSTRACTBACKUPJOBTEST_H
