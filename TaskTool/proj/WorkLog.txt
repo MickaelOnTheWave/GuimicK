@@ -1,4 +1,4 @@
-17/02/2018 (8.5)
+17/02/2018 (3h)
     Chose to abandon solving unit tests issue - it is more important to
     have an implementation working at the moment.
     Updated copyright notice.
@@ -7,7 +7,10 @@
     Backup base class now is specialized using composition for tar
     and 7zip versions. Created corresponding configuration classes.
     Updated configuration editor accordingly. Tested TarTool : working
-    as expected. Now testing 7zip tool :
+    as expected.
+Next planned work:
+    - Test 7zip tool on Windows & make it work
+    - See Release map
 
 13/02/2018 (2.1h)
     Trying to figure out this linking issue. It is not about
