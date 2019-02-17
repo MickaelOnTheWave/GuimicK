@@ -2,14 +2,17 @@
 
 #include "changescreensaverjobconfiguration.h"
 #include "clamavjobconfiguration.h"
-#include "copyfsbackupjobconfigurations.h"
 #include "diskspacecheckjobconfiguration.h"
 #include "gitbackupjobconfiguration.h"
 #include "gitfsbackupjobconfiguration.h"
+#include "oscopyfsbackupjobconfiguration.h"
 #include "remotejobsrunnerconfiguration.h"
 #include "rsnapshotbackupjobconfiguration.h"
+#include "rsynccopyfsbackupjobconfiguration.h"
 #include "shutdownjobconfiguration.h"
+#include "sevenzipbackupjobconfiguration.h"
 #include "sshconsolejobconfiguration.h"
+#include "tarbackupjobconfiguration.h"
 #include "tarincrementalbackupjobconfiguration.h"
 #include "userconsolejobconfiguration.h"
 #include "wakejobconfiguration.h"
@@ -86,7 +89,8 @@ void JobFactory::FillSupportedJobsList()
    supportedJobs.push_back(new GitFsBackupJobConfiguration);
    supportedJobs.push_back(new OsCopyFsBackupJobConfiguration());
    supportedJobs.push_back(new RsyncCopyFsBackupJobConfiguration());
-   supportedJobs.push_back(new ZipAndCopyFsBackupJobConfiguration());
+   supportedJobs.push_back(new TarBackupJobConfiguration());
+   supportedJobs.push_back(new SevenZipBackupJobConfiguration());
    supportedJobs.push_back(new RemoteJobsRunnerConfiguration());
    supportedJobs.push_back(new TarIncrementalBackupJobConfiguration());
 }

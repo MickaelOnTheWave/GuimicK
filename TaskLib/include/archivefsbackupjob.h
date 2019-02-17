@@ -1,5 +1,5 @@
-#ifndef ZIPANDCOPYFSBACKUPJOB_H
-#define ZIPANDCOPYFSBACKUPJOB_H
+#ifndef ARCHIVEFSBACKUPJOB_H
+#define ARCHIVEFSBACKUPJOB_H
 
 #include "abstractbackupjob.h"
 #include "AbstractConsoleJob.h"
@@ -8,15 +8,15 @@
 
 
 // TODO : check that the job works with multiple folders
-class ZipAndCopyFsBackupJob : public AbstractBackupJob
+class ArchiveFsBackupJob : public AbstractBackupJob
 {
 public:
-    ZipAndCopyFsBackupJob();
-    ZipAndCopyFsBackupJob(const ZipAndCopyFsBackupJob& other);
-
-    virtual AbstractJob* Clone();
-
-    virtual std::string GetTypeName() const;
+    ArchiveFsBackupJob(
+          const std::string& jobName,
+          ArchiveTool* _archiveTool
+          );
+    ArchiveFsBackupJob(const ArchiveFsBackupJob& other);
+    virtual ~ArchiveFsBackupJob();
 
     static bool Restore(const std::string& backupFile,
                         const std::string& destination);
@@ -50,6 +50,7 @@ private:
     ArchiveTool* CreateArchiveTool(const std::string& filename) const;
 
     std::string localDestination;
+    ArchiveTool* archiveTool;
 };
 
-#endif // ZIPANDCOPYFSBACKUPJOB_H
+#endif // ARCHIVEFSBACKUPJOB_H

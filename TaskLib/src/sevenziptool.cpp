@@ -6,9 +6,23 @@ using namespace std;
 
 const string SevenZipCommand = "7z.exe";
 
-SevenZipTool::SevenZipTool(const string& _filename)
-   : ArchiveTool(_filename)
+SevenZipTool::SevenZipTool() : ArchiveTool()
 {
+}
+
+SevenZipTool::SevenZipTool(const SevenZipTool& other)
+   : ArchiveTool(other)
+{
+}
+
+void SevenZipTool::Initialize(const string& _filename)
+{
+   filename = _filename;
+}
+
+ArchiveTool* SevenZipTool::Clone() const
+{
+   return new SevenZipTool(*this);
 }
 
 void SevenZipTool::CreateArchive(const string& pathData, ArchiveToolResult& result)

@@ -15,8 +15,14 @@ public:
 class ArchiveTool
 {
 public:
-   ArchiveTool(const std::string& _filename) : filename(_filename) {}
+   ArchiveTool() : filename("") {}
+   ArchiveTool(const ArchiveTool& other) : filename(other.filename) {}
+
    virtual ~ArchiveTool() {}
+
+   virtual void Initialize(const std::string& _filename) = 0;
+
+   virtual ArchiveTool* Clone() const = 0;
 
    virtual void CreateArchive(const std::string& pathData,
                               ArchiveToolResult& result) = 0;
@@ -28,7 +34,7 @@ public:
                                ArchiveToolResult& result) = 0;
 
 protected:
-   const std::string filename;
+   std::string filename;
 };
 
 #endif // ARCHIVETOOL_H

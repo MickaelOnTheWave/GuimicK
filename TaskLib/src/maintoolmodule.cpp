@@ -108,7 +108,7 @@ bool MainToolModule::SetupCommandLine(CommandLineManager& manager)
     manager.AddParameter(confFileCommand,    "[CONFIGURATION FILE] Specifies which configuration file to use.");
 
     manager.EnableHelpCommand();
-    manager.EnableVersionCommand("Task Manager", version, "Mickaël C. Guimarães", "2014-2018");
+    manager.EnableVersionCommand("Task Manager", version, "Mickaël C. Guimarães", "2014-2019");
 
     return (manager.HandleUnknownParameters() || manager.HandleVersionCommand() ||
             manager.HandleHelpCommand());

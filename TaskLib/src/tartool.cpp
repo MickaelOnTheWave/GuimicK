@@ -7,9 +7,25 @@ using namespace std;
 
 const string tarCommand = "tar";
 
-TarTool::TarTool(const string& _filename)
-   : ArchiveTool(_filename), useGzipCompression(true)
+TarTool::TarTool()
+   : ArchiveTool(), useGzipCompression(true)
 {
+}
+
+TarTool::TarTool(const TarTool& other)
+   : ArchiveTool(),
+     useGzipCompression(other.useGzipCompression)
+{
+}
+
+void TarTool::Initialize(const string& _filename)
+{
+   filename = _filename;
+}
+
+ArchiveTool* TarTool::Clone() const
+{
+   return new TarTool(*this);
 }
 
 void TarTool::SetGzipCompression(const bool value)

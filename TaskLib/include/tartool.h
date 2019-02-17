@@ -7,9 +7,12 @@
 class TarTool : public ArchiveTool
 {
 public:
-   TarTool(const std::string& _filename);
+   TarTool();
+   TarTool(const TarTool& other);
 
-   void SetGzipCompression(const bool value);
+   virtual void Initialize(const std::string& _filename);
+
+   virtual ArchiveTool* Clone() const;
 
    virtual void CreateArchive(const std::string& pathData,
                               ArchiveToolResult& result);
@@ -20,6 +23,7 @@ public:
    virtual void ExtractArchive(const std::string& destinationPath,
                                ArchiveToolResult& result);
 
+   void SetGzipCompression(const bool value);
 
 private:
    void RunTarCommand(const std::string& command, ArchiveToolResult& result);

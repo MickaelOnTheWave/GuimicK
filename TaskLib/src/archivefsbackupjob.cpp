@@ -1,4 +1,4 @@
-#include "zipandcopyfsbackupjob.h"
+#include "archivefsbackupjob.h"
 
 #include "consolejob.h"
 #include "filetools.h"
@@ -12,31 +12,28 @@ using namespace std;
 static const string cleaningError = "error cleaning destination";
 static const string copyingError = "error copying archive";
 static const string remoteCleaningError = "remote archive not cleaned";
-static const string defaultName = "ZipAndCopy Backup";
 
-ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob()
-    : AbstractBackupJob(defaultName),
-      localDestination("")
+ArchiveFsBackupJob::ArchiveFsBackupJob(const std::string& jobName,
+                                       ArchiveTool* _archiveTool)
+    : AbstractBackupJob(jobName),
+      localDestination(""),
+      archiveTool(_archiveTool)
 {
 }
 
-ZipAndCopyFsBackupJob::ZipAndCopyFsBackupJob(const ZipAndCopyFsBackupJob& other)
+ArchiveFsBackupJob::ArchiveFsBackupJob(const ArchiveFsBackupJob& other)
     : AbstractBackupJob(other),
-      localDestination(other.localDestination)
+      localDestination(other.localDestination),
+      archiveTool(other.archiveTool->Clone())
 {
 }
 
-AbstractJob *ZipAndCopyFsBackupJob::Clone()
+ArchiveFsBackupJob::~ArchiveFsBackupJob()
 {
-   return new ZipAndCopyFsBackupJob(*this);
+   delete archiveTool;
 }
 
-string ZipAndCopyFsBackupJob::GetTypeName() const
-{
-   return defaultName;
-}
-
-bool ZipAndCopyFsBackupJob::Restore(const string &backupFile, const string &destination)
+bool ArchiveFsBackupJob::Restore(const string &backupFile, const string &destination)
 {
     if (FileTools::FolderExists(destination) == false)
     {
@@ -52,17 +49,17 @@ bool ZipAndCopyFsBackupJob::Restore(const string &backupFile, const string &dest
     return (commandJob.GetCommandReturnCode() == 0);
 }
 
-string ZipAndCopyFsBackupJob::GetLocalDestination() const
+string ArchiveFsBackupJob::GetLocalDestination() const
 {
    return localDestination;
 }
 
-void ZipAndCopyFsBackupJob::SetLocalDestination(const string &value)
+void ArchiveFsBackupJob::SetLocalDestination(const string &value)
 {
     localDestination = value;
 }
 
-void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
+void ArchiveFsBackupJob::RunRepositoryBackup(const std::string &source,
                                                 const std::string &destination,
                                                 AbstractBackupJob::ResultCollection &results)
 {
@@ -74,7 +71,7 @@ void ZipAndCopyFsBackupJob::RunRepositoryBackup(const std::string &source,
    }
 }
 
-JobStatus* ZipAndCopyFsBackupJob::RestoreBackupFromServer(const string& source,
+JobStatus* ArchiveFsBackupJob::RestoreBackupFromServer(const string& source,
                                                 const string& destination)
 {
    bool ok = Restore(source, destination);
@@ -94,7 +91,7 @@ void AddResultToCollection(const ArchiveToolResult& result,
 
 // TODO : maybe there is a better architectural option to these result collections :
 // create a JobBackupStatus that stores backup report.
-bool ZipAndCopyFsBackupJob::UpdateBackupArchive(const string &folderToBackup,
+bool ArchiveFsBackupJob::UpdateBackupArchive(const string &folderToBackup,
                                                 const string &archiveName,
                                                 AbstractBackupJob::ResultCollection &results)
 {
@@ -106,7 +103,7 @@ bool ZipAndCopyFsBackupJob::UpdateBackupArchive(const string &folderToBackup,
    return result.isOk;
 }
 
-bool ZipAndCopyFsBackupJob::RemovePreviousArchive(const string &destination,
+bool ArchiveFsBackupJob::RemovePreviousArchive(const string &destination,
                                                AbstractBackupJob::ResultCollection &results)
 {
     if (FileTools::FileExists(destination))
@@ -118,7 +115,7 @@ bool ZipAndCopyFsBackupJob::RemovePreviousArchive(const string &destination,
     return ok;
 }
 
-bool ZipAndCopyFsBackupJob::CopyBackupArchiveToDestination(
+bool ArchiveFsBackupJob::CopyBackupArchiveToDestination(
         const string &destination,
         AbstractBackupJob::ResultCollection &results)
 {
@@ -135,7 +132,7 @@ bool ZipAndCopyFsBackupJob::CopyBackupArchiveToDestination(
     return isRunOk;
 }
 
-bool ZipAndCopyFsBackupJob::CleanBackupArchiveFromSource(AbstractBackupJob::ResultCollection &results)
+bool ArchiveFsBackupJob::CleanBackupArchiveFromSource(AbstractBackupJob::ResultCollection &results)
 {
     string parameters = string("-f ") + localDestination;
     SshConsoleJob* remoteJob = new SshConsoleJob(new ConsoleJob("rm", parameters));
@@ -152,16 +149,17 @@ bool ZipAndCopyFsBackupJob::CleanBackupArchiveFromSource(AbstractBackupJob::Resu
     return isOk;
 }
 
-void ZipAndCopyFsBackupJob::AddStatusToResults(AbstractBackupJob::ResultCollection &results,
+void ArchiveFsBackupJob::AddStatusToResults(AbstractBackupJob::ResultCollection &results,
                                                const int code, const string &message)
 {
     JobStatus* status = new JobStatus(code, message);
     results.push_back(pair<JobStatus*, FileBackupReport*>(status, NULL));
 }
 
-ArchiveTool* ZipAndCopyFsBackupJob::CreateArchiveTool(const string& filename) const
+ArchiveTool* ArchiveFsBackupJob::CreateArchiveTool(const string& filename) const
 {
-   TarTool* tool = new TarTool(filename);
+   TarTool* tool = new TarTool();
+   tool->Initialize(filename);
    tool->SetGzipCompression(false);
    return tool;
 }
