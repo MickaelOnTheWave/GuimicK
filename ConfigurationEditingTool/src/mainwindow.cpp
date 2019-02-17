@@ -37,9 +37,10 @@
 #include "oscopyfsbackupjob.h"
 #include "rsnapshotsmartbackupjob.h"
 #include "rsynccopyfsbackupjob.h"
+#include "sevenzipbackupjob.h"
+#include "tarbackupjob.h"
 #include "userconsolejob.h"
 #include "libwakejob.h"
-#include "zipandcopyfsbackupjob.h"
 
 using namespace std;
 
@@ -432,7 +433,7 @@ void MainWindow::SetupAddJobMenu()
 void MainWindow::SetupWindowsAddJobMenu()
 {
    AddJobMenuEntry("Simple Copy Backup", new OsCopyFsBackupJob);
-   AddJobMenuEntry("Archive Backup", new ZipAndCopyFsBackupJob);
+   AddJobMenuEntry("7zip Backup", new SevenZipBackupJob);
    AddJobMenuEntry("Custom command", new UserConsoleJob);
 }
 
@@ -447,7 +448,7 @@ void MainWindow::SetupLinuxAddJobMenu()
    QMenu* subMenuBackup = new QMenu("Backup");
    AddJobMenuEntry(subMenuBackup, "Raw Copy", new OsCopyFsBackupJob);
    AddJobMenuEntry(subMenuBackup, "Rsync Copy", new RsyncCopyFsBackupJob);
-   AddJobMenuEntry(subMenuBackup, "Zip + Copy", new ZipAndCopyFsBackupJob);
+   AddJobMenuEntry(subMenuBackup, "Tar Backup", new TarBackupJob);
    AddJobMenuEntry(subMenuBackup, "Git (filesystems)", new GitFsBackupJob);
    AddJobMenuEntry(subMenuBackup, "Git (repositories)", new GitBackupJob);
    AddJobMenuEntry(subMenuBackup, "Rsnapshot", new RsnapshotSmartBackupJob);

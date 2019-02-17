@@ -1,5 +1,5 @@
 #include "copyfsbackupjobconfigurationstests.h"
-#include "copyfsbackupjobconfigurations.h"
+#include "oscopyfsbackupjobconfiguration.h"
 
 AbstractJobConfiguration *RawCopyFsBackupJobConfigurationTest::CreateNewConfiguration() const
 {
@@ -13,7 +13,7 @@ AbstractJobConfiguration *RsyncCopyFsBackupJobConfigurationTest::CreateNewConfig
 
 AbstractJobConfiguration *ZipAndCopyFsBackupJobConfigurationTest::CreateNewConfiguration() const
 {
-    return new ZipAndCopyFsBackupJobConfiguration();
+    return new TarBackupJobConfiguration();
 }
 
 

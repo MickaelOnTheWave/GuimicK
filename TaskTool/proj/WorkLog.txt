@@ -1,3 +1,14 @@
+17/02/2018 (8.5)
+    Chose to abandon solving unit tests issue - it is more important to
+    have an implementation working at the moment.
+    Updated copyright notice.
+    Refactored backup configuration classes : every one in a separate
+    file.
+    Backup base class now is specialized using composition for tar
+    and 7zip versions. Created corresponding configuration classes.
+    Updated configuration editor accordingly. Tested TarTool : working
+    as expected. Now testing 7zip tool :
+
 13/02/2018 (2.1h)
     Trying to figure out this linking issue. It is not about
     ZipAndCopy test suite, it is about QtTestSuite. However it is

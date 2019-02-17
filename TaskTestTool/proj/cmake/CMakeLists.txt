@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+find_package(Qt5Test REQUIRED)
+
 set(TASKMANAGER_ROOT "../../..")
 set(QTTOOLS_ROOT "../../../../QtTools")
 set(TOOLS_ROOT "../../../../Tools")

@@ -1,7 +1,7 @@
 #include "editzipcopybackupdialog.h"
 #include "ui_editzipcopybackupdialog.h"
 
-#include "zipandcopyfsbackupjob.h"
+#include "archivefsbackupjob.h"
 
 namespace
 {
@@ -38,14 +38,14 @@ void EditZipCopyBackupDialog::SetupFor(const ConfigurationType& type)
 
 void EditZipCopyBackupDialog::UpdateUiFromJob()
 {
-   auto zipCopyJob = static_cast<ZipAndCopyFsBackupJob*>(job);
+   auto zipCopyJob = static_cast<ArchiveFsBackupJob*>(job);
    basicBackupWidget->UpdateUiFromJob(zipCopyJob);
    ui->localDestinationEdit->setText(zipCopyJob->GetLocalDestination().c_str());
 }
 
 void EditZipCopyBackupDialog::UpdateJobFromUi()
 {
-   auto zipCopyJob = static_cast<ZipAndCopyFsBackupJob*>(job);
+   auto zipCopyJob = static_cast<ArchiveFsBackupJob*>(job);
    basicBackupWidget->UpdateJobFromUi(zipCopyJob);
    zipCopyJob->SetLocalDestination(ui->localDestinationEdit->text().toStdString());
 }
