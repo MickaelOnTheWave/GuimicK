@@ -1,3 +1,5 @@
+18/02/2018 (19.1)
+
 17/02/2018 (3h)
     Chose to abandon solving unit tests issue - it is more important to
     have an implementation working at the moment.
