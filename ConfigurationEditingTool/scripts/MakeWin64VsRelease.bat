@@ -1,5 +1,5 @@
 
-set buildname="Win64VsRelease"
+set buildname="Win64Vs"
 
 IF NOT EXIST ..\bin (
 	mkdir ..\bin
