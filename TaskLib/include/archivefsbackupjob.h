@@ -47,8 +47,6 @@ private:
     void AddStatusToResults(ResultCollection& results,
                             const int code, const std::string& message);
 
-    ArchiveTool* CreateArchiveTool(const std::string& filename) const;
-
     std::string localDestination;
     ArchiveTool* archiveTool;
 };

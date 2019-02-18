@@ -10,8 +10,6 @@ public:
    TarTool();
    TarTool(const TarTool& other);
 
-   virtual void Initialize(const std::string& _filename);
-
    virtual ArchiveTool* Clone() const;
 
    virtual void CreateArchive(const std::string& pathData,

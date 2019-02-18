@@ -15,11 +15,6 @@ SevenZipTool::SevenZipTool(const SevenZipTool& other)
 {
 }
 
-void SevenZipTool::Initialize(const string& _filename)
-{
-   filename = _filename;
-}
-
 ArchiveTool* SevenZipTool::Clone() const
 {
    return new SevenZipTool(*this);

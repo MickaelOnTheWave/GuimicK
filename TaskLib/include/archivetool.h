@@ -20,7 +20,10 @@ public:
 
    virtual ~ArchiveTool() {}
 
-   virtual void Initialize(const std::string& _filename) = 0;
+   virtual void Initialize(const std::string& _filename)
+   {
+      filename = _filename;
+   }
 
    virtual ArchiveTool* Clone() const = 0;
 

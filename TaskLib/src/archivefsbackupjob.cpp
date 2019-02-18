@@ -95,11 +95,10 @@ bool ArchiveFsBackupJob::UpdateBackupArchive(const string &folderToBackup,
                                                 const string &archiveName,
                                                 AbstractBackupJob::ResultCollection &results)
 {
-   ArchiveTool* archiveTool = CreateArchiveTool(archiveName);
+   archiveTool->Initialize(archiveName);
    ArchiveToolResult result;
    archiveTool->AddToArchive(folderToBackup, result);
    AddResultToCollection(result, results);
-   delete archiveTool;
    return result.isOk;
 }
 
@@ -154,12 +153,4 @@ void ArchiveFsBackupJob::AddStatusToResults(AbstractBackupJob::ResultCollection 
 {
     JobStatus* status = new JobStatus(code, message);
     results.push_back(pair<JobStatus*, FileBackupReport*>(status, NULL));
-}
-
-ArchiveTool* ArchiveFsBackupJob::CreateArchiveTool(const string& filename) const
-{
-   TarTool* tool = new TarTool();
-   tool->Initialize(filename);
-   tool->SetGzipCompression(false);
-   return tool;
 }

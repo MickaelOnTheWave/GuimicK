@@ -18,11 +18,6 @@ TarTool::TarTool(const TarTool& other)
 {
 }
 
-void TarTool::Initialize(const string& _filename)
-{
-   filename = _filename;
-}
-
 ArchiveTool* TarTool::Clone() const
 {
    return new TarTool(*this);
