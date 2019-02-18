@@ -1,4 +1,12 @@
-18/02/2018 (19.1)
+18/02/2018 (1.8h)
+    Checked 7zip tool on Windows : did not run, several things are missing.
+    Improved build scripts for Windows. Started implementation of 7zip
+    error detection and parsing.
+Next planned work:
+    - Finish & check archive tool error message support
+    - Implement 7zip output parser
+    - Update windows installer to include 7zip
+    - Finish & check 7zip backup
 
 17/02/2018 (3h)
     Chose to abandon solving unit tests issue - it is more important to
