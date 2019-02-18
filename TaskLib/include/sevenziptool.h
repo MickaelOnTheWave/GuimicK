@@ -23,6 +23,11 @@ public:
 private:
    void Run7zipCommand(const std::string& command, ArchiveToolResult& result);
 
+   void ParseOutput(const std::string& commandOutput,
+                    const int returnValue,
+                    ArchiveToolResult& result) const;
+
+
 };
 
 #endif // SEVENZIPTOOL_H

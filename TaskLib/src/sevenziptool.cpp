@@ -41,5 +41,16 @@ void SevenZipTool::Run7zipCommand(const string& command, ArchiveToolResult& resu
 {
    string output;
    int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
-   //ParseOutput(output, returnValue, result);
+   ParseOutput(output, returnValue, result);
+}
+
+void SevenZipTool::ParseOutput(const string& output,
+                               const int returnValue,
+                               ArchiveToolResult& result) const
+{
+   result.isOk = (returnValue == 0);
+
+/*   TarCommandParser parser("tar");
+   parser.ParseBuffer(output);
+   ConvertToArchiveResult(parser, result);*/
 }

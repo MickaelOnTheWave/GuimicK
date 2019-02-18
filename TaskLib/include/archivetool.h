@@ -10,6 +10,7 @@ public:
    std::vector<std::string> ErrorList;
    std::vector<std::string> FileList;
    bool isOk;
+   std::string errorMessage;
 };
 
 class ArchiveTool
