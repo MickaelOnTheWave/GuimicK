@@ -9,7 +9,10 @@ file(GLOB sources "${projectRoot}/src/*")
 file(GLOB includes "${includeDir}/*")
 
 add_library(TaskLib ${sources})
-add_custom_target(dummyTaskLibIncludes SOURCES ${includes})
+#add_custom_target(dummyTaskLibIncludes SOURCES ${includes})
 
 target_include_directories(TaskLib PUBLIC ${includeDir})
 target_link_libraries (TaskLib ParsersLib ToolsLib)
+
+source_group("sources" FILES ${sources})
+source_group("headers" FILES ${includes})
