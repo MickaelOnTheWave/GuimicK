@@ -1,10 +1,13 @@
 #include "sevenziptool.h"
 
+#include "sevenzipcommandparser.h"
 #include "tools.h"
 
 using namespace std;
 
 const string SevenZipCommand = "7z.exe";
+const string SevenZipNotFoundString = "not recognized as an internal or external command";
+const string error7zipNotFound = "7zip not found";
 
 SevenZipTool::SevenZipTool() : ArchiveTool()
 {
@@ -50,7 +53,12 @@ void SevenZipTool::ParseOutput(const string& output,
 {
    result.isOk = (returnValue == 0);
 
-/*   TarCommandParser parser("tar");
-   parser.ParseBuffer(output);
-   ConvertToArchiveResult(parser, result);*/
+   if (output.find(SevenZipNotFoundString) != string::npos)
+      result.errorMessage = error7zipNotFound;
+   else
+   {
+      SevenZipCommandParser parser;
+      parser.ParseBuffer(output);
+
+   }
 }
