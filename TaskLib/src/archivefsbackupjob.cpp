@@ -83,6 +83,8 @@ void AddResultToCollection(const ArchiveToolResult& result,
 {
    JobStatus* jobStatus = new JobStatus();
    jobStatus->SetCode(result.isOk ? JobStatus::Ok : JobStatus::Error);
+   if (result.errorMessage != "")
+      jobStatus->SetDescription(result.errorMessage);
 
    FileBackupReport* backupReport = new FileBackupReport();
    backupReport->AddAsAdded(result.FileList);

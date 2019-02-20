@@ -1,3 +1,7 @@
+19/02/2018 (18.6-20.5)
+    Finished checking archive tool error management. Added error for
+    gzip compression error (tar).
+
 18/02/2018 (1.8h)
     Checked 7zip tool on Windows : did not run, several things are missing.
     Improved build scripts for Windows. Started implementation of 7zip

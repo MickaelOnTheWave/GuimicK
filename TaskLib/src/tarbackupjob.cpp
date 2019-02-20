@@ -9,7 +9,7 @@ const string defaultName = "Tar Backup";
 TarTool* CreateConfiguredTool()
 {
    TarTool* tool = new TarTool();
-   tool->SetGzipCompression(true);
+   tool->SetGzipCompression(false);
    return tool;
 }
 

@@ -6,6 +6,7 @@
 using namespace std;
 
 const string tarCommand = "tar";
+const string errorNoGzipUpdate = "Error : can't use Gzip compression";
 
 TarTool::TarTool()
    : ArchiveTool(), useGzipCompression(true)
@@ -58,10 +59,15 @@ void TarTool::ParseOutput(const string& output,
                           ArchiveToolResult& result) const
 {
    result.isOk = (returnValue == 0);
+   if (returnValue == 512)
+      result.errorMessage = errorNoGzipUpdate;
 
-   TarCommandParser parser("tar");
-   parser.ParseBuffer(output);
-   ConvertToArchiveResult(parser, result);
+   if (result.isOk)
+   {
+      TarCommandParser parser("tar");
+      parser.ParseBuffer(output);
+      ConvertToArchiveResult(parser, result);
+   }
 }
 
 string TarTool::TarCreateFlags() const

@@ -104,16 +104,16 @@ v1.3 :
 	[052] Support other compilers
 
 v1.2 (Final Paid Version) :
-	[051] Implement a licensing system : either CD-Key or online activation. Use crypto.
-	[046] Include a Windows update job
+        [005] Include AntiVirus scan job
 	[050] Create a backup job for cloud service
 	[043] Create an archive differential File backup job
-	[006] Include Harddrive check job
-	[055] Create a download job
+        [051] Implement a licensing system : either CD-Key or online activation. Use crypto.
+        [046] Include a Windows update job
+        [055] Create a download job
 
 v1.1 (Final Free Version) :
 	[045] Make Windows client work with (nearly) all features
-	[005] Include AntiVirus scan job
+        [006] Include Harddrive check job
 	[057] Support translations and create default ones (EN/PT/FR)
 
 v1.0 : 20/08/2018
