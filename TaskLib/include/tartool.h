@@ -33,9 +33,6 @@ private:
    std::string TarCreateFlags() const;
    std::string TarUpdateFlags() const;
 
-   void ConvertToArchiveResult(TarCommandParser& parser,
-                               ArchiveToolResult& result) const;
-
    bool useGzipCompression;
 };
 

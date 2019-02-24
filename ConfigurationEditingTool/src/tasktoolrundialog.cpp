@@ -9,9 +9,9 @@
 
 #ifdef _MSC_VER
    #include <direct.h>
-   #define _chdir chdir
 #else
    #include <unistd.h>
+   #define _chdir chdir
 #endif
 
 TaskToolRunDialog::TaskToolRunDialog(QWidget *parent) :
@@ -70,7 +70,7 @@ void TaskToolRunDialog::on_runButton_clicked()
                       commandOutput, true
                       );
 
-      chdir(currentDirectory.c_str());
+      _chdir(currentDirectory.c_str());
 
       outputText = (result > -1) ? commandOutput.c_str() : CreateExecutionErrorMessage(result, commandOutput);
    }

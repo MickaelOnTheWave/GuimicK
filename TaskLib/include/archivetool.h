@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "abstractfilebackupparser.h"
+
 class ArchiveToolResult
 {
 public:
@@ -16,15 +18,11 @@ public:
 class ArchiveTool
 {
 public:
-   ArchiveTool() : filename("") {}
-   ArchiveTool(const ArchiveTool& other) : filename(other.filename) {}
+   ArchiveTool();
+   ArchiveTool(const ArchiveTool& other);
+   virtual ~ArchiveTool();
 
-   virtual ~ArchiveTool() {}
-
-   virtual void Initialize(const std::string& _filename)
-   {
-      filename = _filename;
-   }
+   virtual void Initialize(const std::string& _filename);
 
    virtual ArchiveTool* Clone() const = 0;
 
@@ -38,6 +36,9 @@ public:
                                ArchiveToolResult& result) = 0;
 
 protected:
+   void ConvertToArchiveResult(AbstractFileBackupParser& parser,
+                               ArchiveToolResult& result) const;
+
    std::string filename;
 };
 

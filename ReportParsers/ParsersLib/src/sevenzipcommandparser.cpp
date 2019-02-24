@@ -4,6 +4,25 @@
 
 using namespace std;
 
+const char addChar = '+';
+const char removeChar = '-';
+const char updateChar = 'U';
+
+bool IsFileLine(const string& lineData)
+{
+   const char firstChar = lineData.front();
+   const bool isFirstCharValid = (firstChar == addChar ||
+                                  firstChar == removeChar ||
+                                  firstChar == updateChar);
+   const bool isSecondCharEmpty = (lineData.at(1) == ' ');
+   return isFirstCharValid && isSecondCharEmpty;
+}
+
+string ExtractFilename(const string& lineData)
+{
+   return lineData.substr(2);
+}
+
 SevenZipCommandParser::SevenZipCommandParser()
     : AbstractFileBackupParser(new FileBackupReport())
 {
@@ -33,21 +52,18 @@ void SevenZipCommandParser::GetReport(FileBackupReport &_reportData)
 
 void SevenZipCommandParser::FillReportData(const std::vector<string> &lines)
 {
-    int filesStartPosition = 1;
-    string sourceFolder = lines.front();
-/*    if (tarCommand != "" && sourceFolder.find(tarCommand) == 0)
-    {
-        sourceFolder = *(lines.begin()+1);
-        ++filesStartPosition;
-    }
-
-    vector<string>::const_iterator it=lines.begin()+filesStartPosition;
-    for (; it!=lines.end(); ++it)
-    {
-        if (it->size() > sourceFolder.size())
-        {
-            const string currentFile = it->substr(sourceFolder.size());
-            reportData->AddAsAdded(currentFile);
-        }
-    }*/
+   vector<string>::const_iterator it = lines.begin();
+   for (; it != lines.end(); ++it)
+   {
+      if (!it->empty() && IsFileLine(*it))
+      {
+         const char firstChar = it->front();
+         if (firstChar == updateChar)
+            reportData->AddAsModified(ExtractFilename(*it));
+         else if (firstChar == addChar)
+            reportData->AddAsAdded(ExtractFilename(*it));
+         else if (firstChar == removeChar)
+            reportData->AddAsRemoved(ExtractFilename(*it));
+      }
+   }
 }

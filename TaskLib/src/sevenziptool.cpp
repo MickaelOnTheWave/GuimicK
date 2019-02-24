@@ -30,7 +30,7 @@ void SevenZipTool::CreateArchive(const string& pathData, ArchiveToolResult& resu
 
 void SevenZipTool::AddToArchive(const string& pathToAdd, ArchiveToolResult& result)
 {
-   const string command = SevenZipCommand + " a " + filename + " " + pathToAdd;
+   const string command = SevenZipCommand + " a -bb1 " + filename + " " + pathToAdd;
    Run7zipCommand(command, result);
 }
 
@@ -43,7 +43,7 @@ void SevenZipTool::ExtractArchive(const string& destinationPath, ArchiveToolResu
 void SevenZipTool::Run7zipCommand(const string& command, ArchiveToolResult& result)
 {
    string output;
-   int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
+   const int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
    ParseOutput(output, returnValue, result);
 }
 
@@ -59,6 +59,6 @@ void SevenZipTool::ParseOutput(const string& output,
    {
       SevenZipCommandParser parser;
       parser.ParseBuffer(output);
-
+      ConvertToArchiveResult(parser, result);
    }
 }

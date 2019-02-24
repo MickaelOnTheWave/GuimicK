@@ -14,7 +14,6 @@ public:
 
 private:
     void FillReportData(const std::vector<std::string>& lines);
-
 };
 
 #endif // SEVENZIPCOMMANDPARSER_H

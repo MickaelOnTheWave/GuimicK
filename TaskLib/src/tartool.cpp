@@ -79,14 +79,3 @@ string TarTool::TarUpdateFlags() const
 {
    return (useGzipCompression) ? "-uzvf" : "-uvf";
 }
-
-void TarTool::ConvertToArchiveResult(TarCommandParser& parser,
-                                     ArchiveToolResult& result) const
-{
-   FileBackupReport report;
-   parser.GetReport(report);
-
-   vector<string> addedFiles;
-   report.GetAddedFiles(addedFiles);
-   result.FileList = addedFiles;
-}
