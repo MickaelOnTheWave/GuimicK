@@ -1,4 +1,9 @@
-19/02/2018 (2.5h)
+24/02/2019 (16.3-19)
+    Added 7zip do Git. Finished 7zip implementation with its parser.
+    Now checking how it works from ConfigurationEditor... Not working yet,
+    many errors to fix.
+
+19/02/2019 (2.5h)
     Finished checking archive tool error management. Added error for
     gzip compression error (tar). Now creating parser for 7zip...
     Created parser but it is not used for now. Added detection of
@@ -8,7 +13,7 @@ Next planned work:
     - Finish & check 7zip backup
     - Implement 7zip output parser
 
-18/02/2018 (1.8h)
+18/02/2019 (1.8h)
     Checked 7zip tool on Windows : did not run, several things are missing.
     Improved build scripts for Windows. Started implementation of 7zip
     error detection and parsing.
@@ -18,7 +23,7 @@ Next planned work:
     - Update windows installer to include 7zip
     - Finish & check 7zip backup
 
-17/02/2018 (3h)
+17/02/2019 (3h)
     Chose to abandon solving unit tests issue - it is more important to
     have an implementation working at the moment.
     Updated copyright notice.
@@ -32,7 +37,7 @@ Next planned work:
     - Test 7zip tool on Windows & make it work
     - See Release map
 
-13/02/2018 (2.1h)
+13/02/2019 (2.1h)
     Trying to figure out this linking issue. It is not about
     ZipAndCopy test suite, it is about QtTestSuite. However it is
     still not understood : there are no undefined virtual methods.
@@ -44,7 +49,7 @@ Next planned work:
     - Abandon solving linking issues and focus on having 7zip job running
     - Update ConfigurationEditor to have 7zip job available
 
-11/02/2018 (2.6h)
+11/02/2019 (2.6h)
     Removed ALL warnings from ToolsLib. Also removed nearly all
     warnings from TaskTool and dependencies. Only ones remaining are
     from 7zip, and implementation will be done next!
@@ -61,7 +66,7 @@ Next planned work:
     - Create ZipCopy job with 7zip, run it and check
     - Configure Windows SSH to stop pushing and only pull
 
-10/02/2018 (1.3h)
+10/02/2019 (1.3h)
     No practical way found to use a batch library, current dir
     is evaluated at call-time and this breaks function for changing dir.
     Creating a function and leaving it duplicated across batch files.
