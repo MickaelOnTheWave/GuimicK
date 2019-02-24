@@ -3,7 +3,7 @@
 #include <QTest>
 #include "filetestutils.h"
 #include "filetools.h"
-#include "zipandcopyfsbackupjob.h"
+#include "tarbackupjob.h"
 
 using namespace std;
 
@@ -28,7 +28,7 @@ void ZipAndCopyFsBackupJobTest::testRunBackup_data()
 
 void ZipAndCopyFsBackupJobTest::CheckBackedUpDataIsOk()
 {
-    bool ok = ZipAndCopyFsBackupJob::Restore(archiveName, restoredFolder);
+    bool ok = TarBackupJob::Restore(archiveName, restoredFolder);
     QCOMPARE(ok, true);
 
     FileTestUtils::CheckFoldersHaveSameContent(currentSourceFolder, restoredFolder);
@@ -39,7 +39,7 @@ JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob(const bool isRemote,
 {
     // TODO : improve this. There are only two lines that are specific to this test suite,
     // the rest of the code should be used from parent class.
-    ZipAndCopyFsBackupJob* job = new ZipAndCopyFsBackupJob();
+    TarBackupJob* job = new TarBackupJob();
     job->InitializeFromClient(nullptr);
     job->AddFolder(FileTools::BuildFullPathIfRelative(currentSourceFolder), archiveName);
 
@@ -65,5 +65,5 @@ string ZipAndCopyFsBackupJobTest::GetBackupDestination() const
 
 AbstractBackupJob *ZipAndCopyFsBackupJobTest::CreateNewJob()
 {
-    return new ZipAndCopyFsBackupJob();
+    return new TarBackupJob();
 }
