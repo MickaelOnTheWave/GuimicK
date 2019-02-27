@@ -1,7 +1,28 @@
-24/02/2019 (16.3-19)
+27/02/2019 (1.3h)
+    Included 7zip in Windows installer bundle. Now trying to fix SSH
+    server on Windows...
+    OpenSSH for Windows : abandoned, complex and not working
+    FreeSSHd : abandoned, works but too much bugs (can't add user)
+    KpyM : abandoning, configuration too exotic and not readily compatible
+    with linux ciphers.
+    Next bets : Vshell Secure Server for Windows and Fortress SSH server
+Next planned work:
+    - Find a suitable Ssh server for Windows
+    - Setup Git to use it and stop pushing
+    - Setup git to avoid password when pushing
+
+26/02/2019 (0.4h)
+    source_group only work for cpps, so dumping it.
+
+24/02/2019 (3h)
     Added 7zip do Git. Finished 7zip implementation with its parser.
     Now checking how it works from ConfigurationEditor... Not working yet,
     many errors to fix.
+Next planned work:
+    - Finish source_group testing (Cmake)
+    - Setup cmake install targets to avoid messing with paths
+    - Install/configure ssh on VM to avoid git pushes
+    - Setup git to avoid password
 
 19/02/2019 (2.5h)
     Finished checking archive tool error management. Added error for
