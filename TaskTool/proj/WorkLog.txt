@@ -1,3 +1,9 @@
+27/02/2019 (21.8)
+    Abandoning too next SSH servers : both are paid and heavy.
+    Testing Bitvise SSH Server : only free for personal use.
+    Finally got a working SSH server! Bitvise did the job.
+    Now going for configuring Git on Linux..
+
 27/02/2019 (1.3h)
     Included 7zip in Windows installer bundle. Now trying to fix SSH
     server on Windows...
