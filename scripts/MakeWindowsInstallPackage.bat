@@ -13,6 +13,7 @@ cd %ROOT%\bin\WindowsInstallPackage
 copy %ROOT%\scripts\WindowsInstallerScript.nsi WindowsInstallerScript.nsi
 copy %ROOT%\TaskTool\bin\Win64Vs\Release\TaskTool.exe TaskTool.exe
 copy %ROOT%\ConfigurationEditingTool\bin\Win64Vs\Release\ConfigurationEditingTool.exe ConfigurationEditingTool.exe
+copy %ROOT%\data\7z.exe 7z.exe
 copy %ROOT%\data\license.txt license.txt
 xcopy %ROOT%\lib /Y
 "c:\Program Files (x86)\NSIS\Bin\makensis.exe" %ROOT%\bin\WindowsInstallPackage\WindowsInstallerScript.nsi

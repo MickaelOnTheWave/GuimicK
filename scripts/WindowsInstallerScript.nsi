@@ -1,6 +1,6 @@
 ;--------------------------------
 
-!define VERSION "0.9.3"
+!define VERSION "0.9.4"
 ; The name of the installer
 Name "Task Manager ${VERSION}"
 
@@ -39,6 +39,7 @@ Section "" ;No components page, name is not important
   
   ; Put file there
   File TaskTool.exe
+  File 7z.exe
   File ConfigurationEditingTool.exe
   File Qt5Core.dll
   File Qt5Gui.dll
