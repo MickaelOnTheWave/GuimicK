@@ -1,8 +1,27 @@
-27/02/2019 (21.8)
+03/03/2019 (18.5-18.9)
+    It seems that for git to work, all git commands need to be
+    available on Windows. There is some material covering that case,
+    this involves installing OpenSSH-Win32 (discarded earlier because
+    of not being able to make it work) and messing with env scripts,
+    powershell... to have it all work. As the goal is not for admin,
+    leaving it as it is. Seen some materials on pushing to "sandbox"
+    branch instead of master, and do the merge locally. This seems
+    more interesting...
+    Worked, but merge needs to be done from command line. Back to
+    programming... 7zip does not work, probably exe not found.
+    Creating option for 7zip executable path in job. But leaving it
+    to do the first step first : creating the option in Editor.
+
+27/02/2019 (1h)
     Abandoning too next SSH servers : both are paid and heavy.
     Testing Bitvise SSH Server : only free for personal use.
     Finally got a working SSH server! Bitvise did the job.
-    Now going for configuring Git on Linux..
+    Now going for configuring Git on Linux.. Didn't got it to work,
+    but remote path seems OK. Maybe the issue is on the Windows SSH server..
+Next planned work:
+    - Try to switch using a virtual user to a real on
+    - Find a way to make git remote on Linux work
+    - Setup ssh key login
 
 27/02/2019 (1.3h)
     Included 7zip in Windows installer bundle. Now trying to fix SSH

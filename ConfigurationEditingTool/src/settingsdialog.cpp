@@ -2,16 +2,22 @@
 #include "ui_settingsdialog.h"
 
 #include <QFileDialog>
+#include "serverconfiguration.h"
 #include "settingsconfigurationupdater.h"
 #include "settingsuiupdater.h"
 
 using namespace std;
 
+bool IsConfigurationServer(StandaloneConfiguration* configuration)
+{
+   return (dynamic_cast<ServerConfiguration*>(configuration) != nullptr);
+}
+
 SettingsDialog::SettingsDialog(StandaloneConfiguration* _configuration,
                                QWidget *parent) :
    QDialog(parent),
-   configuration(_configuration),
-   ui(new Ui::SettingsDialog)
+   ui(new Ui::SettingsDialog),
+   configuration(_configuration)
 {
    ui->setupUi(this);
    SetDefaultValues();
@@ -21,6 +27,9 @@ SettingsDialog::SettingsDialog(StandaloneConfiguration* _configuration,
    SettingsUiUpdater::Update(ui, configuration);
 
    ui->cssWidget->setVisible(true);
+
+   if (IsConfigurationServer(configuration) == false)
+      HideClientTab();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -67,6 +76,11 @@ void SettingsDialog::InitializeReportFolderSelectionWidget()
             "Choose a folder where the report will be created",
             defaultFolder
             );
+}
+
+void SettingsDialog::HideClientTab()
+{
+   ui->settingsWidget->removeTab(1);
 }
 
 void SettingsDialog::on_reportFormatBox_currentIndexChanged(const QString &arg1)

@@ -32,9 +32,10 @@ private:
    void SetDefaultValues();
    void InitializeCssSelectionWidget();
    void InitializeReportFolderSelectionWidget();
+   void HideClientTab();
 
    Ui::SettingsDialog *ui;
-   StandaloneConfiguration* configuration = nullptr;
+   StandaloneConfiguration* configuration;
 };
 
 
