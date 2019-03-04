@@ -23,6 +23,7 @@
 #include "settingsdialog.h"
 #include "tasktoolrundialog.h"
 #include "tasktoolsettingsdialog.h"
+#include "tools.h"
 
 #include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
@@ -46,13 +47,25 @@ using namespace std;
 
 namespace
 {
-   const string version = "0.9";
+   const string version = "0.94";
+
+   QString GetDefaultTaskToolExecutable()
+   {
+#ifdef _MSC_VER
+      const std::string path = Tools::GetCurrentExecutablePath();
+      const std::string taskToolExe = Tools::GetPathOnly(path) + "\\TaskTool.exe";
+      return QString(path.c_str());
+#else
+      return QString("/usr/local/bin/taskmanagerTool");
+#endif
+
+   }
 
    QString GetTaskToolExecutable()
    {
       QSettings settings;
-      const QString defaultTaskTool = "/usr/local/bin/taskmanagerTool";
-      QVariant keyValue = settings.value("taskTool", defaultTaskTool);
+      
+      QVariant keyValue = settings.value("taskTool", GetDefaultTaskToolExecutable());
       if (keyValue.isValid())
          return keyValue.toString();
       else

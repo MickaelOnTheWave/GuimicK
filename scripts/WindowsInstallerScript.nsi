@@ -1,6 +1,6 @@
 ;--------------------------------
 
-!define VERSION "0.9.4"
+!define VERSION "0.9.6"
 ; The name of the installer
 Name "Task Manager ${VERSION}"
 
@@ -87,5 +87,6 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\App Paths\TaskTool.exe"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager"
   DeleteRegKey HKLM "Software\TaskManager"
+  DeleteRegKey HKCU "Software\TaskManager"
   
 SectionEnd
