@@ -70,6 +70,7 @@ SectionEnd ; end the section
 Section "Uninstall"
   
   Delete $INSTDIR\TaskTool.exe
+  Delete $INSTDIR\7z.exe
   Delete $INSTDIR\ConfigurationEditingTool.exe
   Delete $INSTDIR\Qt5Core.dll
   Delete $INSTDIR\Qt5Gui.dll
