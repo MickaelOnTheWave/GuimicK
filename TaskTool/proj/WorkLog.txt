@@ -1,3 +1,14 @@
+04/03/2019 (2.2h)
+    Checking Windows installer, it has several issues, the first one
+    being that default temp dir isn't accessible. Fixed this issue :
+    it was an encoding issue. Now moving to next ones..
+    Next issue is default tasktool path that is linux-only. Switching
+    to a "smart" solution : get editor's path to have tasktool.
+    Testing it on installed version : it kind of worked. It seems
+    that " are missing to avoid white spaces cutting path.
+Next planned work:
+    - Finish resolving issues until out-of-the-box version does the job
+
 03/03/2019 (3.4h)
     It seems that for git to work, all git commands need to be
     available on Windows. There is some material covering that case,
