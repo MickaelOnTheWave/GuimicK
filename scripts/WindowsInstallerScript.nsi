@@ -1,6 +1,6 @@
 ;--------------------------------
 
-!define VERSION "0.9.4"
+!define VERSION "0.9.6"
 ; The name of the installer
 Name "Task Manager ${VERSION}"
 
@@ -70,6 +70,7 @@ SectionEnd ; end the section
 Section "Uninstall"
   
   Delete $INSTDIR\TaskTool.exe
+  Delete $INSTDIR\7z.exe
   Delete $INSTDIR\ConfigurationEditingTool.exe
   Delete $INSTDIR\Qt5Core.dll
   Delete $INSTDIR\Qt5Gui.dll
@@ -86,5 +87,6 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\App Paths\TaskTool.exe"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager"
   DeleteRegKey HKLM "Software\TaskManager"
+  DeleteRegKey HKCU "Software\TaskManager"
   
 SectionEnd

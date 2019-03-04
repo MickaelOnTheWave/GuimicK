@@ -14,6 +14,30 @@
    #define _chdir chdir
 #endif
 
+namespace
+{
+   QString GetErrnoMessage()
+   {
+      const int bufferSize = 256;
+      char buffer[bufferSize];
+      strerror_s(buffer, bufferSize, errno);
+      return QString(buffer);
+   }
+
+   QString GetDetailedError()
+   {
+      switch (errno)
+      {
+         case ENOENT:
+            return QString("Unable to locate the directory");
+         case EINVAL:
+            return QString("Invalid buffer");
+         default:
+            return GetErrnoMessage();
+      }
+   }
+}
+
 TaskToolRunDialog::TaskToolRunDialog(QWidget *parent) :
    QDialog(parent),
    ui(new Ui::TaskToolRunDialog)
@@ -61,7 +85,7 @@ void TaskToolRunDialog::on_runButton_clicked()
    ui->outputTextEdit->setPlainText("");
    QString outputText;
    const std::string currentDirectory = FileTools::GetCurrentFullPath();
-   int result = chdir(runPath.toStdString().c_str());
+   int result = _chdir(runPath.toLocal8Bit());
    if (result == 0)
    {
       std::string commandOutput;
@@ -93,9 +117,9 @@ std::string TaskToolRunDialog::CreateTaskToolCommand() const
 
 QString TaskToolRunDialog::CreateChdirErrorMessage() const
 {
-   QString errorMessage = "Error : failed to change directory.\n";
-   errorMessage += "\tTarget directory : " + runPath + "\n";
-   errorMessage += "\tCurrent directory : " + QString(FileTools::GetCurrentFullPath().c_str()) + "\n";
+   QString errorMessage = "Failed to change directory : " + GetDetailedError() + "\n";
+   errorMessage += "  Target directory : " + runPath + "\n";
+   errorMessage += "  Current directory : " + QString(FileTools::GetCurrentFullPath().c_str()) + "\n";
    return errorMessage;
 }
 
