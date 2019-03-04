@@ -14,6 +14,17 @@
     Created the option, implemented its persistence and implemented
     client properties persistence. Also did a TODO and minor improvements.
     Tested on Linux : it works. Now missing test in Windows...
+    Still same path issue. Debugging TaskTool to check it.
+    Fixed issues, there were two ones :
+        - Default temp path was not accessible/did not exist. Just setting
+        a new one resolved the path error.
+        - There was a bug in a Write tool where an empty output was incorrectly
+        parsed for newline removal
+    Now 7zip tool is working as expected :-)) With that, making Windows compatibiliby
+    can now be considered done!!
+ Next planned work:
+    - Check Windows installer version, 7zip must work flawlessly
+    - Move on next roadmap goal
 
 27/02/2019 (1h)
     Abandoning too next SSH servers : both are paid and heavy.

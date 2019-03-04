@@ -58,6 +58,7 @@ Features to implement:
 	[055] Create a download job
 	[056] Create VMs for testing remote jobs and wake
 	[057] Support translations and create default ones (EN/PT/FR)
+        [057] Add support for Windows "cron" entries from editor
 
 Abandoned features :
 	[020] Check/repair Screensaver modification from script
@@ -113,6 +114,7 @@ v1.2 (Final Paid Version) :
 
 v1.1 (Final Free Version) :
 	[045] Make Windows client work with (nearly) all features
+        [057] Add support for Windows "cron" entries from editor
         [006] Include Harddrive check job
 	[057] Support translations and create default ones (EN/PT/FR)
 
