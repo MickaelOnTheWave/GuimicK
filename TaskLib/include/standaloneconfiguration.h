@@ -80,6 +80,8 @@ private:
    void SaveReportOptionsToOpenedFile(std::ofstream& file);
    void SaveGlobalPropertiesToOpenedFile(std::ofstream& file);
 
+   void SaveClientPropertiesToOpenedFile(std::ofstream& file);
+
    void CreateReport(ConfigurationObject* confObject,
                      std::vector<std::string>& errorMessages);
 

@@ -13,6 +13,8 @@ public:
    virtual AbstractJob* Clone();
 
    virtual std::string GetTypeName() const;
+
+   virtual bool InitializeFromClient(Client* client);
 };
 
 #endif // SEVENZIPBACKUPJOB_H

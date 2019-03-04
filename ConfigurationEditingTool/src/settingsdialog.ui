@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>469</width>
-    <height>413</height>
+    <height>488</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,21 +24,81 @@
        <string>Agent</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="0" colspan="2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLineEdit" name="agentNameEdit">
+         <property name="text">
+          <string>Task Manager Agent</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
         <widget class="QLabel" name="label_8">
          <property name="text">
           <string>Report format</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item row="1" column="3">
+        <widget class="QComboBox" name="reportFormatBox">
+         <item>
+          <property name="text">
+           <string>Plain Text</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>HTML</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
         <widget class="QLabel" name="label_9">
          <property name="text">
           <string>Send report to</string>
          </property>
         </widget>
        </item>
-       <item row="7" column="0" colspan="3">
+       <item row="2" column="3">
+        <widget class="QComboBox" name="reportDispatchBox">
+         <item>
+          <property name="text">
+           <string>Console</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Email</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Local files</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QCheckBox" name="shutdownCheckBox">
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>Shutdown on Finish</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="PathSelectionControl" name="cssWidget" native="true"/>
+       </item>
+       <item row="5" column="0" colspan="4">
         <widget class="QStackedWidget" name="dispatcherWidget">
          <property name="currentIndex">
           <number>0</number>
@@ -153,65 +213,8 @@
          </widget>
         </widget>
        </item>
-       <item row="0" column="1" colspan="2">
-        <widget class="QLineEdit" name="agentNameEdit">
-         <property name="text">
-          <string>Task Manager Agent</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QComboBox" name="reportFormatBox">
-         <item>
-          <property name="text">
-           <string>Plain Text</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>HTML</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QComboBox" name="reportDispatchBox">
-         <item>
-          <property name="text">
-           <string>Console</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Email</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Local files</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="3">
-        <widget class="QCheckBox" name="shutdownCheckBox">
-         <property name="layoutDirection">
-          <enum>Qt::RightToLeft</enum>
-         </property>
-         <property name="text">
-          <string>Shutdown on Finish</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Name</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="PathSelectionControl" name="cssWidget" native="true"/>
+       <item row="6" column="1" colspan="2">
+        <widget class="PathSelectionControl" name="sevenZipWidget" native="true"/>
        </item>
       </layout>
      </widget>

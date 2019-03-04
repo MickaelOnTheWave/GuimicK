@@ -298,9 +298,10 @@ void StandaloneConfiguration::SaveClientToOpenedFile(ofstream& file)
 {
    file << "Client" << endl;
    file << "{" << endl;
-   ConfigurationTools::SaveValueToFile(file, "Name", "Client"); //TODO : put real name
+   ConfigurationTools::SaveValueToFile(file, "Name", client->GetName());
    ConfigurationTools::SaveValueToFile(file, "showDebugInformation", "never");
 
+   SaveClientPropertiesToOpenedFile(file);
 
    list<AbstractJob*> clientJobList;
    client->GetJobList(clientJobList);
@@ -323,6 +324,14 @@ void StandaloneConfiguration::SaveGlobalPropertiesToOpenedFile(ofstream& file)
    file << "MasterEmail = \"" << masterEmail << "\";" << endl;
    file << "ReportDispatching = \"" << reportDispatching << "\";" << endl;
    file << "ShutdownOnFinish = " << (shutdown ? "true" : "false") << ";" << endl;
+}
+
+void StandaloneConfiguration::SaveClientPropertiesToOpenedFile(std::ofstream& file)
+{
+   Client::PropertyMap::const_iterator it = client->PropertyBegin();
+   Client::PropertyMap::const_iterator end = client->PropertyEnd();
+   for(; it != end; ++it)
+      ConfigurationTools::SaveValueToFile(file, it->first, it->second);
 }
 
 bool StandaloneConfiguration::CreateClient(ConfigurationObject *confObject,

@@ -29,6 +29,8 @@ protected:
                                      const std::string& destination,
                                      ResultCollection& results);
 
+    ArchiveTool* archiveTool;
+
 private:
     virtual JobStatus* RestoreBackupFromServer(const std::string &source,
                                      const std::string &destination);
@@ -48,7 +50,6 @@ private:
                             const int code, const std::string& message);
 
     std::string localDestination;
-    ArchiveTool* archiveTool;
 };
 
 #endif // ARCHIVEFSBACKUPJOB_H

@@ -35,6 +35,10 @@ void SettingsUiUpdater::UpdateAgentData()
 void SettingsUiUpdater::UpdateClientData()
 {
    SetValue(ui->clientNameEdit, configuration->GetClient()->GetName());
+
+   const std::string sevenZipPath =
+         configuration->GetClient()->GetProperty("7zipExecutable");
+   ui->sevenZipWidget->SetPath(sevenZipPath.c_str());
 }
 
 void SettingsUiUpdater::UpdateEmailData(const EmailData& emailData)

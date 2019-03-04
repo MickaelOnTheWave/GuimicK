@@ -20,6 +20,8 @@ public:
    virtual void ExtractArchive(const std::string& destinationPath,
                                ArchiveToolResult& result);
 
+   void SetExecutablePath(const std::string& value);
+
 private:
    void Run7zipCommand(const std::string& command, ArchiveToolResult& result);
 
@@ -27,7 +29,7 @@ private:
                     const int returnValue,
                     ArchiveToolResult& result) const;
 
-
+   std::string sevenZipExecutable;
 };
 
 #endif // SEVENZIPTOOL_H

@@ -17,6 +17,8 @@ private:
    void UpdateReportDispatching() override;
    void UpdateOtherData() override;
 
+   void Update7zipPathProperty(const QString& value);
+
    EmailData CreateEmailData();
 };
 

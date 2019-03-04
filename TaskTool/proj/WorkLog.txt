@@ -1,4 +1,4 @@
-03/03/2019 (18.5-18.9)
+03/03/2019 (18.5-21.2)
     It seems that for git to work, all git commands need to be
     available on Windows. There is some material covering that case,
     this involves installing OpenSSH-Win32 (discarded earlier because
@@ -11,6 +11,9 @@
     programming... 7zip does not work, probably exe not found.
     Creating option for 7zip executable path in job. But leaving it
     to do the first step first : creating the option in Editor.
+    Created the option, implemented its persistence and implemented
+    client properties persistence. Also did a TODO and minor improvements.
+    Tested on Linux : it works. Now missing test in Windows...
 
 27/02/2019 (1h)
     Abandoning too next SSH servers : both are paid and heavy.

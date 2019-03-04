@@ -5,16 +5,18 @@
 
 using namespace std;
 
-const string SevenZipCommand = "7z.exe";
+const string DefaultSevenZipCommand = "7z.exe";
 const string SevenZipNotFoundString = "not recognized as an internal or external command";
 const string error7zipNotFound = "7zip not found";
 
-SevenZipTool::SevenZipTool() : ArchiveTool()
+SevenZipTool::SevenZipTool()
+   : ArchiveTool(), sevenZipExecutable(DefaultSevenZipCommand)
 {
 }
 
 SevenZipTool::SevenZipTool(const SevenZipTool& other)
-   : ArchiveTool(other)
+   : ArchiveTool(other),
+     sevenZipExecutable(other.sevenZipExecutable)
 {
 }
 
@@ -30,14 +32,19 @@ void SevenZipTool::CreateArchive(const string& pathData, ArchiveToolResult& resu
 
 void SevenZipTool::AddToArchive(const string& pathToAdd, ArchiveToolResult& result)
 {
-   const string command = SevenZipCommand + " a -bb1 " + filename + " " + pathToAdd;
+   const string command = sevenZipExecutable + " a -bb1 " + filename + " " + pathToAdd;
    Run7zipCommand(command, result);
 }
 
 void SevenZipTool::ExtractArchive(const string& destinationPath, ArchiveToolResult& result)
 {
-   const string command = SevenZipCommand + " x " + filename + " -o" + destinationPath;
+   const string command = sevenZipExecutable + " x " + filename + " -o" + destinationPath;
    Run7zipCommand(command, result);
+}
+
+void SevenZipTool::SetExecutablePath(const string& value)
+{
+   sevenZipExecutable = value;
 }
 
 void SevenZipTool::Run7zipCommand(const string& command, ArchiveToolResult& result)

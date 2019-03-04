@@ -29,3 +29,18 @@ std::string SevenZipBackupJob::GetTypeName() const
 {
    return defaultName;
 }
+
+bool SevenZipBackupJob::InitializeFromClient(Client* client)
+{
+   bool ok = ArchiveFsBackupJob::InitializeFromClient(client);
+   if (ok)
+   {
+      const string manualSevenZip = client->GetProperty("7zipExecutable");
+      if (manualSevenZip != "")
+      {
+         SevenZipTool* tool = static_cast<SevenZipTool*>(archiveTool);
+         tool->SetExecutablePath(manualSevenZip);
+      }
+   }
+   return ok;
+}

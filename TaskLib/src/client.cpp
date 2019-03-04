@@ -50,6 +50,16 @@ std::string Client::GetProperty(const std::string &propertyName)
    return propertyMap[propertyName];
 }
 
+Client::PropertyMap::const_iterator Client::PropertyBegin() const
+{
+   return propertyMap.begin();
+}
+
+Client::PropertyMap::const_iterator Client::PropertyEnd() const
+{
+   return propertyMap.end();
+}
+
 void Client::GetJobList(std::list<AbstractJob*>& _jobList) const
 {
    list<AbstractJob*>::const_iterator it = jobList.begin();

@@ -2,6 +2,8 @@
 #include "ui_settingsdialog.h"
 
 #include <QFileDialog>
+
+#include "ostools.h"
 #include "serverconfiguration.h"
 #include "settingsconfigurationupdater.h"
 #include "settingsuiupdater.h"
@@ -23,6 +25,7 @@ SettingsDialog::SettingsDialog(StandaloneConfiguration* _configuration,
    SetDefaultValues();
    InitializeCssSelectionWidget();
    InitializeReportFolderSelectionWidget();
+   Initialize7zipWidget();
 
    SettingsUiUpdater::Update(ui, configuration);
 
@@ -76,6 +79,19 @@ void SettingsDialog::InitializeReportFolderSelectionWidget()
             "Choose a folder where the report will be created",
             defaultFolder
             );
+}
+
+void SettingsDialog::Initialize7zipWidget()
+{
+   const QString fileFilter = "Executable file (*.exe)";
+   const QString defaultFile = "";
+   ui->sevenZipWidget->InitializeAsExistingFile(
+        "7zip Executable",
+        "Select 7zip Executable",
+        defaultFile,
+        fileFilter
+   );
+   ui->sevenZipWidget->setVisible(OsTools::IsOnWindows());
 }
 
 void SettingsDialog::HideClientTab()

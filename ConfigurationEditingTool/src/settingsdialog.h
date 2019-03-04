@@ -32,6 +32,7 @@ private:
    void SetDefaultValues();
    void InitializeCssSelectionWidget();
    void InitializeReportFolderSelectionWidget();
+   void Initialize7zipWidget();
    void HideClientTab();
 
    Ui::SettingsDialog *ui;

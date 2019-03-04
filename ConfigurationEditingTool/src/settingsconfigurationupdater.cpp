@@ -35,6 +35,7 @@ void SettingsConfigurationUpdater::UpdateAgentData()
 void SettingsConfigurationUpdater::UpdateClientData()
 {
    configuration->GetClient()->SetName(GetValue(ui->clientNameEdit));
+   Update7zipPathProperty(ui->sevenZipWidget->GetPath());
 }
 
 void SettingsConfigurationUpdater::UpdateReportType()
@@ -68,6 +69,12 @@ void SettingsConfigurationUpdater::UpdateOtherData()
 {
    configuration->SetLocalShutdown(ui->shutdownCheckBox->isChecked());
    configuration->SetMasterEmail(GetValue(ui->masterEmailEdit));
+}
+
+void SettingsConfigurationUpdater::Update7zipPathProperty(const QString& value)
+{
+   if (value != "")
+      configuration->GetClient()->AddProperty("7zipExecutable", value.toStdString());
 }
 
 EmailData SettingsConfigurationUpdater::CreateEmailData()
