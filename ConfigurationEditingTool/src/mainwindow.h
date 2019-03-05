@@ -117,6 +117,8 @@ private:
 
    void UpdateAddJobMenuEntries();
 
+   void OpenRunDialog(const std::string& reportFile);
+
    QString GetTempFolder() const;
    QString GetTempConfigFilename() const;
    QString GetTempReportFolder() const;

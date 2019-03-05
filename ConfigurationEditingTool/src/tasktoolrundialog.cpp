@@ -111,7 +111,7 @@ void TaskToolRunDialog::on_runButton_clicked()
 
 std::string TaskToolRunDialog::CreateTaskToolCommand() const
 {
-   return taskToolExecutable.toStdString() + " --conffile " +
+   return std::string("\"") + taskToolExecutable.toStdString() + "\" --conffile " +
          configurationFile.toStdString();
 }
 
