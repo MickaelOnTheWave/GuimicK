@@ -1,3 +1,14 @@
+05/03/2019 (15.7)
+    Resolved path issues with default TaskTool. Now resolving
+    temp file not being written... Temp file issue could not be solved
+    directly, it seems that Windows has a weird behaviour of read-only
+    folders for Editor app. Improved error management to detect this
+    issue and correctly report it to user with the workaround.
+    Now testing that the improved behaviour does not break in Linux..
+    Working in Linux with minor adjustments.
+    Created default client name to avoid error. Now it seems that
+    final version is near-ready :-)
+
 04/03/2019 (2.2h)
     Checking Windows installer, it has several issues, the first one
     being that default temp dir isn't accessible. Fixed this issue :

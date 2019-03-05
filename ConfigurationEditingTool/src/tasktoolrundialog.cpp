@@ -20,7 +20,11 @@ namespace
    {
       const int bufferSize = 256;
       char buffer[bufferSize];
+#ifdef _MSC_VER
       strerror_s(buffer, bufferSize, errno);
+#else
+      strerror_r(errno, buffer, bufferSize);
+#endif
       return QString(buffer);
    }
 

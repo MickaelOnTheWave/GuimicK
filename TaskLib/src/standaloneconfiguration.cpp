@@ -12,6 +12,7 @@
 
 using namespace std;
 
+const string defaultClientName = "Local Machine";
 string StandaloneConfiguration::MsgMissingClient = "missing Client";
 string StandaloneConfiguration::MsgMissingAgent = "missing Agent configuration";
 string StandaloneConfiguration::MsgOneClientSupported = "only one client is supported for now. "
@@ -20,7 +21,7 @@ string StandaloneConfiguration::MsgOneClientSupported = "only one client is supp
 
 StandaloneConfiguration::StandaloneConfiguration()
    : AbstractTypeConfiguration(),
-     client(new Client()), reportCreator(NULL), agent(new Agent()),
+     client(new Client(defaultClientName)), reportCreator(NULL), agent(new Agent()),
      reportType("html"), cssFile(""),
      masterEmail(""), reportDispatching("console"), shutdown(true)
 {
