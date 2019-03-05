@@ -16,6 +16,7 @@
 #include "configurationcheckdialog.h"
 #include "configurationtype.h"
 #include "configurationtypedialog.h"
+#include "filetools.h"
 #include "jobdelegate.h"
 #include "jobeditdialogfactory.h"
 #include "selectbackupfolderdialog.h"
@@ -54,7 +55,7 @@ namespace
 #ifdef _MSC_VER
       const std::string path = Tools::GetCurrentExecutablePath();
       const std::string taskToolExe = Tools::GetPathOnly(path) + "\\TaskTool.exe";
-      return QString(path.c_str());
+      return QString(taskToolExe.c_str());
 #else
       return QString("/usr/local/bin/taskmanagerTool");
 #endif
@@ -82,6 +83,26 @@ namespace
       else
          filename += "log";
       return filename;
+   }
+
+   QString GetFirstWriteableFolder(const QStandardPaths::StandardLocation location)
+   {
+      const QStringList defaultFolders = QStandardPaths::standardLocations(location);
+      for (const auto it : defaultFolders)
+      {
+         const QFileInfo fileInfo(it);
+         if (fileInfo.permission(QFile::WriteUser | QFile::WriteOwner))
+            return it;
+      }
+      return QString("");
+   }
+
+   QString GetDefaultWriteableTempFolder()
+   {
+      QString folder = GetFirstWriteableFolder(QStandardPaths::TempLocation);
+      if (folder == "")
+         folder = GetFirstWriteableFolder(QStandardPaths::DownloadLocation);
+      return folder;
    }
 }
 
@@ -601,11 +622,25 @@ void MainWindow::UpdateAddJobMenuEntries()
    SetupAddJobMenu();
 }
 
+void MainWindow::OpenRunDialog(const std::string& reportFile)
+{
+   TaskToolRunDialog dialog(this);
+   dialog.SetRunPath(GetTempFolder());
+   dialog.SetConfigurationFile(GetTempConfigFilename());
+   dialog.SetToolExecutable(GetTaskToolExecutable());
+   dialog.SetReportFile(reportFile.c_str());
+   dialog.SetReportFolder(GetTempReportFolder());
+
+   // TODO : implement this
+   dialog.SetReportType(model.GetTmpConfiguration()->GetReportType());
+   //dialog.SetReportCss();
+   dialog.exec();
+}
+
 QString MainWindow::GetTempFolder() const
 {
    QSettings settings;
-   const QStringList defaultTemps = QStandardPaths::standardLocations(QStandardPaths::TempLocation);
-   QVariant keyValue = settings.value("tempFolder", defaultTemps.first());
+   QVariant keyValue = settings.value("tempFolder", GetDefaultWriteableTempFolder());
    if (keyValue.isValid())
       return keyValue.toString();
    else
@@ -640,18 +675,16 @@ string MainWindow::SaveConfigurationToTempLocation()
 void MainWindow::on_actionRun_triggered()
 {
    const string reportFile = SaveConfigurationToTempLocation();
-
-   TaskToolRunDialog dialog(this);
-   dialog.SetRunPath(GetTempFolder());
-   dialog.SetConfigurationFile(GetTempConfigFilename());
-   dialog.SetToolExecutable(GetTaskToolExecutable());
-   dialog.SetReportFile(reportFile.c_str());
-   dialog.SetReportFolder(GetTempReportFolder());
-
-   // TODO : implement this
-   dialog.SetReportType(model.GetTmpConfiguration()->GetReportType());
-   //dialog.SetReportCss();
-   dialog.exec();
+   const string tempConfigFilename = GetTempConfigFilename().toStdString();
+   if (FileTools::FileExists(string(tempConfigFilename)) == false)
+   {
+      QMessageBox::warning(this, "Error with Temp folder",
+                           "Configuration file could not be created in selected temp folder.\n"
+                           "Please choose a temporary folder without the read-only attribute.\n"
+                           "You can specify one in the \"Settings->Task Tool\" section.");
+   }
+   else
+      OpenRunDialog(reportFile);
 }
 
 void MainWindow::on_actionTask_Tool_triggered()
