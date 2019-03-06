@@ -1,4 +1,4 @@
-05/03/2019 (15.7)
+05/03/2019 (5.6h)
     Resolved path issues with default TaskTool. Now resolving
     temp file not being written... Temp file issue could not be solved
     directly, it seems that Windows has a weird behaviour of read-only
@@ -8,6 +8,22 @@
     Working in Linux with minor adjustments.
     Created default client name to avoid error. Now it seems that
     final version is near-ready :-)
+    Trying to find a way to hide/remove console showing up at Editor
+    startup, without success. Leaving as it is for now, it is not a
+    deal-breaker.
+    Improved error management : now showing error and properly handling
+    when config file can't be saved.
+    Cleaning previous runs reports when running from Editor, with proper
+    message when it fails. Also fixed bug in 7zip calling with whitespaces
+    in path.
+    It was obvious that there is a serious issue with dev VM : almost no
+    folders have write access from Editor.
+Next planned work:
+    - Install "empty" windows VM for testing bundle. THere should not be
+    access issues. If so, they need to be fixed.
+    - If no more important issues are found, consider Windows client feature
+    as done :-)
+    - Move Path tools to dedicated file
 
 04/03/2019 (2.2h)
     Checking Windows installer, it has several issues, the first one

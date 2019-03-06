@@ -59,6 +59,7 @@ Features to implement:
 	[056] Create VMs for testing remote jobs and wake
 	[057] Support translations and create default ones (EN/PT/FR)
         [057] Add support for Windows "cron" entries from editor
+        [058] Add icons/graphics to UI. Improve its usability.
 
 Abandoned features :
 	[020] Check/repair Screensaver modification from script
@@ -111,12 +112,13 @@ v1.2 (Final Paid Version) :
         [051] Implement a licensing system : either CD-Key or online activation. Use crypto.
         [046] Include a Windows update job
         [055] Create a download job
+        [057] Support translations and create default ones (EN/PT/FR)
 
 v1.1 (Final Free Version) :
 	[045] Make Windows client work with (nearly) all features
         [057] Add support for Windows "cron" entries from editor
         [006] Include Harddrive check job
-	[057] Support translations and create default ones (EN/PT/FR)
+        [058] Add icons/graphics to UI. Improve its usability.
 
 v1.0 : 20/08/2018
 	[023] Remove wakelan executable dependency
