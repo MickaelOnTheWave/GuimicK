@@ -8,6 +8,7 @@ class FileBackupReport
 {
 public:
    FileBackupReport();
+   FileBackupReport(const FileBackupReport& other);
    virtual ~FileBackupReport();
 
    FileBackupReport& operator=(const FileBackupReport& other);

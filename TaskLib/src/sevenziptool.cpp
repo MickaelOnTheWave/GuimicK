@@ -32,7 +32,7 @@ void SevenZipTool::CreateArchive(const string& pathData, ArchiveToolResult& resu
 
 void SevenZipTool::AddToArchive(const string& pathToAdd, ArchiveToolResult& result)
 {
-   const string command = sevenZipExecutable + " a -bb1 " + filename + " " + pathToAdd;
+   const string command = sevenZipExecutable + " u -bb1 " + filename + " " + pathToAdd;
    Run7zipCommand(command, result);
 }
 
@@ -44,7 +44,8 @@ void SevenZipTool::ExtractArchive(const string& destinationPath, ArchiveToolResu
 
 void SevenZipTool::SetExecutablePath(const string& value)
 {
-   sevenZipExecutable = value;
+   const string quote = "\"";
+   sevenZipExecutable = quote + value + quote;
 }
 
 void SevenZipTool::Run7zipCommand(const string& command, ArchiveToolResult& result)

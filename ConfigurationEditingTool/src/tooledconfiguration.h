@@ -21,7 +21,7 @@ public:
 
    bool LoadConfiguration(const std::string& file,
                           std::vector<std::string>& errors);
-   void SaveConfiguration(const std::string& file);
+   bool SaveConfiguration(const std::string& file);
 
    std::list<AbstractJob*> GetJobList();
    void SetJobs(const std::vector<AbstractJob*>& jobs);

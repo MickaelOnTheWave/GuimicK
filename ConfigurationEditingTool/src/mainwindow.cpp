@@ -177,8 +177,9 @@ void MainWindow::on_actionSave_As_triggered()
 
    if (filename != "")
    {
-      currentConfigurationFile = filename;
-      SaveFile(filename);
+      const bool ok = SaveFile(filename);
+      if (ok)
+         currentConfigurationFile = filename;
    }
 }
 
@@ -380,18 +381,28 @@ void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
    }
 }
 
-void MainWindow::SaveFile(const QString& filename)
+bool MainWindow::SaveFile(const QString& filename)
 {
-   SaveConfigurationToFile(model, filename);
-   hasConfigurationChanged = false;
-   UpdateModificationStatus();
+   bool ok = SaveConfigurationToFile(model, filename);
+   if (ok)
+   {
+      hasConfigurationChanged = false;
+      UpdateModificationStatus();
+   }
+   else
+   {
+      QMessageBox::warning(this, "Write Error", "Configuration file could not be saved.\n"
+                           "Please check your system permissions.");
+   }
+
+   return ok;
 }
 
-void MainWindow::SaveConfigurationToFile(TooledConfiguration& customConfig,
+bool MainWindow::SaveConfigurationToFile(TooledConfiguration& customConfig,
                                          const QString& filename)
 {
    customConfig.SetJobs(jobListModel.GetJobs());
-   customConfig.SaveConfiguration(filename.toStdString());
+   return customConfig.SaveConfiguration(filename.toStdString());
 }
 
 void MainWindow::QuitApplication()
@@ -622,8 +633,10 @@ void MainWindow::UpdateAddJobMenuEntries()
    SetupAddJobMenu();
 }
 
-void MainWindow::OpenRunDialog(const std::string& reportFile)
+void MainWindow::OpenRunDialog(const string& reportFile)
 {
+   CleanPreviousReport();
+
    TaskToolRunDialog dialog(this);
    dialog.SetRunPath(GetTempFolder());
    dialog.SetConfigurationFile(GetTempConfigFilename());
@@ -635,6 +648,13 @@ void MainWindow::OpenRunDialog(const std::string& reportFile)
    dialog.SetReportType(model.GetTmpConfiguration()->GetReportType());
    //dialog.SetReportCss();
    dialog.exec();
+}
+
+void MainWindow::CleanPreviousReport()
+{
+   bool ok = FileTools::RemoveFolder(GetTempReportFolder().toStdString(), true);
+   if (ok == false)
+      QMessageBox::warning(this, "Error", "Previous Report data could not be cleaned");
 }
 
 QString MainWindow::GetTempFolder() const

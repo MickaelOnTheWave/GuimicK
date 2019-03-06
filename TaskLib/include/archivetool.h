@@ -5,12 +5,13 @@
 #include <vector>
 
 #include "abstractfilebackupparser.h"
+#include "filebackupreport.h"
 
 class ArchiveToolResult
 {
 public:
    std::vector<std::string> ErrorList;
-   std::vector<std::string> FileList;
+   FileBackupReport FileList;
    bool isOk;
    std::string errorMessage;
 };

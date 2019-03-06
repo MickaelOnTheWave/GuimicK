@@ -26,13 +26,5 @@ void ArchiveTool::Initialize(const std::string& _filename)
 void ArchiveTool::ConvertToArchiveResult(AbstractFileBackupParser& parser,
                                          ArchiveToolResult& result) const
 {
-   FileBackupReport report;
-   parser.GetReport(report);
-
-   vector<string> files;
-   report.GetAddedFiles(files);
-   result.FileList = files;
-
-   report.GetModifiedFiles(files);
-   result.FileList.insert(result.FileList.end(), files.begin(), files.end());
+   parser.GetReport(result.FileList);
 }

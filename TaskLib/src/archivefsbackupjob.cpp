@@ -86,9 +86,7 @@ void AddResultToCollection(const ArchiveToolResult& result,
    if (result.errorMessage != "")
       jobStatus->SetDescription(result.errorMessage);
 
-   FileBackupReport* backupReport = new FileBackupReport();
-   backupReport->AddAsAdded(result.FileList);
-   results.push_back(make_pair(jobStatus, backupReport));
+   results.push_back(make_pair(jobStatus, new FileBackupReport(result.FileList)));
 }
 
 // TODO : maybe there is a better architectural option to these result collections :

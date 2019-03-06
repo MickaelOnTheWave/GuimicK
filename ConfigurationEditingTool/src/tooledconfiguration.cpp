@@ -34,9 +34,9 @@ bool TooledConfiguration::LoadConfiguration(const std::string& file, std::vector
    return configuration->LoadFromFile(file, errors);
 }
 
-void TooledConfiguration::SaveConfiguration(const std::string& file)
+bool TooledConfiguration::SaveConfiguration(const std::string& file)
 {
-   configuration->SaveToFile(file);
+   return configuration->SaveToFile(file);
 }
 
 list<AbstractJob*> TooledConfiguration::GetJobList()

@@ -79,8 +79,8 @@ private:
    void CreateNewFile();
    void OpenFile(const QString& filename,
                  const bool showStatusIfOk);
-   void SaveFile(const QString& filename);
-   void SaveConfigurationToFile(TooledConfiguration& customConfig,
+   bool SaveFile(const QString& filename);
+   bool SaveConfigurationToFile(TooledConfiguration& customConfig,
                                 const QString& filename);
    void QuitApplication();
 
@@ -118,6 +118,8 @@ private:
    void UpdateAddJobMenuEntries();
 
    void OpenRunDialog(const std::string& reportFile);
+
+   void CleanPreviousReport();
 
    QString GetTempFolder() const;
    QString GetTempConfigFilename() const;

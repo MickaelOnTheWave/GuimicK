@@ -9,6 +9,13 @@ FileBackupReport::FileBackupReport()
 {
 }
 
+FileBackupReport::FileBackupReport(const FileBackupReport& other)
+   : added(other.added),
+   removed(other.removed),
+   modified(other.modified)
+{
+}
+
 FileBackupReport::~FileBackupReport()
 {
 }
