@@ -654,7 +654,9 @@ void MainWindow::CleanPreviousReport()
 {
    bool ok = FileTools::RemoveFolder(GetTempReportFolder().toStdString(), true);
    if (ok == false)
-      QMessageBox::warning(this, "Error", "Previous Report data could not be cleaned");
+      QMessageBox::warning(this, "Error", "Previous Report data could not be cleaned\n"
+                                          "Please make sure Report data is cleaned before each Run,\n"
+                                          "otherwise previous data will be present in current report.");
 }
 
 QString MainWindow::GetTempFolder() const

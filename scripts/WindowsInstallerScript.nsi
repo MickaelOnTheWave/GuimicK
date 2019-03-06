@@ -1,6 +1,6 @@
 ;--------------------------------
 
-!define VERSION "0.9.6"
+!define VERSION "0.9.7"
 ; The name of the installer
 Name "Task Manager ${VERSION}"
 
@@ -48,8 +48,7 @@ Section "" ;No components page, name is not important
   ; Start menu shortcuts
   CreateDirectory "$SMPROGRAMS\TaskManager"
   CreateShortcut "$SMPROGRAMS\TaskManager\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortcut "$SMPROGRAMS\TaskManager\TaskTool.lnk" "$INSTDIR\TaskTool.exe" "" "$INSTDIR\TaskTool.exe" 0
-  CreateShortcut "$SMPROGRAMS\TaskManager\Configuration Editor.lnk" "$INSTDIR\ConfigurationEditingTool.exe" "" "$INSTDIR\ConfigurationEditingTool.exe" 0
+  CreateShortcut "$SMPROGRAMS\TaskManager\Configure.lnk" "$INSTDIR\ConfigurationEditingTool.exe" "" "$INSTDIR\ConfigurationEditingTool.exe" 0
   
   ; Reg Keys
   WriteRegStr HKLM "Software\TaskManager" "Install_Dir" "$INSTDIR"
