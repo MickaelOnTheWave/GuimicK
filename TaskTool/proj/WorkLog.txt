@@ -1,3 +1,11 @@
+06/03/2019 (18)
+    First, going for removing tasktool from start menu. There is no
+    point in executing it from there.
+    Improved an error message, removed the start menu entry and tried to
+    remove registry keys individually on uninstall. Without success.
+    Cloning VM for Test. Meanwhile, doing PathTools refactoring...
+    Finished refactoring.
+
 05/03/2019 (5.6h)
     Resolved path issues with default TaskTool. Now resolving
     temp file not being written... Temp file issue could not be solved
@@ -19,7 +27,7 @@
     It was obvious that there is a serious issue with dev VM : almost no
     folders have write access from Editor.
 Next planned work:
-    - Install "empty" windows VM for testing bundle. THere should not be
+    - Install "empty" windows VM for testing bundle. There should not be
     access issues. If so, they need to be fixed.
     - If no more important issues are found, consider Windows client feature
     as done :-)

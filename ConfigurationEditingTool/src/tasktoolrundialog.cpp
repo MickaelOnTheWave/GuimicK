@@ -5,6 +5,7 @@
 #include <QLabel>
 
 #include "filetools.h"
+#include "pathtools.h"
 #include "tools.h"
 
 #ifdef _MSC_VER
@@ -88,7 +89,7 @@ void TaskToolRunDialog::on_runButton_clicked()
 {
    ui->outputTextEdit->setPlainText("");
    QString outputText;
-   const std::string currentDirectory = FileTools::GetCurrentFullPath();
+   const std::string currentDirectory = PathTools::GetCurrentFullPath();
    int result = _chdir(runPath.toLocal8Bit());
    if (result == 0)
    {
@@ -123,7 +124,7 @@ QString TaskToolRunDialog::CreateChdirErrorMessage() const
 {
    QString errorMessage = "Failed to change directory : " + GetDetailedError() + "\n";
    errorMessage += "  Target directory : " + runPath + "\n";
-   errorMessage += "  Current directory : " + QString(FileTools::GetCurrentFullPath().c_str()) + "\n";
+   errorMessage += "  Current directory : " + QString(PathTools::GetCurrentFullPath().c_str()) + "\n";
    return errorMessage;
 }
 

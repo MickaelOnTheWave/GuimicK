@@ -9,6 +9,7 @@
 #include "gitplumbingreportparser.h"
 #include "gitcommontools.h"
 #include "linuxcopyfsbackupjob.h"
+#include "pathtools.h"
 #include "rsynccopyfsbackupjob.h"
 #include "tools.h"
 
@@ -72,7 +73,7 @@ void GitFsBackupJob::SetForceRawCopyUse(const bool value)
 JobStatus* GitFsBackupJob::RestoreBackupFromServer(const string& source,
                                          const string& destination)
 {
-   string originalDirectory = FileTools::GetCurrentFullPath();
+   string originalDirectory = PathTools::GetCurrentFullPath();
    JobStatus* status = GitCommonTools::ChangeCurrentDir(source);
    if (status->IsOk())
    {
@@ -95,7 +96,7 @@ void GitFsBackupJob::RunRepositoryBackup(const string &source,
     if (status->GetCode() == JobStatus::Ok)
         CopyData(source, fullDestination, status);
 
-    string originalDirectory = FileTools::GetCurrentFullPath();
+    string originalDirectory = PathTools::GetCurrentFullPath();
     bool ok = GitCommonTools::ChangeCurrentDir(fullDestination, results);
     if (!ok)
         return;
@@ -329,7 +330,7 @@ AbstractCopyFsBackupJob *GitFsBackupJob::PrepareCopy(const string &destination, 
 
     if (debugManager->GetUse() == DebugOutput::ALWAYS)
     {
-        string rsyncPath = Tools::GetCommandPath("rsync", ConsoleJob::appSearchPaths);
+        string rsyncPath = PathTools::GetCommandPath("rsync", ConsoleJob::appSearchPaths);
         debugManager->AddDataLine<string>("Rsync path", rsyncPath);
         const bool manualCondition = (rsyncPath != "");
         debugManager->AddDataLine<bool>("Manual condition", manualCondition);

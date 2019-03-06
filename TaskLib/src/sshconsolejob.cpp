@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include "consolejob.h"
+#include "pathtools.h"
 #include "tools.h"
 #include "userconsolejob.h"
 
@@ -289,7 +290,7 @@ bool SshConsoleJob::CopyRemoteAttachments()
 
       if (copyJob.IsRunOk())
       {
-         const string localAttachment = Tools::GetFilenameOnly(*it);
+         const string localAttachment = PathTools::GetFilenameOnly(*it);
          debugManager->AddDataLine<string>("Adding Local Attachment", localAttachment);
          castJob->AddUserAttachment(localAttachment);
       }

@@ -1,7 +1,7 @@
 #include "rsynccopyfsbackupjob.h"
 
+#include "pathtools.h"
 #include "rsynccommandparser.h"
-#include "tools.h"
 
 using namespace std;
 
@@ -28,7 +28,7 @@ string RsyncCopyFsBackupJob::GetTypeName() const
 
 bool RsyncCopyFsBackupJob::IsAvailable()
 {
-    const string path = Tools::GetCommandPath("rsync", ConsoleJob::appSearchPaths);
+    const string path = PathTools::GetCommandPath("rsync", ConsoleJob::appSearchPaths);
     return (path != "");
 }
 

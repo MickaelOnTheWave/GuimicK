@@ -4,6 +4,7 @@
 
 #include "filetools.h"
 #include "linuxcopyfsbackupjob.h"
+#include "pathtools.h"
 #include "rsnapshotconfigurationbuilder.h"
 
 using namespace std;
@@ -190,9 +191,9 @@ RsnapshotRawBackupJob* RsnapshotSmartBackupJob::CreateRawJob(const string& confi
 string RsnapshotSmartBackupJob::BuildFinalPath(const string& inputPath) const
 {
    debugManager->AddDataLine<string>("BuildFinalPath", inputPath);
-   const bool shouldBuildPath = (target.isLocal && !FileTools::IsAbsolutePath(inputPath));
+   const bool shouldBuildPath = (target.isLocal && !PathTools::IsAbsolutePath(inputPath));
    debugManager->AddDataLine<bool>("WillBuildAbsolutePath", shouldBuildPath);
-   return (shouldBuildPath) ? FileTools::BuildFullPath(inputPath) : inputPath;
+   return (shouldBuildPath) ? PathTools::BuildFullPath(inputPath) : inputPath;
 }
 
 

@@ -1,12 +1,13 @@
 #include "gitbackupjob.h"
 
-#include <filetools.h>
 #include <sstream>
 
 #include "backupstatusmanager.h"
 #include "consolejob.h"
+#include "filetools.h"
 #include "gitplumbingreportparser.h"
 #include "gitcommontools.h"
+#include "pathtools.h"
 
 using namespace std;
 
@@ -118,7 +119,7 @@ void GitBackupJob::UpdateGitRepository(const string &gitRepository,
                                        AbstractBackupJob::ResultCollection &statusList)
 {
     debugManager->AddDataLine<string>("Updating Git repository", gitRepository);
-    string originalDirectory = FileTools::GetCurrentFullPath();
+    string originalDirectory = PathTools::GetCurrentFullPath();
 
     bool ok = GitCommonTools::ChangeCurrentDir(gitRepository, statusList);
     if (!ok)

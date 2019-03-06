@@ -1,6 +1,7 @@
 #include "consolejob.h"
 
 #include "jobstatus.h"
+#include <pathtools.h>
 #include <stdlib.h>
 #include <tools.h>
 
@@ -17,7 +18,7 @@ ConsoleJob::ConsoleJob(const string &_command,
       command(_command), commandParams(_params), commandOutput(""),
       expectedReturnCode(_expectedReturnCode), receivedReturnCode(-1)
 {
-    string foundCommandFullName = Tools::GetCommandPath(command, appSearchPaths);
+    string foundCommandFullName = PathTools::GetCommandPath(command, appSearchPaths);
     if (foundCommandFullName != "")
         command = foundCommandFullName;
 }
@@ -126,7 +127,7 @@ bool ConsoleJob::IsCommandAvailable() const
 #ifdef _WIN32
    return true;
 #else
-   return (Tools::GetCommandPath(command, appSearchPaths) != string(""));
+   return (PathTools::GetCommandPath(command, appSearchPaths) != string(""));
 #endif
 }
 
