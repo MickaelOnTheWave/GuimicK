@@ -1,4 +1,21 @@
-06/03/2019 (18)
+12/03/2019 (1.1h)
+    Added missing VS dlls to installer. The other missing dll is qwindows.
+    Integrated the qtdeploywindows tool to install process, however there is
+    still somthing strange about the platform plugin/error.
+    It seems that manually copied platform dir does not work on installed
+    version, but does on copied one.
+Next planned work:
+    - Finish investigating platform dll issue
+    - Fix it
+    - Update installer to have a full working version on clean VM
+
+07/03/2019 (0.3h)
+    Fixing missing dlls. 2 dlls are missing, but even with them there is
+    a "Qt platform pluging" error.
+Next planned work:
+    - Fix missing dependencies error
+
+06/03/2019 (1.2h)
     First, going for removing tasktool from start menu. There is no
     point in executing it from there.
     Improved an error message, removed the start menu entry and tried to
