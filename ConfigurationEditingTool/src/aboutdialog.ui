@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>322</width>
-    <height>136</height>
+    <height>142</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
    <item row="2" column="0" colspan="2">
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Copyright 2018 Mickaël C. Guimarães</string>
+      <string>Copyright 2019 Mickaël C. Guimarães</string>
      </property>
     </widget>
    </item>
@@ -51,7 +51,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="labelExeInfo">
      <property name="text">
-      <string>Configuration Editor v0.5</string>
+      <string>Configuration Editor v0.6</string>
      </property>
     </widget>
    </item>

@@ -1,3 +1,9 @@
+15/03/2019 (11.2)
+
+
+13/03/2019 (0.8h)
+    While VMs are updating, created menu entry for scheduler configuration.
+
 12/03/2019 (1.1h)
     Added missing VS dlls to installer. The other missing dll is qwindows.
     Integrated the qtdeploywindows tool to install process, however there is

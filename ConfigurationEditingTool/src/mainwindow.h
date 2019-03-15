@@ -60,6 +60,8 @@ private slots:
 
    void on_actionTask_Tool_triggered();
 
+   void on_actionSchedule_Execution_triggered();
+
 private:
    void MoveToScreenCenter();
 

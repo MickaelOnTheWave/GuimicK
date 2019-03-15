@@ -88,7 +88,7 @@
      <x>0</x>
      <y>0</y>
      <width>586</width>
-     <height>19</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -125,6 +125,7 @@
      <string>Task Tool</string>
     </property>
     <addaction name="actionRun"/>
+    <addaction name="actionSchedule_Execution"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAdd_Job"/>
@@ -181,6 +182,11 @@
   <action name="actionTask_Tool">
    <property name="text">
     <string>Task Tool</string>
+   </property>
+  </action>
+  <action name="actionSchedule_Execution">
+   <property name="text">
+    <string>Schedule Execution</string>
    </property>
   </action>
  </widget>

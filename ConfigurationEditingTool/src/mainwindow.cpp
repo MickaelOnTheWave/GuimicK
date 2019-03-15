@@ -724,3 +724,8 @@ void MainWindow::on_actionTask_Tool_triggered()
       settings.setValue("taskTool", dialog.GetTaskToolExecutablePath());
    }
 }
+
+void MainWindow::on_actionSchedule_Execution_triggered()
+{
+   QMessageBox::warning(this, "TODO", "Implement");
+}
