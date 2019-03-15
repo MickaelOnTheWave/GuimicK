@@ -15,7 +15,7 @@ InstallDir $PROGRAMFILES64\TaskManager
 InstallDirRegKey HKLM "Software\TaskManager" "Install_Dir"
 
 ; Request application privileges for Windows Vista
-;RequestExecutionLevel admin
+RequestExecutionLevel admin
 
 ;--------------------------------
 

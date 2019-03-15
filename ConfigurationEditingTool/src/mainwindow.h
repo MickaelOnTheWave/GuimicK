@@ -119,8 +119,6 @@ private:
 
    void OpenRunDialog(const std::string& reportFile);
 
-   void CleanPreviousReport();
-
    QString GetTempFolder() const;
    QString GetTempConfigFilename() const;
    QString GetTempReportFolder() const;
