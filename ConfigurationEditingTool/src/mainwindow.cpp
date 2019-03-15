@@ -19,12 +19,12 @@
 #include "filetools.h"
 #include "jobdelegate.h"
 #include "jobeditdialogfactory.h"
+#include "pathtools.h"
 #include "selectbackupfolderdialog.h"
 #include "serverconfiguration.h"
 #include "settingsdialog.h"
 #include "tasktoolrundialog.h"
 #include "tasktoolsettingsdialog.h"
-#include "tools.h"
 
 #include "abstractbackupjobdisplay.h"
 #include "abstractjobdisplay.h"
@@ -53,8 +53,8 @@ namespace
    QString GetDefaultTaskToolExecutable()
    {
 #ifdef _MSC_VER
-      const std::string path = Tools::GetCurrentExecutablePath();
-      const std::string taskToolExe = Tools::GetPathOnly(path) + "\\TaskTool.exe";
+      const std::string path = PathTools::GetCurrentExecutablePath();
+      const std::string taskToolExe = PathTools::GetPathOnly(path) + "\\TaskTool.exe";
       return QString(taskToolExe.c_str());
 #else
       return QString("/usr/local/bin/taskmanagerTool");

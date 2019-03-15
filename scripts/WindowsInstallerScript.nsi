@@ -1,6 +1,6 @@
 ;--------------------------------
 
-!define VERSION "0.9.7"
+!define VERSION "0.9.9"
 ; The name of the installer
 Name "Task Manager ${VERSION}"
 
@@ -15,7 +15,7 @@ InstallDir $PROGRAMFILES64\TaskManager
 InstallDirRegKey HKLM "Software\TaskManager" "Install_Dir"
 
 ; Request application privileges for Windows Vista
-RequestExecutionLevel admin
+;RequestExecutionLevel admin
 
 ;--------------------------------
 
@@ -38,12 +38,20 @@ Section "" ;No components page, name is not important
   SetOutPath $INSTDIR
   
   ; Put file there
-  File TaskTool.exe
   File 7z.exe
   File ConfigurationEditingTool.exe
+  File msvcp140.dll
+  File vcruntime140.dll
   File Qt5Core.dll
   File Qt5Gui.dll
   File Qt5Widgets.dll
+  File TaskTool.exe  
+  File license.txt  
+  File /r "iconengines"
+  File /r "imageformats"
+  File /r "platforms"
+  File /r "styles"
+  File /r "translations"
 
   ; Start menu shortcuts
   CreateDirectory "$SMPROGRAMS\TaskManager"
@@ -68,16 +76,8 @@ SectionEnd ; end the section
 
 Section "Uninstall"
   
-  Delete $INSTDIR\TaskTool.exe
-  Delete $INSTDIR\7z.exe
-  Delete $INSTDIR\ConfigurationEditingTool.exe
-  Delete $INSTDIR\Qt5Core.dll
-  Delete $INSTDIR\Qt5Gui.dll
-  Delete $INSTDIR\Qt5Widgets.dll
-  Delete $INSTDIR\uninstall.exe
+  RMDir /r $INSTDIR
 
-  RMDir "$INSTDIR"
-  
   ; Remove Start menu shortcuts
   Delete "$SMPROGRAMS\TaskManager\*.*"
   RMDir "$SMPROGRAMS\TaskManager"  
@@ -86,6 +86,6 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\App Paths\TaskTool.exe"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager"
   DeleteRegKey HKLM "Software\TaskManager"
-  DeleteRegKey HKCU "Software\TaskManager"
+  DeleteRegKey HKCU "Software\Task Manager"
   
 SectionEnd
