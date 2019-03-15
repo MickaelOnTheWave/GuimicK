@@ -3,6 +3,7 @@
 
 #include <QDir>
 #include <QLabel>
+#include <QMessageBox>
 
 #include "filetools.h"
 #include "pathtools.h"
@@ -87,6 +88,8 @@ void TaskToolRunDialog::SetReportType(const std::string& value)
 
 void TaskToolRunDialog::on_runButton_clicked()
 {
+   CleanPreviousReport();
+
    ui->outputTextEdit->setPlainText("");
    QString outputText;
    const std::string currentDirectory = PathTools::GetCurrentFullPath();
@@ -196,4 +199,17 @@ QString TaskToolRunDialog::BuildTextLabel(const QString& file) const
    QString label = "<a href=\"" + fullFileName;
    label += QString("\">") + file + "</a>";
    return label;
+}
+
+void TaskToolRunDialog::CleanPreviousReport()
+{
+   const std::string stdReportFolder = reportFolder.toStdString();
+   if (FileTools::FolderExists(stdReportFolder))
+   {
+      const bool ok = FileTools::RemoveFolder(stdReportFolder, true);
+      if (ok == false)
+         QMessageBox::warning(this, "Error", "Previous Report data could not be cleaned\n"
+                              "Please make sure Report data is cleaned before each Run,\n"
+                              "otherwise previous data will be present in current report.");
+   }
 }

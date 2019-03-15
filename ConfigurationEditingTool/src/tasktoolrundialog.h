@@ -38,6 +38,8 @@ private:
    void AddFileLink(const QString& file);
    QString BuildTextLabel(const QString& file) const;
 
+   void CleanPreviousReport();
+
    Ui::TaskToolRunDialog *ui;
 
    QString runPath = "";
