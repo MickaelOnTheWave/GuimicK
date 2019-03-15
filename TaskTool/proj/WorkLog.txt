@@ -1,5 +1,14 @@
-15/03/2019 (11.2)
-
+15/03/2019 (1.7h)
+    Finished resolving platform issues : proper commands have been used in
+    NSIS installer. Also improved uninstaller : now configuration registry
+    keys are being deleted.
+    Tested on Clean VM : permission issues occur. Seeing how to prevent this...
+    Restored Installer to admin mode as user mode prevented install. Tried
+    to execute Configuration editor in Admin mode : issue still there.
+Next planned work:
+    - Create small app for reproducing issue in small scale
+    - Try different "system calls" for folder removal/write to temp...
+    - If issue is still not fixed, ask on StackOverflow
 
 13/03/2019 (0.8h)
     While VMs are updating, created menu entry for scheduler configuration.
