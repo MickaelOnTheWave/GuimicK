@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "filetools.h"
+#include "pathtools.h"
 #include "rsnapshotsmartbackupjob.h"
 
 using namespace std;
@@ -79,14 +80,14 @@ void RsnapshotConfigurationBuilder::AppendBackupData(
         string &configurationData,
         const AbstractBackupJob::BackupCollection &dataToBackup) const
 {
-   const string absoluteRepository = FileTools::BuildFullPathIfRelative(repository);
+   const string absoluteRepository = PathTools::BuildFullPathIfRelative(repository);
     configurationData += string("\nsnapshot_root\t") + absoluteRepository + "\n";
 
     vector<pair<string,string> >::const_iterator it=dataToBackup.begin();
     for (; it!=dataToBackup.end(); ++it)
     {
         configurationData += string("\nbackup\t") + it->first;
-        configurationData += "\t" + FileTools::RelativePath(it->second) + "\n";
+        configurationData += "\t" + PathTools::RelativePath(it->second) + "\n";
     }
 }
 
