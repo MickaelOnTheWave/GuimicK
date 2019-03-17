@@ -33,6 +33,7 @@ Features implemented:
 	29/04/2018 - [023] Remove wakelan executable dependency
 	13/08/2018 - [049] Make build be at least partially static (internal dependencies static)
 	20/08/2018 - [016] Create a package with binaries for easy install
+        17/03/2019 - [045] Make Windows client work with (nearly) all features
 
 Features to implement:
 	[005] Include AntiVirus scan job
@@ -49,7 +50,6 @@ Features to implement:
 	[032] Property handle encodings for strings
 	[036] Console job improvement : support a chain system.
 	[043] Create an archive differential File backup job
-	[045] Make Windows client work with (nearly) all features
 	[046] Include a Windows update job
 	[047] Have a Restore option in backup jobs
 	[050] Create a backup job for cloud service

@@ -1,3 +1,10 @@
+17/03/2019 (1.5h)
+    Created small example. Reproduced the issue and asked on StackOverflow.
+    Now trying "different system calls"... Using plain C functions works fine!!
+    Modifying File tools to use it instead of ofstream. Stopping now to rest.
+Next planned work:
+    - Finish changing FileTools to plain C api
+
 15/03/2019 (1.7h)
     Finished resolving platform issues : proper commands have been used in
     NSIS installer. Also improved uninstaller : now configuration registry
