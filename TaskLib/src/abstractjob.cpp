@@ -2,7 +2,7 @@
 
 using namespace std;
 
-AbstractJob::AbstractJob(const string& _title)
+AbstractJob::AbstractJob(const wstring& _title)
     : debugManager(new JobDebugInformationManager(false)),
       isDebugManagerParent(false), title(_title)
 {
@@ -24,12 +24,12 @@ AbstractJob::~AbstractJob()
        delete debugManager;
 }
 
-string AbstractJob::GetName() const
+wstring AbstractJob::GetName() const
 {
    return title;
 }
 
-void AbstractJob::SetName(const string& value)
+void AbstractJob::SetName(const wstring& value)
 {
    title = value;
 }
@@ -57,9 +57,9 @@ void AbstractJob::SetParentDebugManager(JobDebugInformationManager* manager)
     }
 }
 
-std::string AbstractJob::GetAttachmentName()
+std::wstring AbstractJob::GetAttachmentName()
 {
-    return GetName() + ".txt";
+    return GetName() + L".txt";
 }
 
 bool AbstractJob::InitializeFromClient(Client *)

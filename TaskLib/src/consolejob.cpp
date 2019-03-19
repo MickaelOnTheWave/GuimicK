@@ -7,18 +7,18 @@
 
 using namespace std;
 
-static string whichCommandPath("");
-string ConsoleJob::NotAvailableError = "Command not available";
+static wwstring whichCommandPath("");
+wwstring ConsoleJob::NotAvailableError = "Command not available";
 
-std::vector<std::string> ConsoleJob::appSearchPaths;
+vector<wwstring> ConsoleJob::appSearchPaths;
 
-ConsoleJob::ConsoleJob(const string &_command,
-                       const string &_params, int _expectedReturnCode)
+ConsoleJob::ConsoleJob(const wwstring &_command,
+                       const wwstring &_params, int _expectedReturnCode)
     : AbstractConsoleJob(""),
       command(_command), commandParams(_params), commandOutput(""),
       expectedReturnCode(_expectedReturnCode), receivedReturnCode(-1)
 {
-    string foundCommandFullName = PathTools::GetCommandPath(command, appSearchPaths);
+    wstring foundCommandFullName = PathTools::GetCommandPath(command, appSearchPaths);
     if (foundCommandFullName != "")
         command = foundCommandFullName;
 }
@@ -56,7 +56,7 @@ JobStatus *ConsoleJob::Run()
         return CreateErrorStatus();
 }
 
-void ConsoleJob::Run(const string &command, const string &params)
+void ConsoleJob::Run(const wstring &command, const wstring &params)
 {
     ConsoleJob job(command, params);
     job.RunCommand();
@@ -77,22 +77,22 @@ void ConsoleJob::SetExpectedReturnCode(const int value)
     expectedReturnCode = value;
 }
 
-string ConsoleJob::GetCommand() const
+wstring ConsoleJob::GetCommand() const
 {
     return command;
 }
 
-void ConsoleJob::SetCommand(const string &_command)
+void ConsoleJob::SetCommand(const wstring &_command)
 {
     command = _command;
 }
 
-void ConsoleJob::SetCommandParameters(const string &parameters)
+void ConsoleJob::SetCommandParameters(const wstring &parameters)
 {
     commandParams = parameters;
 }
 
-string ConsoleJob::GetCommandParameters() const
+wstring ConsoleJob::GetCommandParameters() const
 {
     return commandParams;
 }
@@ -107,12 +107,12 @@ void ConsoleJob::SetCommandReturnCode(const int value)
     receivedReturnCode = value;
 }
 
-string ConsoleJob::GetCommandOutput() const
+wstring ConsoleJob::GetCommandOutput() const
 {
     return commandOutput;
 }
 
-void ConsoleJob::SetCommandOutput(const string &value)
+void ConsoleJob::SetCommandOutput(const wstring &value)
 {
     commandOutput = value;
 }
@@ -127,11 +127,11 @@ bool ConsoleJob::IsCommandAvailable() const
 #ifdef _WIN32
    return true;
 #else
-   return (PathTools::GetCommandPath(command, appSearchPaths) != string(""));
+   return (PathTools::GetCommandPath(command, appSearchPaths) != wstring(""));
 #endif
 }
 
-void ConsoleJob::AddAppSearchPath(const string &path)
+void ConsoleJob::AddAppSearchPath(const wstring &path)
 {
     appSearchPaths.push_back(path);
 }
@@ -143,7 +143,7 @@ void ConsoleJob::ClearAppSearchPaths()
 
 bool ConsoleJob::RunCommand()
 {
-    string commandToRun = command + " " + commandParams;
+    wstring commandToRun = command + " " + commandParams;
     int rawCode = Tools::RunExternalCommandToBuffer(commandToRun, commandOutput, true);
 #ifdef __linux__
     receivedReturnCode = WEXITSTATUS(rawCode);

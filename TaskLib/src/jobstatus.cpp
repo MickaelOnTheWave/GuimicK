@@ -10,16 +10,16 @@ const int JobStatus::Ok                = 1;
 const int JobStatus::OkWithWarnings  = 2;
 const int JobStatus::Error             = 3;
 
-std::map<int, std::string> JobStatus::codeMap;
+map<int, wstring> JobStatus::codeMap;
 
 JobStatus::JobStatus()
 	: code(NotExecuted),
 	  elapsedTime(0),
-	  description("")
+	  description(L"")
 {
 }
 
-JobStatus::JobStatus(int _code, const string &_description)
+JobStatus::JobStatus(int _code, const wstring &_description)
 	: code(_code), description(_description)
 {
 }
@@ -42,7 +42,7 @@ JobStatus::~JobStatus()
 void JobStatus::Reset()
 {
 	code = NotExecuted;
-	description = "";
+	description = L"";
     externalFilenames.clear();
     filebuffers.clear();
 }
@@ -52,21 +52,21 @@ void JobStatus::SetCode(int _code)
     code = _code;
 }
 
-string JobStatus::GetCodeDescription(int _code)
+wstring JobStatus::GetCodeDescription(int _code)
 {
    if (codeMap.empty())
       PopulateCodeMap();
 
-   map<int, string>::const_iterator it = codeMap.find(_code);
-   return (it != codeMap.end()) ? it->second : string("Unknown status code");
+   map<int, wstring>::const_iterator it = codeMap.find(_code);
+   return (it != codeMap.end()) ? it->second : wstring(L"Unknown status code");
 }
 
-int JobStatus::GetCodeFromDescription(const string &_description)
+int JobStatus::GetCodeFromDescription(const wstring &_description)
 {
    if (codeMap.empty())
       PopulateCodeMap();
 
-   map<int, string>::const_iterator it = codeMap.begin();
+   map<int, wstring>::const_iterator it = codeMap.begin();
    for (; it != codeMap.end(); ++it)
    {
       if (it->second == _description)
@@ -76,7 +76,7 @@ int JobStatus::GetCodeFromDescription(const string &_description)
    return JobStatus::NotExecuted;
 }
 
-string JobStatus::GetCodeDescription() const
+wstring JobStatus::GetCodeDescription() const
 {
     return GetCodeDescription(code);
 }
@@ -86,31 +86,31 @@ void JobStatus::SetDuration(std::time_t duration)
     elapsedTime = duration;
 }
 
-void JobStatus::SetDescription(const string &_description)
+void JobStatus::SetDescription(const wstring &_description)
 {
 	description = _description;
 }
 
-void JobStatus::AddExternalFile(const string &filename)
+void JobStatus::AddExternalFile(const wstring &filename)
 {
     externalFilenames.push_back(filename);
 }
 
-void JobStatus::AddFileBuffer(const string &filename, const string &filecontents)
+void JobStatus::AddFileBuffer(const wstring &filename, const wstring &filecontents)
 {
-   filebuffers.push_back(pair<string,string>(filename, filecontents));
+   filebuffers.push_back(pair<wstring,wstring>(filename, filecontents));
 }
 
 void JobStatus::AddExternalFilesFromStatus(JobStatus *other)
 {
-    vector<string>::const_iterator it=other->externalFilenames.begin();
+    vector<wstring>::const_iterator it=other->externalFilenames.begin();
     for (; it!=other->externalFilenames.end(); ++it)
         AddExternalFile(*it);
 }
 
 void JobStatus::AddFileBuffersFromStatus(JobStatus *other)
 {
-    vector<pair<string,string> >::const_iterator it=other->filebuffers.begin();
+    vector<pair<wstring,wstring> >::const_iterator it=other->filebuffers.begin();
     for (; it!=other->filebuffers.end(); ++it)
         AddFileBuffer(it->first, it->second);
 }
@@ -152,16 +152,16 @@ bool JobStatus::IsOk() const
    return (code == Ok);
 }
 
-string JobStatus::GetDescription() const
+wstring JobStatus::GetDescription() const
 {
 	return description;
 }
 
-string JobStatus::ToString() const
+wstring JobStatus::ToString() const
 {
-	std::stringstream fullDescription;
-	fullDescription << "Code:" << code << " - Desc:" << description;
-    fullDescription << " - Files:" << externalFilenames.size();
+	std::wstringstream fullDescription;
+	fullDescription << L"Code:" << code << L" - Desc:" << description;
+    fullDescription << L" - Files:" << externalFilenames.size();
 	return fullDescription.str();
 }
 
@@ -170,9 +170,9 @@ bool JobStatus::HasExternalFiles()
     return (!externalFilenames.empty());
 }
 
-void JobStatus::GetExternalFilenames(vector<string> &_fileNames)
+void JobStatus::GetExternalFilenames(vector<wstring> &_fileNames)
 {
-    vector<string>::const_iterator it=externalFilenames.begin();
+    vector<wstring>::const_iterator it=externalFilenames.begin();
     for (; it!=externalFilenames.end(); ++it)
         _fileNames.push_back(*it);
 }
@@ -186,8 +186,8 @@ void JobStatus::GetFileBuffers(FileBufferList &_filebuffers)
 
 void JobStatus::PopulateCodeMap()
 {
-   codeMap[JobStatus::NotExecuted] = "Not executed";
-   codeMap[JobStatus::Ok] = "Ok";
-   codeMap[JobStatus::OkWithWarnings] = "Executed with minor errors";
-   codeMap[JobStatus::Error] = "Error";
+   codeMap[JobStatus::NotExecuted] = L"Not executed";
+   codeMap[JobStatus::Ok] = L"Ok";
+   codeMap[JobStatus::OkWithWarnings] = L"Executed with minor errors";
+   codeMap[JobStatus::Error] = L"Error";
 }

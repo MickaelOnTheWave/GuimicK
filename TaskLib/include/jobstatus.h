@@ -15,7 +15,7 @@ public:
     static const int Error;
 
 	JobStatus();
-	JobStatus(int _code, const std::string& _description = "");
+	JobStatus(int _code, const std::wstring& _description = L"");
    JobStatus(const JobStatus& other);
    virtual ~JobStatus();
 
@@ -24,18 +24,18 @@ public:
 	int GetCode() const;
 	void SetCode(int _code);
 
-   static std::string GetCodeDescription(int _code);
-   static int GetCodeFromDescription(const std::string& _description);
-   std::string GetCodeDescription() const;
+   static std::wstring GetCodeDescription(int _code);
+   static int GetCodeFromDescription(const std::wstring& _description);
+   std::wstring GetCodeDescription() const;
 
 	std::time_t GetDuration() const;
 	void SetDuration(std::time_t duration);
 
-	std::string GetDescription() const;
-	void SetDescription(const std::string& _description);
+	std::wstring GetDescription() const;
+	void SetDescription(const std::wstring& _description);
 
-    void AddExternalFile(const std::string& filename);
-    void AddFileBuffer(const std::string& filename, const std::string& filecontents);
+    void AddExternalFile(const std::wstring& filename);
+    void AddFileBuffer(const std::wstring& filename, const std::wstring& filecontents);
     void AddExternalFilesFromStatus(JobStatus* other);
     void AddFileBuffersFromStatus(JobStatus* other);
     void AddAllFilesFromStatus(JobStatus* other);
@@ -50,26 +50,26 @@ public:
 	bool IsFatal() const;
    bool IsOk() const;
 
-	std::string ToString() const;
+	std::wstring ToString() const;
 
 
     bool HasExternalFiles();
 
-    typedef std::vector<std::pair<std::string,std::string> > FileBufferList;
-    void GetExternalFilenames(std::vector<std::string>& _fileNames);
+    typedef std::vector<std::pair<std::wstring,std::wstring> > FileBufferList;
+    void GetExternalFilenames(std::vector<std::wstring>& _fileNames);
     void GetFileBuffers(FileBufferList& _filebuffers);
 
 protected:
 	int			code;
 	std::time_t elapsedTime;
-	std::string description;
+	std::wstring description;
 
-   std::vector<std::string> externalFilenames;
-   std::vector<std::pair<std::string, std::string> > filebuffers;
+   std::vector<std::wstring> externalFilenames;
+   std::vector<std::pair<std::wstring, std::wstring> > filebuffers;
 
 private:
    static void PopulateCodeMap();
-   static std::map<int, std::string> codeMap;
+   static std::map<int, std::wstring> codeMap;
 };
 
 #endif // JOBSTATUS_H

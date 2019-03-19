@@ -16,10 +16,10 @@
 class ConsoleJob : public AbstractConsoleJob
 {
 public:
-   static std::string NotAvailableError;
+   static std::wstring NotAvailableError;
 
-   ConsoleJob(const std::string& _command = "",
-            const std::string& _params = "", int _expectedReturnCode = 0);
+   ConsoleJob(const std::wstring& _command = "",
+            const std::wstring& _params = "", int _expectedReturnCode = 0);
    ConsoleJob(const ConsoleJob& other);
    virtual ~ConsoleJob();
 
@@ -29,24 +29,24 @@ public:
 
    virtual JobStatus* Run();
 
-   static void Run(const std::string& command, const std::string& params);
+   static void Run(const std::wstring& command, const std::wstring& params);
 
    void RunWithoutStatus();
 
    virtual int GetExpectedReturnCode() const;
    virtual void SetExpectedReturnCode(const int value);
 
-   virtual std::string GetCommand() const;
-   virtual void SetCommand(const std::string& command);
+   virtual std::wstring GetCommand() const;
+   virtual void SetCommand(const std::wstring& command);
 
-   virtual void SetCommandParameters(const std::string& parameters);
-   std::string GetCommandParameters() const;
+   virtual void SetCommandParameters(const std::wstring& parameters);
+   std::wstring GetCommandParameters() const;
 
    virtual int GetCommandReturnCode() const;
    virtual void SetCommandReturnCode(const int value);
 
-   virtual std::string GetCommandOutput() const;
-   virtual void SetCommandOutput(const std::string& value);
+   virtual std::wstring GetCommandOutput() const;
+   virtual void SetCommandOutput(const std::wstring& value);
 
    virtual bool IsRunOk() const;
 
@@ -55,9 +55,9 @@ public:
 
    // TODO : find a better place for that. This is a global feature, not
    // necessary related to this job.
-   static void AddAppSearchPath(const std::string& path);
+   static void AddAppSearchPath(const std::wstring& path);
    static void ClearAppSearchPaths();
-   static std::vector<std::string> appSearchPaths;
+   static std::vector<std::wstring> appSearchPaths;
 
 protected:
 
@@ -66,9 +66,9 @@ protected:
     virtual JobStatus* CreateSuccessStatus();
     virtual JobStatus* CreateErrorStatus();
 
-    std::string command;
-    std::string commandParams;
-    std::string commandOutput;
+    std::wstring command;
+    std::wstring commandParams;
+    std::wstring commandOutput;
     int expectedReturnCode;
     int receivedReturnCode;
 };

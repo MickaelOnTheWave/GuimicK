@@ -97,7 +97,7 @@ bool TarTools::ExtractArchive(const wstring& archiveName, const wstring& destina
    wstring parameters = L"xvf " + archiveName + L" -C " + destination;
    parameters += L" --strip-components=1";
 
-   ConsoleJob* job = new ConsoleJob("tar", parameters);
+   ConsoleJob* job = new ConsoleJob(L"tar", parameters);
    if (parentDebugManager)
       job->SetParentDebugManager(parentDebugManager);
 

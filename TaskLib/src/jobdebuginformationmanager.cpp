@@ -5,10 +5,10 @@
 
 using namespace std;
 
-JobDebugInformationManager::JobDebugInformationManager(const int _debugUse, const std::string& jobName)
-    : debugFilename("defaultDebugFile.txt"), debugUse(_debugUse), allData("")
+JobDebugInformationManager::JobDebugInformationManager(const int _debugUse, const wstring& jobName)
+    : debugFilename(L"defaultDebugFile.txt"), debugUse(_debugUse), allData(L"")
 {
-    if (jobName != "")
+    if (jobName != L"")
         SetJobName(jobName);
 }
 
@@ -19,14 +19,14 @@ JobDebugInformationManager::JobDebugInformationManager(const JobDebugInformation
 {
 }
 
-void JobDebugInformationManager::SetJobName(const string &name)
+void JobDebugInformationManager::SetJobName(const wstring &name)
 {
-    debugFilename = name + " - Debug.txt";
+    debugFilename = name + L" - Debug.txt";
 }
 
 void JobDebugInformationManager::Reset()
 {
-    allData = "";
+    allData = L"";
 }
 
 int JobDebugInformationManager::GetUse() const
@@ -39,12 +39,12 @@ void JobDebugInformationManager::SetUse(const int value)
     debugUse = value;
 }
 
-void JobDebugInformationManager::AddTagLine(const string &tag)
+void JobDebugInformationManager::AddTagLine(const wstring &tag)
 {
     if (debugUse == DebugOutput::NEVER)
         return;
 
-    std::stringstream line;
+    wstringstream line;
     line << tag << std::endl;
     allData += line.str();
 }
@@ -57,7 +57,7 @@ JobStatus *JobDebugInformationManager::UpdateStatus(JobStatus *status) const
     return status;
 }
 
-JobStatus *JobDebugInformationManager::CreateStatus(const int code, const string &description) const
+JobStatus *JobDebugInformationManager::CreateStatus(const int code, const wstring& description) const
 {
     return UpdateStatus(new JobStatus(code, description));
 }

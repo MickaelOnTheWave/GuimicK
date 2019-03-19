@@ -10,14 +10,14 @@
 class AbstractJob
 {
 public:
-   AbstractJob(const std::string& _title);
+   AbstractJob(const std::wstring& _title);
    AbstractJob(const AbstractJob& other);
    virtual ~AbstractJob();
 
-   virtual std::string GetName() const;
-   void SetName(const std::string& value);
+   virtual std::wstring GetName() const;
+   void SetName(const std::wstring& value);
 
-   std::string GetAttachmentName();
+   std::wstring GetAttachmentName();
 
    virtual AbstractJob* Clone() = 0;
 
@@ -45,7 +45,7 @@ public:
 protected:
     JobDebugInformationManager* debugManager;
     bool isDebugManagerParent;
-    std::string title;
+    std::wstring title;
 };
 
 #endif // ABSTRACTJOB_H
