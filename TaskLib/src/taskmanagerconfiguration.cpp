@@ -36,7 +36,7 @@ bool TaskManagerConfiguration::LoadFromFile(const string &fileName, vector<strin
 }
 
 
-bool TaskManagerConfiguration::SaveToFile(const string& filename)
+bool TaskManagerConfiguration::SaveToFile(const wstring& filename)
 {
    ofstream filestream(filename.c_str());
    if (!filestream.is_open())

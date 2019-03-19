@@ -20,7 +20,7 @@ TarTools::TarTools(JobExecutionTarget* _target,
 {
 }
 
-bool TarTools::CreateArchive(const string& commandLineParameters,
+bool TarTools::CreateArchive(const wstring& commandLineParameters,
                              AbstractBackupJob::ResultCollection& results)
 {
    JobStatus* status = new JobStatus();
@@ -67,9 +67,9 @@ bool TarTools::CreateArchive(const string& commandLineParameters,
    return returnValue;
 }
 
-bool TarTools::CreateIncrementalArchive(const string& commandLineParameters,
-                                        const string& currentArchive,
-                                        const string& referenceArchive,
+bool TarTools::CreateIncrementalArchive(const wstring& commandLineParameters,
+                                        const wstring& currentArchive,
+                                        const wstring& referenceArchive,
                                         AbstractBackupJob::ResultCollection& results)
 {
    JobStatus* status = new JobStatus();
@@ -92,10 +92,10 @@ bool TarTools::CreateIncrementalArchive(const string& commandLineParameters,
    return ok;
 }
 
-bool TarTools::ExtractArchive(const string& archiveName, const string& destination)
+bool TarTools::ExtractArchive(const wstring& archiveName, const wstring& destination)
 {
-   string parameters = "xvf " + archiveName + " -C " + destination;
-   parameters += " --strip-components=1";
+   wstring parameters = L"xvf " + archiveName + L" -C " + destination;
+   parameters += L" --strip-components=1";
 
    ConsoleJob* job = new ConsoleJob("tar", parameters);
    if (parentDebugManager)
@@ -107,16 +107,16 @@ bool TarTools::ExtractArchive(const string& archiveName, const string& destinati
    return job->IsRunOk();
 }
 
-bool TarTools::ExtractIncrementalArchive(const string& baseArchiveName,
+bool TarTools::ExtractIncrementalArchive(const wstring& baseArchiveName,
                                          const int archiveIndex,
-                                         const string& destination)
+                                         const wstring& destination)
 {
    bool result = ExtractArchive(baseArchiveName, destination);
    if (result)
    {
       for (int i=0; i<=archiveIndex; ++i)
       {
-         stringstream archiveName;
+         wstringstream archiveName;
          archiveName << baseArchiveName << "." << i;
          result = ExtractArchive(archiveName.str(), destination);
          if (result == false)
@@ -126,33 +126,33 @@ bool TarTools::ExtractIncrementalArchive(const string& baseArchiveName,
    return result;
 }
 
-AbstractConsoleJob *TarTools::CreateBackupConsoleJob(const string &parameters)
+AbstractConsoleJob *TarTools::CreateBackupConsoleJob(const wstring &parameters)
 {
     return new ConsoleJob("tar", parameters);
 }
 
-FileBackupReport* TarTools::CreateReportFromArchives(const string& referenceArchive,
-                                                    const string& currentArchive)
+FileBackupReport* TarTools::CreateReportFromArchives(const wstring& referenceArchive,
+                                                    const wstring& currentArchive)
 {
-   vector<string> previousFileList;
+   vector<wstring> previousFileList;
    GetArchiveFileList(referenceArchive, previousFileList);
 
-   vector<string> currentFileList;
+   vector<wstring> currentFileList;
    GetArchiveFileList(currentArchive, currentFileList);
 
    return CreateReportFromFileLists(previousFileList, currentFileList);
 }
 
-void TarTools::GetArchiveFileList(const string& archive, vector<string>& fileList)
+void TarTools::GetArchiveFileList(const wstring& archive, vector<wstring>& fileList)
 {
-   const string params = string("tf ") + archive;
+   const wstring params = wstring(L"tf ") + archive;
    ConsoleJob* tarJob = new ConsoleJob("tar", params);
 
    tarJob->RunWithoutStatus();
    if (tarJob->IsRunOk())
    {
-      vector<string> rawFileList;
-      Tools::TokenizeString(tarJob->GetCommandOutput(), '\n', rawFileList);
+      vector<wstring> rawFileList;
+      Tools::TokenizeString(tarJob->GetCommandOutput(), L'\n', rawFileList);
       RemovePathHeaders(rawFileList);
       RemoveCurrentDirTag(rawFileList);
       copy(rawFileList.begin(), rawFileList.end(), back_inserter(fileList));
@@ -161,13 +161,13 @@ void TarTools::GetArchiveFileList(const string& archive, vector<string>& fileLis
    delete tarJob;
 }
 
-void TarTools::RemovePathHeaders(vector<string>& fileList)
+void TarTools::RemovePathHeaders(vector<wstring>& fileList)
 {
    if (fileList.size() < 2)
       return;
 
-   vector<string>::iterator previousValue = fileList.begin();
-   vector<string>::iterator it = fileList.begin()+1;
+   vector<wstring>::iterator previousValue = fileList.begin();
+   vector<wstring>::iterator it = fileList.begin()+1;
    while (it != fileList.end())
    {
       if (it->find(previousValue->c_str()) != string::npos)
@@ -183,10 +183,10 @@ void TarTools::RemovePathHeaders(vector<string>& fileList)
    }
 }
 
-void TarTools::RemoveCurrentDirTag(vector<string>& fileList)
+void TarTools::RemoveCurrentDirTag(vector<wstring>& fileList)
 {
-   const string currentDirTag = "./";
-   vector<string>::iterator it=fileList.begin();
+   const wstring currentDirTag = L"./";
+   vector<wstring>::iterator it=fileList.begin();
    for (; it!=fileList.end(); ++it)
    {
       if (it->find(currentDirTag) == 0)
@@ -195,7 +195,7 @@ void TarTools::RemoveCurrentDirTag(vector<string>& fileList)
 }
 
 FileBackupReport* TarTools::CreateReportFromFileLists(
-      const vector<string>& baseFileList, const vector<string>& newFileList)
+      const vector<wstring>& baseFileList, const vector<wstring>& newFileList)
 {
    vector<string> addedFiles, modifiedFiles, removedFiles;
 

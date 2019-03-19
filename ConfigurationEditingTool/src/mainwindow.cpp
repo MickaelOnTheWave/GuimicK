@@ -44,6 +44,12 @@
 #include "userconsolejob.h"
 #include "libwakejob.h"
 
+#ifdef WIN32
+   #include <Windows.h>
+   #undef GetJob
+#endif
+
+
 using namespace std;
 
 namespace
@@ -99,10 +105,30 @@ namespace
 
    QString GetDefaultWriteableTempFolder()
    {
-      QString folder = GetFirstWriteableFolder(QStandardPaths::TempLocation);
-      if (folder == "")
-         folder = GetFirstWriteableFolder(QStandardPaths::DownloadLocation);
-      return folder;
+      const QStringList defaultFolders = QStandardPaths::standardLocations(QStandardPaths::TempLocation);
+      return (defaultFolders.empty()) ? QString("") : defaultFolders.first();
+   }
+
+   string ToStdString(const std::wstring& value)
+   {
+      if (value.empty())
+      {
+         return std::string();
+      }
+#if defined WIN32
+      int size = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, &value[0], value.size(), NULL, 0, NULL, NULL);
+      std::string ret = std::string(size, 0);
+      WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, &value[0], value.size(), &ret[0], size, NULL, NULL);
+#else
+      size_t size = 0;
+      _locale_t lc = _create_locale(LC_ALL, "en_US.UTF-8");
+      errno_t err = _wcstombs_s_l(&size, NULL, 0, &wstr[0], _TRUNCATE, lc);
+      std::string ret = std::string(size, 0);
+      err = _wcstombs_s_l(&size, &ret[0], size, &wstr[0], _TRUNCATE, lc);
+      _free_locale(lc);
+      ret.resize(size - 1);
+#endif
+      return ret;
    }
 }
 
@@ -402,7 +428,7 @@ bool MainWindow::SaveConfigurationToFile(TooledConfiguration& customConfig,
                                          const QString& filename)
 {
    customConfig.SetJobs(jobListModel.GetJobs());
-   return customConfig.SaveConfiguration(filename.toStdString());
+   return customConfig.SaveConfiguration(filename.toStdWString());
 }
 
 void MainWindow::QuitApplication()
@@ -675,7 +701,7 @@ string MainWindow::SaveConfigurationToTempLocation()
    tempModel.GetTmpConfiguration()->SetReportDispatching("file");
 
    const string reportFile = CreateReportFile(tempModel.GetTmpConfiguration()->GetReportType());
-   const string reportFolder = GetTempReportFolder().toStdString();
+   const string reportFolder = ToStdString(GetTempReportFolder().toStdWString());
    tempModel.GetAgent()->SetReportFile(reportFile);
    tempModel.GetAgent()->SetReportFolder(reportFolder);
 
@@ -686,8 +712,8 @@ string MainWindow::SaveConfigurationToTempLocation()
 void MainWindow::on_actionRun_triggered()
 {
    const string reportFile = SaveConfigurationToTempLocation();
-   const string tempConfigFilename = GetTempConfigFilename().toStdString();
-   if (FileTools::FileExists(string(tempConfigFilename)) == false)
+   const wstring tempConfigFilename = GetTempConfigFilename().toStdWString();
+   if (FileTools::FileExists(tempConfigFilename) == false)
    {
       QMessageBox::warning(this, "Error with Temp folder",
                            "Configuration file could not be created in selected temp folder.\n"

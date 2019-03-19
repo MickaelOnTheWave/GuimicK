@@ -22,7 +22,7 @@ public:
 
    bool LoadFromFile(const std::string& fileName,
                      std::vector<std::string> &errorMessages);
-   bool SaveToFile(const std::string& filename);
+   bool SaveToFile(const std::wstring& filename);
 
    AbstractTypeConfiguration* GetTypeConfiguration();
 

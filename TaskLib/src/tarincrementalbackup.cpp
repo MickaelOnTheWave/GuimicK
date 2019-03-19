@@ -125,10 +125,10 @@ void TarIncrementalBackup::RunFullBackup(
 }
 
 void TarIncrementalBackup::RunIncrementalBackup(
-      const std::string& source, const std::string& destination,
+      const std::wstring& source, const std::wstring& destination,
       AbstractBackupJob::ResultCollection& results)
 {
-   stringstream params;
+   wstringstream params;
    params << "cpvfh " << CreateIndexedDestination(destination) << " -g ";
    params << GetIndexFile(destination) << " -C " << source << " .";
 
@@ -138,25 +138,25 @@ void TarIncrementalBackup::RunIncrementalBackup(
                                     destination, results);
 }
 
-bool TarIncrementalBackup::DoesFullBackupExist(const string& destination) const
+bool TarIncrementalBackup::DoesFullBackupExist(const wstring& destination) const
 {
    const bool archiveExists = FileTools::FileExists(destination);
    const bool indexExists = FileTools::FileExists(GetIndexFile(destination));
    return archiveExists && indexExists;
 }
 
-string TarIncrementalBackup::GetIndexFile(const string& destination) const
+wstring TarIncrementalBackup::GetIndexFile(const wstring& destination) const
 {
    return destination + ".snar";
 }
 
-string TarIncrementalBackup::CreateIndexedDestination(const string& destination) const
+wstring TarIncrementalBackup::CreateIndexedDestination(const wstring& destination) const
 {
    int index = 0;
-   string currentDestination;
+   wstring currentDestination;
    do
    {
-      stringstream stream;
+      wstringstream stream;
       stream << destination << "." << index;
       currentDestination = stream.str();
       ++index;
@@ -165,12 +165,12 @@ string TarIncrementalBackup::CreateIndexedDestination(const string& destination)
    return currentDestination;
 }
 
-unsigned int TarIncrementalBackup::FindArchiveLastBackupIndex(const string& backupArchive) const
+unsigned int TarIncrementalBackup::FindArchiveLastBackupIndex(const wstring& backupArchive) const
 {
    int index = -1;
    while (true)
    {
-      const string currentArchiveName = CreateArchiveName(backupArchive, index+1);
+      const wstring currentArchiveName = CreateArchiveName(backupArchive, index+1);
       if (FileTools::FileExists(currentArchiveName))
          ++index;
       else
@@ -180,7 +180,7 @@ unsigned int TarIncrementalBackup::FindArchiveLastBackupIndex(const string& back
    return index;
 }
 
-string TarIncrementalBackup::CreateIncrementalArchiveName(const string& backupArchive,
+wstring TarIncrementalBackup::CreateIncrementalArchiveName(const wstring& backupArchive,
                                                           const int timeIndex,
                                                           const int lastArchiveIndex) const
 {
@@ -191,10 +191,10 @@ string TarIncrementalBackup::CreateIncrementalArchiveName(const string& backupAr
       return CreateArchiveName(backupArchive, archiveIndex);
 }
 
-string TarIncrementalBackup::CreateArchiveName(const string& baseArchive,
+wstring TarIncrementalBackup::CreateArchiveName(const wstring& baseArchive,
                                                const int archiveIndex) const
 {
-   stringstream archive;
+   wstringstream archive;
    archive << baseArchive << "." << archiveIndex;
    return archive.str();
 }

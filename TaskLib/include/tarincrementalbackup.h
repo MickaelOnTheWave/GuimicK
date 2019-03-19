@@ -39,21 +39,21 @@ private:
    void RunFullBackup(const std::string& source,
                       const std::string& destination,
                       ResultCollection& results);
-   void RunIncrementalBackup(const std::string& source,
-                             const std::string& destination,
+   void RunIncrementalBackup(const std::wstring& source,
+                             const std::wstring& destination,
                              ResultCollection& results);
 
-   bool DoesFullBackupExist(const std::string& destination) const;
+   bool DoesFullBackupExist(const std::wstring& destination) const;
 
-   std::string GetIndexFile(const std::string& destination) const;
-   std::string CreateIndexedDestination(const std::string& destination) const;
+   std::wstring GetIndexFile(const std::wstring& destination) const;
+   std::wstring CreateIndexedDestination(const std::wstring& destination) const;
 
-   unsigned int FindArchiveLastBackupIndex(const std::string& backupArchive) const;
-   std::string CreateIncrementalArchiveName(const std::string& backupArchive,
-                                            const int timeIndex,
-                                            const int lastArchiveIndex) const;
-   std::string CreateArchiveName(const std::string& baseArchive,
-                                 const int archiveIndex) const;
+   unsigned int FindArchiveLastBackupIndex(const std::wstring& backupArchive) const;
+   std::wstring CreateIncrementalArchiveName(const std::wstring& backupArchive,
+                                             const int timeIndex,
+                                             const int lastArchiveIndex) const;
+   std::wstring CreateArchiveName(const std::wstring& baseArchive,
+                                  const int archiveIndex) const;
 
    int maxIncrementsPerFullBackup;
    int maxFullBackups;

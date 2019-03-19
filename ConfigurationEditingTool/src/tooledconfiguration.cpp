@@ -34,7 +34,7 @@ bool TooledConfiguration::LoadConfiguration(const std::string& file, std::vector
    return configuration->LoadFromFile(file, errors);
 }
 
-bool TooledConfiguration::SaveConfiguration(const std::string& file)
+bool TooledConfiguration::SaveConfiguration(const std::wstring& file)
 {
    return configuration->SaveToFile(file);
 }
