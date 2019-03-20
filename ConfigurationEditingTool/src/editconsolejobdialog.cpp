@@ -58,9 +58,9 @@ void EditConsoleJobDialog::UpdateJobTypeLabel()
 void EditConsoleJobDialog::UpdateUiFromJob_Basic()
 {
    auto consoleJob = static_cast<AbstractConsoleJob*>(job);
-   ui->nameEdit->setText(job->GetName().c_str());
-   ui->commandEdit->setText(consoleJob->GetCommand().c_str());
-   ui->parametersEdit->setText(consoleJob->GetCommandParameters().c_str());
+   ui->nameEdit->setText(QString::fromStdWString(job->GetName()));
+   ui->commandEdit->setText(QString::fromStdWString(consoleJob->GetCommand()));
+   ui->parametersEdit->setText(QString::fromStdWString(consoleJob->GetCommandParameters()));
    ui->expectedCodeSpinBox->setValue(consoleJob->GetExpectedReturnCode());
 }
 
@@ -75,32 +75,33 @@ void EditConsoleJobDialog::UpdateUiFromJob_User()
 
 void EditConsoleJobDialog::UpdateUiFromUserConsoleJob(UserConsoleJob* userJob)
 {
-   ui->useParserBox->setChecked(userJob->GetMiniDescriptionParserCommand() != "");
-   ui->parserEdit->setText(userJob->GetMiniDescriptionParserCommand().c_str());
+   const wstring miniDescription = userJob->GetMiniDescriptionParserCommand();
+   ui->useParserBox->setChecked(miniDescription != L"");
+   ui->parserEdit->setText(QString::fromStdWString(miniDescription));
    ui->parserUsesBufferBox->setChecked(userJob->IsParsingUsingBuffer());
    UpdateParserUi();
 
-   ui->expectedOutputTextEdit->setPlainText(userJob->GetExpectedOutput().c_str());
-   const bool isOutputUsedAsCondition = (userJob->GetExpectedOutput() != "");
+   ui->expectedOutputTextEdit->setPlainText(QString::fromStdWString(userJob->GetExpectedOutput()));
+   const bool isOutputUsedAsCondition = (userJob->GetExpectedOutput() != L"");
    ui->successTypeBox->setCurrentIndex(isOutputUsedAsCondition ? 1 : 0);
 
-   ui->fileOutputEdit->setText(userJob->GetOutputFile().c_str());
-   const bool isOutputToFile = (userJob->GetOutputFile() != "");
+   ui->fileOutputEdit->setText(QString::fromStdWString(userJob->GetOutputFile()));
+   const bool isOutputToFile = (userJob->GetOutputFile() != L"");
    ui->outputTypeBox->setCurrentIndex(isOutputToFile ? 1 : 0);
    ui->fileOutputEdit->setEnabled(isOutputToFile);
 
-   vector<string> userAttachments;
+   vector<wstring> userAttachments;
    userJob->GetUserAttachments(userAttachments);
    for (const auto& it : userAttachments)
-      ui->attachmentsWidget->addItem(QString(it.c_str()));
+      ui->attachmentsWidget->addItem(QString::fromStdWString(it.c_str()));
 }
 
 void EditConsoleJobDialog::UpdateJobFromUi_Basic()
 {
    auto consoleJob = static_cast<AbstractConsoleJob*>(job);
-   job->SetName(ui->nameEdit->text().toStdString());
-   consoleJob->SetCommand(ui->commandEdit->text().toStdString());
-   consoleJob->SetCommandParameters(ui->parametersEdit->text().toStdString());
+   job->SetName(ui->nameEdit->text().toStdWString());
+   consoleJob->SetCommand(ui->commandEdit->text().toStdWString());
+   consoleJob->SetCommandParameters(ui->parametersEdit->text().toStdWString());
    consoleJob->SetExpectedReturnCode(ui->expectedCodeSpinBox->value());
 }
 
@@ -109,24 +110,24 @@ void EditConsoleJobDialog::UpdateJobFromUi_User()
    UserConsoleJob* userJob = GetUserConsoleJob();
 
    const QString parserCommand = (ui->useParserBox->isChecked()) ? ui->parserEdit->text() : QString("");
-   userJob->SetMiniDescriptionParserCommand(parserCommand.toStdString());
+   userJob->SetMiniDescriptionParserCommand(parserCommand.toStdWString());
    userJob->SetParsingUsingBuffer(ui->parserUsesBufferBox->isChecked());
 
    if (ui->successTypeBox->currentIndex() == 1)
-      userJob->SetExpectedOutput(ui->expectedOutputTextEdit->toPlainText().toStdString());
+      userJob->SetExpectedOutput(ui->expectedOutputTextEdit->toPlainText().toStdWString());
    else if (ui->successTypeBox->currentIndex() == 0)
       userJob->SetExpectedReturnCode(ui->expectedCodeSpinBox->value());
 
    if (ui->outputTypeBox->currentIndex() == 0)
       userJob->SetOutputToBuffer();
    else
-      userJob->SetOutputTofile(ui->fileOutputEdit->text().toStdString());
+      userJob->SetOutputTofile(ui->fileOutputEdit->text().toStdWString());
 
    userJob->SetAttachOutput(ui->attachOutputBox->isChecked());
 
    userJob->EmptyUserAttachments();
    for (int i=0; i<ui->attachmentsWidget->count(); ++i)
-      userJob->AddUserAttachment(ui->attachmentsWidget->item(i)->text().toStdString());
+      userJob->AddUserAttachment(ui->attachmentsWidget->item(i)->text().toStdWString());
 }
 
 UserConsoleJob* EditConsoleJobDialog::GetUserConsoleJob()

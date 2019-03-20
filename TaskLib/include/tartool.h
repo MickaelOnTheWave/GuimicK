@@ -12,26 +12,26 @@ public:
 
    virtual ArchiveTool* Clone() const;
 
-   virtual void CreateArchive(const std::string& pathData,
+   virtual void CreateArchive(const std::wstring& pathData,
                               ArchiveToolResult& result);
 
-   virtual void AddToArchive(const std::string& pathToAdd,
+   virtual void AddToArchive(const std::wstring& pathToAdd,
                              ArchiveToolResult& result);
 
-   virtual void ExtractArchive(const std::string& destinationPath,
+   virtual void ExtractArchive(const std::wstring& destinationPath,
                                ArchiveToolResult& result);
 
    void SetGzipCompression(const bool value);
 
 private:
-   void RunTarCommand(const std::string& command, ArchiveToolResult& result);
+   void RunTarCommand(const std::wstring& command, ArchiveToolResult& result);
 
-   void ParseOutput(const std::string& commandOutput,
+   void ParseOutput(const std::wstring& commandOutput,
                     const int returnValue,
                     ArchiveToolResult& result) const;
 
-   std::string TarCreateFlags() const;
-   std::string TarUpdateFlags() const;
+   std::wstring TarCreateFlags() const;
+   std::wstring TarUpdateFlags() const;
 
    bool useGzipCompression;
 };

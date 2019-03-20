@@ -7,10 +7,10 @@ class GitCommonTools
 {
 public:
 
-    static bool ChangeCurrentDir(const std::string &newDir,
+    static bool ChangeCurrentDir(const std::wstring &newDir,
                                  AbstractBackupJob::ResultCollection &statusList);
 
-    static JobStatus* ChangeCurrentDir(const std::string &newDir);
+    static JobStatus* ChangeCurrentDir(const std::wstring &newDir);
 };
 
 #endif // GITCOMMONTOOLS_H

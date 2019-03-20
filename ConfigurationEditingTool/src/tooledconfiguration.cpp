@@ -29,12 +29,12 @@ void TooledConfiguration::SetConfigurationType(const ConfigurationType& type)
    configuration->ChangeConfigurationType(type);
 }
 
-bool TooledConfiguration::LoadConfiguration(const std::string& file, std::vector<std::string>& errors)
+bool TooledConfiguration::LoadConfiguration(const wstring& file, vector<wstring>& errors)
 {
    return configuration->LoadFromFile(file, errors);
 }
 
-bool TooledConfiguration::SaveConfiguration(const std::wstring& file)
+bool TooledConfiguration::SaveConfiguration(const wstring& file)
 {
    return configuration->SaveToFile(file);
 }
@@ -90,6 +90,6 @@ StandaloneConfiguration* TooledConfiguration::GetTmpConfiguration()
 Agent* TooledConfiguration::CreateDefaultAgent()
 {
    Agent* agent = new Agent();
-   agent->SetName("TaskManager Agent");
+   agent->SetName(L"TaskManager Agent");
    return agent;
 }

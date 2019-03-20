@@ -8,41 +8,41 @@
 
 using namespace std;
 
-const string defaultConfigurationFile = "rsnapshotConfigurationFile.conf";
+const wstring defaultConfigurationFile = L"rsnapshotConfigurationFile.conf";
 
-static const string defaultTemplateConfiguration =
-        "config_version	1.2\n"
-        "cmd_rm		/opt/bin/rm\n"
-        "cmd_rsync	/opt/bin/rsync\n"
-        "cmd_ssh	/opt/bin/ssh\n"
-        "verbose		3\n"
-        "loglevel	4\n"
-        "logfile	/var/log/rsnapshot\n"
-        "lockfile	/var/run/rsnapshot.pid\n"
-        "rsync_long_args	--delete --numeric-ids --delete-excluded\n";
+static const wstring defaultTemplateConfiguration =
+        L"config_version	1.2\n"
+        L"cmd_rm		/opt/bin/rm\n"
+        L"cmd_rsync	/opt/bin/rsync\n"
+        L"cmd_ssh	/opt/bin/ssh\n"
+        L"verbose		3\n"
+        L"loglevel	4\n"
+        L"logfile	/var/log/rsnapshot\n"
+        L"lockfile	/var/run/rsnapshot.pid\n"
+        L"rsync_long_args	--delete --numeric-ids --delete-excluded\n";
 
-RsnapshotConfigurationBuilder::RsnapshotConfigurationBuilder(const string &templateConfigurationFile)
+RsnapshotConfigurationBuilder::RsnapshotConfigurationBuilder(const wstring &templateConfigurationFile)
     : templateFile(templateConfigurationFile), configurationFile(defaultConfigurationFile),
-      repository("")
+      repository(L"")
 {
 }
 
-void RsnapshotConfigurationBuilder::SetRepository(const string &value)
+void RsnapshotConfigurationBuilder::SetRepository(const wstring &value)
 {
     repository = value;
 }
 
-void RsnapshotConfigurationBuilder::SetTemplateConfigurationFile(const string &file)
+void RsnapshotConfigurationBuilder::SetTemplateConfigurationFile(const wstring &file)
 {
     templateFile = file;
 }
 
-void RsnapshotConfigurationBuilder::SetGeneratedConfigurationFile(const string &file)
+void RsnapshotConfigurationBuilder::SetGeneratedConfigurationFile(const wstring &file)
 {
     configurationFile = file;
 }
 
-string RsnapshotConfigurationBuilder::CreateConfigurationFile(
+wstring RsnapshotConfigurationBuilder::CreateConfigurationFile(
         const AbstractBackupJob::BackupCollection &dataToBackup,
         const int maxBackups)
 {
@@ -54,50 +54,50 @@ void RsnapshotConfigurationBuilder::BuildConfigurationFile(
         const AbstractBackupJob::BackupCollection &dataToBackup,
         const int maxBackups)
 {
-    string configurationContent = GetTemplateConfiguration();
+    wstring configurationContent = GetTemplateConfiguration();
     AppendMaxBackups(configurationContent, maxBackups);
     AppendBackupData(configurationContent, dataToBackup);
     CheckAndFixConfigurationFile();
     FileTools::WriteBufferToFile(configurationFile, configurationContent);
 }
 
-string RsnapshotConfigurationBuilder::GetTemplateConfiguration() const
+wstring RsnapshotConfigurationBuilder::GetTemplateConfiguration() const
 {
-    if (templateFile != "")
+    if (templateFile != L"")
         return FileTools::GetTextFileContent(templateFile);
     else
         return defaultTemplateConfiguration;
 }
 
-void RsnapshotConfigurationBuilder::AppendMaxBackups(string &configurationData, const int maxBackups)
+void RsnapshotConfigurationBuilder::AppendMaxBackups(wstring &configurationData, const int maxBackups)
 {
-    stringstream stream;
+    wstringstream stream;
     stream << "interval	weekly	" << maxBackups << endl;
     configurationData +=  stream.str();
 }
 
 void RsnapshotConfigurationBuilder::AppendBackupData(
-        string &configurationData,
+        wstring &configurationData,
         const AbstractBackupJob::BackupCollection &dataToBackup) const
 {
-   const string absoluteRepository = PathTools::BuildFullPathIfRelative(repository);
-    configurationData += string("\nsnapshot_root\t") + absoluteRepository + "\n";
+   const wstring absoluteRepository = PathTools::BuildFullPathIfRelative(repository);
+    configurationData += wstring(L"\nsnapshot_root\t") + absoluteRepository + L"\n";
 
-    vector<pair<string,string> >::const_iterator it=dataToBackup.begin();
+    vector<pair<wstring,wstring> >::const_iterator it=dataToBackup.begin();
     for (; it!=dataToBackup.end(); ++it)
     {
-        configurationData += string("\nbackup\t") + it->first;
-        configurationData += "\t" + PathTools::RelativePath(it->second) + "\n";
+        configurationData += wstring(L"\nbackup\t") + it->first;
+        configurationData += L"\t" + PathTools::RelativePath(it->second) + L"\n";
     }
 }
 
 void RsnapshotConfigurationBuilder::CheckAndFixConfigurationFile()
 {
-    string newConfigurationFile = configurationFile;
+    wstring newConfigurationFile = configurationFile;
     int counter = 0;
     while (FileTools::FileExists(newConfigurationFile))
     {
-        stringstream stream;
+        wstringstream stream;
         stream << configurationFile << counter++;
         newConfigurationFile = stream.str();
     }

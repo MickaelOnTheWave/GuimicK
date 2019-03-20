@@ -19,8 +19,8 @@ public:
    ConfigurationType GetConfigurationType() const;
    void SetConfigurationType(const ConfigurationType& type);
 
-   bool LoadConfiguration(const std::string& file,
-                          std::vector<std::string>& errors);
+   bool LoadConfiguration(const std::wstring& file,
+                          std::vector<std::wstring>& errors);
    bool SaveConfiguration(const std::wstring& file);
 
    std::list<AbstractJob*> GetJobList();

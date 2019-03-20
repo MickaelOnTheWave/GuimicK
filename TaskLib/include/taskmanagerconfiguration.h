@@ -20,8 +20,8 @@ public:
    TaskManagerConfiguration(const TaskManagerConfiguration& other);
    virtual ~TaskManagerConfiguration();
 
-   bool LoadFromFile(const std::string& fileName,
-                     std::vector<std::string> &errorMessages);
+   bool LoadFromFile(const std::wstring& fileName,
+                     std::vector<std::wstring> &errorMessages);
    bool SaveToFile(const std::wstring& filename);
 
    AbstractTypeConfiguration* GetTypeConfiguration();

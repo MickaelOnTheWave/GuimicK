@@ -6,7 +6,7 @@
 class RemoteJobsRunner : public AbstractJob
 {
 public:
-    static std::string TargetNotAccessibleError;
+    static std::wstring TargetNotAccessibleError;
 
     RemoteJobsRunner();
     RemoteJobsRunner(const RemoteJobsRunner& other);
@@ -18,25 +18,25 @@ public:
 
     virtual JobStatus* Run();
 
-    std::string GetConfigurationFile() const;
-    void SetConfigurationFile(const std::string& value);
+    std::wstring GetConfigurationFile() const;
+    void SetConfigurationFile(const std::wstring& value);
 
     bool GetIsWorkListTimed() const;
     void SetIsWorkListTimed(const bool value);
 
 private:
-    bool RetrieveRemoteConfiguration(std::string& output);
+    bool RetrieveRemoteConfiguration(std::wstring& output);
 
-    JobStatus* CreateErrorStatus(const std::string& message);    
-    JobStatus* CreateConfigurationErrorStatus(const std::vector<std::string>& errors);
+    JobStatus* CreateErrorStatus(const std::wstring& message);    
+    JobStatus* CreateConfigurationErrorStatus(const std::vector<std::wstring>& errors);
 
-    bool IsInvalidFileError(const std::string& output, const std::string& file) const;
-    bool IsPasswordError(const std::string& output) const;
+    bool IsInvalidFileError(const std::wstring& output, const std::wstring& file) const;
+    bool IsPasswordError(const std::wstring& output) const;
 
-    std::string CreateConfigurationErrorDescription(const std::vector<std::string>& errors) const;
+    std::wstring CreateConfigurationErrorDescription(const std::vector<std::wstring>& errors) const;
 
-    std::string configurationFile;
-    std::string host, user;
+    std::wstring configurationFile;
+    std::wstring host, user;
     bool isWorkListTimed;
     Client* originalClient;
 };

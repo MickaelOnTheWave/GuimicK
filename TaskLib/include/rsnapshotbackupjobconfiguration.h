@@ -8,11 +8,11 @@
 class RsnapshotBackupJobConfiguration : public AbstractBackupJobConfiguration
 {
 public:
-    static const std::string FullConfigurationProperty;
-    static const std::string WaitProperty;
-    static const std::string TemplateConfigurationProperty;
-    static const std::string RepositoryProperty;
-    static const std::string MaxBackupCountProperty;
+    static const std::wstring FullConfigurationProperty;
+    static const std::wstring WaitProperty;
+    static const std::wstring TemplateConfigurationProperty;
+    static const std::wstring RepositoryProperty;
+    static const std::wstring MaxBackupCountProperty;
 
     RsnapshotBackupJobConfiguration();
 
@@ -24,28 +24,28 @@ protected:
     virtual AbstractJob* CreateJob();
     virtual void ConfigureJob(AbstractJob* job,
                               ConfigurationObject *confObject,
-                              std::vector<std::string> &errorMessages);
+                              std::vector<std::wstring> &errorMessages);
 
-    virtual void FillKnownProperties(std::vector<std::string>& properties);
+    virtual void FillKnownProperties(std::vector<std::wstring>& properties);
 
 private:
-    virtual std::string GetBackupItemName() const;
+    virtual std::wstring GetBackupItemName() const;
 
     void ConfigureSmartJob(RsnapshotSmartBackupJob* job,
                            ConfigurationObject *confObject,
-                           std::vector<std::string> &errorMessages);
+                           std::vector<std::wstring> &errorMessages);
     void ConfigureRawJob(RsnapshotRawBackupJob* job,
                          ConfigurationObject *confObject,
-                         std::vector<std::string> &errorMessages);
+                         std::vector<std::wstring> &errorMessages);
 
-    std::string GetRepositoryValue(ConfigurationObject *confObject) const;
+    std::wstring GetRepositoryValue(ConfigurationObject *confObject) const;
     bool GetWaitBeforeRunValue(ConfigurationObject *confObject) const;
     void SetMaxBackupCount(RsnapshotSmartBackupJob* job, ConfigurationObject* confObject) const;
 
     void CreateRawConfiguration(ConfigurationObject* conf, RsnapshotRawBackupJob* job);
     void CreateSmartConfiguration(ConfigurationObject* conf, RsnapshotSmartBackupJob* job);
 
-    std::string fullConfigurationFile;
+    std::wstring fullConfigurationFile;
 };
 
 #endif // RSNAPSHOTBACKUPJOBCONFIGURATION_H

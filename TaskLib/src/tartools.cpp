@@ -10,8 +10,8 @@
 
 using namespace std;
 
-static const string reportCreationError = "Failed creating report";
-static const string tarCommandError = "tar command failed";
+static const wstring reportCreationError = L"Failed creating report";
+static const wstring tarCommandError = L"tar command failed";
 
 TarTools::TarTools(JobExecutionTarget* _target,
                    JobDebugInformationManager* _parentDebugManager)
@@ -57,8 +57,8 @@ bool TarTools::CreateArchive(const wstring& commandLineParameters,
    {
        status->SetCode(JobStatus::Error);
        status->SetDescription(tarCommandError);
-       parentDebugManager->AddDataLine<string>("tar output", commandJob->GetCommandOutput());
-       parentDebugManager->AddDataLine<int>("tar code", commandJob->GetCommandReturnCode());
+       parentDebugManager->AddDataLine<wstring>(L"tar output", commandJob->GetCommandOutput());
+       parentDebugManager->AddDataLine<int>(L"tar code", commandJob->GetCommandReturnCode());
        results.push_back(pair<JobStatus*, FileBackupReport*>(status, NULL));
        returnValue = false;
    }
@@ -85,7 +85,7 @@ bool TarTools::CreateIncrementalArchive(const wstring& commandLineParameters,
    else
    {
       status->SetCode(JobStatus::Error);
-      status->SetDescription("Incremental Archive not created");
+      status->SetDescription(L"Incremental Archive not created");
    }
 
    results.push_back(pair<JobStatus*, FileBackupReport*>(status, finalReport));
@@ -128,7 +128,7 @@ bool TarTools::ExtractIncrementalArchive(const wstring& baseArchiveName,
 
 AbstractConsoleJob *TarTools::CreateBackupConsoleJob(const wstring &parameters)
 {
-    return new ConsoleJob("tar", parameters);
+    return new ConsoleJob(L"tar", parameters);
 }
 
 FileBackupReport* TarTools::CreateReportFromArchives(const wstring& referenceArchive,
@@ -146,7 +146,7 @@ FileBackupReport* TarTools::CreateReportFromArchives(const wstring& referenceArc
 void TarTools::GetArchiveFileList(const wstring& archive, vector<wstring>& fileList)
 {
    const wstring params = wstring(L"tf ") + archive;
-   ConsoleJob* tarJob = new ConsoleJob("tar", params);
+   ConsoleJob* tarJob = new ConsoleJob(L"tar", params);
 
    tarJob->RunWithoutStatus();
    if (tarJob->IsRunOk())
@@ -170,7 +170,7 @@ void TarTools::RemovePathHeaders(vector<wstring>& fileList)
    vector<wstring>::iterator it = fileList.begin()+1;
    while (it != fileList.end())
    {
-      if (it->find(previousValue->c_str()) != string::npos)
+      if (it->find(previousValue->c_str()) != wstring::npos)
       {
          previousValue = fileList.erase(previousValue);
          it = previousValue+1;
@@ -197,7 +197,7 @@ void TarTools::RemoveCurrentDirTag(vector<wstring>& fileList)
 FileBackupReport* TarTools::CreateReportFromFileLists(
       const vector<wstring>& baseFileList, const vector<wstring>& newFileList)
 {
-   vector<string> addedFiles, modifiedFiles, removedFiles;
+   vector<wstring> addedFiles, modifiedFiles, removedFiles;
 
    set_difference(newFileList.begin(), newFileList.end(), baseFileList.begin(), baseFileList.end(),
                   back_inserter(addedFiles));

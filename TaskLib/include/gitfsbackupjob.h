@@ -16,53 +16,53 @@ public:
     virtual AbstractJob* Clone();
     virtual JobStatus* Run();
 
-    virtual std::string GetTypeName() const;
+    virtual std::wstring GetTypeName() const;
 
     bool GetForceRawCopyUse() const;
     void SetForceRawCopyUse(const bool value);
 
 private:
-    virtual JobStatus* RestoreBackupFromServer(const std::string &source, const std::string &destination);
+    virtual JobStatus* RestoreBackupFromServer(const std::wstring &source, const std::wstring &destination);
 
-    void RunRepositoryBackup(const std::string& source,
-                             const std::string& destination,
+    void RunRepositoryBackup(const std::wstring& source,
+                             const std::wstring& destination,
                              ResultCollection &results);
 
-    void CreateGitRepository(const std::string& path, JobStatus* status);
-    void CleanDestination(const std::string& destination, JobStatus* status);
-    void CopyData(const std::string& source, const std::string& destination,
+    void CreateGitRepository(const std::wstring& path, JobStatus* status);
+    void CleanDestination(const std::wstring& destination, JobStatus* status);
+    void CopyData(const std::wstring& source, const std::wstring& destination,
                        JobStatus* status);
     void AddData(JobStatus* status);
-    std::string CommitData(JobStatus* status);
+    std::wstring CommitData(JobStatus* status);
     bool HasChangesInRepository() const;
-    void CreateReport(const std::string &commitId, JobStatus* status, FileBackupReport &report);
+    void CreateReport(const std::wstring &commitId, JobStatus* status, FileBackupReport &report);
 
     void FixCRLFIssue();
     void SetGitUserToFixUtf8Warning();
 
     int GetRevisionCount() const;
     void CreateInitialReport(JobStatus* status, FileBackupReport& report);
-    void CreateDifferentialReport(const std::string &commitId, JobStatus* status,
+    void CreateDifferentialReport(const std::wstring &commitId, JobStatus* status,
                                   FileBackupReport& report);
 
-    std::string GetCommitId(const std::string& output);
+    std::wstring GetCommitId(const std::wstring& output);
 
     bool IsGitInstalled() const;
 
     bool IsCommitCodeOk(const int code) const;
 
-    AbstractCopyFsBackupJob* PrepareCopy(const std::string& destination, JobStatus* status);
+    AbstractCopyFsBackupJob* PrepareCopy(const std::wstring& destination, JobStatus* status);
     void RunCopy(AbstractCopyFsBackupJob* copyJob,
-                 const std::string& source, const std::string& destination, JobStatus* status);
+                 const std::wstring& source, const std::wstring& destination, JobStatus* status);
 
-    void LogDebugCommand(const std::string& title, const ConsoleJob &job);
+    void LogDebugCommand(const std::wstring& title, const ConsoleJob &job);
 
     bool ConfigureGitRepository();
-    bool SetupGitConfig(const std::string& configuration, const std::string& value);
+    bool SetupGitConfig(const std::wstring& configuration, const std::wstring& value);
 
-    std::string CreateFilteredFileName(const std::string& name);
+    std::wstring CreateFilteredFileName(const std::wstring& name);
 
-    void RunGitExport(const std::string& destination, JobStatus* status);
+    void RunGitExport(const std::wstring& destination, JobStatus* status);
 
     bool forceRawCopy;
 };

@@ -15,7 +15,7 @@ public:
 protected:
     virtual AbstractJob* CreateConfiguredJobAfterCheck(
                             ConfigurationObject *confObject,
-                            std::vector<std::string> &errorMessages);
+                            std::vector<std::wstring> &errorMessages);
 };
 
 #endif // SSHCONSOLEJOBCONFIGURATION_H

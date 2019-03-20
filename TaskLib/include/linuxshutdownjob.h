@@ -29,7 +29,7 @@ private:
     int WaitForComputerToGoDown() const;
 
     SshConsoleJob* shutdownJob;
-    std::string computer;
+    std::wstring computer;
     int jobTimeoutInSeconds;
 };
 

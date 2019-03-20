@@ -4,13 +4,13 @@
 
 using namespace std;
 
-const string RemoteJobsRunnerConfiguration::ConfFileProperty = "conffile";
-const string RemoteJobsRunnerConfiguration::TimedJobsProperty = "timedJobs";
+const wstring RemoteJobsRunnerConfiguration::ConfFileProperty = L"conffile";
+const wstring RemoteJobsRunnerConfiguration::TimedJobsProperty = L"timedJobs";
 
-static const string defaultConfigurationFile = ".taskmanager";
+static const wstring defaultConfigurationFile = L".taskmanager";
 
 RemoteJobsRunnerConfiguration::RemoteJobsRunnerConfiguration()
-   : AbstractJobConfiguration("RemoteRunner")
+   : AbstractJobConfiguration(L"RemoteRunner")
 {
 }
 
@@ -25,7 +25,7 @@ ConfigurationObject* RemoteJobsRunnerConfiguration::CreateConfigurationObject(Ab
    ConfigurationObject* confObject = new ConfigurationObject(jobTag);
 
    confObject->SetProperty(ConfFileProperty, castJob->GetConfigurationFile());
-   confObject->SetProperty(TimedJobsProperty, castJob->GetIsWorkListTimed() ? "true" : "false");
+   confObject->SetProperty(TimedJobsProperty, castJob->GetIsWorkListTimed() ? L"true" : L"false");
    return confObject;
 }
 
@@ -35,21 +35,21 @@ AbstractJob* RemoteJobsRunnerConfiguration::CreateJob()
 }
 
 void RemoteJobsRunnerConfiguration::ConfigureJob(AbstractJob* job, ConfigurationObject* confObject,
-                                                 vector<string>& errorMessages)
+                                                 vector<wstring>& errorMessages)
 {
    AbstractJobConfiguration::ConfigureJob(job, confObject, errorMessages);
-   string conffile = confObject->GetFirstProperty(ConfFileProperty, "param0");
-   if (conffile == "")
+   wstring conffile = confObject->GetFirstProperty(ConfFileProperty, L"param0");
+   if (conffile == L"")
       conffile = defaultConfigurationFile;
 
-   const string timedRun = confObject->GetProperty(TimedJobsProperty);
+   const wstring timedRun = confObject->GetProperty(TimedJobsProperty);
 
    RemoteJobsRunner* castJob = static_cast<RemoteJobsRunner*>(job);
    castJob->SetConfigurationFile(conffile);
-   castJob->SetIsWorkListTimed(timedRun != "false");
+   castJob->SetIsWorkListTimed(timedRun != L"false");
 }
 
-void RemoteJobsRunnerConfiguration::FillKnownProperties(std::vector<std::string>& properties)
+void RemoteJobsRunnerConfiguration::FillKnownProperties(std::vector<std::wstring>& properties)
 {
    AbstractJobConfiguration::FillKnownProperties(properties);
    properties.push_back(ConfFileProperty);

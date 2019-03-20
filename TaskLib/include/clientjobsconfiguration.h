@@ -11,8 +11,8 @@
 class ClientJobsConfiguration : public AbstractTypeConfiguration
 {
 public:
-   static std::string MsgNoJobList;
-   static std::string MsgUnsupportedObjects;
+   static std::wstring MsgNoJobList;
+   static std::wstring MsgUnsupportedObjects;
 
    ClientJobsConfiguration(const int _debugOption = DebugOutput::UNDEFINED);
    ClientJobsConfiguration(const ClientJobsConfiguration& other);
@@ -21,9 +21,9 @@ public:
 
    virtual AbstractTypeConfiguration* Copy() const;
 
-   bool LoadFromBuffer(const std::string& buffer, std::vector<std::string> &errorMessages);
+   bool LoadFromBuffer(const std::wstring& buffer, std::vector<std::wstring> &errorMessages);
 
-   virtual void SaveToOpenedFile(std::ofstream& fileStream);
+   virtual void SaveToOpenedFile(std::wofstream& fileStream);
 
    virtual void GetJobList(std::list<AbstractJob*>& _jobList);
 
@@ -32,18 +32,18 @@ public:
    virtual void ClearJobList();
 
    bool LoadFromConfigurationObject(ConfigurationObject* confObject,
-                                    std::vector<std::string> &errorMessages);
+                                    std::vector<std::wstring> &errorMessages);
 
 private:
     virtual void FillRootObjects(const std::list<ConfigurationObject*>& objectList,
-                         std::vector<std::string> &errorMessages);
+                         std::vector<std::wstring> &errorMessages);
     virtual void FillGlobalProperties(ConfigurationObject* object,
-                         std::vector<std::string> &errorMessages);
-    virtual bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
+                         std::vector<std::wstring> &errorMessages);
+    virtual bool IsConfigurationConsistent(std::vector<std::wstring> &errorMessages);
 
     ConfigurationObject* FindJobListObject(const std::list<ConfigurationObject*>& objectList);
 
-    void FillJobList(ConfigurationObject* jobListObj, std::vector<std::string> &errorMessages);
+    void FillJobList(ConfigurationObject* jobListObj, std::vector<std::wstring> &errorMessages);
 
     std::list<AbstractJob*> jobList;
     int debugOption;

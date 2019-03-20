@@ -31,6 +31,6 @@ JobStatus* LibWakeJob::RunWaker()
    if (ok)
       return new JobStatus(JobStatus::Ok);
    else
-      return new JobStatus(JobStatus::Error, "Wake failed");
+      return new JobStatus(JobStatus::Error, L"Wake failed");
 }
 

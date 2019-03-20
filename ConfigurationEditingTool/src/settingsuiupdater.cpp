@@ -6,9 +6,9 @@ using namespace std;
 
 namespace
 {
-   void SetValue(QLineEdit* lineEdit, const string& value)
+   void SetValue(QLineEdit* lineEdit, const wstring& value)
    {
-      lineEdit->setText(value.c_str());
+      lineEdit->setText(QString::fromStdWString(value));
    }
 }
 
@@ -29,16 +29,16 @@ void SettingsUiUpdater::UpdateAgentData()
    Agent* agent = configuration->GetAgent();
    SetValue(ui->agentNameEdit, agent->GetName());
    UpdateEmailData(agent->GetEmailData());
-   ui->reportFolderWidget->SetPath(agent->GetReportFolder().c_str());
+   ui->reportFolderWidget->SetPath(QString::fromStdWString(agent->GetReportFolder()));
 }
 
 void SettingsUiUpdater::UpdateClientData()
 {
    SetValue(ui->clientNameEdit, configuration->GetClient()->GetName());
 
-   const std::string sevenZipPath =
-         configuration->GetClient()->GetProperty("7zipExecutable");
-   ui->sevenZipWidget->SetPath(sevenZipPath.c_str());
+   const std::wstring sevenZipPath =
+         configuration->GetClient()->GetProperty(L"7zipExecutable");
+   ui->sevenZipWidget->SetPath(QString::fromStdWString(sevenZipPath));
 }
 
 void SettingsUiUpdater::UpdateEmailData(const EmailData& emailData)
@@ -52,22 +52,22 @@ void SettingsUiUpdater::UpdateEmailData(const EmailData& emailData)
 
 void SettingsUiUpdater::UpdateReportType()
 {
-   const string reportType = configuration->GetReportType();
-   const bool isReportTypeHtml = (reportType == "html");
+   const wstring reportType = configuration->GetReportType();
+   const bool isReportTypeHtml = (reportType == L"html");
    ui->cssWidget->setVisible(isReportTypeHtml);
    ui->reportFormatBox->setCurrentIndex(isReportTypeHtml ? 1 : 0);
 
-   ui->cssWidget->SetPath(configuration->GetReportCss().c_str());
+   ui->cssWidget->SetPath(QString::fromStdWString(configuration->GetReportCss()));
 }
 
 void SettingsUiUpdater::UpdateReportDispatching()
 {
-   const string reportDispatching = configuration->GetReportDispatching();
-   if (reportDispatching == "email")
+   const wstring reportDispatching = configuration->GetReportDispatching();
+   if (reportDispatching == L"email")
       SetReportDispatchControls(1);
-   else if (reportDispatching == "console")
+   else if (reportDispatching == L"console")
       SetReportDispatchControls(0);
-   else if (reportDispatching == "file")
+   else if (reportDispatching == L"file")
       SetReportDispatchControls(2);
    else
       SetReportDispatchControls(0);

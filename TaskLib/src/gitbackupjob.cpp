@@ -11,20 +11,20 @@
 
 using namespace std;
 
-static const string invalidSourceRepositoryError        = "Invalid source repository";
-static const string repositoryCloneOk                   = "Repository cloned successfully";
-static const string invalidDestinationRepositoryError   = "Invalid destination repository";
-static const string fetchUpdateError                    = "Update error";
-static const string unknownError                        = "Unknown error";
-static const string repositoryPullOk                    = "Repository successfully updated, see attached file.";
-static const string reportCreationError                 = "Failed creating report";
+static const wstring invalidSourceRepositoryError        = L"Invalid source repository";
+static const wstring repositoryCloneOk                   = L"Repository cloned successfully";
+static const wstring invalidDestinationRepositoryError   = L"Invalid destination repository";
+static const wstring fetchUpdateError                    = L"Update error";
+static const wstring unknownError                        = L"Unknown error";
+static const wstring repositoryPullOk                    = L"Repository successfully updated, see attached file.";
+static const wstring reportCreationError                 = L"Failed creating report";
 
-static const string repositoryBackupMessage = "repositories backed up";
-static const string defaultName = "Git Repository Backup";
+static const wstring repositoryBackupMessage = L"repositories backed up";
+static const wstring defaultName = L"Git Repository Backup";
 
 GitBackupJob::GitBackupJob()
  : AbstractBackupJob(defaultName),
-   writeLogsToFile(false), archiveContent("")
+   writeLogsToFile(false), archiveContent(L"")
 {
     statusManager->SetItemBackupMessage(repositoryBackupMessage);
     statusManager->SetJoinReports(false);
@@ -39,9 +39,9 @@ GitBackupJob::GitBackupJob(const GitBackupJob &other)
     statusManager->SetJoinReports(false);
 }
 
-GitBackupJob::GitBackupJob(const std::vector<std::pair<string, string> > &repositoryList)
- : AbstractBackupJob("Git Repository Backup"),
-   writeLogsToFile(false), archiveContent("")
+GitBackupJob::GitBackupJob(const std::vector<std::pair<wstring, wstring> > &repositoryList)
+ : AbstractBackupJob(L"Git Repository Backup"),
+   writeLogsToFile(false), archiveContent(L"")
 {
     folderList = repositoryList;
     statusManager->SetItemBackupMessage(repositoryBackupMessage);
@@ -57,7 +57,7 @@ AbstractJob *GitBackupJob::Clone()
    return new GitBackupJob(*this);
 }
 
-string GitBackupJob::GetTypeName() const
+wstring GitBackupJob::GetTypeName() const
 {
    return defaultName;
 }
@@ -73,8 +73,8 @@ void GitBackupJob::SetWriteLogsToFiles(bool enabled)
 }
 
 void GitBackupJob::RunRepositoryBackup(
-        const string &source,
-        const string &destination,
+        const wstring &source,
+        const wstring &destination,
         AbstractBackupJob::ResultCollection& results)
 {
     if (FileTools::FolderExists(destination))
@@ -83,9 +83,9 @@ void GitBackupJob::RunRepositoryBackup(
        RunGitClone(source, destination, results);
 }
 
-JobStatus* GitBackupJob::RestoreBackupFromServer(const string& source, const string& destination)
+JobStatus* GitBackupJob::RestoreBackupFromServer(const wstring& source, const wstring& destination)
 {
-   ConsoleJob* gitCommand = new ConsoleJob("git", BuildCloneParameters(source, destination, false));
+   ConsoleJob* gitCommand = new ConsoleJob(L"git", BuildCloneParameters(source, destination, false));
    JobStatus* status = gitCommand->Run();
    if (gitCommand->GetCommandReturnCode() == 128)
        status->SetDescription(invalidSourceRepositoryError);
@@ -96,8 +96,8 @@ bool GitBackupJob::IsInvalidSourceError(const ConsoleJob &job) const
 {
     if (!job.IsRunOk())
     {
-        const string tagString = "does not appear to be a git repository";
-        if (job.GetCommandOutput().find(tagString) != string::npos)
+        const wstring tagString = L"does not appear to be a git repository";
+        if (job.GetCommandOutput().find(tagString) != wstring::npos)
             return true;
     }
 
@@ -106,7 +106,7 @@ bool GitBackupJob::IsInvalidSourceError(const ConsoleJob &job) const
 
 bool GitBackupJob::AreSourcesConsistent() const
 {
-    vector<pair<string, string> >::const_iterator it=folderList.begin();
+    vector<pair<wstring, wstring> >::const_iterator it=folderList.begin();
     for (; it!=folderList.end(); it++)
     {
         if (!FileTools::FolderExists(it->first))
@@ -115,46 +115,46 @@ bool GitBackupJob::AreSourcesConsistent() const
     return true;
 }
 
-void GitBackupJob::UpdateGitRepository(const string &gitRepository,
+void GitBackupJob::UpdateGitRepository(const wstring &gitRepository,
                                        AbstractBackupJob::ResultCollection &statusList)
 {
-    debugManager->AddDataLine<string>("Updating Git repository", gitRepository);
-    string originalDirectory = PathTools::GetCurrentFullPath();
+    debugManager->AddDataLine<wstring>(L"Updating Git repository", gitRepository);
+    wstring originalDirectory = PathTools::GetCurrentFullPath();
 
     bool ok = GitCommonTools::ChangeCurrentDir(gitRepository, statusList);
     if (!ok)
         return;
 
     // TODO : try again to use exceptions here
-    const string oldHeadId = GetRepositoryHeadId();
+    const wstring oldHeadId = GetRepositoryHeadId();
     ok = FetchUpdates(gitRepository, statusList);
     if (ok)
     {
-        const string newHeadId = GetRepositoryHeadId();
+        const wstring newHeadId = GetRepositoryHeadId();
         ComputeChanges(gitRepository, oldHeadId, newHeadId, statusList);
     }
 
     GitCommonTools::ChangeCurrentDir(originalDirectory, statusList);
 }
 
-string GitBackupJob::GetRepositoryHeadId() const
+wstring GitBackupJob::GetRepositoryHeadId() const
 {
-    ConsoleJob command("git", "rev-parse HEAD");
+    ConsoleJob command(L"git", L"rev-parse HEAD");
     command.RunWithoutStatus();
     if (command.IsRunOk())
         return command.GetCommandOutput();
     else
-        return string("");
+        return wstring(L"");
 }
 
-bool GitBackupJob::FetchUpdates(const string &gitRepository,
+bool GitBackupJob::FetchUpdates(const wstring &gitRepository,
                                 ResultCollection &statusList)
 {
-    ConsoleJob command("git", "remote update");
+    ConsoleJob command(L"git", L"remote update");
     command.RunWithoutStatus();
     if (!command.IsRunOk())
     {
-        string errorMessage;
+        wstring errorMessage;
         if (IsInvalidSourceError(command))
             errorMessage = invalidSourceRepositoryError;
         else
@@ -169,13 +169,13 @@ bool GitBackupJob::FetchUpdates(const string &gitRepository,
 }
 
 void GitBackupJob::ComputeChanges(
-        const string& gitRepository,
-        const string &oldCommitId, const string &newCommitId,
+        const wstring& gitRepository,
+        const wstring &oldCommitId, const wstring &newCommitId,
         AbstractBackupJob::ResultCollection &statusList)
 {
-    string params = "diff --name-status ";
-    params += oldCommitId + " " + newCommitId;
-    ConsoleJob command("git", params);
+    wstring params = L"diff --name-status ";
+    params += oldCommitId + L" " + newCommitId;
+    ConsoleJob command(L"git", params);
     command.RunWithoutStatus();
     if (command.IsRunOk())
         CreateReport(gitRepository, command.GetCommandOutput(), statusList);
@@ -185,13 +185,13 @@ void GitBackupJob::ComputeChanges(
 }
 
 void GitBackupJob::CreateReport(
-        const std::string& gitRepository,
-        const std::string& commandOutput,
+        const std::wstring& gitRepository,
+        const std::wstring& commandOutput,
         AbstractBackupJob::ResultCollection &statusList)
 {
     GitPlumbingReportParser parser;
     bool ok = parser.ParseBuffer(commandOutput);
-    debugManager->AddDataLine<bool>("Parser result", ok);
+    debugManager->AddDataLine<bool>(L"Parser result", ok);
     if (ok)
     {
         FileBackupReport* report = new FileBackupReport();
@@ -202,7 +202,7 @@ void GitBackupJob::CreateReport(
     }
     else
     {
-        debugManager->AddDataLine<string>("Parser input", commandOutput);
+        debugManager->AddDataLine<wstring>(L"Parser input", commandOutput);
         JobStatus* status = new JobStatus(JobStatus::OkWithWarnings, reportCreationError);
         AddToAttachedArchive(gitRepository, commandOutput);
         statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
@@ -210,47 +210,47 @@ void GitBackupJob::CreateReport(
 }
 
 void GitBackupJob::AddToAttachedArchive(
-        const std::string& gitRepository,
-        const std::string& content)
+        const std::wstring& gitRepository,
+        const std::wstring& content)
 {
-    const string repositoryName = FileTools::GetFilenameFromUnixPath(gitRepository);
-    archiveContent += string("\nReport for ") + repositoryName + "\n";
+    const wstring repositoryName = FileTools::GetFilenameFromUnixPath(gitRepository);
+    archiveContent += wstring(L"\nReport for ") + repositoryName + L"\n";
     archiveContent += content;
 }
 
-void GitBackupJob::RunGitClone(const string &source,
-                               const string &destination,
+void GitBackupJob::RunGitClone(const wstring &source,
+                               const wstring &destination,
                                ResultCollection &statusList)
 {
-    debugManager->AddDataLine<string>("Git Clone on", repository);
-    ConsoleJob* gitCommand = new ConsoleJob("git", BuildCloneParameters(source, destination, true));
+    debugManager->AddDataLine<wstring>(L"Git Clone on", repository);
+    ConsoleJob* gitCommand = new ConsoleJob(L"git", BuildCloneParameters(source, destination, true));
     JobStatus* status = gitCommand->Run();
-    debugManager->AddDataLine<int>("Clone result", gitCommand->GetCommandReturnCode());
-    debugManager->AddDataLine<string>("Clone output", gitCommand->GetCommandOutput());
+    debugManager->AddDataLine<int>(L"Clone result", gitCommand->GetCommandReturnCode());
+    debugManager->AddDataLine<wstring>(L"Clone output", gitCommand->GetCommandOutput());
     if (gitCommand->GetCommandReturnCode() == 128)
         status->SetDescription(invalidSourceRepositoryError);
     else
     {
         status->SetDescription(repositoryCloneOk);
-        AddToAttachedArchive(source, "Repository cloned");
+        AddToAttachedArchive(source, L"Repository cloned");
     }
 
     statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
     delete gitCommand;
 }
 
-string GitBackupJob::BuildCloneParameters(const string &source, const string &destination,
+wstring GitBackupJob::BuildCloneParameters(const wstring &source, const wstring &destination,
                                           const bool mirror) const
 {
-    string params("clone ");
+    wstring params(L"clone ");
     if (mirror)
-       params += "--mirror ";
+       params += L"--mirror ";
 
     if (IsTargetLocal())
         params += source;
     else
-        params += target.sshUser + "@" + target.sshHost + ":" + source;
+        params += target.sshUser + L"@" + target.sshHost + L":" + source;
 
-    params += string(" 2>&1 ") + destination;
+    params += wstring(L" 2>&1 ") + destination;
     return params;
 }

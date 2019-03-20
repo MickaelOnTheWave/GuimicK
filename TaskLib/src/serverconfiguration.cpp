@@ -7,7 +7,6 @@
 
 #include "tools.h"
 
-#include "changescreensaverjobconfiguration.h"
 #include "clamavjobconfiguration.h"
 #include "configurationtools.h"
 #include "diskspacecheckjobconfiguration.h"
@@ -22,12 +21,12 @@
 
 using namespace std;
 
-string ServerConfiguration::MsgNoPassword = "Client requires password";
-string ServerConfiguration::MsgNoConfigFile = "Client configuration file missing";
-string ServerConfiguration::MsgClientConfigAccessError = "Error trying to access Client configuration";
-string ServerConfiguration::MsgClientConfigUnknownObjects = "Client configuration has unknown objects";
-string ServerConfiguration::MsgClientConfigEmpty = "Client configuration is empty";
-string ServerConfiguration::MsgRemoteOptionDeprecated = "Remote option deprecated";
+wstring ServerConfiguration::MsgNoPassword                  = L"Client requires password";
+wstring ServerConfiguration::MsgNoConfigFile                = L"Client configuration file missing";
+wstring ServerConfiguration::MsgClientConfigAccessError     = L"Error trying to access Client configuration";
+wstring ServerConfiguration::MsgClientConfigUnknownObjects  = L"Client configuration has unknown objects";
+wstring ServerConfiguration::MsgClientConfigEmpty           = L"Client configuration is empty";
+wstring ServerConfiguration::MsgRemoteOptionDeprecated      = L"Remote option deprecated";
 
 ServerConfiguration::ServerConfiguration()
     : StandaloneConfiguration()
@@ -49,19 +48,19 @@ AbstractTypeConfiguration* ServerConfiguration::Copy() const
 }
 
 void ServerConfiguration::CreateAgent(ConfigurationObject* confObject,
-                                      std::vector<string>& errorMessages)
+                                      std::vector<wstring>& errorMessages)
 {
    StandaloneConfiguration::CreateAgent(confObject, errorMessages);
 
    // TODO : think about the proper place for that
-   ConfigurationObject* pathsObject = confObject->GetObject("DefaultBinPaths");
+   ConfigurationObject* pathsObject = confObject->GetObject(L"DefaultBinPaths");
    if (pathsObject)
    {
-       map<string, string>::iterator itPath = pathsObject->propertyList.begin();
-       map<string, string>::iterator endPath = pathsObject->propertyList.end();
+       map<wstring, wstring>::iterator itPath = pathsObject->propertyList.begin();
+       map<wstring, wstring>::iterator endPath = pathsObject->propertyList.end();
        for (; itPath != endPath; itPath++)
        {
-           pair<string, string> currentPathPair = *itPath;
+           pair<wstring, wstring> currentPathPair = *itPath;
            ConsoleJob::AddAppSearchPath(currentPathPair.second);
        }
    }
@@ -69,7 +68,7 @@ void ServerConfiguration::CreateAgent(ConfigurationObject* confObject,
 }
 
 bool ServerConfiguration::CreateClient(ConfigurationObject* confObject,
-                                       std::vector<string>& errorMessages)
+                                       std::vector<wstring>& errorMessages)
 {
    if (client != NULL)
    {

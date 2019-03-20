@@ -4,7 +4,7 @@
 
 using namespace std;
 
-static const string errorReportCreation = "Error creating report";
+static const wstring errorReportCreation = L"Error creating report";
 
 LinuxCopyFsBackupJob::LinuxCopyFsBackupJob() : AbstractRawCopyFsBackupJob()
 {
@@ -20,35 +20,35 @@ AbstractJob *LinuxCopyFsBackupJob::Clone()
    return new LinuxCopyFsBackupJob(*this);
 }
 
-void LinuxCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
-                                            const std::string &destination,
-                                            ConsoleJob &commandJob)
+void LinuxCopyFsBackupJob::PrepareCopyCommand(  const std::wstring &source,
+                                                const std::wstring &destination,
+                                                ConsoleJob &commandJob)
 {
-    const string command = (target.isLocal ? "cp" : "scp");
-    string params;
+    const wstring command = (target.isLocal ? L"cp" : L"scp");
+    wstring params;
     if (target.isLocal)
-        params = "-R ";
+        params = L"-R ";
     else
-        params = string("-r ") + target.sshUser + "@" + target.sshHost + ":";
-    params += source + "/* " + destination;
+        params = wstring(L"-r ") + target.sshUser + L"@" + target.sshHost + L":";
+    params += source + L"/* " + destination;
 
     commandJob.SetCommand(command);
     commandJob.SetCommandParameters(params);
 }
 
-void LinuxCopyFsBackupJob::CreateReport(const std::string &destination,
-                                        const std::string &/*output*/,
+void LinuxCopyFsBackupJob::CreateReport(const std::wstring &destination,
+                                        const std::wstring &/*output*/,
                                         AbstractBackupJob::ResultCollection &results)
 {
     FileBackupReport* report = new FileBackupReport();
     JobStatus* status = new JobStatus();
 
     // TODO : change this to a proper recursive command.
-    ConsoleJob lsCommand("ls", destination);
+    ConsoleJob lsCommand(L"ls", destination);
     lsCommand.RunWithoutStatus();
     if (lsCommand.GetCommandReturnCode() == 0)
     {
-        vector<string> fileList;
+        vector<wstring> fileList;
         Tools::TokenizeString(lsCommand.GetCommandOutput(), '\n', fileList);
 
         report->AddAsAdded(fileList);

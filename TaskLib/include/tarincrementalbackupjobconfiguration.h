@@ -14,7 +14,7 @@ protected:
     virtual AbstractJob *CreateJob();
 
 private:
-    virtual std::string GetBackupItemName() const;
+    virtual std::wstring GetBackupItemName() const;
 
 };
 

@@ -4,33 +4,33 @@
 
 using namespace std;
 
-string LocalClientConfiguration::MsgClientWithoutName = "Error : Client without name";
-string LocalClientConfiguration::MsgClientWithoutJobs = "Warning : Client has no jobs";
-string LocalClientConfiguration::MsgDeprecatedRemoteOption = "Warning : Remote option deprecated";
+wstring LocalClientConfiguration::MsgClientWithoutName = L"Error : Client without name";
+wstring LocalClientConfiguration::MsgClientWithoutJobs = L"Warning : Client has no jobs";
+wstring LocalClientConfiguration::MsgDeprecatedRemoteOption = L"Warning : Remote option deprecated";
 
 
 Client* LocalClientConfiguration::CreateConfiguredClient(ConfigurationObject* confObject,
-                                                    vector<string>& errorMessages)
+                                                    vector<wstring>& errorMessages)
 {
 	client = NULL;
 
-	const string deprecatedRemoteJobOption = confObject->GetProperty("remoteJobList");
-	if (deprecatedRemoteJobOption != "")
+	const wstring deprecatedRemoteJobOption = confObject->GetProperty(L"remoteJobList");
+	if (deprecatedRemoteJobOption != L"")
 		 errorMessages.push_back(MsgDeprecatedRemoteOption);
 
 	client = new Client();
-	client->SetName(confObject->GetProperty("Name"));
+	client->SetName(confObject->GetProperty(L"Name"));
 	SetAllClientProperties(confObject);
 
 	bool ok = AreClientPropertiesConsistent(confObject, errorMessages);
 	if (ok)
 	{
-		const string debugOptionString = confObject->GetProperty("showDebugInformation");
-		const int debugOption = (debugOptionString != "") ?
-		                           DebugOutput::GetValue(debugOptionString) :
+		const wstring debugOptionwstring = confObject->GetProperty(L"showDebugInformation");
+		const int debugOption = (debugOptionwstring != L"") ?
+		                           DebugOutput::GetValue(debugOptionwstring) :
 		                           DebugOutput::UNDEFINED;
 		ClientJobsConfiguration jobsConfiguration(debugOption);
-		ConfigurationObject* jobListObject = confObject->GetObject("JobList");
+		ConfigurationObject* jobListObject = confObject->GetObject(L"JobList");
 		if (jobListObject)
 			ok = jobsConfiguration.LoadFromConfigurationObject(jobListObject, errorMessages);
 
@@ -56,14 +56,14 @@ Client* LocalClientConfiguration::CreateConfiguredClient(ConfigurationObject* co
 
 void LocalClientConfiguration::SetAllClientProperties(ConfigurationObject* object)
 {
-	map<string, string>::iterator itProp = object->propertyList.begin();
-	map<string, string>::iterator endProp = object->propertyList.end();
+	map<wstring, wstring>::iterator itProp = object->propertyList.begin();
+	map<wstring, wstring>::iterator endProp = object->propertyList.end();
 	for (; itProp != endProp; itProp++)
 	{
-		 pair<string, string> currentProp = *itProp;
+		 pair<wstring, wstring> currentProp = *itProp;
 
 		 // Name already handled
-		 if (currentProp.first == "Name")
+		 if (currentProp.first == L"Name")
 			  continue;
 
 		 client->AddProperty(currentProp.first, currentProp.second);
@@ -71,9 +71,9 @@ void LocalClientConfiguration::SetAllClientProperties(ConfigurationObject* objec
 }
 
 bool LocalClientConfiguration::AreClientPropertiesConsistent(
-   ConfigurationObject*, std::vector<string> &errorMessages)
+   ConfigurationObject*, std::vector<wstring> &errorMessages)
 {
-	if (client->GetName() == "")
+	if (client->GetName() == L"")
 	{
 		errorMessages.push_back(MsgClientWithoutName);
 		return false;

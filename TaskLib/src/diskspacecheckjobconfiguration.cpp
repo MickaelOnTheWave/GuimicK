@@ -3,11 +3,11 @@
 
 using namespace std;
 
-const string DiskSpaceCheckJobConfiguration::DriveProperty = "drive";
-const string DiskSpaceCheckJobConfiguration::TargetProperty = "localTarget";
+const wstring DiskSpaceCheckJobConfiguration::DriveProperty = L"drive";
+const wstring DiskSpaceCheckJobConfiguration::TargetProperty = L"localTarget";
 
 DiskSpaceCheckJobConfiguration::DiskSpaceCheckJobConfiguration()
-    : AbstractJobDefaultConfiguration("DiskSpaceCheck")
+    : AbstractJobDefaultConfiguration(L"DiskSpaceCheck")
 {
 }
 
@@ -23,7 +23,7 @@ ConfigurationObject* DiskSpaceCheckJobConfiguration::CreateConfigurationObject(
    LinuxFreeSpaceCheckJob* castJob = static_cast<LinuxFreeSpaceCheckJob*>(job);
 
    confObject->SetProperty(DriveProperty, castJob->GetDrive());
-   const string targetValue = (castJob->IsTargetLocal() ? "true" : "false");
+   const wstring targetValue = (castJob->IsTargetLocal() ? L"true" : L"false");
    confObject->SetProperty(TargetProperty, targetValue);
 
    return confObject;
@@ -36,20 +36,20 @@ AbstractJob *DiskSpaceCheckJobConfiguration::CreateJob()
 
 void DiskSpaceCheckJobConfiguration::ConfigureJob(AbstractJob *job,
                                                   ConfigurationObject *confObject,
-                                                  std::vector<string> &errorMessages)
+                                                  std::vector<wstring> &errorMessages)
 {
     AbstractJobDefaultConfiguration::ConfigureJob(job, confObject, errorMessages);
 
-    const string drive = confObject->GetFirstProperty(DriveProperty, "param0");
-    const string localTarget = confObject->GetFirstProperty(TargetProperty, "param1");
+    const wstring drive = confObject->GetFirstProperty(DriveProperty, L"param0");
+    const wstring localTarget = confObject->GetFirstProperty(TargetProperty, L"param1");
 
     LinuxFreeSpaceCheckJob* castJob = static_cast<LinuxFreeSpaceCheckJob*>(job);
     castJob->SetDrive(drive);
-    if (localTarget == "false")
+    if (localTarget == L"false")
         castJob->SetTargetToLocal(false);
 }
 
-void DiskSpaceCheckJobConfiguration::FillKnownProperties(std::vector<string> &properties)
+void DiskSpaceCheckJobConfiguration::FillKnownProperties(std::vector<wstring> &properties)
 {
     AbstractJobDefaultConfiguration::FillKnownProperties(properties);
     properties.push_back(DriveProperty);

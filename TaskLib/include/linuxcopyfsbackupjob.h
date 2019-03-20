@@ -12,12 +12,12 @@ public:
     virtual AbstractJob* Clone();
 
 protected:
-    virtual void PrepareCopyCommand(const std::string &source,
-                                    const std::string &destination,
+    virtual void PrepareCopyCommand(const std::wstring &source,
+                                    const std::wstring &destination,
                                     ConsoleJob& commandJob);
 
-    virtual void CreateReport(const std::string& destination,
-                              const std::string& output, ResultCollection& results);
+    virtual void CreateReport(const std::wstring& destination,
+                              const std::wstring& output, ResultCollection& results);
 
 };
 

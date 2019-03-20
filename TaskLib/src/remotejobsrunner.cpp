@@ -8,12 +8,12 @@
 
 using namespace std;
 
-string RemoteJobsRunner::TargetNotAccessibleError = "Client is offline";
+wstring RemoteJobsRunner::TargetNotAccessibleError = L"Client is offline";
 
 RemoteJobsRunner::RemoteJobsRunner()
-    : AbstractJob("RemoteJobsRunner"),
-      configurationFile(".taskmanager"),
-      host(""), user(""), isWorkListTimed(true),
+    : AbstractJob(L"RemoteJobsRunner"),
+      configurationFile(L".taskmanager"),
+      host(L""), user(L""), isWorkListTimed(true),
       originalClient(NULL)
 {
 }
@@ -39,8 +39,8 @@ bool RemoteJobsRunner::InitializeFromClient(Client *client)
    if (ok)
    {
       originalClient = client;
-      host = client->GetProperty("ip");
-      user = client->GetProperty("sshuser");
+      host = client->GetProperty(L"ip");
+      user = client->GetProperty(L"sshuser");
       return IsInitialized();
    }
    else
@@ -49,7 +49,7 @@ bool RemoteJobsRunner::InitializeFromClient(Client *client)
 
 bool RemoteJobsRunner::IsInitialized()
 {
-    return (host != "" && user != "");
+    return (host != L"" && user != L"");
 }
 
 JobStatus *RemoteJobsRunner::Run()
@@ -57,12 +57,12 @@ JobStatus *RemoteJobsRunner::Run()
     if (!Tools::IsComputerAlive(host))
         return CreateErrorStatus(TargetNotAccessibleError);
 
-    string content;
+    wstring content;
     bool ok = RetrieveRemoteConfiguration(content);
     if (!ok)
         return CreateErrorStatus(content);
 
-    vector<string> configurationErrors;
+    vector<wstring> configurationErrors;
     ClientJobsConfiguration configuration;
     bool usable = configuration.LoadFromBuffer(content, configurationErrors);
     if (!usable)
@@ -77,12 +77,12 @@ JobStatus *RemoteJobsRunner::Run()
     return new ResultCollectionStatus(remoteResults);
 }
 
-std::string RemoteJobsRunner::GetConfigurationFile() const
+std::wstring RemoteJobsRunner::GetConfigurationFile() const
 {
     return configurationFile;
 }
 
-void RemoteJobsRunner::SetConfigurationFile(const std::string &value)
+void RemoteJobsRunner::SetConfigurationFile(const std::wstring &value)
 {
     configurationFile = value;
 }
@@ -97,9 +97,9 @@ void RemoteJobsRunner::SetIsWorkListTimed(const bool value)
    isWorkListTimed = value;
 }
 
-bool RemoteJobsRunner::RetrieveRemoteConfiguration(string& output)
+bool RemoteJobsRunner::RetrieveRemoteConfiguration(wstring& output)
 {
-   ConsoleJob* retrieveJob = new ConsoleJob("cat", Tools::EscapedSpaces(configurationFile));
+   ConsoleJob* retrieveJob = new ConsoleJob(L"cat", Tools::EscapedSpaces(configurationFile));
    SshConsoleJob remoteRetrieveJob(retrieveJob);
    remoteRetrieveJob.SetParentDebugManager(debugManager);
    remoteRetrieveJob.SetTarget(user, host);
@@ -107,51 +107,51 @@ bool RemoteJobsRunner::RetrieveRemoteConfiguration(string& output)
    JobStatus* status = remoteRetrieveJob.Run();
 
    const bool success = (status->GetCode() == JobStatus::Ok);
-   const string commandOutput = remoteRetrieveJob.GetCommandOutput();
+   const wstring commandOutput = remoteRetrieveJob.GetCommandOutput();
    if (success)
      output = commandOutput;
    else if (IsInvalidFileError(commandOutput, configurationFile))
-     output = "Configuration file not found";
+     output = L"Configuration file not found";
    else if (IsPasswordError(commandOutput))
-     output = "Password needed";
+     output = L"Password needed";
    else
-     output = "Error trying to retrieve configuration";
+     output = L"Error trying to retrieve configuration";
 
    delete status;
    return success;
 }
 
-JobStatus *RemoteJobsRunner::CreateErrorStatus(const string &message)
+JobStatus *RemoteJobsRunner::CreateErrorStatus(const wstring &message)
 {
     return debugManager->CreateStatus(JobStatus::Error, message);
 }
 
-JobStatus *RemoteJobsRunner::CreateConfigurationErrorStatus(const std::vector<string>& errors)
+JobStatus *RemoteJobsRunner::CreateConfigurationErrorStatus(const std::vector<wstring>& errors)
 {
-   JobStatus* status = new JobStatus(JobStatus::Error, "Errors in remote configuration");
+   JobStatus* status = new JobStatus(JobStatus::Error, L"Errors in remote configuration");
    status->AddFileBuffer(GetAttachmentName(), CreateConfigurationErrorDescription(errors));
    return status;
 }
 
-bool RemoteJobsRunner::IsInvalidFileError(const string& output, const string& file) const
+bool RemoteJobsRunner::IsInvalidFileError(const wstring& output, const wstring& file) const
 {
-   size_t catCommandPos = output.find("cat:");
-   const bool isCatCommand = (catCommandPos != string::npos);
-   const bool isFileNotFound = (output.find(file + ": No such file or directory", catCommandPos));
+   size_t catCommandPos = output.find(L"cat:");
+   const bool isCatCommand = (catCommandPos != wstring::npos);
+   const bool isFileNotFound = (output.find(file + L": No such file or directory", catCommandPos));
    return isCatCommand && isFileNotFound;
 }
 
-bool RemoteJobsRunner::IsPasswordError(const string& output) const
+bool RemoteJobsRunner::IsPasswordError(const wstring& output) const
 {
-   return (output.find("Permission denied") == 0);
+   return (output.find(L"Permission denied") == 0);
 }
 
-string RemoteJobsRunner::CreateConfigurationErrorDescription(const std::vector<string>& errors) const
+wstring RemoteJobsRunner::CreateConfigurationErrorDescription(const std::vector<wstring>& errors) const
 {
-   string content;
-   content += "The following errors occured while loading client configuration :\n";
-   vector<string>::const_iterator it = errors.begin();
+   wstring content;
+   content += L"The following errors occured while loading client configuration :\n";
+   vector<wstring>::const_iterator it = errors.begin();
    for (; it!=errors.end(); ++it)
-      content += string("\t") + *it + "\n";
+      content += wstring(L"\t") + *it + L"\n";
    return content;
 }

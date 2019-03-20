@@ -2,7 +2,7 @@
 #include "tarincrementalbackup.h"
 
 TarIncrementalBackupJobConfiguration::TarIncrementalBackupJobConfiguration()
-   : AbstractBackupJobConfiguration("TarIncrementalBackup")
+   : AbstractBackupJobConfiguration(L"TarIncrementalBackup")
 {
 }
 
@@ -16,7 +16,7 @@ AbstractJob* TarIncrementalBackupJobConfiguration::CreateJob()
    return new TarIncrementalBackup();
 }
 
-std::string TarIncrementalBackupJobConfiguration::GetBackupItemName() const
+std::wstring TarIncrementalBackupJobConfiguration::GetBackupItemName() const
 {
-   return std::string("Folder");
+   return L"Folder";
 }

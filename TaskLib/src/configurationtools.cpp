@@ -5,17 +5,17 @@
 
 using namespace std;
 
-string ConfigurationTools::CreateWarning(const string& message)
+wstring ConfigurationTools::CreateWarning(const wstring& message)
 {
-   return CreateMessage("Warning", message);
+   return CreateMessage(L"Warning", message);
 }
 
-string ConfigurationTools::CreateError(const string& message)
+wstring ConfigurationTools::CreateError(const wstring& message)
 {
-   return CreateMessage("Error", message);
+   return CreateMessage(L"Error", message);
 }
 
-void ConfigurationTools::SaveJobListToFile(ofstream& file,
+void ConfigurationTools::SaveJobListToFile(wofstream& file,
                                            const list<AbstractJob*>& jobList)
 {
    JobFactory jobFactory;
@@ -36,31 +36,31 @@ void ConfigurationTools::SaveJobListToFile(ofstream& file,
    file << "}" << endl;
 }
 
-bool ConfigurationTools::GetBooleanValue(const string &strValue,
-                                         vector<string> &errorMessages)
+bool ConfigurationTools::GetBooleanValue(const wstring &strValue,
+                                         vector<wstring> &errorMessages)
 {
-   if (strValue == "true")
+   if (strValue == L"true")
       return true;
-   else if (strValue == "false")
+   else if (strValue == L"false")
       return false;
 
-   std::string error("Warning : ");
-    error += strValue + " is not a valid boolean value. Defaulting to false";
+   std::wstring error(L"Warning : ");
+    error += strValue + L" is not a valid boolean value. Defaulting to false";
    errorMessages.push_back(error);
    return false;
 }
 
-string ConfigurationTools::CreateMessage(const string& tag, const string& message)
+wstring ConfigurationTools::CreateMessage(const wstring& tag, const wstring& message)
 {
-   if (message != "")
-       return tag + " : " + message;
+   if (message != L"")
+       return tag + L" : " + message;
    else
-      return string("");
+      return L"";
 }
 /*
 template<class T>
-void ConfigurationTools::SaveValueToFile(ofstream& file, const string& name, const ConfigurationTools::T value)
+void ConfigurationTools::SaveValueToFile(ofstream& file, const wstring& name, const ConfigurationTools::T value)
 {
-   const string tab = "\t";
+   const wstring tab = "\t";
    file << tab << name << " = \"" << value << "\";" << endl;
 }*/

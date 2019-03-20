@@ -4,7 +4,7 @@
 using namespace std;
 
 GitFsBackupJobConfiguration::GitFsBackupJobConfiguration()
-    : AbstractBackupJobConfiguration("GitFsBackup")
+    : AbstractBackupJobConfiguration(L"GitFsBackup")
 {
 }
 
@@ -18,7 +18,7 @@ AbstractJob *GitFsBackupJobConfiguration::CreateJob()
     return new GitFsBackupJob();
 }
 
-string GitFsBackupJobConfiguration::GetBackupItemName() const
+wstring GitFsBackupJobConfiguration::GetBackupItemName() const
 {
-    return string("Folder");
+    return L"Folder";
 }

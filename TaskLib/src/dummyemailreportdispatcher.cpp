@@ -1,8 +1,8 @@
 #include "dummyemailreportdispatcher.h"
 
-std::string DummyEmailReportDispatcher::GetName() const
+std::wstring DummyEmailReportDispatcher::GetName() const
 {
-    return std::string("Dummy Email");
+    return L"Dummy Email";
 }
 
 bool DummyEmailReportDispatcher::Dispatch(AbstractReportCreator *)

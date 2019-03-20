@@ -23,7 +23,7 @@ TaskManagerConfiguration::~TaskManagerConfiguration()
    delete typeConfiguration;
 }
 
-bool TaskManagerConfiguration::LoadFromFile(const string &fileName, vector<string> &errorMessages)
+bool TaskManagerConfiguration::LoadFromFile(const wstring &fileName, vector<wstring> &errorMessages)
 {
     errorMessages.clear();
     parser.ResetData();
@@ -38,7 +38,7 @@ bool TaskManagerConfiguration::LoadFromFile(const string &fileName, vector<strin
 
 bool TaskManagerConfiguration::SaveToFile(const wstring& filename)
 {
-   ofstream filestream(filename.c_str());
+   wofstream filestream(filename.c_str());
    if (!filestream.is_open())
       return false;
 
@@ -78,17 +78,17 @@ ConfigurationType TaskManagerConfiguration::FindConfigurationType()
 bool TaskManagerConfiguration::HasOnlyJobList() const
 {
    return (parser.objectList.size() == 1 &&
-           parser.objectList.front()->GetName() == "JobList");
+           parser.objectList.front()->GetName() == L"JobList");
 }
 
 ConfigurationType TaskManagerConfiguration::GetTypeByConfiguration() const
 {
-   const string configurationTypeString = parser.anonymousObject->GetProperty("Type");
-   if (configurationTypeString == "Client")
+   const wstring configurationTypewstring = parser.anonymousObject->GetProperty(L"Type");
+   if (configurationTypewstring == L"Client")
       return ClientConfigurationType;
-   else if (configurationTypeString == "Server")
+   else if (configurationTypewstring == L"Server")
       return ServerConfigurationType;
-   else //if (configurationTypeString == "Standalone")
+   else //if (configurationTypewstring == "Standalone")
       return StandaloneConfigurationType;
 }
 

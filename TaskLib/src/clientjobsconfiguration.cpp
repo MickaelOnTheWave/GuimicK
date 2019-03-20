@@ -6,10 +6,10 @@
 
 using namespace std;
 
-static const string JobListObjectName = "JobList";
+static const wstring JobListObjectName = L"JobList";
 
-string ClientJobsConfiguration::MsgNoJobList = "Client without job list";
-string ClientJobsConfiguration::MsgUnsupportedObjects = "Unsupported objects present";
+wstring ClientJobsConfiguration::MsgNoJobList = L"Client without job list";
+wstring ClientJobsConfiguration::MsgUnsupportedObjects = L"Unsupported objects present";
 
 ClientJobsConfiguration::ClientJobsConfiguration(const int _debugOption)
    : AbstractTypeConfiguration(), debugOption(_debugOption)
@@ -34,8 +34,8 @@ AbstractTypeConfiguration* ClientJobsConfiguration::Copy() const
    return new ClientJobsConfiguration(*this);
 }
 
-bool ClientJobsConfiguration::LoadFromBuffer(const string& buffer,
-                                             std::vector<string>& errorMessages)
+bool ClientJobsConfiguration::LoadFromBuffer(const wstring& buffer,
+                                             vector<wstring>& errorMessages)
 {
    ConfigurationParser parser;
    bool ok = parser.ParseBuffer(buffer, errorMessages);
@@ -45,7 +45,7 @@ bool ClientJobsConfiguration::LoadFromBuffer(const string& buffer,
       return false;
 }
 
-void ClientJobsConfiguration::SaveToOpenedFile(ofstream& file)
+void ClientJobsConfiguration::SaveToOpenedFile(wofstream& file)
 {
    ConfigurationTools::SaveJobListToFile(file, jobList);
 }
@@ -69,14 +69,14 @@ void ClientJobsConfiguration::ClearJobList()
 }
 
 bool ClientJobsConfiguration::LoadFromConfigurationObject(ConfigurationObject* confObject,
-                                                          std::vector<string>& errorMessages)
+                                                          std::vector<wstring>& errorMessages)
 {
    FillJobList(confObject, errorMessages);
    return IsConfigurationConsistent(errorMessages);
 }
 
 void ClientJobsConfiguration::FillRootObjects(const list<ConfigurationObject*> &objectList,
-                                              vector<string> &errorMessages)
+                                              vector<wstring> &errorMessages)
 {
    ConfigurationObject* jobListObject = FindJobListObject(objectList);
    if (objectList.size() == 0 || jobListObject == NULL)
@@ -91,11 +91,11 @@ void ClientJobsConfiguration::FillRootObjects(const list<ConfigurationObject*> &
    FillJobList(jobListObject, errorMessages);
 }
 
-void ClientJobsConfiguration::FillGlobalProperties(ConfigurationObject *, vector<string> &)
+void ClientJobsConfiguration::FillGlobalProperties(ConfigurationObject *, vector<wstring> &)
 {
 }
 
-bool ClientJobsConfiguration::IsConfigurationConsistent(std::vector<string> &)
+bool ClientJobsConfiguration::IsConfigurationConsistent(std::vector<wstring> &)
 {
    return true;
 }
@@ -114,7 +114,7 @@ ConfigurationObject* ClientJobsConfiguration::FindJobListObject(
 }
 
 void ClientJobsConfiguration::FillJobList(ConfigurationObject* jobListObj,
-                                          vector<string> &errorMessages)
+                                          vector<wstring> &errorMessages)
 {
    JobFactory jobFactory;
    list<ConfigurationObject*>::iterator itJobs = jobListObj->objectList.begin();

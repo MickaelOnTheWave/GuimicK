@@ -16,16 +16,16 @@ public:
 
    virtual AbstractReportCreator* Copy() const;
 
-   virtual void UpdateWithDispatchError(const std::string& failedDispatcher,
-                                      const std::string& fallbackDispatcher);
+   virtual void UpdateWithDispatchError(const std::wstring& failedDispatcher,
+                                      const std::wstring& fallbackDispatcher);
 
 protected:
    virtual void AddHeader(void);
-   virtual void AddClientHeaderData(const std::pair<std::string, ClientJobResults *> &clientData);
-   virtual void AddJobData(const std::string& jobName, JobStatus* status);
+   virtual void AddClientHeaderData(const std::pair<std::wstring, ClientJobResults *> &clientData);
+   virtual void AddJobData(const std::wstring& jobName, JobStatus* status);
    virtual void AddSummaryData(const int code, const time_t duration);
-   virtual void AddConfigurationErrorsData(const std::vector<std::string>& errors);
-   virtual void AddProgramData(const std::string& version);
+   virtual void AddConfigurationErrorsData(const std::vector<std::wstring>& errors);
+   virtual void AddProgramData(const std::wstring& version);
 
    void UpdateNameCellSize(ClientJobResults* data);
 

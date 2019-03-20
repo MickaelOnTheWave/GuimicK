@@ -11,25 +11,25 @@ public:
 
    virtual ArchiveTool* Clone() const;
 
-   virtual void CreateArchive(const std::string& pathData,
+   virtual void CreateArchive(const std::wstring& pathData,
                               ArchiveToolResult& result);
 
-   virtual void AddToArchive(const std::string& pathToAdd,
+   virtual void AddToArchive(const std::wstring& pathToAdd,
                              ArchiveToolResult& result);
 
-   virtual void ExtractArchive(const std::string& destinationPath,
+   virtual void ExtractArchive(const std::wstring& destinationPath,
                                ArchiveToolResult& result);
 
-   void SetExecutablePath(const std::string& value);
+   void SetExecutablePath(const std::wstring& value);
 
 private:
-   void Run7zipCommand(const std::string& command, ArchiveToolResult& result);
+   void Run7zipCommand(const std::wstring& command, ArchiveToolResult& result);
 
-   void ParseOutput(const std::string& commandOutput,
+   void ParseOutput(const std::wstring& commandOutput,
                     const int returnValue,
                     ArchiveToolResult& result) const;
 
-   std::string sevenZipExecutable;
+   std::wstring sevenZipExecutable;
 };
 
 #endif // SEVENZIPTOOL_H

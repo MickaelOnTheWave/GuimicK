@@ -22,7 +22,7 @@ public:
       file << tab << name << L" = \"" << value << L"\";" << std::endl;
    }
 
-   static void SaveJobListToFile(std::ofstream& file,
+   static void SaveJobListToFile(std::wofstream& file,
                                  const std::list<AbstractJob*>& jobList);
 
    static bool GetBooleanValue(const std::wstring& strValue,

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-const string AbstractEmailReportDispatcher::subject = "Maintenance Report";
+const wstring AbstractEmailReportDispatcher::subject = L"Maintenance Report";
 
 AbstractEmailReportDispatcher::AbstractEmailReportDispatcher()
     : outputDebugInformation(false), isVerbose(false)
@@ -17,9 +17,9 @@ AbstractEmailReportDispatcher::~AbstractEmailReportDispatcher()
 {
 }
 
-string AbstractEmailReportDispatcher::GetName() const
+wstring AbstractEmailReportDispatcher::GetName() const
 {
-    return string("Email");
+    return L"Email";
 }
 
 void AbstractEmailReportDispatcher::Initialize(
@@ -36,8 +36,8 @@ void AbstractEmailReportDispatcher::Initialize(
 
       isHtml = standaloneConfiguration->IsReportHtml();
       destEmail = standaloneConfiguration->GetMasterEmail();
-      cc = string("");
-      bcc = string("");
+      cc = L"";
+      bcc = L"";
    }
 }
 
@@ -51,11 +51,11 @@ void AbstractEmailReportDispatcher::SetVerboseMode()
     isVerbose = true;
 }
 
-string AbstractEmailReportDispatcher::GetSmtpUrl() const
+wstring AbstractEmailReportDispatcher::GetSmtpUrl() const
 {
-	string smtpUrl("smtp://");
-   smtpUrl += emailData.GetSmtpServer() + ":";
-	stringstream s;
+	wstring smtpUrl(L"smtp://");
+   smtpUrl += emailData.GetSmtpServer() + L":";
+	wstringstream s;
    s << emailData.GetSmtpPort();
 	smtpUrl += s.str();
 	return smtpUrl;

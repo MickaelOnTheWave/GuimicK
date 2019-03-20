@@ -16,7 +16,7 @@ AbstractTypeConfiguration::~AbstractTypeConfiguration()
 }
 
 bool AbstractTypeConfiguration::Load(ConfigurationParser& parser,
-                                     vector<string>& errorMessages)
+                                     vector<wstring>& errorMessages)
 {
    FillRootObjects(parser.objectList, errorMessages);
    FillGlobalProperties(parser.anonymousObject, errorMessages);

@@ -4,7 +4,7 @@
 //-------------------------------------------------------------------------//
 
 SevenZipBackupJobConfiguration::SevenZipBackupJobConfiguration()
-    : AbstractFsBackupJobConfiguration("7zipBackup")
+    : AbstractFsBackupJobConfiguration(L"7zipBackup")
 {
 }
 

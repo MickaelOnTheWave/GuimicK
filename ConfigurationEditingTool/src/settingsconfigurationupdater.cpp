@@ -6,9 +6,9 @@ using namespace std;
 
 namespace
 {
-   string GetValue(QLineEdit* lineEdit)
+   wstring GetValue(QLineEdit* lineEdit)
    {
-      return lineEdit->text().toStdString();
+      return lineEdit->text().toStdWString();
    }
 }
 
@@ -29,7 +29,7 @@ void SettingsConfigurationUpdater::UpdateAgentData()
    Agent* agent = configuration->GetAgent();
    agent->SetName(GetValue(ui->agentNameEdit));
    agent->SetEmailData(CreateEmailData());
-   agent->SetReportFolder(ui->reportFolderWidget->GetPath().toStdString());
+   agent->SetReportFolder(ui->reportFolderWidget->GetPath().toStdWString());
 }
 
 void SettingsConfigurationUpdater::UpdateClientData()
@@ -41,26 +41,26 @@ void SettingsConfigurationUpdater::UpdateClientData()
 void SettingsConfigurationUpdater::UpdateReportType()
 {
    const QString uiReportType = ui->reportFormatBox->currentText();
-   string confReportType;
+   wstring confReportType;
    if (uiReportType == "HTML")
-      confReportType = "html";
+      confReportType = L"html";
    else// if (uiReportType == "Plain Text")
-      confReportType = "text";
+      confReportType = L"text";
 
    configuration->SetReportType(confReportType);
-   configuration->SetReportCss(ui->cssWidget->GetPath().toStdString());
+   configuration->SetReportCss(ui->cssWidget->GetPath().toStdWString());
 }
 
 void SettingsConfigurationUpdater::UpdateReportDispatching()
 {
    const QString uiReportDispatching = ui->reportDispatchBox->currentText();
-   string confReportDispatching;
+   wstring confReportDispatching;
    if (uiReportDispatching == "Email")
-      confReportDispatching = "email";
-   else if (uiReportDispatching == "Console")
-      confReportDispatching = "console";
+      confReportDispatching = L"email";
+   else if (uiReportDispatching == L"Console")
+      confReportDispatching = L"console";
    else // if (uiReportDispatching == "Local files")
-      confReportDispatching = "file";
+      confReportDispatching = L"file";
 
    configuration->SetReportDispatching(confReportDispatching);
 }
@@ -74,7 +74,7 @@ void SettingsConfigurationUpdater::UpdateOtherData()
 void SettingsConfigurationUpdater::Update7zipPathProperty(const QString& value)
 {
    if (value != "")
-      configuration->GetClient()->AddProperty("7zipExecutable", value.toStdString());
+      configuration->GetClient()->AddProperty(L"7zipExecutable", value.toStdWString());
 }
 
 EmailData SettingsConfigurationUpdater::CreateEmailData()

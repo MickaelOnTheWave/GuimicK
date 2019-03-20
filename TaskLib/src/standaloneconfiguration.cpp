@@ -12,18 +12,18 @@
 
 using namespace std;
 
-const string defaultClientName = "Local Machine";
-string StandaloneConfiguration::MsgMissingClient = "missing Client";
-string StandaloneConfiguration::MsgMissingAgent = "missing Agent configuration";
-string StandaloneConfiguration::MsgOneClientSupported = "only one client is supported for now. "
+const wstring defaultClientName = L"Local Machine";
+wstring StandaloneConfiguration::MsgMissingClient = L"missing Client";
+wstring StandaloneConfiguration::MsgMissingAgent = L"missing Agent configuration";
+wstring StandaloneConfiguration::MsgOneClientSupported = L"only one client is supported for now. "
                                               "Redefining default client";
 
 
 StandaloneConfiguration::StandaloneConfiguration()
    : AbstractTypeConfiguration(),
      client(new Client(defaultClientName)), reportCreator(NULL), agent(new Agent()),
-     reportType("html"), cssFile(""),
-     masterEmail(""), reportDispatching("console"), shutdown(true)
+     reportType(L"html"), cssFile(L""),
+     masterEmail(L""), reportDispatching(L"console"), shutdown(true)
 {
 }
 
@@ -52,7 +52,7 @@ AbstractTypeConfiguration* StandaloneConfiguration::Copy() const
    return new StandaloneConfiguration(*this);
 }
 
-void StandaloneConfiguration::SaveToOpenedFile(ofstream& fileStream)
+void StandaloneConfiguration::SaveToOpenedFile(wofstream& fileStream)
 {
    agent->SaveToOpenedFile(fileStream);
    SaveClientToOpenedFile(fileStream);
@@ -87,12 +87,12 @@ ClientWorkManager* StandaloneConfiguration::BuildWorkList(const bool withProfili
    return workManager;
 }
 
-string StandaloneConfiguration::GetMasterEmail() const
+wstring StandaloneConfiguration::GetMasterEmail() const
 {
    return masterEmail;
 }
 
-void StandaloneConfiguration::SetMasterEmail(const string& value)
+void StandaloneConfiguration::SetMasterEmail(const wstring& value)
 {
    masterEmail = value;
 }
@@ -107,22 +107,22 @@ void StandaloneConfiguration::SetLocalShutdown(const bool value)
    shutdown = value;
 }
 
-std::string StandaloneConfiguration::GetReportDispatching() const
+std::wstring StandaloneConfiguration::GetReportDispatching() const
 {
    return reportDispatching;
 }
 
-void StandaloneConfiguration::SetReportDispatching(const string& value)
+void StandaloneConfiguration::SetReportDispatching(const wstring& value)
 {
    reportDispatching = value;
 }
 
-string StandaloneConfiguration::GetReportType() const
+wstring StandaloneConfiguration::GetReportType() const
 {
    return reportType;
 }
 
-void StandaloneConfiguration::SetReportType(const string& value)
+void StandaloneConfiguration::SetReportType(const wstring& value)
 {
    reportType = value;
    ChangeReportCreator();
@@ -133,12 +133,12 @@ AbstractReportCreator *StandaloneConfiguration::GetReportCreator() const
    return reportCreator;
 }
 
-string StandaloneConfiguration::GetReportCss() const
+wstring StandaloneConfiguration::GetReportCss() const
 {
    return cssFile;
 }
 
-void StandaloneConfiguration::SetReportCss(const string& value)
+void StandaloneConfiguration::SetReportCss(const wstring& value)
 {
    cssFile = value;
 }
@@ -163,9 +163,9 @@ AbstractReportDispatcher *StandaloneConfiguration::CreateReportDispatcher(
 {
     AbstractReportDispatcher* dispatcher = NULL;
 
-    if (reportDispatching == "email" && !commandLinePreventsEmail)
+    if (reportDispatching == L"email" && !commandLinePreventsEmail)
         dispatcher = new DummyEmailReportDispatcher();
-    else if (reportDispatching == "file")
+    else if (reportDispatching == L"file")
         dispatcher = new FileReportDispatcher();
     else // reportDispatching == "console"
         dispatcher = new ConsoleReportDispatcher();
@@ -180,7 +180,7 @@ bool StandaloneConfiguration::IsReportHtml() const
 }
 
 void StandaloneConfiguration::FillRootObjects(const list<ConfigurationObject*>& objectList,
-                                              vector<string>& errorMessages)
+                                              vector<wstring>& errorMessages)
 {
    delete client;
    delete agent;
@@ -193,16 +193,16 @@ void StandaloneConfiguration::FillRootObjects(const list<ConfigurationObject*>& 
    {
        bool returnValue = true;
        ConfigurationObject* currentObject = *it;
-       if (currentObject->name == "Client")
+       if (currentObject->name == L"Client")
            returnValue = CreateClient(currentObject, errorMessages);
-       else if (currentObject->name == "Agent")
+       else if (currentObject->name == L"Agent")
            CreateAgent(currentObject, errorMessages);
-       else if (currentObject->name == "Report")
+       else if (currentObject->name == L"Report")
            CreateReport(currentObject, errorMessages);
        else
        {
-           string message = "Warning : unknown object \"";
-           message += currentObject->name + "\"";
+           wstring message = L"Warning : unknown object \"";
+           message += currentObject->name + L"\"";
            errorMessages.push_back(message);
        }
 
@@ -212,38 +212,38 @@ void StandaloneConfiguration::FillRootObjects(const list<ConfigurationObject*>& 
 }
 
 void StandaloneConfiguration::FillGlobalProperties(ConfigurationObject* object,
-                                                   vector<string>& errorMessages)
+                                                   vector<wstring>& errorMessages)
 {
    if (!object)
    {
-       errorMessages.push_back("Warning : no global properties defined!");
+       errorMessages.push_back(L"Warning : no global properties defined!");
        return;
    }
 
-   map<string, string>::iterator itProp = object->propertyList.begin();
-   map<string, string>::iterator endProp = object->propertyList.end();
+   map<wstring, wstring>::iterator itProp = object->propertyList.begin();
+   map<wstring, wstring>::iterator endProp = object->propertyList.end();
    for (; itProp != endProp; itProp++)
    {
-       pair<string, string> currentProp = *itProp;
-       if (currentProp.first == "MasterEmail")
+       pair<wstring, wstring> currentProp = *itProp;
+       if (currentProp.first == L"MasterEmail")
            masterEmail = currentProp.second;
-       else if (currentProp.first == "ReportDispatching")
+       else if (currentProp.first == L"ReportDispatching")
            reportDispatching = currentProp.second;
-       else if (currentProp.first == "ShutdownOnFinish")
+       else if (currentProp.first == L"ShutdownOnFinish")
        {
            shutdown = ConfigurationTools::GetBooleanValue(currentProp.second,
                                                           errorMessages);
        }
        else
        {
-           string message = "Warning : unknown property \"";
-           message += currentProp.first + "\"";
+           wstring message = L"Warning : unknown property \"";
+           message += currentProp.first + L"\"";
            errorMessages.push_back(message);
        }
    }
 }
 
-bool StandaloneConfiguration::IsConfigurationConsistent(vector<string>& errorMessages)
+bool StandaloneConfiguration::IsConfigurationConsistent(vector<wstring>& errorMessages)
 {
    if (hasFatalError)
        return false;
@@ -261,7 +261,7 @@ bool StandaloneConfiguration::IsConfigurationConsistent(vector<string>& errorMes
    if (reportCreator == NULL)
    {
        reportCreator = new TextReportCreator();
-       errorMessages.push_back("Warning : missing Report configuration. Defaulting to text");
+       errorMessages.push_back(L"Warning : missing Report configuration. Defaulting to text");
    }
 
    CheckReportDispatchingErrors(errorMessages);
@@ -269,38 +269,38 @@ bool StandaloneConfiguration::IsConfigurationConsistent(vector<string>& errorMes
 }
 
 void StandaloneConfiguration::CheckReportDispatchingErrors(
-   std::vector<string>& errorMessages
+   std::vector<wstring>& errorMessages
 )
 {
-   const bool isReportDispatchingValid = (reportDispatching == "email" ||
-                                          reportDispatching == "file" ||
-                                          reportDispatching == "console");
+   const bool isReportDispatchingValid = (reportDispatching == L"email" ||
+                                          reportDispatching == L"file" ||
+                                          reportDispatching == L"console");
    if (!isReportDispatchingValid)
    {
-       stringstream message;
+       wstringstream message;
        message << "Warning : unknown " << reportDispatching << " dispatching.";
        message << "Defaulting to console.";
-       reportDispatching = "console";
+       reportDispatching = L"console";
        errorMessages.push_back(message.str());
    }
-   else if (reportDispatching == "email" && !IsEmailDataComplete())
+   else if (reportDispatching == L"email" && !IsEmailDataComplete())
    {
-       errorMessages.push_back("Error : missing data for email sending. Defaulting to console.");
-       reportDispatching = "console";
+       errorMessages.push_back(L"Error : missing data for email sending. Defaulting to console.");
+       reportDispatching = L"console";
    }
-   else if (reportDispatching == "file" && !IsFileDataComplete())
+   else if (reportDispatching == L"file" && !IsFileDataComplete())
    {
-       errorMessages.push_back("Error : missing data for file storage. Defaulting to console.");
-       reportDispatching = "console";
+       errorMessages.push_back(L"Error : missing data for file storage. Defaulting to console.");
+       reportDispatching = L"console";
    }
 }
 
-void StandaloneConfiguration::SaveClientToOpenedFile(ofstream& file)
+void StandaloneConfiguration::SaveClientToOpenedFile(wofstream& file)
 {
    file << "Client" << endl;
    file << "{" << endl;
-   ConfigurationTools::SaveValueToFile(file, "Name", client->GetName());
-   ConfigurationTools::SaveValueToFile(file, "showDebugInformation", "never");
+   ConfigurationTools::SaveValueToFile(file, L"Name", client->GetName());
+   ConfigurationTools::SaveValueToFile(file, L"showDebugInformation", L"never");
 
    SaveClientPropertiesToOpenedFile(file);
 
@@ -311,23 +311,23 @@ void StandaloneConfiguration::SaveClientToOpenedFile(ofstream& file)
    file << "}" << endl;
 }
 
-void StandaloneConfiguration::SaveReportOptionsToOpenedFile(ofstream& file)
+void StandaloneConfiguration::SaveReportOptionsToOpenedFile(wofstream& file)
 {
    file << "Report" << endl;
    file << "{" << endl;
-   ConfigurationTools::SaveValueToFile(file, "type", reportType);
-   ConfigurationTools::SaveValueToFile(file, "css", cssFile);
+   ConfigurationTools::SaveValueToFile(file, L"type", reportType);
+   ConfigurationTools::SaveValueToFile(file, L"css", cssFile);
    file << "}" << endl;
 }
 
-void StandaloneConfiguration::SaveGlobalPropertiesToOpenedFile(ofstream& file)
+void StandaloneConfiguration::SaveGlobalPropertiesToOpenedFile(wofstream& file)
 {
    file << "MasterEmail = \"" << masterEmail << "\";" << endl;
    file << "ReportDispatching = \"" << reportDispatching << "\";" << endl;
    file << "ShutdownOnFinish = " << (shutdown ? "true" : "false") << ";" << endl;
 }
 
-void StandaloneConfiguration::SaveClientPropertiesToOpenedFile(std::ofstream& file)
+void StandaloneConfiguration::SaveClientPropertiesToOpenedFile(wofstream& file)
 {
    Client::PropertyMap::const_iterator it = client->PropertyBegin();
    Client::PropertyMap::const_iterator end = client->PropertyEnd();
@@ -336,7 +336,7 @@ void StandaloneConfiguration::SaveClientPropertiesToOpenedFile(std::ofstream& fi
 }
 
 bool StandaloneConfiguration::CreateClient(ConfigurationObject *confObject,
-                                           vector<string> &errorMessages)
+                                           vector<wstring> &errorMessages)
 {
     if (client != NULL)
     {
@@ -350,11 +350,11 @@ bool StandaloneConfiguration::CreateClient(ConfigurationObject *confObject,
 }
 
 void StandaloneConfiguration::CreateAgent(ConfigurationObject *confObject,
-                                          vector<string> &errorMessages)
+                                          vector<wstring> &errorMessages)
 {
     if (agent != NULL)
     {
-        errorMessages.push_back("Warning : redefining SelfIdentity object");
+        errorMessages.push_back(L"Warning : redefining SelfIdentity object");
         delete agent;
     }
 
@@ -362,25 +362,25 @@ void StandaloneConfiguration::CreateAgent(ConfigurationObject *confObject,
 }
 
 void StandaloneConfiguration::CreateReport(ConfigurationObject *confObject,
-                                           vector<string> &errorMessages)
+                                           vector<wstring> &errorMessages)
 {
-    reportType = confObject->GetFirstProperty("type", "param0");
+    reportType = confObject->GetFirstProperty(L"type", L"param0");
     ChangeReportCreator();
     if (reportCreator == NULL)
     {
-        string message = "Warning : unsupported \"";
-        message += reportType + "\" report type. Defaulting to text";
+        wstring message = L"Warning : unsupported \"";
+        message += reportType + L"\" report type. Defaulting to text";
         errorMessages.push_back(message);
 
         reportCreator = new TextReportCreator();
-        reportType = "text";
+        reportType = L"text";
     }
 
-    string useProfiling = confObject->GetFirstProperty("timed", "param1");
-    reportCreator->UseProfileColumn(useProfiling != "false");
+    wstring useProfiling = confObject->GetFirstProperty(L"timed", L"param1");
+    reportCreator->UseProfileColumn(useProfiling != L"false");
 
-    cssFile = confObject->GetProperty("css");
-    if (cssFile != "")
+    cssFile = confObject->GetProperty(L"css");
+    if (cssFile != L"")
     {
         HtmlReportCreator* htmlReportCreator = dynamic_cast<HtmlReportCreator*>(reportCreator);
         if (htmlReportCreator)
@@ -391,9 +391,9 @@ void StandaloneConfiguration::CreateReport(ConfigurationObject *confObject,
 void StandaloneConfiguration::ChangeReportCreator()
 {
    delete reportCreator;
-   if (reportType == "text")
+   if (reportType == L"text")
       reportCreator = new TextReportCreator();
-   else if (reportType == "html")
+   else if (reportType == L"html")
       reportCreator = new HtmlReportCreator();
    else
       reportCreator = NULL;
@@ -402,10 +402,10 @@ void StandaloneConfiguration::ChangeReportCreator()
 
 bool StandaloneConfiguration::IsEmailDataComplete() const
 {
-   return (agent->HasValidEmailData() && masterEmail != "");
+   return (agent->HasValidEmailData() && masterEmail != L"");
 }
 
 bool StandaloneConfiguration::IsFileDataComplete() const
 {
-   return (agent->GetReportFolder() != "");
+   return (agent->GetReportFolder() != L"");
 }

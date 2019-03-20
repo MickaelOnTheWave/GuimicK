@@ -20,19 +20,19 @@ public:
 
     virtual JobStatus* Run();
 
-    virtual std::string GetTypeName() const;
+    virtual std::wstring GetTypeName() const;
 
-    virtual void SetRepository(const std::string& value);
-    virtual void AddFolder(const std::string& source, const std::string& destination);
+    virtual void SetRepository(const std::wstring& value);
+    virtual void AddFolder(const std::wstring& source, const std::wstring& destination);
 
     virtual JobStatus* RestoreBackupFromClient( const BackupRestoreParameters& parameters,
                                                 const BackupRestoreTarget& target);
 
-    std::string GetTemplateConfigurationFile() const;
-    void SetTemplateConfigurationFile(const std::string& value);
+    std::wstring GetTemplateConfigurationFile() const;
+    void SetTemplateConfigurationFile(const std::wstring& value);
 
-    std::string GetTemporaryFile() const;
-    void SetTemporaryFile(const std::string& value);
+    std::wstring GetTemporaryFile() const;
+    void SetTemporaryFile(const std::wstring& value);
 
     bool GetWaitBeforeRun() const;
     void SetWaitBeforeRun(const bool value);
@@ -41,29 +41,29 @@ public:
     void SetMaxBackupCount(const int value);
 
 protected:
-    virtual void RunRepositoryBackup(const std::string& source,
-                                     const std::string& destination,
+    virtual void RunRepositoryBackup(const std::wstring& source,
+                                     const std::wstring& destination,
                                      ResultCollection& results);
 
 private:
-    virtual JobStatus* RestoreBackupFromServer(const std::string &source, const std::string &destination);
+    virtual JobStatus* RestoreBackupFromServer(const std::wstring &source, const std::wstring &destination);
 
-    virtual std::string CreateBackupSourcePath(const std::string& backupTag) const;
+    virtual std::wstring CreateBackupSourcePath(const std::wstring& backupTag) const;
 
     JobStatus* RunConfiguredBackupJob();
 
-    JobStatus* RunRawCopy(const std::string &source, const std::string &destination);
+    JobStatus* RunRawCopy(const std::wstring &source, const std::wstring &destination);
 
-    std::string AppendTrailingSlash(const std::string value) const;
+    std::wstring AppendTrailingSlash(const std::wstring value) const;
 
-    std::string CreateConfiguration() const;
+    std::wstring CreateConfiguration() const;
 
-    RsnapshotRawBackupJob* CreateRawJob(const std::string& configuration) const;
+    RsnapshotRawBackupJob* CreateRawJob(const std::wstring& configuration) const;
 
-    std::string BuildFinalPath(const std::string& inputPath) const;
+    std::wstring BuildFinalPath(const std::wstring& inputPath) const;
 
-    std::string templateConfigurationFile;
-    std::string temporaryFile;
+    std::wstring templateConfigurationFile;
+    std::wstring temporaryFile;
     bool waitBeforeRun;
     int maxBackupCount;
 };

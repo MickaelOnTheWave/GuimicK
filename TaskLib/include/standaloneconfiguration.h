@@ -11,9 +11,9 @@
 class StandaloneConfiguration : public AbstractTypeConfiguration
 {
 public:
-   static std::string MsgMissingClient;
-   static std::string MsgMissingAgent;
-   static std::string MsgOneClientSupported;
+   static std::wstring MsgMissingClient;
+   static std::wstring MsgMissingAgent;
+   static std::wstring MsgOneClientSupported;
 
    StandaloneConfiguration();
    StandaloneConfiguration(const StandaloneConfiguration& other);
@@ -23,7 +23,7 @@ public:
 
    virtual AbstractTypeConfiguration* Copy() const;
 
-   virtual void SaveToOpenedFile(std::ofstream& fileStream);
+   virtual void SaveToOpenedFile(std::wofstream& fileStream);
 
    virtual void GetJobList(std::list<AbstractJob*>& _jobList);
 
@@ -33,21 +33,21 @@ public:
 
    virtual ClientWorkManager* BuildWorkList(const bool withProfiling) const;
 
-   std::string GetMasterEmail() const;
-   void SetMasterEmail(const std::string& value);
+   std::wstring GetMasterEmail() const;
+   void SetMasterEmail(const std::wstring& value);
 
    bool GetLocalShutdown() const;
    void SetLocalShutdown(const bool value);
 
-   std::string GetReportDispatching() const;
-   void SetReportDispatching(const std::string& value);
+   std::wstring GetReportDispatching() const;
+   void SetReportDispatching(const std::wstring& value);
 
-   std::string GetReportType() const;
-   void SetReportType(const std::string& value);
+   std::wstring GetReportType() const;
+   void SetReportType(const std::wstring& value);
    AbstractReportCreator* GetReportCreator(void) const;
 
-   std::string GetReportCss() const;
-   void SetReportCss(const std::string& value);
+   std::wstring GetReportCss() const;
+   void SetReportCss(const std::wstring& value);
 
 
    Agent* GetAgent() const;
@@ -61,29 +61,29 @@ public:
 
 protected:
    virtual void CreateAgent(ConfigurationObject* confObject,
-                            std::vector<std::string>& errorMessages);
+                            std::vector<std::wstring>& errorMessages);
    virtual bool CreateClient(ConfigurationObject* confObject,
-                             std::vector<std::string> &errorMessages);
+                             std::vector<std::wstring> &errorMessages);
 
    Client* client;
 
 private:
    virtual void FillRootObjects(const std::list<ConfigurationObject*>& objectList,
-                              std::vector<std::string> &errorMessages);
+                              std::vector<std::wstring> &errorMessages);
    virtual void FillGlobalProperties(ConfigurationObject* object,
-                                   std::vector<std::string> &errorMessages);
-   virtual bool IsConfigurationConsistent(std::vector<std::string> &errorMessages);
+                                   std::vector<std::wstring> &errorMessages);
+   virtual bool IsConfigurationConsistent(std::vector<std::wstring> &errorMessages);
 
-   void CheckReportDispatchingErrors(std::vector<std::string> &errorMessages);
+   void CheckReportDispatchingErrors(std::vector<std::wstring> &errorMessages);
 
-   void SaveClientToOpenedFile(std::ofstream& file);
-   void SaveReportOptionsToOpenedFile(std::ofstream& file);
-   void SaveGlobalPropertiesToOpenedFile(std::ofstream& file);
+   void SaveClientToOpenedFile(std::wofstream& file);
+   void SaveReportOptionsToOpenedFile(std::wofstream& file);
+   void SaveGlobalPropertiesToOpenedFile(std::wofstream& file);
 
-   void SaveClientPropertiesToOpenedFile(std::ofstream& file);
+   void SaveClientPropertiesToOpenedFile(std::wofstream& file);
 
    void CreateReport(ConfigurationObject* confObject,
-                     std::vector<std::string>& errorMessages);
+                     std::vector<std::wstring>& errorMessages);
 
    void ChangeReportCreator();
 
@@ -92,10 +92,10 @@ private:
 
    AbstractReportCreator* reportCreator;
    Agent* agent;
-   std::string reportType;
-   std::string cssFile;
-   std::string masterEmail;
-   std::string reportDispatching;
+   std::wstring reportType;
+   std::wstring cssFile;
+   std::wstring masterEmail;
+   std::wstring reportDispatching;
    bool shutdown;
 };
 

@@ -6,7 +6,7 @@
 class DummyEmailReportDispatcher : public AbstractEmailReportDispatcher
 {
 public:
-    virtual std::string GetName() const;
+    virtual std::wstring GetName() const;
     virtual bool Dispatch(AbstractReportCreator* reportCreator);
 };
 

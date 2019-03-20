@@ -9,11 +9,11 @@
 
 using namespace std;
 
-static const string defaultName = "Rsnapshot Backup";
+static const wstring defaultName = L"Rsnapshot Backup";
 
 RsnapshotSmartBackupJob::RsnapshotSmartBackupJob()
     : AbstractBackupJob(defaultName),
-      templateConfigurationFile(""), temporaryFile(""),
+      templateConfigurationFile(L""), temporaryFile(L""),
       waitBeforeRun(false), maxBackupCount(100)
 {
 }
@@ -44,37 +44,37 @@ JobStatus *RsnapshotSmartBackupJob::Run()
     return RunConfiguredBackupJob();
 }
 
-string RsnapshotSmartBackupJob::GetTypeName() const
+wstring RsnapshotSmartBackupJob::GetTypeName() const
 {
    return defaultName;
 }
 
-void RsnapshotSmartBackupJob::SetRepository(const string& value)
+void RsnapshotSmartBackupJob::SetRepository(const wstring& value)
 {
    AbstractBackupJob::SetRepository(BuildFinalPath(value));
 }
 
-void RsnapshotSmartBackupJob::AddFolder(const string& source, const string& destination)
+void RsnapshotSmartBackupJob::AddFolder(const wstring& source, const wstring& destination)
 {
    AbstractBackupJob::AddFolder(BuildFinalPath(source), destination);
 }
 
-string RsnapshotSmartBackupJob::GetTemplateConfigurationFile() const
+wstring RsnapshotSmartBackupJob::GetTemplateConfigurationFile() const
 {
     return templateConfigurationFile;
 }
 
-void RsnapshotSmartBackupJob::SetTemplateConfigurationFile(const string &value)
+void RsnapshotSmartBackupJob::SetTemplateConfigurationFile(const wstring &value)
 {
     templateConfigurationFile = value;
 }
 
-string RsnapshotSmartBackupJob::GetTemporaryFile() const
+wstring RsnapshotSmartBackupJob::GetTemporaryFile() const
 {
     return temporaryFile;
 }
 
-void RsnapshotSmartBackupJob::SetTemporaryFile(const string &value)
+void RsnapshotSmartBackupJob::SetTemporaryFile(const wstring &value)
 {
     temporaryFile = value;
 }
@@ -99,25 +99,25 @@ void RsnapshotSmartBackupJob::SetMaxBackupCount(const int value)
     maxBackupCount = value;
 }
 
-void RsnapshotSmartBackupJob::RunRepositoryBackup(const string&,
-                                                  const string&,
+void RsnapshotSmartBackupJob::RunRepositoryBackup(const wstring&,
+                                                  const wstring&,
                                                   AbstractBackupJob::ResultCollection &)
 {
 }
 
-JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromServer(const string& source, const string& destination)
+JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromServer(const wstring& source, const wstring& destination)
 {
    if (!FileTools::IsFolderEmpty(source))
       return RunRawCopy(source, destination);
    else
-      return new JobStatus(JobStatus::Ok, "");
+      return new JobStatus(JobStatus::Ok, L"");
 }
 
 JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromClient(
       const BackupRestoreParameters& parameters,
       const BackupRestoreTarget& restoreTarget)
 {
-   string source = CreateBackupSourcePath("");
+   wstring source = CreateBackupSourcePath(L"");
 
    LinuxCopyFsBackupJob copyJob;
    copyJob.SetTargetRemote(restoreTarget.user, restoreTarget.host);
@@ -127,18 +127,18 @@ JobStatus* RsnapshotSmartBackupJob::RestoreBackupFromClient(
    return copyStatus;
 }
 
-string RsnapshotSmartBackupJob::CreateBackupSourcePath(const string& backupTag) const
+wstring RsnapshotSmartBackupJob::CreateBackupSourcePath(const wstring& backupTag) const
 {
    const int lastBackupIndex = 0;
-   stringstream weeklyString;
-   weeklyString << "weekly." << lastBackupIndex;
-   return repository + weeklyString.str() + "/" + backupTag;
+   wstringstream weeklywstring;
+   weeklywstring << L"weekly." << lastBackupIndex;
+   return repository + weeklywstring.str() + L"/" + backupTag;
 }
 
 JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
 {
-   debugManager->AddDataLine<bool>("Running - IsTargetLocal", target.isLocal);
-   string configuration = CreateConfiguration();
+   debugManager->AddDataLine<bool>(L"Running - IsTargetLocal", target.isLocal);
+   wstring configuration = CreateConfiguration();
    RsnapshotRawBackupJob* rawBackupJob = CreateRawJob(configuration);
 
    JobStatus* status = rawBackupJob->Run();
@@ -148,7 +148,7 @@ JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
    return status;
 }
 
-JobStatus* RsnapshotSmartBackupJob::RunRawCopy(const string& source, const string& destination)
+JobStatus* RsnapshotSmartBackupJob::RunRawCopy(const wstring& source, const wstring& destination)
 {
    LinuxCopyFsBackupJob rawCopyJob;
    rawCopyJob.CopyTarget(*this);
@@ -158,28 +158,28 @@ JobStatus* RsnapshotSmartBackupJob::RunRawCopy(const string& source, const strin
    if (status->IsOk())
       return new JobStatus(JobStatus::Ok);
    else
-      return new JobStatus(JobStatus::Error, "Raw Copy failed");
+      return new JobStatus(JobStatus::Error, L"Raw Copy failed");
 }
 
-string RsnapshotSmartBackupJob::AppendTrailingSlash(const string value) const
+wstring RsnapshotSmartBackupJob::AppendTrailingSlash(const wstring value) const
 {
    const char slash = '/';
-   string fixedValue = value;
+   wstring fixedValue = value;
    if (value[value.size()-1] != slash)
       fixedValue.push_back(slash);
    return fixedValue;
 }
 
-string RsnapshotSmartBackupJob::CreateConfiguration() const
+wstring RsnapshotSmartBackupJob::CreateConfiguration() const
 {
    RsnapshotConfigurationBuilder builder(templateConfigurationFile);
    builder.SetRepository(repository);
-   if (temporaryFile != "")
+   if (temporaryFile != L"")
        builder.SetGeneratedConfigurationFile(temporaryFile);
    return builder.CreateConfigurationFile(folderList, maxBackupCount);
 }
 
-RsnapshotRawBackupJob* RsnapshotSmartBackupJob::CreateRawJob(const string& configuration) const
+RsnapshotRawBackupJob* RsnapshotSmartBackupJob::CreateRawJob(const wstring& configuration) const
 {
    RsnapshotRawBackupJob* rawBackupJob = new RsnapshotRawBackupJob(repository, configuration);
    rawBackupJob->SetParentDebugManager(debugManager);
@@ -188,11 +188,11 @@ RsnapshotRawBackupJob* RsnapshotSmartBackupJob::CreateRawJob(const string& confi
    return rawBackupJob;
 }
 
-string RsnapshotSmartBackupJob::BuildFinalPath(const string& inputPath) const
+wstring RsnapshotSmartBackupJob::BuildFinalPath(const wstring& inputPath) const
 {
-   debugManager->AddDataLine<string>("BuildFinalPath", inputPath);
+   debugManager->AddDataLine<wstring>(L"BuildFinalPath", inputPath);
    const bool shouldBuildPath = (target.isLocal && !PathTools::IsAbsolutePath(inputPath));
-   debugManager->AddDataLine<bool>("WillBuildAbsolutePath", shouldBuildPath);
+   debugManager->AddDataLine<bool>(L"WillBuildAbsolutePath", shouldBuildPath);
    return (shouldBuildPath) ? PathTools::BuildFullPath(inputPath) : inputPath;
 }
 

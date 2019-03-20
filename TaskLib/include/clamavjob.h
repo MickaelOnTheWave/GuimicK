@@ -22,7 +22,7 @@ public:
 protected:
    UserConsoleJob* virusDefinitionUpdateJob;
    UserConsoleJob* virusFullScanJob;
-	std::string scanDir;
+	std::wstring scanDir;
 	bool blockOnFailingUpdate;
 };
 

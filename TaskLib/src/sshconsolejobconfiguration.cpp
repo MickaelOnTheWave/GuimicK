@@ -7,7 +7,7 @@
 using namespace std;
 
 SshConsoleJobConfiguration::SshConsoleJobConfiguration()
-    : UserConsoleJobConfiguration("SshConsole")
+    : UserConsoleJobConfiguration(L"SshConsole")
 {
 }
 
@@ -37,9 +37,9 @@ ConfigurationObject* SshConsoleJobConfiguration::CreateConfigurationObject(Abstr
 
 AbstractJob *SshConsoleJobConfiguration::CreateConfiguredJobAfterCheck(
                                             ConfigurationObject *confObject,
-                                            std::vector<std::string> &errorMessages)
+                                            std::vector<std::wstring> &errorMessages)
 {
-    SshConsoleJob* mainJob = new SshConsoleJob("", "");
+    SshConsoleJob* mainJob = new SshConsoleJob(L"", L"");
     AbstractJobDefaultConfiguration::ConfigureJob(mainJob, confObject, errorMessages);
 
     AbstractJob* remoteJob = UserConsoleJobConfiguration::CreateConfiguredJobAfterCheck(

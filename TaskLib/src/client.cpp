@@ -35,17 +35,17 @@ void Client::SetName(const wstring& _name)
 	name = _name;
 }
 
-void Client::AddProperty(const std::string &propertyName, const std::wstring &value)
+void Client::AddProperty(const std::wstring &propertyName, const std::wstring &value)
 {
     propertyMap[propertyName] = value;
 }
 
-bool Client::HasProperty(const std::string &propertyName)
+bool Client::HasProperty(const std::wstring &propertyName)
 {
     return (propertyMap.count(propertyName) > 0);
 }
 
-std::wstring Client::GetProperty(const std::string &propertyName)
+std::wstring Client::GetProperty(const std::wstring &propertyName)
 {
    return propertyMap[propertyName];
 }

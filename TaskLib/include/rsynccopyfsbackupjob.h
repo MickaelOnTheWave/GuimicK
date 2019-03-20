@@ -11,29 +11,29 @@ public:
 
     virtual AbstractJob* Clone();
 
-    virtual std::string GetTypeName() const;
+    virtual std::wstring GetTypeName() const;
 
     static bool IsAvailable();
 
     virtual bool IsInitialized(void);
 
-    void GetExclusionList(std::vector<std::string>& exclusions);
-    void AddToExclusions(const std::string& item);
+    void GetExclusionList(std::vector<std::wstring>& exclusions);
+    void AddToExclusions(const std::wstring& item);
     void ClearExclusionList();
 
 protected:
-    virtual void PrepareCopyCommand(const std::string &source,
-                                    const std::string &destination,
+    virtual void PrepareCopyCommand(const std::wstring &source,
+                                    const std::wstring &destination,
                                     ConsoleJob& commandJob);
 
-    virtual void CreateReport(const std::string&,
-                              const std::string& output, ResultCollection& results);
+    virtual void CreateReport(const std::wstring&,
+                              const std::wstring& output, ResultCollection& results);
 
 private:
-    std::string BuildSource(const std::string& originalSource) const;
-    std::string BuildExclusions() const;
+    std::wstring BuildSource(const std::wstring& originalSource) const;
+    std::wstring BuildExclusions() const;
 
-    std::vector<std::string> itemsToExclude;
+    std::vector<std::wstring> itemsToExclude;
 };
 
 #endif // RSYNCCOPYFSBACKUPJOB_H

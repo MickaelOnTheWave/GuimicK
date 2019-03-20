@@ -10,7 +10,7 @@
 class MainToolModule
 {
 public:
-    MainToolModule(const std::string& _version);
+    MainToolModule(const std::wstring& _version);
     ~MainToolModule();
 
     void EnableTimedRuns(const bool value);
@@ -18,7 +18,7 @@ public:
     void SetFallbackDispatcher(AbstractReportDispatcher* dispatcher);
 
     int RunFromCommandLine(int argc, char* argv[]);
-    int RunFromParameterMap(const std::map<std::string, std::string>& parameters);
+    int RunFromParameterMap(const std::map<std::wstring, std::wstring>& parameters);
 
 private:
 
@@ -26,9 +26,9 @@ private:
 
     bool SetupCommandLine(CommandLineManager& manager);
 
-    std::string GetConfigurationFile(const std::string& commandLineFile);
+    std::wstring GetConfigurationFile(const std::wstring& commandLineFile);
 
-    void ShowErrors(std::vector<std::string> &errorMessages);
+    void ShowErrors(std::vector<std::wstring> &errorMessages);
 
     bool SetupShutdownOptions(const bool isConfigShutdownEnabled, const bool isCommandLineShutdownCanceled,
                               ClientWorkManager* workList);
@@ -36,7 +36,7 @@ private:
     void SetupSingleJobOption(ClientWorkManager* workList, const CommandLineManager& commandLine);
 
     AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const StandaloneConfiguration& configuration,
-                                       const std::vector<std::string>& configurationErrors);
+                                       const std::vector<std::wstring>& configurationErrors);
 
     void DispatchReport(AbstractReportCreator* reportCreator,
                         const StandaloneConfiguration& configuration,
@@ -50,7 +50,7 @@ private:
 
     bool RunLocalShutdown(const bool isLocalShutdownEnabled);
 
-    const std::string version;
+    const std::wstring version;
     AbstractReportDispatcherReplacer* replacer;
     AbstractReportDispatcher* fallbackDispatcher;
     bool timedRuns;

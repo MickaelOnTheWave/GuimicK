@@ -10,7 +10,7 @@ class AbstractJob;
 class Client
 {
 public:
-    typedef std::map<std::string, std::wstring> PropertyMap;
+    typedef std::map<std::wstring, std::wstring> PropertyMap;
 
     Client(const std::wstring& _name = L"");
     Client(const Client& other);
@@ -21,11 +21,11 @@ public:
     std::wstring GetName() const;
     void SetName(const std::wstring& _name);
 
-    void AddProperty(const std::string& name,
+    void AddProperty(const std::wstring& name,
                      const std::wstring& value);
 
-    bool HasProperty(const std::string& name);
-    std::wstring GetProperty(const std::string& name);
+    bool HasProperty(const std::wstring& name);
+    std::wstring GetProperty(const std::wstring& name);
 
     PropertyMap::const_iterator PropertyBegin() const;
     PropertyMap::const_iterator PropertyEnd() const;

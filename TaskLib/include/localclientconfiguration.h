@@ -9,16 +9,16 @@
 class LocalClientConfiguration
 {
 public:
-	static std::string MsgClientWithoutName;
-	static std::string MsgClientWithoutJobs;
-	static std::string MsgDeprecatedRemoteOption;
+	static std::wstring MsgClientWithoutName;
+	static std::wstring MsgClientWithoutJobs;
+	static std::wstring MsgDeprecatedRemoteOption;
 
 	Client* CreateConfiguredClient(ConfigurationObject* confObject,
-	                               std::vector<std::string> &errorMessages);
+	                               std::vector<std::wstring> &errorMessages);
 
 protected:
    virtual bool AreClientPropertiesConsistent(ConfigurationObject* object,
-                                              std::vector<std::string> &errorMessages);
+                                              std::vector<std::wstring> &errorMessages);
 
    Client* client;
 

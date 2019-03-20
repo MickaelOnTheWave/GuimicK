@@ -5,7 +5,7 @@
 
 using namespace std;
 
-static const string defaultName = "Rsync Copy Backup";
+static const wstring defaultName = L"Rsync Copy Backup";
 
 RsyncCopyFsBackupJob::RsyncCopyFsBackupJob() : AbstractCopyFsBackupJob(defaultName)
 {
@@ -21,15 +21,15 @@ AbstractJob *RsyncCopyFsBackupJob::Clone()
    return new RsyncCopyFsBackupJob(*this);
 }
 
-string RsyncCopyFsBackupJob::GetTypeName() const
+wstring RsyncCopyFsBackupJob::GetTypeName() const
 {
    return defaultName;
 }
 
 bool RsyncCopyFsBackupJob::IsAvailable()
 {
-    const string path = PathTools::GetCommandPath("rsync", ConsoleJob::appSearchPaths);
-    return (path != "");
+    const wstring path = PathTools::GetCommandPath(L"rsync", ConsoleJob::appSearchPaths);
+    return (path != L"");
 }
 
 bool RsyncCopyFsBackupJob::IsInitialized()
@@ -37,12 +37,12 @@ bool RsyncCopyFsBackupJob::IsInitialized()
    return AbstractCopyFsBackupJob::IsInitialized() && IsAvailable();
 }
 
-void RsyncCopyFsBackupJob::GetExclusionList(std::vector<string>& exclusions)
+void RsyncCopyFsBackupJob::GetExclusionList(std::vector<wstring>& exclusions)
 {
    exclusions = itemsToExclude;
 }
 
-void RsyncCopyFsBackupJob::AddToExclusions(const string &item)
+void RsyncCopyFsBackupJob::AddToExclusions(const wstring &item)
 {
    itemsToExclude.push_back(item);
 }
@@ -52,19 +52,19 @@ void RsyncCopyFsBackupJob::ClearExclusionList()
    itemsToExclude.clear();
 }
 
-void RsyncCopyFsBackupJob::PrepareCopyCommand(const std::string &source,
-                                              const std::string &destination,
+void RsyncCopyFsBackupJob::PrepareCopyCommand(const std::wstring &source,
+                                              const std::wstring &destination,
                                               ConsoleJob &commandJob)
 {
-    commandJob.SetCommand("rsync");
-    string params = "-avzhi --delete " + BuildExclusions() + " ";
-    params += BuildSource(source) + " " + destination;
-    debugManager->AddDataLine<string>("Rsync params", params);
+    commandJob.SetCommand(L"rsync");
+    wstring params = L"-avzhi --delete " + BuildExclusions() + L" ";
+    params += BuildSource(source) + L" " + destination;
+    debugManager->AddDataLine<wstring>(L"Rsync params", params);
     commandJob.SetCommandParameters(params);
 }
 
-void RsyncCopyFsBackupJob::CreateReport(const std::string &,
-                                        const std::string &output,
+void RsyncCopyFsBackupJob::CreateReport(const std::wstring &,
+                                        const std::wstring &output,
                                         AbstractBackupJob::ResultCollection &results)
 {
     JobStatus* status = new JobStatus(JobStatus::Ok);
@@ -75,37 +75,37 @@ void RsyncCopyFsBackupJob::CreateReport(const std::string &,
     if (result)
     {
         status->SetDescription(parser.GetMiniDescription());
-        status->AddFileBuffer("RsyncCopy.txt", parser.GetFullDescription());
+        status->AddFileBuffer(L"RsyncCopy.txt", parser.GetFullDescription());
         parser.GetReport(*report);
         results.push_back(make_pair(status, report));
     }
     else
     {
         status->SetCode(JobStatus::OkWithWarnings);
-        status->SetDescription("Report parsing failed");
+        status->SetDescription(L"Report parsing failed");
         results.push_back(make_pair(status, new FileBackupReport()));
     }
 }
 
-string RsyncCopyFsBackupJob::BuildSource(const string &originalSource) const
+wstring RsyncCopyFsBackupJob::BuildSource(const wstring &originalSource) const
 {
-    string finalSource;
+    wstring finalSource;
     if (target.isLocal)
         finalSource = originalSource;
     else
-        finalSource = target.sshUser + "@" + target.sshHost + ":" + originalSource;
-    return finalSource + "/";
+        finalSource = target.sshUser + L"@" + target.sshHost + L":" + originalSource;
+    return finalSource + L"/";
 }
 
-string RsyncCopyFsBackupJob::BuildExclusions() const
+wstring RsyncCopyFsBackupJob::BuildExclusions() const
 {
     if (itemsToExclude.size() == 0)
-        return string("");
+        return wstring(L"");
 
-    string parameter("");
-    vector<string>::const_iterator it=itemsToExclude.begin();
+    wstring parameter(L"");
+    vector<wstring>::const_iterator it=itemsToExclude.begin();
     for (; it!=itemsToExclude.end(); ++it)
-        parameter += string("--exclude '") + *it + "'";
+        parameter += wstring(L"--exclude '") + *it + L"'";
 
     return parameter;
 }

@@ -9,7 +9,7 @@ class LinuxFreeSpaceCheckJob : public AbstractJob
 {
 public:
     LinuxFreeSpaceCheckJob();
-    LinuxFreeSpaceCheckJob(const std::string& _drive);
+    LinuxFreeSpaceCheckJob(const std::wstring& _drive);
 
     virtual AbstractJob* Clone();
 
@@ -22,18 +22,18 @@ public:
     bool IsTargetLocal() const;
     void SetTargetToLocal(const bool value);
 
-    std::string GetDrive() const;
-    void SetDrive(const std::string& value);
+    std::wstring GetDrive() const;
+    void SetDrive(const std::wstring& value);
 
 
 private:
     bool IsRemoteTargetConsistent() const;
     AbstractConsoleJob *CreateJobInstance() const;
 
-    std::string drive;
+    std::wstring drive;
     bool isTargetLocal;
-    std::string sshUser;
-    std::string sshHost;
+    std::wstring sshUser;
+    std::wstring sshHost;
 };
 
 #endif // LINUXFREESPACECHECKJOB_H

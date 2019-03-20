@@ -21,8 +21,8 @@ public:
     void SetMaxRetries(const int value);
 
 protected:
-    std::string macAddress;
-    std::string broadcastIp;
+    std::wstring macAddress;
+    std::wstring broadcastIp;
 
 private:
     virtual JobStatus* SetupWaker() = 0;
@@ -34,7 +34,7 @@ private:
      */
     int WaitForComputerToGoUp(void) const;
 
-    std::string expectedIp;
+    std::wstring expectedIp;
     int timeout;
     int maxRetries;
 };

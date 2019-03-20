@@ -3,10 +3,10 @@
 
 using namespace std;
 
-const string GitBackupJobConfiguration::WriteLogProperty = "writeLogsToFiles";
+const wstring GitBackupJobConfiguration::WriteLogProperty = L"writeLogsToFiles";
 
 GitBackupJobConfiguration::GitBackupJobConfiguration()
-    : AbstractBackupJobConfiguration("GitBackup")
+    : AbstractBackupJobConfiguration(L"GitBackup")
 {
 }
 
@@ -22,24 +22,24 @@ AbstractJob *GitBackupJobConfiguration::CreateJob()
 
 void GitBackupJobConfiguration::ConfigureJob(AbstractJob *job,
                                              ConfigurationObject *confObject,
-                                             std::vector<string> &errorMessages)
+                                             std::vector<wstring> &errorMessages)
 {
     AbstractBackupJobConfiguration::ConfigureJob(job, confObject, errorMessages);
 
     GitBackupJob* castJob = static_cast<GitBackupJob*>(job);
-    const string writeLogsToFiles(confObject->GetProperty(WriteLogProperty));
-    if (writeLogsToFiles == "true")
+    const wstring writeLogsToFiles(confObject->GetProperty(WriteLogProperty));
+    if (writeLogsToFiles == L"true")
         castJob->SetWriteLogsToFiles(true);
 
 }
 
-void GitBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &properties)
+void GitBackupJobConfiguration::FillKnownProperties(std::vector<std::wstring> &properties)
 {
     AbstractBackupJobConfiguration::FillKnownProperties(properties);
     properties.push_back(WriteLogProperty);
 }
 
-string GitBackupJobConfiguration::GetBackupItemName() const
+wstring GitBackupJobConfiguration::GetBackupItemName() const
 {
-    return string("Repository");
+    return wstring(L"Repository");
 }

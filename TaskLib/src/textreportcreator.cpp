@@ -4,7 +4,7 @@
 
 using namespace std;
 
-static const string overallString = "Overall";
+static const wstring overallString = L"Overall";
 
 TextReportCreator::TextReportCreator()
     : AbstractStructuredReportCreator()
@@ -25,13 +25,13 @@ AbstractReportCreator* TextReportCreator::Copy() const
    return new TextReportCreator(*this);
 }
 
-void TextReportCreator::UpdateWithDispatchError(const std::string& failedDispatcher,
-                                                const std::string& fallbackDispatcher)
+void TextReportCreator::UpdateWithDispatchError(const std::wstring& failedDispatcher,
+                                                const std::wstring& fallbackDispatcher)
 {
-    fullReport = "";
+    fullReport = L"";
 
     dispatchErrors << failedDispatcher << " failed.";
-    if (fallbackDispatcher != "")
+    if (fallbackDispatcher != L"")
         dispatchErrors << " Using " << fallbackDispatcher << ".";
     dispatchErrors << endl;
 
@@ -42,7 +42,7 @@ void TextReportCreator::AddHeader()
 {
 }
 
-void TextReportCreator::AddClientHeaderData(const pair<string, ClientJobResults*>& clientData)
+void TextReportCreator::AddClientHeaderData(const pair<wstring, ClientJobResults*>& clientData)
 {
     reportCore << Tools::Tabs(3) << clientData.first << endl;
     reportCore << endl;
@@ -51,23 +51,23 @@ void TextReportCreator::AddClientHeaderData(const pair<string, ClientJobResults*
     UpdateNameCellSize(clientData.second);
 }
 
-void TextReportCreator::AddJobData(const string &jobName, JobStatus *status)
+void TextReportCreator::AddJobData(const wstring &jobName, JobStatus *status)
 {
-    string stringOutput(status->GetDescription());
+    wstring wstringOutput(status->GetDescription());
 
-    const string spaces = Tools::Spaces(nameCellSize - static_cast<int>(jobName.size()));
+    const wstring spaces = Tools::Spaces(nameCellSize - static_cast<int>(jobName.size()));
     reportCore << "\t" << jobName << spaces << status->GetCodeDescription();
     if (useProfiling)
         reportCore << "\t" << Tools::FormatTimeString(status->GetDuration());
     reportCore << endl;
 
-    if (stringOutput != "")
-        reportCore << Tools::Tabs(2) << stringOutput << endl;
+    if (wstringOutput != L"")
+        reportCore << Tools::Tabs(2) << wstringOutput << endl;
 }
 
 void TextReportCreator::AddSummaryData(const int code, const time_t duration)
 {
-    const string spaces = Tools::Spaces(nameCellSize - static_cast<int>(overallString.size()));
+    const wstring spaces = Tools::Spaces(nameCellSize - static_cast<int>(overallString.size()));
     reportCore << endl;
     reportCore << "\t" << overallString << spaces;
     reportCore << JobStatus::GetCodeDescription(code);
@@ -76,18 +76,18 @@ void TextReportCreator::AddSummaryData(const int code, const time_t duration)
     reportCore << endl;
 }
 
-void TextReportCreator::AddConfigurationErrorsData(const std::vector<string> &errors)
+void TextReportCreator::AddConfigurationErrorsData(const std::vector<wstring> &errors)
 {
     if (errors.size() > 0)
     {
         reportCore << Tools::Tabs(1) << "Configuration file has some errors :" << endl;
-        for (vector<string>::const_iterator it=errors.begin(); it!=errors.end(); ++it)
+        for (vector<wstring>::const_iterator it=errors.begin(); it!=errors.end(); ++it)
             reportCore << Tools::Tabs(2) << *it << endl;
         reportCore << endl;
     }
 }
 
-void TextReportCreator::AddProgramData(const string &version)
+void TextReportCreator::AddProgramData(const wstring &version)
 {
     programVersion << "Task Manager version " << version << endl;
 }
@@ -100,7 +100,7 @@ void TextReportCreator::UpdateNameCellSize(ClientJobResults *data)
     ClientJobResults::iterator endJob=data->end();
     for (; itJob!=endJob; itJob++)
     {
-        pair<string, JobStatus*> jobData = *itJob;
+        pair<wstring, JobStatus*> jobData = *itJob;
         if (jobData.first.size() > nameCellSize)
             nameCellSize = static_cast<int>(jobData.first.size());
     }

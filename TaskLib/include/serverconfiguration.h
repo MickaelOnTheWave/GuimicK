@@ -11,12 +11,12 @@
 class ServerConfiguration : public StandaloneConfiguration
 {
 public:
-    static std::string MsgNoPassword;
-    static std::string MsgNoConfigFile;
-    static std::string MsgClientConfigAccessError;
-    static std::string MsgClientConfigUnknownObjects;
-    static std::string MsgClientConfigEmpty;
-    static std::string MsgRemoteOptionDeprecated;
+    static std::wstring MsgNoPassword;
+    static std::wstring MsgNoConfigFile;
+    static std::wstring MsgClientConfigAccessError;
+    static std::wstring MsgClientConfigUnknownObjects;
+    static std::wstring MsgClientConfigEmpty;
+    static std::wstring MsgRemoteOptionDeprecated;
 
     ServerConfiguration();
     virtual ~ServerConfiguration();
@@ -27,9 +27,9 @@ public:
 
 protected:
     virtual void CreateAgent(ConfigurationObject* confObject,
-                             std::vector<std::string>& errorMessages);
+                             std::vector<std::wstring>& errorMessages);
     virtual bool CreateClient(ConfigurationObject* confObject,
-                              std::vector<std::string> &errorMessages);
+                              std::vector<std::wstring> &errorMessages);
 };
 
 #endif // SERVERCONFIGURATION_H

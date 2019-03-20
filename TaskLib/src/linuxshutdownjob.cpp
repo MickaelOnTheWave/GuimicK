@@ -8,10 +8,10 @@ using namespace std;
 static const int defaultTimeout = 120;
 
 LinuxShutdownJob::LinuxShutdownJob()
-    : AbstractJob("Shutdown"),
-      computer(""), jobTimeoutInSeconds(defaultTimeout)
+    : AbstractJob(L"Shutdown"),
+      computer(L""), jobTimeoutInSeconds(defaultTimeout)
 {
-    shutdownJob = new SshConsoleJob("Shutdown", "shutdown -h now");
+    shutdownJob = new SshConsoleJob(L"Shutdown", L"shutdown -h now");
 }
 
 LinuxShutdownJob::LinuxShutdownJob(const LinuxShutdownJob &other)
@@ -37,9 +37,9 @@ bool LinuxShutdownJob::InitializeFromClient(Client *client)
     bool ok = AbstractJob::InitializeFromClient(client);
     if (ok)
     {
-        computer = client->GetProperty("ip");
+        computer = client->GetProperty(L"ip");
         bool jobInitialized = shutdownJob->InitializeFromClient(client);
-        return (jobInitialized && computer != "");
+        return (jobInitialized && computer != L"");
     }
     else
         return false;
@@ -47,26 +47,26 @@ bool LinuxShutdownJob::InitializeFromClient(Client *client)
 
 bool LinuxShutdownJob::IsInitialized()
 {
-    return shutdownJob->IsInitialized() && computer != "";
+    return shutdownJob->IsInitialized() && computer != L"";
 }
 
 JobStatus *LinuxShutdownJob::Run()
 {
     JobStatus* status = shutdownJob->Run();
 
-    debugManager->AddDataLine<int>("Return code", shutdownJob->GetCommandReturnCode());
-    debugManager->AddDataLine<string>("Output", shutdownJob->GetCommandOutput());
+    debugManager->AddDataLine<int>(L"Return code", shutdownJob->GetCommandReturnCode());
+    debugManager->AddDataLine<wstring>(L"Output", shutdownJob->GetCommandOutput());
     if (status->GetCode() != JobStatus::Error)
     {
         int secondsToShutdown = WaitForComputerToGoDown();
         if (secondsToShutdown > jobTimeoutInSeconds)
         {
             status->SetCode(JobStatus::Error);
-            status->SetDescription("Machine still running");
+            status->SetDescription(L"Machine still running");
         }
 
-        debugManager->AddDataLine<int>("Seconds counter", secondsToShutdown);
-        debugManager->AddDataLine<int>("Timeout", jobTimeoutInSeconds);
+        debugManager->AddDataLine<int>(L"Seconds counter", secondsToShutdown);
+        debugManager->AddDataLine<int>(L"Timeout", jobTimeoutInSeconds);
     }
 
     return debugManager->UpdateStatus(status);

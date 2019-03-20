@@ -9,18 +9,18 @@
 
 using namespace std;
 
-static const string DEFAULT_CONFIGURATION_FILE = "configuration.txt";
+static const wstring DEFAULT_CONFIGURATION_FILE = L"configuration.txt";
 
-static const string noEmailCommand = "noemail";
-static const string noShutdownCommand = "noshutdown";
-static const string onlyOneJobCommand = "onlyjob";
-static const string confFileCommand = "conffile";
+static const wstring noEmailCommand = L"noemail";
+static const wstring noShutdownCommand = L"noshutdown";
+static const wstring onlyOneJobCommand = L"onlyjob";
+static const wstring confFileCommand = L"conffile";
 
 static const int NO_ERROR              = 0;
 static const int CONFIGURATION_ERROR   = 1;
 static const int OTHER_ERROR           = 2;
 
-MainToolModule::MainToolModule(const string &_version)
+MainToolModule::MainToolModule(const wstring &_version)
     : version(_version), replacer(NULL), timedRuns(true)
 {
     fallbackDispatcher = new FileReportDispatcher();
@@ -54,7 +54,7 @@ int MainToolModule::RunFromCommandLine(int argc, char *argv[])
     return Run(commandLine);
 }
 
-int MainToolModule::RunFromParameterMap(const std::map<string, string> &parameters)
+int MainToolModule::RunFromParameterMap(const std::map<wstring, wstring> &parameters)
 {
     CommandLineManager commandLine(parameters);
     return Run(commandLine);
@@ -66,15 +66,15 @@ int MainToolModule::Run(CommandLineManager &commandLine)
     if (shouldReturn)
         return NO_ERROR;
 
-    string configurationFile = GetConfigurationFile(commandLine.GetParameterValue(confFileCommand));
+    wstring configurationFile = GetConfigurationFile(commandLine.GetParameterValue(confFileCommand));
     if (FileTools::FileExists(configurationFile) == false)
     {
-        cout << "Error : file " << configurationFile << " could not be opened." << endl;
+        wcout << "Error : file " << configurationFile << " could not be opened." << endl;
         return CONFIGURATION_ERROR;
     }
 
     TaskManagerConfiguration configuration;
-    vector<string> configurationErrors;
+    vector<wstring> configurationErrors;
     bool configurationIsUsable = configuration.LoadFromFile(configurationFile, configurationErrors);
     if (configurationIsUsable == false)
     {
@@ -102,32 +102,32 @@ int MainToolModule::Run(CommandLineManager &commandLine)
 
 bool MainToolModule::SetupCommandLine(CommandLineManager& manager)
 {
-    manager.AddParameter(noEmailCommand,     "Doesn't send report via email.");
-    manager.AddParameter(noShutdownCommand,  "Doesn't shutdown client neither server after running.");
-    manager.AddParameter(onlyOneJobCommand,  "[JOBNAME] Only runs job JOBNAME.");
-    manager.AddParameter(confFileCommand,    "[CONFIGURATION FILE] Specifies which configuration file to use.");
+    manager.AddParameter(noEmailCommand,     L"Doesn't send report via email.");
+    manager.AddParameter(noShutdownCommand,  L"Doesn't shutdown client neither server after running.");
+    manager.AddParameter(onlyOneJobCommand,  L"[JOBNAME] Only runs job JOBNAME.");
+    manager.AddParameter(confFileCommand,    L"[CONFIGURATION FILE] Specifies which configuration file to use.");
 
     manager.EnableHelpCommand();
-    manager.EnableVersionCommand("Task Manager", version, "Mickaël C. Guimarães", "2014-2019");
+    manager.EnableVersionCommand(L"Task Manager", version, L"Mickaël C. Guimarães", L"2014-2019");
 
     return (manager.HandleUnknownParameters() || manager.HandleVersionCommand() ||
             manager.HandleHelpCommand());
 }
 
-string MainToolModule::GetConfigurationFile(const string& commandLineFile)
+wstring MainToolModule::GetConfigurationFile(const wstring& commandLineFile)
 {
-    return (commandLineFile != "") ? commandLineFile : DEFAULT_CONFIGURATION_FILE;
+    return (commandLineFile != L"") ? commandLineFile : DEFAULT_CONFIGURATION_FILE;
 }
 
-void MainToolModule::ShowErrors(vector<string>& errorMessages)
+void MainToolModule::ShowErrors(vector<wstring>& errorMessages)
 {
     if (errorMessages.size() == 0)
         return;
 
-    vector<string>::const_iterator it=errorMessages.begin();
+    vector<wstring>::const_iterator it=errorMessages.begin();
     for (; it!=errorMessages.end(); it++)
-        cout << *it << endl;
-    cout << endl;
+        wcout << *it << endl;
+    wcout << endl;
 }
 
 bool MainToolModule::SetupShutdownOptions(const bool isConfigShutdownEnabled,
@@ -138,7 +138,7 @@ bool MainToolModule::SetupShutdownOptions(const bool isConfigShutdownEnabled,
     if (isCommandLineShutdownCanceled)
     {
         localShutdown = false;
-        workList->RemoveJob("Shutdown");
+        workList->RemoveJob(L"Shutdown");
     }
     return localShutdown;
 }
@@ -146,14 +146,14 @@ bool MainToolModule::SetupShutdownOptions(const bool isConfigShutdownEnabled,
 void MainToolModule::SetupSingleJobOption(ClientWorkManager* workList,
                                           const CommandLineManager& commandLine)
 {
-    string singleJob = commandLine.GetParameterValue(onlyOneJobCommand);
-    if (singleJob != "")
+    wstring singleJob = commandLine.GetParameterValue(onlyOneJobCommand);
+    if (singleJob != L"")
         workList->RemoveAllButJobs(singleJob);
 }
 
 AbstractReportCreator* MainToolModule::RunWorkList(ClientWorkManager* workList,
                                                    const StandaloneConfiguration& configuration,
-                                                   const vector<string>& configurationErrors)
+                                                   const vector<wstring>& configurationErrors)
 {
     WorkResultData* workResult = workList->RunWorkList();
     AbstractReportCreator* reportCreator = configuration.GetReportCreator();
@@ -185,9 +185,9 @@ bool MainToolModule::DispatchReport(AbstractReportCreator *reportCreator,
     bool ok = dispatcher->Dispatch(reportCreator);
     if (!ok)
     {
-        const string fallbackName = (dispatcher != fallbackDispatcher) ?
+        const wstring fallbackName = (dispatcher != fallbackDispatcher) ?
                     fallbackDispatcher->GetName() :
-                    string("");
+                    wstring(L"");
 
         reportCreator->UpdateWithDispatchError(dispatcher->GetName(), fallbackName);
     }
@@ -199,11 +199,11 @@ bool MainToolModule::RunLocalShutdown(const bool isLocalShutdownEnabled)
     if (isLocalShutdownEnabled == false)
         return true;
 
-    ConsoleJob finalShutdown("/sbin/poweroff");
+    ConsoleJob finalShutdown(L"/sbin/poweroff");
     JobStatus* status = finalShutdown.Run();
     const bool shutdownError = (status->GetCode() != JobStatus::Ok);
     if (shutdownError)
-        cout << "Local shutdown failed : " << status->GetDescription() << endl;
+        wcout << "Local shutdown failed : " << status->GetDescription() << endl;
 
     delete status;
     return !shutdownError;

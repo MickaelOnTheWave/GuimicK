@@ -20,9 +20,9 @@ public:
    virtual AbstractTypeConfiguration* Copy() const = 0;
 
    virtual bool Load(ConfigurationParser& parser,
-                     std::vector<std::string> &errorMessages);
+                     std::vector<std::wstring> &errorMessages);
 
-   virtual void SaveToOpenedFile(std::ofstream& fileStream) = 0;
+   virtual void SaveToOpenedFile(std::wofstream& fileStream) = 0;
 
    virtual void GetJobList(std::list<AbstractJob*>& _jobList) = 0;
 
@@ -35,10 +35,10 @@ protected:
 
 private:
     virtual void FillRootObjects(const std::list<ConfigurationObject*>& objectList,
-                                 std::vector<std::string> &errorMessages) = 0;
+                                 std::vector<std::wstring> &errorMessages) = 0;
     virtual void FillGlobalProperties(ConfigurationObject* object,
-                                      std::vector<std::string> &errorMessages) = 0;
-    virtual bool IsConfigurationConsistent(std::vector<std::string> &errorMessages) = 0;
+                                      std::vector<std::wstring> &errorMessages) = 0;
+    virtual bool IsConfigurationConsistent(std::vector<std::wstring> &errorMessages) = 0;
 };
 
 #endif // ABSTRACTTYPECONFIGURATION_H

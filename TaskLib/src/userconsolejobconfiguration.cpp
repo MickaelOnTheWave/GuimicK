@@ -4,21 +4,21 @@
 
 using namespace std;
 
-const std::string UserConsoleJobConfiguration::CommandProperty = "command";
-const std::string UserConsoleJobConfiguration::ParameterProperty = "params";
-const std::string UserConsoleJobConfiguration::ReturnCodeProperty = "returnCode";
-const std::string UserConsoleJobConfiguration::ExpectedOutputProperty = "expectedOutput";
-const std::string UserConsoleJobConfiguration::OutputFilenameProperty = "outputFileName";
-const std::string UserConsoleJobConfiguration::ParserCommandProperty = "parserCommand";
-const std::string UserConsoleJobConfiguration::ParserUsesBufferProperty = "parserUsesBuffer";
-const std::string UserConsoleJobConfiguration::UserAttachmentObject = "AttachFile";
+const std::wstring UserConsoleJobConfiguration::CommandProperty = L"command";
+const std::wstring UserConsoleJobConfiguration::ParameterProperty = L"params";
+const std::wstring UserConsoleJobConfiguration::ReturnCodeProperty = L"returnCode";
+const std::wstring UserConsoleJobConfiguration::ExpectedOutputProperty = L"expectedOutput";
+const std::wstring UserConsoleJobConfiguration::OutputFilenameProperty = L"outputFileName";
+const std::wstring UserConsoleJobConfiguration::ParserCommandProperty = L"parserCommand";
+const std::wstring UserConsoleJobConfiguration::ParserUsesBufferProperty = L"parserUsesBuffer";
+const std::wstring UserConsoleJobConfiguration::UserAttachmentObject = L"AttachFile";
 
 UserConsoleJobConfiguration::UserConsoleJobConfiguration()
-    : AbstractJobDefaultConfiguration("Console")
+    : AbstractJobDefaultConfiguration(L"Console")
 {
 }
 
-UserConsoleJobConfiguration::UserConsoleJobConfiguration(const string &tag)
+UserConsoleJobConfiguration::UserConsoleJobConfiguration(const wstring &tag)
     : AbstractJobDefaultConfiguration(tag)
 {
 }
@@ -47,53 +47,53 @@ AbstractJob *UserConsoleJobConfiguration::CreateJob()
     return new UserConsoleJob();
 }
 
-void UserConsoleJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationObject *confObject, std::vector<string> &errorMessages)
+void UserConsoleJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationObject *confObject, std::vector<wstring> &errorMessages)
 {
     AbstractJobDefaultConfiguration::ConfigureJob(job, confObject, errorMessages);
 
-    const string command =        confObject->GetFirstProperty(CommandProperty, "param0");
-    const string parameters =     confObject->GetFirstProperty(ParameterProperty, "param1");
-    const string rawReturnCode =  confObject->GetFirstProperty(ReturnCodeProperty,"param2");
-    const string expectedOutput = confObject->GetProperty(ExpectedOutputProperty);
-    const string outputFile     = confObject->GetProperty(OutputFilenameProperty);
-    const string parserCommand  = confObject->GetProperty(ParserCommandProperty);
-    const string parserUsingBuffer = confObject->GetProperty(ParserUsesBufferProperty);
+    const wstring command =        confObject->GetFirstProperty(CommandProperty, L"param0");
+    const wstring parameters =     confObject->GetFirstProperty(ParameterProperty, L"param1");
+    const wstring rawReturnCode =  confObject->GetFirstProperty(ReturnCodeProperty, L"param2");
+    const wstring expectedOutput = confObject->GetProperty(ExpectedOutputProperty);
+    const wstring outputFile     = confObject->GetProperty(OutputFilenameProperty);
+    const wstring parserCommand  = confObject->GetProperty(ParserCommandProperty);
+    const wstring parserUsingBuffer = confObject->GetProperty(ParserUsesBufferProperty);
 
     UserConsoleJob* castJob = static_cast<UserConsoleJob*>(job);
     castJob->Initialize(command);
     castJob->SetCommandParameters(parameters);
 
-    if (rawReturnCode != "")
+    if (rawReturnCode != L"")
     {
         int returnCode = 0;
-        stringstream ss(rawReturnCode);
+        wstringstream ss(rawReturnCode);
         ss >> returnCode;
         castJob->SetExpectedReturnCode(returnCode);
     }
 
-    if (expectedOutput != "")
+    if (expectedOutput != L"")
         castJob->SetExpectedOutput(expectedOutput);
 
-    if (outputFile != "")
+    if (outputFile != L"")
         castJob->SetOutputTofile(outputFile);
     else
         castJob->SetAttachOutput(true);
 
-    if (parserCommand != "")
+    if (parserCommand != L"")
         castJob->SetMiniDescriptionParserCommand(parserCommand);
 
-    if (parserUsingBuffer == "true")
+    if (parserUsingBuffer == L"true")
         castJob->SetParsingUsingBuffer(true);
 
     list<ConfigurationObject*>::iterator it = confObject->objectList.begin();
     for (; it != confObject->objectList.end(); ++it)
     {
        if ((*it)->GetName() == UserAttachmentObject)
-          castJob->AddUserAttachment((*it)->GetProperty("param0"));
+          castJob->AddUserAttachment((*it)->GetProperty(L"param0"));
     }
 }
 
-void UserConsoleJobConfiguration::FillKnownProperties(std::vector<string> &properties)
+void UserConsoleJobConfiguration::FillKnownProperties(std::vector<wstring> &properties)
 {
     AbstractJobDefaultConfiguration::FillKnownProperties(properties);
 
@@ -106,7 +106,7 @@ void UserConsoleJobConfiguration::FillKnownProperties(std::vector<string> &prope
     properties.push_back(ParserUsesBufferProperty);
 }
 
-void UserConsoleJobConfiguration::FillKnownSubObjects(std::vector<string>& objects)
+void UserConsoleJobConfiguration::FillKnownSubObjects(std::vector<wstring>& objects)
 {
    AbstractJobDefaultConfiguration::FillKnownSubObjects(objects);
    objects.push_back(UserAttachmentObject);
@@ -116,27 +116,27 @@ void UserConsoleJobConfiguration::ConfigureObjectFromJob(
       ConfigurationObject* confObject,
       UserConsoleJob* job)
 {
-   if (job->GetExpectedOutput() != "")
+   if (job->GetExpectedOutput() != L"")
       confObject->SetProperty(ExpectedOutputProperty, job->GetExpectedOutput());
    else
       confObject->SetProperty(ReturnCodeProperty, job->GetExpectedReturnCode());
 
-   if (job->GetOutputFile() != "")
+   if (job->GetOutputFile() != L"")
       confObject->SetProperty(OutputFilenameProperty, job->GetOutputFile());
 
-   if (job->GetMiniDescriptionParserCommand() != "")
+   if (job->GetMiniDescriptionParserCommand() != L"")
    {
       confObject->SetProperty(ParserCommandProperty, job->GetMiniDescriptionParserCommand());
       confObject->SetProperty(ParserUsesBufferProperty, job->IsParsingUsingBuffer());
    }
 
-   vector<string> attachments;
+   vector<wstring> attachments;
    job->GetUserAttachments(attachments);
-   vector<string>::const_iterator it = attachments.begin();
+   vector<wstring>::const_iterator it = attachments.begin();
    for (; it != attachments.end(); ++it)
    {
       ConfigurationObject* attachmentObj = new ConfigurationObject(UserAttachmentObject);
-      attachmentObj->SetProperty("param0", *it);
+      attachmentObj->SetProperty(L"param0", *it);
       confObject->AddObject(attachmentObj);
    }
 }

@@ -10,7 +10,7 @@ static const int defaultRetries = 3;
 
 AbstractWakeJob::AbstractWakeJob()
    : AbstractJob(L"Wake"),
-    macAddress(""), broadcastIp(""), expectedIp(""),
+    macAddress(L""), broadcastIp(L""), expectedIp(L""),
     timeout(defaultTimeout), maxRetries(defaultRetries)
 {
 }
@@ -35,12 +35,12 @@ bool AbstractWakeJob::InitializeFromClient(Client *client)
     if (!ok)
         return false;
 
-    if (macAddress == "")
-        macAddress = client->GetProperty("mac");
-    if (broadcastIp == "")
-        broadcastIp = client->GetProperty("broadcast");
-    if (expectedIp == "")
-        expectedIp = client->GetProperty("ip");
+    if (macAddress == L"")
+        macAddress = client->GetProperty(L"mac");
+    if (broadcastIp == L"")
+        broadcastIp = client->GetProperty(L"broadcast");
+    if (expectedIp == L"")
+        expectedIp = client->GetProperty(L"ip");
 
     return IsInitialized();
 }
@@ -70,7 +70,7 @@ JobStatus* AbstractWakeJob::Run()
      {
          debugManager->AddDataLine<int>(L"Retry count", i);
          debugManager->AddDataLine<int>(L"seconds counter", secondsToWake);
-         return debugManager->CreateStatus(JobStatus::Ok, "");
+         return debugManager->CreateStatus(JobStatus::Ok, L"");
      }
    }
 
@@ -84,7 +84,7 @@ int AbstractWakeJob::GetTimeout() const
 
 void AbstractWakeJob::SetTimeout(const int value)
 {
-   debugManager->AddDataLine<int>("Setting timeout", value);
+   debugManager->AddDataLine<int>(L"Setting timeout", value);
    timeout = value;
 }
 
@@ -95,13 +95,13 @@ int AbstractWakeJob::GetMaxRetries() const
 
 void AbstractWakeJob::SetMaxRetries(const int value)
 {
-   debugManager->AddDataLine<int>("Setting max retries", value);
+   debugManager->AddDataLine<int>(L"Setting max retries", value);
    maxRetries = value;
 }
 
 bool AbstractWakeJob::HasMandatoryParameters() const
 {
-    return (macAddress != "" && broadcastIp != "" && expectedIp != "");
+    return (macAddress != L"" && broadcastIp != L"" && expectedIp != L"");
 }
 
 int AbstractWakeJob::WaitForComputerToGoUp() const

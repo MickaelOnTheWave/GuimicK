@@ -5,9 +5,9 @@
 
 using namespace std;
 
-const string DefaultSevenZipCommand = "7z.exe";
-const string SevenZipNotFoundString = "not recognized as an internal or external command";
-const string error7zipNotFound = "7zip not found";
+const wstring DefaultSevenZipCommand = L"7z.exe";
+const wstring SevenZipNotFoundwstring = L"not recognized as an internal or external command";
+const wstring error7zipNotFound = L"7zip not found";
 
 SevenZipTool::SevenZipTool()
    : ArchiveTool(), sevenZipExecutable(DefaultSevenZipCommand)
@@ -25,43 +25,43 @@ ArchiveTool* SevenZipTool::Clone() const
    return new SevenZipTool(*this);
 }
 
-void SevenZipTool::CreateArchive(const string& pathData, ArchiveToolResult& result)
+void SevenZipTool::CreateArchive(const wstring& pathData, ArchiveToolResult& result)
 {
    AddToArchive(pathData, result);
 }
 
-void SevenZipTool::AddToArchive(const string& pathToAdd, ArchiveToolResult& result)
+void SevenZipTool::AddToArchive(const wstring& pathToAdd, ArchiveToolResult& result)
 {
-   const string command = sevenZipExecutable + " u -bb1 " + filename + " " + pathToAdd;
+   const wstring command = sevenZipExecutable + L" u -bb1 " + filename + L" " + pathToAdd;
    Run7zipCommand(command, result);
 }
 
-void SevenZipTool::ExtractArchive(const string& destinationPath, ArchiveToolResult& result)
+void SevenZipTool::ExtractArchive(const wstring& destinationPath, ArchiveToolResult& result)
 {
-   const string command = sevenZipExecutable + " x " + filename + " -o" + destinationPath;
+   const wstring command = sevenZipExecutable + L" x " + filename + L" -o" + destinationPath;
    Run7zipCommand(command, result);
 }
 
-void SevenZipTool::SetExecutablePath(const string& value)
+void SevenZipTool::SetExecutablePath(const wstring& value)
 {
-   const string quote = "\"";
+   const wstring quote = L"\"";
    sevenZipExecutable = quote + value + quote;
 }
 
-void SevenZipTool::Run7zipCommand(const string& command, ArchiveToolResult& result)
+void SevenZipTool::Run7zipCommand(const wstring& command, ArchiveToolResult& result)
 {
-   string output;
+   wstring output;
    const int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
    ParseOutput(output, returnValue, result);
 }
 
-void SevenZipTool::ParseOutput(const string& output,
+void SevenZipTool::ParseOutput(const wstring& output,
                                const int returnValue,
                                ArchiveToolResult& result) const
 {
    result.isOk = (returnValue == 0);
 
-   if (output.find(SevenZipNotFoundString) != string::npos)
+   if (output.find(SevenZipNotFoundwstring) != wstring::npos)
       result.errorMessage = error7zipNotFound;
    else
    {

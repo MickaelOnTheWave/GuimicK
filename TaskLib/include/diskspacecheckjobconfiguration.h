@@ -6,8 +6,8 @@
 class DiskSpaceCheckJobConfiguration : public AbstractJobDefaultConfiguration
 {
 public:
-    static const std::string DriveProperty;
-    static const std::string TargetProperty;
+    static const std::wstring DriveProperty;
+    static const std::wstring TargetProperty;
 
     DiskSpaceCheckJobConfiguration();
 
@@ -19,8 +19,8 @@ protected:
     virtual AbstractJob* CreateJob();
     virtual void ConfigureJob(AbstractJob* job,
                               ConfigurationObject *confObject,
-                              std::vector<std::string> &errorMessages);
-    virtual void FillKnownProperties(std::vector<std::string>& properties);
+                              std::vector<std::wstring> &errorMessages);
+    virtual void FillKnownProperties(std::vector<std::wstring>& properties);
 };
 
 #endif // DISKSPACECHECKJOBCONFIGURATION_H

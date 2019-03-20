@@ -8,8 +8,8 @@
 class RsnapshotRawBackupJob : public AbstractJob
 {
 public:
-    RsnapshotRawBackupJob(const std::string& _backupRepositoryPath = "",
-                          const std::string& _rsnapshotConfFile = "");
+    RsnapshotRawBackupJob(const std::wstring& _backupRepositoryPath = L"",
+                          const std::wstring& _rsnapshotConfFile = L"");
     RsnapshotRawBackupJob(const RsnapshotRawBackupJob& other);
     virtual ~RsnapshotRawBackupJob();
 
@@ -18,11 +18,11 @@ public:
 
     virtual JobStatus* Run();
 
-    std::string GetRepository() const;
-    void SetRepository(const std::string& value);
+    std::wstring GetRepository() const;
+    void SetRepository(const std::wstring& value);
 
-    std::string GetConfigurationFile() const;
-    void SetConfigurationFile(const std::string& value);
+    std::wstring GetConfigurationFile() const;
+    void SetConfigurationFile(const std::wstring& value);
 
     /**
      * On automated testing, if there is no wait after
@@ -42,10 +42,10 @@ private:
     ConsoleJob* CreateBackupCommandJob();
     ConsoleJob* CreateReportCommandJob();
 
-    std::string configurationFile;
-    std::string repository;
+    std::wstring configurationFile;
+    std::wstring repository;
     bool waitBeforeRun;
-    std::string reportJobOutput;
+    std::wstring reportJobOutput;
 };
 
 #endif // RSNAPSHOTRAWBACKUPJOB_H

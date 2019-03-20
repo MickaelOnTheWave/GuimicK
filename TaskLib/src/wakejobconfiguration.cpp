@@ -6,11 +6,11 @@
 
 using namespace std;
 
-const string WakeJobConfiguration::TimeoutProperty = "timeout";
-const string WakeJobConfiguration::MaxRetriesProperty = "maxRetries";
+const wstring WakeJobConfiguration::TimeoutProperty = L"timeout";
+const wstring WakeJobConfiguration::MaxRetriesProperty = L"maxRetries";
 
 WakeJobConfiguration::WakeJobConfiguration()
-    : AbstractJobDefaultConfiguration("Wake")
+    : AbstractJobDefaultConfiguration(L"Wake")
 {
 }
 
@@ -36,25 +36,25 @@ AbstractJob *WakeJobConfiguration::CreateJob()
 
 void WakeJobConfiguration::ConfigureJob(AbstractJob *job,
                                         ConfigurationObject *confObject,
-                                        std::vector<string> &errorMessages)
+                                        std::vector<wstring> &errorMessages)
 {
     AbstractJobDefaultConfiguration::ConfigureJob(job, confObject, errorMessages);
 
-    const string timeout = confObject->GetFirstProperty(TimeoutProperty, "param0");
-    const string maxRetries = confObject->GetProperty(MaxRetriesProperty);
+    const wstring timeout = confObject->GetFirstProperty(TimeoutProperty, L"param0");
+    const wstring maxRetries = confObject->GetProperty(MaxRetriesProperty);
 
     AbstractWakeJob* castJob = static_cast<AbstractWakeJob*>(job);
 
-    int timeoutValue = atoi(timeout.c_str());
+    int timeoutValue = _wtoi(timeout.c_str());
     if (timeoutValue > 0)
         castJob->SetTimeout(timeoutValue);
 
-    int retriesValue = atoi(maxRetries.c_str());
+    int retriesValue = _wtoi(maxRetries.c_str());
     if (retriesValue > 0)
         castJob->SetMaxRetries(retriesValue);
 }
 
-void WakeJobConfiguration::FillKnownProperties(std::vector<string> &properties)
+void WakeJobConfiguration::FillKnownProperties(std::vector<wstring> &properties)
 {
     AbstractJobDefaultConfiguration::FillKnownProperties(properties);
     properties.push_back(TimeoutProperty);

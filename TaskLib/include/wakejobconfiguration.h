@@ -6,8 +6,8 @@
 class WakeJobConfiguration : public AbstractJobDefaultConfiguration
 {
 public:
-    static const std::string TimeoutProperty;
-    static const std::string MaxRetriesProperty;
+    static const std::wstring TimeoutProperty;
+    static const std::wstring MaxRetriesProperty;
 
     WakeJobConfiguration();
 
@@ -19,9 +19,9 @@ protected:
 
     virtual void ConfigureJob(AbstractJob* job,
                               ConfigurationObject *confObject,
-                              std::vector<std::string> &errorMessages);
+                              std::vector<std::wstring> &errorMessages);
 
-    virtual void FillKnownProperties(std::vector<std::string>& properties);
+    virtual void FillKnownProperties(std::vector<std::wstring>& properties);
 };
 
 #endif // WAKEJOBCONFIGURATION_H

@@ -5,8 +5,10 @@
 
 using namespace std;
 
-const string tarCommand = "tar";
-const string errorNoGzipUpdate = "Error : can't use Gzip compression";
+const wstring tarCommand = L"tar";
+const wstring errorNoGzipUpdate = L"Error : can't use Gzip compression";
+
+const wstring space = L" ";
 
 TarTool::TarTool()
    : ArchiveTool(), useGzipCompression(true)
@@ -29,32 +31,32 @@ void TarTool::SetGzipCompression(const bool value)
    useGzipCompression = value;
 }
 
-void TarTool::CreateArchive(const string& pathData, ArchiveToolResult& result)
+void TarTool::CreateArchive(const wstring& pathData, ArchiveToolResult& result)
 {
-   const string command = tarCommand + " " + TarCreateFlags() + " " + filename + " " + pathData;
+   const wstring command = tarCommand + space + TarCreateFlags() + space + filename + space + pathData;
    RunTarCommand(command, result);
 }
 
-void TarTool::AddToArchive(const string& pathToAdd, ArchiveToolResult& result)
+void TarTool::AddToArchive(const wstring& pathToAdd, ArchiveToolResult& result)
 {
-   const string command = tarCommand + " " + TarUpdateFlags() + " " + filename + " " + pathToAdd;
+   const wstring command = tarCommand + space + TarUpdateFlags() + space + filename + space + pathToAdd;
    RunTarCommand(command, result);
 }
 
-void TarTool::ExtractArchive(const string& destinationPath, ArchiveToolResult& result)
+void TarTool::ExtractArchive(const wstring& destinationPath, ArchiveToolResult& result)
 {
-   const string command = tarCommand + " -xvf " + filename + " -C " + destinationPath;
+   const wstring command = tarCommand + L" -xvf " + filename + L" -C " + destinationPath;
    RunTarCommand(command, result);
 }
 
-void TarTool::RunTarCommand(const string& command, ArchiveToolResult& result)
+void TarTool::RunTarCommand(const wstring& command, ArchiveToolResult& result)
 {
-   string output;
+   wstring output;
    int returnValue = Tools::RunExternalCommandToBuffer(command, output, true);
    ParseOutput(output, returnValue, result);
 }
 
-void TarTool::ParseOutput(const string& output,
+void TarTool::ParseOutput(const wstring& output,
                           const int returnValue,
                           ArchiveToolResult& result) const
 {
@@ -64,18 +66,18 @@ void TarTool::ParseOutput(const string& output,
 
    if (result.isOk)
    {
-      TarCommandParser parser("tar");
+      TarCommandParser parser(L"tar");
       parser.ParseBuffer(output);
       ConvertToArchiveResult(parser, result);
    }
 }
 
-string TarTool::TarCreateFlags() const
+wstring TarTool::TarCreateFlags() const
 {
-   return (useGzipCompression) ? "-cpzvf" : "-cpvf";
+   return (useGzipCompression) ? L"-cpzvf" : L"-cpvf";
 }
 
-string TarTool::TarUpdateFlags() const
+wstring TarTool::TarUpdateFlags() const
 {
-   return (useGzipCompression) ? "-uzvf" : "-uvf";
+   return (useGzipCompression) ? L"-uzvf" : L"-uvf";
 }

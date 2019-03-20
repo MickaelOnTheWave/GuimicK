@@ -1,6 +1,5 @@
 #include "jobfactory.h"
 
-#include "changescreensaverjobconfiguration.h"
 #include "clamavjobconfiguration.h"
 #include "diskspacecheckjobconfiguration.h"
 #include "gitbackupjobconfiguration.h"
@@ -30,14 +29,14 @@ JobFactory::~JobFactory()
 }
 
 AbstractJob* JobFactory::CreateJob(ConfigurationObject* object,
-                                  std::vector<string>& errorMessages)
+                                  std::vector<wstring>& errorMessages)
 {
    AbstractJobConfiguration* relatedConfiguration = GetConfiguration(object->name);
    if (relatedConfiguration == NULL)
    {
-       string errorMessage = "unknown job \"";
-       errorMessage += object->name + "\". Ignoring...";
-       errorMessages.push_back(string("Warning : ") + errorMessage);
+       wstring errorMessage = L"unknown job \"";
+       errorMessage += object->name + L"\". Ignoring...";
+       errorMessages.push_back(wstring(L"Warning : ") + errorMessage);
        return NULL;
    }
    else
@@ -53,7 +52,7 @@ ConfigurationObject* JobFactory::CreateConfigurationObject(AbstractJob* job)
       return NULL;
 }
 
-AbstractJobConfiguration *JobFactory::GetConfiguration(const string &jobTab)
+AbstractJobConfiguration *JobFactory::GetConfiguration(const wstring &jobTab)
 {
     vector<AbstractJobConfiguration*>::iterator it = supportedJobs.begin();
     for (; it != supportedJobs.end(); ++it)
@@ -78,7 +77,6 @@ AbstractJobConfiguration* JobFactory::GetConfiguration(AbstractJob* job)
 void JobFactory::FillSupportedJobsList()
 {
    supportedJobs.push_back(new WakeJobConfiguration);
-   supportedJobs.push_back(new ChangeScreensaverJobConfiguration);
    supportedJobs.push_back(new RsnapshotBackupJobConfiguration);
    supportedJobs.push_back(new ClamAvJobConfiguration);
    supportedJobs.push_back(new ShutdownJobConfiguration);

@@ -6,15 +6,15 @@
 
 using namespace std;
 
-const string RsnapshotBackupJobConfiguration::FullConfigurationProperty = "fullConfigurationFile";
-const string RsnapshotBackupJobConfiguration::WaitProperty = "waitAfterRun";
-const string RsnapshotBackupJobConfiguration::TemplateConfigurationProperty = "templateConfigurationFile";
-const string RsnapshotBackupJobConfiguration::RepositoryProperty = "repository";
-const string RsnapshotBackupJobConfiguration::MaxBackupCountProperty = "maxBackupCount";
+const wstring RsnapshotBackupJobConfiguration::FullConfigurationProperty = L"fullConfigurationFile";
+const wstring RsnapshotBackupJobConfiguration::WaitProperty = L"waitAfterRun";
+const wstring RsnapshotBackupJobConfiguration::TemplateConfigurationProperty = L"templateConfigurationFile";
+const wstring RsnapshotBackupJobConfiguration::RepositoryProperty = L"repository";
+const wstring RsnapshotBackupJobConfiguration::MaxBackupCountProperty = L"maxBackupCount";
 
 RsnapshotBackupJobConfiguration::RsnapshotBackupJobConfiguration()
-    : AbstractBackupJobConfiguration("RsnapshotBackup"),
-      fullConfigurationFile("")
+    : AbstractBackupJobConfiguration(L"RsnapshotBackup"),
+      fullConfigurationFile(L"")
 {
 }
 
@@ -43,26 +43,26 @@ ConfigurationObject* RsnapshotBackupJobConfiguration::CreateConfigurationObject(
 
 void RsnapshotBackupJobConfiguration::AnalyzeConfiguration(ConfigurationObject *confObject)
 {
-    fullConfigurationFile = confObject->GetFirstProperty(FullConfigurationProperty, "param1");
+    fullConfigurationFile = confObject->GetFirstProperty(FullConfigurationProperty, L"param1");
 }
 
 AbstractJob *RsnapshotBackupJobConfiguration::CreateJob()
 {
-    if (fullConfigurationFile != "")
+    if (fullConfigurationFile != L"")
         return new RsnapshotRawBackupJob();
     else
         return new RsnapshotSmartBackupJob();
 }
 
-void RsnapshotBackupJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationObject *confObject, std::vector<string> &errorMessages)
+void RsnapshotBackupJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationObject *confObject, std::vector<wstring> &errorMessages)
 {
-    if (fullConfigurationFile != "")
+    if (fullConfigurationFile != L"")
         ConfigureRawJob(static_cast<RsnapshotRawBackupJob*>(job), confObject, errorMessages);
     else
         ConfigureSmartJob(static_cast<RsnapshotSmartBackupJob*>(job), confObject, errorMessages);
 }
 
-void RsnapshotBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &properties)
+void RsnapshotBackupJobConfiguration::FillKnownProperties(std::vector<std::wstring> &properties)
 {
     AbstractBackupJobConfiguration::FillKnownProperties(properties);
     properties.push_back(RepositoryProperty);
@@ -72,18 +72,18 @@ void RsnapshotBackupJobConfiguration::FillKnownProperties(std::vector<std::strin
     properties.push_back(MaxBackupCountProperty);
 }
 
-string RsnapshotBackupJobConfiguration::GetBackupItemName() const
+wstring RsnapshotBackupJobConfiguration::GetBackupItemName() const
 {
-    return string("Folder");
+    return wstring(L"Folder");
 }
 
 void RsnapshotBackupJobConfiguration::ConfigureSmartJob(RsnapshotSmartBackupJob *job,
                                                         ConfigurationObject *confObject,
-                                                        std::vector<string> &errorMessages)
+                                                        std::vector<wstring> &errorMessages)
 {
     AbstractBackupJobConfiguration::ConfigureJob(job, confObject, errorMessages);
 
-    const string templateFile = confObject->GetProperty(TemplateConfigurationProperty);
+    const wstring templateFile = confObject->GetProperty(TemplateConfigurationProperty);
     job->SetTemplateConfigurationFile(templateFile);
 
     job->SetRepository(GetRepositoryValue(confObject));
@@ -93,7 +93,7 @@ void RsnapshotBackupJobConfiguration::ConfigureSmartJob(RsnapshotSmartBackupJob 
 
 void RsnapshotBackupJobConfiguration::ConfigureRawJob(RsnapshotRawBackupJob *job,
                                                       ConfigurationObject *confObject,
-                                                      std::vector<string> &errorMessages)
+                                                      std::vector<wstring> &errorMessages)
 {
     AbstractJobDefaultConfiguration::ConfigureJob(job, confObject, errorMessages);
 
@@ -102,23 +102,23 @@ void RsnapshotBackupJobConfiguration::ConfigureRawJob(RsnapshotRawBackupJob *job
     job->SetWaitBeforeRun(GetWaitBeforeRunValue(confObject));
 }
 
-string RsnapshotBackupJobConfiguration::GetRepositoryValue(ConfigurationObject *confObject) const
+wstring RsnapshotBackupJobConfiguration::GetRepositoryValue(ConfigurationObject *confObject) const
 {
-    return confObject->GetFirstProperty(RepositoryProperty, "param0");
+    return confObject->GetFirstProperty(RepositoryProperty, L"param0");
 }
 
 bool RsnapshotBackupJobConfiguration::GetWaitBeforeRunValue(ConfigurationObject *confObject) const
 {
-    return (confObject->GetProperty(WaitProperty) == "true");
+    return (confObject->GetProperty(WaitProperty) == L"true");
 }
 
 void RsnapshotBackupJobConfiguration::SetMaxBackupCount(RsnapshotSmartBackupJob *job,
                                                         ConfigurationObject *confObject) const
 {
-    const string maxBackupCountProperty = confObject->GetProperty(MaxBackupCountProperty);
-    if (maxBackupCountProperty != "")
+    const wstring maxBackupCountProperty = confObject->GetProperty(MaxBackupCountProperty);
+    if (maxBackupCountProperty != L"")
     {
-        int intMaxBackupCount = atoi(maxBackupCountProperty.c_str());
+        int intMaxBackupCount = _wtoi(maxBackupCountProperty.c_str());
         if (intMaxBackupCount != 0)
         {
             if (intMaxBackupCount < 1)
@@ -140,7 +140,7 @@ void RsnapshotBackupJobConfiguration::CreateSmartConfiguration(
 {
    conf->SetProperty(RepositoryProperty, job->GetRepository());
 
-   stringstream maxBackupCountStr;
+   wstringstream maxBackupCountStr;
    maxBackupCountStr << job->GetMaxBackupCount();
    conf->SetProperty(MaxBackupCountProperty, maxBackupCountStr.str());
 }

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const string defaultName = "7zip Backup";
+const wstring defaultName = L"7zip Backup";
 
 SevenZipBackupJob::SevenZipBackupJob()
    : ArchiveFsBackupJob(defaultName, new SevenZipTool())
@@ -25,7 +25,7 @@ AbstractJob* SevenZipBackupJob::Clone()
    return new SevenZipBackupJob(*this);
 }
 
-std::string SevenZipBackupJob::GetTypeName() const
+std::wstring SevenZipBackupJob::GetTypeName() const
 {
    return defaultName;
 }
@@ -35,8 +35,8 @@ bool SevenZipBackupJob::InitializeFromClient(Client* client)
    bool ok = ArchiveFsBackupJob::InitializeFromClient(client);
    if (ok)
    {
-      const string manualSevenZip = client->GetProperty("7zipExecutable");
-      if (manualSevenZip != "")
+      const wstring manualSevenZip = client->GetProperty(L"7zipExecutable");
+      if (manualSevenZip != L"")
       {
          SevenZipTool* tool = static_cast<SevenZipTool*>(archiveTool);
          tool->SetExecutablePath(manualSevenZip);

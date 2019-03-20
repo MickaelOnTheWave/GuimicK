@@ -12,14 +12,14 @@ public:
    ~JobFactory();
 
    AbstractJob *CreateJob(ConfigurationObject* object,
-                          std::vector<std::string>& errorMessages);
+                          std::vector<std::wstring>& errorMessages);
 
    ConfigurationObject* CreateConfigurationObject(AbstractJob* job);
 
 private:
    void FillSupportedJobsList();
    void FreeSupportedJobsList();
-   AbstractJobConfiguration *GetConfiguration(const std::string &jobTab);
+   AbstractJobConfiguration *GetConfiguration(const std::wstring &jobTab);
    AbstractJobConfiguration *GetConfiguration(AbstractJob* job);
 
    std::vector<AbstractJobConfiguration*> supportedJobs;

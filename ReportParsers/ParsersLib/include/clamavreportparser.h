@@ -13,16 +13,16 @@ public:
 	void Reset();
 
 	unsigned long scannedFilesCount;
-	std::map<std::string, unsigned long> statusMap;
+	std::map<std::wstring, unsigned long> statusMap;
 };
 
 class ClamAvReportParser : public AbstractOutputParser
 {
 public:
 
-    virtual bool ParseBuffer(const std::string& buffer);
-    virtual std::string GetMiniDescription();
-    virtual std::string GetFullDescription();
+    virtual bool ParseBuffer(const std::wstring& buffer);
+    virtual std::wstring GetMiniDescription();
+    virtual std::wstring GetFullDescription();
 
 private:
     ClamAvReportData reportData;

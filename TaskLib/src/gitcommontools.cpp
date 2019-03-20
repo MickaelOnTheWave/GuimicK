@@ -11,9 +11,9 @@
 
 using namespace std;
 
-static const string changeDirError                      = "Failed accessing folder";
+static const wstring changeDirError                      = L"Failed accessing folder";
 
-bool GitCommonTools::ChangeCurrentDir(const string &newDir,
+bool GitCommonTools::ChangeCurrentDir(const wstring &newDir,
                                     AbstractBackupJob::ResultCollection &statusList)
 {
    JobStatus* status = ChangeCurrentDir(newDir);
@@ -23,9 +23,9 @@ bool GitCommonTools::ChangeCurrentDir(const string &newDir,
    return status->IsOk();
 }
 
-JobStatus* GitCommonTools::ChangeCurrentDir(const string &newDir)
+JobStatus* GitCommonTools::ChangeCurrentDir(const wstring &newDir)
 {
-   int returnValue = chdir(newDir.c_str());
+   int returnValue = _wchdir(newDir.c_str());
    const bool ok = (returnValue == 0);
    return (ok) ? new JobStatus(JobStatus::Ok) : new JobStatus(JobStatus::Error, changeDirError);
 }

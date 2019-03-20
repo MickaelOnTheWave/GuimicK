@@ -19,14 +19,14 @@ void ClamAvReportData::Reset()
 	statusMap.clear();
 }
 
-bool ClamAvReportParser::ParseBuffer(const string &buffer)
+bool ClamAvReportParser::ParseBuffer(const wstring &buffer)
 {
     reportData.Reset();
 
-    vector<string> lines;
+    vector<wstring> lines;
     Tools::TokenizeString(buffer, '\n', lines);
 
-    vector<string>::const_iterator it=lines.begin();
+    vector<wstring>::const_iterator it=lines.begin();
     for (; it!=lines.end(); ++it)
     {
         if ((*it)[0] != '/')
@@ -37,39 +37,39 @@ bool ClamAvReportParser::ParseBuffer(const string &buffer)
 
         reportData.scannedFilesCount++;
         size_t pos = it->find(':');
-        if (pos == string::npos)
+        if (pos == wstring::npos)
         {
             // Strange .. no status? Format changed? Anyway, ignore that...
             continue;
         }
 
-        string status = it->substr(pos+2);
+        wstring status = it->substr(pos+2);
         reportData.statusMap[status]++;
     }
 
     return true;
 }
 
-string ClamAvReportParser::GetMiniDescription()
+wstring ClamAvReportParser::GetMiniDescription()
 {
-    stringstream descriptionStream;
+    wstringstream descriptionStream;
     descriptionStream << reportData.scannedFilesCount << " files scanned. ";
-    map<string, unsigned long>::iterator it=reportData.statusMap.begin();
-    map<string, unsigned long>::iterator end=reportData.statusMap.end();
+    map<wstring, unsigned long>::iterator it=reportData.statusMap.begin();
+    map<wstring, unsigned long>::iterator end=reportData.statusMap.end();
     for (; it!=end; ++it)
     {
         if (it != reportData.statusMap.begin())
             descriptionStream << ",";
 
-        pair<string, unsigned long> current = *it;
+        pair<wstring, unsigned long> current = *it;
         descriptionStream << current.first << ": " << current.second;
     }
     return descriptionStream.str();
 }
 
-string ClamAvReportParser::GetFullDescription()
+wstring ClamAvReportParser::GetFullDescription()
 {
-    return string("Not implemented");
+    return L"Not implemented";
 }
 
 

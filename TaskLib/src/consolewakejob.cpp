@@ -3,7 +3,7 @@
 using namespace std;
 
 ConsoleWakeJob::ConsoleWakeJob()
-   : AbstractWakeJob(), wakeCommand("wakelan", "")
+   : AbstractWakeJob(), wakeCommand(L"wakelan", L"")
 {
 }
 
@@ -24,14 +24,14 @@ AbstractJob *ConsoleWakeJob::Clone()
 
 JobStatus* ConsoleWakeJob::SetupWaker()
 {
-   const string parameters = string("-m ") + macAddress + " -b " + broadcastIp;
+   const wstring parameters = wstring(L"-m ") + macAddress + L" -b " + broadcastIp;
    wakeCommand.SetCommandParameters(parameters);
    wakeCommand.SetParentDebugManager(debugManager);
 
    if (wakeCommand.IsCommandAvailable())
       return new JobStatus(JobStatus::Ok);
    else
-      return new JobStatus(JobStatus::Error, "wakelan not installed");
+      return new JobStatus(JobStatus::Error, L"wakelan not installed");
 }
 
 JobStatus* ConsoleWakeJob::RunWaker()
@@ -42,6 +42,6 @@ JobStatus* ConsoleWakeJob::RunWaker()
    else
        delete status;
 
-   debugManager->AddDataLine<string>("Wake Output", wakeCommand.GetCommandOutput());
+   debugManager->AddDataLine<wstring>(L"Wake Output", wakeCommand.GetCommandOutput());
    return new JobStatus(JobStatus::Ok);
 }

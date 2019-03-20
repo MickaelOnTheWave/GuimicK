@@ -62,10 +62,10 @@ bool SshConsoleJob::InitializeFromClient(Client *client)
     if (AbstractConsoleJob::InitializeFromClient(client))
     {
         if (user == L"")
-            user = client->GetProperty("sshuser");
+            user = client->GetProperty(L"sshuser");
 
         if (host == L"")
-            host = client->GetProperty("ip");
+            host = client->GetProperty(L"ip");
 
         return IsInitialized();
     }

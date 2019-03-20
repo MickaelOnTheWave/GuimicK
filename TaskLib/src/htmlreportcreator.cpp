@@ -6,7 +6,7 @@
 using namespace std;
 
 HtmlReportCreator::HtmlReportCreator()
-    : AbstractStructuredReportCreator(), cssFile("")
+    : AbstractStructuredReportCreator(), cssFile(L"")
 {
 }
 
@@ -24,17 +24,17 @@ AbstractReportCreator* HtmlReportCreator::Copy() const
    return new HtmlReportCreator(*this);
 }
 
-void HtmlReportCreator::UpdateWithDispatchError(const string &failedDispatcher,
-                                                const string &fallbackDispatcher)
+void HtmlReportCreator::UpdateWithDispatchError(const wstring &failedDispatcher,
+                                                const wstring &fallbackDispatcher)
 {
-    fullReport = "";
+    fullReport = L"";
 
     dispatchErrors << "<tr><td>" << failedDispatcher << " dispatch failed.";
-    if (fallbackDispatcher != "")
+    if (fallbackDispatcher != L"")
         dispatchErrors << " Using " << fallbackDispatcher << " dispatch.";
     dispatchErrors << "</tr></td>" << endl;
 
-    stringstream dispatchTable;
+    wstringstream dispatchTable;
     dispatchTable << "<table><tr><th>Dispatching errors</th></tr>";
     dispatchTable << dispatchErrors.str();
     dispatchTable << "</table>";
@@ -42,7 +42,7 @@ void HtmlReportCreator::UpdateWithDispatchError(const string &failedDispatcher,
     fullReport = reportCore.str() + dispatchTable.str() + programVersion.str();
 }
 
-void HtmlReportCreator::SetCssFile(const string &_cssFile)
+void HtmlReportCreator::SetCssFile(const wstring &_cssFile)
 {
     cssFile = _cssFile;
 }
@@ -52,7 +52,7 @@ void HtmlReportCreator::AddHeader()
     reportCore << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">" << endl;
     reportCore << "<html>" << endl;
     reportCore << "  <head>" << endl;
-    if (cssFile != "")
+    if (cssFile != L"")
     {
         reportCore << "    <META http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" << endl;
         reportCore << FileTools::GetTextFileContent(cssFile) << endl;
@@ -61,7 +61,7 @@ void HtmlReportCreator::AddHeader()
     reportCore << "<body>" << endl;
 }
 
-void HtmlReportCreator::AddClientHeaderData(const pair<string, ClientJobResults *>& clientData)
+void HtmlReportCreator::AddClientHeaderData(const pair<wstring, ClientJobResults *>& clientData)
 {
     reportCore << "<h1>" << clientData.first << "</h1>" << endl;
     reportCore << "<table>" << endl;
@@ -74,7 +74,7 @@ void HtmlReportCreator::AddClientHeaderData(const pair<string, ClientJobResults 
     reportCore << "  </tr>" << endl;
 }
 
-void HtmlReportCreator::AddJobData(const string &jobName, JobStatus* status)
+void HtmlReportCreator::AddJobData(const wstring &jobName, JobStatus* status)
 {
     AddJobData(jobName, status->GetDescription(), status->GetCodeDescription(),
                Tools::FormatTimeString(status->GetDuration()));
@@ -82,33 +82,33 @@ void HtmlReportCreator::AddJobData(const string &jobName, JobStatus* status)
 
 void HtmlReportCreator::AddSummaryData(const int code, const time_t duration)
 {
-    AddJobData("Total", "", JobStatus::GetCodeDescription(code),
+    AddJobData(L"Total", L"", JobStatus::GetCodeDescription(code),
                Tools::FormatTimeString(duration));
     reportCore << "</table>" << endl;
 }
 
-void HtmlReportCreator::AddConfigurationErrorsData(const std::vector<string> &errors)
+void HtmlReportCreator::AddConfigurationErrorsData(const std::vector<wstring> &errors)
 {
     if (errors.size() == 0)
         return;
 
     reportCore << "<table>" << endl;
     reportCore << "<tr><th>Configuration file errors</th></tr>" << endl;
-    vector<string>::const_iterator it = errors.begin();
+    vector<wstring>::const_iterator it = errors.begin();
     for (; it != errors.end(); ++it)
         reportCore << "<tr><td>" << *it << "</td></tr>" << endl;
     reportCore << "</table>" << endl;
 }
 
-void HtmlReportCreator::AddProgramData(const std::string& version)
+void HtmlReportCreator::AddProgramData(const std::wstring& version)
 {
     programVersion << "<small>Task Manager version " << version << "</small>" << endl;
     programVersion << "</body>" << endl;
     programVersion << "</html>" << endl;
 }
 
-void HtmlReportCreator::AddJobData(const string &jobName, const string &jobDescription,
-                                   const string &jobStatusCode, const string &jobDuration)
+void HtmlReportCreator::AddJobData(const wstring &jobName, const wstring &jobDescription,
+                                   const wstring &jobStatusCode, const wstring &jobDuration)
 {
     reportCore << "  <tr>" << endl;
     reportCore << "    <td>" << endl;
