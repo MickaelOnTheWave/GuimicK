@@ -6,8 +6,8 @@
 
 using namespace std;
 
-static const string defaultReportFolder = "report/";
-static const string defaultReportFile = "report.log";
+static const wstring defaultReportFolder = L"report/";
+static const wstring defaultReportFile = L"report.log";
 
 FileReportDispatcher::FileReportDispatcher()
    : reportFolder(defaultReportFolder),
@@ -15,9 +15,9 @@ FileReportDispatcher::FileReportDispatcher()
 {
 }
 
-string FileReportDispatcher::GetName() const
+wstring FileReportDispatcher::GetName() const
 {
-    return string("File");
+    return L"File";
 }
 
 void FileReportDispatcher::Initialize(const AbstractTypeConfiguration* configuration)
@@ -46,24 +46,24 @@ bool FileReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
     return ok;
 }
 
-void FileReportDispatcher::SetFolderName(const string& value)
+void FileReportDispatcher::SetFolderName(const wstring& value)
 {
    reportFolder = value;
 }
 
-void FileReportDispatcher::SetFileName(const string& value)
+void FileReportDispatcher::SetFileName(const wstring& value)
 {
    reportFile = value;
 }
 
 bool FileReportDispatcher::WriteAttachments(AbstractReportCreator *reportCreator)
 {
-    vector<string> files;
-    vector<pair<string,string> > buffers;
+    vector<wstring> files;
+    vector<pair<wstring,wstring> > buffers;
     reportCreator->GetAssociatedFiles(files, buffers);
 
     bool allOk = true;
-    vector<pair<string,string> >::const_iterator itBuffers = buffers.begin();
+    vector<pair<wstring,wstring> >::const_iterator itBuffers = buffers.begin();
     for (; itBuffers!=buffers.end(); ++itBuffers)
     {
         if (!FileTools::WriteBufferToFile(reportFolder+itBuffers->first, itBuffers->second))

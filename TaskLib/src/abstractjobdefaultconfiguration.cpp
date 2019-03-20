@@ -2,10 +2,10 @@
 
 using namespace std;
 
-const string AbstractJobDefaultConfiguration::DebugProperty = "showDebugInformation";
-const string AbstractJobDefaultConfiguration::TitleProperty = "title";
+const wstring AbstractJobDefaultConfiguration::DebugProperty = L"showDebugInformation";
+const wstring AbstractJobDefaultConfiguration::TitleProperty = L"title";
 
-AbstractJobDefaultConfiguration::AbstractJobDefaultConfiguration(const std::string &tag)
+AbstractJobDefaultConfiguration::AbstractJobDefaultConfiguration(const std::wstring &tag)
     : AbstractJobConfiguration(tag)
 {
 }
@@ -19,21 +19,21 @@ ConfigurationObject* AbstractJobDefaultConfiguration::CreateConfigurationObject(
 
 void AbstractJobDefaultConfiguration::ConfigureJob(AbstractJob *job,
                                                    ConfigurationObject *confObject,
-                                                   std::vector<std::string> &)
+                                                   std::vector<std::wstring> &)
 {
-    const string showDebugInformation(confObject->GetProperty(DebugProperty));
-    if (showDebugInformation != "")
+    const wstring showDebugInformation(confObject->GetProperty(DebugProperty));
+    if (showDebugInformation != L"")
     {
         const int debugValue = DebugOutput::GetValue(showDebugInformation);
         job->SetOutputDebugInformation(debugValue);
     }
 
-    const string title(confObject->GetProperty(TitleProperty));
-    if (title != "")
+    const wstring title(confObject->GetProperty(TitleProperty));
+    if (title != L"")
         job->SetName(title);
 }
 
-void AbstractJobDefaultConfiguration::FillKnownProperties(std::vector<std::string> &properties)
+void AbstractJobDefaultConfiguration::FillKnownProperties(std::vector<std::wstring> &properties)
 {
     properties.push_back(DebugProperty);
     properties.push_back(TitleProperty);

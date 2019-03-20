@@ -10,16 +10,16 @@ public:
    EmailData();
 	EmailData(const EmailData& other);
 
-   void SaveToOpenedFile(std::ofstream& fileStream);
+   void SaveToOpenedFile(std::wofstream& fileStream);
 
-   std::string GetAddress() const;
-   void SetAddress(const std::string& value);
+   std::wstring GetAddress() const;
+   void SetAddress(const std::wstring& value);
 
-   std::string GetPassword() const;
-   void SetPassword(const std::string& value);
+   std::wstring GetPassword() const;
+   void SetPassword(const std::wstring& value);
 
-   std::string GetSmtpServer() const;
-   void SetSmtpServer(const std::string& value);
+   std::wstring GetSmtpServer() const;
+   void SetSmtpServer(const std::wstring& value);
 
    int GetSmtpPort() const;
    void SetSmtpPort(int value);
@@ -30,9 +30,9 @@ public:
 	bool IsValid() const;
 
 private:
-   std::string address;
-   std::string password;
-   std::string smtpServer;
+   std::wstring address;
+   std::wstring password;
+   std::wstring smtpServer;
    bool useSsl;
    int smtpPort;
 };

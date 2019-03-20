@@ -11,9 +11,9 @@ public:
 
    virtual AbstractJob* Clone();
 
-   virtual std::string GetTypeName() const;
+   virtual std::wstring GetTypeName() const;
 
-   virtual JobStatus* RestoreBackupFromServer(const std::string& destination,
+   virtual JobStatus* RestoreBackupFromServer(const std::wstring& destination,
                                               const int folderIndex,
                                               const int timeIndex);
 
@@ -24,20 +24,20 @@ public:
    void SetMaxFullsCount(const int value);
 
 protected:
-    virtual void RunRepositoryBackup(const std::string& source,
-                                     const std::string& destination,
+    virtual void RunRepositoryBackup(const std::wstring& source,
+                                     const std::wstring& destination,
                                      ResultCollection& results);
 
 private:
-   virtual JobStatus* RestoreBackupFromServer(const std::string& source,
-                                              const std::string& destination);
+   virtual JobStatus* RestoreBackupFromServer(const std::wstring& source,
+                                              const std::wstring& destination);
 
-   void CreateNewBackup(const std::string& source,
-                        const std::string& destination,
+   void CreateNewBackup(const std::wstring& source,
+                        const std::wstring& destination,
                         ResultCollection& results);
    void RemoveObsoleteBackups();
-   void RunFullBackup(const std::string& source,
-                      const std::string& destination,
+   void RunFullBackup(const std::wstring& source,
+                      const std::wstring& destination,
                       ResultCollection& results);
    void RunIncrementalBackup(const std::wstring& source,
                              const std::wstring& destination,

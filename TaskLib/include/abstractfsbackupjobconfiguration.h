@@ -6,9 +6,9 @@
 class AbstractFsBackupJobConfiguration : public AbstractBackupJobConfiguration
 {
 public:
-    AbstractFsBackupJobConfiguration(const std::string& tag);
+    AbstractFsBackupJobConfiguration(const std::wstring& tag);
 
-    virtual std::string GetBackupItemName() const;
+    virtual std::wstring GetBackupItemName() const;
 };
 
 #endif // COPYFSBACKUPJOBCONFIGURATION_H

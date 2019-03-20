@@ -3,7 +3,7 @@
 using namespace std;
 
 ProfiledJob::ProfiledJob(AbstractJob *_baseJob)
-    : AbstractJob(""),
+    : AbstractJob(L""),
       baseJob(_baseJob), elapsedTime(0)
 {
 }
@@ -13,7 +13,7 @@ ProfiledJob::~ProfiledJob()
 	delete baseJob;
 }
 
-string ProfiledJob::GetName() const
+wstring ProfiledJob::GetName() const
 {
     return baseJob->GetName();
 }

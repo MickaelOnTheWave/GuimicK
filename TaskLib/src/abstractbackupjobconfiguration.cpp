@@ -2,13 +2,13 @@
 
 using namespace std;
 
-const string AbstractBackupJobConfiguration::TargetProperty = "target";
-const string AbstractBackupJobConfiguration::JoinReportsProperty = "joinReports";
+const wstring AbstractBackupJobConfiguration::TargetProperty = L"target";
+const wstring AbstractBackupJobConfiguration::JoinReportsProperty = L"joinReports";
 
-static const wstring invalidSourceError = "Error : source is invalid";
-static const wstring invalidDestinationError = "Error : destination is invalid";
+static const wstring invalidSourceError = L"Error : source is invalid";
+static const wstring invalidDestinationError = L"Error : destination is invalid";
 
-AbstractBackupJobConfiguration::AbstractBackupJobConfiguration(const std::string &tag)
+AbstractBackupJobConfiguration::AbstractBackupJobConfiguration(const std::wstring &tag)
     : AbstractJobDefaultConfiguration(tag)
 {
 }
@@ -18,38 +18,38 @@ ConfigurationObject* AbstractBackupJobConfiguration::CreateConfigurationObject(A
    AbstractBackupJob* castJob = static_cast<AbstractBackupJob*>(job);
    ConfigurationObject* confObject = AbstractJobDefaultConfiguration::CreateConfigurationObject(job);
 
-   const string targetValue = (castJob->IsTargetLocal() ? "local" : "remote");
+   const wstring targetValue = (castJob->IsTargetLocal() ? L"local" : L"remote");
    confObject->SetProperty(TargetProperty, targetValue);
-   confObject->SetProperty(JoinReportsProperty, (castJob->GetJoinReports() ? "true" : "false"));
+   confObject->SetProperty(JoinReportsProperty, (castJob->GetJoinReports() ? L"true" : L"false"));
 
-   vector<pair<string,string> > backupPoints;
+   vector<pair<wstring,wstring> > backupPoints;
    castJob->GetFolderList(backupPoints);
-   vector<pair<string,string> >::const_iterator it = backupPoints.begin();
+   vector<pair<wstring,wstring> >::const_iterator it = backupPoints.begin();
    for (; it != backupPoints.end(); ++it)
    {
       ConfigurationObject* subObject = new ConfigurationObject(GetBackupItemName());
-      subObject->SetProperty("source", it->first);
-      subObject->SetProperty("dest", it->second);
+      subObject->SetProperty(L"source", it->first);
+      subObject->SetProperty(L"dest", it->second);
       confObject->AddObject(subObject);
    }
    return confObject;
 }
 
-void AbstractBackupJobConfiguration::FillKnownProperties(std::vector<std::string> &properties)
+void AbstractBackupJobConfiguration::FillKnownProperties(std::vector<std::wstring> &properties)
 {
     AbstractJobDefaultConfiguration::FillKnownProperties(properties);
     properties.push_back(TargetProperty);
     properties.push_back(JoinReportsProperty);
 }
 
-void AbstractBackupJobConfiguration::FillKnownSubObjects(std::vector<string> &objects)
+void AbstractBackupJobConfiguration::FillKnownSubObjects(std::vector<wstring> &objects)
 {
     objects.push_back(GetBackupItemName());
 }
 
 void AbstractBackupJobConfiguration::ConfigureJob(AbstractJob *job,
                                                   ConfigurationObject *confObject,
-                                                  std::vector<string> &errorMessages)
+                                                  std::vector<wstring> &errorMessages)
 {
     AbstractJobDefaultConfiguration::ConfigureJob(job, confObject, errorMessages);
 
@@ -57,12 +57,12 @@ void AbstractBackupJobConfiguration::ConfigureJob(AbstractJob *job,
 
     ConfigureItemList(castJob, confObject, errorMessages);
     ConfigureTarget(castJob, confObject);
-    castJob->SetJoinReports(confObject->GetProperty(JoinReportsProperty) == "true");
+    castJob->SetJoinReports(confObject->GetProperty(JoinReportsProperty) == L"true");
 }
 
 void AbstractBackupJobConfiguration::ConfigureItemList(AbstractBackupJob *job,
                                                        ConfigurationObject *confObject,
-                                                       vector<string> &errorMessages)
+                                                       vector<wstring> &errorMessages)
 {
     list<ConfigurationObject*>::const_iterator it = confObject->objectList.begin();
     for (; it != confObject->objectList.end(); ++it)
@@ -71,11 +71,11 @@ void AbstractBackupJobConfiguration::ConfigureItemList(AbstractBackupJob *job,
 
         if (currentObj->name == GetBackupItemName())
         {
-            const string source(currentObj->GetProperty("source"));
-            const string dest(currentObj->GetProperty("dest"));
+            const wstring source(currentObj->GetProperty(L"source"));
+            const wstring dest(currentObj->GetProperty(L"dest"));
 
-            const bool isSourceValid = (source != "");
-            const bool isDestinationValid = (dest != "");
+            const bool isSourceValid = (source != L"");
+            const bool isDestinationValid = (dest != L"");
 
             if (isSourceValid && isDestinationValid)
                 job->AddFolder(source, dest);
@@ -90,8 +90,8 @@ void AbstractBackupJobConfiguration::ConfigureItemList(AbstractBackupJob *job,
 void AbstractBackupJobConfiguration::ConfigureTarget(AbstractBackupJob *job,
                                                      ConfigurationObject *confObject)
 {
-    string target(confObject->GetProperty(TargetProperty));
-    if (target == "local")
+    wstring target(confObject->GetProperty(TargetProperty));
+    if (target == L"local")
         job->SetTargetLocal();
     else
         job->SetTargetRemote();

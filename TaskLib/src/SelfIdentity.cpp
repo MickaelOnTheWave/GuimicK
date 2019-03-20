@@ -5,8 +5,8 @@
 
 using namespace std;
 
-Agent::Agent() : name(""),
-   reportFile(""), reportFolder("")
+Agent::Agent() : name(L""),
+   reportFile(L""), reportFolder(L"")
 {
 }
 
@@ -17,72 +17,72 @@ Agent::Agent(const Agent& other)
 {
 }
 
-Agent::Agent(ConfigurationObject *confObject, vector<string> &errorMessages)
+Agent::Agent(ConfigurationObject *confObject, vector<wstring> &errorMessages)
 {
-    map<string, string>::iterator itProp = confObject->propertyList.begin();
-    map<string, string>::iterator endProp = confObject->propertyList.end();
+    map<wstring, wstring>::iterator itProp = confObject->propertyList.begin();
+    map<wstring, wstring>::iterator endProp = confObject->propertyList.end();
     for (; itProp != endProp; itProp++)
     {
-        pair<string, string> currentProp = *itProp;
+        pair<wstring, wstring> currentProp = *itProp;
 
-        if (currentProp.first == "Name")
+        if (currentProp.first == L"Name")
             name = currentProp.second;
-        else if (currentProp.first == "Email")
+        else if (currentProp.first == L"Email")
             emailData.SetAddress(currentProp.second);
-        else if (currentProp.first == "Password")
+        else if (currentProp.first == L"Password")
             emailData.SetPassword(currentProp.second);
-        else if (currentProp.first == "SmtpAddress")
+        else if (currentProp.first == L"SmtpAddress")
             emailData.SetSmtpServer(currentProp.second);
-        else if (currentProp.first == "SmtpPort")
-            emailData.SetSmtpPort(atoi(currentProp.second.c_str()));
-        else if (currentProp.first == "UseSSL")
-            emailData.SetUseSsl(currentProp.second == "true");
-        else if (currentProp.first == "ReportFile")
+        else if (currentProp.first == L"SmtpPort")
+            emailData.SetSmtpPort(_wtoi(currentProp.second.c_str()));
+        else if (currentProp.first == L"UseSSL")
+            emailData.SetUseSsl(currentProp.second == L"true");
+        else if (currentProp.first == L"ReportFile")
             reportFile = currentProp.second;
-        else if (currentProp.first == "ReportFolder")
+        else if (currentProp.first == L"ReportFolder")
             reportFolder = currentProp.second;
         else
             errorMessages.push_back(BuildUnhandledPropertyMessage(currentProp.first));
     }
 }
 
-void Agent::SaveToOpenedFile(ofstream& fileStream)
+void Agent::SaveToOpenedFile(wofstream& fileStream)
 {
    fileStream << "Agent" << endl;
    fileStream << "{" << endl;
-   ConfigurationTools::SaveValueToFile(fileStream, "Name", name);
-   ConfigurationTools::SaveValueToFile(fileStream, "ReportFile", reportFile);
-   ConfigurationTools::SaveValueToFile(fileStream, "ReportFolder", reportFolder);
+   ConfigurationTools::SaveValueToFile(fileStream, L"Name", name);
+   ConfigurationTools::SaveValueToFile(fileStream, L"ReportFile", reportFile);
+   ConfigurationTools::SaveValueToFile(fileStream, L"ReportFolder", reportFolder);
    emailData.SaveToOpenedFile(fileStream);
    fileStream << "}" << endl;
 }
 
-string Agent::GetName() const
+wstring Agent::GetName() const
 {
    return name;
 }
 
-void Agent::SetName(const string& value)
+void Agent::SetName(const wstring& value)
 {
    name = value;
 }
 
-string Agent::GetReportFile() const
+wstring Agent::GetReportFile() const
 {
    return reportFile;
 }
 
-void Agent::SetReportFile(const string& value)
+void Agent::SetReportFile(const wstring& value)
 {
    reportFile = value;
 }
 
-string Agent::GetReportFolder() const
+wstring Agent::GetReportFolder() const
 {
    return reportFolder;
 }
 
-void Agent::SetReportFolder(const string& value)
+void Agent::SetReportFolder(const wstring& value)
 {
    reportFolder = value;
 }
@@ -102,9 +102,9 @@ bool Agent::HasValidEmailData() const
    return emailData.IsValid();
 }
 
-string Agent::BuildUnhandledPropertyMessage(const string &property) const
+wstring Agent::BuildUnhandledPropertyMessage(const wstring &property) const
 {
-    string message = "Warning : unhandled property ";
-    message += property + " for Agent configuration";
+    wstring message = L"Warning : unhandled property ";
+    message += property + L" for Agent configuration";
     return message;
 }

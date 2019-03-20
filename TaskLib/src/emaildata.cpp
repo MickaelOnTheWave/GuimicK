@@ -3,7 +3,7 @@
 #include "configurationtools.h"
 
 EmailData::EmailData() :
-   address(""), password(""), smtpServer(""),
+   address(L""), password(L""), smtpServer(L""),
    useSsl(false), smtpPort(-1)
 {
 }
@@ -17,44 +17,44 @@ EmailData::EmailData(const EmailData& other) :
 {
 }
 
-void EmailData::SaveToOpenedFile(std::ofstream& fileStream)
+void EmailData::SaveToOpenedFile(std::wofstream& fileStream)
 {
    if (IsValid())
    {
-      ConfigurationTools::SaveValueToFile(fileStream, "Email", address);
-      ConfigurationTools::SaveValueToFile(fileStream, "Password", password);
-      ConfigurationTools::SaveValueToFile(fileStream, "SmtpAddress", smtpServer);
-      ConfigurationTools::SaveValueToFile(fileStream, "SmtpPort", smtpPort);
-      ConfigurationTools::SaveValueToFile(fileStream, "UseSSL", useSsl);
+      ConfigurationTools::SaveValueToFile(fileStream, L"Email", address);
+      ConfigurationTools::SaveValueToFile(fileStream, L"Password", password);
+      ConfigurationTools::SaveValueToFile(fileStream, L"SmtpAddress", smtpServer);
+      ConfigurationTools::SaveValueToFile(fileStream, L"SmtpPort", smtpPort);
+      ConfigurationTools::SaveValueToFile(fileStream, L"UseSSL", useSsl);
    }
 }
 
-std::string EmailData::GetAddress() const
+std::wstring EmailData::GetAddress() const
 {
    return address;
 }
 
-void EmailData::SetAddress(const std::string& value)
+void EmailData::SetAddress(const std::wstring& value)
 {
    address = value;
 }
 
-std::string EmailData::GetPassword() const
+std::wstring EmailData::GetPassword() const
 {
    return password;
 }
 
-void EmailData::SetPassword(const std::string& value)
+void EmailData::SetPassword(const std::wstring& value)
 {
    password = value;
 }
 
-std::string EmailData::GetSmtpServer() const
+std::wstring EmailData::GetSmtpServer() const
 {
    return smtpServer;
 }
 
-void EmailData::SetSmtpServer(const std::string& value)
+void EmailData::SetSmtpServer(const std::wstring& value)
 {
    smtpServer = value;
 }
@@ -81,13 +81,13 @@ void EmailData::SetUseSsl(bool value)
 
 bool EmailData::IsValid() const
 {
-   if (address == "")
+   if (address == L"")
        return false;
-   else if (password == "")
+   else if (password == L"")
        return false;
    else if (smtpPort == -1)
        return false;
-   else if (smtpServer == "")
+   else if (smtpServer == L"")
        return false;
    else
        return true;

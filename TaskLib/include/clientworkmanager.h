@@ -26,14 +26,14 @@ public:
     one job with this name. In case of several jobs, none
       of them will be removed.
    */
-   bool RemoveJob(const std::string& jobName);
+   bool RemoveJob(const std::wstring& jobName);
 
    /**
     Removes all jobs except those with specified name
     @param[in] jobName Job name.
    */
 
-   bool RemoveAllButJobs(const std::string& jobName);
+   bool RemoveAllButJobs(const std::wstring& jobName);
 
    WorkResultData* RunWorkList();
 

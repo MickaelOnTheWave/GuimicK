@@ -33,8 +33,8 @@ bool AbstractBackupJob::InitializeFromClient(Client *client)
 
         if (client && target.isLocal == false)
         {
-            target.sshUser = client->GetProperty(L"sshuser");
-            target.sshHost = client->GetProperty(L"ip");
+            target.sshUser = client->GetProperty("sshuser");
+            target.sshHost = client->GetProperty("ip");
         }
         return IsInitialized();
     }

@@ -1,11 +1,13 @@
 #include "abstractfsbackupjobconfiguration.h"
 
-AbstractFsBackupJobConfiguration::AbstractFsBackupJobConfiguration(const std::string &tag)
+using namespace std;
+
+AbstractFsBackupJobConfiguration::AbstractFsBackupJobConfiguration(const wstring &tag)
     : AbstractBackupJobConfiguration(tag)
 {
 }
 
-std::string AbstractFsBackupJobConfiguration::GetBackupItemName() const
+wstring AbstractFsBackupJobConfiguration::GetBackupItemName() const
 {
-    return std::string("Folder");
+    return L"Folder";
 }

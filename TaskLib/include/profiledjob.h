@@ -16,7 +16,7 @@ public:
 	ProfiledJob(AbstractJob* _baseJob);
 	virtual ~ProfiledJob();
 
-   virtual std::string GetName() const;
+   virtual std::wstring GetName() const;
 
    virtual AbstractJob* Clone();
 

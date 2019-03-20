@@ -10,13 +10,13 @@ WorkResultData::WorkResultData()
 
 WorkResultData::~WorkResultData()
 {
-	vector<pair<string, ClientJobResults*> >::iterator it = allClientsResults.begin();
-	vector<pair<string, ClientJobResults*> >::iterator end = allClientsResults.end();
+	vector<pair<wstring, ClientJobResults*> >::iterator it = allClientsResults.begin();
+	vector<pair<wstring, ClientJobResults*> >::iterator end = allClientsResults.end();
 	for (; it!=end; it++)
 	{
 		ClientJobResults* clientResult = it->second;
-		vector<pair<string, JobStatus*> >::iterator itStat = clientResult->begin();
-		vector<pair<string, JobStatus*> >::iterator endStat = clientResult->end();
+		vector<pair<wstring, JobStatus*> >::iterator itStat = clientResult->begin();
+		vector<pair<wstring, JobStatus*> >::iterator endStat = clientResult->end();
 		for (; itStat!=endStat; itStat++)
 		{
 			delete itStat->second;
@@ -24,7 +24,7 @@ WorkResultData::~WorkResultData()
 	}
 }
 
-void WorkResultData::AddClientData(const std::string& clientName, ClientJobResults *clientData)
+void WorkResultData::AddClientData(const wstring& clientName, ClientJobResults *clientData)
 {
     allClientsResults.push_back(make_pair(clientName, clientData));
 }
@@ -34,12 +34,12 @@ size_t WorkResultData::GetClientCount() const
     return allClientsResults.size();
 }
 
-void WorkResultData::GetAttachmentContents(vector<string> &attachments) const
+void WorkResultData::GetAttachmentContents(vector<wstring> &attachments) const
 {
-    std::vector<std::pair<std::string, ClientJobResults*> >::const_iterator itClients = allClientsResults.begin();
+    vector<pair<wstring, ClientJobResults*> >::const_iterator itClients = allClientsResults.begin();
     for (; itClients!=allClientsResults.end(); ++itClients)
     {
-        std::vector<std::pair<std::string, JobStatus*> >::const_iterator itJobs = itClients->second->begin();
+        vector<pair<wstring, JobStatus*> >::const_iterator itJobs = itClients->second->begin();
         for (; itJobs != itClients->second->end(); ++itJobs)
         {
             JobStatus* status = itJobs->second;
@@ -49,20 +49,20 @@ void WorkResultData::GetAttachmentContents(vector<string> &attachments) const
     }
 }
 
-void WorkResultData::GetBufferAttachments(JobStatus *status, std::vector<string> &attachments) const
+void WorkResultData::GetBufferAttachments(JobStatus *status, vector<wstring> &attachments) const
 {
-    std::vector<std::pair<string, string> > buffers;
+    vector<pair<wstring, wstring> > buffers;
     status->GetFileBuffers(buffers);
-    std::vector<std::pair<string, string> >::const_iterator it=buffers.begin();
+    vector<pair<wstring, wstring> >::const_iterator it=buffers.begin();
     for (; it != buffers.end(); ++it)
         attachments.push_back(it->second);
 }
 
-void WorkResultData::GetFileAttachments(JobStatus *status, std::vector<string> &attachments) const
+void WorkResultData::GetFileAttachments(JobStatus *status, vector<wstring> &attachments) const
 {
-    std::vector<string> filenames;
+    vector<wstring> filenames;
     status->GetExternalFilenames(filenames);
-    std::vector<string>::const_iterator it=filenames.begin();
+    vector<wstring>::const_iterator it=filenames.begin();
     for (; it != filenames.end(); ++it)
         attachments.push_back(FileTools::GetTextFileContent(*it));
 }

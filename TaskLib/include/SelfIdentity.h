@@ -13,30 +13,30 @@ class Agent
 public:
     Agent();
     Agent(const Agent& other);
-    Agent(ConfigurationObject *confObject, std::vector<std::string> &errorMessages);
+    Agent(ConfigurationObject *confObject, std::vector<std::wstring> &errorMessages);
 
-    void SaveToOpenedFile(std::ofstream& fileStream);
+    void SaveToOpenedFile(std::wofstream& fileStream);
 
-    std::string GetName() const;
-    void SetName(const std::string& value);
+    std::wstring GetName() const;
+    void SetName(const std::wstring& value);
 
-    std::string GetReportFile() const;
-    void SetReportFile(const std::string& value);
+    std::wstring GetReportFile() const;
+    void SetReportFile(const std::wstring& value);
 
-    std::string GetReportFolder() const;
-    void SetReportFolder(const std::string& value);
+    std::wstring GetReportFolder() const;
+    void SetReportFolder(const std::wstring& value);
 
     EmailData GetEmailData() const;
     void SetEmailData(const EmailData& value);
     bool HasValidEmailData() const;
 
 private:
-    std::string BuildUnhandledPropertyMessage(const std::string& property) const;
+    std::wstring BuildUnhandledPropertyMessage(const std::wstring& property) const;
 
     // TODO : change all this to a property map, like Client.
-    std::string name;
-    std::string reportFile;
-    std::string reportFolder;
+    std::wstring name;
+    std::wstring reportFile;
+    std::wstring reportFolder;
     EmailData emailData;
 };
 

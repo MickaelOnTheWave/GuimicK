@@ -4,6 +4,8 @@
 
 using namespace std;
 
+const wstring emptyString = L"";
+
 AbstractStructuredReportCreator::AbstractStructuredReportCreator()
    : globalCode(JobStatus::NotExecuted), globalDuration(0)
 {
@@ -20,13 +22,13 @@ AbstractStructuredReportCreator::~AbstractStructuredReportCreator()
 }
 
 void AbstractStructuredReportCreator::Generate(WorkResultData *data,
-                                               const vector<string> &configErrors,
-                                               const string &version)
+                                               const vector<wstring> &configErrors,
+                                               const wstring &version)
 {
-    fullReport = "";
-    reportCore.str("");
-    dispatchErrors.str("");
-    programVersion.str("");
+    fullReport = emptyString;
+    reportCore.str(emptyString);
+    dispatchErrors.str(emptyString);
+    programVersion.str(emptyString);
 
     AddHeader();
 
@@ -34,7 +36,7 @@ void AbstractStructuredReportCreator::Generate(WorkResultData *data,
     vector<ClientResult>::iterator endClient=data->allClientsResults.end();
     for (; itClient!=endClient; itClient++)
     {
-        pair<string, ClientJobResults*> clientData = *itClient;
+        pair<wstring, ClientJobResults*> clientData = *itClient;
 
         AddClientHeaderData(clientData);
 
@@ -57,7 +59,7 @@ void AbstractStructuredReportCreator::AddJobResultData(const ClientResult& clien
    ClientJobResults::iterator endJob=clientData.second->end();
    for (; itJob!=endJob; itJob++)
    {
-      pair<string, JobStatus*> jobData = *itJob;
+      pair<wstring, JobStatus*> jobData = *itJob;
 
       ResultCollectionStatus* collectionStatus = dynamic_cast<ResultCollectionStatus*>(jobData.second);
       if (collectionStatus)

@@ -36,7 +36,7 @@ void ClientWorkManager::AddJobs(const list<AbstractJob*>& _jobList, const bool t
    }
 }
 
-bool ClientWorkManager::RemoveJob(const string &jobName)
+bool ClientWorkManager::RemoveJob(const wstring &jobName)
 {
 	list<AbstractJob*>::iterator it=jobList.begin();
 	list<AbstractJob*>::iterator end=jobList.end();
@@ -58,7 +58,7 @@ bool ClientWorkManager::RemoveJob(const string &jobName)
 	return true;
 }
 
-bool ClientWorkManager::RemoveAllButJobs(const string &jobName)
+bool ClientWorkManager::RemoveAllButJobs(const wstring &jobName)
 {
 	list<AbstractJob*>::iterator it=jobList.begin();
 	unsigned int removedJobs = 0;
@@ -90,7 +90,7 @@ WorkResultData *ClientWorkManager::RunWorkList()
          status = currentJob->Run();
       else
       {
-         status = new JobStatus(JobStatus::NotExecuted, "Initialization failed");
+         status = new JobStatus(JobStatus::NotExecuted, L"Initialization failed");
          status->SetDuration(0);
       }
 

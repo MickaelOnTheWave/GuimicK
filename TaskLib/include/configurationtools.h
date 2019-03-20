@@ -10,27 +10,27 @@
 class ConfigurationTools
 {
 public:
-   static std::string CreateWarning(const std::string& message);
-   static std::string CreateError(const std::string& message);
+   static std::wstring CreateWarning(const std::wstring& message);
+   static std::wstring CreateError(const std::wstring& message);
 
    template <class T>
-   static void SaveValueToFile(std::ofstream& file,
-                               const std::string& name,
+   static void SaveValueToFile(std::wofstream& file,
+                               const std::wstring& name,
                                const T value)
    {
-      const std::string tab = "\t";
-      file << tab << name << " = \"" << value << "\";" << std::endl;
+      const std::wstring tab = L"\t";
+      file << tab << name << L" = \"" << value << L"\";" << std::endl;
    }
 
    static void SaveJobListToFile(std::ofstream& file,
                                  const std::list<AbstractJob*>& jobList);
 
-   static bool GetBooleanValue(const std::string& strValue,
-                               std::vector<std::string>& errorMessages);
+   static bool GetBooleanValue(const std::wstring& strValue,
+                               std::vector<std::wstring>& errorMessages);
 
 private:
-   static std::string CreateMessage(const std::string& tag,
-                                    const std::string& message);
+   static std::wstring CreateMessage(const std::wstring& tag,
+                                    const std::wstring& message);
 };
 
 #endif // CONFIGURATIONTOOLS_H

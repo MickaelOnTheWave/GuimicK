@@ -11,8 +11,8 @@ namespace DebugOutput
    static const int ON_FATAL_ERROR = 2;
    static const int ALWAYS = 3;
 
-   int GetValue(const std::string& stringValue);
-   std::string GetDescription(const int value);
+   int GetValue(const std::wstring& stringValue);
+   std::wstring GetDescription(const int value);
 }
 
 #endif // DEBUGOUTPUT_H
