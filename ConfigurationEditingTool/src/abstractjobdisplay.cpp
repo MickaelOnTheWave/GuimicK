@@ -17,8 +17,8 @@ AbstractJobDisplay::~AbstractJobDisplay()
 
 void AbstractJobDisplay::Initialize(AbstractJob* job)
 {
-   ui->jobnameLabel->setText(job->GetName().c_str());
+   ui->jobnameLabel->setText(QString::fromStdWString(job->GetName()));
 
    const int debugValue = job->GetOutputDebugInformationValue();
-   ui->debugValueLabel->setText(DebugOutput::GetDescription(debugValue).c_str());
+   ui->debugValueLabel->setText(QString::fromStdWString(DebugOutput::GetDescription(debugValue)));
 }

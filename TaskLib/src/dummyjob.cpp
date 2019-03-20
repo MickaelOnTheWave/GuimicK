@@ -1,7 +1,7 @@
 #include "dummyjob.h"
 
-DummyJob::DummyJob(const std::string &_name, const int expectedCode,
-                   const std::string& expectedDescription)
+DummyJob::DummyJob(const std::wstring& _name, const int expectedCode,
+                   const std::wstring& expectedDescription)
     : AbstractJob(_name),
       statusCode(expectedCode), statusDescription(expectedDescription),
       initializationValue(true)
@@ -39,7 +39,7 @@ JobStatus *DummyJob::Run()
     return status;
 }
 
-void DummyJob::SetStatusDescription(const std::string &value)
+void DummyJob::SetStatusDescription(const std::wstring &value)
 {
     statusDescription = value;
 }

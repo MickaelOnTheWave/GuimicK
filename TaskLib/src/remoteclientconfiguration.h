@@ -7,7 +7,7 @@ class RemoteClientConfiguration : public LocalClientConfiguration
 {
 protected:
 	virtual bool AreClientPropertiesConsistent(ConfigurationObject* object,
-	                                           std::vector<std::string> &errorMessages);
+	                                           std::vector<std::wstring> &errorMessages);
 
 };
 

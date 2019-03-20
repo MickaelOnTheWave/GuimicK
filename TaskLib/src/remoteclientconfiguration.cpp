@@ -3,19 +3,19 @@
 using namespace std;
 
 bool RemoteClientConfiguration::AreClientPropertiesConsistent(
-      ConfigurationObject* object, std::vector<std::string>& errorMessages
+      ConfigurationObject* object, vector<wstring>& errorMessages
       )
 {
 	if (!LocalClientConfiguration::AreClientPropertiesConsistent(object, errorMessages))
 		return false;
-	if (client->GetProperty("ip") == "")
+	if (client->GetProperty(L"ip") == L"")
 	{
-	  errorMessages.push_back("Error : Client without IP address");
+	  errorMessages.push_back(L"Error : Client without IP address");
 	  return false;
 	}
-	else if (client->GetProperty("sshuser") == "")
+	else if (client->GetProperty(L"sshuser") == L"")
 	{
-	  errorMessages.push_back("Error : Client without Ssh user");
+	  errorMessages.push_back(L"Error : Client without Ssh user");
 	  return false;
 	}
 	else

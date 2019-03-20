@@ -26,9 +26,9 @@ void EditRsnapshotBackupJobDialog::UpdateUiFromJob()
 {
    auto rsnapshotJob = static_cast<RsnapshotSmartBackupJob*>(job);
    basicBackupWidget->UpdateUiFromJob(rsnapshotJob);
-   ui->repositoryEdit->setText(rsnapshotJob->GetRepository().c_str());
-   ui->templateConfFileEdit->setText(rsnapshotJob->GetTemplateConfigurationFile().c_str());
-   ui->tempConfFileEdit->setText(rsnapshotJob->GetTemporaryFile().c_str());
+   ui->repositoryEdit->setText(QString::fromStdWString(rsnapshotJob->GetRepository()));
+   ui->templateConfFileEdit->setText(QString::fromStdWString(rsnapshotJob->GetTemplateConfigurationFile()));
+   ui->tempConfFileEdit->setText(QString::fromStdWString(rsnapshotJob->GetTemporaryFile()));
    ui->maxBackupsSpinBox->setValue(rsnapshotJob->GetMaxBackupCount());
 }
 
@@ -36,9 +36,9 @@ void EditRsnapshotBackupJobDialog::UpdateJobFromUi()
 {
    auto rsnapshotJob = static_cast<RsnapshotSmartBackupJob*>(job);
    basicBackupWidget->UpdateJobFromUi(rsnapshotJob);
-   rsnapshotJob->SetRepository(ui->repositoryEdit->text().toStdString());
-   rsnapshotJob->SetTemplateConfigurationFile(ui->templateConfFileEdit->text().toStdString());
-   rsnapshotJob->SetTemporaryFile(ui->tempConfFileEdit->text().toStdString());
+   rsnapshotJob->SetRepository(ui->repositoryEdit->text().toStdWString());
+   rsnapshotJob->SetTemplateConfigurationFile(ui->templateConfFileEdit->text().toStdWString());
+   rsnapshotJob->SetTemporaryFile(ui->tempConfFileEdit->text().toStdWString());
    rsnapshotJob->SetMaxBackupCount(ui->maxBackupsSpinBox->value());
 }
 

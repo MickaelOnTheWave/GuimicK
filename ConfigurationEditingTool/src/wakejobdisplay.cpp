@@ -20,8 +20,8 @@ void WakeJobDisplay::Initialize(AbstractJob* job)
    auto wakeJob = dynamic_cast<AbstractWakeJob*>(job);
    if (wakeJob)
    {
-      ui->nameLabel->setText(wakeJob->GetName().c_str());
-      ui->typeLabel->setVisible((wakeJob->GetName() != "Wake"));
+      ui->nameLabel->setText(QString::fromStdWString(wakeJob->GetName()));
+      ui->typeLabel->setVisible((wakeJob->GetName() != L"Wake"));
       ui->maxRetriesLabel->setText(QString::number(wakeJob->GetMaxRetries()));
       ui->timeoutLabel->setText(QString::number(wakeJob->GetTimeout()));
    }

@@ -13,10 +13,10 @@ public:
     virtual bool Dispatch(AbstractReportCreator* reportCreator);
 
 private:
-    std::string GetCurlVersion() const;
-    std::string BuildCurlParams(const std::string& mailFilename) const;
+    std::wstring GetCurlVersion() const;
+    std::wstring BuildCurlParams(const std::wstring& mailFilename) const;
     void WriteReportContentToFile(AbstractReportCreator* reportCreator,
-                                  const std::string& filename);
+                                  const std::wstring& filename);
 };
 
 #endif // CURLCONSOLEEMAILSENDER_H

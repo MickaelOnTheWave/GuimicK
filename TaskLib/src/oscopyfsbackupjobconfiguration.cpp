@@ -2,7 +2,7 @@
 #include "oscopyfsbackupjob.h"
 
 OsCopyFsBackupJobConfiguration::OsCopyFsBackupJobConfiguration()
-    : AbstractFsBackupJobConfiguration("CopyBackup")
+    : AbstractFsBackupJobConfiguration(L"CopyBackup")
 {
 }
 

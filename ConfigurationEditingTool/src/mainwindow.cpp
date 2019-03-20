@@ -54,14 +54,14 @@ using namespace std;
 
 namespace
 {
-   const string version = "0.94";
+   const wstring version = L"0.95";
 
    QString GetDefaultTaskToolExecutable()
    {
 #ifdef _MSC_VER
-      const std::string path = PathTools::GetCurrentExecutablePath();
-      const std::string taskToolExe = PathTools::GetPathOnly(path) + "\\TaskTool.exe";
-      return QString(taskToolExe.c_str());
+      const std::wstring path = PathTools::GetCurrentExecutablePath();
+      const std::wstring taskToolExe = PathTools::GetPathOnly(path) + L"\\TaskTool.exe";
+      return QString::fromStdWString(taskToolExe);
 #else
       return QString("/usr/local/bin/taskmanagerTool");
 #endif
@@ -79,15 +79,15 @@ namespace
          return QString("");
    }
 
-   string CreateReportFile(const string& type)
+   wstring CreateReportFile(const wstring& type)
    {
-      string filename = "report.";
-      if (type == "html")
-         filename += "html";
-      else if (type == "text")
-         filename += "txt";
+      wstring filename = L"report.";
+      if (type == L"html")
+         filename += L"html";
+      else if (type == L"text")
+         filename += L"txt";
       else
-         filename += "log";
+         filename += L"log";
       return filename;
    }
 
@@ -107,28 +107,6 @@ namespace
    {
       const QStringList defaultFolders = QStandardPaths::standardLocations(QStandardPaths::TempLocation);
       return (defaultFolders.empty()) ? QString("") : defaultFolders.first();
-   }
-
-   string ToStdString(const std::wstring& value)
-   {
-      if (value.empty())
-      {
-         return std::string();
-      }
-#if defined WIN32
-      int size = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, &value[0], value.size(), NULL, 0, NULL, NULL);
-      std::string ret = std::string(size, 0);
-      WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, &value[0], value.size(), &ret[0], size, NULL, NULL);
-#else
-      size_t size = 0;
-      _locale_t lc = _create_locale(LC_ALL, "en_US.UTF-8");
-      errno_t err = _wcstombs_s_l(&size, NULL, 0, &wstr[0], _TRUNCATE, lc);
-      std::string ret = std::string(size, 0);
-      err = _wcstombs_s_l(&size, &ret[0], size, &wstr[0], _TRUNCATE, lc);
-      _free_locale(lc);
-      ret.resize(size - 1);
-#endif
-      return ret;
    }
 }
 
@@ -227,7 +205,7 @@ void MainWindow::on_actionGeneral_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-   AboutDialog dialog(version, configurationType);
+   AboutDialog dialog(QString::fromStdWString(version), configurationType);
    dialog.exec();
 }
 
@@ -393,8 +371,8 @@ void MainWindow::CreateNewFile()
 
 void MainWindow::OpenFile(const QString& filename, const bool showStatusIfOk)
 {
-   vector<string> errors;
-   const bool isUsable = model.LoadConfiguration(filename.toStdString(), errors);
+   vector<wstring> errors;
+   const bool isUsable = model.LoadConfiguration(filename.toStdWString(), errors);
    const bool isStatusFullOk = (isUsable && errors.empty());
 
    if (showStatusIfOk || !isStatusFullOk)
@@ -576,9 +554,9 @@ QString MainWindow::GetBackupFolder(AbstractBackupJob* job) const
    }
    else if (job->GetFolderCount() == 1)
    {
-      vector<pair<string,string> > folders;
+      vector<pair<wstring,wstring> > folders;
       job->GetFolderList(folders);
-      selectedBackupFolder = folders.front().first.c_str();
+      selectedBackupFolder = QString::fromStdWString(folders.front().first);
    }
 
    return selectedBackupFolder;
@@ -599,8 +577,8 @@ void MainWindow::RestoreBackup(
                            "/home");
 
    // TODO : fix that
-   const BackupRestoreParameters parameters = {folderName.toStdString(), 0, 0};
-   const BackupRestoreTarget target = {"192.168.1.256", "user", "userPassword"};
+   const BackupRestoreParameters parameters = {folderName.toStdWString(), 0, 0};
+   const BackupRestoreTarget target = {L"192.168.1.256", L"user", L"userPassword"};
    if (folderName != "")
       job->RestoreBackupFromClient(parameters, target);
 }
@@ -659,13 +637,13 @@ void MainWindow::UpdateAddJobMenuEntries()
    SetupAddJobMenu();
 }
 
-void MainWindow::OpenRunDialog(const string& reportFile)
+void MainWindow::OpenRunDialog(const wstring& reportFile)
 {
    TaskToolRunDialog dialog(this);
    dialog.SetRunPath(GetTempFolder());
    dialog.SetConfigurationFile(GetTempConfigFilename());
    dialog.SetToolExecutable(GetTaskToolExecutable());
-   dialog.SetReportFile(reportFile.c_str());
+   dialog.SetReportFile(QString::fromStdWString(reportFile));
    dialog.SetReportFolder(GetTempReportFolder());
 
    // TODO : implement this
@@ -694,14 +672,14 @@ QString MainWindow::GetTempReportFolder() const
    return GetTempFolder() + "/TaskManagerReport/";
 }
 
-string MainWindow::SaveConfigurationToTempLocation()
+wstring MainWindow::SaveConfigurationToTempLocation()
 {
    TooledConfiguration tempModel(model);
    tempModel.GetTmpConfiguration()->SetLocalShutdown(false);
-   tempModel.GetTmpConfiguration()->SetReportDispatching("file");
+   tempModel.GetTmpConfiguration()->SetReportDispatching(L"file");
 
-   const string reportFile = CreateReportFile(tempModel.GetTmpConfiguration()->GetReportType());
-   const string reportFolder = ToStdString(GetTempReportFolder().toStdWString());
+   const wstring reportFile = CreateReportFile(tempModel.GetTmpConfiguration()->GetReportType());
+   const wstring reportFolder = GetTempReportFolder().toStdWString();
    tempModel.GetAgent()->SetReportFile(reportFile);
    tempModel.GetAgent()->SetReportFolder(reportFolder);
 
@@ -711,7 +689,7 @@ string MainWindow::SaveConfigurationToTempLocation()
 
 void MainWindow::on_actionRun_triggered()
 {
-   const string reportFile = SaveConfigurationToTempLocation();
+   const wstring reportFile = SaveConfigurationToTempLocation();
    const wstring tempConfigFilename = GetTempConfigFilename().toStdWString();
    if (FileTools::FileExists(tempConfigFilename) == false)
    {

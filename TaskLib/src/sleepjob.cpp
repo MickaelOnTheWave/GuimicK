@@ -2,7 +2,7 @@
 #include "tools.h"
 
 SleepJob::SleepJob(int _sleepTime)
-   : AbstractJob("SleepJob"), sleepTime(_sleepTime)
+   : AbstractJob(L"SleepJob"), sleepTime(_sleepTime)
 {
 }
 

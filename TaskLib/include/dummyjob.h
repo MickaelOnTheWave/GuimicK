@@ -7,9 +7,9 @@
 class DummyJob : public AbstractJob
 {
 public:
-    DummyJob(const std::string& _name = "DummyJob",
+    DummyJob(const std::wstring& _name = L"DummyJob",
              const int expectedCode = JobStatus::Ok,
-             const std::string& _expectedDescription = "");
+             const std::wstring& _expectedDescription = L"");
     DummyJob(const DummyJob& other);
 
     virtual AbstractJob* Clone();
@@ -20,13 +20,13 @@ public:
 
 	virtual JobStatus* Run();
 
-    void SetStatusDescription(const std::string& value);
+    void SetStatusDescription(const std::wstring& value);
 
     void SetInitialization(const bool value);
 
 protected:
     int statusCode;
-    std::string statusDescription;
+    std::wstring statusDescription;
     bool initializationValue;
 };
 

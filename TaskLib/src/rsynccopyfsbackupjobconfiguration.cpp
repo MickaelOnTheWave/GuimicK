@@ -3,7 +3,7 @@
 #include "rsynccopyfsbackupjob.h"
 
 RsyncCopyFsBackupJobConfiguration::RsyncCopyFsBackupJobConfiguration()
-    : AbstractFsBackupJobConfiguration("RsyncBackup")
+    : AbstractFsBackupJobConfiguration(L"RsyncBackup")
 {
 }
 

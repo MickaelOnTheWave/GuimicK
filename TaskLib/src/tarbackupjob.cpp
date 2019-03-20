@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const string defaultName = "Tar Backup";
+const wstring defaultName = L"Tar Backup";
 
 TarTool* CreateConfiguredTool()
 {
@@ -32,7 +32,7 @@ AbstractJob* TarBackupJob::Clone()
    return new TarBackupJob(*this);
 }
 
-std::string TarBackupJob::GetTypeName() const
+std::wstring TarBackupJob::GetTypeName() const
 {
    return defaultName;
 }

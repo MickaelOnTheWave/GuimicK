@@ -20,7 +20,7 @@ public:
    void SetToolExecutable(const QString& value);
    void SetReportFile(const QString& value);
    void SetReportFolder(const QString& value);
-   void SetReportType(const std::string& value);
+   void SetReportType(const std::wstring& value);
 
 private slots:
    void on_runButton_clicked();
@@ -47,7 +47,7 @@ private:
    QString taskToolExecutable = "";
    QString reportFile = "";
    QString reportFolder = "";
-   std::string reportType = "";
+   std::wstring reportType = L"";
 };
 
 #endif // TASKTOOLRUNDIALOG_H

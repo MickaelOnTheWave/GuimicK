@@ -30,13 +30,13 @@ void EditShutdownJobDialog::on_cancelButton_clicked()
 void EditShutdownJobDialog::UpdateUiFromJob()
 {
    auto shutdownJob = static_cast<LinuxShutdownJob*>(job);
-   ui->nameEdit->setText(job->GetName().c_str());
+   ui->nameEdit->setText(QString::fromStdWString(job->GetName()));
    ui->timeoutBox->setValue(shutdownJob->GetTimeout());
 }
 
 void EditShutdownJobDialog::UpdateJobFromUi()
 {
    auto shutdownJob = static_cast<LinuxShutdownJob*>(job);
-   job->SetName(ui->nameEdit->text().toStdString());
+   job->SetName(ui->nameEdit->text().toStdWString());
    shutdownJob->SetTimeout(ui->timeoutBox->value());
 }

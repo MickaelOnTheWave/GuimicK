@@ -2,7 +2,7 @@
 #include "linuxshutdownjob.h"
 
 ShutdownJobConfiguration::ShutdownJobConfiguration()
-    : AbstractJobDefaultConfiguration("Shutdown")
+    : AbstractJobDefaultConfiguration(L"Shutdown")
 {
 }
 

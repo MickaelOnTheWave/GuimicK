@@ -81,7 +81,7 @@ void TaskToolRunDialog::SetReportFolder(const QString& value)
    reportFolder = value;
 }
 
-void TaskToolRunDialog::SetReportType(const std::string& value)
+void TaskToolRunDialog::SetReportType(const std::wstring& value)
 {
    reportType = value;
 }
@@ -150,7 +150,7 @@ void TaskToolRunDialog::SetupReportDisplay()
    const std::wstring reportContent = FileTools::GetTextFileContent(
                                         reportFileFullName.toStdWString());
    const QString qReportContent = QString::fromStdWString(reportContent);
-   const bool isHtml = (reportType == "html");
+   const bool isHtml = (reportType == L"html");
    if (isHtml)
    {
       ui->textBrowser->setHtml(qReportContent);

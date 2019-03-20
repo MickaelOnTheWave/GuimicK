@@ -48,11 +48,11 @@ void EditRsyncFsBackupJobDialog::CreateBasicBackupWidget()
 void EditRsyncFsBackupJobDialog::UpdateUiExclusions()
 {
    auto rsyncJob = static_cast<RsyncCopyFsBackupJob*>(job);
-   vector<string> exclusions;
+   vector<wstring> exclusions;
    rsyncJob->GetExclusionList(exclusions);
 
    for (auto it : exclusions)
-      ui->exclusionListWidget->addItem(it.c_str());
+      ui->exclusionListWidget->addItem(QString::fromStdWString(it));
 }
 
 void EditRsyncFsBackupJobDialog::UpdateJobExclusions()
@@ -60,7 +60,7 @@ void EditRsyncFsBackupJobDialog::UpdateJobExclusions()
    auto rsyncJob = static_cast<RsyncCopyFsBackupJob*>(job);
    rsyncJob->ClearExclusionList();
    for (int i=0; i<ui->exclusionListWidget->count(); ++i)
-      rsyncJob->AddToExclusions(ui->exclusionListWidget->item(i)->text().toStdString());
+      rsyncJob->AddToExclusions(ui->exclusionListWidget->item(i)->text().toStdWString());
 }
 
 void EditRsyncFsBackupJobDialog::on_addExclusionButton_clicked()

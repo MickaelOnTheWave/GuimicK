@@ -16,11 +16,11 @@ public:
    ~ConfigurationCheckDialog();
 
    static void Show(const bool isFatalError,
-                    const std::vector<std::string>& errors);
+                    const std::vector<std::wstring>& errors);
 
 private:
    void SetupControls(const bool isFatalError,
-                      const std::vector<std::string>& errors);
+                      const std::vector<std::wstring>& errors);
 
    Ui::ConfigurationCheckDialog *ui;
 };

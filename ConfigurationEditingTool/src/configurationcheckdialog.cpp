@@ -15,14 +15,14 @@ ConfigurationCheckDialog::~ConfigurationCheckDialog()
    delete ui;
 }
 
-void ConfigurationCheckDialog::Show(const bool isFatalError, const std::vector<std::string>& errors)
+void ConfigurationCheckDialog::Show(const bool isFatalError, const vector<wstring>& errors)
 {
    ConfigurationCheckDialog dialog;
    dialog.SetupControls(isFatalError, errors);
    dialog.exec();
 }
 
-void ConfigurationCheckDialog::SetupControls(const bool isFatalError, const std::vector<std::string>& errors)
+void ConfigurationCheckDialog::SetupControls(const bool isFatalError, const vector<wstring>& errors)
 {
    if (isFatalError)
       ui->descriptionLabel->setText("Fatal errors found in configuration. It is not usable in this state.");
@@ -38,7 +38,7 @@ void ConfigurationCheckDialog::SetupControls(const bool isFatalError, const std:
    {
       QStringList qtErrors;
       for (auto& it : errors)
-         qtErrors.push_back(QString(it.c_str()));
+         qtErrors.push_back(QString::fromStdWString(it));
       ui->listWidget->addItems(qtErrors);
    }
    else

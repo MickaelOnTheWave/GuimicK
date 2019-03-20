@@ -10,7 +10,7 @@
 
 using namespace std;
 
-static const string mailFileName = "mailContents.txt";
+static const wstring mailFileName = L"mailContents.txt";
 
 // @TODO Make proper implementation without clear password
 // @TODO Improve security handling SSL correctly without insecure option
@@ -22,23 +22,23 @@ CurlConsoleReportDispatcher::CurlConsoleReportDispatcher()
 
 bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 {
-    JobDebugInformationManager debugInfo(outputDebugInformation, "EmailSend");
+    JobDebugInformationManager debugInfo(outputDebugInformation, L"EmailSend");
 
     WriteReportContentToFile(reportCreator, mailFileName);
 
-    const string curlParams = BuildCurlParams(mailFileName);
+    const wstring curlParams = BuildCurlParams(mailFileName);
 
-    debugInfo.AddDataLine<string>("Params", curlParams);
-    ConsoleJob curl("curl", curlParams);
+    debugInfo.AddDataLine<wstring>(L"Params", curlParams);
+    ConsoleJob curl(L"curl", curlParams);
     JobStatus* status = curl.Run();
     if (status->GetCode() == JobStatus::Ok)
-        remove(mailFileName.c_str());
+        _wremove(mailFileName.c_str());
     else
     {
-        debugInfo.AddDataLine<string>("Command executable", curl.GetCommand());
-        debugInfo.AddDataLine<int>("Return code", curl.GetCommandReturnCode());
-        debugInfo.AddDataLine<string>("Output", curl.GetCommandOutput());
-        debugInfo.AddDataLine<string>("Curl version", GetCurlVersion());
+        debugInfo.AddDataLine<wstring>(L"Command executable", curl.GetCommand());
+        debugInfo.AddDataLine<int>(L"Return code", curl.GetCommandReturnCode());
+        debugInfo.AddDataLine<wstring>(L"Output", curl.GetCommandOutput());
+        debugInfo.AddDataLine<wstring>(L"Curl version", GetCurlVersion());
         debugInfo.WriteToFile();
     }
 
@@ -46,36 +46,36 @@ bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
     return (status->GetCode() == JobStatus::Ok);
 }
 
-string CurlConsoleReportDispatcher::GetCurlVersion() const
+wstring CurlConsoleReportDispatcher::GetCurlVersion() const
 {
-    ConsoleJob command("curl", "--version");
+    ConsoleJob command(L"curl", L"--version");
     command.RunWithoutStatus();
     return command.GetCommandOutput();
 }
 
-string CurlConsoleReportDispatcher::BuildCurlParams(const string &mailFilename) const
+wstring CurlConsoleReportDispatcher::BuildCurlParams(const wstring &mailFilename) const
 {
-    string params;
-    params += " --url \"" + GetSmtpUrl() + "\" --ssl-reqd ";
-    params += "--mail-from \"" + emailData.GetAddress() + "\" ";
-    params += "--mail-rcpt \"" + destEmail + "\" ";
-    params += "--upload-file " + mailFilename + " ";
-    params += "--user \"" + emailData.GetAddress() + ":" + emailData.GetPassword() + "\" ";
-    params += "--insecure --show-error ";
-    params += isVerbose ? "--verbose" : "--silent";
+    wstring params;
+    params += L" --url \"" + GetSmtpUrl() + L"\" --ssl-reqd ";
+    params += L"--mail-from \"" + emailData.GetAddress() + L"\" ";
+    params += L"--mail-rcpt \"" + destEmail + L"\" ";
+    params += L"--upload-file " + mailFilename + L" ";
+    params += L"--user \"" + emailData.GetAddress() + L":" + emailData.GetPassword() + L"\" ";
+    params += L"--insecure --show-error ";
+    params += isVerbose ? L"--verbose" : L"--silent";
     return params;
 }
 
 void CurlConsoleReportDispatcher::WriteReportContentToFile(AbstractReportCreator *reportCreator,
-                                                           const string &filename)
+                                                           const wstring &filename)
 {
-    vector<string> externalFiles;
-    vector<pair<string,string> > fileBuffers;
+    vector<wstring> externalFiles;
+    vector<pair<wstring,wstring> > fileBuffers;
     reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
 
     MimeTools mimeCreator;
 
-    ofstream mailFile;
+    wofstream mailFile;
     mailFile.open(filename.c_str());
     mailFile << mimeCreator.CreateEmailContent(isHtml, displayName, emailData.GetAddress(),
                                                destEmail, cc, bcc,

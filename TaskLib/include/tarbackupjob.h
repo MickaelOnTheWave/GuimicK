@@ -12,7 +12,7 @@ public:
 
    virtual AbstractJob* Clone();
 
-   virtual std::string GetTypeName() const;
+   virtual std::wstring GetTypeName() const;
 };
 
 #endif // TARBACKUPJOB_H

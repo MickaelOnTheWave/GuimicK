@@ -117,12 +117,12 @@ private:
 
    void UpdateAddJobMenuEntries();
 
-   void OpenRunDialog(const std::string& reportFile);
+   void OpenRunDialog(const std::wstring& reportFile);
 
    QString GetTempFolder() const;
    QString GetTempConfigFilename() const;
    QString GetTempReportFolder() const;
-   std::string SaveConfigurationToTempLocation();
+   std::wstring SaveConfigurationToTempLocation();
 
    Ui::MainWindow *ui;
    TooledConfiguration model;
