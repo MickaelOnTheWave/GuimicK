@@ -17,36 +17,36 @@ public:
 
    void SortData();
 
-   virtual std::string GetMiniDescription() const;
-   virtual std::string GetFullDescription() const;
+   virtual std::wstring GetMiniDescription() const;
+   virtual std::wstring GetFullDescription() const;
 
-   void AddAsAdded(const std::vector<std::string>& files);
-   void AddAsAdded(const std::string& file);
+   void AddAsAdded(const std::vector<std::wstring>& files);
+   void AddAsAdded(const std::wstring& file);
 
-   void AddAsModified(const std::vector<std::string>& files);
-   void AddAsModified(const std::string& file);
+   void AddAsModified(const std::vector<std::wstring>& files);
+   void AddAsModified(const std::wstring& file);
 
-   void AddAsRemoved(const std::vector<std::string>& files);
-   void AddAsRemoved(const std::string& file);
+   void AddAsRemoved(const std::vector<std::wstring>& files);
+   void AddAsRemoved(const std::wstring& file);
 
    void Add(const FileBackupReport& otherReport);
-   void AddWithPrefix(const FileBackupReport& otherReport, const std::string& prefix);
+   void AddWithPrefix(const FileBackupReport& otherReport, const std::wstring& prefix);
 
-   void GetAddedFiles(std::vector<std::string>& files);
-   void GetModifiedFiles(std::vector<std::string>& files);
-   void GetRemovedFiles(std::vector<std::string>& files);
+   void GetAddedFiles(std::vector<std::wstring>& files);
+   void GetModifiedFiles(std::vector<std::wstring>& files);
+   void GetRemovedFiles(std::vector<std::wstring>& files);
 
 protected:
-    std::vector<std::string> added;
-    std::vector<std::string> modified;
-    std::vector<std::string> removed;
+    std::vector<std::wstring> added;
+    std::vector<std::wstring> modified;
+    std::vector<std::wstring> removed;
 
 private:
-    std::string FileListDescription(const std::vector<std::string> &fileList,
-                                    const std::string &operation) const;
-    void CopyPrefixed(std::vector<std::string>& destination,
-                      const std::vector<std::string> &source,
-                      const std::string& prefix);
+    std::wstring FileListDescription(const std::vector<std::wstring> &fileList,
+                                    const std::wstring &operation) const;
+    void CopyPrefixed(std::vector<std::wstring>& destination,
+                      const std::vector<std::wstring> &source,
+                      const std::wstring& prefix);
 };
 
 #endif // FILEBACKUPREPORT_H

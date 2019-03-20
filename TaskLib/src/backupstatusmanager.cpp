@@ -4,9 +4,9 @@
 
 using namespace std;
 
-static const string defaultItemBackupMessage = "backups succeeded";
+static const wstring defaultItemBackupMessage = L"backups succeeded";
 
-BackupStatusManager::BackupStatusManager(const string &_attachmentName)
+BackupStatusManager::BackupStatusManager(const wstring &_attachmentName)
     : resultCollection(NULL), debugManager(NULL), joinReports(true),
       attachmentName(_attachmentName),
       itemBackupMessage(defaultItemBackupMessage)
@@ -37,12 +37,12 @@ void BackupStatusManager::SetJoinReports(const bool value)
     joinReports = value;
 }
 
-void BackupStatusManager::SetAttachmentName(const string &name)
+void BackupStatusManager::SetAttachmentName(const wstring &name)
 {
     attachmentName = name;
 }
 
-void BackupStatusManager::SetItemBackupMessage(const string &message)
+void BackupStatusManager::SetItemBackupMessage(const wstring &message)
 {
     itemBackupMessage = message;
 }
@@ -55,7 +55,7 @@ JobStatus *BackupStatusManager::CreateGlobalStatus(
     backupCollection = &backups;
 
     if (debugManager)
-        debugManager->AddDataLine<size_t>("Statuses to handle", resultCollection->size());
+        debugManager->AddDataLine<size_t>(L"Statuses to handle", resultCollection->size());
     if (resultCollection->size() == 1)
         return CreateSingleStatus();
     else
@@ -70,7 +70,7 @@ JobStatus *BackupStatusManager::CreateGlobalStatus(
 JobStatus *BackupStatusManager::CreateSingleStatus()
 {
    if (debugManager)
-      debugManager->AddTagLine("Creating Single status");
+      debugManager->AddTagLine(L"Creating Single status");
    const AbstractBackupJob::ResultEntry& result = resultCollection->front();
 
    JobStatus* status = new JobStatus(result.first->GetCode());
@@ -91,7 +91,7 @@ JobStatus *BackupStatusManager::CreateAllOkStatus()
 JobStatus *BackupStatusManager::CreateJoinedStatus()
 {
     if (debugManager)
-        debugManager->AddTagLine("Creating Joined status");
+        debugManager->AddTagLine(L"Creating Joined status");
 
     FileBackupReport* globalReport = CreateGlobalReport();
 
@@ -106,13 +106,13 @@ JobStatus *BackupStatusManager::CreateJoinedStatus()
 JobStatus *BackupStatusManager::CreateSeparatedStatus(const int code)
 {
     if (debugManager)
-        debugManager->AddTagLine("Creating Separated status");
+        debugManager->AddTagLine(L"Creating Separated status");
 
     JobStatus* status = new JobStatus(code);
 
     status->SetDescription(CreateRepositoriesMiniDescription());
-    const string attachmentContent = CreateStatusesDescription();
-    if (attachmentContent != "")
+    const wstring attachmentContent = CreateStatusesDescription();
+    if (attachmentContent != L"")
       status->AddFileBuffer(attachmentName, attachmentContent);
     return status;
 }
@@ -134,9 +134,9 @@ bool BackupStatusManager::AreAllStatusesEqual(const int expectedCode)
 }
 
 
-string BackupStatusManager::CreateStatusesDescription()
+wstring BackupStatusManager::CreateStatusesDescription()
 {
-    string fullDescription("");
+    wstring fullDescription(L"");
     AbstractBackupJob::BackupCollection::const_iterator itDestination = backupCollection->begin();
     AbstractBackupJob::ResultCollection::const_iterator it = resultCollection->begin();
     for (; it!=resultCollection->end(); ++it, ++itDestination)
@@ -145,17 +145,17 @@ string BackupStatusManager::CreateStatusesDescription()
         if (it->second)
             fullDescription += it->second->GetFullDescription();
     }
-    if (fullDescription != "")
+    if (fullDescription != L"")
       fullDescription += BuildFooter();
     return fullDescription;
 }
 
-string BackupStatusManager::CreateRepositoriesMiniDescription()
+wstring BackupStatusManager::CreateRepositoriesMiniDescription()
 {
     const int successCount = ComputeSuccessCount();
     const int failureCount = static_cast<int>(resultCollection->size()) - successCount;
 
-    stringstream miniDescription;
+    wstringstream miniDescription;
     if (successCount > 0)
     {
         miniDescription << successCount << " " << itemBackupMessage;
@@ -180,23 +180,23 @@ int BackupStatusManager::ComputeSuccessCount() const
     return count;
 }
 
-string BackupStatusManager::BuildRepositoryHeader(const string& name)
+wstring BackupStatusManager::BuildRepositoryHeader(const wstring& name)
 {
-    return string("--- ") + name + " ---\n";
+    return wstring(L"--- ") + name + L" ---\n";
 }
 
-string BackupStatusManager::BuildFooter()
+wstring BackupStatusManager::BuildFooter()
 {
-    return string("------------------\n");
+    return wstring(L"------------------\n");
 }
 
-string BackupStatusManager::GetCorrectMiniDescription(
+wstring BackupStatusManager::GetCorrectMiniDescription(
         const AbstractBackupJob::ResultEntry &result) const
 {
     const int statusCode = result.first->GetCode();
     const bool isStatusCodeAcceptable = (statusCode == JobStatus::Ok ||
                                          statusCode == JobStatus::OkWithWarnings);
-    string description;
+    wstring description;
     if (isStatusCodeAcceptable && result.second != NULL)
         description = result.second->GetMiniDescription();
     else

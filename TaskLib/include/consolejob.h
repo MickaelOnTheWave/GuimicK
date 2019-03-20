@@ -18,8 +18,8 @@ class ConsoleJob : public AbstractConsoleJob
 public:
    static std::wstring NotAvailableError;
 
-   ConsoleJob(const std::wstring& _command = "",
-            const std::wstring& _params = "", int _expectedReturnCode = 0);
+   ConsoleJob(const std::wstring& _command = L"",
+            const std::wstring& _params = L"", int _expectedReturnCode = 0);
    ConsoleJob(const ConsoleJob& other);
    virtual ~ConsoleJob();
 

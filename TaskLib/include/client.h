@@ -10,22 +10,22 @@ class AbstractJob;
 class Client
 {
 public:
-    typedef std::map<std::string, std::string> PropertyMap;
+    typedef std::map<std::string, std::wstring> PropertyMap;
 
-    Client(const std::string& _name = "");
+    Client(const std::wstring& _name = L"");
     Client(const Client& other);
     ~Client();
 
     Client* Clone() const;
 
-    std::string GetName() const;
-    void SetName(const std::string& _name);
+    std::wstring GetName() const;
+    void SetName(const std::wstring& _name);
 
     void AddProperty(const std::string& name,
-                     const std::string& value);
+                     const std::wstring& value);
 
     bool HasProperty(const std::string& name);
-    std::string GetProperty(const std::string& name);
+    std::wstring GetProperty(const std::string& name);
 
     PropertyMap::const_iterator PropertyBegin() const;
     PropertyMap::const_iterator PropertyEnd() const;
@@ -39,7 +39,7 @@ public:
 
 
 protected:
-    std::string name;
+    std::wstring name;
     PropertyMap propertyMap;
     std::list<AbstractJob*> jobList;
 };

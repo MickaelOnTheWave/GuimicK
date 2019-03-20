@@ -7,19 +7,17 @@
 #include <string>
 #include <list>
 
-
 class RsnapshotReport : public FileBackupReport
 {
 public:
     virtual void Clear();
-	std::string BytesTaken() const;
+	std::wstring BytesTaken() const;
 	void CreateModifiedList();
 
     void operator=(const RsnapshotReport& other);
 
-    virtual std::string GetMiniDescription() const;
-    virtual std::string GetFullDescription() const;
-
+    virtual std::wstring GetMiniDescription() const;
+    virtual std::wstring GetFullDescription() const;
 
 	long long bytesAdded;
 	long long bytesRemoved;
@@ -31,17 +29,17 @@ public:
     RSnapshotReportParser();
     virtual ~RSnapshotReportParser();
 
-    virtual bool ParseBuffer(const std::string& buffer);
+    virtual bool ParseBuffer(const std::wstring& buffer);
 
     virtual void GetReport(FileBackupReport& reportData);
 
 
 private:
-    void ParseLines(const std::vector<std::string>& lines);
+    void ParseLines(const std::vector<std::wstring>& lines);
 
-    long long ParseByteDataLine(const std::string& line,
-										 const std::string& wordBefore,
-										 const std::string& wordAfter);
+    long long ParseByteDataLine(const std::wstring& line,
+										 const std::wstring& wordBefore,
+										 const std::wstring& wordAfter);
 
     RsnapshotReport* GetTypedReport();
 };

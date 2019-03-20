@@ -6,11 +6,11 @@
 using namespace std;
 
 Drive::Drive()
-    : name(""), totalSpace(""), usedSpace(""), freeSpace(""), ratio("")
+    : name(L""), totalSpace(L""), usedSpace(L""), freeSpace(L""), ratio(L"")
 {
 }
 
-Drive::Drive(const std::vector<string> &properties)
+Drive::Drive(const vector<wstring> &properties)
 {
     name = properties[0];
     totalSpace = CreateFormattedSize(properties[1]);
@@ -21,11 +21,11 @@ Drive::Drive(const std::vector<string> &properties)
 
 
 
-string Drive::CreateFormattedSize(const string &rawSize) const
+wstring Drive::CreateFormattedSize(const wstring &rawSize) const
 {
     const size_t lastCharPos = rawSize.size()-1;
-    string formattedSize = rawSize.substr(0, lastCharPos);
-    formattedSize += string(" ") + rawSize[lastCharPos] + "b";
+    wstring formattedSize = rawSize.substr(0, lastCharPos);
+    formattedSize += wstring(L" ") + rawSize[lastCharPos] + L"b";
     return formattedSize;
 }
 
@@ -34,11 +34,11 @@ DfCommandParser::DfCommandParser()
 {
 }
 
-bool DfCommandParser::ParseBuffer(const string& buffer)
+bool DfCommandParser::ParseBuffer(const wstring& buffer)
 {
     driveList.clear();
 
-    vector<string> lines;
+    vector<wstring> lines;
     Tools::TokenizeString(buffer, '\n', lines);
 
     if (lines.size() > 1)
@@ -50,7 +50,7 @@ bool DfCommandParser::ParseBuffer(const string& buffer)
         return false;
 }
 
-string DfCommandParser::GetMiniDescription()
+wstring DfCommandParser::GetMiniDescription()
 {
     if (driveList.size() == 1)
         return CreateResumedMiniDescription(driveList.front());
@@ -58,10 +58,10 @@ string DfCommandParser::GetMiniDescription()
         return CreateDriveListDescription();
 }
 
-string DfCommandParser::GetFullDescription()
+wstring DfCommandParser::GetFullDescription()
 {
     if (driveList.size() < 2)
-        return "";
+        return L"";
     else
         return CreateFullDescription();
 }
@@ -76,12 +76,12 @@ Drive DfCommandParser::GetFirstDrive() const
     return driveList.front();
 }
 
-void DfCommandParser::FillDriveData(const std::vector<string> &lines)
+void DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
 {
-    std::vector<string>::const_iterator it=lines.begin()+1;
+    std::vector<wstring>::const_iterator it=lines.begin()+1;
     for (; it!=lines.end(); ++it)
     {
-        vector<string> tokens;
+        vector<wstring> tokens;
         TokenizeUsingWhitespaces(*it, tokens);
 
         if (IsDesirableDriveName(tokens[0]))
@@ -89,19 +89,19 @@ void DfCommandParser::FillDriveData(const std::vector<string> &lines)
     }
 }
 
-void DfCommandParser::TokenizeUsingWhitespaces(const string &buffer,
-                                               vector<string> &tokens) const
+void DfCommandParser::TokenizeUsingWhitespaces(const wstring &buffer,
+                                               vector<wstring> &tokens) const
 {
     tokens.clear();
-    string currentToken("");
+    wstring currentToken(L"");
     for (unsigned int i=0; i<buffer.length(); ++i)
     {
         if (isspace(buffer[i]) != 0)
         {
-            if (currentToken != "")
+            if (currentToken != L"")
             {
                 tokens.push_back(currentToken);
-                currentToken = "";
+                currentToken = L"";
             }
         }
         else
@@ -109,26 +109,26 @@ void DfCommandParser::TokenizeUsingWhitespaces(const string &buffer,
     }
 }
 
-bool DfCommandParser::IsDesirableDriveName(const string &name) const
+bool DfCommandParser::IsDesirableDriveName(const wstring &name) const
 {
     return (name.length() > 0 && name[0] == '/');
 }
 
-string DfCommandParser::CreateResumedMiniDescription(const Drive &drive) const
+wstring DfCommandParser::CreateResumedMiniDescription(const Drive &drive) const
 {
-    return drive.freeSpace + " available (" + drive.ratio + " used)";
+    return drive.freeSpace + L" available (" + drive.ratio + L" used)";
 }
 
-string DfCommandParser::CreateDriveListDescription() const
+wstring DfCommandParser::CreateDriveListDescription() const
 {
-    stringstream stream;
+    wstringstream stream;
     stream << driveList.size() << " drives checked, see report";
     return stream.str();
 }
 
-string DfCommandParser::CreateFullDescription() const
+wstring DfCommandParser::CreateFullDescription() const
 {
-    stringstream stream;
+    wstringstream stream;
     vector<Drive>::const_iterator it = driveList.begin();
     for (;it != driveList.end(); ++it)
     {

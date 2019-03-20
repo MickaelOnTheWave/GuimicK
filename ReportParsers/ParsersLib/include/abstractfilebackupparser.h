@@ -10,8 +10,8 @@ public:
     AbstractFileBackupParser(FileBackupReport* _report);
     virtual ~AbstractFileBackupParser();
 
-    virtual std::string GetMiniDescription();
-    virtual std::string GetFullDescription();
+    virtual std::wstring GetMiniDescription();
+    virtual std::wstring GetFullDescription();
 
     virtual void GetReport(FileBackupReport& reportData) = 0;
 

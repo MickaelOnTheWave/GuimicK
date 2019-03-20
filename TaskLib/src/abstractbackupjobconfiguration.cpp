@@ -5,8 +5,8 @@ using namespace std;
 const string AbstractBackupJobConfiguration::TargetProperty = "target";
 const string AbstractBackupJobConfiguration::JoinReportsProperty = "joinReports";
 
-static const string invalidSourceError = "Error : source is invalid";
-static const string invalidDestinationError = "Error : destination is invalid";
+static const wstring invalidSourceError = "Error : source is invalid";
+static const wstring invalidDestinationError = "Error : destination is invalid";
 
 AbstractBackupJobConfiguration::AbstractBackupJobConfiguration(const std::string &tag)
     : AbstractJobDefaultConfiguration(tag)

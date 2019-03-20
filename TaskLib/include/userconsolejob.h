@@ -9,26 +9,26 @@ class UserConsoleJob : public ConsoleJob
 {
 public:
     UserConsoleJob();
-    UserConsoleJob(const std::string& _commandTitle,
-                   const std::string& _command = "", const std::string& _params = "",
+    UserConsoleJob(const std::wstring& _commandTitle,
+                   const std::wstring& _command = L"", const std::wstring& _params = L"",
                    int _expectedReturnCode = 0);
     UserConsoleJob(const UserConsoleJob& other);
     virtual ~UserConsoleJob();
 
     virtual AbstractJob* Clone();
 
-    virtual void Initialize(const std::string& _command,
+    virtual void Initialize(const std::wstring& _command,
                             int _expectedReturnCode = 0);
 
     virtual JobStatus* Run();
 
-    std::string GetMiniDescriptionParserCommand() const;
-    void SetMiniDescriptionParserCommand(const std::string& parser);
+    std::wstring GetMiniDescriptionParserCommand() const;
+    void SetMiniDescriptionParserCommand(const std::wstring& parser);
 
     void SetAttachOutput(const bool value);
 
-    std::string GetOutputFile() const;
-    void SetOutputTofile(const std::string& filename);
+    std::wstring GetOutputFile() const;
+    void SetOutputTofile(const std::wstring& filename);
     void SetOutputToBuffer(void);
 
     bool IsParsingUsingBuffer() const;
@@ -36,12 +36,12 @@ public:
 
     virtual void SetExpectedReturnCode(const int value);
 
-    std::string GetExpectedOutput() const;
-    void SetExpectedOutput(const std::string& value);
+    std::wstring GetExpectedOutput() const;
+    void SetExpectedOutput(const std::wstring& value);
 
     bool HasUserAttachments() const;
-    void GetUserAttachments(std::vector<std::string>& attachments);
-    void AddUserAttachment(const std::string& name);
+    void GetUserAttachments(std::vector<std::wstring>& attachments);
+    void AddUserAttachment(const std::wstring& name);
     void EmptyUserAttachments();
 
 protected:
@@ -59,18 +59,18 @@ protected:
     void FinalizeStatusCreation();
 
 private:
-    std::string CreateParserCommand() const;
+    std::wstring CreateParserCommand() const;
 
-    std::string parserCommand;
+    std::wstring parserCommand;
 
     JobStatus* currentStatus;
 
     bool attachOutputToStatus;
     bool successConditionOnStandardOutput;
     bool useParserWithBuffer;
-    std::string outputFileName;
-    std::string expectedOutput;
-    std::vector<std::string> additionalAttachments;
+    std::wstring outputFileName;
+    std::wstring expectedOutput;
+    std::vector<std::wstring> additionalAttachments;
 };
 
 #endif // USERCONSOLEJOB_H

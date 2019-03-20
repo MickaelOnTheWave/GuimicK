@@ -9,16 +9,16 @@ class Drive
 {
 public :
     Drive();
-    Drive(const std::vector<std::string>& properties);
+    Drive(const std::vector<std::wstring>& properties);
 
-    std::string name;
-    std::string totalSpace;
-    std::string usedSpace;
-    std::string freeSpace;
-    std::string ratio;
+    std::wstring name;
+    std::wstring totalSpace;
+    std::wstring usedSpace;
+    std::wstring freeSpace;
+    std::wstring ratio;
 
 private :
-    std::string CreateFormattedSize(const std::string& rawSize) const;
+    std::wstring CreateFormattedSize(const std::wstring& rawSize) const;
 };
 
 class DfCommandParser : public AbstractOutputParser
@@ -26,22 +26,22 @@ class DfCommandParser : public AbstractOutputParser
 public:
     DfCommandParser();
 
-    virtual bool ParseBuffer(const std::string& buffer);
-    virtual std::string GetMiniDescription();
-    virtual std::string GetFullDescription();
+    virtual bool ParseBuffer(const std::wstring& buffer);
+    virtual std::wstring GetMiniDescription();
+    virtual std::wstring GetFullDescription();
 
     void GetDrives(std::vector<Drive>& drives) const;
     Drive GetFirstDrive() const;
 
 private:
-    void FillDriveData(const std::vector<std::string>& lines);
-    void TokenizeUsingWhitespaces(const std::string& buffer,
-                                  std::vector<std::string>& tokens) const;
-    bool IsDesirableDriveName(const std::string& name) const;
+    void FillDriveData(const std::vector<std::wstring>& lines);
+    void TokenizeUsingWhitespaces(const std::wstring& buffer,
+                                  std::vector<std::wstring>& tokens) const;
+    bool IsDesirableDriveName(const std::wstring& name) const;
 
-    std::string CreateResumedMiniDescription(const Drive& drive) const;
-    std::string CreateDriveListDescription() const;
-    std::string CreateFullDescription() const;
+    std::wstring CreateResumedMiniDescription(const Drive& drive) const;
+    std::wstring CreateDriveListDescription() const;
+    std::wstring CreateFullDescription() const;
 
     std::vector<Drive> driveList;
 };

@@ -9,7 +9,7 @@ public:
     AbstractRawCopyFsBackupJob();
     AbstractRawCopyFsBackupJob(const AbstractCopyFsBackupJob& other);
 
-    virtual std::string GetTypeName() const;
+    virtual std::wstring GetTypeName() const;
 };
 
 #endif // RAWCOPYFSBACKUPJOB_H

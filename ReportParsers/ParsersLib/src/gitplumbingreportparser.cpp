@@ -13,11 +13,11 @@ GitPlumbingReportParser::~GitPlumbingReportParser()
 {
 }
 
-bool GitPlumbingReportParser::ParseBuffer(const string &buffer)
+bool GitPlumbingReportParser::ParseBuffer(const wstring &buffer)
 {
     reportData->Clear();
 
-    vector<string> lines;
+    vector<wstring> lines;
     Tools::TokenizeString(buffer, '\n', lines);
 
     FillReportData(lines);
@@ -29,16 +29,16 @@ void GitPlumbingReportParser::GetReport(FileBackupReport &report)
     report = *reportData;
 }
 
-void GitPlumbingReportParser::FillReportData(const std::vector<string> &lines)
+void GitPlumbingReportParser::FillReportData(const vector<wstring> &lines)
 {
-    vector<string>::const_iterator it=lines.begin();
+    vector<wstring>::const_iterator it=lines.begin();
     for (; it!=lines.end(); ++it)
     {
-        vector<string> tokens;
+        vector<wstring> tokens;
         Tools::TokenizeString(*it, '\t', tokens);
-        if (tokens.front() == "A")
+        if (tokens.front() == L"A")
             reportData->AddAsAdded(tokens.back());
-        else if (tokens.front() == "D")
+        else if (tokens.front() == L"D")
             reportData->AddAsRemoved(tokens.back());
         else
             reportData->AddAsModified(tokens.back());

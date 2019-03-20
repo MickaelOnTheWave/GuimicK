@@ -6,6 +6,8 @@
 
 using namespace std;
 
+const wstring space = L" ";
+
 void AptGetUpgradeReport::Clear()
 {
     obsoletePackages.clear();
@@ -13,20 +15,20 @@ void AptGetUpgradeReport::Clear()
     upgradedPackages.clear();
     installedPackages.clear();
     removedPackages.clear();
-    updateFileSize = "";
+    updateFileSize = L"";
 }
 
-std::vector<string> *AptGetUpgradeReport::GetListPointerFromDescription(const string &line)
+vector<wstring> *AptGetUpgradeReport::GetListPointerFromDescription(const wstring &line)
 {
-    if (line.find("kept back") != string::npos)
+    if (line.find(L"kept back") != wstring::npos)
         return &keptPackages;
-    else if (line.find("upgraded") != string::npos)
+    else if (line.find(L"upgraded") != wstring::npos)
         return &upgradedPackages;
-    else if (line.find("removed") != string::npos)
+    else if (line.find(L"removed") != wstring::npos)
         return &removedPackages;
-    else if (line.find("no longer required") != string::npos)
+    else if (line.find(L"no longer required") != wstring::npos)
         return &obsoletePackages;
-    else if (line.find("installed") != string::npos)
+    else if (line.find(L"installed") != wstring::npos)
         return &installedPackages;
     else
         return NULL;
@@ -34,7 +36,7 @@ std::vector<string> *AptGetUpgradeReport::GetListPointerFromDescription(const st
 
 
 AptGetUpgradeParser::AptGetUpgradeParser()
-    : fullDescription("")
+    : fullDescription(L"")
 {
 }
 
@@ -43,17 +45,17 @@ AptGetUpgradeParser::~AptGetUpgradeParser()
 
 }
 
-bool AptGetUpgradeParser::ParseBuffer(const string &buffer)
+bool AptGetUpgradeParser::ParseBuffer(const wstring &buffer)
 {
     // TODO : find a way to make report not rely on language. So far, it can
     // only work with english reports.
     report.Clear();
 
-    vector<string> lines;
+    vector<wstring> lines;
     Tools::TokenizeString(buffer, '\n', lines);
 
-    vector<string> downloadLines;
-    vector<string> otherLines;
+    vector<wstring> downloadLines;
+    vector<wstring> otherLines;
     ParseLines(lines, downloadLines, otherLines);
 
     BuildFullDescriptionList(downloadLines, otherLines);
@@ -61,18 +63,18 @@ bool AptGetUpgradeParser::ParseBuffer(const string &buffer)
     return true;
 }
 
-string AptGetUpgradeParser::GetMiniDescription()
+wstring AptGetUpgradeParser::GetMiniDescription()
 {
-    std::stringstream description;
-    description << report.upgradedPackages.size() << " packages upgraded, ";
-    description << report.installedPackages.size() << " installed, ";
-    description << report.removedPackages.size() << " removed and ";
-    description << report.keptPackages.size() << " not upgraded. ";
-    description << report.updateFileSize << " taken.";
+    wstringstream description;
+    description << report.upgradedPackages.size() << L" packages upgraded, ";
+    description << report.installedPackages.size() << L" installed, ";
+    description << report.removedPackages.size() << L" removed and ";
+    description << report.keptPackages.size() << L" not upgraded. ";
+    description << report.updateFileSize << L" taken.";
     return description.str();
 }
 
-string AptGetUpgradeParser::GetFullDescription()
+wstring AptGetUpgradeParser::GetFullDescription()
 {
     return fullDescription;
 }
@@ -82,14 +84,14 @@ void AptGetUpgradeParser::GetReport(AptGetUpgradeReport &_report)
     _report = report;
 }
 
-void AptGetUpgradeParser::ParseLines(const vector<string> &lines,
-                                     vector<string> &downloadLines,
-                                     vector<string> &otherLines)
+void AptGetUpgradeParser::ParseLines(const vector<wstring> &lines,
+                                     vector<wstring> &downloadLines,
+                                     vector<wstring> &otherLines)
 {
     // TODO : find a more elegant way to make sure we go through each line and don't
     // have ugly while conditions. Look for something like going through line positions in
     // a memory buffer.
-    vector<string>::const_iterator it=lines.begin();
+    vector<wstring>::const_iterator it=lines.begin();
     for (; it!=lines.end(); ++it)
     {
         if (IsPackageListLine(*it))
@@ -106,59 +108,59 @@ void AptGetUpgradeParser::ParseLines(const vector<string> &lines,
     }
 }
 
-void AptGetUpgradeParser::BuildFullDescriptionList(std::vector<string> &downloadLines, std::vector<string> &otherLines)
+void AptGetUpgradeParser::BuildFullDescriptionList(std::vector<wstring> &downloadLines, std::vector<wstring> &otherLines)
 {
-    std::stringstream description;
+    std::wstringstream description;
     description << "\t--- Full System update report ---" << endl << endl;
-    WriteListData(&report.installedPackages, "Newly installed packages", downloadLines, otherLines, description);
-    WriteListData(&report.upgradedPackages, "Upgraded packages", downloadLines, otherLines, description);
-    WriteListData(&report.removedPackages, "Removed packages", downloadLines, otherLines, description);
-    WriteListData(&report.keptPackages, "Kept packages", downloadLines, otherLines, description);
+    WriteListData(&report.installedPackages, L"Newly installed packages", downloadLines, otherLines, description);
+    WriteListData(&report.upgradedPackages, L"Upgraded packages", downloadLines, otherLines, description);
+    WriteListData(&report.removedPackages, L"Removed packages", downloadLines, otherLines, description);
+    WriteListData(&report.keptPackages, L"Kept packages", downloadLines, otherLines, description);
     fullDescription = description.str();
 }
 
-bool AptGetUpgradeParser::IsPackageListLine(const string &line)
+bool AptGetUpgradeParser::IsPackageListLine(const wstring &line)
 {
-    return (line.find("The following package") == 0);
+    return (line.find(L"The following package") == 0);
 }
 
-bool AptGetUpgradeParser::IsSizeLine(const string &line)
+bool AptGetUpgradeParser::IsSizeLine(const wstring &line)
 {
-    return (line.find("Need to get") == 0);
+    return (line.find(L"Need to get") == 0);
 }
 
-bool AptGetUpgradeParser::IsPackageDownloadLine(const string &line)
+bool AptGetUpgradeParser::IsPackageDownloadLine(const wstring &line)
 {
-    return (line.find("Get:") == 0);
+    return (line.find(L"Get:") == 0);
 }
 
-void AptGetUpgradeParser::ParseDownloadSizeInformation(const string &line)
+void AptGetUpgradeParser::ParseDownloadSizeInformation(const wstring &line)
 {
-    size_t initPos = string("Need to get ").length();
-    size_t finalSizePos = line.find_first_of(" ", initPos);
-    size_t finalPos = line.find_first_of(" ", finalSizePos+1);
+   size_t initPos = wstring(L"Need to get ").length();
+   size_t finalSizePos = line.find_first_of(space, initPos);
+   size_t finalPos = line.find_first_of(space, finalSizePos+1);
 
-    report.updateFileSize = line.substr(initPos, finalPos-initPos);
+   report.updateFileSize = line.substr(initPos, finalPos-initPos);
 }
 
-void AptGetUpgradeParser::BuildPackageList(vector<string>::const_iterator& lineIterator)
+void AptGetUpgradeParser::BuildPackageList(vector<wstring>::const_iterator& lineIterator)
 {
-    vector<string>* currentList = report.GetListPointerFromDescription(*lineIterator);
+    vector<wstring>* currentList = report.GetListPointerFromDescription(*lineIterator);
     if (currentList == NULL)
         return;
 
     ++lineIterator;
 
-    for (; lineIterator->find(" ") == 0; ++lineIterator)
+    for (; lineIterator->find(space) == 0; ++lineIterator)
     {
-        size_t currentPos = lineIterator->find_first_not_of(" ");
+        size_t currentPos = lineIterator->find_first_not_of(space);
         while (true)
         {
             size_t newPos = lineIterator->find_first_of(' ', currentPos);
-            string package = lineIterator->substr(currentPos,newPos-currentPos);
+            wstring package = lineIterator->substr(currentPos,newPos-currentPos);
             currentList->push_back(package);
 
-            if (newPos != string::npos)
+            if (newPos != wstring::npos)
                 currentPos = newPos+1;
             else
                 break;
@@ -166,28 +168,28 @@ void AptGetUpgradeParser::BuildPackageList(vector<string>::const_iterator& lineI
     }
 }
 
-void AptGetUpgradeParser::WriteListData(vector<string>* packageList, const string& listLabel,
-                                        vector<string> &downloadLines, vector<string> &otherLines, stringstream& fileStream)
+void AptGetUpgradeParser::WriteListData(vector<wstring>* packageList, const wstring& listLabel,
+                                        vector<wstring> &downloadLines, vector<wstring> &otherLines, wstringstream& fileStream)
 {
     if (packageList->size() > 0)
     {
         fileStream << listLabel << std::endl;
-        vector<string>::const_iterator it=packageList->begin();
-        vector<string>::const_iterator end=packageList->end();
+        vector<wstring>::const_iterator it=packageList->begin();
+        vector<wstring>::const_iterator end=packageList->end();
         for (; it!=end; ++it)
         {
             fileStream << "\t" << *it << endl;
 
-            string downloadLine = FindAndRemoveStringContaining(*it, &downloadLines);
+            wstring downloadLine = FindAndRemoveStringContaining(*it, &downloadLines);
             // Remove Get:XX header
-            if (downloadLine != "")
+            if (downloadLine != L"")
             {
-                size_t beginPos = downloadLine.find_first_of(" ");
+                size_t beginPos = downloadLine.find_first_of(space);
                 fileStream << "\t\t" << downloadLine.substr(beginPos) << endl;
             }
 
-            string currentLine = FindAndRemoveStringContaining(*it, &otherLines);
-            while (currentLine != "")
+            wstring currentLine = FindAndRemoveStringContaining(*it, &otherLines);
+            while (currentLine != L"")
             {
                 fileStream << "\t\t" << currentLine << endl;
                 currentLine = FindAndRemoveStringContaining(*it, &otherLines);
@@ -198,25 +200,25 @@ void AptGetUpgradeParser::WriteListData(vector<string>* packageList, const strin
     }
 }
 
-string AptGetUpgradeParser::FindAndRemoveStringContaining(const string& tag, vector<string>* lineList)
+wstring AptGetUpgradeParser::FindAndRemoveStringContaining(const wstring& tag, vector<wstring>* lineList)
 {
     // TODO : use a regext for a real and complete find here. It should be :
     // (Any non-AlphaNum char) + tag + (Any non-AlphaNum char).
     // The actual way is very conservative and discards some results.
-    string tagToFind(" ");
-    tagToFind += tag + " ";
-    vector<string>::iterator it=lineList->begin();
-    vector<string>::iterator end=lineList->end();
+    wstring tagToFind(space);
+    tagToFind += tag + space;
+    vector<wstring>::iterator it=lineList->begin();
+    vector<wstring>::iterator end=lineList->end();
     for (; it!=end; ++it)
     {
-        if (it->find(tagToFind) != string::npos)
+        if (it->find(space) != wstring::npos)
             break;
     }
 
     if (it == end)
-        return string("");
+        return wstring(L"");
 
-    string returnValue(*it);
+    wstring returnValue(*it);
     lineList->erase(it);
     return returnValue;
 }

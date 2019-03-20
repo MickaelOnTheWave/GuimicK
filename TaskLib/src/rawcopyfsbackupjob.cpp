@@ -4,7 +4,7 @@
 
 using namespace std;
 
-static const string defaultName = "Copy Backup";
+static const wstring defaultName = L"Copy Backup";
 
 AbstractRawCopyFsBackupJob::AbstractRawCopyFsBackupJob() : AbstractCopyFsBackupJob(defaultName)
 {
@@ -15,7 +15,7 @@ AbstractRawCopyFsBackupJob::AbstractRawCopyFsBackupJob(const AbstractCopyFsBacku
 {
 }
 
-string AbstractRawCopyFsBackupJob::GetTypeName() const
+wstring AbstractRawCopyFsBackupJob::GetTypeName() const
 {
    return defaultName;
 }

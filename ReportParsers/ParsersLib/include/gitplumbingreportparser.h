@@ -11,12 +11,12 @@ public:
     GitPlumbingReportParser();
     virtual ~GitPlumbingReportParser();
 
-    virtual bool ParseBuffer(const std::string& buffer);
+    virtual bool ParseBuffer(const std::wstring& buffer);
 
     virtual void GetReport(FileBackupReport& reportData);
 
 private:
-    void FillReportData(const std::vector<std::string>& lines);
+    void FillReportData(const std::vector<std::wstring>& lines);
 };
 
 #endif // GITPLUMBINGREPORTPARSER_H

@@ -15,31 +15,31 @@ public:
     GitPorcelainReportParser();
     virtual ~GitPorcelainReportParser();
 
-    virtual bool ParseBuffer(const std::string& buffer);
-    virtual std::string GetFullDescription();
+    virtual bool ParseBuffer(const std::wstring& buffer);
+    virtual std::wstring GetFullDescription();
 
     virtual void GetReport(FileBackupReport& _report);
 
 private:
 
-    void WriteFileList(const std::vector<std::string>& fileList,
-                       const std::string& operation,
-                       std::stringstream &stream);
-    virtual void SplitIntoSections(const std::vector<std::string>& linesList,
-                           std::vector<std::string>& fileLinesList,
-                           std::vector<std::string>& informationLinesList);
-    void RemoveLinesWithoutStartingWhitespaces(std::vector<std::string>& linesList);
-    void CreateFileList(const std::vector<std::string>& linesList, std::vector<std::string>& fileList);
-    void FillReportData(const std::vector<std::string>& files,
-                        const std::vector<std::string>& informationLines,
+    void WriteFileList(const std::vector<std::wstring>& fileList,
+                       const std::wstring& operation,
+                       std::wstringstream &stream);
+    virtual void SplitIntoSections(const std::vector<std::wstring>& linesList,
+                           std::vector<std::wstring>& fileLinesList,
+                           std::vector<std::wstring>& informationLinesList);
+    void RemoveLinesWithoutStartingWhitespaces(std::vector<std::wstring>& linesList);
+    void CreateFileList(const std::vector<std::wstring>& linesList, std::vector<std::wstring>& fileList);
+    void FillReportData(const std::vector<std::wstring>& files,
+                        const std::vector<std::wstring>& informationLines,
                         FileBackupReport &reportData
                         );
 
-    std::string GetLineWithSubstring(const std::string& stringToFind,
-                                     const std::vector<std::string>& stringList);
+    std::wstring GetLineWithSubstring(const std::wstring& stringToFind,
+                                     const std::vector<std::wstring>& stringList);
 
-    std::string GetLeftTrimmed(const std::string &input);
-    std::string GetRightTrimmed(const std::string &input);
+    std::wstring GetLeftTrimmed(const std::wstring &input);
+    std::wstring GetRightTrimmed(const std::wstring &input);
 };
 
 #endif // GITPORCELAINREPORTPARSER_H

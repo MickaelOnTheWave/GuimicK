@@ -5,7 +5,7 @@
 
 using namespace std;
 
-ArchiveTool::ArchiveTool() : filename("")
+ArchiveTool::ArchiveTool() : filename(L"")
 {
 }
 
@@ -18,7 +18,7 @@ ArchiveTool::~ArchiveTool()
 {
 }
 
-void ArchiveTool::Initialize(const std::string& _filename)
+void ArchiveTool::Initialize(const std::wstring& _filename)
 {
    filename = _filename;
 }

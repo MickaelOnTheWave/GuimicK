@@ -10,12 +10,12 @@ AbstractFileBackupParser::~AbstractFileBackupParser()
     delete reportData;
 }
 
-std::string AbstractFileBackupParser::GetMiniDescription()
+std::wstring AbstractFileBackupParser::GetMiniDescription()
 {
     return reportData->GetMiniDescription();
 }
 
-std::string AbstractFileBackupParser::GetFullDescription()
+std::wstring AbstractFileBackupParser::GetFullDescription()
 {
     return reportData->GetFullDescription();
 }

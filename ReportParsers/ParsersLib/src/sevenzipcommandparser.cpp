@@ -8,7 +8,7 @@ const char addChar = '+';
 const char removeChar = '-';
 const char updateChar = 'U';
 
-bool IsFileLine(const string& lineData)
+bool IsFileLine(const wstring& lineData)
 {
    const char firstChar = lineData.front();
    const bool isFirstCharValid = (firstChar == addChar ||
@@ -18,7 +18,7 @@ bool IsFileLine(const string& lineData)
    return isFirstCharValid && isSecondCharEmpty;
 }
 
-string ExtractFilename(const string& lineData)
+wstring ExtractFilename(const wstring& lineData)
 {
    return lineData.substr(2);
 }
@@ -33,11 +33,11 @@ SevenZipCommandParser::~SevenZipCommandParser()
 {
 }
 
-bool SevenZipCommandParser::ParseBuffer(const std::string &buffer)
+bool SevenZipCommandParser::ParseBuffer(const std::wstring &buffer)
 {
     reportData->Clear();
 
-    vector<string> lines;
+    vector<wstring> lines;
     Tools::TokenizeString(buffer, '\n', lines);
 
     FillReportData(lines);
@@ -50,9 +50,9 @@ void SevenZipCommandParser::GetReport(FileBackupReport &_reportData)
     _reportData = *reportData;
 }
 
-void SevenZipCommandParser::FillReportData(const std::vector<string> &lines)
+void SevenZipCommandParser::FillReportData(const vector<wstring> &lines)
 {
-   vector<string>::const_iterator it = lines.begin();
+   vector<wstring>::const_iterator it = lines.begin();
    for (; it != lines.end(); ++it)
    {
       if (!it->empty() && IsFileLine(*it))

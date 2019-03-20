@@ -8,19 +8,21 @@
 
 using namespace std;
 
-string SshConsoleJob::NoTargetError = "No target specified";
-string SshConsoleJob::InvalidTargetError = "Invalid target specified";
-string SshConsoleJob::NoTerminalForPasswordError = "Password needed";
-string SshConsoleJob::FailedRemoteCopyError = "Failed to attach files";
+wstring SshConsoleJob::NoTargetError = L"No target specified";
+wstring SshConsoleJob::InvalidTargetError = L"Invalid target specified";
+wstring SshConsoleJob::NoTerminalForPasswordError = L"Password needed";
+wstring SshConsoleJob::FailedRemoteCopyError = L"Failed to attach files";
+
+const wstring emptyString = L"";
 
 SshConsoleJob::SshConsoleJob(AbstractConsoleJob *_job)
-    : AbstractConsoleJob(""), title(""), user(""), host("")
+    : AbstractConsoleJob(L""), title(L""), user(L""), host(L"")
 {
     SetRemoteJob(_job);
 }
 
-SshConsoleJob::SshConsoleJob(const string &_title, const string &_command)
-    : AbstractConsoleJob(""), title(_title), user(""), host("")
+SshConsoleJob::SshConsoleJob(const wstring &_title, const wstring &_command)
+    : AbstractConsoleJob(L""), title(_title), user(L""), host(L"")
 {
 
     SetRemoteJob(new ConsoleJob(_command));
@@ -39,7 +41,7 @@ SshConsoleJob::~SshConsoleJob()
     delete remoteJob;
 }
 
-string SshConsoleJob::GetName()
+wstring SshConsoleJob::GetName()
 {
     return remoteJob->GetName();
 }
@@ -49,7 +51,7 @@ AbstractJob *SshConsoleJob::Clone()
     return new SshConsoleJob(*this);
 }
 
-void SshConsoleJob::SetTarget(const string &_user, const string &_host)
+void SshConsoleJob::SetTarget(const wstring &_user, const wstring &_host)
 {
     user = _user;
     host= _host;
@@ -59,10 +61,10 @@ bool SshConsoleJob::InitializeFromClient(Client *client)
 {
     if (AbstractConsoleJob::InitializeFromClient(client))
     {
-        if (user == "")
+        if (user == L"")
             user = client->GetProperty("sshuser");
 
-        if (host == "")
+        if (host == L"")
             host = client->GetProperty("ip");
 
         return IsInitialized();
@@ -73,7 +75,7 @@ bool SshConsoleJob::InitializeFromClient(Client *client)
 
 bool SshConsoleJob::IsInitialized()
 {
-    return (user != "" && host != "");
+    return (user != L"" && host != L"");
 }
 
 JobStatus *SshConsoleJob::Run()
@@ -85,8 +87,8 @@ JobStatus *SshConsoleJob::Run()
 
     AbstractConsoleJob* sshJob = CreateSshJob();
 
-    debugManager->AddDataLine<string>("Child command", sshJob->GetCommand());
-    debugManager->AddDataLine<string>("Child params", sshJob->GetCommandParameters());
+    debugManager->AddDataLine<wstring>(L"Child command", sshJob->GetCommand());
+    debugManager->AddDataLine<wstring>(L"Child params", sshJob->GetCommandParameters());
 
     bool remoteCopyWithoutErrors = CopyRemoteAttachments();
 
@@ -107,7 +109,7 @@ JobStatus *SshConsoleJob::Run()
     return status;
 }
 
-void SshConsoleJob::SetTitle(const string &value)
+void SshConsoleJob::SetTitle(const wstring &value)
 {
     title = value;
 }
@@ -122,22 +124,22 @@ void SshConsoleJob::SetExpectedReturnCode(const int value)
     remoteJob->SetExpectedReturnCode(value);
 }
 
-string SshConsoleJob::GetCommand() const
+wstring SshConsoleJob::GetCommand() const
 {
     return remoteJob->GetCommand();
 }
 
-void SshConsoleJob::SetCommand(const string &command)
+void SshConsoleJob::SetCommand(const wstring &command)
 {
     remoteJob->SetCommand(command);
 }
 
-string SshConsoleJob::GetCommandParameters() const
+wstring SshConsoleJob::GetCommandParameters() const
 {
     return remoteJob->GetCommandParameters();
 }
 
-void SshConsoleJob::SetCommandParameters(const string &parameters)
+void SshConsoleJob::SetCommandParameters(const wstring &parameters)
 {
     remoteJob->SetCommandParameters(parameters);
 }
@@ -152,12 +154,12 @@ void SshConsoleJob::SetCommandReturnCode(const int value)
     remoteJob->SetCommandReturnCode(value);
 }
 
-string SshConsoleJob::GetCommandOutput() const
+wstring SshConsoleJob::GetCommandOutput() const
 {
     return remoteJob->GetCommandOutput();
 }
 
-void SshConsoleJob::SetCommandOutput(const string &value)
+void SshConsoleJob::SetCommandOutput(const wstring &value)
 {
     remoteJob->SetCommandOutput(value);
 }
@@ -173,14 +175,14 @@ bool SshConsoleJob::IsRunOk() const
    return remoteJob->IsRunOk();
 }
 
-void SshConsoleJob::GetUserAttachments(std::vector<string>& attachments)
+void SshConsoleJob::GetUserAttachments(std::vector<wstring>& attachments)
 {
    UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
    if (castJob)
       castJob->GetUserAttachments(attachments);
 }
 
-void SshConsoleJob::AddUserAttachment(const string& name)
+void SshConsoleJob::AddUserAttachment(const wstring& name)
 {
    UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
    if (castJob)
@@ -193,29 +195,29 @@ void SshConsoleJob::SetRemoteJob(AbstractConsoleJob *_remoteJob)
     remoteJob->SetParentDebugManager(debugManager);
 }
 
-string SshConsoleJob::GetExpectedOutput() const
+wstring SshConsoleJob::GetExpectedOutput() const
 {
     UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
-    return (castJob) ? castJob->GetExpectedOutput() : string("");
+    return (castJob) ? castJob->GetExpectedOutput() : wstring(L"");
 }
 
-void SshConsoleJob::SetExpectedOutput(const string &value)
+void SshConsoleJob::SetExpectedOutput(const wstring &value)
 {
     UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
     if (castJob)
         castJob->SetExpectedOutput(value);
 }
 
-string SshConsoleJob::GetOutputFile() const
+wstring SshConsoleJob::GetOutputFile() const
 {
     UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
-    return (castJob) ? castJob->GetOutputFile() : string("");
+    return (castJob) ? castJob->GetOutputFile() : emptyString;
 }
 
-string SshConsoleJob::GetMiniDescriptionParserCommand() const
+wstring SshConsoleJob::GetMiniDescriptionParserCommand() const
 {
     UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
-    return (castJob) ? castJob->GetMiniDescriptionParserCommand() : string("");
+    return (castJob) ? castJob->GetMiniDescriptionParserCommand() : emptyString;
 }
 
 bool SshConsoleJob::IsParsingUsingBuffer() const
@@ -232,66 +234,66 @@ AbstractConsoleJob* SshConsoleJob::GetRemoteJob()
 AbstractConsoleJob *SshConsoleJob::CreateSshJob()
 {
     AbstractConsoleJob* sshJob = static_cast<AbstractConsoleJob*>(remoteJob->Clone());
-    const string remoteJobCommand = remoteJob->GetCommand() + " " +
+    const wstring remoteJobCommand = remoteJob->GetCommand() + L" " +
                                     remoteJob->GetCommandParameters();
 
-    const string sshBatchMode = "-o BatchMode=yes ";
-    const string sshParameters = sshBatchMode + user + "@" + host + " \"" + remoteJobCommand + "\"";
-    sshJob->SetCommand("ssh");
+    const wstring sshBatchMode = L"-o BatchMode=yes ";
+    const wstring sshParameters = sshBatchMode + user + L"@" + host + L" \"" + remoteJobCommand + L"\"";
+    sshJob->SetCommand(L"ssh");
     sshJob->SetCommandParameters(sshParameters);
     sshJob->SetParentDebugManager(debugManager);
 
-    debugManager->AddDataLine<string>("Ssh parameters", sshParameters);
+    debugManager->AddDataLine<wstring>(L"Ssh parameters", sshParameters);
     return sshJob;
 }
 
 bool SshConsoleJob::IsAskTerminalError(JobStatus *status,
-                                       const string& message) const
+                                       const wstring& message) const
 {
-    const string expectedOutput = "sudo: no tty present";
+    const wstring expectedOutput = L"sudo: no tty present";
     return (status->GetCode() == JobStatus::Error &&
             message.find(expectedOutput) == 0);
 }
 
 bool SshConsoleJob::CopyRemoteAttachments()
 {
-   const string startTag = "\"'";
-   const string endTag = "'\"";
+   const wstring startTag = L"\"'";
+   const wstring endTag = L"'\"";
 
    UserConsoleJob* castJob = dynamic_cast<UserConsoleJob*>(remoteJob);
    const bool hasAttachments = (!castJob || !castJob->HasUserAttachments());
-   debugManager->AddDataLine<bool>("Has User Attachments?", hasAttachments);
+   debugManager->AddDataLine<bool>(L"Has User Attachments?", hasAttachments);
    if (hasAttachments)
       return true;
 
-   vector<string> userAttachments;
+   vector<wstring> userAttachments;
    castJob->GetUserAttachments(userAttachments);
    castJob->EmptyUserAttachments();
 
    bool allOk = true;
-   vector<string>::const_iterator it = userAttachments.begin();
+   vector<wstring>::const_iterator it = userAttachments.begin();
    for (; it != userAttachments.end(); ++it)
    {
-      debugManager->AddDataLine<string>("Copying Attachment", *it);
-      string scpParams = user + "@" + host + ":";
+      debugManager->AddDataLine<wstring>(L"Copying Attachment", *it);
+      wstring scpParams = user + L"@" + host + L":";
       if ((*it)[0] == '/')
          scpParams += startTag + *it;
       else
-         scpParams += string("~/") + startTag + *it;
-      scpParams += endTag + " ./";
+         scpParams += wstring(L"~/") + startTag + *it;
+      scpParams += endTag + L" ./";
 
-      debugManager->AddDataLine<string>("Scp parameters", scpParams);
+      debugManager->AddDataLine<wstring>(L"Scp parameters", scpParams);
 
-      ConsoleJob copyJob("scp", scpParams);
+      ConsoleJob copyJob(L"scp", scpParams);
       copyJob.RunWithoutStatus();
 
-      debugManager->AddDataLine<bool>("Scp Ok", copyJob.IsRunOk());
-      debugManager->AddDataLine<string>("Scp Output", copyJob.GetCommandOutput());
+      debugManager->AddDataLine<bool>(L"Scp Ok", copyJob.IsRunOk());
+      debugManager->AddDataLine<wstring>(L"Scp Output", copyJob.GetCommandOutput());
 
       if (copyJob.IsRunOk())
       {
-         const string localAttachment = PathTools::GetFilenameOnly(*it);
-         debugManager->AddDataLine<string>("Adding Local Attachment", localAttachment);
+         const wstring localAttachment = PathTools::GetFilenameOnly(*it);
+         debugManager->AddDataLine<wstring>(L"Adding Local Attachment", localAttachment);
          castJob->AddUserAttachment(localAttachment);
       }
       else

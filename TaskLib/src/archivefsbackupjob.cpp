@@ -9,14 +9,14 @@
 
 using namespace std;
 
-static const string cleaningError = "error cleaning destination";
-static const string copyingError = "error copying archive";
-static const string remoteCleaningError = "remote archive not cleaned";
+static const wstring cleaningError = L"error cleaning destination";
+static const wstring copyingError = L"error copying archive";
+static const wstring remoteCleaningError = L"remote archive not cleaned";
 
-ArchiveFsBackupJob::ArchiveFsBackupJob(const std::string& jobName,
+ArchiveFsBackupJob::ArchiveFsBackupJob(const wstring& jobName,
                                        ArchiveTool* _archiveTool)
     : AbstractBackupJob(jobName),
-      localDestination(""),
+      localDestination(L""),
       archiveTool(_archiveTool)
 {
 }
@@ -33,7 +33,7 @@ ArchiveFsBackupJob::~ArchiveFsBackupJob()
    delete archiveTool;
 }
 
-bool ArchiveFsBackupJob::Restore(const string &backupFile, const string &destination)
+bool ArchiveFsBackupJob::Restore(const wstring &backupFile, const wstring &destination)
 {
     if (FileTools::FolderExists(destination) == false)
     {
@@ -42,25 +42,25 @@ bool ArchiveFsBackupJob::Restore(const string &backupFile, const string &destina
             return false;
     }
 
-    const string params = string("-xf ") + backupFile + " -C " + destination;
-    ConsoleJob commandJob("tar", params);
+    const wstring params = wstring(L"-xf ") + backupFile + L" -C " + destination;
+    ConsoleJob commandJob(L"tar", params);
     commandJob.RunWithoutStatus();
 
     return (commandJob.GetCommandReturnCode() == 0);
 }
 
-string ArchiveFsBackupJob::GetLocalDestination() const
+wstring ArchiveFsBackupJob::GetLocalDestination() const
 {
    return localDestination;
 }
 
-void ArchiveFsBackupJob::SetLocalDestination(const string &value)
+void ArchiveFsBackupJob::SetLocalDestination(const wstring &value)
 {
     localDestination = value;
 }
 
-void ArchiveFsBackupJob::RunRepositoryBackup(const std::string &source,
-                                                const std::string &destination,
+void ArchiveFsBackupJob::RunRepositoryBackup(const std::wstring &source,
+                                                const std::wstring &destination,
                                                 AbstractBackupJob::ResultCollection &results)
 {
    if (target.isLocal)
@@ -71,8 +71,8 @@ void ArchiveFsBackupJob::RunRepositoryBackup(const std::string &source,
    }
 }
 
-JobStatus* ArchiveFsBackupJob::RestoreBackupFromServer(const string& source,
-                                                const string& destination)
+JobStatus* ArchiveFsBackupJob::RestoreBackupFromServer(const wstring& source,
+                                                const wstring& destination)
 {
    bool ok = Restore(source, destination);
    return new JobStatus(ok ? JobStatus::Ok : JobStatus::Error);
@@ -83,7 +83,7 @@ void AddResultToCollection(const ArchiveToolResult& result,
 {
    JobStatus* jobStatus = new JobStatus();
    jobStatus->SetCode(result.isOk ? JobStatus::Ok : JobStatus::Error);
-   if (result.errorMessage != "")
+   if (result.errorMessage != L"")
       jobStatus->SetDescription(result.errorMessage);
 
    results.push_back(make_pair(jobStatus, new FileBackupReport(result.FileList)));
@@ -91,8 +91,8 @@ void AddResultToCollection(const ArchiveToolResult& result,
 
 // TODO : maybe there is a better architectural option to these result collections :
 // create a JobBackupStatus that stores backup report.
-bool ArchiveFsBackupJob::UpdateBackupArchive(const string &folderToBackup,
-                                                const string &archiveName,
+bool ArchiveFsBackupJob::UpdateBackupArchive(const wstring &folderToBackup,
+                                                const wstring &archiveName,
                                                 AbstractBackupJob::ResultCollection &results)
 {
    archiveTool->Initialize(archiveName);
@@ -102,7 +102,7 @@ bool ArchiveFsBackupJob::UpdateBackupArchive(const string &folderToBackup,
    return result.isOk;
 }
 
-bool ArchiveFsBackupJob::RemovePreviousArchive(const string &destination,
+bool ArchiveFsBackupJob::RemovePreviousArchive(const wstring &destination,
                                                AbstractBackupJob::ResultCollection &results)
 {
     if (FileTools::FileExists(destination))
@@ -115,13 +115,13 @@ bool ArchiveFsBackupJob::RemovePreviousArchive(const string &destination,
 }
 
 bool ArchiveFsBackupJob::CopyBackupArchiveToDestination(
-        const string &destination,
+        const wstring &destination,
         AbstractBackupJob::ResultCollection &results)
 {
-    stringstream params;
+    wstringstream params;
     params << target.sshUser << "@" << target.sshHost << ":";
     params << localDestination << " " << destination;
-    ConsoleJob scpCommand("scp", params.str());
+    ConsoleJob scpCommand(L"scp", params.str());
     scpCommand.RunWithoutStatus();
 
     const bool isRunOk = scpCommand.IsRunOk();
@@ -133,8 +133,8 @@ bool ArchiveFsBackupJob::CopyBackupArchiveToDestination(
 
 bool ArchiveFsBackupJob::CleanBackupArchiveFromSource(AbstractBackupJob::ResultCollection &results)
 {
-    string parameters = string("-f ") + localDestination;
-    SshConsoleJob* remoteJob = new SshConsoleJob(new ConsoleJob("rm", parameters));
+    wstring parameters = wstring(L"-f ") + localDestination;
+    SshConsoleJob* remoteJob = new SshConsoleJob(new ConsoleJob(L"rm", parameters));
     remoteJob->SetTarget(target.sshUser, target.sshHost);
 
     JobStatus* unusedStatus = remoteJob->Run();
@@ -149,7 +149,7 @@ bool ArchiveFsBackupJob::CleanBackupArchiveFromSource(AbstractBackupJob::ResultC
 }
 
 void ArchiveFsBackupJob::AddStatusToResults(AbstractBackupJob::ResultCollection &results,
-                                               const int code, const string &message)
+                                               const int code, const wstring &message)
 {
     JobStatus* status = new JobStatus(code, message);
     results.push_back(pair<JobStatus*, FileBackupReport*>(status, NULL));

@@ -7,12 +7,12 @@ class AbstractOutputParser
 {
 public :
     virtual ~AbstractOutputParser();
-    virtual bool ParseBuffer(const std::string& buffer) = 0;
-    bool ParseFile(const std::string& inputFile);
+    virtual bool ParseBuffer(const std::wstring& buffer) = 0;
+    bool ParseFile(const std::wstring& inputFile);
 
-    virtual std::string GetMiniDescription() = 0;
-    virtual std::string GetFullDescription() = 0;
-    void WriteFullDescriptionToFile(const std::string& filename);
+    virtual std::wstring GetMiniDescription() = 0;
+    virtual std::wstring GetFullDescription() = 0;
+    void WriteFullDescriptionToFile(const std::wstring& filename);
 };
 
 

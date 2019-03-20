@@ -7,19 +7,19 @@
 
 using namespace std;
 
-static wwstring whichCommandPath("");
-wwstring ConsoleJob::NotAvailableError = "Command not available";
+static wstring whichCommandPath = L"";
+wstring ConsoleJob::NotAvailableError = L"Command not available";
 
-vector<wwstring> ConsoleJob::appSearchPaths;
+vector<wstring> ConsoleJob::appSearchPaths;
 
-ConsoleJob::ConsoleJob(const wwstring &_command,
-                       const wwstring &_params, int _expectedReturnCode)
-    : AbstractConsoleJob(""),
-      command(_command), commandParams(_params), commandOutput(""),
+ConsoleJob::ConsoleJob(const wstring &_command,
+                       const wstring &_params, int _expectedReturnCode)
+    : AbstractConsoleJob(L""),
+      command(_command), commandParams(_params), commandOutput(L""),
       expectedReturnCode(_expectedReturnCode), receivedReturnCode(-1)
 {
     wstring foundCommandFullName = PathTools::GetCommandPath(command, appSearchPaths);
-    if (foundCommandFullName != "")
+    if (foundCommandFullName != L"")
         command = foundCommandFullName;
 }
 
@@ -44,7 +44,7 @@ AbstractJob *ConsoleJob::Clone()
 
 bool ConsoleJob::IsInitialized()
 {
-    return (command != "");
+    return (command != L"");
 }
 
 JobStatus *ConsoleJob::Run()
@@ -143,7 +143,7 @@ void ConsoleJob::ClearAppSearchPaths()
 
 bool ConsoleJob::RunCommand()
 {
-    wstring commandToRun = command + " " + commandParams;
+    wstring commandToRun = command + L" " + commandParams;
     int rawCode = Tools::RunExternalCommandToBuffer(commandToRun, commandOutput, true);
 #ifdef __linux__
     receivedReturnCode = WEXITSTATUS(rawCode);
@@ -155,10 +155,10 @@ bool ConsoleJob::RunCommand()
 
 JobStatus *ConsoleJob::CreateSuccessStatus()
 {
-    return new JobStatus(JobStatus::Ok, "");
+    return new JobStatus(JobStatus::Ok, L"");
 }
 
 JobStatus *ConsoleJob::CreateErrorStatus()
 {
-    return new JobStatus(JobStatus::Error, "");
+    return new JobStatus(JobStatus::Error, L"");
 }

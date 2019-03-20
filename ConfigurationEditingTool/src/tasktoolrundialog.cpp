@@ -92,19 +92,20 @@ void TaskToolRunDialog::on_runButton_clicked()
 
    ui->outputTextEdit->setPlainText("");
    QString outputText;
-   const std::string currentDirectory = PathTools::GetCurrentFullPath();
+   const std::wstring currentDirectory = PathTools::GetCurrentFullPath();
    int result = _chdir(runPath.toLocal8Bit());
    if (result == 0)
    {
-      std::string commandOutput;
+      std::wstring commandOutput;
       result = Tools::RunExternalCommandToBuffer(
                       CreateTaskToolCommand(),
                       commandOutput, true
                       );
 
-      _chdir(currentDirectory.c_str());
+      _wchdir(currentDirectory.c_str());
 
-      outputText = (result > -1) ? commandOutput.c_str() : CreateExecutionErrorMessage(result, commandOutput);
+      outputText = (result > -1) ? QString::fromStdWString(commandOutput)
+                                 : CreateExecutionErrorMessage(result, commandOutput);
    }
    else
    {
@@ -117,26 +118,26 @@ void TaskToolRunDialog::on_runButton_clicked()
    SetupReportFilesDisplay();
 }
 
-std::string TaskToolRunDialog::CreateTaskToolCommand() const
+std::wstring TaskToolRunDialog::CreateTaskToolCommand() const
 {
-   return std::string("\"") + taskToolExecutable.toStdString() + "\" --conffile " +
-         configurationFile.toStdString();
+   return std::wstring(L"\"") + taskToolExecutable.toStdWString() + L"\" --conffile " +
+         configurationFile.toStdWString();
 }
 
 QString TaskToolRunDialog::CreateChdirErrorMessage() const
 {
    QString errorMessage = "Failed to change directory : " + GetDetailedError() + "\n";
    errorMessage += "  Target directory : " + runPath + "\n";
-   errorMessage += "  Current directory : " + QString(PathTools::GetCurrentFullPath().c_str()) + "\n";
+   errorMessage += "  Current directory : " + QString::fromStdWString(PathTools::GetCurrentFullPath()) + "\n";
    return errorMessage;
 }
 
 QString TaskToolRunDialog::CreateExecutionErrorMessage(const int returnValue,
-                                                       const std::string& output) const
+                                                       const std::wstring& output) const
 {
    QString errorMessage = "Error running Task tool command.\n";
    errorMessage += "\tError code : " + QString::number(returnValue) + "\n";
-   errorMessage += "\tOutput : " + QString(output.c_str()) + "\n";
+   errorMessage += "\tOutput : " + QString::fromStdWString(output) + "\n";
    errorMessage += "\tRun Path : " + runPath + "\n";
    errorMessage += "\tExecutable : " + taskToolExecutable + "\n";
    errorMessage += "\tConfiguration file : " + configurationFile + "\n";
@@ -146,16 +147,17 @@ QString TaskToolRunDialog::CreateExecutionErrorMessage(const int returnValue,
 void TaskToolRunDialog::SetupReportDisplay()
 {
    const QString reportFileFullName = reportFolder + reportFile;
-   const std::string reportContent = FileTools::GetTextFileContent(
-                                        reportFileFullName.toStdString());
+   const std::wstring reportContent = FileTools::GetTextFileContent(
+                                        reportFileFullName.toStdWString());
+   const QString qReportContent = QString::fromStdWString(reportContent);
    const bool isHtml = (reportType == "html");
    if (isHtml)
    {
-      ui->textBrowser->setHtml(reportContent.c_str());
+      ui->textBrowser->setHtml(qReportContent);
       //ui->textBrowser->setStyleSheet();
    }
    else
-      ui->textBrowser->setPlainText(reportContent.c_str());
+      ui->textBrowser->setPlainText(qReportContent);
 }
 
 void TaskToolRunDialog::SetupReportFilesDisplay()
@@ -203,7 +205,7 @@ QString TaskToolRunDialog::BuildTextLabel(const QString& file) const
 
 void TaskToolRunDialog::CleanPreviousReport()
 {
-   const std::string stdReportFolder = reportFolder.toStdString();
+   const std::wstring stdReportFolder = reportFolder.toStdWString();
    if (FileTools::FolderExists(stdReportFolder))
    {
       const bool ok = FileTools::RemoveFolder(stdReportFolder, true);

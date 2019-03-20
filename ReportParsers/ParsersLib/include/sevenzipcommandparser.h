@@ -9,11 +9,11 @@ public:
     SevenZipCommandParser();
     virtual ~SevenZipCommandParser();
 
-    virtual bool ParseBuffer(const std::string& buffer);
+    virtual bool ParseBuffer(const std::wstring& buffer);
     virtual void GetReport(FileBackupReport& _reportData);
 
 private:
-    void FillReportData(const std::vector<std::string>& lines);
+    void FillReportData(const std::vector<std::wstring>& lines);
 };
 
 #endif // SEVENZIPCOMMANDPARSER_H

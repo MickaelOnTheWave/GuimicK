@@ -9,7 +9,7 @@ static const int defaultTimeout = 120;
 static const int defaultRetries = 3;
 
 AbstractWakeJob::AbstractWakeJob()
-   : AbstractJob("Wake"),
+   : AbstractJob(L"Wake"),
     macAddress(""), broadcastIp(""), expectedIp(""),
     timeout(defaultTimeout), maxRetries(defaultRetries)
 {
@@ -52,8 +52,8 @@ bool AbstractWakeJob::IsInitialized()
 
 JobStatus* AbstractWakeJob::Run()
 {
-   debugManager->AddDataLine<int>("maxRetries", maxRetries);
-   debugManager->AddDataLine<int>("timeout", timeout);
+   debugManager->AddDataLine<int>(L"maxRetries", maxRetries);
+   debugManager->AddDataLine<int>(L"timeout", timeout);
 
    JobStatus* setupStatus = SetupWaker();
    if (setupStatus->GetCode() == JobStatus::Error)
@@ -68,13 +68,13 @@ JobStatus* AbstractWakeJob::Run()
      int secondsToWake = WaitForComputerToGoUp();
      if (secondsToWake < timeout)
      {
-         debugManager->AddDataLine<int>("Retry count", i);
-         debugManager->AddDataLine<int>("seconds counter", secondsToWake);
+         debugManager->AddDataLine<int>(L"Retry count", i);
+         debugManager->AddDataLine<int>(L"seconds counter", secondsToWake);
          return debugManager->CreateStatus(JobStatus::Ok, "");
      }
    }
 
-   return debugManager->CreateStatus(JobStatus::Error, "Machine still not awake");
+   return debugManager->CreateStatus(JobStatus::Error, L"Machine still not awake");
 }
 
 int AbstractWakeJob::GetTimeout() const

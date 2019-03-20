@@ -10,12 +10,12 @@ public:
 
    bool IsRemoteTargetConsistent() const
    {
-       return (sshUser != "" && sshHost != "");
+       return (sshUser != L"" && sshHost != L"");
    }
 
    bool isLocal;
-   std::string sshUser;
-   std::string sshHost;
+   std::wstring sshUser;
+   std::wstring sshHost;
 };
 
 #endif // JOBEXECUTIONTARGET_H

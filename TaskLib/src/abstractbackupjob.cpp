@@ -4,9 +4,9 @@
 
 using namespace std;
 
-AbstractBackupJob::AbstractBackupJob(const string& _title)
+AbstractBackupJob::AbstractBackupJob(const wstring& _title)
     : AbstractJob(_title),
-      repository("")
+      repository(L"")
 {
     statusManager = new BackupStatusManager();
 }
@@ -33,8 +33,8 @@ bool AbstractBackupJob::InitializeFromClient(Client *client)
 
         if (client && target.isLocal == false)
         {
-            target.sshUser = client->GetProperty("sshuser");
-            target.sshHost = client->GetProperty("ip");
+            target.sshUser = client->GetProperty(L"sshuser");
+            target.sshHost = client->GetProperty(L"ip");
         }
         return IsInitialized();
     }
@@ -50,25 +50,25 @@ bool AbstractBackupJob::IsInitialized()
 JobStatus *AbstractBackupJob::Run()
 {
     vector<pair<JobStatus*, FileBackupReport*> > results;
-    vector<pair<string, string> >::const_iterator it=folderList.begin();
+    vector<pair<wstring, wstring> >::const_iterator it=folderList.begin();
     for (; it!=folderList.end(); it++)
         RunRepositoryBackup(it->first, it->second, results);
 
     return debugManager->UpdateStatus(CreateGlobalStatus(results));
 }
 
-JobStatus* AbstractBackupJob::RestoreBackupFromServer(const string& destination, const int folderIndex)
+JobStatus* AbstractBackupJob::RestoreBackupFromServer(const wstring& destination, const int folderIndex)
 {
    if (static_cast<unsigned int>(folderIndex) < folderList.size())
    {
-      const string backupSource = folderList[folderIndex].second;
+      const wstring backupSource = folderList[folderIndex].second;
       return RestoreBackupFromServer(CreateBackupSourcePath(backupSource), destination);
    }
    else
-      return new JobStatus(JobStatus::Error, "Invalid Repository Index");
+      return new JobStatus(JobStatus::Error, L"Invalid Repository Index");
 }
 
-JobStatus* AbstractBackupJob::RestoreBackupFromServer(const string& destination,
+JobStatus* AbstractBackupJob::RestoreBackupFromServer(const wstring& destination,
                                                       const int folderIndex,
                                                       const int)
 {
@@ -78,7 +78,7 @@ JobStatus* AbstractBackupJob::RestoreBackupFromServer(const string& destination,
 JobStatus* AbstractBackupJob::RestoreBackupFromClient(
       const BackupRestoreParameters& , const BackupRestoreTarget& )
 {
-   return new JobStatus(JobStatus::Error, "Not yet Implemented");
+   return new JobStatus(JobStatus::Error, L"Not yet Implemented");
 }
 
 bool AbstractBackupJob::IsTargetLocal() const
@@ -86,7 +86,7 @@ bool AbstractBackupJob::IsTargetLocal() const
     return target.isLocal;
 }
 
-void AbstractBackupJob::SetTargetRemote(const std::string &user, const std::string &host)
+void AbstractBackupJob::SetTargetRemote(const std::wstring &user, const std::wstring &host)
 {
     target.isLocal = false;
     target.sshHost = host;
@@ -96,8 +96,8 @@ void AbstractBackupJob::SetTargetRemote(const std::string &user, const std::stri
 void AbstractBackupJob::SetTargetLocal()
 {
     target.isLocal = true;
-    target.sshUser = "";
-    target.sshHost = "";
+    target.sshUser = L"";
+    target.sshHost = L"";
 }
 
 void AbstractBackupJob::CopyTarget(const AbstractBackupJob& other)
@@ -105,22 +105,22 @@ void AbstractBackupJob::CopyTarget(const AbstractBackupJob& other)
    target = other.target;
 }
 
-string AbstractBackupJob::GetRepository() const
+wstring AbstractBackupJob::GetRepository() const
 {
    return repository;
 }
 
-void AbstractBackupJob::SetRepository(const string &value)
+void AbstractBackupJob::SetRepository(const wstring &value)
 {
     repository = value;
 }
 
-void AbstractBackupJob::AddFolder(const std::string &source, const std::string &destination)
+void AbstractBackupJob::AddFolder(const std::wstring &source, const std::wstring &destination)
 {
     folderList.push_back(make_pair(source, destination));
 }
 
-void AbstractBackupJob::GetFolderList(std::vector<std::pair<string, string> > &folders)
+void AbstractBackupJob::GetFolderList(std::vector<std::pair<wstring, wstring> > &folders)
 {
    copy(folderList.begin(), folderList.end(), back_inserter(folders));
 }
@@ -157,7 +157,7 @@ JobStatus *AbstractBackupJob::CreateGlobalStatus(const AbstractBackupJob::Result
    return statusManager->CreateGlobalStatus(results, folderList);
 }
 
-string AbstractBackupJob::CreateBackupSourcePath(const string& backupTag) const
+wstring AbstractBackupJob::CreateBackupSourcePath(const wstring& backupTag) const
 {
    return repository + backupTag;
 }

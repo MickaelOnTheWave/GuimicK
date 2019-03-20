@@ -6,10 +6,10 @@
 
 using namespace std;
 
-static const string errorReportCreation = "Error creating report";
-static const string errorCopyCommand = "Copy command failed";
+static const wstring errorReportCreation = L"Error creating report";
+static const wstring errorCopyCommand = L"Copy command failed";
 
-AbstractCopyFsBackupJob::AbstractCopyFsBackupJob(const string& _title)
+AbstractCopyFsBackupJob::AbstractCopyFsBackupJob(const wstring& _title)
    : AbstractBackupJob(_title)
 {
 }
@@ -23,39 +23,39 @@ AbstractCopyFsBackupJob::~AbstractCopyFsBackupJob()
 {
 }
 
-int AbstractCopyFsBackupJob::RunOnParameters(const string &source, const string &destination)
+int AbstractCopyFsBackupJob::RunOnParameters(const wstring &source, const wstring &destination)
 {
     ConsoleJob commandJob;
     PrepareCopyCommand(source, destination, commandJob);
 
     commandJob.RunWithoutStatus();
 
-    debugManager->AddDataLine<string>("Copy command", commandJob.GetCommand() + " " + commandJob.GetCommandParameters());
-    debugManager->AddDataLine<string>("Copy output", commandJob.GetCommandOutput());
-    debugManager->AddDataLine<int>("Copy value", commandJob.GetCommandReturnCode());
+    debugManager->AddDataLine<wstring>(L"Copy command", commandJob.GetCommand() + L" " + commandJob.GetCommandParameters());
+    debugManager->AddDataLine<wstring>(L"Copy output", commandJob.GetCommandOutput());
+    debugManager->AddDataLine<int>(L"Copy value", commandJob.GetCommandReturnCode());
 
     return commandJob.GetCommandReturnCode();
 }
 
-void AbstractCopyFsBackupJob::RunRepositoryBackup(const string &source,
-                                                  const string &destination,
+void AbstractCopyFsBackupJob::RunRepositoryBackup(const wstring &source,
+                                                  const wstring &destination,
                                                   ResultCollection &results)
 {
-   const string copyDestination = repository + destination;
+   const wstring copyDestination = repository + destination;
    if (FileTools::FolderExists(copyDestination) == false)
      FileTools::CreateFolder(copyDestination);
 
    RunCopy(source, copyDestination, results);
 }
 
-JobStatus* AbstractCopyFsBackupJob::RestoreBackupFromServer(const string& source, const string& destination)
+JobStatus* AbstractCopyFsBackupJob::RestoreBackupFromServer(const wstring& source, const wstring& destination)
 {
    ConsoleJob copyCommand;
    PrepareCopyCommand(source, destination, copyCommand);
    return copyCommand.Run();
 }
 
-void AbstractCopyFsBackupJob::RunCopy(const string &source, const string &destination,
+void AbstractCopyFsBackupJob::RunCopy(const wstring &source, const wstring &destination,
                                  AbstractBackupJob::ResultCollection &results)
 {
     ConsoleJob copyCommand;
@@ -68,7 +68,7 @@ void AbstractCopyFsBackupJob::RunCopy(const string &source, const string &destin
         CreateCopyErrorReport(copyCommand.GetCommandOutput(), results);
 }
 
-void AbstractCopyFsBackupJob::CreateCopyErrorReport(const std::string& message, AbstractBackupJob::ResultCollection &results)
+void AbstractCopyFsBackupJob::CreateCopyErrorReport(const std::wstring& message, AbstractBackupJob::ResultCollection &results)
 {
     JobStatus* status = new JobStatus(JobStatus::Error, errorCopyCommand);
     status->AddFileBuffer(GetAttachmentName(), message);

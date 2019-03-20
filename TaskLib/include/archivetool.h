@@ -10,10 +10,10 @@
 class ArchiveToolResult
 {
 public:
-   std::vector<std::string> ErrorList;
+   std::vector<std::wstring> ErrorList;
    FileBackupReport FileList;
    bool isOk;
-   std::string errorMessage;
+   std::wstring errorMessage;
 };
 
 class ArchiveTool
@@ -23,24 +23,24 @@ public:
    ArchiveTool(const ArchiveTool& other);
    virtual ~ArchiveTool();
 
-   virtual void Initialize(const std::string& _filename);
+   virtual void Initialize(const std::wstring& _filename);
 
    virtual ArchiveTool* Clone() const = 0;
 
-   virtual void CreateArchive(const std::string& pathData,
+   virtual void CreateArchive(const std::wstring& pathData,
                               ArchiveToolResult& result) = 0;
 
-   virtual void AddToArchive(const std::string& pathToAdd,
+   virtual void AddToArchive(const std::wstring& pathToAdd,
                              ArchiveToolResult& result) = 0;
 
-   virtual void ExtractArchive(const std::string& destinationPath,
+   virtual void ExtractArchive(const std::wstring& destinationPath,
                                ArchiveToolResult& result) = 0;
 
 protected:
    void ConvertToArchiveResult(AbstractFileBackupParser& parser,
                                ArchiveToolResult& result) const;
 
-   std::string filename;
+   std::wstring filename;
 };
 
 #endif // ARCHIVETOOL_H

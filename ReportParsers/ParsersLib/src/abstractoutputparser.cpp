@@ -10,9 +10,9 @@ AbstractOutputParser::~AbstractOutputParser()
 {
 }
 
-bool AbstractOutputParser::ParseFile(const string &inputFile)
+bool AbstractOutputParser::ParseFile(const wstring &inputFile)
 {
-    string fileContents("");
+   wstring fileContents(L"");
 
     if (FileTools::GetTextFileContent(inputFile, fileContents) == false)
         return false;
@@ -23,9 +23,9 @@ bool AbstractOutputParser::ParseFile(const string &inputFile)
     return true;
 }
 
-void AbstractOutputParser::WriteFullDescriptionToFile(const string &filename)
+void AbstractOutputParser::WriteFullDescriptionToFile(const wstring &filename)
 {
-    ofstream outFile(filename.c_str());
+    wofstream outFile(filename.c_str());
     outFile << GetFullDescription();
     outFile.close();
 }

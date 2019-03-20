@@ -4,7 +4,7 @@
 
 using namespace std;
 
-TarCommandParser::TarCommandParser(const string &_tarCommand)
+TarCommandParser::TarCommandParser(const wstring &_tarCommand)
     : AbstractFileBackupParser(new FileBackupReport()),
       tarCommand(_tarCommand)
 {
@@ -14,11 +14,11 @@ TarCommandParser::~TarCommandParser()
 {
 }
 
-bool TarCommandParser::ParseBuffer(const std::string &buffer)
+bool TarCommandParser::ParseBuffer(const std::wstring &buffer)
 {
     reportData->Clear();
 
-    vector<string> lines;
+    vector<wstring> lines;
     Tools::TokenizeString(buffer, '\n', lines);
 
     FillReportData(lines);
@@ -31,22 +31,22 @@ void TarCommandParser::GetReport(FileBackupReport &_reportData)
     _reportData = *reportData;
 }
 
-void TarCommandParser::FillReportData(const std::vector<string> &lines)
+void TarCommandParser::FillReportData(const std::vector<wstring> &lines)
 {
     int filesStartPosition = 1;
-    string sourceFolder = lines.front();
-    if (tarCommand != "" && sourceFolder.find(tarCommand) == 0)
+    wstring sourceFolder = lines.front();
+    if (tarCommand != L"" && sourceFolder.find(tarCommand) == 0)
     {
         sourceFolder = *(lines.begin()+1);
         ++filesStartPosition;
     }
 
-    vector<string>::const_iterator it=lines.begin()+filesStartPosition;
+    vector<wstring>::const_iterator it=lines.begin()+filesStartPosition;
     for (; it!=lines.end(); ++it)
     {
         if (it->size() > sourceFolder.size())
         {
-            const string currentFile = it->substr(sourceFolder.size());
+            const wstring currentFile = it->substr(sourceFolder.size());
             reportData->AddAsAdded(currentFile);
         }
     }

@@ -26,10 +26,10 @@ private slots:
    void on_runButton_clicked();
 
 private:
-   std::string CreateTaskToolCommand() const;
+   std::wstring CreateTaskToolCommand() const;
    QString CreateChdirErrorMessage() const;
    QString CreateExecutionErrorMessage(const int returnValue,
-                                       const std::string& output) const;
+                                       const std::wstring& output) const;
    void SetupReportDisplay();
 
    void SetupReportFilesDisplay();

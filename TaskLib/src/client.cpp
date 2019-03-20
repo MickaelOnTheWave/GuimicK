@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Client::Client(const std::string &_name)
+Client::Client(const wstring& _name)
     : name(_name)
 {
 }
@@ -25,17 +25,17 @@ Client *Client::Clone() const
     return new Client(*this);
 }
 
-string Client::GetName() const
+wstring Client::GetName() const
 {
 	return name;
 }
 
-void Client::SetName(const string& _name)
+void Client::SetName(const wstring& _name)
 {
 	name = _name;
 }
 
-void Client::AddProperty(const std::string &propertyName, const std::string &value)
+void Client::AddProperty(const std::string &propertyName, const std::wstring &value)
 {
     propertyMap[propertyName] = value;
 }
@@ -45,7 +45,7 @@ bool Client::HasProperty(const std::string &propertyName)
     return (propertyMap.count(propertyName) > 0);
 }
 
-std::string Client::GetProperty(const std::string &propertyName)
+std::wstring Client::GetProperty(const std::string &propertyName)
 {
    return propertyMap[propertyName];
 }

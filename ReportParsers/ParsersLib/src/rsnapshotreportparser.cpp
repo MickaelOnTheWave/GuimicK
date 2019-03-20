@@ -16,26 +16,26 @@ void RsnapshotReport::Clear()
 	bytesRemoved = 0;
 }
 
-std::string RsnapshotReport::BytesTaken() const
+wstring RsnapshotReport::BytesTaken() const
 {
 	long long bytesTaken = (bytesAdded - bytesRemoved);
 
-    std::string formattedQuantity;
+    std::wstring formattedQuantity;
 	if (bytesTaken < 0)
-		formattedQuantity = Tools::FormatByteString(-bytesTaken) + " freed";
+		formattedQuantity = Tools::FormatByteString(-bytesTaken) + L" freed";
 	else
-		formattedQuantity = Tools::FormatByteString(bytesTaken) + " taken";
+		formattedQuantity = Tools::FormatByteString(bytesTaken) + L" taken";
 
 	return formattedQuantity;
 }
 
 void RsnapshotReport::CreateModifiedList()
 {
-    vector<string>::iterator addedIt=added.begin();
-    vector<string>::iterator addedEnd=added.end();
+    vector<wstring>::iterator addedIt=added.begin();
+    vector<wstring>::iterator addedEnd=added.end();
 	while (addedIt != addedEnd)
 	{
-        vector<string>::iterator removedIt = find(removed.begin(), removed.end(), *addedIt);
+        vector<wstring>::iterator removedIt = find(removed.begin(), removed.end(), *addedIt);
         if (removedIt != removed.end())
 		{
             modified.push_back(*addedIt);
@@ -55,20 +55,20 @@ void RsnapshotReport::operator=(const RsnapshotReport &other)
     bytesRemoved  = other.bytesRemoved;
 }
 
-string RsnapshotReport::GetMiniDescription() const
+wstring RsnapshotReport::GetMiniDescription() const
 {
-    stringstream description;
+    wstringstream description;
     description << FileBackupReport::GetMiniDescription() << ". ";
     description << BytesTaken();
     return description.str();
 }
 
-string RsnapshotReport::GetFullDescription() const
+wstring RsnapshotReport::GetFullDescription() const
 {
-    stringstream description;
+    wstringstream description;
     description << FileBackupReport::GetFullDescription();
-    description << Tools::FormatByteString(bytesAdded) << " added, ";
-    description << Tools::FormatByteString(bytesRemoved) << " removed, and overall ";
+    description << Tools::FormatByteString(bytesAdded) << L" added, ";
+    description << Tools::FormatByteString(bytesRemoved) << L" removed, and overall ";
     description << BytesTaken() << std::endl;
     return description.str();
 }
@@ -84,11 +84,11 @@ RSnapshotReportParser::~RSnapshotReportParser()
 {
 }
 
-bool RSnapshotReportParser::ParseBuffer(const std::string &buffer)
+bool RSnapshotReportParser::ParseBuffer(const std::wstring &buffer)
 {
     reportData->Clear();
 
-    vector<string> lines;
+    vector<wstring> lines;
     Tools::TokenizeString(buffer, '\n', lines);
 
     // TODO : refactor inside this (very messy) method and here too.
@@ -109,30 +109,30 @@ void RSnapshotReportParser::GetReport(FileBackupReport &report)
     *typedReport = *GetTypedReport();
 }
 
-void RSnapshotReportParser::ParseLines(const std::vector<string> &lines)
+void RSnapshotReportParser::ParseLines(const std::vector<wstring> &lines)
 {
-    vector<string>::const_iterator it=lines.begin();
+    vector<wstring>::const_iterator it=lines.begin();
 
-    while (it != lines.end() && it->find("Comparing") != 0)
+    while (it != lines.end() && it->find(L"Comparing") != 0)
         ++it;
 
-    while (it != lines.end() && it->find("Between") != 0)
+    while (it != lines.end() && it->find(L"Between") != 0)
     {
-        size_t posSimbol = it->find_first_of("+-");
-        if (posSimbol != std::string::npos)
+        size_t posSimbol = it->find_first_of(L"+-");
+        if (posSimbol != std::wstring::npos)
         {
             char simbol = (*it)[posSimbol];
-            size_t posFile = it->find_first_not_of(" ", posSimbol+1);
-            if (posFile != std::string::npos)
+            size_t posFile = it->find_first_not_of(L" ", posSimbol+1);
+            if (posFile != std::wstring::npos)
             {
-                std::string backupFileName(it->substr(posFile+1));
+                std::wstring backupFileName(it->substr(posFile+1));
 
-                size_t weeklyPos = backupFileName.find("weekly.");
-                if (weeklyPos != std::string::npos)
-                    weeklyPos = backupFileName.find("/", weeklyPos);
+                size_t weeklyPos = backupFileName.find(L"weekly.");
+                if (weeklyPos != std::wstring::npos)
+                    weeklyPos = backupFileName.find(L"/", weeklyPos);
 
-                std::string fileName;
-                if (weeklyPos != std::string::npos)
+                std::wstring fileName;
+                if (weeklyPos != std::wstring::npos)
                     fileName = backupFileName.substr(weeklyPos);
                 else
                     fileName = backupFileName;
@@ -146,34 +146,34 @@ void RSnapshotReportParser::ParseLines(const std::vector<string> &lines)
         ++it;
     }
 
-    bool foundAddedBytesString = false;
-    bool foundRemovedBytesString = false;
-    while (it != lines.end() && (!foundAddedBytesString || !foundRemovedBytesString))
+    bool foundAddedByteswstring = false;
+    bool foundRemovedByteswstring = false;
+    while (it != lines.end() && (!foundAddedByteswstring || !foundRemovedByteswstring))
     {
-        if (!foundAddedBytesString &&
-             it->find("added") != std::string::npos && it->find("taking") != std::string::npos)
+        if (!foundAddedByteswstring &&
+             it->find(L"added") != std::wstring::npos && it->find(L"taking") != std::wstring::npos)
         {
-            GetTypedReport()->bytesAdded = ParseByteDataLine(*it, "taking", "bytes");
-            foundAddedBytesString = true;
+            GetTypedReport()->bytesAdded = ParseByteDataLine(*it, L"taking", L"bytes");
+            foundAddedByteswstring = true;
         }
 
-        if (!foundRemovedBytesString &&
-             it->find("removed") != std::string::npos && it->find("saving") != std::string::npos)
+        if (!foundRemovedByteswstring &&
+             it->find(L"removed") != std::wstring::npos && it->find(L"saving") != std::wstring::npos)
         {
-            GetTypedReport()->bytesRemoved = ParseByteDataLine(*it, "saving", "bytes");
-            foundRemovedBytesString = true;
+            GetTypedReport()->bytesRemoved = ParseByteDataLine(*it, L"saving", L"bytes");
+            foundRemovedByteswstring = true;
         }
         ++it;
     }
 }
 
-long long RSnapshotReportParser::ParseByteDataLine(const std::string &line, const std::string &wordBefore, const std::string &wordAfter)
+long long RSnapshotReportParser::ParseByteDataLine(const std::wstring &line, const std::wstring &wordBefore, const std::wstring &wordAfter)
 {
 	long long bytes = 0;
 	size_t initPos = line.find(wordBefore)+wordBefore.size();
 	size_t endPos = line.rfind(wordAfter);
-    std::string byteString(line.substr(initPos, endPos));
-    std::istringstream is (byteString);
+    wstring bytewstring(line.substr(initPos, endPos));
+    wistringstream is (bytewstring);
 	is >> bytes;
     return bytes;
 }

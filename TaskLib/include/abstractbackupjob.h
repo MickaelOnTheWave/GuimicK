@@ -12,7 +12,7 @@ class BackupStatusManager;
 class BackupRestoreParameters
 {
 public:
-   std::string destination;
+   std::wstring destination;
    int folderIndex;
    int timeIndex;
 };
@@ -20,9 +20,9 @@ public:
 class BackupRestoreTarget
 {
 public:
-   std::string host;
-   std::string user;
-   std::string password;
+   std::wstring host;
+   std::wstring user;
+   std::wstring password;
 };
 
 class AbstractBackupJob : public AbstractJob
@@ -30,9 +30,9 @@ class AbstractBackupJob : public AbstractJob
 public:
     typedef std::pair<JobStatus*, FileBackupReport*> ResultEntry;
     typedef std::vector<ResultEntry> ResultCollection;
-    typedef std::vector<std::pair<std::string, std::string> > BackupCollection;
+    typedef std::vector<std::pair<std::wstring, std::wstring> > BackupCollection;
 
-    AbstractBackupJob(const std::string& _title);
+    AbstractBackupJob(const std::wstring& _title);
     AbstractBackupJob(const AbstractBackupJob& other);
     virtual ~AbstractBackupJob();
 
@@ -41,11 +41,11 @@ public:
 
     virtual JobStatus* Run();
 
-    virtual std::string GetTypeName() const = 0;
+    virtual std::wstring GetTypeName() const = 0;
 
-    JobStatus* RestoreBackupFromServer(const std::string& destination, const int folderIndex = 0);
+    JobStatus* RestoreBackupFromServer(const std::wstring& destination, const int folderIndex = 0);
 
-    virtual JobStatus* RestoreBackupFromServer(const std::string& destination,
+    virtual JobStatus* RestoreBackupFromServer(const std::wstring& destination,
                                                const int folderIndex,
                                                const int timeIndex);
 
@@ -53,14 +53,14 @@ public:
                                                 const BackupRestoreTarget& target);
 
     bool IsTargetLocal() const;
-    void SetTargetRemote(const std::string& user = "", const std::string& host = "");
+    void SetTargetRemote(const std::wstring& user = L"", const std::wstring& host = L"");
     void SetTargetLocal();
     void CopyTarget(const AbstractBackupJob& other);
 
-    std::string GetRepository() const;
-    virtual void SetRepository(const std::string& value);
-    virtual void AddFolder(const std::string& source, const std::string& destination);
-    void GetFolderList(std::vector<std::pair<std::string, std::string> >& folders);
+    std::wstring GetRepository() const;
+    virtual void SetRepository(const std::wstring& value);
+    virtual void AddFolder(const std::wstring& source, const std::wstring& destination);
+    void GetFolderList(std::vector<std::pair<std::wstring, std::wstring> >& folders);
     int GetFolderCount() const;
     void ClearFolderList(void);
 
@@ -69,14 +69,14 @@ public:
 
 protected:
     virtual bool Initialize();
-    virtual void RunRepositoryBackup(const std::string& source,
-                                     const std::string& destination,
+    virtual void RunRepositoryBackup(const std::wstring& source,
+                                     const std::wstring& destination,
                                      ResultCollection& results) = 0;
     virtual JobStatus* CreateGlobalStatus(const ResultCollection& results);
 
-    virtual std::string CreateBackupSourcePath(const std::string& backupTag) const;
+    virtual std::wstring CreateBackupSourcePath(const std::wstring& backupTag) const;
 
-    std::string repository;
+    std::wstring repository;
     BackupCollection folderList;
     JobExecutionTarget target;
 
@@ -84,6 +84,6 @@ protected:
     bool isDebugManagerParent;
 
 private:
-    virtual JobStatus* RestoreBackupFromServer(const std::string& source, const std::string& destination) = 0;
+    virtual JobStatus* RestoreBackupFromServer(const std::wstring& source, const std::wstring& destination) = 0;
 };
 #endif // ABSTRACTBACKUPJOB_H

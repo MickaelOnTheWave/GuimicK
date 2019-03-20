@@ -12,44 +12,44 @@ class ArchiveFsBackupJob : public AbstractBackupJob
 {
 public:
     ArchiveFsBackupJob(
-          const std::string& jobName,
+          const std::wstring& jobName,
           ArchiveTool* _archiveTool
           );
     ArchiveFsBackupJob(const ArchiveFsBackupJob& other);
     virtual ~ArchiveFsBackupJob();
 
-    static bool Restore(const std::string& backupFile,
-                        const std::string& destination);
+    static bool Restore(const std::wstring& backupFile,
+                        const std::wstring& destination);
 
-    std::string GetLocalDestination() const;
-    void SetLocalDestination(const std::string& value);
+    std::wstring GetLocalDestination() const;
+    void SetLocalDestination(const std::wstring& value);
 
 protected:
-    virtual void RunRepositoryBackup(const std::string& source,
-                                     const std::string& destination,
+    virtual void RunRepositoryBackup(const std::wstring& source,
+                                     const std::wstring& destination,
                                      ResultCollection& results);
 
     ArchiveTool* archiveTool;
 
 private:
-    virtual JobStatus* RestoreBackupFromServer(const std::string &source,
-                                     const std::string &destination);
+    virtual JobStatus* RestoreBackupFromServer(const std::wstring &source,
+                                     const std::wstring &destination);
 
-    bool UpdateBackupArchive(const std::string& folderToBackup,
-                             const std::string& archiveName,
+    bool UpdateBackupArchive(const std::wstring& folderToBackup,
+                             const std::wstring& archiveName,
                              ResultCollection& results);
-    bool RemovePreviousArchive(const std::string& destination,
+    bool RemovePreviousArchive(const std::wstring& destination,
                                ResultCollection& results);
 
-    bool CopyBackupArchiveToDestination(const std::string& destination,
+    bool CopyBackupArchiveToDestination(const std::wstring& destination,
                                         ResultCollection& results);
 
     bool CleanBackupArchiveFromSource(ResultCollection& results);
 
     void AddStatusToResults(ResultCollection& results,
-                            const int code, const std::string& message);
+                            const int code, const std::wstring& message);
 
-    std::string localDestination;
+    std::wstring localDestination;
 };
 
 #endif // ARCHIVEFSBACKUPJOB_H

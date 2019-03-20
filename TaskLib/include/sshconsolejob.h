@@ -6,21 +6,21 @@
 class SshConsoleJob : public AbstractConsoleJob
 {
 public:
-    static std::string NoTargetError;
-    static std::string InvalidTargetError;
-    static std::string NoTerminalForPasswordError;
-    static std::string FailedRemoteCopyError;
+    static std::wstring NoTargetError;
+    static std::wstring InvalidTargetError;
+    static std::wstring NoTerminalForPasswordError;
+    static std::wstring FailedRemoteCopyError;
 
     SshConsoleJob(AbstractConsoleJob* _job);
-    SshConsoleJob(const std::string& _title, const std::string& _command = "");
+    SshConsoleJob(const std::wstring& _title, const std::wstring& _command = L"");
     SshConsoleJob(const SshConsoleJob& other);
     virtual ~SshConsoleJob();
 
-    virtual std::string GetName();
+    virtual std::wstring GetName();
 
     virtual AbstractJob* Clone();
 
-    void SetTarget(const std::string& _user, const std::string& _host);
+    void SetTarget(const std::wstring& _user, const std::wstring& _host);
 
     virtual bool InitializeFromClient(Client *client);
 
@@ -28,38 +28,38 @@ public:
 
     virtual JobStatus* Run();
 
-    virtual void SetTitle(const std::string& value);
+    virtual void SetTitle(const std::wstring& value);
 
     virtual int GetExpectedReturnCode() const;
     virtual void SetExpectedReturnCode(const int value);
 
-    virtual std::string GetCommand() const;
-    virtual void SetCommand(const std::string& command);
+    virtual std::wstring GetCommand() const;
+    virtual void SetCommand(const std::wstring& command);
 
-    virtual std::string GetCommandParameters() const;
-    virtual void SetCommandParameters(const std::string& parameters);
+    virtual std::wstring GetCommandParameters() const;
+    virtual void SetCommandParameters(const std::wstring& parameters);
 
     virtual int GetCommandReturnCode() const;
     virtual void SetCommandReturnCode(const int value);
 
-    virtual std::string GetCommandOutput() const;
-    virtual void SetCommandOutput(const std::string& value);
+    virtual std::wstring GetCommandOutput() const;
+    virtual void SetCommandOutput(const std::wstring& value);
 
     virtual bool IsCommandAvailable() const;
 
     virtual bool IsRunOk() const;
 
-    void GetUserAttachments(std::vector<std::string>& attachments);
-    void AddUserAttachment(const std::string& name);
+    void GetUserAttachments(std::vector<std::wstring>& attachments);
+    void AddUserAttachment(const std::wstring& name);
 
     void SetRemoteJob(AbstractConsoleJob* _remoteJob);
 
-    std::string GetExpectedOutput() const;
-    void SetExpectedOutput(const std::string& value);
+    std::wstring GetExpectedOutput() const;
+    void SetExpectedOutput(const std::wstring& value);
 
-    std::string GetOutputFile() const;
+    std::wstring GetOutputFile() const;
 
-    std::string GetMiniDescriptionParserCommand() const;
+    std::wstring GetMiniDescriptionParserCommand() const;
 
     bool IsParsingUsingBuffer() const;
 
@@ -69,13 +69,13 @@ private:
    AbstractConsoleJob* CreateSshJob();
 
    bool IsAskTerminalError(JobStatus* status,
-                         const std::string &message) const;
+                         const std::wstring &message) const;
 
    bool CopyRemoteAttachments();
 
-   std::string title;
-   std::string user;
-   std::string host;
+   std::wstring title;
+   std::wstring user;
+   std::wstring host;
 
    AbstractConsoleJob* remoteJob;
 };

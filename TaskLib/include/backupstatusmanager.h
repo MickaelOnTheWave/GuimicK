@@ -8,14 +8,14 @@
 class BackupStatusManager
 {
 public :
-    BackupStatusManager(const std::string& _attachmentName = "attachment.txt");
+    BackupStatusManager(const std::wstring& _attachmentName = L"attachment.txt");
     BackupStatusManager(const BackupStatusManager& other);
 
     void SetDebugManager(JobDebugInformationManager* _debugManager);
     bool GetJoinReports() const;
     void SetJoinReports(const bool value);
-    void SetAttachmentName(const std::string& name);
-    void SetItemBackupMessage(const std::string& message);
+    void SetAttachmentName(const std::wstring& name);
+    void SetItemBackupMessage(const std::wstring& message);
 
     JobStatus *CreateGlobalStatus(const AbstractBackupJob::ResultCollection& results,
                                   const AbstractBackupJob::BackupCollection& backups);
@@ -28,14 +28,14 @@ private:
     JobStatus* CreateSeparatedStatus(const int code);
 
     bool AreAllStatusesEqual(const int expectedCode);
-    std::string CreateStatusesDescription();
-    std::string CreateRepositoriesMiniDescription();
+    std::wstring CreateStatusesDescription();
+    std::wstring CreateRepositoriesMiniDescription();
     int ComputeSuccessCount() const;
 
-    std::string BuildRepositoryHeader(const std::string &name);
-    std::string BuildFooter();
+    std::wstring BuildRepositoryHeader(const std::wstring &name);
+    std::wstring BuildFooter();
 
-    std::string GetCorrectMiniDescription(
+    std::wstring GetCorrectMiniDescription(
             const AbstractBackupJob::ResultEntry& result) const;
 
     FileBackupReport* CreateGlobalReport() const;
@@ -44,8 +44,8 @@ private:
     const AbstractBackupJob::BackupCollection* backupCollection;
     JobDebugInformationManager* debugManager;
     bool joinReports;
-    std::string attachmentName;
-    std::string itemBackupMessage;
+    std::wstring attachmentName;
+    std::wstring itemBackupMessage;
 };
 
 #endif // BACKUPSTATUSMANAGER_H

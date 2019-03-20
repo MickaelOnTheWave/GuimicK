@@ -9,16 +9,16 @@ using namespace std;
 UserConsoleJob::UserConsoleJob()
     : ConsoleJob()
 {
-   SetName("Console");
-   Initialize("", 0);
+   SetName(L"Console");
+   Initialize(L"", 0);
 }
 
-UserConsoleJob::UserConsoleJob(const std::string &_commandTitle,
-                               const std::string &_command, const std::string& _params,
+UserConsoleJob::UserConsoleJob(const std::wstring &_commandTitle,
+                               const std::wstring &_command, const std::wstring& _params,
                                int _expectedReturnCode)
     : ConsoleJob(_command, _params, _expectedReturnCode)
 {
-   SetName(_commandTitle != "" ? _commandTitle : "Console");
+   SetName(_commandTitle != L"" ? _commandTitle : L"Console");
    Initialize(_command, _expectedReturnCode);
 }
 
@@ -49,15 +49,15 @@ AbstractJob *UserConsoleJob::Clone()
     return new UserConsoleJob(*this);
 }
 
-void UserConsoleJob::Initialize(const string &_command, int _expectedReturnCode)
+void UserConsoleJob::Initialize(const wstring &_command, int _expectedReturnCode)
 {
     currentStatus = NULL;
     command = _command;
-    outputFileName = "";
+    outputFileName = L"";
     expectedReturnCode = _expectedReturnCode;
     receivedReturnCode = -1;
-    commandOutput = "";
-    expectedOutput = "";
+    commandOutput = L"";
+    expectedOutput = L"";
     successConditionOnStandardOutput = false;
     attachOutputToStatus = false;
     useParserWithBuffer = false;
@@ -73,12 +73,12 @@ JobStatus *UserConsoleJob::Run()
     return ConsoleJob::Run();
 }
 
-string UserConsoleJob::GetMiniDescriptionParserCommand() const
+wstring UserConsoleJob::GetMiniDescriptionParserCommand() const
 {
     return parserCommand;
 }
 
-void UserConsoleJob::SetMiniDescriptionParserCommand(const string &parser)
+void UserConsoleJob::SetMiniDescriptionParserCommand(const wstring &parser)
 {
     parserCommand = parser;
     attachOutputToStatus = false;
@@ -89,21 +89,21 @@ void UserConsoleJob::SetAttachOutput(const bool value)
     attachOutputToStatus = value;
 }
 
-string UserConsoleJob::GetOutputFile() const
+wstring UserConsoleJob::GetOutputFile() const
 {
     return outputFileName;
 }
 
-void UserConsoleJob::SetOutputTofile(const string &filename)
+void UserConsoleJob::SetOutputTofile(const wstring &filename)
 {
     outputFileName = filename;
-    expectedOutput = "";
+    expectedOutput = L"";
     successConditionOnStandardOutput = false;
 }
 
 void UserConsoleJob::SetOutputToBuffer()
 {
-    outputFileName = "";
+    outputFileName = L"";
 }
 
 bool UserConsoleJob::IsParsingUsingBuffer() const
@@ -120,16 +120,16 @@ void UserConsoleJob::SetExpectedReturnCode(const int value)
 {
     ConsoleJob::SetExpectedReturnCode(value);
 
-    expectedOutput = "";
+    expectedOutput = L"";
     successConditionOnStandardOutput = false;
 }
 
-string UserConsoleJob::GetExpectedOutput() const
+wstring UserConsoleJob::GetExpectedOutput() const
 {
     return expectedOutput;
 }
 
-void UserConsoleJob::SetExpectedOutput(const string &value)
+void UserConsoleJob::SetExpectedOutput(const wstring &value)
 {
     expectedOutput = value;
 
@@ -142,12 +142,12 @@ bool UserConsoleJob::HasUserAttachments() const
    return (!additionalAttachments.empty());
 }
 
-void UserConsoleJob::GetUserAttachments(vector<string>& attachments)
+void UserConsoleJob::GetUserAttachments(vector<wstring>& attachments)
 {
    attachments = additionalAttachments;
 }
 
-void UserConsoleJob::AddUserAttachment(const string& name)
+void UserConsoleJob::AddUserAttachment(const wstring& name)
 {
    additionalAttachments.push_back(name);
 }
@@ -163,23 +163,23 @@ bool UserConsoleJob::RunCommand()
 {
     debugManager->Reset();
 
-    debugManager->AddDataLine<string>("Command", command);
+    debugManager->AddDataLine<wstring>(L"Command", command);
 
     delete currentStatus;
     currentStatus = new JobStatus();
-    if (outputFileName != "")
+    if (outputFileName != L"")
         RunCommandOnFile();
     else
         RunCommandOnBuffer();
 
-    debugManager->AddDataLine<int>("Received return code", receivedReturnCode);
+    debugManager->AddDataLine<int>(L"Received return code", receivedReturnCode);
 
     return IsRunOk();
 }
 
 JobStatus *UserConsoleJob::CreateSuccessStatus()
 {
-    if (parserCommand != "")
+    if (parserCommand != L"")
         FillStatusFromParsing();
     else
         currentStatus->SetCode(JobStatus::Ok);
@@ -201,7 +201,7 @@ JobStatus *UserConsoleJob::CreateErrorStatus()
 
 void UserConsoleJob::RunCommandOnFile()
 {
-    string commandToRun = command + " " + commandParams;
+    wstring commandToRun = command + L" " + commandParams;
     int rawCode = Tools::RunExternalCommandToFile(commandToRun, outputFileName, true);
 #ifdef __linux__
     receivedReturnCode = WEXITSTATUS(rawCode);
@@ -214,7 +214,7 @@ void UserConsoleJob::RunCommandOnFile()
 void UserConsoleJob::RunCommandOnBuffer()
 {
     ConsoleJob::RunCommand();
-    if (attachOutputToStatus && commandOutput != "")
+    if (attachOutputToStatus && commandOutput != L"")
         currentStatus->AddFileBuffer(GetAttachmentName(), commandOutput);
 }
 
@@ -228,9 +228,9 @@ bool UserConsoleJob::IsRunOk()
 
 void UserConsoleJob::FillStatusFromParsing()
 {
-    debugManager->AddDataLine<string>("Parser command", parserCommand);
+    debugManager->AddDataLine<wstring>(L"Parser command", parserCommand);
 
-    string miniDescription("");
+    wstring miniDescription(L"");
     int returnValue = Tools::RunExternalCommandToBuffer(CreateParserCommand(), miniDescription, true);
     if (returnValue != -1)
     {
@@ -240,7 +240,7 @@ void UserConsoleJob::FillStatusFromParsing()
     else
     {
         currentStatus->SetCode(JobStatus::OkWithWarnings);
-        currentStatus->SetDescription("Parsing error");
+        currentStatus->SetDescription(L"Parsing error");
     }
 }
 
@@ -248,7 +248,7 @@ void UserConsoleJob::FillErrorStatusFromOutput()
 {
     currentStatus->SetCode(JobStatus::Error);
 
-    stringstream message;
+    wstringstream message;
     message << "Received <" << commandOutput << "> - expected <" << expectedOutput << ">" << endl;
     currentStatus->SetDescription(message.str());
 }
@@ -257,27 +257,27 @@ void UserConsoleJob::FillErrorStatusFromReturnCode()
 {
     currentStatus->SetCode(JobStatus::Error);
 
-    stringstream message;
+    wstringstream message;
     message << "Return value : " << receivedReturnCode << " - expected : " << expectedReturnCode << endl;
 
     currentStatus->SetDescription(message.str());
 
-    debugManager->AddDataLine<string>("Output", commandOutput);
+    debugManager->AddDataLine<wstring>(L"Output", commandOutput);
 }
 
 void UserConsoleJob::FinalizeStatusCreation()
 {
     currentStatus = debugManager->UpdateStatus(currentStatus);
 
-    vector<string>::const_iterator it = additionalAttachments.begin();
+    vector<wstring>::const_iterator it = additionalAttachments.begin();
     for (; it != additionalAttachments.end(); ++it)
        currentStatus->AddExternalFile(*it);
 }
 
-string UserConsoleJob::CreateParserCommand() const
+wstring UserConsoleJob::CreateParserCommand() const
 {
     if (useParserWithBuffer)
-        return parserCommand + " \"" + commandOutput + "\"";
+        return parserCommand + L" \"" + commandOutput + L"\"";
     else
         return parserCommand;
 }
