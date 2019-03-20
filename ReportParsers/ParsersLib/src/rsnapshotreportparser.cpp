@@ -121,7 +121,7 @@ void RSnapshotReportParser::ParseLines(const std::vector<wstring> &lines)
         size_t posSimbol = it->find_first_of(L"+-");
         if (posSimbol != std::wstring::npos)
         {
-            char simbol = (*it)[posSimbol];
+            wchar_t simbol = (*it)[posSimbol];
             size_t posFile = it->find_first_not_of(L" ", posSimbol+1);
             if (posFile != std::wstring::npos)
             {

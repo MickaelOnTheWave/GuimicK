@@ -30,9 +30,9 @@ void SelectBackupFolderDialog::on_backupWidget_clicked(const QModelIndex &index)
 
 void SelectBackupFolderDialog::FillUiFromJob(AbstractBackupJob* job)
 {
-   vector<pair<string,string> > backedUpFolders;
+   vector<pair<wstring,wstring> > backedUpFolders;
    job->GetFolderList(backedUpFolders);
 
    for (auto it : backedUpFolders)
-      ui->backupWidget->addItem(it.first.c_str());
+      ui->backupWidget->addItem(QString::fromStdWString(it.first));
 }

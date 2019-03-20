@@ -30,14 +30,14 @@ void EditDiskSpaceJobDialog::on_buttonBox_rejected()
 void EditDiskSpaceJobDialog::UpdateUiFromJob()
 {
    auto diskSpaceJob = static_cast<LinuxFreeSpaceCheckJob*>(job);
-   ui->jobNameEdit->setText(diskSpaceJob->GetName().c_str());
-   ui->driveEdit->setText(diskSpaceJob->GetDrive().c_str());
+   ui->jobNameEdit->setText(QString::fromStdWString(diskSpaceJob->GetName()));
+   ui->driveEdit->setText(QString::fromStdWString(diskSpaceJob->GetDrive()));
 }
 
 void EditDiskSpaceJobDialog::UpdateJobFromUi()
 {
    auto diskSpaceJob = static_cast<LinuxFreeSpaceCheckJob*>(job);
-   diskSpaceJob->SetName(ui->jobNameEdit->text().toStdString());
-   diskSpaceJob->SetDrive(ui->driveEdit->text().toStdString());
+   diskSpaceJob->SetName(ui->jobNameEdit->text().toStdWString());
+   diskSpaceJob->SetDrive(ui->driveEdit->text().toStdWString());
    diskSpaceJob->SetTargetToLocal(true);
 }

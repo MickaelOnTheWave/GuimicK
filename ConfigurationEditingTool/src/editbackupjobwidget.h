@@ -35,7 +35,7 @@ private slots:
 
 private:
    void AddBackupPointsToUi(
-      const std::vector<std::pair<std::string,std::string> >& backupPoints
+      const std::vector<std::pair<std::wstring,std::wstring> >& backupPoints
    );
    void AddBackupPointsToJob(AbstractBackupJob* job) const;
 

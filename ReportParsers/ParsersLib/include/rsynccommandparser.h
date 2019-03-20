@@ -18,7 +18,7 @@ private:
     void FillChangeList(const std::vector<std::wstring>& reportLines,
                         RawFileChangeList& changeList);
     void FillReport(const RawFileChangeList &changeList);
-    bool IsFileStatusChar(const char charToTest) const;
+    bool IsFileStatusChar(const wchar_t charToTest) const;
     bool IsTimeChangeOnly(const std::wstring& changeString) const;
 };
 

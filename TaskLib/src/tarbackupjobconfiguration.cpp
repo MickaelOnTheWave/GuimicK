@@ -4,7 +4,7 @@
 //-------------------------------------------------------------------------//
 
 TarBackupJobConfiguration::TarBackupJobConfiguration()
-    : AbstractFsBackupJobConfiguration("TarBackup")
+    : AbstractFsBackupJobConfiguration(L"TarBackup")
 {
 }
 

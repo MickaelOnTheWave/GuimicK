@@ -18,7 +18,7 @@ ConsoleJobDisplay::~ConsoleJobDisplay()
 
 void ConsoleJobDisplay::Initialize(AbstractJob* job)
 {
-   ui->nameLabel->setText(job->GetName().c_str());
+   ui->nameLabel->setText(QString::fromStdWString(job->GetName()));
    auto consoleJob = dynamic_cast<AbstractConsoleJob*>(job);
    if (consoleJob)
    {
@@ -58,7 +58,7 @@ void ConsoleJobDisplay::InitializeParserLabel(AbstractConsoleJob* job)
 
    if (userJob)
    {
-      const QString parserCommand = userJob->GetMiniDescriptionParserCommand().c_str();
+      const QString parserCommand = QString::fromStdWString(userJob->GetMiniDescriptionParserCommand());
       if (parserCommand != "")
          ui->parserLabel->setText(parserCommand);
       else

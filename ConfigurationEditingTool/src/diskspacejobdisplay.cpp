@@ -20,8 +20,8 @@ void DiskSpaceJobDisplay::Initialize(AbstractJob* job)
    auto diskSpaceJob = dynamic_cast<LinuxFreeSpaceCheckJob*>(job);
    if (diskSpaceJob)
    {
-      ui->jobNameLabel->setText(diskSpaceJob->GetName().c_str());
-      ui->jobTypeLabel->setVisible((diskSpaceJob->GetName() != "Free space checking"));
-      ui->driveLabel->setText(diskSpaceJob->GetDrive().c_str());
+      ui->jobNameLabel->setText(QString::fromStdWString(diskSpaceJob->GetName()));
+      ui->jobTypeLabel->setVisible((diskSpaceJob->GetName() != L"Free space checking"));
+      ui->driveLabel->setText(QString::fromStdWString(diskSpaceJob->GetDrive()));
    }
 }

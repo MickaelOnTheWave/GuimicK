@@ -62,7 +62,7 @@ void RsyncCommandParser::FillReport(const RawFileChangeList &changeList)
     }
 }
 
-bool RsyncCommandParser::IsFileStatusChar(const char charToTest) const
+bool RsyncCommandParser::IsFileStatusChar(const wchar_t charToTest) const
 {
     return (charToTest == '*' || charToTest == 'c' || charToTest == '>');
 }

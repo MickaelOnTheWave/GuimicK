@@ -55,10 +55,10 @@ void SettingsDialog::SetDefaultValues()
 {
    Client* client = configuration->GetClient();
    Agent* agent = configuration->GetAgent();
-   if (client->GetName() == "")
-      client->SetName("Local Client");
-   if (agent->GetName() == "")
-      agent->SetName("Task Manager Agent");
+   if (client->GetName() == L"")
+      client->SetName(L"Local Client");
+   if (agent->GetName() == L"")
+      agent->SetName(L"Task Manager Agent");
 }
 
 void SettingsDialog::InitializeCssSelectionWidget()

@@ -40,14 +40,14 @@ void EditZipCopyBackupDialog::UpdateUiFromJob()
 {
    auto zipCopyJob = static_cast<ArchiveFsBackupJob*>(job);
    basicBackupWidget->UpdateUiFromJob(zipCopyJob);
-   ui->localDestinationEdit->setText(zipCopyJob->GetLocalDestination().c_str());
+   ui->localDestinationEdit->setText(QString::fromStdWString(zipCopyJob->GetLocalDestination()));
 }
 
 void EditZipCopyBackupDialog::UpdateJobFromUi()
 {
    auto zipCopyJob = static_cast<ArchiveFsBackupJob*>(job);
    basicBackupWidget->UpdateJobFromUi(zipCopyJob);
-   zipCopyJob->SetLocalDestination(ui->localDestinationEdit->text().toStdString());
+   zipCopyJob->SetLocalDestination(ui->localDestinationEdit->text().toStdWString());
 }
 
 void EditZipCopyBackupDialog::CreateBasicBackupWidget()

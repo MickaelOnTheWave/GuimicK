@@ -26,9 +26,9 @@ void EditBackupJobWidget::SetupDestinationAsFile(const QString& message,
 void EditBackupJobWidget::UpdateUiFromJob(AbstractBackupJob* job)
 {
    auto backupJob = static_cast<AbstractBackupJob*>(job);
-   ui->jobNameEdit->setText(backupJob->GetName().c_str());
+   ui->jobNameEdit->setText(QString::fromStdWString(backupJob->GetName()));
 
-   vector<pair<string,string> > backupPoints;
+   vector<pair<wstring,wstring> > backupPoints;
    backupJob->GetFolderList(backupPoints);
    AddBackupPointsToUi(backupPoints);
    ui->removeBackupPointButton->setEnabled(false);
@@ -37,20 +37,20 @@ void EditBackupJobWidget::UpdateUiFromJob(AbstractBackupJob* job)
 void EditBackupJobWidget::UpdateJobFromUi(AbstractBackupJob* job) const
 {
    auto backupJob = static_cast<AbstractBackupJob*>(job);
-   backupJob->SetName(ui->jobNameEdit->text().toStdString());
+   backupJob->SetName(ui->jobNameEdit->text().toStdWString());
    AddBackupPointsToJob(job);
 }
 
 void EditBackupJobWidget::AddBackupPointsToUi(
-   const vector<pair<string, string> >& backupPoints
+   const vector<pair<wstring, wstring> >& backupPoints
 )
 {
    ui->backupPointsWidget->setRowCount(backupPoints.size());
    int index = 0;
    for (const auto it : backupPoints)
    {
-      ui->backupPointsWidget->setItem(index, 0, new QTableWidgetItem(it.first.c_str()));
-      ui->backupPointsWidget->setItem(index, 1, new QTableWidgetItem(it.second.c_str()));
+      ui->backupPointsWidget->setItem(index, 0, new QTableWidgetItem(QString::fromStdWString(it.first)));
+      ui->backupPointsWidget->setItem(index, 1, new QTableWidgetItem(QString::fromStdWString(it.second)));
       ++index;
    }
    ui->backupPointsWidget->resizeColumnsToContents();
@@ -66,7 +66,7 @@ void EditBackupJobWidget::AddBackupPointsToJob(AbstractBackupJob* job) const
       QTableWidgetItem* destinationItem = ui->backupPointsWidget->item(i, 1);
       const QString sourceContent = (sourceItem) ? sourceItem->text() : QString("");
       const QString destinationContent = (destinationItem) ? destinationItem->text() : QString("");
-      backupJob->AddFolder(sourceContent.toStdString(), destinationContent.toStdString());
+      backupJob->AddFolder(sourceContent.toStdWString(), destinationContent.toStdWString());
    }
 }
 
