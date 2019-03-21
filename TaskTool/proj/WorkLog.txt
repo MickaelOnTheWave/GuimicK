@@ -1,3 +1,18 @@
+21/03/2019 (2.5h)
+    Finished migrating ConfigurationEditor. Now checking TaskTool : only
+    a few compilation issues remained. Now fixing some linking ones.
+Next planned work:
+    - Fix remaining issues in TaskTool compilation
+    - Finish bug in Editor with two jobs of the same type
+
+20/03/2019 (5.8h)
+    Finished wstring migration for Configuration editor. Mostly finished
+    for TaskLib. Mostly finished for ToolsLib, only some tools need templatization
+    for both types of string. Mostly finished all config editor with dependencies.
+
+19/03/2019 (4.6h)
+    Continuing wstring migration...
+
 18/03/2019 (2h)
     Saw answer from StackOverflow : the issue is not with the std api, its
     with using simple strings instead of wide ones. Starting the migration...
