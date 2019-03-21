@@ -7,8 +7,35 @@
 #include "filetools.h"
 #include "jobdebuginformationmanager.h"
 #include "mimetools.h"
+#include "tools.h"
 
 using namespace std;
+
+vector<string> ToUtf8(const vector<wstring>& input)
+{
+   vector<string> output;
+   output.reserve(input.size());
+   vector<wstring>::const_iterator it = input.begin();
+   vector<wstring>::const_iterator end = input.end();
+   for (; it != end; ++it)
+      output.push_back(Tools::UnicodeToUtf8(*it));
+   return output;
+}
+
+vector<pair<string, string> > ToUtf8(const vector<pair<wstring, wstring> >& input)
+{
+   vector<pair<string, string> > output;
+   output.reserve(input.size());
+   vector<pair<wstring, wstring> >::const_iterator it = input.begin();
+   vector<pair<wstring, wstring> >::const_iterator end = input.end();
+   for (; it != end; ++it)
+   {
+      const string first = Tools::UnicodeToUtf8(it->first);
+      const string second = Tools::UnicodeToUtf8(it->second);
+      output.push_back(make_pair(first, second));
+   }
+   return output;
+}
 
 static const wstring mailFileName = L"mailContents.txt";
 
@@ -69,17 +96,32 @@ wstring CurlConsoleReportDispatcher::BuildCurlParams(const wstring &mailFilename
 void CurlConsoleReportDispatcher::WriteReportContentToFile(AbstractReportCreator *reportCreator,
                                                            const wstring &filename)
 {
-    vector<wstring> externalFiles;
-    vector<pair<wstring,wstring> > fileBuffers;
-    reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
+    const string emailContent = CreateEmailContent(reportCreator);
 
-    MimeTools mimeCreator;
-
-    wofstream mailFile;
-    mailFile.open(filename.c_str());
-    mailFile << mimeCreator.CreateEmailContent(isHtml, displayName, emailData.GetAddress(),
-                                               destEmail, cc, bcc,
-                                               subject, reportCreator->GetReportContent(),
-                                               externalFiles, fileBuffers);
+    ofstream mailFile;
+    mailFile.open(Tools::UnicodeToUtf8(filename));
+    mailFile << emailContent;
     mailFile.close();
+}
+
+std::string CurlConsoleReportDispatcher::CreateEmailContent(AbstractReportCreator* reportCreator) const
+{
+   vector<wstring> externalFiles;
+   vector<pair<wstring, wstring> > fileBuffers;
+   reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
+
+   MimeTools mimeCreator;
+   const string emailContent = mimeCreator.CreateEmailContent(
+      isHtml, 
+      Tools::UnicodeToUtf8(displayName),
+      Tools::UnicodeToUtf8(emailData.GetAddress()),
+      Tools::UnicodeToUtf8(destEmail),
+      Tools::UnicodeToUtf8(cc),
+      Tools::UnicodeToUtf8(bcc),
+      Tools::UnicodeToUtf8(subject),
+      Tools::UnicodeToUtf8(reportCreator->GetReportContent()),
+      ToUtf8(externalFiles),
+      ToUtf8(fileBuffers)
+   );
+   return emailContent;
 }

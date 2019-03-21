@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 
+#include "bytestring.h"
 #include <tools.h>
 
 using namespace std;
@@ -22,9 +23,9 @@ wstring RsnapshotReport::BytesTaken() const
 
     std::wstring formattedQuantity;
 	if (bytesTaken < 0)
-		formattedQuantity = Tools::FormatByteString(-bytesTaken) + L" freed";
+		formattedQuantity = ByteString<wstring>::Format(-bytesTaken) + L" freed";
 	else
-		formattedQuantity = Tools::FormatByteString(bytesTaken) + L" taken";
+		formattedQuantity = ByteString<wstring>::Format(bytesTaken) + L" taken";
 
 	return formattedQuantity;
 }
@@ -67,8 +68,8 @@ wstring RsnapshotReport::GetFullDescription() const
 {
     wstringstream description;
     description << FileBackupReport::GetFullDescription();
-    description << Tools::FormatByteString(bytesAdded) << L" added, ";
-    description << Tools::FormatByteString(bytesRemoved) << L" removed, and overall ";
+    description << ByteString<wstring>::Format(bytesAdded) << L" added, ";
+    description << ByteString<wstring>::Format(bytesRemoved) << L" removed, and overall ";
     description << BytesTaken() << std::endl;
     return description.str();
 }

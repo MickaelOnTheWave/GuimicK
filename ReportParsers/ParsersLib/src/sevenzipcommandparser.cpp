@@ -4,13 +4,13 @@
 
 using namespace std;
 
-const char addChar = '+';
-const char removeChar = '-';
-const char updateChar = 'U';
+const wchar_t addChar = '+';
+const wchar_t removeChar = '-';
+const wchar_t updateChar = 'U';
 
 bool IsFileLine(const wstring& lineData)
 {
-   const char firstChar = lineData.front();
+   const wchar_t firstChar = lineData.front();
    const bool isFirstCharValid = (firstChar == addChar ||
                                   firstChar == removeChar ||
                                   firstChar == updateChar);
@@ -57,7 +57,7 @@ void SevenZipCommandParser::FillReportData(const vector<wstring> &lines)
    {
       if (!it->empty() && IsFileLine(*it))
       {
-         const char firstChar = it->front();
+         const wchar_t firstChar = it->front();
          if (firstChar == updateChar)
             reportData->AddAsModified(ExtractFilename(*it));
          else if (firstChar == addChar)

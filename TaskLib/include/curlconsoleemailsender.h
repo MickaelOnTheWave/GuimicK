@@ -17,6 +17,7 @@ private:
     std::wstring BuildCurlParams(const std::wstring& mailFilename) const;
     void WriteReportContentToFile(AbstractReportCreator* reportCreator,
                                   const std::wstring& filename);
+    std::string CreateEmailContent(AbstractReportCreator* reportCreator) const;
 };
 
 #endif // CURLCONSOLEEMAILSENDER_H
