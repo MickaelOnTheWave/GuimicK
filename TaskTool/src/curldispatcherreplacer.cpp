@@ -9,7 +9,7 @@ AbstractReportDispatcher *CurlDispatcherReplacer::Run(AbstractReportDispatcher *
     // tasklib. Here is the workaround to get the final dispatcher : replace the dummy
     // one returned from configuration to the real one linked in tool.
 
-    if (input->GetName() == "Dummy Email")
+    if (input->GetName() == L"Dummy Email")
     {
         delete input;
         AbstractReportDispatcher* trueDispatcher = EmailDispatcherFactory::Create();
