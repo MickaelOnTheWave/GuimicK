@@ -1,3 +1,11 @@
+24/03/2019 (3.5h)
+    Fixed ByteString template tool. Also reimplemented Folder delete
+    Windows calls, now report cleaning works as expected.
+    However tool is now crashing because of code page conversion.
+Next planned work:
+    - Fix encoding issue with console paths
+    - Fix bug with two jobs
+
 21/03/2019 (2.5h)
     Finished migrating ConfigurationEditor. Now checking TaskTool : only
     a few compilation issues remained. Now fixing some linking ones.
