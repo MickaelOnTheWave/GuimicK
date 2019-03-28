@@ -20,6 +20,7 @@
 #include "jobdelegate.h"
 #include "jobeditdialogfactory.h"
 #include "pathtools.h"
+#include "schedulerdialog.h"
 #include "selectbackupfolderdialog.h"
 #include "serverconfiguration.h"
 #include "settingsdialog.h"
@@ -716,5 +717,6 @@ void MainWindow::on_actionTask_Tool_triggered()
 
 void MainWindow::on_actionSchedule_Execution_triggered()
 {
-   QMessageBox::warning(this, "TODO", "Implement");
+   SchedulerDialog dialog(this);
+   const int result = dialog.exec();
 }

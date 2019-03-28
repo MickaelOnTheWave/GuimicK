@@ -1,3 +1,10 @@
+28/03/2019 (1h)
+    Too short time to resolve encoding issue. Going for Task scheduler.
+    Scheduler UI mostly done with its UI logic.
+Next planned work:
+    - Insert Path Selection control in Scheduler UI
+    - Resolve encoding issue in Windows
+
 24/03/2019 (3.5h)
     Fixed ByteString template tool. Also reimplemented Folder delete
     Windows calls, now report cleaning works as expected.
