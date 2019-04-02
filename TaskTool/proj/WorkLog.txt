@@ -1,3 +1,64 @@
+02/04/2019 (20.1-20.4)
+    Finished Scheduler path selection control. Going back to Encoding...
+
+28/03/2019 (1h)
+    Too short time to resolve encoding issue. Going for Task scheduler.
+    Scheduler UI mostly done with its UI logic.
+Next planned work:
+    - Insert Path Selection control in Scheduler UI
+    - Resolve encoding issue in Windows
+
+24/03/2019 (3.5h)
+    Fixed ByteString template tool. Also reimplemented Folder delete
+    Windows calls, now report cleaning works as expected.
+    However tool is now crashing because of code page conversion.
+Next planned work:
+    - Fix encoding issue with console paths
+    - Fix bug with two jobs
+
+21/03/2019 (2.5h)
+    Finished migrating ConfigurationEditor. Now checking TaskTool : only
+    a few compilation issues remained. Now fixing some linking ones.
+Next planned work:
+    - Fix remaining issues in TaskTool compilation
+    - Finish bug in Editor with two jobs of the same type
+
+20/03/2019 (5.8h)
+    Finished wstring migration for Configuration editor. Mostly finished
+    for TaskLib. Mostly finished for ToolsLib, only some tools need templatization
+    for both types of string. Mostly finished all config editor with dependencies.
+
+19/03/2019 (4.6h)
+    Continuing wstring migration...
+
+18/03/2019 (2h)
+    Saw answer from StackOverflow : the issue is not with the std api, its
+    with using simple strings instead of wide ones. Starting the migration...
+Next planned work:
+    - Continue/Finish wstring migration
+
+17/03/2019 (1.5h)
+    Created small example. Reproduced the issue and asked on StackOverflow.
+    Now trying "different system calls"... Using plain C functions works fine!!
+    Modifying File tools to use it instead of ofstream. Stopping now to rest.
+Next planned work:
+    - Finish changing FileTools to plain C api
+
+15/03/2019 (1.7h)
+    Finished resolving platform issues : proper commands have been used in
+    NSIS installer. Also improved uninstaller : now configuration registry
+    keys are being deleted.
+    Tested on Clean VM : permission issues occur. Seeing how to prevent this...
+    Restored Installer to admin mode as user mode prevented install. Tried
+    to execute Configuration editor in Admin mode : issue still there.
+Next planned work:
+    - Create small app for reproducing issue in small scale
+    - Try different "system calls" for folder removal/write to temp...
+    - If issue is still not fixed, ask on StackOverflow
+
+13/03/2019 (0.8h)
+    While VMs are updating, created menu entry for scheduler configuration.
+
 12/03/2019 (1.1h)
     Added missing VS dlls to installer. The other missing dll is qwindows.
     Integrated the qtdeploywindows tool to install process, however there is
