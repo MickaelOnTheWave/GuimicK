@@ -718,5 +718,6 @@ void MainWindow::on_actionTask_Tool_triggered()
 void MainWindow::on_actionSchedule_Execution_triggered()
 {
    SchedulerDialog dialog(this);
+   dialog.SetConfigurationFile(currentConfigurationFile);
    const int result = dialog.exec();
 }

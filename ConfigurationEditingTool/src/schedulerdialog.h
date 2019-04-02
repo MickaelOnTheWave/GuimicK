@@ -15,6 +15,8 @@ public:
    explicit SchedulerDialog(QWidget *parent = 0);
    ~SchedulerDialog();
 
+   void SetConfigurationFile(const QString& file);
+
 private slots:
    void on_noScheduleButton_clicked();
 
@@ -27,7 +29,10 @@ private slots:
    void on_monthlyButton_clicked();
 
 private:
+   void InitializePathWidget();
+
    Ui::SchedulerDialog *ui;
+   QString configurationFile = "";
 };
 
 #endif // SCHEDULERDIALOG_H

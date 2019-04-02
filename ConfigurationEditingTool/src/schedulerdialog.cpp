@@ -8,11 +8,19 @@ SchedulerDialog::SchedulerDialog(QWidget *parent) :
    ui->setupUi(this);
    on_noScheduleButton_clicked();
    on_dailyButton_clicked();
+
+   InitializePathWidget();
 }
 
 SchedulerDialog::~SchedulerDialog()
 {
    delete ui;
+}
+
+void SchedulerDialog::SetConfigurationFile(const QString& file)
+{
+   configurationFile = file;
+   ui->fileSelectionDialog->SetPath(configurationFile);
 }
 
 void SchedulerDialog::on_noScheduleButton_clicked()
@@ -37,5 +45,15 @@ void SchedulerDialog::on_weeklyButton_clicked()
 
 void SchedulerDialog::on_monthlyButton_clicked()
 {
-    ui->configurationStackedWidget->setCurrentIndex(2);
+   ui->configurationStackedWidget->setCurrentIndex(2);
+}
+
+void SchedulerDialog::InitializePathWidget()
+{
+   const QString fileFilter = "Configuration file (*)";
+   ui->fileSelectionDialog->InitializeAsExistingFile(
+            "Configuration file",
+            "Select configuration to use for Scheduled Runs",
+            "",
+            fileFilter);
 }

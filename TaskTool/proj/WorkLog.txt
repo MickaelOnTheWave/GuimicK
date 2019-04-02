@@ -1,3 +1,6 @@
+02/04/2019 (20.1-20.4)
+    Finished Scheduler path selection control. Going back to Encoding...
+
 28/03/2019 (1h)
     Too short time to resolve encoding issue. Going for Task scheduler.
     Scheduler UI mostly done with its UI logic.
