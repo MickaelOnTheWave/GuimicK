@@ -120,8 +120,10 @@ void TaskToolRunDialog::on_runButton_clicked()
 
 std::wstring TaskToolRunDialog::CreateTaskToolCommand() const
 {
-   return std::wstring(L"\"") + taskToolExecutable.toStdWString() + L"\" --conffile " +
-         configurationFile.toStdWString();
+   std::wstring command = std::wstring(L"\"");
+   command += PathTools::ToWindowsPath(taskToolExecutable.toStdWString()) + L"\" --conffile ";
+   command += PathTools::ToWindowsPath(configurationFile.toStdWString());
+   return command;
 }
 
 QString TaskToolRunDialog::CreateChdirErrorMessage() const

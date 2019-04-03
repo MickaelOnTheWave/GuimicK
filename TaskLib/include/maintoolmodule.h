@@ -18,6 +18,7 @@ public:
     void SetFallbackDispatcher(AbstractReportDispatcher* dispatcher);
 
     int RunFromCommandLine(int argc, char* argv[]);
+    int RunFromCommandLine(int argc, wchar_t* argv[]);
     int RunFromParameterMap(const std::map<std::wstring, std::wstring>& parameters);
 
 private:

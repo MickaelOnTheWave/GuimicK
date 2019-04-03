@@ -54,6 +54,12 @@ int MainToolModule::RunFromCommandLine(int argc, char *argv[])
     return Run(commandLine);
 }
 
+int MainToolModule::RunFromCommandLine(int argc, wchar_t* argv[])
+{
+   CommandLineManager commandLine(argc, argv);
+   return Run(commandLine);
+}
+
 int MainToolModule::RunFromParameterMap(const std::map<wstring, wstring> &parameters)
 {
     CommandLineManager commandLine(parameters);
