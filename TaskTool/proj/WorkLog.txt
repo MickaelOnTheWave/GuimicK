@@ -1,5 +1,10 @@
-02/04/2019 (20.1-20.4)
+02/04/2019 (1.5h)
     Finished Scheduler path selection control. Going back to Encoding...
+    Finished encoding issue. Solution : use Windows API to get
+    argv directly in Unicode. Tested and worked as expected.
+    Pushed code to Linux : now trying to make it compile.
+Next planned work:
+    - Make Linux version compile and work as before
 
 28/03/2019 (1h)
     Too short time to resolve encoding issue. Going for Task scheduler.
