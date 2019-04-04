@@ -1,6 +1,6 @@
 #include "tarcommandparser.h"
 
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -19,7 +19,7 @@ bool TarCommandParser::ParseBuffer(const std::wstring &buffer)
     reportData->Clear();
 
     vector<wstring> lines;
-    Tools::TokenizeString(buffer, '\n', lines);
+    StringTools::Tokenize(buffer, '\n', lines);
 
     FillReportData(lines);
 

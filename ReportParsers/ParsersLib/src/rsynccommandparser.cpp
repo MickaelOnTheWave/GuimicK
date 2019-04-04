@@ -1,6 +1,6 @@
 #include "rsynccommandparser.h"
 
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ RsyncCommandParser::~RsyncCommandParser()
 bool RsyncCommandParser::ParseBuffer(const wstring &buffer)
 {
     vector<wstring> lines;
-    Tools::TokenizeString(buffer, '\n', lines);
+    StringTools::Tokenize(buffer, '\n', lines);
 
     RawFileChangeList changeList;
     FillChangeList(lines, changeList);
@@ -42,7 +42,7 @@ void RsyncCommandParser::FillChangeList(const std::vector<wstring> &reportLines,
             size_t pos = it->find_first_of(' ');
             const wstring fileTag = it->substr(0, pos);
             const wstring fileName = it->substr(pos+1);
-            changeList.push_back(make_pair(fileTag, Tools::LeftTrim(fileName)));
+            changeList.push_back(make_pair(fileTag, StringTools::LeftTrim(fileName)));
         }
     }
 }

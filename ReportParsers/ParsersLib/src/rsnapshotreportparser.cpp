@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include "bytestring.h"
-#include <tools.h>
+#include "stringtools.h"
 
 using namespace std;
 
@@ -90,7 +90,7 @@ bool RSnapshotReportParser::ParseBuffer(const std::wstring &buffer)
     reportData->Clear();
 
     vector<wstring> lines;
-    Tools::TokenizeString(buffer, '\n', lines);
+    StringTools::Tokenize(buffer, '\n', lines);
 
     // TODO : refactor inside this (very messy) method and here too.
     ParseLines(lines);

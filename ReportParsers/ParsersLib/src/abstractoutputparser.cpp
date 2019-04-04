@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "filetools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -25,7 +26,12 @@ bool AbstractOutputParser::ParseFile(const wstring &inputFile)
 
 void AbstractOutputParser::WriteFullDescriptionToFile(const wstring &filename)
 {
+#ifdef _WIN32
     wofstream outFile(filename.c_str());
+#else
+   const string utf8Filename = StringTools::UnicodeToUtf8(filename);
+   wofstream outFile(utf8Filename.c_str());
+#endif
     outFile << GetFullDescription();
     outFile.close();
 }

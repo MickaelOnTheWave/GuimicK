@@ -1,3 +1,10 @@
+04/04/2019 (1.9h)
+    Fixed a lot of compilation issues in Linux. Heavily relied upon
+    UnicodeToUtf8 conversion... There are still issues to fix.
+Next planned work:
+    - Check that Windows version still compiles
+    - Back to fixing Linux errors
+
 02/04/2019 (1.5h)
     Finished Scheduler path selection control. Going back to Encoding...
     Finished encoding issue. Solution : use Windows API to get

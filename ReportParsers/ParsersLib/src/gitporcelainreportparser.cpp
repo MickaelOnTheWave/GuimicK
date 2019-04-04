@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -23,7 +23,7 @@ bool GitPorcelainReportParser::ParseBuffer(const wstring &buffer)
     reportData->Clear();
 
     vector<wstring> lines;
-    Tools::TokenizeString(buffer, '\n', lines);
+    StringTools::Tokenize(buffer, '\n', lines);
 
     RemoveLinesWithoutStartingWhitespaces(lines);
 

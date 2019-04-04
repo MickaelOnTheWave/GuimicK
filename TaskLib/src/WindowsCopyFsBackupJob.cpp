@@ -1,6 +1,6 @@
 #include "WindowsCopyFsBackupJob.h"
 
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -41,7 +41,7 @@ void WindowsCopyFsBackupJob::CreateReport(const std::wstring&,
 FileBackupReport* WindowsCopyFsBackupJob::CreateBackupReport(const wstring& output) const
 {
    vector<wstring> fileList;
-   Tools::TokenizeString(output, '\n', fileList);
+   StringTools::Tokenize(output, '\n', fileList);
    fileList.pop_back();
 
    FileBackupReport* report = new FileBackupReport();

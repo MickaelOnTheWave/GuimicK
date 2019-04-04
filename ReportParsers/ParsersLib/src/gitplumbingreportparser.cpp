@@ -1,6 +1,6 @@
 #include "gitplumbingreportparser.h"
 
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ bool GitPlumbingReportParser::ParseBuffer(const wstring &buffer)
     reportData->Clear();
 
     vector<wstring> lines;
-    Tools::TokenizeString(buffer, '\n', lines);
+    StringTools::Tokenize(buffer, '\n', lines);
 
     FillReportData(lines);
     return true;
@@ -35,7 +35,7 @@ void GitPlumbingReportParser::FillReportData(const vector<wstring> &lines)
     for (; it!=lines.end(); ++it)
     {
         vector<wstring> tokens;
-        Tools::TokenizeString(*it, '\t', tokens);
+        StringTools::Tokenize(*it, '\t', tokens);
         if (tokens.front() == L"A")
             reportData->AddAsAdded(tokens.back());
         else if (tokens.front() == L"D")

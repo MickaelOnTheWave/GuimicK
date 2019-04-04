@@ -1,7 +1,7 @@
 #include "dfcommandparser.h"
 
 #include <sstream>
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -39,7 +39,7 @@ bool DfCommandParser::ParseBuffer(const wstring& buffer)
     driveList.clear();
 
     vector<wstring> lines;
-    Tools::TokenizeString(buffer, '\n', lines);
+    StringTools::Tokenize(buffer, '\n', lines);
 
     if (lines.size() > 1)
     {

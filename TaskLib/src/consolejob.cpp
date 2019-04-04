@@ -127,7 +127,7 @@ bool ConsoleJob::IsCommandAvailable() const
 #ifdef _WIN32
    return true;
 #else
-   return (PathTools::GetCommandPath(command, appSearchPaths) != wstring(""));
+   return (PathTools::GetCommandPath(command, appSearchPaths) != wstring(L""));
 #endif
 }
 

@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include "configurationtools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -34,7 +35,7 @@ Agent::Agent(ConfigurationObject *confObject, vector<wstring> &errorMessages)
         else if (currentProp.first == L"SmtpAddress")
             emailData.SetSmtpServer(currentProp.second);
         else if (currentProp.first == L"SmtpPort")
-            emailData.SetSmtpPort(_wtoi(currentProp.second.c_str()));
+            emailData.SetSmtpPort(StringTools::ToInt(currentProp.second));
         else if (currentProp.first == L"UseSSL")
             emailData.SetUseSsl(currentProp.second == L"true");
         else if (currentProp.first == L"ReportFile")

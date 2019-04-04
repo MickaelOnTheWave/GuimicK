@@ -4,7 +4,7 @@
 #include <sstream>
 #include <vector>
 
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -24,7 +24,7 @@ bool ClamAvReportParser::ParseBuffer(const wstring &buffer)
     reportData.Reset();
 
     vector<wstring> lines;
-    Tools::TokenizeString(buffer, '\n', lines);
+    StringTools::Tokenize(buffer, '\n', lines);
 
     vector<wstring>::const_iterator it=lines.begin();
     for (; it!=lines.end(); ++it)

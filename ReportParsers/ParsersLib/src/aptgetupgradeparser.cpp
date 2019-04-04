@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -52,7 +52,7 @@ bool AptGetUpgradeParser::ParseBuffer(const wstring &buffer)
     report.Clear();
 
     vector<wstring> lines;
-    Tools::TokenizeString(buffer, '\n', lines);
+    StringTools::Tokenize(buffer, '\n', lines);
 
     vector<wstring> downloadLines;
     vector<wstring> otherLines;
