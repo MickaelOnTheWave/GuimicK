@@ -3,13 +3,13 @@
 #include <algorithm>
 #include <stdlib.h>
 
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
 RsnapshotErrorAnalyzer::RsnapshotErrorAnalyzer(const std::wstring &output)
 {
-    Tools::TokenizeString(output, '\n', outputLines);
+    StringTools::Tokenize(output, '\n', outputLines);
 }
 
 bool RsnapshotErrorAnalyzer::IsOutOfSpaceError(void) const
@@ -40,7 +40,7 @@ int RsnapshotErrorAnalyzer::GetRsyncErrorCode(const wstring &line) const
     const size_t endPos = line.rfind(')');
     const size_t startPos = line.rfind('(', endPos);
     wstring codeString = line.substr(startPos+1, endPos-1);
-    return _wtoi(codeString.c_str());
+    return StringTools::ToInt(codeString);
 }
 
 bool startFinder(const wstring& line)

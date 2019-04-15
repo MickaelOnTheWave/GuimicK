@@ -40,9 +40,11 @@ void ConsoleJobDisplay::InitializeTypeLabel(AbstractConsoleJob* job)
 
 void ConsoleJobDisplay::InitializeCommandLabel(AbstractConsoleJob* job)
 {
+   const QString jobCommand = QString::fromStdWString(job->GetCommand());
+   const QString jobParameters = QString::fromStdWString(job->GetCommandParameters());
    const QString command = QString("%1 %2")
-                           .arg(job->GetCommand().c_str())
-                           .arg(job->GetCommandParameters().c_str());
+                           .arg(jobCommand)
+                           .arg(jobParameters);
    ui->commandLabel->setText(command);
 }
 

@@ -4,6 +4,7 @@
 #include "clientjobsconfiguration.h"
 #include "resultcollectionstatus.h"
 #include "sshconsolejob.h"
+#include "stringtools.h"
 #include "tools.h"
 
 using namespace std;
@@ -99,7 +100,8 @@ void RemoteJobsRunner::SetIsWorkListTimed(const bool value)
 
 bool RemoteJobsRunner::RetrieveRemoteConfiguration(wstring& output)
 {
-   ConsoleJob* retrieveJob = new ConsoleJob(L"cat", Tools::EscapedSpaces(configurationFile));
+   const wstring fixedConfFile = StringTools::EscapedSpaces(configurationFile);
+   ConsoleJob* retrieveJob = new ConsoleJob(L"cat", fixedConfFile);
    SshConsoleJob remoteRetrieveJob(retrieveJob);
    remoteRetrieveJob.SetParentDebugManager(debugManager);
    remoteRetrieveJob.SetTarget(user, host);

@@ -18,9 +18,12 @@ ConsoleJob::ConsoleJob(const wstring &_command,
       command(_command), commandParams(_params), commandOutput(L""),
       expectedReturnCode(_expectedReturnCode), receivedReturnCode(-1)
 {
-    wstring foundCommandFullName = PathTools::GetCommandPath(command, appSearchPaths);
-    if (foundCommandFullName != L"")
+   if (command != L"")
+   {
+      wstring foundCommandFullName = PathTools::GetCommandPath(command, appSearchPaths);
+      if (foundCommandFullName != L"")
         command = foundCommandFullName;
+   }
 }
 
 ConsoleJob::ConsoleJob(const ConsoleJob &other)

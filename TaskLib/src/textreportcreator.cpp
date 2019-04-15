@@ -1,6 +1,6 @@
 #include "textreportcreator.h"
 
-#include <tools.h>
+#include "stringtools.h"
 
 using namespace std;
 
@@ -44,7 +44,7 @@ void TextReportCreator::AddHeader()
 
 void TextReportCreator::AddClientHeaderData(const pair<wstring, ClientJobResults*>& clientData)
 {
-    reportCore << Tools::Tabs(3) << clientData.first << endl;
+    reportCore << StringTools::Tabs(3) << clientData.first << endl;
     reportCore << endl;
     reportCore << endl;
 
@@ -55,24 +55,24 @@ void TextReportCreator::AddJobData(const wstring &jobName, JobStatus *status)
 {
     wstring wstringOutput(status->GetDescription());
 
-    const wstring spaces = Tools::Spaces(nameCellSize - static_cast<int>(jobName.size()));
+    const wstring spaces = StringTools::Spaces(nameCellSize - static_cast<int>(jobName.size()));
     reportCore << "\t" << jobName << spaces << status->GetCodeDescription();
     if (useProfiling)
-        reportCore << "\t" << Tools::FormatTimeString(status->GetDuration());
+        reportCore << "\t" << StringTools::FormatTime(status->GetDuration());
     reportCore << endl;
 
     if (wstringOutput != L"")
-        reportCore << Tools::Tabs(2) << wstringOutput << endl;
+        reportCore << StringTools::Tabs(2) << wstringOutput << endl;
 }
 
 void TextReportCreator::AddSummaryData(const int code, const time_t duration)
 {
-    const wstring spaces = Tools::Spaces(nameCellSize - static_cast<int>(overallString.size()));
+    const wstring spaces = StringTools::Spaces(nameCellSize - static_cast<int>(overallString.size()));
     reportCore << endl;
     reportCore << "\t" << overallString << spaces;
     reportCore << JobStatus::GetCodeDescription(code);
     if (useProfiling)
-        reportCore << "\t" << Tools::FormatTimeString(duration) << endl;
+        reportCore << "\t" << StringTools::FormatTime(duration) << endl;
     reportCore << endl;
 }
 
@@ -80,9 +80,9 @@ void TextReportCreator::AddConfigurationErrorsData(const std::vector<wstring> &e
 {
     if (errors.size() > 0)
     {
-        reportCore << Tools::Tabs(1) << "Configuration file has some errors :" << endl;
+        reportCore << StringTools::Tabs(1) << "Configuration file has some errors :" << endl;
         for (vector<wstring>::const_iterator it=errors.begin(); it!=errors.end(); ++it)
-            reportCore << Tools::Tabs(2) << *it << endl;
+            reportCore << StringTools::Tabs(2) << *it << endl;
         reportCore << endl;
     }
 }

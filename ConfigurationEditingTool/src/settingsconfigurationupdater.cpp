@@ -57,7 +57,7 @@ void SettingsConfigurationUpdater::UpdateReportDispatching()
    wstring confReportDispatching;
    if (uiReportDispatching == "Email")
       confReportDispatching = L"email";
-   else if (uiReportDispatching == L"Console")
+   else if (uiReportDispatching == "Console")
       confReportDispatching = L"console";
    else // if (uiReportDispatching == "Local files")
       confReportDispatching = L"file";

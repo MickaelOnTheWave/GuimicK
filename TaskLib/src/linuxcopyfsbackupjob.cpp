@@ -1,6 +1,6 @@
 #include "linuxcopyfsbackupjob.h"
 
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -49,7 +49,7 @@ void LinuxCopyFsBackupJob::CreateReport(const std::wstring &destination,
     if (lsCommand.GetCommandReturnCode() == 0)
     {
         vector<wstring> fileList;
-        Tools::TokenizeString(lsCommand.GetCommandOutput(), '\n', fileList);
+        StringTools::Tokenize(lsCommand.GetCommandOutput(), '\n', fileList);
 
         report->AddAsAdded(fileList);
         status->SetCode(JobStatus::Ok);

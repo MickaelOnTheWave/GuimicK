@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "rsnapshotrawbackupjob.h"
 #include "rsnapshotsmartbackupjob.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -118,7 +119,7 @@ void RsnapshotBackupJobConfiguration::SetMaxBackupCount(RsnapshotSmartBackupJob 
     const wstring maxBackupCountProperty = confObject->GetProperty(MaxBackupCountProperty);
     if (maxBackupCountProperty != L"")
     {
-        int intMaxBackupCount = _wtoi(maxBackupCountProperty.c_str());
+        int intMaxBackupCount = StringTools::ToInt(maxBackupCountProperty);
         if (intMaxBackupCount != 0)
         {
             if (intMaxBackupCount < 1)

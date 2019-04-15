@@ -6,7 +6,7 @@
 #include "jobdebuginformationmanager.h"
 #include "sshconsolejob.h"
 #include "tarcommandparser.h"
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -152,7 +152,7 @@ void TarTools::GetArchiveFileList(const wstring& archive, vector<wstring>& fileL
    if (tarJob->IsRunOk())
    {
       vector<wstring> rawFileList;
-      Tools::TokenizeString(tarJob->GetCommandOutput(), L'\n', rawFileList);
+      StringTools::Tokenize(tarJob->GetCommandOutput(), L'\n', rawFileList);
       RemovePathHeaders(rawFileList);
       RemoveCurrentDirTag(rawFileList);
       copy(rawFileList.begin(), rawFileList.end(), back_inserter(fileList));

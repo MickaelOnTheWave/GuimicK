@@ -11,7 +11,8 @@
 #include "linuxcopyfsbackupjob.h"
 #include "pathtools.h"
 #include "rsynccopyfsbackupjob.h"
-#include "tools.h"
+#include "stringtools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -249,7 +250,10 @@ int GitFsBackupJob::GetRevisionCount() const
 {
     ConsoleJob commandJob(L"git", L"rev-list --all --count");
     commandJob.RunWithoutStatus();
-    return (commandJob.GetCommandReturnCode() == 0) ? _wtoi(commandJob.GetCommandOutput().c_str()) : -1;
+    if (commandJob.GetCommandReturnCode() == 0)
+       return StringTools::ToInt(commandJob.GetCommandOutput());
+    else
+       return -1;
 }
 
 void GitFsBackupJob::CreateInitialReport(JobStatus *status, FileBackupReport &report)
@@ -271,7 +275,7 @@ void GitFsBackupJob::CreateInitialReport(JobStatus *status, FileBackupReport &re
         // TODO : put this in a class and create a test suite for it.
         // There is already production.txt file to check on test.
         vector<wstring> fileList;
-        Tools::TokenizeString(commandJob.GetCommandOutput(), '\n', fileList);
+        StringTools::Tokenize(commandJob.GetCommandOutput(), '\n', fileList);
 
         vector<wstring>::const_iterator it = fileList.begin();
         for(; it!=fileList.end(); ++it)

@@ -7,7 +7,7 @@
 #include "filetools.h"
 #include "jobdebuginformationmanager.h"
 #include "mimetools.h"
-#include "tools.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ vector<string> ToUtf8(const vector<wstring>& input)
    vector<wstring>::const_iterator it = input.begin();
    vector<wstring>::const_iterator end = input.end();
    for (; it != end; ++it)
-      output.push_back(Tools::UnicodeToUtf8(*it));
+      output.push_back(StringTools::UnicodeToUtf8(*it));
    return output;
 }
 
@@ -30,8 +30,8 @@ vector<pair<string, string> > ToUtf8(const vector<pair<wstring, wstring> >& inpu
    vector<pair<wstring, wstring> >::const_iterator end = input.end();
    for (; it != end; ++it)
    {
-      const string first = Tools::UnicodeToUtf8(it->first);
-      const string second = Tools::UnicodeToUtf8(it->second);
+      const string first = StringTools::UnicodeToUtf8(it->first);
+      const string second = StringTools::UnicodeToUtf8(it->second);
       output.push_back(make_pair(first, second));
    }
    return output;
@@ -59,7 +59,7 @@ bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
     ConsoleJob curl(L"curl", curlParams);
     JobStatus* status = curl.Run();
     if (status->GetCode() == JobStatus::Ok)
-        _wremove(mailFileName.c_str());
+        FileTools::RemoveFile(mailFileName);
     else
     {
         debugInfo.AddDataLine<wstring>(L"Command executable", curl.GetCommand());
@@ -99,7 +99,7 @@ void CurlConsoleReportDispatcher::WriteReportContentToFile(AbstractReportCreator
     const string emailContent = CreateEmailContent(reportCreator);
 
     ofstream mailFile;
-    mailFile.open(Tools::UnicodeToUtf8(filename));
+    mailFile.open(StringTools::UnicodeToUtf8(filename));
     mailFile << emailContent;
     mailFile.close();
 }
@@ -113,13 +113,13 @@ std::string CurlConsoleReportDispatcher::CreateEmailContent(AbstractReportCreato
    MimeTools mimeCreator;
    const string emailContent = mimeCreator.CreateEmailContent(
       isHtml, 
-      Tools::UnicodeToUtf8(displayName),
-      Tools::UnicodeToUtf8(emailData.GetAddress()),
-      Tools::UnicodeToUtf8(destEmail),
-      Tools::UnicodeToUtf8(cc),
-      Tools::UnicodeToUtf8(bcc),
-      Tools::UnicodeToUtf8(subject),
-      Tools::UnicodeToUtf8(reportCreator->GetReportContent()),
+      StringTools::UnicodeToUtf8(displayName),
+      StringTools::UnicodeToUtf8(emailData.GetAddress()),
+      StringTools::UnicodeToUtf8(destEmail),
+      StringTools::UnicodeToUtf8(cc),
+      StringTools::UnicodeToUtf8(bcc),
+      StringTools::UnicodeToUtf8(subject),
+      StringTools::UnicodeToUtf8(reportCreator->GetReportContent()),
       ToUtf8(externalFiles),
       ToUtf8(fileBuffers)
    );

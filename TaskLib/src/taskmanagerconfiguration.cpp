@@ -5,6 +5,7 @@
 #include "profiledjob.h"
 #include "serverconfiguration.h"
 #include "standaloneconfiguration.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -38,7 +39,12 @@ bool TaskManagerConfiguration::LoadFromFile(const wstring &fileName, vector<wstr
 
 bool TaskManagerConfiguration::SaveToFile(const wstring& filename)
 {
+#ifdef _WIN32
    wofstream filestream(filename.c_str());
+#else
+   const string utf8Filename = StringTools::UnicodeToUtf8(filename);
+   wofstream filestream(utf8Filename.c_str());
+#endif
    if (!filestream.is_open())
       return false;
 

@@ -93,16 +93,15 @@ void TaskToolRunDialog::on_runButton_clicked()
    ui->outputTextEdit->setPlainText("");
    QString outputText;
    const std::wstring currentDirectory = PathTools::GetCurrentFullPath();
-   int result = _chdir(runPath.toLocal8Bit());
-   if (result == 0)
+   if (PathTools::ChangeCurrentDir(runPath.toStdWString()))
    {
       std::wstring commandOutput;
-      result = Tools::RunExternalCommandToBuffer(
+      const int result = Tools::RunExternalCommandToBuffer(
                       CreateTaskToolCommand(),
                       commandOutput, true
                       );
 
-      _wchdir(currentDirectory.c_str());
+      PathTools::ChangeCurrentDir(currentDirectory);
 
       outputText = (result > -1) ? QString::fromStdWString(commandOutput)
                                  : CreateExecutionErrorMessage(result, commandOutput);

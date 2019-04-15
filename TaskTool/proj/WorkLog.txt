@@ -1,3 +1,19 @@
+15/04/2019 (19.9)
+
+11/04/2019 (0.2h)
+    Resolved chdir problem. Resolved a runtime crash. Now editor is executing
+    apparently fine on Linux.
+Next planned work:
+    - Back to Windows : everything should compile/run fine
+    - Implement System scheduler interaction
+
+08/04/2019 (0.2)
+    Resolved compilation issues on Linux. Looking for a centralized solution
+    for chdir...
+
+07/04/2019 (0.5h)
+    Fixed more issues. Now checking on Windows...
+
 04/04/2019 (1.9h)
     Fixed a lot of compilation issues in Linux. Heavily relied upon
     UnicodeToUtf8 conversion... There are still issues to fix.

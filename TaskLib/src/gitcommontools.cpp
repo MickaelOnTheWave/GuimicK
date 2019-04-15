@@ -1,13 +1,7 @@
 #include "gitcommontools.h"
 
 #include <string>
-
-#ifdef _MSC_VER
-   #include <direct.h>
-   #define chdir _chdir
-#else
-   #include <unistd.h>
-#endif
+#include "pathtools.h"
 
 using namespace std;
 
@@ -25,8 +19,7 @@ bool GitCommonTools::ChangeCurrentDir(const wstring &newDir,
 
 JobStatus* GitCommonTools::ChangeCurrentDir(const wstring &newDir)
 {
-   int returnValue = _wchdir(newDir.c_str());
-   const bool ok = (returnValue == 0);
+   const bool ok = PathTools::ChangeCurrentDir(newDir);
    return (ok) ? new JobStatus(JobStatus::Ok) : new JobStatus(JobStatus::Error, changeDirError);
 }
 

@@ -1,7 +1,7 @@
 #include "htmlreportcreator.h"
 
-#include <tools.h>
 #include <filetools.h>
+#include <stringtools.h>
 
 using namespace std;
 
@@ -77,13 +77,13 @@ void HtmlReportCreator::AddClientHeaderData(const pair<wstring, ClientJobResults
 void HtmlReportCreator::AddJobData(const wstring &jobName, JobStatus* status)
 {
     AddJobData(jobName, status->GetDescription(), status->GetCodeDescription(),
-               Tools::FormatTimeString(status->GetDuration()));
+               StringTools::FormatTime(status->GetDuration()));
 }
 
 void HtmlReportCreator::AddSummaryData(const int code, const time_t duration)
 {
     AddJobData(L"Total", L"", JobStatus::GetCodeDescription(code),
-               Tools::FormatTimeString(duration));
+               StringTools::FormatTime(duration));
     reportCore << "</table>" << endl;
 }
 

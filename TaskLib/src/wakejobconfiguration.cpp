@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "consolewakejob.h"
 #include "libwakejob.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -45,11 +46,11 @@ void WakeJobConfiguration::ConfigureJob(AbstractJob *job,
 
     AbstractWakeJob* castJob = static_cast<AbstractWakeJob*>(job);
 
-    int timeoutValue = _wtoi(timeout.c_str());
+    int timeoutValue = StringTools::ToInt(timeout);
     if (timeoutValue > 0)
         castJob->SetTimeout(timeoutValue);
 
-    int retriesValue = _wtoi(maxRetries.c_str());
+    int retriesValue = StringTools::ToInt(maxRetries);
     if (retriesValue > 0)
         castJob->SetMaxRetries(retriesValue);
 }
