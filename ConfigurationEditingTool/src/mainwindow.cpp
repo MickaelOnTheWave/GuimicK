@@ -523,7 +523,7 @@ void MainWindow::AddJobMenuEntry(QMenu* subMenu,
                                  const QString& title,
                                  AbstractJob* job)
 {
-   subMenu->addAction(title, [this, job](){InsertNewJob(job);});
+   subMenu->addAction(title, [this, job](){InsertNewJob(job->Clone());});
 }
 
 
