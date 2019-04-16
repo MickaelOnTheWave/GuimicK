@@ -21,13 +21,18 @@ add_subdirectory ("${TASKMANAGER_ROOT}/ReportParsers/ParsersLib/proj/cmake" "./P
 add_subdirectory ("${TOOLS_ROOT}/ToolsLib/proj/cmake" "./ToolsLib") 
 add_subdirectory ("${PROG_ROOT}/QtTools/QtTools/proj/cmake" "./QtTools")
 
-file(GLOB SOURCES "../../src/*")
+file(GLOB rootSources "../../src/*")
+set(schedulerSources "../../src/scheduler/schedulerdialog.cpp")
+if(WIN32)
+    list(APPEND ${schedulerSources} "../../src/scheduler/windowsscheduler.cpp")
+endif(WIN32)
+set(sources ${rootSources} ${schedulerSources})
 
 if(WIN32)
     set(GUI_TYPE WIN32)
 endif(WIN32)
 
-add_executable(ConfigurationEditingTool ${GUI_TYPE} ${SOURCES})
+add_executable(ConfigurationEditingTool ${GUI_TYPE} ${sources})
 
 target_link_libraries (ConfigurationEditingTool TaskLib ToolsLib QtToolsLib Qt5::Widgets)
 if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")

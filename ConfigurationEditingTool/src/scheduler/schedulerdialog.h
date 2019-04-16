@@ -2,6 +2,7 @@
 #define SCHEDULERDIALOG_H
 
 #include <QDialog>
+#include "abstractscheduler.h"
 
 namespace Ui {
    class SchedulerDialog;
@@ -28,11 +29,22 @@ private slots:
 
    void on_monthlyButton_clicked();
 
+   void on_buttonBox_accepted();
+
 private:
    void InitializePathWidget();
 
+   void InitializeScheduler();
+   void CreateScheduler();
+   void ReadSchedulerData();
+   void WriteSchedulerData();
+
+   void UpdateUiFromScheduleData(const ScheduleTarget& data);
+   ScheduleTarget GetScheduleDataFromUi() const;
+
    Ui::SchedulerDialog *ui;
    QString configurationFile = "";
+   AbstractScheduler* scheduler = nullptr;
 };
 
 #endif // SCHEDULERDIALOG_H

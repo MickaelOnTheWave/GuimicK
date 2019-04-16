@@ -20,7 +20,7 @@
 #include "jobdelegate.h"
 #include "jobeditdialogfactory.h"
 #include "pathtools.h"
-#include "schedulerdialog.h"
+#include "scheduler/schedulerdialog.h"
 #include "selectbackupfolderdialog.h"
 #include "serverconfiguration.h"
 #include "settingsdialog.h"

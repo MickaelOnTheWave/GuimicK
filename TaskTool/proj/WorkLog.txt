@@ -1,3 +1,8 @@
+16/04/2019 (18.8)
+    Created structure for Scheduler interaction. Changed code structure
+    to use subdirectories. Now going for Windows to implement
+    Windows system scheduler...
+
 15/04/2019 (1.5h)
     Fixed compilation on Windows. Now going for the edit bug...
     Fixed the bug, it was a silly mistake.
