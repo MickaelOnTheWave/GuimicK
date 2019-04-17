@@ -1,7 +1,11 @@
-16/04/2019 (18.8)
+16/04/2019 (2.7h)
     Created structure for Scheduler interaction. Changed code structure
     to use subdirectories. Now going for Windows to implement
     Windows system scheduler...
+    Started implementation : initialization and setup of Windows API.
+Next planned work:
+    - Resolve linking issues with missing WinAPI libs
+    - Continue/Finish Windows scheduler implementation
 
 15/04/2019 (1.5h)
     Fixed compilation on Windows. Now going for the edit bug...
