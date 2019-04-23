@@ -95,9 +95,9 @@ void SchedulerDialog::WriteSchedulerData()
       QMessageBox::warning(this, "Error", "System scheduler data could not be modified");
 }
 
-void SchedulerDialog::UpdateUiFromScheduleData(const ScheduleTarget& data)
+void SchedulerDialog::UpdateUiFromScheduleData(const ScheduleTarget& scheduleData)
 {
-   switch (data.type)
+   switch (scheduleData.type)
    {
       case ScheduleTarget::Type::Daily :
       {
@@ -121,14 +121,14 @@ void SchedulerDialog::UpdateUiFromScheduleData(const ScheduleTarget& data)
 
 ScheduleTarget SchedulerDialog::GetScheduleDataFromUi() const
 {
-   ScheduleTarget data;
+   ScheduleTarget scheduleData;
    if (ui->dailyButton->isChecked())
-      data.type = ScheduleTarget::Type::Daily;
+      scheduleData.type = ScheduleTarget::Type::Daily;
    else if (ui->weeklyButton->isChecked())
-      data.type = ScheduleTarget::Type::Weekly;
+      scheduleData.type = ScheduleTarget::Type::Weekly;
    else if (ui->monthlyButton->isChecked())
-      data.type = ScheduleTarget::Type::Monthly;
-   return data;
+      scheduleData.type = ScheduleTarget::Type::Monthly;
+   return scheduleData;
 }
 
 void SchedulerDialog::on_buttonBox_accepted()

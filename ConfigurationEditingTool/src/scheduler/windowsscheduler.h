@@ -20,6 +20,12 @@ private:
    void InitializeComSecurity();
    void CreateTaskService();
 
+   ITaskFolder* GetTaskRootFolder();
+
+   void FillDataFromTask(IRegisteredTask* task,
+                         ScheduleTarget& data);
+   ITaskDefinition* CreateTaskFromData(const ScheduleTarget& data);
+
    bool comInitialized = false;
    bool winApiAvailable = true;
    bool taskServiceAvailable = true;
