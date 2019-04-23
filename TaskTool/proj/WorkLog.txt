@@ -1,3 +1,13 @@
+22/04/2019 (1.5h)
+    Resolved linking issues. Now continuing implementation...
+    Continued implementation. Implemented part of Read and most of Write..
+    now it is testable. First tests were not conclusive : CoInitialize seems
+    unnecessary, task is created but fails to be registered.
+Next planned work:
+    - Make Task registration work
+    - Finish Task Data writing
+    - Proceed to Task reading
+
 16/04/2019 (2.7h)
     Created structure for Scheduler interaction. Changed code structure
     to use subdirectories. Now going for Windows to implement
