@@ -2,6 +2,24 @@
 
 #include <comdef.h>
 
+namespace
+{
+   wchar_t* defaultTaskName = L"TaskManager Automated Task";
+   wchar_t* defaultAuthor = L"Task Manager";
+
+   TASK_TRIGGER_TYPE2 TranslateTriggerType(const ScheduleTarget::Type targetType)
+   {
+      if (targetType == ScheduleTarget::Type::Daily)
+         return TASK_TRIGGER_DAILY;
+      else if (targetType == ScheduleTarget::Type::Weekly)
+         return TASK_TRIGGER_WEEKLY;
+      else if (targetType == ScheduleTarget::Type::Monthly)
+         return TASK_TRIGGER_MONTHLY;
+      else
+         return TASK_TRIGGER_EVENT; // TODO : change this!
+   }
+}
+
 WindowsScheduler::WindowsScheduler()
 {
    InitializeWindowsApi();
@@ -20,20 +38,43 @@ bool WindowsScheduler::Read(ScheduleTarget& data)
 {
    if (comInitialized && winApiAvailable)
    {
-      return false;
+      ITaskFolder* taskRootFolder = GetTaskRootFolder();
+      if (taskRootFolder)
+      {
+         IRegisteredTask* task = NULL;
+         taskRootFolder->GetTask(defaultTaskName, &task);
+         if (task)
+            FillDataFromTask(task, data);
+         return true;
+      }
    }
-   else
-      return false;
+
+   return false;
 }
 
 bool WindowsScheduler::Write(const ScheduleTarget& data)
 {
    if (comInitialized && winApiAvailable)
    {
-      return false;
+      ITaskFolder* taskRootFolder = GetTaskRootFolder();
+      if (taskRootFolder)
+      {
+         taskRootFolder->DeleteTask(defaultTaskName, 0);
+         ITaskDefinition* task = CreateTaskFromData(data);
+         if (task)
+         {
+            IRegisteredTask* registeredTask = NULL;
+            HRESULT hr = taskRootFolder->RegisterTaskDefinition(
+               L"Auto Task Name", task, TASK_CREATE_OR_UPDATE,
+               _variant_t(), _variant_t(), TASK_LOGON_NONE,
+               _variant_t(L""), &registeredTask);
+
+            return (SUCCEEDED(hr));
+         }
+      }
    }
-   else
-      return false;
+
+   return false;
 }
 
 void WindowsScheduler::InitializeWindowsApi()
@@ -42,16 +83,13 @@ void WindowsScheduler::InitializeWindowsApi()
    InitializeCom();
    InitializeComSecurity();
    CreateTaskService();
-   //CreateTaskFolder();
-   //DefineTaskInformation();
-   //CreateTrigger();
-   //CreateTaskAction();
 }
 
 void WindowsScheduler::InitializeCom()
 {
-   HRESULT hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
-   comInitialized = SUCCEEDED(hr);
+   //HRESULT hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+   //comInitialized = SUCCEEDED(hr);
+   comInitialized = true;
 }
 
 void WindowsScheduler::InitializeComSecurity()
@@ -75,4 +113,58 @@ void WindowsScheduler::CreateTaskService()
    }
 
    winApiAvailable = taskServiceAvailable;
+}
+
+ITaskFolder* WindowsScheduler::GetTaskRootFolder()
+{
+   ITaskFolder* taskRootFolder = nullptr;
+   HRESULT hr = taskService->GetFolder(L"", &taskRootFolder);
+   return (SUCCEEDED(hr)) ? taskRootFolder : nullptr;
+}
+
+void WindowsScheduler::FillDataFromTask(IRegisteredTask* task,
+                                        ScheduleTarget& data)
+{
+}
+
+ITaskDefinition* WindowsScheduler::CreateTaskFromData(const ScheduleTarget& data)
+{
+   ITaskDefinition* taskDefinition = NULL;
+   HRESULT hr = taskService->NewTask(0, &taskDefinition);
+   if (SUCCEEDED(hr))
+   {
+      IRegistrationInfo *pRegInfo = NULL;
+      hr = taskDefinition->get_RegistrationInfo(&pRegInfo);
+      if (SUCCEEDED(hr))
+      {
+         hr = pRegInfo->put_Author(defaultAuthor);
+         if (SUCCEEDED(hr))
+         {
+            ITriggerCollection *pTriggerCollection = NULL;
+            hr = taskDefinition->get_Triggers(&pTriggerCollection);
+            if (SUCCEEDED(hr))
+            {
+               if (data.type != ScheduleTarget::Type::Unset)
+               {
+                  TASK_TRIGGER_TYPE2 triggerType = TranslateTriggerType(data.type);
+                  ITrigger *pTrigger = NULL;
+                  hr = pTriggerCollection->Create(triggerType, &pTrigger);
+                  if (SUCCEEDED(hr))
+                  {
+                     hr = pTrigger->put_Id(defaultTaskName);
+                     if (SUCCEEDED(hr))
+                     {
+                        // TODO : continue
+
+                     }
+                     /*IWeeklyTrigger *pWeeklyTrigger = NULL;
+                     hr = pTrigger->QueryInterface(
+                        IID_IWeeklyTrigger, (void**)&pWeeklyTrigger);*/
+                  }
+               }
+            }
+         }
+      }
+   }
+   return taskDefinition;
 }
