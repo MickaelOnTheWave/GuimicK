@@ -1,6 +1,9 @@
-24/04/2019 (17.8-19)
+24/04/2019 (1.8h)
     Refactored Schedule data classes. Now going for Windows to finish
-    refactoring on Windows implementation.
+    refactoring on Windows implementation. Finished refactoring.
+Next planned work:
+    - Finish Refactoring Schedule dialog day controls
+    - Continue implementation
 
 23/04/2019 (2.8h)
     Made Task registration work :-) However it only works for Weekly target
