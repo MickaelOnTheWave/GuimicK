@@ -34,6 +34,7 @@ Features implemented:
 	13/08/2018 - [049] Make build be at least partially static (internal dependencies static)
 	20/08/2018 - [016] Create a package with binaries for easy install
         17/03/2019 - [045] Make Windows client work with (nearly) all features
+        23/04/2019 - [032] Property handle encodings for strings
 
 Features to implement:
 	[005] Include AntiVirus scan job
@@ -47,7 +48,6 @@ Features to implement:
 	[025] Use libssh instead of using command line
 	[026] Support multiple clients with multiple job lists
 	[027] Manage email commands
-	[032] Property handle encodings for strings
 	[036] Console job improvement : support a chain system.
 	[043] Create an archive differential File backup job
 	[046] Include a Windows update job
@@ -90,18 +90,18 @@ Release plan
 -------------
 
 v2.0 :
-   [027] Manage email commands
+        [027] Manage email commands
 	[015] Make a stat job for longer time level (yearly?)
 
 v1.4 (Server/Client Version) :
-   [026] Support multiple clients with multiple job lists
+        [026] Support multiple clients with multiple job lists
 	[010] Implement all TODOs in code
 	[025] Use libssh instead of using command line
 	[024] Remove ping executable dependency
 	[056] Create VMs for testing remote jobs and wake
 
 v1.3 :
-   [047] Have a Restore option in backup jobs
+        [047] Have a Restore option in backup jobs
 	[007] Include Defragmentation job
 	[008] Use another time level of backup for other jobs (monly/yearly...)
 	[052] Support other compilers

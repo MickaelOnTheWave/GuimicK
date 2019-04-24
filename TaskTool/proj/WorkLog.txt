@@ -1,3 +1,7 @@
+24/04/2019 (17.8-19)
+    Refactored Schedule data classes. Now going for Windows to finish
+    refactoring on Windows implementation.
+
 23/04/2019 (2.8h)
     Made Task registration work :-) However it only works for Weekly target
     and with hardcoded data. First organizing code...

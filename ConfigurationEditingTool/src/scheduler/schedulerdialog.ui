@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>602</width>
-    <height>505</height>
+    <width>459</width>
+    <height>466</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,9 +36,9 @@
      <property name="title">
       <string>Schedule configuration</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
+     <layout class="QVBoxLayout" name="verticalLayout_6">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
@@ -81,12 +81,9 @@
          </layout>
         </item>
         <item>
-         <widget class="QStackedWidget" name="configurationStackedWidget">
-          <property name="currentIndex">
-           <number>2</number>
-          </property>
-          <widget class="QWidget" name="dailyPage">
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
              <spacer name="horizontalSpacer">
               <property name="orientation">
@@ -94,25 +91,21 @@
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>183</width>
+                <width>40</width>
                 <height>20</height>
                </size>
               </property>
              </spacer>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout">
-              <item>
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string>at</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QTimeEdit" name="timeEdit"/>
-              </item>
-             </layout>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>at</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTimeEdit" name="scheduleTimeEdit"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_2">
@@ -121,385 +114,85 @@
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>183</width>
+                <width>40</width>
                 <height>20</height>
                </size>
               </property>
              </spacer>
             </item>
            </layout>
-          </widget>
-          <widget class="QWidget" name="weeklyPage">
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <item>
-             <layout class="QGridLayout" name="gridLayout">
-              <item row="0" column="0">
-               <widget class="QCheckBox" name="checkBox">
-                <property name="text">
-                 <string>Sunday</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QCheckBox" name="checkBox_4">
-                <property name="text">
-                 <string>Wednesday</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QCheckBox" name="checkBox_2">
-                <property name="text">
-                 <string>Monday</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QCheckBox" name="checkBox_5">
-                <property name="text">
-                 <string>Thursday</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <widget class="QCheckBox" name="checkBox_7">
-                <property name="text">
-                 <string>Saturday</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="checkBox_3">
-                <property name="text">
-                 <string>Tuesday</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QCheckBox" name="checkBox_6">
-                <property name="text">
-                 <string>Friday</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_6">
+          </item>
+          <item>
+           <widget class="QStackedWidget" name="configurationStackedWidget">
+            <property name="currentIndex">
+             <number>2</number>
+            </property>
+            <widget class="QWidget" name="dailyPage">
+             <layout class="QHBoxLayout" name="horizontalLayout_5"/>
+            </widget>
+            <widget class="QWidget" name="weeklyPage">
+             <layout class="QVBoxLayout" name="verticalLayout_3">
               <item>
-               <spacer name="horizontalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <item>
-                 <widget class="QLabel" name="label_2">
+               <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="0">
+                 <widget class="QCheckBox" name="sundayBox">
                   <property name="text">
-                   <string>at</string>
+                   <string>Sunday</string>
                   </property>
                  </widget>
                 </item>
-                <item>
-                 <widget class="QTimeEdit" name="timeEdit_2"/>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_4">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="montlyPage">
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <layout class="QGridLayout" name="gridLayout_2">
-              <item row="0" column="0">
-               <widget class="QCheckBox" name="checkBox_8">
-                <property name="text">
-                 <string>1</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QCheckBox" name="checkBox_18">
-                <property name="text">
-                 <string>9</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QCheckBox" name="checkBox_22">
-                <property name="text">
-                 <string>17</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3">
-               <widget class="QCheckBox" name="checkBox_26">
-                <property name="text">
-                 <string>25</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QCheckBox" name="checkBox_9">
-                <property name="text">
-                 <string>2</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QCheckBox" name="checkBox_16">
-                <property name="text">
-                 <string>10</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <widget class="QCheckBox" name="checkBox_20">
-                <property name="text">
-                 <string>18</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="3">
-               <widget class="QCheckBox" name="checkBox_24">
-                <property name="text">
-                 <string>26</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QCheckBox" name="checkBox_11">
-                <property name="text">
-                 <string>3</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QCheckBox" name="checkBox_17">
-                <property name="text">
-                 <string>11</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="2">
-               <widget class="QCheckBox" name="checkBox_21">
-                <property name="text">
-                 <string>19</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="3">
-               <widget class="QCheckBox" name="checkBox_25">
-                <property name="text">
-                 <string>27</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QCheckBox" name="checkBox_10">
-                <property name="text">
-                 <string>4</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QCheckBox" name="checkBox_19">
-                <property name="text">
-                 <string>12</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2">
-               <widget class="QCheckBox" name="checkBox_23">
-                <property name="text">
-                 <string>20</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="3">
-               <widget class="QCheckBox" name="checkBox_27">
-                <property name="text">
-                 <string>28</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QCheckBox" name="checkBox_14">
-                <property name="text">
-                 <string>5</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QCheckBox" name="checkBox_28">
-                <property name="text">
-                 <string>13</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="2">
-               <widget class="QCheckBox" name="checkBox_29">
-                <property name="text">
-                 <string>21</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="3">
-               <widget class="QCheckBox" name="checkBox_30">
-                <property name="text">
-                 <string>29</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="2">
-               <widget class="QCheckBox" name="checkBox_31">
-                <property name="text">
-                 <string>22</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="3">
-               <widget class="QCheckBox" name="checkBox_32">
-                <property name="text">
-                 <string>30</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="2">
-               <widget class="QCheckBox" name="checkBox_33">
-                <property name="text">
-                 <string>23</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0">
-               <widget class="QCheckBox" name="checkBox_12">
-                <property name="text">
-                 <string>6</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="0">
-               <widget class="QCheckBox" name="checkBox_13">
-                <property name="text">
-                 <string>7</string>
-                </property>
-               </widget>
-              </item>
-              <item row="7" column="0">
-               <widget class="QCheckBox" name="checkBox_15">
-                <property name="text">
-                 <string>8</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="1">
-               <widget class="QCheckBox" name="checkBox_34">
-                <property name="text">
-                 <string>14</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="1">
-               <widget class="QCheckBox" name="checkBox_35">
-                <property name="text">
-                 <string>15</string>
-                </property>
-               </widget>
-              </item>
-              <item row="7" column="1">
-               <widget class="QCheckBox" name="checkBox_36">
-                <property name="text">
-                 <string>16</string>
-                </property>
-               </widget>
-              </item>
-              <item row="7" column="2">
-               <widget class="QCheckBox" name="checkBox_37">
-                <property name="text">
-                 <string>24</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="3">
-               <widget class="QCheckBox" name="checkBox_38">
-                <property name="text">
-                 <string>31</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_7">
-              <item>
-               <spacer name="horizontalSpacer_5">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_3">
-                <item>
-                 <widget class="QLabel" name="label_3">
+                <item row="0" column="1">
+                 <widget class="QCheckBox" name="wednesdayBox">
                   <property name="text">
-                   <string>at</string>
+                   <string>Wednesday</string>
                   </property>
                  </widget>
                 </item>
-                <item>
-                 <widget class="QTimeEdit" name="timeEdit_3"/>
+                <item row="1" column="0">
+                 <widget class="QCheckBox" name="mondayBox">
+                  <property name="text">
+                   <string>Monday</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QCheckBox" name="thursdayBox">
+                  <property name="text">
+                   <string>Thursday</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QCheckBox" name="saturdayBox">
+                  <property name="text">
+                   <string>Saturday</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QCheckBox" name="tuesdayBox">
+                  <property name="text">
+                   <string>Tuesday</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QCheckBox" name="fridayBox">
+                  <property name="text">
+                   <string>Friday</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
-              <item>
-               <spacer name="horizontalSpacer_6">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
              </layout>
-            </item>
-           </layout>
-          </widget>
-         </widget>
+            </widget>
+            <widget class="QWidget" name="montlyPage">
+             <layout class="QVBoxLayout" name="_2"/>
+            </widget>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>

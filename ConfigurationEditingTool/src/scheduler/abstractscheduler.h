@@ -2,6 +2,7 @@
 #define ABSTRACTSCHEDULER_H
 
 #include <QString>
+#include "scheduledata.h"
 
 class ScheduleTarget
 {
@@ -16,7 +17,7 @@ class AbstractScheduler
 {
 public:
    virtual bool Read(ScheduleTarget& data) = 0;
-   virtual bool Write(const ScheduleTarget& data) = 0;
+   virtual bool Write(ScheduleData* data) = 0;
    QString GetLastError() const
    {
       return lastError;

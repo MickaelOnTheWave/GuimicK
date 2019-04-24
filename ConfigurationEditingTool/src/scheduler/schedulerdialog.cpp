@@ -1,14 +1,19 @@
 #include "schedulerdialog.h"
 #include "ui_schedulerdialog.h"
 
+#include <QGridLayout>
 #include <QMessageBox>
-#include "windowsscheduler.h"
+
+#ifdef _WIN32
+   #include "windowsscheduler.h"
+#endif
 
 SchedulerDialog::SchedulerDialog(QWidget *parent) :
    QDialog(parent),
    ui(new Ui::SchedulerDialog)
 {
    ui->setupUi(this);
+   CreateDaysOfMonthControls();
    on_noScheduleButton_clicked();
    on_dailyButton_clicked();
 
@@ -90,7 +95,7 @@ void SchedulerDialog::ReadSchedulerData()
 
 void SchedulerDialog::WriteSchedulerData()
 {
-   const bool ok = scheduler->Write(GetScheduleDataFromUi());
+   const bool ok = scheduler->Write(CreateScheduleDataFromUi());
    if (!ok)
    {
       QString errorMessage = "Error trying to update Scheduler data :\n\n";
@@ -123,15 +128,50 @@ void SchedulerDialog::UpdateUiFromScheduleData(const ScheduleTarget& scheduleDat
    }
 }
 
-ScheduleTarget SchedulerDialog::GetScheduleDataFromUi() const
+ScheduleData* SchedulerDialog::CreateScheduleDataFromUi() const
 {
-   ScheduleTarget scheduleData;
    if (ui->dailyButton->isChecked())
-      scheduleData.type = ScheduleTarget::Type::Daily;
+      return CreateDailyScheduleDataFromUi();
    else if (ui->weeklyButton->isChecked())
-      scheduleData.type = ScheduleTarget::Type::Weekly;
+      return CreateWeeklyScheduleDataFromUi();
    else if (ui->monthlyButton->isChecked())
-      scheduleData.type = ScheduleTarget::Type::Monthly;
+      return CreateMonthlyScheduleDataFromUi();
+   else
+      return nullptr;
+}
+
+ScheduleData* SchedulerDialog::CreateDailyScheduleDataFromUi() const
+{
+   auto scheduleData = new ScheduleDailyData();
+   scheduleData->SetTime(ui->scheduleTimeEdit->time());
+   return scheduleData;
+}
+
+ScheduleData* SchedulerDialog::CreateWeeklyScheduleDataFromUi() const
+{
+   auto scheduleData = new ScheduleWeeklyData();
+   scheduleData->SetTime(ui->scheduleTimeEdit->time());
+
+   if (ui->sundayBox->isChecked())
+      scheduleData->AddDayIndex(0);
+   if (ui->mondayBox->isChecked())
+      scheduleData->AddDayIndex(1);
+   if (ui->tuesdayBox->isChecked())
+      scheduleData->AddDayIndex(2);
+   return scheduleData;
+}
+
+ScheduleData* SchedulerDialog::CreateMonthlyScheduleDataFromUi() const
+{
+   auto scheduleData = new ScheduleMonthlyData();
+   scheduleData->SetTime(ui->scheduleTimeEdit->time());
+
+   for (auto checkbox : monthlyCheckboxes)
+   {
+      if (checkbox.first->isChecked())
+         scheduleData->AddDayIndex(checkbox.second);
+   }
+
    return scheduleData;
 }
 
@@ -140,4 +180,21 @@ void SchedulerDialog::on_buttonBox_accepted()
    if (scheduler)
       WriteSchedulerData();
    accept();
+}
+
+void SchedulerDialog::CreateDaysOfMonthControls()
+{
+   auto gridLayout = new QGridLayout();
+
+   for (int i=0; i<31; ++i)
+   {
+      const int row = i%8;
+      const int column = i/8;
+
+      auto checkbox = new QCheckBox(QString::number(i+1), ui->montlyPage);
+      gridLayout->addWidget(checkbox, row, column);
+      monthlyCheckboxes.insert(std::make_pair(checkbox, i));
+   }
+
+   ui->montlyPage->layout()->addItem(gridLayout);
 }

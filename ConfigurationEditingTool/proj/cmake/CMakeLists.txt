@@ -22,7 +22,9 @@ add_subdirectory ("${TOOLS_ROOT}/ToolsLib/proj/cmake" "./ToolsLib")
 add_subdirectory ("${PROG_ROOT}/QtTools/QtTools/proj/cmake" "./QtTools")
 
 file(GLOB rootSources "../../src/*")
-set(schedulerSources "../../src/scheduler/schedulerdialog.cpp")
+set(schedulerSources "../../src/scheduler/schedulerdialog.cpp"
+                     "../../src/scheduler/schedulerdialog.ui"
+                     "../../src/scheduler/scheduledata.cpp")
 if(WIN32)
     list(APPEND schedulerSources "../../src/scheduler/windowsscheduler.cpp")
 endif(WIN32)

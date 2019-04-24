@@ -1,8 +1,12 @@
 #ifndef SCHEDULERDIALOG_H
 #define SCHEDULERDIALOG_H
 
+#include <map>
+#include <QCheckBox>
 #include <QDialog>
+
 #include "abstractscheduler.h"
+#include "scheduledata.h"
 
 namespace Ui {
    class SchedulerDialog;
@@ -32,6 +36,7 @@ private slots:
    void on_buttonBox_accepted();
 
 private:
+   void CreateDaysOfMonthControls();
    void InitializePathWidget();
 
    void InitializeScheduler();
@@ -40,11 +45,16 @@ private:
    void WriteSchedulerData();
 
    void UpdateUiFromScheduleData(const ScheduleTarget& data);
-   ScheduleTarget GetScheduleDataFromUi() const;
+   ScheduleData* CreateScheduleDataFromUi() const;
+
+   ScheduleData* CreateDailyScheduleDataFromUi() const;
+   ScheduleData* CreateWeeklyScheduleDataFromUi() const;
+   ScheduleData* CreateMonthlyScheduleDataFromUi() const;
 
    Ui::SchedulerDialog *ui;
    QString configurationFile = "";
    AbstractScheduler* scheduler = nullptr;
+   std::map<QCheckBox*,int> monthlyCheckboxes;
 };
 
 #endif // SCHEDULERDIALOG_H
