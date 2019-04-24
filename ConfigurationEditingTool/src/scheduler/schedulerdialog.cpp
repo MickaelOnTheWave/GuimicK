@@ -92,7 +92,11 @@ void SchedulerDialog::WriteSchedulerData()
 {
    const bool ok = scheduler->Write(GetScheduleDataFromUi());
    if (!ok)
-      QMessageBox::warning(this, "Error", "System scheduler data could not be modified");
+   {
+      QString errorMessage = "Error trying to update Scheduler data :\n\n";
+      errorMessage += scheduler->GetLastError();
+      QMessageBox::warning(this, "System scheduler Update", errorMessage);
+   }
 }
 
 void SchedulerDialog::UpdateUiFromScheduleData(const ScheduleTarget& scheduleData)

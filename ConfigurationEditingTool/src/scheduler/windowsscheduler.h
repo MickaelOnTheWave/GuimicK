@@ -22,9 +22,28 @@ private:
 
    ITaskFolder* GetTaskRootFolder();
 
+   bool RegisterTask(ITaskFolder* taskFolder,
+                     ITaskDefinition* taskDefinition);
+
    void FillDataFromTask(IRegisteredTask* task,
                          ScheduleTarget& data);
    ITaskDefinition* CreateTaskFromData(const ScheduleTarget& data);
+
+   bool SetTaskRegistrationData(ITaskDefinition* taskDefinition);
+   bool SetTaskTriggerData(ITaskDefinition* taskDefinition,
+                           const ScheduleTarget& data);
+   bool SetCommonTriggerData(ITrigger* trigger);
+   bool SetTypedTriggerData(ITrigger* trigger,
+                            const ScheduleTarget& data);
+   bool SetDailyTriggerData(ITrigger* trigger,
+                            const ScheduleTarget& data);
+   bool SetWeeklyTriggerData(ITrigger* trigger,
+                            const ScheduleTarget& data);
+   bool SetMontlyTriggerData(ITrigger* trigger,
+                             const ScheduleTarget& data);
+   bool SetTaskAction(ITaskDefinition* taskDefinition);
+
+   void UpdateLastErrorMessage(const HRESULT hr);
 
    bool comInitialized = false;
    bool winApiAvailable = true;

@@ -6,6 +6,9 @@ namespace
 {
    wchar_t* defaultTaskName = L"TaskManager Automated Task";
    wchar_t* defaultAuthor = L"Task Manager";
+   wchar_t* defaultDescription = L"This task runs periodically TaskManager.\n"
+                                 L"It was created automatically by the Configuration editor.";
+   wchar_t* defaultTriggerName = L"Default Trigger";
 
    TASK_TRIGGER_TYPE2 TranslateTriggerType(const ScheduleTarget::Type targetType)
    {
@@ -17,6 +20,19 @@ namespace
          return TASK_TRIGGER_MONTHLY;
       else
          return TASK_TRIGGER_EVENT; // TODO : change this!
+   }
+
+   BSTR GetCurrentTimeString()
+   {
+      SYSTEMTIME currentTime;
+      GetLocalTime(&currentTime);
+
+      const size_t bufferSize = 100;
+      wchar_t buffer[bufferSize];
+      swprintf_s(buffer, bufferSize, L"%4d-%02d-%02dT%02d:%02d:%02d", 
+                 currentTime.wYear, currentTime.wMonth, currentTime.wDay,
+                 currentTime.wHour, currentTime.wMinute, currentTime.wSecond);
+      return _bstr_t(buffer);
    }
 }
 
@@ -54,6 +70,7 @@ bool WindowsScheduler::Read(ScheduleTarget& data)
 
 bool WindowsScheduler::Write(const ScheduleTarget& data)
 {
+   bool result = false;
    if (comInitialized && winApiAvailable)
    {
       ITaskFolder* taskRootFolder = GetTaskRootFolder();
@@ -63,23 +80,17 @@ bool WindowsScheduler::Write(const ScheduleTarget& data)
          ITaskDefinition* task = CreateTaskFromData(data);
          if (task)
          {
-            IRegisteredTask* registeredTask = NULL;
-            HRESULT hr = taskRootFolder->RegisterTaskDefinition(
-               L"Auto Task Name", task, TASK_CREATE_OR_UPDATE,
-               _variant_t(), _variant_t(), TASK_LOGON_NONE,
-               _variant_t(L""), &registeredTask);
-
-            return (SUCCEEDED(hr));
+            result = RegisterTask(taskRootFolder, task);
+            task->Release();
          }
+         taskRootFolder->Release();
       }
    }
-
-   return false;
+   return result;
 }
 
 void WindowsScheduler::InitializeWindowsApi()
 {
-   // TODO : finish copying from docs.microsoft.com : weekly trigger example
    InitializeCom();
    InitializeComSecurity();
    CreateTaskService();
@@ -122,6 +133,24 @@ ITaskFolder* WindowsScheduler::GetTaskRootFolder()
    return (SUCCEEDED(hr)) ? taskRootFolder : nullptr;
 }
 
+bool WindowsScheduler::RegisterTask(ITaskFolder* taskFolder,
+                                    ITaskDefinition* taskDefinition)
+{
+   IRegisteredTask* registeredTask = NULL;
+   const HRESULT hr = taskFolder->RegisterTaskDefinition(
+      defaultTaskName, taskDefinition,
+      TASK_CREATE_OR_UPDATE, _variant_t(), _variant_t(),
+      TASK_LOGON_NONE, _variant_t(L""), &registeredTask
+   );
+
+   const bool ok = SUCCEEDED(hr);
+   if (ok)
+      registeredTask->Release();
+   else
+      UpdateLastErrorMessage(hr);
+   return ok;
+}
+
 void WindowsScheduler::FillDataFromTask(IRegisteredTask* task,
                                         ScheduleTarget& data)
 {
@@ -129,42 +158,159 @@ void WindowsScheduler::FillDataFromTask(IRegisteredTask* task,
 
 ITaskDefinition* WindowsScheduler::CreateTaskFromData(const ScheduleTarget& data)
 {
-   ITaskDefinition* taskDefinition = NULL;
+   ITaskDefinition* taskDefinition = nullptr;
    HRESULT hr = taskService->NewTask(0, &taskDefinition);
    if (SUCCEEDED(hr))
    {
-      IRegistrationInfo *pRegInfo = NULL;
-      hr = taskDefinition->get_RegistrationInfo(&pRegInfo);
+      bool ok = SetTaskRegistrationData(taskDefinition);
+      if (ok)
+         ok = SetTaskTriggerData(taskDefinition, data);
+
+      if (ok)
+         ok = SetTaskAction(taskDefinition);
+   }
+
+   UpdateLastErrorMessage(hr);
+   return taskDefinition;
+}
+
+bool WindowsScheduler::SetTaskRegistrationData(ITaskDefinition* taskDefinition)
+{
+   IRegistrationInfo *taskRegistrationInfo = nullptr;
+   HRESULT hr = taskDefinition->get_RegistrationInfo(&taskRegistrationInfo);
+   if (SUCCEEDED(hr))
+   {
+      hr = taskRegistrationInfo->put_Author(defaultAuthor);
+      if (SUCCEEDED(hr))
+         hr = taskRegistrationInfo->put_Description(defaultDescription);
+
+      taskRegistrationInfo->Release();
+   }
+
+   UpdateLastErrorMessage(hr);
+   return SUCCEEDED(hr);
+}
+
+bool WindowsScheduler::SetTaskTriggerData(ITaskDefinition* taskDefinition,
+                                          const ScheduleTarget& data)
+{
+   if (data.type == ScheduleTarget::Type::Unset)
+      return true;
+
+   ITriggerCollection *triggerCollection = nullptr;
+   HRESULT hr = taskDefinition->get_Triggers(&triggerCollection);
+   if (SUCCEEDED(hr))
+   {
+      TASK_TRIGGER_TYPE2 triggerType = TranslateTriggerType(data.type);
+      ITrigger *taskTrigger = nullptr;
+      hr = triggerCollection->Create(triggerType, &taskTrigger);
       if (SUCCEEDED(hr))
       {
-         hr = pRegInfo->put_Author(defaultAuthor);
+         bool ok = SetCommonTriggerData(taskTrigger);
+         if (ok)
+            ok = SetTypedTriggerData(taskTrigger, data);
+         taskTrigger->Release();
+      }
+      triggerCollection->Release();
+   }
+
+   UpdateLastErrorMessage(hr);
+   return SUCCEEDED(hr);
+}
+
+bool WindowsScheduler::SetCommonTriggerData(ITrigger* trigger)
+{
+   HRESULT hr = trigger->put_Id(defaultTriggerName);
+   if (SUCCEEDED(hr))
+      hr = trigger->put_StartBoundary(GetCurrentTimeString());
+
+   UpdateLastErrorMessage(hr);
+   return SUCCEEDED(hr);
+}
+
+bool WindowsScheduler::SetTypedTriggerData(ITrigger* trigger, const ScheduleTarget& data)
+{
+   if (data.type == ScheduleTarget::Type::Daily)
+      return SetDailyTriggerData(trigger, data);
+   else if (data.type == ScheduleTarget::Type::Weekly)
+      return SetWeeklyTriggerData(trigger, data);
+   else if (data.type == ScheduleTarget::Type::Monthly)
+      return SetMontlyTriggerData(trigger, data);
+   else
+      return true;
+}
+
+bool WindowsScheduler::SetDailyTriggerData(ITrigger* trigger, const ScheduleTarget& data)
+{
+   IDailyTrigger *dailyTrigger = nullptr;
+   HRESULT hr = trigger->QueryInterface(IID_IDailyTrigger, (void**)&dailyTrigger);
+   if (SUCCEEDED(hr))
+   {
+      hr = dailyTrigger->put_DaysInterval((short)1);
+      dailyTrigger->Release();
+   }
+   return SUCCEEDED(hr);
+}
+
+bool WindowsScheduler::SetWeeklyTriggerData(ITrigger* trigger, const ScheduleTarget& data)
+{
+   IWeeklyTrigger *pWeeklyTrigger = NULL;
+   HRESULT hr = trigger->QueryInterface(
+      IID_IWeeklyTrigger, (void**)&pWeeklyTrigger);
+
+   if (SUCCEEDED(hr))
+   {
+      hr = pWeeklyTrigger->put_WeeksInterval((short)1);
+      if (SUCCEEDED(hr))
+         hr = pWeeklyTrigger->put_DaysOfWeek((short)2);
+
+      pWeeklyTrigger->Release();
+   }
+   return SUCCEEDED(hr);
+}
+
+bool WindowsScheduler::SetMontlyTriggerData(ITrigger* trigger, const ScheduleTarget& data)
+{
+   IMonthlyTrigger *monthlyTrigger = nullptr;
+   HRESULT hr = trigger->QueryInterface(IID_IMonthlyTrigger, (void**)&monthlyTrigger);
+   if (SUCCEEDED(hr))
+   {
+      hr = monthlyTrigger->put_DaysOfMonth(5);
+      monthlyTrigger->Release();
+   }
+   return SUCCEEDED(hr);
+}
+
+bool WindowsScheduler::SetTaskAction(ITaskDefinition* taskDefinition)
+{
+   IActionCollection *pActionCollection = NULL;
+   HRESULT hr = taskDefinition->get_Actions(&pActionCollection);
+   if (SUCCEEDED(hr))
+   {
+      IAction *pAction = NULL;
+      hr = pActionCollection->Create(TASK_ACTION_EXEC, &pAction);
+      if (SUCCEEDED(hr))
+      {
+         IExecAction *pExecAction = NULL;
+         //  QI for the executable task pointer.
+         hr = pAction->QueryInterface(IID_IExecAction, (void**)&pExecAction);
          if (SUCCEEDED(hr))
          {
-            ITriggerCollection *pTriggerCollection = NULL;
-            hr = taskDefinition->get_Triggers(&pTriggerCollection);
-            if (SUCCEEDED(hr))
-            {
-               if (data.type != ScheduleTarget::Type::Unset)
-               {
-                  TASK_TRIGGER_TYPE2 triggerType = TranslateTriggerType(data.type);
-                  ITrigger *pTrigger = NULL;
-                  hr = pTriggerCollection->Create(triggerType, &pTrigger);
-                  if (SUCCEEDED(hr))
-                  {
-                     hr = pTrigger->put_Id(defaultTaskName);
-                     if (SUCCEEDED(hr))
-                     {
-                        // TODO : continue
-
-                     }
-                     /*IWeeklyTrigger *pWeeklyTrigger = NULL;
-                     hr = pTrigger->QueryInterface(
-                        IID_IWeeklyTrigger, (void**)&pWeeklyTrigger);*/
-                  }
-               }
-            }
+            std::wstring wstrExecutablePath = _wgetenv(L"WINDIR");
+            wstrExecutablePath += L"\\SYSTEM32\\NOTEPAD.EXE";
+            hr = pExecAction->put_Path(_bstr_t(wstrExecutablePath.c_str()));
          }
       }
+
    }
-   return taskDefinition;
+
+   UpdateLastErrorMessage(hr);
+   return SUCCEEDED(hr);
+}
+
+void WindowsScheduler::UpdateLastErrorMessage(const HRESULT hr)
+{
+   _com_error comError(hr);
+   const LPCTSTR errorMsg = comError.ErrorMessage();
+   lastError = errorMsg;
 }
