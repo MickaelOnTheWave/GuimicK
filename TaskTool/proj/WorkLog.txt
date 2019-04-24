@@ -1,7 +1,34 @@
-16/04/2019 (18.8)
+23/04/2019 (2.8h)
+    Made Task registration work :-) However it only works for Weekly target
+    and with hardcoded data. First organizing code...
+    Code mostly organized. Also used Schedule type information when registering
+    task.
+Next planned work:
+    - Find a proper way to include detailed information into Schedule type
+    - Finish code cleaning in Windows schedule API
+    - Replace hardcoded data with UI schedule data
+    - Implement data read
+    - If possible, reorganized Windows scheduler into various classes
+    - Change task action to run TaskTool
+
+22/04/2019 (1.5h)
+    Resolved linking issues. Now continuing implementation...
+    Continued implementation. Implemented part of Read and most of Write..
+    now it is testable. First tests were not conclusive : CoInitialize seems
+    unnecessary, task is created but fails to be registered.
+Next planned work:
+    - Make Task registration work
+    - Finish Task Data writing
+    - Proceed to Task reading
+
+16/04/2019 (2.7h)
     Created structure for Scheduler interaction. Changed code structure
     to use subdirectories. Now going for Windows to implement
     Windows system scheduler...
+    Started implementation : initialization and setup of Windows API.
+Next planned work:
+    - Resolve linking issues with missing WinAPI libs
+    - Continue/Finish Windows scheduler implementation
 
 15/04/2019 (1.5h)
     Fixed compilation on Windows. Now going for the edit bug...
