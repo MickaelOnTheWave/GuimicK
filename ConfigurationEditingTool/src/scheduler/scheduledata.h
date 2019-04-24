@@ -7,6 +7,8 @@
 class ScheduleData
 {
 public:
+   virtual ~ScheduleData() = default;
+
    QTime GetTime() const;
    void SetTime(const QTime& value);
 

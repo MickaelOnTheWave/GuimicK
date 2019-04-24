@@ -11,8 +11,8 @@ public:
    WindowsScheduler();
    ~WindowsScheduler();
 
-   bool Read(ScheduleTarget &data) override;
-   bool Write(const ScheduleTarget &data) override;
+   ScheduleData* Read() const override;
+   bool Write(ScheduleData* data) override;
 
 private:
    void InitializeWindowsApi();
@@ -20,27 +20,26 @@ private:
    void InitializeComSecurity();
    void CreateTaskService();
 
-   ITaskFolder* GetTaskRootFolder();
+   ITaskFolder* GetTaskRootFolder() const;
 
    bool RegisterTask(ITaskFolder* taskFolder,
                      ITaskDefinition* taskDefinition);
 
-   void FillDataFromTask(IRegisteredTask* task,
-                         ScheduleTarget& data);
-   ITaskDefinition* CreateTaskFromData(const ScheduleTarget& data);
+   ScheduleData* CreateDataFromTask(IRegisteredTask* task) const;
+   ITaskDefinition* CreateTaskFromData(ScheduleData* data);
 
    bool SetTaskRegistrationData(ITaskDefinition* taskDefinition);
    bool SetTaskTriggerData(ITaskDefinition* taskDefinition,
-                           const ScheduleTarget& data);
+                           ScheduleData* data);
    bool SetCommonTriggerData(ITrigger* trigger);
    bool SetTypedTriggerData(ITrigger* trigger,
-                            const ScheduleTarget& data);
+                            ScheduleData* data);
    bool SetDailyTriggerData(ITrigger* trigger,
-                            const ScheduleTarget& data);
+                            ScheduleData* data);
    bool SetWeeklyTriggerData(ITrigger* trigger,
-                            const ScheduleTarget& data);
+                             ScheduleData* data);
    bool SetMontlyTriggerData(ITrigger* trigger,
-                             const ScheduleTarget& data);
+                             ScheduleData* data);
    bool SetTaskAction(ITaskDefinition* taskDefinition);
 
    void UpdateLastErrorMessage(const HRESULT hr);

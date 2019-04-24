@@ -85,9 +85,8 @@ void SchedulerDialog::CreateScheduler()
 
 void SchedulerDialog::ReadSchedulerData()
 {
-   ScheduleTarget scheduleData;
-   const bool ok = scheduler->Read(scheduleData);
-   if (ok)
+   ScheduleData* scheduleData = scheduler->Read();
+   if (scheduleData)
       UpdateUiFromScheduleData(scheduleData);
    else
       QMessageBox::warning(this, "Error", "System scheduler data could not be read");
@@ -104,28 +103,14 @@ void SchedulerDialog::WriteSchedulerData()
    }
 }
 
-void SchedulerDialog::UpdateUiFromScheduleData(const ScheduleTarget& scheduleData)
+void SchedulerDialog::UpdateUiFromScheduleData(ScheduleData* scheduleData)
 {
-   switch (scheduleData.type)
-   {
-      case ScheduleTarget::Type::Daily :
-      {
-         ui->dailyButton->setChecked(true);
-         break;
-      }
-      case ScheduleTarget::Type::Weekly :
-      {
-         ui->weeklyButton->setChecked(true);
-         break;
-      }
-      case ScheduleTarget::Type::Monthly :
-      {
-         ui->monthlyButton->setChecked(true);
-         break;
-      }
-      default:
-      break;
-   }
+   if (dynamic_cast<ScheduleDailyData*>(scheduleData))
+      ui->dailyButton->setChecked(true);
+   else if (dynamic_cast<ScheduleWeeklyData*>(scheduleData))
+      ui->weeklyButton->setChecked(true);
+   else if (dynamic_cast<ScheduleMonthlyData*>(scheduleData))
+      ui->monthlyButton->setChecked(true);
 }
 
 ScheduleData* SchedulerDialog::CreateScheduleDataFromUi() const

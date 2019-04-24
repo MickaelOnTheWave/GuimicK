@@ -44,7 +44,7 @@ private:
    void ReadSchedulerData();
    void WriteSchedulerData();
 
-   void UpdateUiFromScheduleData(const ScheduleTarget& data);
+   void UpdateUiFromScheduleData(ScheduleData* data);
    ScheduleData* CreateScheduleDataFromUi() const;
 
    ScheduleData* CreateDailyScheduleDataFromUi() const;

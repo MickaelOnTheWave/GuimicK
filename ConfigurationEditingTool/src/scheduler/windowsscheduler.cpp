@@ -10,13 +10,13 @@ namespace
                                  L"It was created automatically by the Configuration editor.";
    wchar_t* defaultTriggerName = L"Default Trigger";
 
-   TASK_TRIGGER_TYPE2 TranslateTriggerType(const ScheduleTarget::Type targetType)
+   TASK_TRIGGER_TYPE2 TranslateTriggerType(ScheduleData* data)
    {
-      if (targetType == ScheduleTarget::Type::Daily)
+      if (dynamic_cast<ScheduleDailyData*>(data))
          return TASK_TRIGGER_DAILY;
-      else if (targetType == ScheduleTarget::Type::Weekly)
+      else if (dynamic_cast<ScheduleWeeklyData*>(data))
          return TASK_TRIGGER_WEEKLY;
-      else if (targetType == ScheduleTarget::Type::Monthly)
+      else if (dynamic_cast<ScheduleMonthlyData*>(data))
          return TASK_TRIGGER_MONTHLY;
       else
          return TASK_TRIGGER_EVENT; // TODO : change this!
@@ -50,7 +50,7 @@ WindowsScheduler::~WindowsScheduler()
       CoUninitialize();
 }
 
-bool WindowsScheduler::Read(ScheduleTarget& data)
+ScheduleData* WindowsScheduler::Read() const
 {
    if (comInitialized && winApiAvailable)
    {
@@ -60,15 +60,14 @@ bool WindowsScheduler::Read(ScheduleTarget& data)
          IRegisteredTask* task = NULL;
          taskRootFolder->GetTask(defaultTaskName, &task);
          if (task)
-            FillDataFromTask(task, data);
-         return true;
+            return CreateDataFromTask(task);
       }
    }
 
-   return false;
+   return nullptr;
 }
 
-bool WindowsScheduler::Write(const ScheduleTarget& data)
+bool WindowsScheduler::Write(ScheduleData* data)
 {
    bool result = false;
    if (comInitialized && winApiAvailable)
@@ -126,7 +125,7 @@ void WindowsScheduler::CreateTaskService()
    winApiAvailable = taskServiceAvailable;
 }
 
-ITaskFolder* WindowsScheduler::GetTaskRootFolder()
+ITaskFolder* WindowsScheduler::GetTaskRootFolder() const
 {
    ITaskFolder* taskRootFolder = nullptr;
    HRESULT hr = taskService->GetFolder(L"", &taskRootFolder);
@@ -151,12 +150,12 @@ bool WindowsScheduler::RegisterTask(ITaskFolder* taskFolder,
    return ok;
 }
 
-void WindowsScheduler::FillDataFromTask(IRegisteredTask* task,
-                                        ScheduleTarget& data)
+ScheduleData* WindowsScheduler::CreateDataFromTask(IRegisteredTask* task) const
 {
+   return nullptr;
 }
 
-ITaskDefinition* WindowsScheduler::CreateTaskFromData(const ScheduleTarget& data)
+ITaskDefinition* WindowsScheduler::CreateTaskFromData(ScheduleData* data)
 {
    ITaskDefinition* taskDefinition = nullptr;
    HRESULT hr = taskService->NewTask(0, &taskDefinition);
@@ -192,16 +191,13 @@ bool WindowsScheduler::SetTaskRegistrationData(ITaskDefinition* taskDefinition)
 }
 
 bool WindowsScheduler::SetTaskTriggerData(ITaskDefinition* taskDefinition,
-                                          const ScheduleTarget& data)
+                                          ScheduleData* data)
 {
-   if (data.type == ScheduleTarget::Type::Unset)
-      return true;
-
    ITriggerCollection *triggerCollection = nullptr;
    HRESULT hr = taskDefinition->get_Triggers(&triggerCollection);
    if (SUCCEEDED(hr))
    {
-      TASK_TRIGGER_TYPE2 triggerType = TranslateTriggerType(data.type);
+      TASK_TRIGGER_TYPE2 triggerType = TranslateTriggerType(data);
       ITrigger *taskTrigger = nullptr;
       hr = triggerCollection->Create(triggerType, &taskTrigger);
       if (SUCCEEDED(hr))
@@ -228,19 +224,19 @@ bool WindowsScheduler::SetCommonTriggerData(ITrigger* trigger)
    return SUCCEEDED(hr);
 }
 
-bool WindowsScheduler::SetTypedTriggerData(ITrigger* trigger, const ScheduleTarget& data)
+bool WindowsScheduler::SetTypedTriggerData(ITrigger* trigger, ScheduleData* data)
 {
-   if (data.type == ScheduleTarget::Type::Daily)
+   if (dynamic_cast<ScheduleDailyData*>(data))
       return SetDailyTriggerData(trigger, data);
-   else if (data.type == ScheduleTarget::Type::Weekly)
+   else if (dynamic_cast<ScheduleWeeklyData*>(data))
       return SetWeeklyTriggerData(trigger, data);
-   else if (data.type == ScheduleTarget::Type::Monthly)
+   else if (dynamic_cast<ScheduleMonthlyData*>(data))
       return SetMontlyTriggerData(trigger, data);
    else
       return true;
 }
 
-bool WindowsScheduler::SetDailyTriggerData(ITrigger* trigger, const ScheduleTarget& data)
+bool WindowsScheduler::SetDailyTriggerData(ITrigger* trigger, ScheduleData* data)
 {
    IDailyTrigger *dailyTrigger = nullptr;
    HRESULT hr = trigger->QueryInterface(IID_IDailyTrigger, (void**)&dailyTrigger);
@@ -252,7 +248,7 @@ bool WindowsScheduler::SetDailyTriggerData(ITrigger* trigger, const ScheduleTarg
    return SUCCEEDED(hr);
 }
 
-bool WindowsScheduler::SetWeeklyTriggerData(ITrigger* trigger, const ScheduleTarget& data)
+bool WindowsScheduler::SetWeeklyTriggerData(ITrigger* trigger, ScheduleData* data)
 {
    IWeeklyTrigger *pWeeklyTrigger = NULL;
    HRESULT hr = trigger->QueryInterface(
@@ -269,7 +265,7 @@ bool WindowsScheduler::SetWeeklyTriggerData(ITrigger* trigger, const ScheduleTar
    return SUCCEEDED(hr);
 }
 
-bool WindowsScheduler::SetMontlyTriggerData(ITrigger* trigger, const ScheduleTarget& data)
+bool WindowsScheduler::SetMontlyTriggerData(ITrigger* trigger, ScheduleData* data)
 {
    IMonthlyTrigger *monthlyTrigger = nullptr;
    HRESULT hr = trigger->QueryInterface(IID_IMonthlyTrigger, (void**)&monthlyTrigger);
