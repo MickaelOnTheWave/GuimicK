@@ -21,6 +21,7 @@ public:
    ~SchedulerDialog();
 
    void SetConfigurationFile(const QString& file);
+   void SetTaskToolExecutable(const QString& value);
 
 private slots:
    void on_noScheduleButton_clicked();
@@ -51,10 +52,12 @@ private:
    ScheduleData* CreateWeeklyScheduleDataFromUi() const;
    ScheduleData* CreateMonthlyScheduleDataFromUi() const;
 
+   void SetSchedulerCommandData();
+
    Ui::SchedulerDialog *ui;
-   QString configurationFile = "";
    AbstractScheduler* scheduler = nullptr;
    std::map<QCheckBox*,int> monthlyCheckboxes;
+   QString taskToolExecutable = "";
 };
 
 #endif // SCHEDULERDIALOG_H

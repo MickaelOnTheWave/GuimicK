@@ -24,6 +24,7 @@ class ScheduleWeeklyData : public ScheduleData
 {
 public:
     void AddDayIndex(const int value);
+    std::vector<int> GetDaysIndices() const;
 
 protected:
     std::vector<int> daysIndices;

@@ -28,8 +28,12 @@ SchedulerDialog::~SchedulerDialog()
 
 void SchedulerDialog::SetConfigurationFile(const QString& file)
 {
-   configurationFile = file;
-   ui->fileSelectionDialog->SetPath(configurationFile);
+   ui->fileSelectionDialog->SetPath(file);
+}
+
+void SchedulerDialog::SetTaskToolExecutable(const QString& value)
+{
+   taskToolExecutable = value;
 }
 
 void SchedulerDialog::on_noScheduleButton_clicked()
@@ -94,6 +98,7 @@ void SchedulerDialog::ReadSchedulerData()
 
 void SchedulerDialog::WriteSchedulerData()
 {
+   SetSchedulerCommandData();
    const bool ok = scheduler->Write(CreateScheduleDataFromUi());
    if (!ok)
    {
@@ -105,12 +110,12 @@ void SchedulerDialog::WriteSchedulerData()
 
 void SchedulerDialog::UpdateUiFromScheduleData(ScheduleData* scheduleData)
 {
-   if (dynamic_cast<ScheduleDailyData*>(scheduleData))
+   if (dynamic_cast<ScheduleMonthlyData*>(scheduleData))
+      ui->monthlyButton->setChecked(true);
+   else if (dynamic_cast<ScheduleDailyData*>(scheduleData))
       ui->dailyButton->setChecked(true);
    else if (dynamic_cast<ScheduleWeeklyData*>(scheduleData))
       ui->weeklyButton->setChecked(true);
-   else if (dynamic_cast<ScheduleMonthlyData*>(scheduleData))
-      ui->monthlyButton->setChecked(true);
 }
 
 ScheduleData* SchedulerDialog::CreateScheduleDataFromUi() const
@@ -143,6 +148,14 @@ ScheduleData* SchedulerDialog::CreateWeeklyScheduleDataFromUi() const
       scheduleData->AddDayIndex(1);
    if (ui->tuesdayBox->isChecked())
       scheduleData->AddDayIndex(2);
+   if (ui->wednesdayBox->isChecked())
+      scheduleData->AddDayIndex(3);
+   if (ui->thursdayBox->isChecked())
+      scheduleData->AddDayIndex(4);
+   if (ui->fridayBox->isChecked())
+      scheduleData->AddDayIndex(5);
+   if (ui->saturdayBox->isChecked())
+      scheduleData->AddDayIndex(6);
    return scheduleData;
 }
 
@@ -158,6 +171,15 @@ ScheduleData* SchedulerDialog::CreateMonthlyScheduleDataFromUi() const
    }
 
    return scheduleData;
+}
+
+void SchedulerDialog::SetSchedulerCommandData()
+{
+   const QString command = QString("\"") + taskToolExecutable + "\"";
+   const QString arguments = QString("--conffile \"") + ui->fileSelectionDialog->GetPath() + "\"";
+
+   scheduler->SetCommandToRun(command);
+   scheduler->SetCommandArguments(arguments);
 }
 
 void SchedulerDialog::on_buttonBox_accepted()

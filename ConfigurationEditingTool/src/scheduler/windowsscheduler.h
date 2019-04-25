@@ -31,15 +31,16 @@ private:
    bool SetTaskRegistrationData(ITaskDefinition* taskDefinition);
    bool SetTaskTriggerData(ITaskDefinition* taskDefinition,
                            ScheduleData* data);
-   bool SetCommonTriggerData(ITrigger* trigger);
+   bool SetCommonTriggerData(ITrigger* trigger,
+                             ScheduleData* data);
    bool SetTypedTriggerData(ITrigger* trigger,
                             ScheduleData* data);
    bool SetDailyTriggerData(ITrigger* trigger,
-                            ScheduleData* data);
+                            ScheduleDailyData* data);
    bool SetWeeklyTriggerData(ITrigger* trigger,
-                             ScheduleData* data);
+                             ScheduleWeeklyData* data);
    bool SetMontlyTriggerData(ITrigger* trigger,
-                             ScheduleData* data);
+                             ScheduleMonthlyData* data);
    bool SetTaskAction(ITaskDefinition* taskDefinition);
 
    void UpdateLastErrorMessage(const HRESULT hr);

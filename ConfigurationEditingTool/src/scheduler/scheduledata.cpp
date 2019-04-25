@@ -15,3 +15,8 @@ void ScheduleWeeklyData::AddDayIndex(const int value)
 {
    daysIndices.push_back(value);
 }
+
+std::vector<int> ScheduleWeeklyData::GetDaysIndices() const
+{
+   return daysIndices;
+}
