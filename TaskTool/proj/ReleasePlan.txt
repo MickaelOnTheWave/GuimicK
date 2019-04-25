@@ -84,6 +84,7 @@ Pending bugs :
 	[010] Some tests are failing in GitJob only in Release. Make all test suites pass 100% in both Debug and Release.
 	[012] Debug flag is not handled as it should. Check that global one works as default and can be overridden by local ones.
 	[014] There should be error reporting when simple copy backup fails (see on windows, using system folder)
+        [015] Windows - error when trying to create a monthly scheduled run. It is in Windows API.
 
 -------------
 Release plan

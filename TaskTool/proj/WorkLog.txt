@@ -1,3 +1,12 @@
+25/04/2019 (2h)
+    Finished setting proper data for Daily and Weekly schedules.
+    However there is a bug with Monthly schedule, it seems that
+    the trigger does not now its query. Reporting the bug and going for
+    other parts for now.. Finished Action registering.
+Next planned work:
+    - Refactor Windows Scheduler code. Multiple classes?
+    - Implement Windows Scheduler reading
+
 24/04/2019 (1.8h)
     Refactored Schedule data classes. Now going for Windows to finish
     refactoring on Windows implementation. Finished refactoring.
