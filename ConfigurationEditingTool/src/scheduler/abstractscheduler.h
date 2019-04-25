@@ -4,27 +4,20 @@
 #include <QString>
 #include "scheduledata.h"
 
-class ScheduleTarget
-{
-public:
-    enum class Type {Unset, Daily, Weekly, Monthly};
-
-    Type type = Type::Unset;
-    QString details = "";
-};
-
 class AbstractScheduler
 {
 public:
-   virtual bool Read(ScheduleTarget& data) = 0;
+   virtual ScheduleData* Read() const = 0;
    virtual bool Write(ScheduleData* data) = 0;
-   QString GetLastError() const
-   {
-      return lastError;
-   };
+
+   QString GetLastError() const;
+   void SetCommandToRun(const QString& value);
+   void SetCommandArguments(const QString& value);
 
 protected:
    QString lastError = "";
+   QString commandToRun = "";
+   QString commandArguments = "";
 };
 
 #endif // ABSTRACTSCHEDULER_H
