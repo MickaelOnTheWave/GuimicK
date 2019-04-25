@@ -92,18 +92,6 @@ namespace
       return filename;
    }
 
-   QString GetFirstWriteableFolder(const QStandardPaths::StandardLocation location)
-   {
-      const QStringList defaultFolders = QStandardPaths::standardLocations(location);
-      for (const auto it : defaultFolders)
-      {
-         const QFileInfo fileInfo(it);
-         if (fileInfo.permission(QFile::WriteUser | QFile::WriteOwner))
-            return it;
-      }
-      return QString("");
-   }
-
    QString GetDefaultWriteableTempFolder()
    {
       const QStringList defaultFolders = QStandardPaths::standardLocations(QStandardPaths::TempLocation);
