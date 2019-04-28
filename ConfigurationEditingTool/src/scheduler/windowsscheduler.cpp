@@ -35,6 +35,15 @@ namespace
       return _bstr_t(buffer);
    }
 
+   QTime ConvertToQtime(const BSTR& time)
+   {
+      int year, month, day, hour, minute, second;
+      swscanf_s(time, L"%4d-%02d-%02dT%02d:%02d:%02d",
+               &year, &month, &day,
+               &hour, &minute, &second);
+      return QTime(hour, minute);
+   }
+
    short ConvertToDayMask(const std::vector<int>& daysIndices)
    {
       short mask = 0;
@@ -213,7 +222,14 @@ ScheduleData* WindowsScheduler::CreateDataFromTrigger(ITrigger* trigger) const
 ScheduleData* WindowsScheduler::CreateDataFromDailyTrigger(ITrigger* trigger) const
 {
    auto data = new ScheduleDailyData();
-   data->SetTime(QTime(11, 42, 00, 00));
+   IDailyTrigger* dailyTrigger = GetDailyTrigger(trigger);
+   if (dailyTrigger)
+   {
+      BSTR triggerStart;
+      HRESULT hr = dailyTrigger->get_StartBoundary(&triggerStart);
+      if (SUCCEEDED(hr))
+         data->SetTime(ConvertToQtime(triggerStart));
+   }
    return data;
 }
 
@@ -235,7 +251,6 @@ ScheduleData* WindowsScheduler::CreateDataFromMonthlyTrigger(ITrigger* trigger) 
    data->AddDayIndex(3);
    data->AddDayIndex(5);
    return data;
-
 }
 
 ITaskDefinition* WindowsScheduler::CreateTaskFromData(ScheduleData* data)
@@ -322,14 +337,15 @@ bool WindowsScheduler::SetTypedTriggerData(ITrigger* trigger, ScheduleData* data
 
 bool WindowsScheduler::SetDailyTriggerData(ITrigger* trigger, ScheduleDailyData* data)
 {
-   IDailyTrigger *dailyTrigger = nullptr;
-   HRESULT hr = trigger->QueryInterface(IID_IDailyTrigger, (void**)&dailyTrigger);
-   if (SUCCEEDED(hr))
+   IDailyTrigger *dailyTrigger = GetDailyTrigger(trigger);
+   bool ok = false;
+   if (dailyTrigger)
    {
-      hr = dailyTrigger->put_DaysInterval((short)1);
+      const HRESULT hr = dailyTrigger->put_DaysInterval((short)1);
       dailyTrigger->Release();
+      ok = SUCCEEDED(hr);
    }
-   return SUCCEEDED(hr);
+   return ok;
 }
 
 bool WindowsScheduler::SetWeeklyTriggerData(ITrigger* trigger, ScheduleWeeklyData* data)
@@ -398,4 +414,11 @@ void WindowsScheduler::UpdateLastErrorMessage(const HRESULT hr)
    _com_error comError(hr);
    const LPCTSTR errorMsg = comError.ErrorMessage();
    lastError = errorMsg;
+}
+
+IDailyTrigger* WindowsScheduler::GetDailyTrigger(ITrigger* trigger) const
+{
+   IDailyTrigger *dailyTrigger = nullptr;
+   trigger->QueryInterface(IID_IDailyTrigger, (void**)&dailyTrigger);
+   return dailyTrigger;
 }

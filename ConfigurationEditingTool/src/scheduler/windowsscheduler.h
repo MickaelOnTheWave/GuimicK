@@ -51,6 +51,8 @@ private:
 
    void UpdateLastErrorMessage(const HRESULT hr);
 
+   IDailyTrigger* GetDailyTrigger(ITrigger* trigger) const;
+
    bool comInitialized = false;
    bool winApiAvailable = true;
    bool taskServiceAvailable = true;
