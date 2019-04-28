@@ -55,7 +55,7 @@ using namespace std;
 
 namespace
 {
-   const wstring version = L"0.96";
+   const wstring version = L"1.00";
 
    QString GetDefaultTaskToolExecutable()
    {

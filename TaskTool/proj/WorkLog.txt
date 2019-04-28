@@ -1,3 +1,16 @@
+28/04/2019 (2.9h)
+    It is not clear yet if a refactor is that necessary. Going first for
+    read implementation. Implemented read of trigger type. For now using
+    hard-coded details. Resolved multiple inconsistencies in UI management.
+    Now checking how to resolve issue with empty read (no task) giving error.
+    Finished all scheduler read operations. Fixed bug with Monthly trigger
+    write. All scheduler seems complete, only missing refactor.
+Next planned work:
+    - Refactor Scheduler code : Windows scheduler API and Scheduler dialog
+    - Update Scheduler UI to avoid empty days triggers error
+    - Back to Linux : have task tool compile for Synology
+    - Back to Linux : install TaskManager to run as before
+
 25/04/2019 (2h)
     Finished setting proper data for Daily and Weekly schedules.
     However there is a bug with Monthly schedule, it seems that
