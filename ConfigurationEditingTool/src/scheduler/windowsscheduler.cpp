@@ -14,12 +14,12 @@ namespace
    {
       if (dynamic_cast<ScheduleDailyData*>(data))
          return TASK_TRIGGER_DAILY;
-      else if (dynamic_cast<ScheduleWeeklyData*>(data))
-         return TASK_TRIGGER_WEEKLY;
       else if (dynamic_cast<ScheduleMonthlyData*>(data))
          return TASK_TRIGGER_MONTHLY;
+      else if (dynamic_cast<ScheduleWeeklyData*>(data))
+         return TASK_TRIGGER_WEEKLY;
       else
-         return TASK_TRIGGER_EVENT; // TODO : change this!
+         return TASK_TRIGGER_IDLE;
    }
 
    BSTR ConvertToTimeString(const QTime& time)
@@ -50,6 +50,11 @@ namespace
       for (const int i : daysIndices)
          mask += pow(2, i);
       return mask;
+   }
+
+   short GetAllMonthsOfYearMask()
+   {
+      return pow(2, 12) - 1;
    }
 }
 
@@ -373,7 +378,7 @@ bool WindowsScheduler::SetMontlyTriggerData(ITrigger* trigger, ScheduleMonthlyDa
    {
       hr = monthlyTrigger->put_DaysOfMonth(ConvertToDayMask(data->GetDaysIndices()));
       if (SUCCEEDED(hr))
-         hr = monthlyTrigger->put_MonthsOfYear((short)1);
+         hr = monthlyTrigger->put_MonthsOfYear(GetAllMonthsOfYearMask());
 
       monthlyTrigger->Release();
    }
