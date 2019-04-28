@@ -89,8 +89,9 @@ void SchedulerDialog::CreateScheduler()
 
 void SchedulerDialog::ReadSchedulerData()
 {
-   ScheduleData* scheduleData = scheduler->Read();
-   if (scheduleData)
+   ScheduleData* scheduleData = nullptr;
+   const bool ok = scheduler->Read(&scheduleData);
+   if (ok)
       UpdateUiFromScheduleData(scheduleData);
    else
       QMessageBox::warning(this, "Error", "System scheduler data could not be read");
@@ -111,23 +112,51 @@ void SchedulerDialog::WriteSchedulerData()
 void SchedulerDialog::UpdateUiFromScheduleData(ScheduleData* scheduleData)
 {
    if (dynamic_cast<ScheduleMonthlyData*>(scheduleData))
+   {
+      ui->scheduleButton->setChecked(true);
+      on_scheduleButton_clicked();
+
       ui->monthlyButton->setChecked(true);
+      on_monthlyButton_clicked();
+   }
    else if (dynamic_cast<ScheduleDailyData*>(scheduleData))
+   {
+      ui->scheduleButton->setChecked(true);
+      on_scheduleButton_clicked();
+
       ui->dailyButton->setChecked(true);
-   else if (dynamic_cast<ScheduleWeeklyData*>(scheduleData))
+      on_dailyButton_clicked();
+
+      ui->scheduleTimeEdit->setTime(scheduleData->GetTime());
+   }
+   else if (auto weeklyData = dynamic_cast<ScheduleWeeklyData*>(scheduleData))
+   {
+      ui->scheduleButton->setChecked(true);
+      on_scheduleButton_clicked();
+
       ui->weeklyButton->setChecked(true);
+      on_weeklyButton_clicked();
+
+      ui->scheduleTimeEdit->setTime(scheduleData->GetTime());
+      std::vector<int> days = weeklyData->GetDaysIndices();
+      UpdateWeekDaysCheckboxes(days);
+   }
+   else
+      on_noScheduleButton_clicked();
 }
 
 ScheduleData* SchedulerDialog::CreateScheduleDataFromUi() const
 {
-   if (ui->dailyButton->isChecked())
-      return CreateDailyScheduleDataFromUi();
-   else if (ui->weeklyButton->isChecked())
-      return CreateWeeklyScheduleDataFromUi();
-   else if (ui->monthlyButton->isChecked())
-      return CreateMonthlyScheduleDataFromUi();
-   else
-      return nullptr;
+   if (ui->scheduleButton->isChecked())
+   {
+      if (ui->dailyButton->isChecked())
+         return CreateDailyScheduleDataFromUi();
+      else if (ui->weeklyButton->isChecked())
+         return CreateWeeklyScheduleDataFromUi();
+      else if (ui->monthlyButton->isChecked())
+         return CreateMonthlyScheduleDataFromUi();
+   }
+   return nullptr;
 }
 
 ScheduleData* SchedulerDialog::CreateDailyScheduleDataFromUi() const
@@ -180,6 +209,39 @@ void SchedulerDialog::SetSchedulerCommandData()
 
    scheduler->SetCommandToRun(command);
    scheduler->SetCommandArguments(arguments);
+}
+
+void SchedulerDialog::UpdateWeekDaysCheckboxes(const std::vector<int>& days)
+{
+   UncheckAllWeekDaysCheckboxes();
+   for (const int day : days)
+   {
+      if (day == 0)
+         ui->sundayBox->setChecked(true);
+      else if (day == 1)
+         ui->mondayBox->setChecked(true);
+      else if (day == 2)
+         ui->tuesdayBox->setChecked(true);
+      else if (day == 3)
+         ui->wednesdayBox->setChecked(true);
+      else if (day == 4)
+         ui->thursdayBox->setChecked(true);
+      else if (day == 5)
+         ui->fridayBox->setChecked(true);
+      else if (day == 6)
+         ui->saturdayBox->setChecked(true);
+   }
+}
+
+void SchedulerDialog::UncheckAllWeekDaysCheckboxes()
+{
+   ui->sundayBox->setChecked(false);
+   ui->mondayBox->setChecked(false);
+   ui->tuesdayBox->setChecked(false);
+   ui->wednesdayBox->setChecked(false);
+   ui->thursdayBox->setChecked(false);
+   ui->fridayBox->setChecked(false);
+   ui->saturdayBox->setChecked(false);
 }
 
 void SchedulerDialog::on_buttonBox_accepted()

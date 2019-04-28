@@ -58,7 +58,7 @@ WindowsScheduler::~WindowsScheduler()
       CoUninitialize();
 }
 
-ScheduleData* WindowsScheduler::Read() const
+bool WindowsScheduler::Read(ScheduleData** data) const
 {
    if (comInitialized && winApiAvailable)
    {
@@ -68,11 +68,11 @@ ScheduleData* WindowsScheduler::Read() const
          IRegisteredTask* task = NULL;
          taskRootFolder->GetTask(defaultTaskName, &task);
          if (task)
-            return CreateDataFromTask(task);
+            *data = CreateDataFromTask(task);
+         return true;
       }
    }
-
-   return nullptr;
+   return false;
 }
 
 bool WindowsScheduler::Write(ScheduleData* data)
@@ -84,12 +84,17 @@ bool WindowsScheduler::Write(ScheduleData* data)
       if (taskRootFolder)
       {
          taskRootFolder->DeleteTask(defaultTaskName, 0);
-         ITaskDefinition* task = CreateTaskFromData(data);
-         if (task)
+         if (data)
          {
-            result = RegisterTask(taskRootFolder, task);
-            task->Release();
+            ITaskDefinition* task = CreateTaskFromData(data);
+            if (task)
+            {
+               result = RegisterTask(taskRootFolder, task);
+               task->Release();
+            }
          }
+         else
+            result = true;
          taskRootFolder->Release();
       }
    }
@@ -160,7 +165,77 @@ bool WindowsScheduler::RegisterTask(ITaskFolder* taskFolder,
 
 ScheduleData* WindowsScheduler::CreateDataFromTask(IRegisteredTask* task) const
 {
+   ScheduleData* scheduleData = nullptr;
+   ITaskDefinition* taskDefinition = nullptr;
+   HRESULT hr = task->get_Definition(&taskDefinition);
+   if (SUCCEEDED(hr))
+   {
+      ITriggerCollection* taskTriggers = nullptr;
+      hr = taskDefinition->get_Triggers(&taskTriggers);
+      if (SUCCEEDED(hr))
+      {
+         long triggerCount = 0;
+         hr = taskTriggers->get_Count(&triggerCount);
+         if (SUCCEEDED(hr) && triggerCount > 0)
+         {
+            ITrigger* trigger = nullptr;
+            taskTriggers->get_Item(1, &trigger);
+            if (SUCCEEDED(hr))
+            {
+               scheduleData = CreateDataFromTrigger(trigger);
+               trigger->Release();
+            }
+         }
+         taskTriggers->Release();
+      }
+      taskDefinition->Release();
+   }
+   return scheduleData;
+}
+
+ScheduleData* WindowsScheduler::CreateDataFromTrigger(ITrigger* trigger) const
+{
+   TASK_TRIGGER_TYPE2 triggerType;
+   HRESULT hr = trigger->get_Type(&triggerType);
+   if (SUCCEEDED(hr))
+   {
+      if (triggerType == TASK_TRIGGER_DAILY)
+         return CreateDataFromDailyTrigger(trigger);
+      else if (triggerType == TASK_TRIGGER_WEEKLY)
+         return CreateDataFromWeeklyTrigger(trigger);
+      else if (triggerType == TASK_TRIGGER_MONTHLY)
+         return CreateDataFromMonthlyTrigger(trigger);
+   }
+
    return nullptr;
+}
+
+ScheduleData* WindowsScheduler::CreateDataFromDailyTrigger(ITrigger* trigger) const
+{
+   auto data = new ScheduleDailyData();
+   data->SetTime(QTime(11, 42, 00, 00));
+   return data;
+}
+
+ScheduleData* WindowsScheduler::CreateDataFromWeeklyTrigger(ITrigger* trigger) const
+{
+   auto data = new ScheduleWeeklyData();
+   data->SetTime(QTime(12, 42, 00, 00));
+   data->AddDayIndex(0);
+   data->AddDayIndex(2);
+   data->AddDayIndex(4);
+   return data;
+}
+
+ScheduleData* WindowsScheduler::CreateDataFromMonthlyTrigger(ITrigger* trigger) const
+{
+   auto data = new ScheduleMonthlyData();
+   data->SetTime(QTime(13, 42, 00, 00));
+   data->AddDayIndex(1);
+   data->AddDayIndex(3);
+   data->AddDayIndex(5);
+   return data;
+
 }
 
 ITaskDefinition* WindowsScheduler::CreateTaskFromData(ScheduleData* data)

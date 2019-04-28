@@ -11,7 +11,7 @@ public:
    WindowsScheduler();
    ~WindowsScheduler();
 
-   ScheduleData* Read() const override;
+   bool Read(ScheduleData** data) const override;
    bool Write(ScheduleData* data) override;
 
 private:
@@ -26,6 +26,12 @@ private:
                      ITaskDefinition* taskDefinition);
 
    ScheduleData* CreateDataFromTask(IRegisteredTask* task) const;
+
+   ScheduleData* CreateDataFromTrigger(ITrigger* trigger) const;
+   ScheduleData* CreateDataFromDailyTrigger(ITrigger* trigger) const;
+   ScheduleData* CreateDataFromWeeklyTrigger(ITrigger* trigger) const;
+   ScheduleData* CreateDataFromMonthlyTrigger(ITrigger* trigger) const;
+
    ITaskDefinition* CreateTaskFromData(ScheduleData* data);
 
    bool SetTaskRegistrationData(ITaskDefinition* taskDefinition);
