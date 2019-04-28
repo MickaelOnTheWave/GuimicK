@@ -57,6 +57,8 @@ private:
    void UpdateWeekDaysCheckboxes(const std::vector<int>& days);
    void UncheckAllWeekDaysCheckboxes();
 
+   void UpdateMonthDaysCheckboxes(const std::vector<int>& days);
+
    Ui::SchedulerDialog *ui;
    AbstractScheduler* scheduler = nullptr;
    std::map<QCheckBox*,int> monthlyCheckboxes;

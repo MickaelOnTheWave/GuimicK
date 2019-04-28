@@ -222,34 +222,35 @@ ScheduleData* WindowsScheduler::CreateDataFromTrigger(ITrigger* trigger) const
 ScheduleData* WindowsScheduler::CreateDataFromDailyTrigger(ITrigger* trigger) const
 {
    auto data = new ScheduleDailyData();
-   IDailyTrigger* dailyTrigger = GetDailyTrigger(trigger);
-   if (dailyTrigger)
-   {
-      BSTR triggerStart;
-      HRESULT hr = dailyTrigger->get_StartBoundary(&triggerStart);
-      if (SUCCEEDED(hr))
-         data->SetTime(ConvertToQtime(triggerStart));
-   }
+   SetCommonDataFromTrigger(data, trigger);
    return data;
 }
 
 ScheduleData* WindowsScheduler::CreateDataFromWeeklyTrigger(ITrigger* trigger) const
 {
    auto data = new ScheduleWeeklyData();
-   data->SetTime(QTime(12, 42, 00, 00));
-   data->AddDayIndex(0);
-   data->AddDayIndex(2);
-   data->AddDayIndex(4);
+   SetCommonDataFromTrigger(data, trigger);
+   IWeeklyTrigger* weeklyTrigger = GetWeeklyTrigger(trigger);
+   if (weeklyTrigger)
+   {
+      short dayMask;
+      weeklyTrigger->get_DaysOfWeek(&dayMask);
+      SetDayDataFromMask(data, dayMask, 7);
+   }
    return data;
 }
 
 ScheduleData* WindowsScheduler::CreateDataFromMonthlyTrigger(ITrigger* trigger) const
 {
    auto data = new ScheduleMonthlyData();
-   data->SetTime(QTime(13, 42, 00, 00));
-   data->AddDayIndex(1);
-   data->AddDayIndex(3);
-   data->AddDayIndex(5);
+   SetCommonDataFromTrigger(data, trigger);
+   IMonthlyTrigger* monthlyTrigger = GetMonthlyTrigger(trigger);
+   if (monthlyTrigger)
+   {
+      long dayMask;
+      monthlyTrigger->get_DaysOfMonth(&dayMask);
+      SetDayDataFromMask(data, dayMask, 31);
+   }
    return data;
 }
 
@@ -350,19 +351,18 @@ bool WindowsScheduler::SetDailyTriggerData(ITrigger* trigger, ScheduleDailyData*
 
 bool WindowsScheduler::SetWeeklyTriggerData(ITrigger* trigger, ScheduleWeeklyData* data)
 {
-   IWeeklyTrigger *pWeeklyTrigger = NULL;
-   HRESULT hr = trigger->QueryInterface(
-      IID_IWeeklyTrigger, (void**)&pWeeklyTrigger);
-
-   if (SUCCEEDED(hr))
+   bool ok = false;
+   IWeeklyTrigger *weeklyTrigger = GetWeeklyTrigger(trigger);
+   if (weeklyTrigger)
    {
-      hr = pWeeklyTrigger->put_WeeksInterval((short)1);
+      HRESULT hr = weeklyTrigger->put_WeeksInterval((short)1);
       if (SUCCEEDED(hr))
-         hr = pWeeklyTrigger->put_DaysOfWeek(ConvertToDayMask(data->GetDaysIndices()));
+         hr = weeklyTrigger->put_DaysOfWeek(ConvertToDayMask(data->GetDaysIndices()));
 
-      pWeeklyTrigger->Release();
+      weeklyTrigger->Release();
+      ok = SUCCEEDED(hr);
    }
-   return SUCCEEDED(hr);
+   return ok;
 }
 
 bool WindowsScheduler::SetMontlyTriggerData(ITrigger* trigger, ScheduleMonthlyData* data)
@@ -421,4 +421,40 @@ IDailyTrigger* WindowsScheduler::GetDailyTrigger(ITrigger* trigger) const
    IDailyTrigger *dailyTrigger = nullptr;
    trigger->QueryInterface(IID_IDailyTrigger, (void**)&dailyTrigger);
    return dailyTrigger;
+}
+
+IWeeklyTrigger* WindowsScheduler::GetWeeklyTrigger(ITrigger* trigger) const
+{
+   IWeeklyTrigger *weeklyTrigger = nullptr;
+   trigger->QueryInterface(IID_IWeeklyTrigger, (void**)&weeklyTrigger);
+   return weeklyTrigger;
+}
+
+IMonthlyTrigger* WindowsScheduler::GetMonthlyTrigger(ITrigger* trigger) const
+{
+   IMonthlyTrigger *monthlyTrigger = nullptr;
+   trigger->QueryInterface(IID_IMonthlyTrigger, (void**)&monthlyTrigger);
+   return monthlyTrigger;
+}
+
+void WindowsScheduler::SetCommonDataFromTrigger(ScheduleData* data,
+                                                ITrigger* trigger) const
+{
+   BSTR triggerStart;
+   HRESULT hr = trigger->get_StartBoundary(&triggerStart);
+   if (SUCCEEDED(hr))
+      data->SetTime(ConvertToQtime(triggerStart));
+}
+
+void WindowsScheduler::SetDayDataFromMask(ScheduleWeeklyData* data,
+                                          const long dayMask,
+                                          const long daysCount) const
+{
+   for (int i=0; i<daysCount; ++i)
+   {
+      const long currentDayMask = pow(2, i);
+      const long result = dayMask & currentDayMask;
+      if (result == currentDayMask)
+         data->AddDayIndex(i);
+   }
 }

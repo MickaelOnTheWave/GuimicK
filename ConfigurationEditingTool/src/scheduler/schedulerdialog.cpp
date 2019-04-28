@@ -111,13 +111,17 @@ void SchedulerDialog::WriteSchedulerData()
 
 void SchedulerDialog::UpdateUiFromScheduleData(ScheduleData* scheduleData)
 {
-   if (dynamic_cast<ScheduleMonthlyData*>(scheduleData))
+   if (auto monthlyData = dynamic_cast<ScheduleMonthlyData*>(scheduleData))
    {
       ui->scheduleButton->setChecked(true);
       on_scheduleButton_clicked();
 
       ui->monthlyButton->setChecked(true);
       on_monthlyButton_clicked();
+
+      ui->scheduleTimeEdit->setTime(scheduleData->GetTime());
+      std::vector<int> days = monthlyData->GetDaysIndices();
+      UpdateMonthDaysCheckboxes(days);
    }
    else if (dynamic_cast<ScheduleDailyData*>(scheduleData))
    {
@@ -242,6 +246,22 @@ void SchedulerDialog::UncheckAllWeekDaysCheckboxes()
    ui->thursdayBox->setChecked(false);
    ui->fridayBox->setChecked(false);
    ui->saturdayBox->setChecked(false);
+}
+
+void SchedulerDialog::UpdateMonthDaysCheckboxes(const std::vector<int>& days)
+{
+   int i = 0;
+   const QObjectList checkboxList = ui->montlyPage->children();
+   for (const auto object : checkboxList)
+   {
+      auto checkbox = dynamic_cast<QCheckBox*>(object);
+      if (checkbox)
+      {
+         const bool isDayPresent = std::find(days.begin(), days.end(), i) != days.end();
+         checkbox->setChecked(isDayPresent);
+         ++i;
+      }
+   }
 }
 
 void SchedulerDialog::on_buttonBox_accepted()

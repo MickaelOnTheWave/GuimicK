@@ -53,6 +53,16 @@ private:
 
    IDailyTrigger* GetDailyTrigger(ITrigger* trigger) const;
 
+   IWeeklyTrigger* GetWeeklyTrigger(ITrigger* trigger) const;
+
+   IMonthlyTrigger* GetMonthlyTrigger(ITrigger* trigger) const;
+
+   void SetCommonDataFromTrigger(ScheduleData* data,
+                                 ITrigger* trigger) const;
+   void SetDayDataFromMask(ScheduleWeeklyData* data,
+                           const long dayMask,
+                           const long daysCount) const;
+
    bool comInitialized = false;
    bool winApiAvailable = true;
    bool taskServiceAvailable = true;
