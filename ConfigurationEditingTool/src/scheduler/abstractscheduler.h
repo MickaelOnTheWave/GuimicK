@@ -7,7 +7,7 @@
 class AbstractScheduler
 {
 public:
-   virtual ScheduleData* Read() const = 0;
+   virtual bool Read(ScheduleData** data) const = 0;
    virtual bool Write(ScheduleData* data) = 0;
 
    QString GetLastError() const;

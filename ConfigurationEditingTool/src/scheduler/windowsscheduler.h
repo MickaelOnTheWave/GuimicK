@@ -11,7 +11,7 @@ public:
    WindowsScheduler();
    ~WindowsScheduler();
 
-   ScheduleData* Read() const override;
+   bool Read(ScheduleData** data) const override;
    bool Write(ScheduleData* data) override;
 
 private:
@@ -26,6 +26,12 @@ private:
                      ITaskDefinition* taskDefinition);
 
    ScheduleData* CreateDataFromTask(IRegisteredTask* task) const;
+
+   ScheduleData* CreateDataFromTrigger(ITrigger* trigger) const;
+   ScheduleData* CreateDataFromDailyTrigger(ITrigger* trigger) const;
+   ScheduleData* CreateDataFromWeeklyTrigger(ITrigger* trigger) const;
+   ScheduleData* CreateDataFromMonthlyTrigger(ITrigger* trigger) const;
+
    ITaskDefinition* CreateTaskFromData(ScheduleData* data);
 
    bool SetTaskRegistrationData(ITaskDefinition* taskDefinition);
@@ -44,6 +50,18 @@ private:
    bool SetTaskAction(ITaskDefinition* taskDefinition);
 
    void UpdateLastErrorMessage(const HRESULT hr);
+
+   IDailyTrigger* GetDailyTrigger(ITrigger* trigger) const;
+
+   IWeeklyTrigger* GetWeeklyTrigger(ITrigger* trigger) const;
+
+   IMonthlyTrigger* GetMonthlyTrigger(ITrigger* trigger) const;
+
+   void SetCommonDataFromTrigger(ScheduleData* data,
+                                 ITrigger* trigger) const;
+   void SetDayDataFromMask(ScheduleWeeklyData* data,
+                           const long dayMask,
+                           const long daysCount) const;
 
    bool comInitialized = false;
    bool winApiAvailable = true;
