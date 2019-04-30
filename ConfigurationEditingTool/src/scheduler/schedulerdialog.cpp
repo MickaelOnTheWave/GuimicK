@@ -3,6 +3,7 @@
 
 #include <QGridLayout>
 #include <QMessageBox>
+#include <QPushButton>
 
 #ifdef _WIN32
    #include "windowsscheduler.h"
@@ -13,6 +14,8 @@ SchedulerDialog::SchedulerDialog(QWidget *parent) :
    ui(new Ui::SchedulerDialog)
 {
    ui->setupUi(this);
+   setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+   ConnectDaysOfWeekControls();
    CreateDaysOfMonthControls();
    on_noScheduleButton_clicked();
    on_dailyButton_clicked();
@@ -39,26 +42,37 @@ void SchedulerDialog::SetTaskToolExecutable(const QString& value)
 void SchedulerDialog::on_noScheduleButton_clicked()
 {
    ui->configurationGroupBox->setEnabled(false);
+   SetOkButtonEnabled(true);
 }
 
 void SchedulerDialog::on_scheduleButton_clicked()
 {
    ui->configurationGroupBox->setEnabled(true);
+
+   if (ui->dailyButton->isChecked())
+      SetOkButtonEnabled(true);
+   else if (ui->weeklyButton->isChecked())
+      SetOkButtonEnabled(IsOneWeeklyCheckboxChecked());
+   else if (ui->monthlyButton->isChecked())
+      SetOkButtonEnabled(IsOneMonthlyCheckboxChecked());
 }
 
 void SchedulerDialog::on_dailyButton_clicked()
 {
    ui->configurationStackedWidget->setCurrentIndex(0);
+   SetOkButtonEnabled(true);
 }
 
 void SchedulerDialog::on_weeklyButton_clicked()
 {
    ui->configurationStackedWidget->setCurrentIndex(1);
+   SetOkButtonEnabled(IsOneWeeklyCheckboxChecked());
 }
 
 void SchedulerDialog::on_monthlyButton_clicked()
 {
    ui->configurationStackedWidget->setCurrentIndex(2);
+   SetOkButtonEnabled(IsOneMonthlyCheckboxChecked());
 }
 
 void SchedulerDialog::InitializePathWidget()
@@ -264,11 +278,77 @@ void SchedulerDialog::UpdateMonthDaysCheckboxes(const std::vector<int>& days)
    }
 }
 
-void SchedulerDialog::on_buttonBox_accepted()
+void SchedulerDialog::SetOkButtonEnabled(const bool value)
+{
+   QPushButton* okButton = ui->closeButtonBox->button(QDialogButtonBox::Ok);
+   okButton->setEnabled(value);
+}
+
+bool SchedulerDialog::IsOneWeeklyCheckboxChecked() const
+{
+   if (ui->sundayBox->isChecked())
+      return true;
+   else if (ui->mondayBox->isChecked())
+      return true;
+   else if (ui->tuesdayBox->isChecked())
+      return true;
+   else if (ui->wednesdayBox->isChecked())
+      return true;
+   else if (ui->thursdayBox->isChecked())
+      return true;
+   else if (ui->fridayBox->isChecked())
+      return true;
+   else if (ui->saturdayBox->isChecked())
+      return true;
+   else
+      return false;
+}
+
+bool SchedulerDialog::IsOneMonthlyCheckboxChecked() const
+{
+   const QObjectList checkboxList = ui->montlyPage->children();
+   for (const auto object : checkboxList)
+   {
+      auto checkbox = dynamic_cast<QCheckBox*>(object);
+      if (checkbox && checkbox->isChecked())
+         return true;
+   }
+
+   return false;
+}
+
+void SchedulerDialog::on_closeButtonBox_accepted()
 {
    if (scheduler)
       WriteSchedulerData();
    accept();
+}
+
+void SchedulerDialog::onWeeklyCheckboxCheck(bool value)
+{
+   if (value)
+      SetOkButtonEnabled(true);
+   else
+      SetOkButtonEnabled(IsOneWeeklyCheckboxChecked());
+}
+
+void SchedulerDialog::onMonthlyCheckboxCheck(bool value)
+{
+   if (value)
+      SetOkButtonEnabled(true);
+   else
+      SetOkButtonEnabled(IsOneMonthlyCheckboxChecked());
+}
+
+void SchedulerDialog::ConnectDaysOfWeekControls()
+{
+   connect(ui->sundayBox, SIGNAL(clicked(bool)), this, SLOT(onWeeklyCheckboxCheck(bool)));
+   connect(ui->mondayBox, SIGNAL(clicked(bool)), this, SLOT(onWeeklyCheckboxCheck(bool)));
+   connect(ui->tuesdayBox, SIGNAL(clicked(bool)), this, SLOT(onWeeklyCheckboxCheck(bool)));
+   connect(ui->wednesdayBox, SIGNAL(clicked(bool)), this, SLOT(onWeeklyCheckboxCheck(bool)));
+   connect(ui->thursdayBox, SIGNAL(clicked(bool)), this, SLOT(onWeeklyCheckboxCheck(bool)));
+   connect(ui->fridayBox, SIGNAL(clicked(bool)), this, SLOT(onWeeklyCheckboxCheck(bool)));
+   connect(ui->saturdayBox, SIGNAL(clicked(bool)), this, SLOT(onWeeklyCheckboxCheck(bool)));
 }
 
 void SchedulerDialog::CreateDaysOfMonthControls()
@@ -281,6 +361,7 @@ void SchedulerDialog::CreateDaysOfMonthControls()
       const int column = i/8;
 
       auto checkbox = new QCheckBox(QString::number(i+1), ui->montlyPage);
+      connect(checkbox, SIGNAL(clicked(bool)), this, SLOT(onMonthlyCheckboxCheck(bool)));
       gridLayout->addWidget(checkbox, row, column);
       monthlyCheckboxes.insert(std::make_pair(checkbox, i));
    }

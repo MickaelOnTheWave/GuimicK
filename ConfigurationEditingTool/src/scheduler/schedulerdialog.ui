@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Scheduled Run Configuration</string>
   </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QRadioButton" name="noScheduleButton">
@@ -203,7 +206,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
+    <widget class="QDialogButtonBox" name="closeButtonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -225,7 +228,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>closeButtonBox</sender>
    <signal>rejected()</signal>
    <receiver>SchedulerDialog</receiver>
    <slot>reject()</slot>

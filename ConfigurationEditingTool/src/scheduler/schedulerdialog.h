@@ -34,9 +34,13 @@ private slots:
 
    void on_monthlyButton_clicked();
 
-   void on_buttonBox_accepted();
+   void on_closeButtonBox_accepted();
+
+   void onWeeklyCheckboxCheck(bool value);
+   void onMonthlyCheckboxCheck(bool value);
 
 private:
+   void ConnectDaysOfWeekControls();
    void CreateDaysOfMonthControls();
    void InitializePathWidget();
 
@@ -58,6 +62,12 @@ private:
    void UncheckAllWeekDaysCheckboxes();
 
    void UpdateMonthDaysCheckboxes(const std::vector<int>& days);
+
+   void SetOkButtonEnabled(const bool value);
+
+   bool IsOneWeeklyCheckboxChecked() const;
+
+   bool IsOneMonthlyCheckboxChecked() const;
 
    Ui::SchedulerDialog *ui;
    AbstractScheduler* scheduler = nullptr;

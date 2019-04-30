@@ -1,3 +1,12 @@
+30/04/2019 (0.6h)
+    Updated Scheduler UI : now all known cases are properly covered. There
+    should no scenario where Ok button is pressed without proper weekly/monthly
+    data. Also improved the dialog : remove the close button and made it modal.
+Next planned work:
+    - Refactor Scheduler code : Windows scheduler API and Scheduler dialog
+    - Back to Linux : have task tool compile for Synology
+    - Back to Linux : install TaskManager to run as before
+
 28/04/2019 (2.9h)
     It is not clear yet if a refactor is that necessary. Going first for
     read implementation. Implemented read of trigger type. For now using
