@@ -55,6 +55,7 @@ private:
     AbstractReportDispatcherReplacer* replacer;
     AbstractReportDispatcher* fallbackDispatcher;
     bool timedRuns;
+    bool isWindowsComInitialized;
 };
 
 #endif // MAINTOOLMODULE_H

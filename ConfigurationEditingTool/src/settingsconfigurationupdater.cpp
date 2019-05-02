@@ -29,7 +29,8 @@ void SettingsConfigurationUpdater::UpdateAgentData()
    Agent* agent = configuration->GetAgent();
    agent->SetName(GetValue(ui->agentNameEdit));
    agent->SetEmailData(CreateEmailData());
-   agent->SetReportFolder(ui->reportFolderWidget->GetPath().toStdWString());
+   agent->SetReportFolder(ui->reportFolderWidget->GetPath().toStdWString() + L"/");
+   agent->SetReportFile(GetDefaultReportFilename());
 }
 
 void SettingsConfigurationUpdater::UpdateClientData()
@@ -86,4 +87,12 @@ EmailData SettingsConfigurationUpdater::CreateEmailData()
    emailData.SetSmtpPort(ui->smtpPortBox->value());
    emailData.SetUseSsl(ui->smtpSslCheckBox->isChecked());
    return emailData;
+}
+
+std::wstring SettingsConfigurationUpdater::GetDefaultReportFilename() const
+{
+   if (configuration->GetReportType() == L"html")
+      return L"report.html";
+   else
+      return L"report.txt";
 }

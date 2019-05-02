@@ -1,5 +1,9 @@
 #include "maintoolmodule.h"
 
+#ifdef _WIN32
+   #include <comdef.h>
+#endif
+
 #include <iostream>
 #include "consolejob.h"
 #include "filereportdispatcher.h"
@@ -16,20 +20,30 @@ static const wstring noShutdownCommand = L"noshutdown";
 static const wstring onlyOneJobCommand = L"onlyjob";
 static const wstring confFileCommand = L"conffile";
 
-static const int NO_ERROR              = 0;
+static const int TM_NO_ERROR              = 0;
 static const int CONFIGURATION_ERROR   = 1;
-static const int OTHER_ERROR           = 2;
+static const int SHUTDOWN_ERROR        = 2;
+static const int WINDOWS_INIT_ERROR    = 3;
 
 MainToolModule::MainToolModule(const wstring &_version)
     : version(_version), replacer(NULL), timedRuns(true)
 {
     fallbackDispatcher = new FileReportDispatcher();
+
+#ifdef _WIN32
+    const HRESULT hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+    isWindowsComInitialized = (SUCCEEDED(hr));
+#endif
 }
 
 MainToolModule::~MainToolModule()
 {
     delete replacer;
     delete fallbackDispatcher;
+#ifdef _WIN32
+    if (isWindowsComInitialized)
+       CoUninitialize();
+#endif
 }
 
 void MainToolModule::EnableTimedRuns(const bool value)
@@ -68,7 +82,12 @@ int MainToolModule::RunFromParameterMap(const std::map<wstring, wstring> &parame
 
 int MainToolModule::Run(CommandLineManager &commandLine)
 {
-    bool shouldReturn = SetupCommandLine(commandLine);
+#ifdef _WIN32
+   if (isWindowsComInitialized == false)
+      return WINDOWS_INIT_ERROR;
+#endif
+
+    const bool shouldReturn = SetupCommandLine(commandLine);
     if (shouldReturn)
         return NO_ERROR;
 
@@ -89,7 +108,6 @@ int MainToolModule::Run(CommandLineManager &commandLine)
         return CONFIGURATION_ERROR;
     }
 
-
     StandaloneConfiguration* typedConfiguration = dynamic_cast<StandaloneConfiguration*>(configuration.GetTypeConfiguration());
     ClientWorkManager* workList = typedConfiguration->BuildWorkList(timedRuns);
     bool localShutdown = SetupShutdownOptions(typedConfiguration->GetLocalShutdown(),
@@ -102,8 +120,8 @@ int MainToolModule::Run(CommandLineManager &commandLine)
     DispatchReport(reportCreator, *typedConfiguration, commandLine);
     delete reportCreator;
 
-    bool ok = RunLocalShutdown(localShutdown);
-    return (ok) ? NO_ERROR : OTHER_ERROR;
+    const bool ok = RunLocalShutdown(localShutdown);
+    return (ok) ? TM_NO_ERROR : SHUTDOWN_ERROR;
 }
 
 bool MainToolModule::SetupCommandLine(CommandLineManager& manager)
