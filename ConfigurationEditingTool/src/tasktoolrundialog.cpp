@@ -96,10 +96,9 @@ void TaskToolRunDialog::on_runButton_clicked()
    if (PathTools::ChangeCurrentDir(runPath.toStdWString()))
    {
       std::wstring commandOutput;
+      const std::wstring command = CreateTaskToolCommand();
       const int result = Tools::RunExternalCommandToBuffer(
-                      CreateTaskToolCommand(),
-                      commandOutput, true
-                      );
+                                    command, commandOutput, true);
 
       PathTools::ChangeCurrentDir(currentDirectory);
 
@@ -119,9 +118,11 @@ void TaskToolRunDialog::on_runButton_clicked()
 
 std::wstring TaskToolRunDialog::CreateTaskToolCommand() const
 {
-   std::wstring command = std::wstring(L"\"");
-   command += PathTools::ToWindowsPath(taskToolExecutable.toStdWString()) + L"\" --conffile \"";
-   command += PathTools::ToWindowsPath(configurationFile.toStdWString()) + L"\"";
+   const std::wstring stringToken = L"\"";
+   std::wstring command = stringToken;
+   command += PathTools::ToWindowsPath(taskToolExecutable.toStdWString()) + stringToken;
+   command += L" --conffile ";
+   command += PathTools::ToWindowsPath(configurationFile.toStdWString());
    return command;
 }
 

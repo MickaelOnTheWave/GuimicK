@@ -31,11 +31,7 @@ if(WIN32)
 endif(WIN32)
 set(sources ${rootSources} ${schedulerSources})
 
-if(WIN32)
-    set(GUI_TYPE WIN32)
-endif(WIN32)
-
-add_executable(ConfigurationEditingTool ${GUI_TYPE} ${sources})
+add_executable(ConfigurationEditingTool ${sources})
 
 target_link_libraries (ConfigurationEditingTool TaskLib ToolsLib QtToolsLib Qt5::Widgets)
 if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")
