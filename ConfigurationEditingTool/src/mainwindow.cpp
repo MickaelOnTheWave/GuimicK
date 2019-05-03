@@ -151,7 +151,7 @@ void MainWindow::on_actionOpen_triggered()
                          QDir::homePath(), "Configuration files (*)");
 
    if (filename != "")
-      OpenFile(filename, true);
+      OpenFile(filename, false);
 }
 
 void MainWindow::on_actionSave_triggered()
