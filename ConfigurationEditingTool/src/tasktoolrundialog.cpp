@@ -120,8 +120,8 @@ void TaskToolRunDialog::on_runButton_clicked()
 std::wstring TaskToolRunDialog::CreateTaskToolCommand() const
 {
    std::wstring command = std::wstring(L"\"");
-   command += PathTools::ToWindowsPath(taskToolExecutable.toStdWString()) + L"\" --conffile ";
-   command += PathTools::ToWindowsPath(configurationFile.toStdWString());
+   command += PathTools::ToWindowsPath(taskToolExecutable.toStdWString()) + L"\" --conffile \"";
+   command += PathTools::ToWindowsPath(configurationFile.toStdWString()) + L"\"";
    return command;
 }
 

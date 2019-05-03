@@ -20,7 +20,7 @@ static const wstring noShutdownCommand = L"noshutdown";
 static const wstring onlyOneJobCommand = L"onlyjob";
 static const wstring confFileCommand = L"conffile";
 
-static const int TM_NO_ERROR              = 0;
+static const int TM_NO_ERROR           = 0;
 static const int CONFIGURATION_ERROR   = 1;
 static const int SHUTDOWN_ERROR        = 2;
 static const int WINDOWS_INIT_ERROR    = 3;

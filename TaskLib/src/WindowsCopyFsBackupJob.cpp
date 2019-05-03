@@ -1,5 +1,6 @@
 #include "WindowsCopyFsBackupJob.h"
 
+#include "pathtools.h"
 #include "stringtools.h"
 
 using namespace std;
@@ -22,7 +23,8 @@ void WindowsCopyFsBackupJob::PrepareCopyCommand(const std::wstring &source,
                                             const std::wstring &destination,
                                             ConsoleJob &commandJob)
 {
-    const wstring params = source + L" " + destination + L" /e /y";
+    const wstring params = PathTools::ToWindowsPath(source) + L" " +
+                           PathTools::ToWindowsPath(destination) + L" /e /y";
     commandJob.SetCommand(L"xcopy");
     commandJob.SetCommandParameters(params);
 }

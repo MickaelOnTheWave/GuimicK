@@ -10,6 +10,15 @@ namespace
    {
       return lineEdit->text().toStdWString();
    }
+
+   wstring FixPath(const wstring& value)
+   {
+      const wchar_t pathSeparator = L'/';
+      wstring fixedValue = value;
+      if (value.back() != pathSeparator)
+         fixedValue += pathSeparator;
+      return fixedValue;
+   }
 }
 
 void SettingsConfigurationUpdater::Update(Ui::SettingsDialog* ui, StandaloneConfiguration* configuration)
@@ -29,7 +38,7 @@ void SettingsConfigurationUpdater::UpdateAgentData()
    Agent* agent = configuration->GetAgent();
    agent->SetName(GetValue(ui->agentNameEdit));
    agent->SetEmailData(CreateEmailData());
-   agent->SetReportFolder(ui->reportFolderWidget->GetPath().toStdWString() + L"/");
+   agent->SetReportFolder(FixPath(ui->reportFolderWidget->GetPath().toStdWString()));
    agent->SetReportFile(GetDefaultReportFilename());
 }
 
