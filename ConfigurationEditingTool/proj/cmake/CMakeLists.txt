@@ -21,17 +21,22 @@ add_subdirectory ("${TASKMANAGER_ROOT}/ReportParsers/ParsersLib/proj/cmake" "./P
 add_subdirectory ("${TOOLS_ROOT}/ToolsLib/proj/cmake" "./ToolsLib") 
 add_subdirectory ("${PROG_ROOT}/QtTools/QtTools/proj/cmake" "./QtTools")
 
-file(GLOB rootSources "../../src/*")
-set(schedulerSources "../../src/scheduler/schedulerdialog.cpp"
-                     "../../src/scheduler/schedulerdialog.ui"
-                     "../../src/scheduler/scheduledata.cpp"
-					 "../../src/scheduler/abstractscheduler.cpp")
+set (rootDir "../../src")
+set (scheduleDir "${rootDir}/scheduler")
+
+file(GLOB rootSources "${rootDir}/*")
+file(GLOB schedulerSources "${scheduleDir}/*")
+file(GLOB winSchedulerSources "${scheduleDir}/windows/*")
+
 if(WIN32)
-    list(APPEND schedulerSources "../../src/scheduler/windowsscheduler.cpp")
+	set(sources ${rootSources} ${schedulerSources} ${winSchedulerSources})
+else(WIN32)
+	set(sources ${rootSources} ${schedulerSources})
 endif(WIN32)
-set(sources ${rootSources} ${schedulerSources})
 
 add_executable(ConfigurationEditingTool ${sources})
+
+target_include_directories(ConfigurationEditingTool PRIVATE ${scheduleDir})
 
 target_link_libraries (ConfigurationEditingTool TaskLib ToolsLib QtToolsLib Qt5::Widgets)
 if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")

@@ -2,7 +2,7 @@
 
 QString AbstractScheduler::GetLastError() const
 {
-   return lastError;
+   return errorManager.GetLastError();
 }
 
 void AbstractScheduler::SetCommandToRun(const QString& value)

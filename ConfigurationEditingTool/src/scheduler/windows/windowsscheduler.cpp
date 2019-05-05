@@ -1,6 +1,8 @@
 #include "windowsscheduler.h"
 
 #include <comdef.h>
+#include "scheduletriggerreader.h"
+#include "scheduletriggerwriter.h"
 
 namespace
 {
@@ -8,7 +10,6 @@ namespace
    wchar_t* defaultAuthor = L"Task Manager";
    wchar_t* defaultDescription = L"This task runs periodically TaskManager.\n"
                                  L"It was created automatically by the Configuration editor.";
-   wchar_t* defaultTriggerName = L"Default Trigger";
 
    TASK_TRIGGER_TYPE2 TranslateTriggerType(ScheduleData* data)
    {
@@ -20,41 +21,6 @@ namespace
          return TASK_TRIGGER_WEEKLY;
       else
          return TASK_TRIGGER_IDLE;
-   }
-
-   BSTR ConvertToTimeString(const QTime& time)
-   {
-      SYSTEMTIME currentTime;
-      GetLocalTime(&currentTime);
-
-      const size_t bufferSize = 100;
-      wchar_t buffer[bufferSize];
-      swprintf_s(buffer, bufferSize, L"%4d-%02d-%02dT%02d:%02d:%02d", 
-                 currentTime.wYear, currentTime.wMonth, currentTime.wDay,
-                 time.hour(), time.minute(), time.second());
-      return _bstr_t(buffer);
-   }
-
-   QTime ConvertToQtime(const BSTR& time)
-   {
-      int year, month, day, hour, minute, second;
-      swscanf_s(time, L"%4d-%02d-%02dT%02d:%02d:%02d",
-               &year, &month, &day,
-               &hour, &minute, &second);
-      return QTime(hour, minute);
-   }
-
-   short ConvertToDayMask(const std::vector<int>& daysIndices)
-   {
-      short mask = 0;
-      for (const int i : daysIndices)
-         mask += pow(2, i);
-      return mask;
-   }
-
-   short GetAllMonthsOfYearMask()
-   {
-      return pow(2, 12) - 1;
    }
 }
 
@@ -162,7 +128,7 @@ bool WindowsScheduler::RegisterTask(ITaskFolder* taskFolder,
    if (ok)
       registeredTask->Release();
    else
-      UpdateLastErrorMessage(hr);
+      errorManager.UpdateLastErrorMessage(hr);
    return ok;
 }
 
@@ -185,7 +151,7 @@ ScheduleData* WindowsScheduler::CreateDataFromTask(IRegisteredTask* task) const
             taskTriggers->get_Item(1, &trigger);
             if (SUCCEEDED(hr))
             {
-               scheduleData = CreateDataFromTrigger(trigger);
+               scheduleData = ScheduleTriggerReader::Read(trigger);
                trigger->Release();
             }
          }
@@ -194,58 +160,6 @@ ScheduleData* WindowsScheduler::CreateDataFromTask(IRegisteredTask* task) const
       taskDefinition->Release();
    }
    return scheduleData;
-}
-
-ScheduleData* WindowsScheduler::CreateDataFromTrigger(ITrigger* trigger) const
-{
-   TASK_TRIGGER_TYPE2 triggerType;
-   HRESULT hr = trigger->get_Type(&triggerType);
-   if (SUCCEEDED(hr))
-   {
-      if (triggerType == TASK_TRIGGER_DAILY)
-         return CreateDataFromDailyTrigger(trigger);
-      else if (triggerType == TASK_TRIGGER_WEEKLY)
-         return CreateDataFromWeeklyTrigger(trigger);
-      else if (triggerType == TASK_TRIGGER_MONTHLY)
-         return CreateDataFromMonthlyTrigger(trigger);
-   }
-
-   return nullptr;
-}
-
-ScheduleData* WindowsScheduler::CreateDataFromDailyTrigger(ITrigger* trigger) const
-{
-   auto data = new ScheduleDailyData();
-   SetCommonDataFromTrigger(data, trigger);
-   return data;
-}
-
-ScheduleData* WindowsScheduler::CreateDataFromWeeklyTrigger(ITrigger* trigger) const
-{
-   auto data = new ScheduleWeeklyData();
-   SetCommonDataFromTrigger(data, trigger);
-   IWeeklyTrigger* weeklyTrigger = GetWeeklyTrigger(trigger);
-   if (weeklyTrigger)
-   {
-      short dayMask;
-      weeklyTrigger->get_DaysOfWeek(&dayMask);
-      SetDayDataFromMask(data, dayMask, 7);
-   }
-   return data;
-}
-
-ScheduleData* WindowsScheduler::CreateDataFromMonthlyTrigger(ITrigger* trigger) const
-{
-   auto data = new ScheduleMonthlyData();
-   SetCommonDataFromTrigger(data, trigger);
-   IMonthlyTrigger* monthlyTrigger = GetMonthlyTrigger(trigger);
-   if (monthlyTrigger)
-   {
-      long dayMask;
-      monthlyTrigger->get_DaysOfMonth(&dayMask);
-      SetDayDataFromMask(data, dayMask, 31);
-   }
-   return data;
 }
 
 ITaskDefinition* WindowsScheduler::CreateTaskFromData(ScheduleData* data)
@@ -262,7 +176,7 @@ ITaskDefinition* WindowsScheduler::CreateTaskFromData(ScheduleData* data)
          ok = SetTaskAction(taskDefinition);
    }
 
-   UpdateLastErrorMessage(hr);
+   errorManager.UpdateLastErrorMessage(hr);
    return taskDefinition;
 }
 
@@ -279,7 +193,7 @@ bool WindowsScheduler::SetTaskRegistrationData(ITaskDefinition* taskDefinition)
       taskRegistrationInfo->Release();
    }
 
-   UpdateLastErrorMessage(hr);
+   errorManager.UpdateLastErrorMessage(hr);
    return SUCCEEDED(hr);
 }
 
@@ -295,82 +209,14 @@ bool WindowsScheduler::SetTaskTriggerData(ITaskDefinition* taskDefinition,
       hr = triggerCollection->Create(triggerType, &taskTrigger);
       if (SUCCEEDED(hr))
       {
-         bool ok = SetCommonTriggerData(taskTrigger, data);
-         if (ok)
-            ok = SetTypedTriggerData(taskTrigger, data);
+         ScheduleTriggerWriter writer(errorManager);
+         writer.Write(taskTrigger, data);
          taskTrigger->Release();
       }
       triggerCollection->Release();
    }
 
-   UpdateLastErrorMessage(hr);
-   return SUCCEEDED(hr);
-}
-
-bool WindowsScheduler::SetCommonTriggerData(ITrigger* trigger,
-                                            ScheduleData* data)
-{
-   HRESULT hr = trigger->put_Id(defaultTriggerName);
-   if (SUCCEEDED(hr))
-      hr = trigger->put_StartBoundary(ConvertToTimeString(data->GetTime()));
-
-   UpdateLastErrorMessage(hr);
-   return SUCCEEDED(hr);
-}
-
-bool WindowsScheduler::SetTypedTriggerData(ITrigger* trigger, ScheduleData* data)
-{
-   if (auto monthlyData = dynamic_cast<ScheduleMonthlyData*>(data))
-      return SetMontlyTriggerData(trigger, monthlyData);
-   else if (auto dailyData = dynamic_cast<ScheduleDailyData*>(data))
-      return SetDailyTriggerData(trigger, dailyData);
-   else if (auto weeklyData = dynamic_cast<ScheduleWeeklyData*>(data))
-      return SetWeeklyTriggerData(trigger, weeklyData);
-   else
-      return true;
-}
-
-bool WindowsScheduler::SetDailyTriggerData(ITrigger* trigger, ScheduleDailyData*)
-{
-   IDailyTrigger *dailyTrigger = GetDailyTrigger(trigger);
-   bool ok = false;
-   if (dailyTrigger)
-   {
-      const HRESULT hr = dailyTrigger->put_DaysInterval((short)1);
-      dailyTrigger->Release();
-      ok = SUCCEEDED(hr);
-   }
-   return ok;
-}
-
-bool WindowsScheduler::SetWeeklyTriggerData(ITrigger* trigger, ScheduleWeeklyData* data)
-{
-   bool ok = false;
-   IWeeklyTrigger *weeklyTrigger = GetWeeklyTrigger(trigger);
-   if (weeklyTrigger)
-   {
-      HRESULT hr = weeklyTrigger->put_WeeksInterval((short)1);
-      if (SUCCEEDED(hr))
-         hr = weeklyTrigger->put_DaysOfWeek(ConvertToDayMask(data->GetDaysIndices()));
-
-      weeklyTrigger->Release();
-      ok = SUCCEEDED(hr);
-   }
-   return ok;
-}
-
-bool WindowsScheduler::SetMontlyTriggerData(ITrigger* trigger, ScheduleMonthlyData* data)
-{
-   IMonthlyTrigger *monthlyTrigger = nullptr;
-   HRESULT hr = trigger->QueryInterface(IID_IMonthlyTrigger, (void**)&monthlyTrigger);
-   if (SUCCEEDED(hr))
-   {
-      hr = monthlyTrigger->put_DaysOfMonth(ConvertToDayMask(data->GetDaysIndices()));
-      if (SUCCEEDED(hr))
-         hr = monthlyTrigger->put_MonthsOfYear(GetAllMonthsOfYearMask());
-
-      monthlyTrigger->Release();
-   }
+   errorManager.UpdateLastErrorMessage(hr);
    return SUCCEEDED(hr);
 }
 
@@ -399,56 +245,6 @@ bool WindowsScheduler::SetTaskAction(ITaskDefinition* taskDefinition)
       }
    }
 
-   UpdateLastErrorMessage(hr);
+   errorManager.UpdateLastErrorMessage(hr);
    return SUCCEEDED(hr);
-}
-
-void WindowsScheduler::UpdateLastErrorMessage(const HRESULT hr)
-{
-   _com_error comError(hr);
-   const LPCTSTR errorMsg = comError.ErrorMessage();
-   lastError = errorMsg;
-}
-
-IDailyTrigger* WindowsScheduler::GetDailyTrigger(ITrigger* trigger) const
-{
-   IDailyTrigger *dailyTrigger = nullptr;
-   trigger->QueryInterface(IID_IDailyTrigger, (void**)&dailyTrigger);
-   return dailyTrigger;
-}
-
-IWeeklyTrigger* WindowsScheduler::GetWeeklyTrigger(ITrigger* trigger) const
-{
-   IWeeklyTrigger *weeklyTrigger = nullptr;
-   trigger->QueryInterface(IID_IWeeklyTrigger, (void**)&weeklyTrigger);
-   return weeklyTrigger;
-}
-
-IMonthlyTrigger* WindowsScheduler::GetMonthlyTrigger(ITrigger* trigger) const
-{
-   IMonthlyTrigger *monthlyTrigger = nullptr;
-   trigger->QueryInterface(IID_IMonthlyTrigger, (void**)&monthlyTrigger);
-   return monthlyTrigger;
-}
-
-void WindowsScheduler::SetCommonDataFromTrigger(ScheduleData* data,
-                                                ITrigger* trigger) const
-{
-   BSTR triggerStart;
-   HRESULT hr = trigger->get_StartBoundary(&triggerStart);
-   if (SUCCEEDED(hr))
-      data->SetTime(ConvertToQtime(triggerStart));
-}
-
-void WindowsScheduler::SetDayDataFromMask(ScheduleWeeklyData* data,
-                                          const long dayMask,
-                                          const long daysCount) const
-{
-   for (int i=0; i<daysCount; ++i)
-   {
-      const long currentDayMask = pow(2, i);
-      const long result = dayMask & currentDayMask;
-      if (result == currentDayMask)
-         data->AddDayIndex(i);
-   }
 }

@@ -6,7 +6,7 @@
 #include <QPushButton>
 
 #ifdef _WIN32
-   #include "windowsscheduler.h"
+   #include "windows/windowsscheduler.h"
 #endif
 
 SchedulerDialog::SchedulerDialog(QWidget *parent) :
