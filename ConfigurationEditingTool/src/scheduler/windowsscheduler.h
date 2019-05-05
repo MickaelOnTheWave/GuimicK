@@ -63,7 +63,6 @@ private:
                            const long dayMask,
                            const long daysCount) const;
 
-   bool comInitialized = false;
    bool winApiAvailable = true;
    bool taskServiceAvailable = true;
    ITaskService* taskService = nullptr;

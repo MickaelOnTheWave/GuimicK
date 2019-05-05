@@ -67,14 +67,11 @@ WindowsScheduler::~WindowsScheduler()
 {
    if (taskServiceAvailable)
       taskService->Release();
-
-   if (comInitialized)
-      CoUninitialize();
 }
 
 bool WindowsScheduler::Read(ScheduleData** data) const
 {
-   if (comInitialized && winApiAvailable)
+   if (winApiAvailable)
    {
       ITaskFolder* taskRootFolder = GetTaskRootFolder();
       if (taskRootFolder)
@@ -92,7 +89,7 @@ bool WindowsScheduler::Read(ScheduleData** data) const
 bool WindowsScheduler::Write(ScheduleData* data)
 {
    bool result = false;
-   if (comInitialized && winApiAvailable)
+   if (winApiAvailable)
    {
       ITaskFolder* taskRootFolder = GetTaskRootFolder();
       if (taskRootFolder)
@@ -117,16 +114,8 @@ bool WindowsScheduler::Write(ScheduleData* data)
 
 void WindowsScheduler::InitializeWindowsApi()
 {
-   InitializeCom();
    InitializeComSecurity();
    CreateTaskService();
-}
-
-void WindowsScheduler::InitializeCom()
-{
-   //HRESULT hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
-   //comInitialized = SUCCEEDED(hr);
-   comInitialized = true;
 }
 
 void WindowsScheduler::InitializeComSecurity()
@@ -341,7 +330,7 @@ bool WindowsScheduler::SetTypedTriggerData(ITrigger* trigger, ScheduleData* data
       return true;
 }
 
-bool WindowsScheduler::SetDailyTriggerData(ITrigger* trigger, ScheduleDailyData* data)
+bool WindowsScheduler::SetDailyTriggerData(ITrigger* trigger, ScheduleDailyData*)
 {
    IDailyTrigger *dailyTrigger = GetDailyTrigger(trigger);
    bool ok = false;
