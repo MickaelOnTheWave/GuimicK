@@ -110,7 +110,7 @@ namespace
    }
 }
 
-ScheduleTriggerWriter::ScheduleTriggerWriter(SchedulerErrorManager& _errorManager)
+ScheduleTriggerWriter::ScheduleTriggerWriter(WindowsSchedulerErrorManager& _errorManager)
    : errorManager(_errorManager)
 {
 }

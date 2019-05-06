@@ -3,20 +3,18 @@
 
 #include <QString>
 #include "scheduledata.h"
-#include "baseschedulererrormanager.h"
 
 class AbstractScheduler
 {
 public:
    virtual bool Read(ScheduleData** data) const = 0;
    virtual bool Write(ScheduleData* data) = 0;
+   virtual QString GetLastError() const = 0;
 
-   QString GetLastError() const;
    void SetCommandToRun(const QString& value);
    void SetCommandArguments(const QString& value);
 
 protected:
-   BaseSchedulerErrorManager* errorManager;
    QString commandToRun = "";
    QString commandArguments = "";
 };

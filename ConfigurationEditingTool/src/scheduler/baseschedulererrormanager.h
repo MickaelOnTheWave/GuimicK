@@ -11,7 +11,7 @@ public:
        return lastError;
    }
 
-private:
+protected:
    QString lastError = "";
 };
 

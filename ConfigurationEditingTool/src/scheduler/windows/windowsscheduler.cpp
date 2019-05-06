@@ -3,6 +3,7 @@
 #include <comdef.h>
 #include "scheduletriggerreader.h"
 #include "scheduletriggerwriter.h"
+#include "windowsschedulererrormanager.h"
 
 namespace
 {
@@ -76,6 +77,11 @@ bool WindowsScheduler::Write(ScheduleData* data)
       }
    }
    return result;
+}
+
+QString WindowsScheduler::GetLastError() const
+{
+   return errorManager.GetLastError();
 }
 
 void WindowsScheduler::InitializeWindowsApi()

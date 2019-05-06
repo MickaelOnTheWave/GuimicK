@@ -2,19 +2,15 @@
 #define SCHEDULERERRORMANAGER_H
 
 #include <comdef.h>
-#include <qstring.h>
+#include "baseschedulererrormanager.h"
 
-class WindowsSchedulerErrorManager
+class WindowsSchedulerErrorManager : public BaseSchedulerErrorManager
 {
 public:
    WindowsSchedulerErrorManager() = default;
-   ~WindowsSchedulerErrorManager() = default;
+   virtual ~WindowsSchedulerErrorManager() = default;
 
    void UpdateLastErrorMessage(const HRESULT hr);
-   QString GetLastError() const;
-
-private:
-   QString lastError = "";
 };
 
 #endif // SCHEDULERERRORMANAGER_H

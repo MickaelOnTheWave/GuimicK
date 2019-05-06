@@ -4,15 +4,17 @@
 #include "abstractscheduler.h"
 
 #include <taskschd.h>
+#include "windowsschedulererrormanager.h"
 
 class WindowsScheduler : public AbstractScheduler
 {
 public:
    WindowsScheduler();
-   ~WindowsScheduler();
+   virtual ~WindowsScheduler();
 
    bool Read(ScheduleData** data) const override;
    bool Write(ScheduleData* data) override;
+   QString GetLastError() const override;
 
 private:
    void InitializeWindowsApi();
@@ -37,6 +39,7 @@ private:
    bool winApiAvailable = true;
    bool taskServiceAvailable = true;
    ITaskService* taskService = nullptr;
+   WindowsSchedulerErrorManager errorManager;
 };
 
 #endif // WINDOWSSCHEDULER_H
