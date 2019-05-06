@@ -73,7 +73,7 @@ Fixed bugs :
 	26/09/2018 - [011] Configuration parser fails to parse empty string properties. See TODO.
 	13/12/2018 - [013] Configuration Editor Backup UI : folder controls should be disabled when no selection
         15/04/2019 - [015] Jobs with same type just created are always edited together
-        28/04/2019 - [015] Windows - error when trying to create a monthly scheduled run. It is in Windows API.
+        28/04/2019 - [016] Windows - error when trying to create a monthly scheduled run. It is in Windows API.
 
 Pending bugs :
 	[001] Git report parser crashes when trying to parse a report coming from git asking for ssh password.
@@ -85,6 +85,7 @@ Pending bugs :
 	[010] Some tests are failing in GitJob only in Release. Make all test suites pass 100% in both Debug and Release.
 	[012] Debug flag is not handled as it should. Check that global one works as default and can be overridden by local ones.
 	[014] There should be error reporting when simple copy backup fails (see on windows, using system folder)        
+        [017] Windows Monthly trigger randomly fails with set.
 
 -------------
 Release plan

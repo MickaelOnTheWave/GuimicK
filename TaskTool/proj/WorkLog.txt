@@ -1,10 +1,14 @@
-05/05/2019 (18.9-21.1)
+05/05/2019 (2.6h)
     Refactored Windows Scheduler into various classes : Reader, Writer and error
     manager. Also moved them to a Windows folder, now Cmake file is cleaner and
     still uses GLOBs per folder.
     How back to Linux.. Making changes to Scheduler error manager : it was not
     cross platform. Abstracted it. Also improved UI to disable it when no
-    scheduler is available.
+    scheduler is available. Updated Windows implementation accordingly. Reporting
+    bug with Windows scheduler.
+Next planned work:
+    - Back to Linux : have task tool compile for Synology
+    - Back to Linux : install TaskManager to run as before
 
 02/05/2019 (2.4h)
     Fixed report configuration : / is correctly appended to path and report file
