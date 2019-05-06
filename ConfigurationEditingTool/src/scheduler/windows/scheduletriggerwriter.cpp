@@ -19,9 +19,9 @@ namespace
       return _bstr_t(buffer);
    }
 
-   short ConvertToDayMask(const std::vector<int>& daysIndices)
+   long ConvertToDayMask(const std::vector<int>& daysIndices)
    {
-      short mask = 0;
+      long mask = 0;
       for (const int i : daysIndices)
          mask += pow(2, i);
       return mask;
