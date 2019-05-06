@@ -1,3 +1,41 @@
+05/05/2019 (18.9-21.1)
+    Refactored Windows Scheduler into various classes : Reader, Writer and error
+    manager. Also moved them to a Windows folder, now Cmake file is cleaner and
+    still uses GLOBs per folder.
+    How back to Linux.. Making changes to Scheduler error manager : it was not
+    cross platform. Abstracted it. Also improved UI to disable it when no
+    scheduler is available.
+
+02/05/2019 (2.4h)
+    Fixed report configuration : / is correctly appended to path and report file
+    is set according to report type. Tested with scheduled run : it worked!
+    Now going for Backup copy bug. Fixed it, but direct run from Editor keeps failing.
+    However, scheduled one works.
+    Finding minor / UI issues that will need fixing :
+    - Name of file does not appear in title after saving new one
+    (only once a dialog is entered)
+    - Ok message needs to be removed when a file is loaded (there is already one
+    in case of error)
+    - Revise TaskTool configuration dialogs. Settings should be in TaskTool menu?
+    Removed Ok message. Still investigating on directy run failure. Maybe it is
+    better to first focus on getting output from console command..
+    Run failure had two causes :
+    1. Trying to put "" on conffile did not work and seems useless. Removed it.
+    2. Compiling the Editor as a GUI application prevents it from opening a console.
+    Fixed both of them - now Editor works fine.
+Next planned work:
+    - Refactor Scheduler code : Windows scheduler API and Scheduler dialog
+    - Back to Linux : have task tool compile for Synology
+    - Back to Linux : install TaskManager to run as before
+
+01/05/2019 (1.5h)
+    Discovered a bug with Simple copy backup, it crashes when run through Editor.
+    Testing Scheduler first, then going for the bug.
+    Scheduler worked, but bugs are caused by some details in TaskTool. First one
+    resolved : there was no global CoInitialize(), so most Windows API calls were
+    failing. Now there is another issue : report configuration is not ok.
+    Fixing this...
+
 30/04/2019 (0.6h)
     Updated Scheduler UI : now all known cases are properly covered. There
     should no scenario where Ok button is pressed without proper weekly/monthly

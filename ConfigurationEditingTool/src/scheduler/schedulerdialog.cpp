@@ -90,6 +90,8 @@ void SchedulerDialog::InitializeScheduler()
    CreateScheduler();
    if (scheduler)
       ReadSchedulerData();
+   else
+      DisableSchedulerUi();
 }
 
 void SchedulerDialog::CreateScheduler()
@@ -99,6 +101,12 @@ void SchedulerDialog::CreateScheduler()
 #else
    scheduler = nullptr;
 #endif
+}
+
+void SchedulerDialog::DisableSchedulerUi()
+{
+   ui->scheduleButton->setEnabled(false);
+   ui->noScheduleButton->setEnabled(false);
 }
 
 void SchedulerDialog::ReadSchedulerData()

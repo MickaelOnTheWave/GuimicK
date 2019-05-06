@@ -89,7 +89,7 @@ int MainToolModule::Run(CommandLineManager &commandLine)
 
     const bool shouldReturn = SetupCommandLine(commandLine);
     if (shouldReturn)
-        return NO_ERROR;
+        return TM_NO_ERROR;
 
     wstring configurationFile = GetConfigurationFile(commandLine.GetParameterValue(confFileCommand));
     if (FileTools::FileExists(configurationFile) == false)

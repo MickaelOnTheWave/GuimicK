@@ -46,6 +46,7 @@ private:
 
    void InitializeScheduler();
    void CreateScheduler();
+   void DisableSchedulerUi();
    void ReadSchedulerData();
    void WriteSchedulerData();
 

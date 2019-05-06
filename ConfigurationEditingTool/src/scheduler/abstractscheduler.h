@@ -3,7 +3,7 @@
 
 #include <QString>
 #include "scheduledata.h"
-#include "schedulererrormanager.h"
+#include "baseschedulererrormanager.h"
 
 class AbstractScheduler
 {
@@ -16,7 +16,7 @@ public:
    void SetCommandArguments(const QString& value);
 
 protected:
-   SchedulerErrorManager errorManager;
+   BaseSchedulerErrorManager* errorManager;
    QString commandToRun = "";
    QString commandArguments = "";
 };

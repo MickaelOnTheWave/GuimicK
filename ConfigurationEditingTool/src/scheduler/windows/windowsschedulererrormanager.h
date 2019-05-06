@@ -4,11 +4,11 @@
 #include <comdef.h>
 #include <qstring.h>
 
-class SchedulerErrorManager
+class WindowsSchedulerErrorManager
 {
 public:
-   SchedulerErrorManager() = default;
-   ~SchedulerErrorManager() = default;
+   WindowsSchedulerErrorManager() = default;
+   ~WindowsSchedulerErrorManager() = default;
 
    void UpdateLastErrorMessage(const HRESULT hr);
    QString GetLastError() const;
