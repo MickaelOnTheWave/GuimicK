@@ -1,9 +1,18 @@
-08/05/2019 (17.4-19)
+08/05/2019 (2.5h)
     Finished refactoring, created both classes. Refactored Linux Freespace Check
     job and created Windows hard drive check accordingly. Now trying to test Linux
     job. A bug in conf editor prevents this, trying to fix it. Fixed it, it was
     due to encoding problems on Linux with path management inadequate for Linux.
     Checked linux job : it is ok. Now moving to Windows..
+    Created Check Disk configuration dialog. Updated Windows command, however it
+    can't work for now as tool hasn't been updated.
+Next planned work:
+    - Update TaskTool to support Check Disk job
+    - Create Check Disk job configuration
+    - Check that both tool and editor use it properly
+    - Create job parser. Handle all cases : no rights, bad sectors, fix...
+    - Update Ui : it should present a list of valid drives to select
+    - Update Ui : support fix/not fix control and others if available
 
 07/05/2019 (1.1h)
     Uninstalled gcc. Now going directly for Windows feature : hard disk check.

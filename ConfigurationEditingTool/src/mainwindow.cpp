@@ -423,9 +423,9 @@ void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
    }
 }
 
-void MainWindow::on_jobListView_clicked(const QModelIndex &index)
+void MainWindow::on_jobListView_clicked(const QModelIndex &)
 {
-   AbstractJob* job = jobListModel.GetJob(index);
+   //AbstractJob* job = jobListModel.GetJob(index);
    //const bool isBackupJob = (dynamic_cast<AbstractBackupJob*>(job) != nullptr);
    const bool isBackupJob = false; // Pending - see task [056].
    ui->checkBackupsButton->setVisible(isBackupJob);
@@ -560,7 +560,7 @@ int MainWindow::GetBackupTimeIndex(
 }
 
 void MainWindow::RestoreBackup(
-      AbstractBackupJob* job, const QString& backupFolder, const int timeIndex) const
+      AbstractBackupJob* job, const QString&, const int) const
 {
    QString folderName = QFileDialog::getExistingDirectory(
                            nullptr, "Choose a folder to restore Backup to",
