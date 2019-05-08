@@ -11,6 +11,7 @@
 #include "userconsolejob.h"
 #include "abstractwakejob.h"
 
+#include "editabstractjobdialog.h"
 #include "editbackupjobdialog.h"
 #include "editconsolejobdialog.h"
 #include "editdiskspacejobdialog.h"
@@ -34,7 +35,7 @@ AbstractEditJobDialog* JobEditDialogFactory::Create(AbstractJob* job)
    else if (dynamic_cast<LinuxFreeSpaceCheckJob*>(job))
       return new EditDiskSpaceJobDialog(job);
    else
-      return nullptr;
+      return new EditAbstractJobDialog(job);
 }
 
 AbstractEditJobDialog* JobEditDialogFactory::CreateBackupDialog(AbstractJob* job)

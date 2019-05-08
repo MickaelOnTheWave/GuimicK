@@ -472,7 +472,6 @@ void MainWindow::SetupWindowsAddJobMenu()
 {
    AddJobMenuEntry("Simple Copy Backup", new OsCopyFsBackupJob);
    AddJobMenuEntry("7zip Backup", new SevenZipBackupJob);
-   AddJobMenuEntry("7zip Backup", new SevenZipBackupJob);
    AddJobMenuEntry("Check disk", new WindowsCheckdiskJob);
    AddJobMenuEntry("Custom command", new UserConsoleJob);
 }
