@@ -39,12 +39,18 @@ add_executable(ConfigurationEditingTool ${sources})
 target_include_directories(ConfigurationEditingTool PRIVATE ${scheduleDir})
 
 target_link_libraries (ConfigurationEditingTool TaskLib ToolsLib QtToolsLib Qt5::Widgets)
-if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")
-	target_link_libraries (ConfigurationEditingTool "${TOOLS_ROOT}/ToolsLib/lib/ws2_64.lib")
-	target_link_libraries (ConfigurationEditingTool "${TASKMANAGER_ROOT}/ConfigurationEditingTool/lib/taskschd_64.lib")
+
+if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)" OR "${CMAKE_GENERATOR}" MATCHES "Ninja")
+    set(isCompilerWin64 TRUE)
+endif()
+
+if (isCompilerWin64)
+    target_link_libraries (ConfigurationEditingTool "${TOOLS_ROOT}/ToolsLib/lib/ws2_64.lib")
+    target_link_libraries (ConfigurationEditingTool "${TASKMANAGER_ROOT}/ConfigurationEditingTool/lib/taskschd_64.lib")
 elseif(WIN32)
-	target_link_libraries (ConfigurationEditingTool "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
-endif("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)")
+    target_link_libraries (ConfigurationEditingTool "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
+endif(isCompilerWin64)
+
 
 if(MSVC)
   target_compile_options(ConfigurationEditingTool PRIVATE /W4)

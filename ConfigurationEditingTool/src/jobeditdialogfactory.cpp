@@ -1,5 +1,6 @@
 #include "jobeditdialogfactory.h"
 
+#include "abstractwakejob.h"
 #include "archivefsbackupjob.h"
 #include "gitbackupjob.h"
 #include "gitfsbackupjob.h"
@@ -9,10 +10,11 @@
 #include "rsnapshotsmartbackupjob.h"
 #include "rsynccopyfsbackupjob.h"
 #include "userconsolejob.h"
-#include "abstractwakejob.h"
+#include "windowscheckdiskjob.h"
 
 #include "editabstractjobdialog.h"
 #include "editbackupjobdialog.h"
+#include "editcheckdiskjobdialog.h"
 #include "editconsolejobdialog.h"
 #include "editdiskspacejobdialog.h"
 #include "editgitfsbackupjobdialog.h"
@@ -34,6 +36,8 @@ AbstractEditJobDialog* JobEditDialogFactory::Create(AbstractJob* job)
       return CreateBackupDialog(job);
    else if (dynamic_cast<LinuxFreeSpaceCheckJob*>(job))
       return new EditDiskSpaceJobDialog(job);
+   else if (dynamic_cast<WindowsCheckdiskJob*>(job))
+      return new EditCheckDiskJobDialog(job);
    else
       return new EditAbstractJobDialog(job);
 }
