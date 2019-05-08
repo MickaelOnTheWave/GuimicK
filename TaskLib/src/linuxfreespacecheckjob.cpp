@@ -1,34 +1,32 @@
 #include "linuxfreespacecheckjob.h"
 
+#include "consolejob.h"
 #include "dfcommandparser.h"
 #include "sshconsolejob.h"
 
 using namespace std;
 
-LinuxFreeSpaceCheckJob::LinuxFreeSpaceCheckJob()
-    : AbstractJob(L"Free space checking"),
-      drive(L""), isTargetLocal(true), sshUser(L""), sshHost(L"")
-{
-}
-
 LinuxFreeSpaceCheckJob::LinuxFreeSpaceCheckJob(const std::wstring& _drive)
-    : AbstractJob(L"Free space checking"),
-      drive(_drive), isTargetLocal(true), sshUser(L""), sshHost(L"")
+    : DiskRelatedJob(L"Free space checking", _drive),
+      isTargetLocal(true), sshUser(L""), sshHost(L"")
 {
 }
 
-AbstractJob *LinuxFreeSpaceCheckJob::Clone()
+LinuxFreeSpaceCheckJob::LinuxFreeSpaceCheckJob(const LinuxFreeSpaceCheckJob& other)
+   : DiskRelatedJob(other),
+     isTargetLocal(other.isTargetLocal),
+     sshUser(other.sshUser), sshHost(other.sshHost)
 {
-    LinuxFreeSpaceCheckJob* job = new LinuxFreeSpaceCheckJob(drive);
-    job->isTargetLocal = isTargetLocal;
-    job->sshUser = sshUser;
-    job->sshHost = sshHost;
-    return job;
+}
+
+AbstractJob* LinuxFreeSpaceCheckJob::Clone()
+{
+   return new LinuxFreeSpaceCheckJob(*this);
 }
 
 bool LinuxFreeSpaceCheckJob::InitializeFromClient(Client *client)
 {
-    if (AbstractJob::InitializeFromClient(client))
+    if (DiskRelatedJob::InitializeFromClient(client))
     {
         if (isTargetLocal == false)
         {
@@ -47,40 +45,7 @@ bool LinuxFreeSpaceCheckJob::InitializeFromClient(Client *client)
 
 bool LinuxFreeSpaceCheckJob::IsInitialized()
 {
-    return (isTargetLocal) ? true : IsRemoteTargetConsistent();
-}
-
-JobStatus *LinuxFreeSpaceCheckJob::Run()
-{
-    AbstractConsoleJob* job = CreateJobInstance();
-
-    debugManager->AddDataLine<wstring>(L"Command", job->GetCommand());
-    debugManager->AddDataLine<wstring>(L"Parameters", job->GetCommandParameters());
-
-    JobStatus* status = job->Run();
-    if (status->GetCode() == JobStatus::Ok)
-    {
-        DfCommandParser parser;
-        wstring reportContent = L"";
-        bool ok = parser.ParseBuffer(job->GetCommandOutput());
-        if (ok)
-        {
-            status->SetDescription(parser.GetMiniDescription());
-            reportContent = parser.GetFullDescription();
-        }
-        else
-        {
-            status->SetCode(JobStatus::OkWithWarnings);
-            status->SetDescription(L"Failed to parse output");
-            reportContent = job->GetCommandOutput();
-        }
-
-        if (reportContent != L"")
-            status->AddFileBuffer(GetAttachmentName(), reportContent);
-    }
-
-    delete job;
-    return debugManager->UpdateStatus(status);
+   return (isTargetLocal) ? true : IsRemoteTargetConsistent();
 }
 
 bool LinuxFreeSpaceCheckJob::IsTargetLocal() const
@@ -93,22 +58,12 @@ void LinuxFreeSpaceCheckJob::SetTargetToLocal(const bool value)
     isTargetLocal = value;
 }
 
-wstring LinuxFreeSpaceCheckJob::GetDrive() const
-{
-    return drive;
-}
-
-void LinuxFreeSpaceCheckJob::SetDrive(const wstring &value)
-{
-    drive = value;
-}
-
 bool LinuxFreeSpaceCheckJob::IsRemoteTargetConsistent() const
 {
     return (sshUser != L"" && sshHost != L"");
 }
 
-AbstractConsoleJob *LinuxFreeSpaceCheckJob::CreateJobInstance() const
+AbstractConsoleJob* LinuxFreeSpaceCheckJob::CreateJobInstance() const
 {
     const wstring parameters = wstring(L"-h ") + drive;
     ConsoleJob* dfJob = new ConsoleJob(L"df", parameters);
@@ -120,5 +75,10 @@ AbstractConsoleJob *LinuxFreeSpaceCheckJob::CreateJobInstance() const
         sshJob->SetTarget(sshUser, sshHost);
         return sshJob;
     }
+}
+
+AbstractOutputParser* LinuxFreeSpaceCheckJob::CreateOutputParser() const
+{
+   return new DfCommandParser();
 }
 

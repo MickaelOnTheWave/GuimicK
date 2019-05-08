@@ -118,11 +118,28 @@ void TaskToolRunDialog::on_runButton_clicked()
 
 std::wstring TaskToolRunDialog::CreateTaskToolCommand() const
 {
+#ifdef _WIN32
+   return CreateWindowsTaskToolCommand();
+#else
+   return CreateLinuxTaskToolCommand();
+#endif
+}
+
+std::wstring TaskToolRunDialog::CreateWindowsTaskToolCommand() const
+{
    const std::wstring stringToken = L"\"";
    std::wstring command = stringToken;
    command += PathTools::ToWindowsPath(taskToolExecutable.toStdWString()) + stringToken;
    command += L" --conffile ";
    command += PathTools::ToWindowsPath(configurationFile.toStdWString());
+   return command;
+}
+
+std::wstring TaskToolRunDialog::CreateLinuxTaskToolCommand() const
+{
+   std::wstring command = taskToolExecutable.toStdWString();
+   command += L" --conffile ";
+   command += configurationFile.toStdWString();
    return command;
 }
 

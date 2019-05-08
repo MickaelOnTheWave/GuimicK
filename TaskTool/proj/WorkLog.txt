@@ -1,3 +1,34 @@
+08/05/2019 (17.4-19)
+    Finished refactoring, created both classes. Refactored Linux Freespace Check
+    job and created Windows hard drive check accordingly. Now trying to test Linux
+    job. A bug in conf editor prevents this, trying to fix it. Fixed it, it was
+    due to encoding problems on Linux with path management inadequate for Linux.
+    Checked linux job : it is ok. Now moving to Windows..
+
+07/05/2019 (1.1h)
+    Uninstalled gcc. Now going directly for Windows feature : hard disk check.
+    Created class (working on Linux). Created menu entry in editor.
+    Now working on the class. Too much similarities with Linux free space check,
+    this begs for a refactor. Here are the oportunities found os far:
+    - Create a DiskRelatedJob class base of LinuxFreeSpace and WindowsDiskCheck
+    It will have disk parameters. Command and parser will be left for children.
+    - Create a CommandBasedJob class base of DiskRelatedJob.
+    It will have abstracted command and parser, and the Run() structure.
+    This class should probably be base of many other jobs, and will be for many more.
+Next planned work:
+    - Begin refactoring
+
+06/05/2019 (1.2h)
+    Put back passwordless SSH login from Synology to Desktop. Now cross toolchain
+    needs to be set. Installing it...
+    Installed deb standard gcc-arm toolset. No luck. Tried some custom compile
+    flags from Internet, didn't execute either on target. Seems like we are stuck
+    with Synology-delivered compiler toolchain...
+Next planned work:
+    - Uninstall gcc arm toolchain
+    - Install Synology compiling toolchain OR
+    - Just setup current version backup and move on
+
 05/05/2019 (2.8h)
     Refactored Windows Scheduler into various classes : Reader, Writer and error
     manager. Also moved them to a Windows folder, now Cmake file is cleaner and

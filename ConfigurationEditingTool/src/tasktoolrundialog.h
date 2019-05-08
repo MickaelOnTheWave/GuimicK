@@ -27,6 +27,9 @@ private slots:
 
 private:
    std::wstring CreateTaskToolCommand() const;
+   std::wstring CreateWindowsTaskToolCommand() const;
+   std::wstring CreateLinuxTaskToolCommand() const;
+
    QString CreateChdirErrorMessage() const;
    QString CreateExecutionErrorMessage(const int returnValue,
                                        const std::wstring& output) const;

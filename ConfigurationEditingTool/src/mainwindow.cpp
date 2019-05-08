@@ -44,6 +44,7 @@
 #include "tarbackupjob.h"
 #include "userconsolejob.h"
 #include "libwakejob.h"
+#include "windowscheckdiskjob.h"
 
 #ifdef WIN32
    #include <Windows.h>
@@ -55,7 +56,7 @@ using namespace std;
 
 namespace
 {
-   const wstring version = L"1.00";
+   const wstring version = L"1.01";
 
    QString GetDefaultTaskToolExecutable()
    {
@@ -472,6 +473,8 @@ void MainWindow::SetupWindowsAddJobMenu()
 {
    AddJobMenuEntry("Simple Copy Backup", new OsCopyFsBackupJob);
    AddJobMenuEntry("7zip Backup", new SevenZipBackupJob);
+   AddJobMenuEntry("7zip Backup", new SevenZipBackupJob);
+   AddJobMenuEntry("Check disk", new WindowsCheckdiskJob);
    AddJobMenuEntry("Custom command", new UserConsoleJob);
 }
 

@@ -1,15 +1,13 @@
 #ifndef LINUXFREESPACECHECKJOB_H
 #define LINUXFREESPACECHECKJOB_H
 
-#include "abstractjob.h"
+#include "diskrelatedjob.h"
 
-#include "consolejob.h"
-
-class LinuxFreeSpaceCheckJob : public AbstractJob
+class LinuxFreeSpaceCheckJob : public DiskRelatedJob
 {
 public:
-    LinuxFreeSpaceCheckJob();
-    LinuxFreeSpaceCheckJob(const std::wstring& _drive);
+    LinuxFreeSpaceCheckJob(const std::wstring& _drive = L"");
+    LinuxFreeSpaceCheckJob(const LinuxFreeSpaceCheckJob& other);
 
     virtual AbstractJob* Clone();
 
@@ -17,20 +15,15 @@ public:
 
     virtual bool IsInitialized(void);
 
-    virtual JobStatus* Run();
-
     bool IsTargetLocal() const;
     void SetTargetToLocal(const bool value);
 
-    std::wstring GetDrive() const;
-    void SetDrive(const std::wstring& value);
-
-
 private:
-    bool IsRemoteTargetConsistent() const;
-    AbstractConsoleJob *CreateJobInstance() const;
+    virtual AbstractConsoleJob *CreateJobInstance() const;
+    virtual AbstractOutputParser* CreateOutputParser() const;
 
-    std::wstring drive;
+    bool IsRemoteTargetConsistent() const;
+
     bool isTargetLocal;
     std::wstring sshUser;
     std::wstring sshHost;
