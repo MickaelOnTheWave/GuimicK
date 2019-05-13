@@ -27,7 +27,7 @@ void SshConsoleJobConfigurationTest::FinalCheckTitleProperty(AbstractJob *job,
 {
     auto castJob = dynamic_cast<SshConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetName(), expectedValue);
+    TestUtils::Compare(castJob->GetName(), expectedValue);
 }
 
 void SshConsoleJobConfigurationTest::FinalCheckExpectedOutputProperty(AbstractJob *job,
@@ -35,7 +35,7 @@ void SshConsoleJobConfigurationTest::FinalCheckExpectedOutputProperty(AbstractJo
 {
     auto castJob = dynamic_cast<SshConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetExpectedOutput(), expectedValue);
+    TestUtils::Compare(castJob->GetExpectedOutput(), expectedValue);
 }
 
 void SshConsoleJobConfigurationTest::FinalCheckOutputFilenameProperty(AbstractJob *job,
@@ -43,7 +43,7 @@ void SshConsoleJobConfigurationTest::FinalCheckOutputFilenameProperty(AbstractJo
 {
     auto castJob = dynamic_cast<SshConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetOutputFile(), expectedValue);
+    TestUtils::Compare(castJob->GetOutputFile(), expectedValue);
 }
 
 void SshConsoleJobConfigurationTest::FinalCheckParserCommandProperty(AbstractJob *job,
@@ -51,7 +51,7 @@ void SshConsoleJobConfigurationTest::FinalCheckParserCommandProperty(AbstractJob
 {
     auto castJob = dynamic_cast<SshConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
-    QCOMPARE(castJob->GetMiniDescriptionParserCommand(), expectedValue);
+    TestUtils::Compare(castJob->GetMiniDescriptionParserCommand(), expectedValue);
 }
 
 void SshConsoleJobConfigurationTest::FinalCheckParserUsesBufferProperty(AbstractJob *job,

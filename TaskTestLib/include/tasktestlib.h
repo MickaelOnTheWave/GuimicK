@@ -5,7 +5,7 @@
 #include <vector>
 
 void GetTaskLibTests(std::vector<QObject*>& tests,
-                     const std::string &dataPrefix,
-                     const std::string& errorPrefix);
+                     const std::wstring& dataPrefix,
+                     const std::wstring& errorPrefix);
 
 #endif // TASKTESTLIB_H

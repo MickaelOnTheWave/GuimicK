@@ -20,8 +20,8 @@ private Q_SLOTS:
     void testRun_AttachRemoteAttachments_Ok();
 
 protected:
-    virtual AbstractConsoleJob* CreateDefaultJob(const std::string& command,
-                                                 const std::string & params) override;   
+    virtual AbstractConsoleJob* CreateDefaultJob(const std::wstring& command,
+                                                 const std::wstring & params) override;
 
     SshConsoleJob* GetJob();
 
@@ -29,7 +29,7 @@ private:
     virtual void TestCommandWithAppendedParameter();
     virtual void TestCommandWithSeparatedParameter();
 
-    void CreateRemoteCatJob(const std::string& fileToTest);
+    void CreateRemoteCatJob(const std::wstring& fileToTest);
 
 };
 

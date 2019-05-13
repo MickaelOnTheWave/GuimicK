@@ -12,7 +12,7 @@ class TaskFeatureTest : public QObject
     Q_OBJECT
 
 public:
-    TaskFeatureTest(const std::string& _dataFolder, const std::string& _errorFolder);
+    TaskFeatureTest(const std::wstring& _dataFolder, const std::wstring& _errorFolder);
 
 private Q_SLOTS:
     void init();
@@ -22,28 +22,31 @@ private Q_SLOTS:
     void testRun();
 
 private:
+
+    using StdStringVector = std::vector<std::wstring>;
+
     void CheckFinalReport();
 
-    std::vector<std::string> GetAttachmentFiles() const;
+    StdStringVector GetAttachmentFiles() const;
 
     void CopyDataFolders();
-    QStringList GetAttachmentFiles(const std::string& folder);
+    QStringList GetAttachmentFiles(const std::wstring& folder);
 
     void ReadConfiguration(TaskManagerConfiguration& configuration);
-    void CheckReport(const std::string& reportContent);
-    void CheckAttachments(const std::vector<std::string>& files);
+    void CheckReport(const std::wstring& reportContent);
+    void CheckAttachments(const StdStringVector& files);
 
     void GetAttachmentContents(const QStringList& fileList,
-                               std::vector<std::string>& contentList);
-    void CheckAttachmentContentsAreEqual(const std::vector<std::string>& contents,
-                                         const std::vector<std::string>& expectedContents);
-    void WriteAttachment(const std::string& content, const int number);
+                               StdStringVector& contentList);
+    void CheckAttachmentContentsAreEqual(const StdStringVector& contents,
+                                         const StdStringVector& expectedContents);
+    void WriteAttachment(const std::wstring& content, const int number);
 
-    std::string currentTestCaseName = "";
-    std::string currentTestCaseFolder = "";
+    std::wstring currentTestCaseName = L"";
+    std::wstring currentTestCaseFolder = L"";
 
-    const std::string suiteFolder;
-    const std::string errorFolder;
+    const std::wstring suiteFolder;
+    const std::wstring errorFolder;
 };
 
 #endif // TASKFEATURETEST_H

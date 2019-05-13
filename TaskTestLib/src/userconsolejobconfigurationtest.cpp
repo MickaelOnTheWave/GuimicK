@@ -10,17 +10,17 @@ using namespace std;
 
 void UserConsoleJobConfigurationTest::testConfigure_TitleProperty()
 {
-    TestTitleProperty("My Testing Title");
+    TestTitleProperty(L"My Testing Title");
 }
 
 void UserConsoleJobConfigurationTest::testConfigure_CommandProperty()
 {
-    TestCommandProperty("command");
+    TestCommandProperty(L"command");
 }
 
 void UserConsoleJobConfigurationTest::testConfigure_ParamsProperty()
 {
-    TestParamsProperty("parameters");
+    TestParamsProperty(L"parameters");
 }
 
 void UserConsoleJobConfigurationTest::testConfigure_ReturnCodeProperty_data()
@@ -39,7 +39,7 @@ void UserConsoleJobConfigurationTest::testConfigure_ReturnCodeProperty()
 {
     QFETCH(QString, propertyValue);
     QFETCH(int, expectedValue);
-    TestReturnCodeProperty(propertyValue.toStdString(), expectedValue);
+    TestReturnCodeProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 void UserConsoleJobConfigurationTest::testConfigure_ParserUsesBufferProperty_data()
@@ -57,7 +57,7 @@ void UserConsoleJobConfigurationTest::testConfigure_ParserUsesBufferProperty()
 {
     QFETCH(QString, propertyValue);
     QFETCH(bool, expectedValue);
-    TestParserUsesBufferProperty(propertyValue.toStdString(), expectedValue);
+    TestParserUsesBufferProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 void UserConsoleJobConfigurationTest::testConfigure_UserAttachment_data()
@@ -82,17 +82,17 @@ void UserConsoleJobConfigurationTest::testConfigure_UserAttachment()
 
 void UserConsoleJobConfigurationTest::testConfigure_ExpectedOutputProperty()
 {
-    TestExpectedOutputProperty("expected output");
+    TestExpectedOutputProperty(L"expected output");
 }
 
 void UserConsoleJobConfigurationTest::testConfigure_OutputFilenameProperty()
 {
-    TestOutputFilenameProperty("somefile.txt");
+    TestOutputFilenameProperty(L"somefile.txt");
 }
 
 void UserConsoleJobConfigurationTest::testConfigure_ParserCommandProperty()
 {
-    TestParserCommandProperty("/bin/parsercommand");
+    TestParserCommandProperty(L"/bin/parsercommand");
 }
 
 AbstractJobConfiguration *UserConsoleJobConfigurationTest::CreateNewConfiguration() const
@@ -100,7 +100,7 @@ AbstractJobConfiguration *UserConsoleJobConfigurationTest::CreateNewConfiguratio
     return new UserConsoleJobConfiguration();
 }
 
-void UserConsoleJobConfigurationTest::TestTitleProperty(const string &propertyValue)
+void UserConsoleJobConfigurationTest::TestTitleProperty(const wstring &propertyValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 UserConsoleJobConfiguration::TitleProperty, propertyValue);
@@ -113,7 +113,7 @@ void UserConsoleJobConfigurationTest::TestTitleProperty(const string &propertyVa
     delete confObject;
 }
 
-void UserConsoleJobConfigurationTest::TestCommandProperty(const std::string &propertyValue)
+void UserConsoleJobConfigurationTest::TestCommandProperty(const wstring& propertyValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 UserConsoleJobConfiguration::CommandProperty, propertyValue);
@@ -128,7 +128,7 @@ void UserConsoleJobConfigurationTest::TestCommandProperty(const std::string &pro
     delete confObject;
 }
 
-void UserConsoleJobConfigurationTest::TestParamsProperty(const string &propertyValue)
+void UserConsoleJobConfigurationTest::TestParamsProperty(const wstring &propertyValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 UserConsoleJobConfiguration::ParameterProperty, propertyValue);
@@ -143,7 +143,7 @@ void UserConsoleJobConfigurationTest::TestParamsProperty(const string &propertyV
     delete confObject;
 }
 
-void UserConsoleJobConfigurationTest::TestReturnCodeProperty(const string &propertyValue,
+void UserConsoleJobConfigurationTest::TestReturnCodeProperty(const wstring &propertyValue,
                                                              const int &expectedValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
@@ -159,7 +159,7 @@ void UserConsoleJobConfigurationTest::TestReturnCodeProperty(const string &prope
     delete confObject;
 }
 
-void UserConsoleJobConfigurationTest::TestExpectedOutputProperty(const string &propertyValue)
+void UserConsoleJobConfigurationTest::TestExpectedOutputProperty(const wstring &propertyValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 UserConsoleJobConfiguration::ExpectedOutputProperty, propertyValue);
@@ -172,7 +172,7 @@ void UserConsoleJobConfigurationTest::TestExpectedOutputProperty(const string &p
     delete confObject;
 }
 
-void UserConsoleJobConfigurationTest::TestOutputFilenameProperty(const string &propertyValue)
+void UserConsoleJobConfigurationTest::TestOutputFilenameProperty(const wstring& propertyValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 UserConsoleJobConfiguration::OutputFilenameProperty, propertyValue);
@@ -185,7 +185,7 @@ void UserConsoleJobConfigurationTest::TestOutputFilenameProperty(const string &p
     delete confObject;
 }
 
-void UserConsoleJobConfigurationTest::TestParserCommandProperty(const string &propertyValue)
+void UserConsoleJobConfigurationTest::TestParserCommandProperty(const wstring &propertyValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 UserConsoleJobConfiguration::ParserCommandProperty, propertyValue);
@@ -198,7 +198,7 @@ void UserConsoleJobConfigurationTest::TestParserCommandProperty(const string &pr
     delete confObject;
 }
 
-void UserConsoleJobConfigurationTest::TestParserUsesBufferProperty(const string &propertyValue,
+void UserConsoleJobConfigurationTest::TestParserUsesBufferProperty(const wstring &propertyValue,
                                                                    const bool &expectedValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
@@ -216,7 +216,7 @@ void UserConsoleJobConfigurationTest::TestUserAttachments(const QStringList& att
 {
    auto confObject = new ConfigurationObject();
    for (auto&& it : attachments)
-      AddUserAttachmentObject(confObject, it.toStdString());
+      AddUserAttachmentObject(confObject, it.toStdWString());
 
    AbstractJob* job = TestConfigurationWithoutErrors(confObject);
    FinalCheckUserAttachments(job, attachments);
@@ -226,7 +226,7 @@ void UserConsoleJobConfigurationTest::TestUserAttachments(const QStringList& att
 }
 
 void UserConsoleJobConfigurationTest::FinalCheckTitleProperty(AbstractJob *job,
-                                                              const string &expectedValue)
+                                                              const wstring &expectedValue)
 {
     auto castJob = dynamic_cast<UserConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
@@ -234,7 +234,7 @@ void UserConsoleJobConfigurationTest::FinalCheckTitleProperty(AbstractJob *job,
 }
 
 void UserConsoleJobConfigurationTest::FinalCheckExpectedOutputProperty(AbstractJob *job,
-                                                                       const string &expectedValue)
+                                                                       const wstring& expectedValue)
 {
     auto castJob = dynamic_cast<UserConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
@@ -242,7 +242,7 @@ void UserConsoleJobConfigurationTest::FinalCheckExpectedOutputProperty(AbstractJ
 }
 
 void UserConsoleJobConfigurationTest::FinalCheckOutputFilenameProperty(AbstractJob *job,
-                                                                       const string &expectedValue)
+                                                                       const wstring &expectedValue)
 {
     auto castJob = dynamic_cast<UserConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
@@ -250,7 +250,7 @@ void UserConsoleJobConfigurationTest::FinalCheckOutputFilenameProperty(AbstractJ
 }
 
 void UserConsoleJobConfigurationTest::FinalCheckParserCommandProperty(AbstractJob *job,
-                                                                      const string &expectedValue)
+                                                                      const wstring& expectedValue)
 {
     auto castJob = dynamic_cast<UserConsoleJob*>(job);
     QVERIFY(castJob != nullptr);
@@ -271,16 +271,16 @@ void UserConsoleJobConfigurationTest::FinalCheckUserAttachments(AbstractJob *job
    auto castJob = dynamic_cast<UserConsoleJob*>(job);
    QVERIFY(castJob != nullptr);
 
-   vector<string> actualUserAttachments;
+   vector<wstring> actualUserAttachments;
    castJob->GetUserAttachments(actualUserAttachments);
 
    TestUtils::CheckListsAreEqual(attachments, actualUserAttachments);
 }
 
 void UserConsoleJobConfigurationTest::AddUserAttachmentObject(ConfigurationObject* confObject,
-                                                              const string& name)
+                                                              const wstring& name)
 {
    auto userAttachmentObject = new ConfigurationObject(UserConsoleJobConfiguration::UserAttachmentObject);
-   userAttachmentObject->SetProperty("param0", name);
+   userAttachmentObject->SetProperty(L"param0", name);
    confObject->AddObject(userAttachmentObject);
 }

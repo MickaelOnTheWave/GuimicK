@@ -6,25 +6,29 @@
 
 #include "filetestutils.h"
 #include "filetools.h"
+#include "pathtools.h"
 #include "tarincrementalbackup.h"
 #include "tartools.h"
 #include "tools.h"
 
 using namespace std;
 
-const string folderToBackup = "folderToBackup";
-const string archiveName = "backupArchive.tar";
+namespace
+{
+   const wstring folderToBackup = L"folderToBackup";
+   const wstring archiveName = L"backupArchive.tar";
 
-const QStringList initialTestFiles = {
-   "initialFile01.txt", "initialFile02.txt", "initialFile03.txt"
-};
-const QStringList initialTestFilesContents = {
-   "woo\nhoo", "waaaaahaaaaa", "wiiiihiiiiii"
-};
+   const QStringList initialTestFiles = {
+      "initialFile01.txt", "initialFile02.txt", "initialFile03.txt"
+   };
+   const QStringList initialTestFilesContents = {
+      "woo\nhoo", "waaaaahaaaaa", "wiiiihiiiiii"
+   };
+}
 
 
 TarIncrementalBackupJobTest::TarIncrementalBackupJobTest()
-   : QtTestSuite("", "")
+   : QtTestSuite(L"", L"")
 {
 }
 
@@ -35,8 +39,8 @@ void TarIncrementalBackupJobTest::init()
 
 void TarIncrementalBackupJobTest::cleanup()
 {
-    string unusedOutput;
-    Tools::RunExternalCommandToBuffer("rm -Rf *", unusedOutput, true);
+    wstring unusedOutput;
+    Tools::RunExternalCommandToBuffer(L"rm -Rf *", unusedOutput, true);
 }
 
 void TarIncrementalBackupJobTest::testRunBackup_Added()
@@ -152,8 +156,8 @@ void TarIncrementalBackupJobTest::CreateInitialData()
    auto itContent = initialTestFilesContents.begin();
    for (; itName != initialTestFiles.end(); ++itName, ++itContent)
    {
-       const string filename = folderToBackup + "/" + itName->toStdString();
-       FileTools::WriteBufferToFile(filename, itContent->toStdString());
+       const wstring filename = folderToBackup + L"/" + itName->toStdWString();
+       FileTools::WriteBufferToFile(filename, itContent->toStdWString());
    }
 }
 
@@ -168,7 +172,7 @@ AbstractBackupJob* TarIncrementalBackupJobTest::CreateInitializedJob()
 {
    auto job = new TarIncrementalBackup();
    job->InitializeFromClient(nullptr);
-   job->AddFolder(FileTools::BuildFullPathIfRelative(folderToBackup), archiveName);
+   job->AddFolder(PathTools::BuildFullPathIfRelative(folderToBackup), archiveName);
    job->SetTargetLocal();
    job->SetOutputDebugInformation(DebugOutput::NEVER);
    return job;
@@ -181,8 +185,8 @@ void TarIncrementalBackupJobTest::AddFiles(const QStringList& names,
    auto itContent = contents.begin();
    for (; itName != names.end(); ++itName, ++itContent)
    {
-      const string currentFile = folderToBackup + "/" + itName->toStdString();
-      FileTools::WriteBufferToFile(currentFile, itContent->toStdString());
+      const wstring currentFile = folderToBackup + L"/" + itName->toStdWString();
+      FileTools::WriteBufferToFile(currentFile, itContent->toStdWString());
    }
 }
 
@@ -194,9 +198,9 @@ void TarIncrementalBackupJobTest::ModifyFiles(const QStringList& names,
    auto itContent = contents.begin();
    for (; itName != names.end(); ++itName, ++itContent)
    {
-      const string currentFile = folderToBackup + "/" + itName->toStdString();
-      const string currentContent = FileTools::GetTextFileContent(currentFile);
-      FileTools::WriteBufferToFile(currentFile, currentContent + itContent->toStdString());
+      const wstring currentFile = folderToBackup + L"/" + itName->toStdWString();
+      const wstring currentContent = FileTools::GetTextFileContent(currentFile);
+      FileTools::WriteBufferToFile(currentFile, currentContent + itContent->toStdWString());
    }
 }
 
@@ -208,9 +212,9 @@ void TarIncrementalBackupJobTest::CheckStatus(JobStatus* status,
 
    FileBackupReport expectedReport;
    for (auto it : addedFiles)
-      expectedReport.AddAsAdded(it.toStdString());
+      expectedReport.AddAsAdded(it.toStdWString());
    for (auto it : modifiedFiles)
-      expectedReport.AddAsModified(it.toStdString());
+      expectedReport.AddAsModified(it.toStdWString());
    CheckReport(status, expectedReport);
 }
 
@@ -222,8 +226,8 @@ void TarIncrementalBackupJobTest::CheckReport(JobStatus* status,
    QCOMPARE(attachments.size(), 1ul);
    if (attachments.front().second != expectedReport.GetFullDescription())
    {
-      FileTools::WriteBufferToFile(GetErrorFolder()+"ExpectedReport", expectedReport.GetFullDescription());
-      FileTools::WriteBufferToFile(GetErrorFolder()+"ResultedReport", attachments.front().second);
+      FileTools::WriteBufferToFile(GetErrorFolder()+L"ExpectedReport", expectedReport.GetFullDescription());
+      FileTools::WriteBufferToFile(GetErrorFolder()+L"ResultedReport", attachments.front().second);
       QFAIL("Report different than expected");
    }
 }
@@ -232,12 +236,13 @@ void TarIncrementalBackupJobTest::RestoreAndCheck(AbstractBackupJob* job, const 
                                                   const QStringList& expectedFiles,
                                                   const QStringList& expectedContents)
 {
-   const string restoreFolder = "Restore";
+   const wstring restoreFolder = L"Restore";
    FileTools::CreateFolder(restoreFolder);
 
    JobStatus* status = job->RestoreBackupFromServer(restoreFolder, 0, timeIndex);
    QCOMPARE(status->GetCode(), JobStatus::Ok);
-   FileTestUtils::CheckFolderContent(restoreFolder, expectedFiles, expectedContents);
+   FileTestUtils::CheckFolderContent(QString::fromStdWString(restoreFolder),
+                                     expectedFiles, expectedContents);
 
    FileTools::RemoveFolder(restoreFolder, false);
 }

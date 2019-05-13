@@ -32,24 +32,24 @@ protected:
     virtual AbstractJobConfiguration* CreateNewConfiguration() const override;
 
 private:
-    void TestTitleProperty(const std::string &propertyValue);
-    void TestCommandProperty(const std::string &propertyValue);
-    void TestParamsProperty(const std::string &propertyValue);
-    void TestReturnCodeProperty(const std::string &propertyValue, const int &expectedValue);
-    void TestExpectedOutputProperty(const std::string &propertyValue);
-    void TestOutputFilenameProperty(const std::string &propertyValue);
-    void TestParserCommandProperty(const std::string &propertyValue);
-    void TestParserUsesBufferProperty(const std::string &propertyValue, const bool &expectedValue);
+    void TestTitleProperty(const std::wstring& propertyValue);
+    void TestCommandProperty(const std::wstring &propertyValue);
+    void TestParamsProperty(const std::wstring& propertyValue);
+    void TestReturnCodeProperty(const std::wstring &propertyValue, const int &expectedValue);
+    void TestExpectedOutputProperty(const std::wstring& propertyValue);
+    void TestOutputFilenameProperty(const std::wstring &propertyValue);
+    void TestParserCommandProperty(const std::wstring &propertyValue);
+    void TestParserUsesBufferProperty(const std::wstring &propertyValue, const bool &expectedValue);
     void TestUserAttachments(const QStringList& attachments);
 
-    virtual void FinalCheckTitleProperty(AbstractJob* job, const std::string& expectedValue);
-    virtual void FinalCheckExpectedOutputProperty(AbstractJob* job, const std::string& expectedValue);
-    virtual void FinalCheckOutputFilenameProperty(AbstractJob* job, const std::string& expectedValue);
-    virtual void FinalCheckParserCommandProperty(AbstractJob* job, const std::string& expectedValue);
+    virtual void FinalCheckTitleProperty(AbstractJob* job, const std::wstring& expectedValue);
+    virtual void FinalCheckExpectedOutputProperty(AbstractJob* job, const std::wstring& expectedValue);
+    virtual void FinalCheckOutputFilenameProperty(AbstractJob* job, const std::wstring& expectedValue);
+    virtual void FinalCheckParserCommandProperty(AbstractJob* job, const std::wstring& expectedValue);
     virtual void FinalCheckParserUsesBufferProperty(AbstractJob* job, const bool expectedValue);
     virtual void FinalCheckUserAttachments(AbstractJob* job, const QStringList& attachments);
 
-    void AddUserAttachmentObject(ConfigurationObject* confObject, const std::string& name);
+    void AddUserAttachmentObject(ConfigurationObject* confObject, const std::wstring& name);
 };
 
 #endif // USERCONSOLEJOBCONFIGURATIONTEST_H

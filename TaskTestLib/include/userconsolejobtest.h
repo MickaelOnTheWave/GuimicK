@@ -22,17 +22,17 @@ private Q_SLOTS:
     void testConfiguration_CheckConditions();
 
 protected:
-    virtual std::string GetExpectedErrorDescription(const int expectedCode,
+    virtual std::wstring GetExpectedErrorDescription(const int expectedCode,
                                                     const int receivedCode);
-    std::string GetExpectedErrorDescription(const std::string& expected,
-                                            const std::string& received);
+    std::wstring GetExpectedErrorDescription(const std::wstring& expected,
+                                             const std::wstring& received);
 
-    virtual ConsoleJob* CreateDefaultJob(const std::string& command,
-                                         const std::string& params = "") override;
+    virtual ConsoleJob* CreateDefaultJob(const std::wstring& command,
+                                         const std::wstring& params = L"") override;
     UserConsoleJob* GetJob(void);
 
     void CheckJobConditions(const int expectedCode,
-                            const std::string& expectedOutput);
+                            const std::wstring& expectedOutput);
 
 private:
     virtual void TestCommandWithAppendedParameter() override;

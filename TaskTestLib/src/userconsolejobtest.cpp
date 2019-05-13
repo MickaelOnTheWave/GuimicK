@@ -1,8 +1,10 @@
 #include "userconsolejobtest.h"
 
-#include "filetools.h"
 #include <QTest>
 #include <sstream>
+
+#include "filetools.h"
+#include "testutils.h"
 
 using namespace std;
 
@@ -12,7 +14,7 @@ UserConsoleJobTest::UserConsoleJobTest()
 
 void UserConsoleJobTest::testRun_InvalidCommand()
 {
-    job = CreateDefaultJob("nonexistentcommand");
+    job = CreateDefaultJob(L"nonexistentcommand");
 
     RunAndCheckNoAttachments(JobStatus::Error, ConsoleJob::NotAvailableError);
 
@@ -28,7 +30,7 @@ void UserConsoleJobTest::testRun_CheckReturnCode()
     job = ConsoleJobTest::CreateDefaultJob();
 
     job->SetExpectedReturnCode(0);
-    RunAndCheckNoAttachments(JobStatus::Ok, "");
+    RunAndCheckNoAttachments(JobStatus::Ok, L"");
 
     job->SetExpectedReturnCode(1);
     RunAndCheckNoAttachments(JobStatus::Error, GetExpectedErrorDescription(1, 0));
@@ -36,81 +38,81 @@ void UserConsoleJobTest::testRun_CheckReturnCode()
 
 void UserConsoleJobTest::testRun_CheckOutput()
 {
-    FileTools::WriteBufferToFile("testFile", "test content");
+    FileTools::WriteBufferToFile(L"testFile", L"test content");
     job = ConsoleJobTest::CreateDefaultJob();
 
-    GetJob()->SetExpectedOutput("testFile");
-    RunAndCheckNoAttachments(JobStatus::Ok, "");
+    GetJob()->SetExpectedOutput(L"testFile");
+    RunAndCheckNoAttachments(JobStatus::Ok, L"");
 
-    GetJob()->SetExpectedOutput("Output is not that");
-    RunAndCheckNoAttachments(JobStatus::Error, GetExpectedErrorDescription("Output is not that", "testFile"));
+    GetJob()->SetExpectedOutput(L"Output is not that");
+    RunAndCheckNoAttachments(JobStatus::Error, GetExpectedErrorDescription(L"Output is not that", L"testFile"));
 }
 
 void UserConsoleJobTest::testRun_CheckAttachment()
 {
-    FileTools::WriteBufferToFile("testFile", "test content");
+    FileTools::WriteBufferToFile(L"testFile", L"test content");
     job = ConsoleJobTest::CreateDefaultJob();
 
-    RunAndCheckNoAttachments(JobStatus::Ok, "");
+    RunAndCheckNoAttachments(JobStatus::Ok, L"");
 
     GetJob()->SetAttachOutput(true);
-    RunAndCheckOneAttachment(JobStatus::Ok, "", "testFile");
+    RunAndCheckOneAttachment(JobStatus::Ok, L"", L"testFile");
 }
 
 void UserConsoleJobTest::testRun_OutputToFile_ReturnCode()
 {
-    FileTools::WriteBufferToFile("testFile", "test content");
-    job = CreateDefaultJob("ls",  "testFile");
-    GetJob()->SetOutputTofile("outputFile");
+    FileTools::WriteBufferToFile(L"testFile", L"test content");
+    job = CreateDefaultJob(L"ls",  L"testFile");
+    GetJob()->SetOutputTofile(L"outputFile");
 
-    RunAndCheck(JobStatus::Ok, "");
+    RunAndCheck(JobStatus::Ok, L"");
     CheckAttachmentCount(1, 0);
 
-    string content = FileTools::GetTextFileContent("outputFile");
-    QCOMPARE(content.c_str(), "testFile\n");
+    const wstring content = FileTools::GetTextFileContent(L"outputFile");
+    TestUtils::Compare(content.c_str(), "testFile\n");
 }
 
 void UserConsoleJobTest::testRun_OutputToFile_OutputDoesNotWork()
 {
-    const string testFileName = "testFile";
-    const string testFileContent = "test content";
-    const string outputFileName = "output";
+    const wstring testFileName = L"testFile";
+    const wstring testFileContent = L"test content";
+    const wstring outputFileName = L"output";
 
     FileTools::WriteBufferToFile(testFileName, testFileContent);
-    job = CreateDefaultJob("cat", testFileName);
+    job = CreateDefaultJob(L"cat", testFileName);
     GetJob()->SetOutputTofile(outputFileName);
 
     GetJob()->SetExpectedOutput(testFileContent);
-    RunAndCheck(JobStatus::Error, GetExpectedErrorDescription(testFileContent, ""));
+    RunAndCheck(JobStatus::Error, GetExpectedErrorDescription(testFileContent, L""));
     CheckAttachmentCount(1, 0);
 
-    const string wrongContent = "wrong content";
+    const wstring wrongContent = L"wrong content";
     GetJob()->SetExpectedOutput(wrongContent);
-    RunAndCheck(JobStatus::Error, GetExpectedErrorDescription(wrongContent, ""));
+    RunAndCheck(JobStatus::Error, GetExpectedErrorDescription(wrongContent, L""));
     CheckAttachmentCount(1, 0);
 }
 
 void UserConsoleJobTest::testRun_AttachUserFile()
 {
-   const string testFileName = "testFile.txt";
-   const string testFileContent = "test content";
+   const wstring testFileName = L"testFile.txt";
+   const wstring testFileContent = L"test content";
 
    FileTools::WriteBufferToFile(testFileName, testFileContent);
-   job = CreateDefaultJob("echo", "blabla");
+   job = CreateDefaultJob(L"echo", L"blabla");
    GetJob()->AddUserAttachment(testFileName);
 
-   RunAndCheck(JobStatus::Ok, "");
+   RunAndCheck(JobStatus::Ok, L"");
    CheckAttachmentCount(1, 0);
 
-   vector<string> userAttachment;
+   vector<wstring> userAttachment;
    status->GetExternalFilenames(userAttachment);
 
    if (userAttachment.size() == 1)
    {
-      QCOMPARE(userAttachment.front().c_str(), testFileName.c_str());
+      TestUtils::Compare(userAttachment.front(), testFileName);
 
-      string retrievedContent = FileTools::GetTextFileContent(testFileName);
-      QCOMPARE(retrievedContent.c_str(), testFileContent.c_str());
+      const wstring retrievedContent = FileTools::GetTextFileContent(testFileName);
+      TestUtils::Compare(retrievedContent, testFileContent);
    }
    else
       QFAIL("Wrong number of file attachments");
@@ -119,36 +121,38 @@ void UserConsoleJobTest::testRun_AttachUserFile()
 void UserConsoleJobTest::testConfiguration_CheckConditions()
 {
     job = ConsoleJobTest::CreateDefaultJob();
-    CheckJobConditions(0, "");
+    CheckJobConditions(0, L"");
 
     GetJob()->SetExpectedReturnCode(2);
-    CheckJobConditions(2, "");
+    CheckJobConditions(2, L"");
 
-    GetJob()->SetExpectedOutput("blabla");
-    CheckJobConditions(-1, "blabla");
+    GetJob()->SetExpectedOutput(L"blabla");
+    CheckJobConditions(-1, L"blabla");
 
     GetJob()->SetExpectedReturnCode(3);
-    CheckJobConditions(3, "");
+    CheckJobConditions(3, L"");
 }
 
-string UserConsoleJobTest::GetExpectedErrorDescription(const int expectedCode,
-                                                       const int receivedCode)
+wstring UserConsoleJobTest::GetExpectedErrorDescription(const int expectedCode,
+                                                        const int receivedCode)
 {
-    stringstream stream;
+    wstringstream stream;
     stream << "Return value : " << receivedCode << " - expected : " << expectedCode << endl;
     return stream.str();
 }
 
-string UserConsoleJobTest::GetExpectedErrorDescription(const string &expected, const string &received)
+wstring UserConsoleJobTest::GetExpectedErrorDescription(const wstring& expected,
+                                                        const wstring& received)
 {
-    stringstream stream;
+    wstringstream stream;
     stream << "Received <" << received << "> - expected <" << expected << ">" << endl;
     return stream.str();
 }
 
-ConsoleJob *UserConsoleJobTest::CreateDefaultJob(const std::string &command, const string &params)
+ConsoleJob *UserConsoleJobTest::CreateDefaultJob(const wstring& command,
+                                                 const wstring& params)
 {
-    return new UserConsoleJob("dummyName", command, params);
+    return new UserConsoleJob(L"dummyName", command, params);
 }
 
 UserConsoleJob *UserConsoleJobTest::GetJob()
@@ -157,7 +161,7 @@ UserConsoleJob *UserConsoleJobTest::GetJob()
 }
 
 void UserConsoleJobTest::CheckJobConditions(const int expectedCode,
-                                            const string &expectedOutput)
+                                            const wstring& expectedOutput)
 {
     QCOMPARE(GetJob()->GetExpectedReturnCode(), expectedCode);
     QCOMPARE(GetJob()->GetExpectedOutput().c_str(), expectedOutput.c_str());
@@ -165,7 +169,7 @@ void UserConsoleJobTest::CheckJobConditions(const int expectedCode,
 
 void UserConsoleJobTest::TestCommandWithAppendedParameter()
 {
-    TestCommandWithParameter(JobStatus::Error, ConsoleJob::NotAvailableError, "", true);
+    TestCommandWithParameter(JobStatus::Error, ConsoleJob::NotAvailableError, L"", true);
 
 }
 

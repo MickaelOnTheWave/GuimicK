@@ -8,7 +8,8 @@ class ZipAndCopyFsBackupJobTest : public AbstractFsBackupJobTest
     Q_OBJECT
 
 public:
-    ZipAndCopyFsBackupJobTest(const std::string& dataPrefix, const std::string& errorPrefix);
+    ZipAndCopyFsBackupJobTest(const std::wstring& dataPrefix,
+                              const std::wstring& errorPrefix);
     virtual ~ZipAndCopyFsBackupJobTest() = default;
 
 private Q_SLOTS:
@@ -19,7 +20,7 @@ protected:
     virtual JobStatus* RunBackupJob(const bool isRemote,
                                     const bool useDebug) override;
 
-    virtual std::string GetBackupDestination() const override;
+    virtual std::wstring GetBackupDestination() const override;
 
     virtual AbstractBackupJob* CreateNewJob() override;
 };

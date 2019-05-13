@@ -1,4 +1,4 @@
-12/05/2019 (2.6h)
+12/05/2019 (3.4h)
     Working :-) Now trying to run automated test. Unfortunately, tests haven't been
     migrated to wide strings. Doing it now...
 Next planned work:

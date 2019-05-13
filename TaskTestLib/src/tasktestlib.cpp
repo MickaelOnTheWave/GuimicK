@@ -3,8 +3,8 @@
 #include "tasktestsuites.h"
 
 void GetTaskLibTests(std::vector<QObject*>& tests,
-                     const std::string& dataPrefix,
-                     const std::string& errorPrefix)
+                     const std::wstring& dataPrefix,
+                     const std::wstring& errorPrefix)
 {
    // Disabled for now, for some reason the ssh password is no more asked and thus it fails
    // tests.
@@ -25,7 +25,6 @@ void GetTaskLibTests(std::vector<QObject*>& tests,
    tests.push_back(new GitFsBackupJobConfigurationTest());
    tests.push_back(new RsnapshotBackupJobConfigurationTest());
    tests.push_back(new WakeJobConfigurationTest());
-   tests.push_back(new ChangeScreensaverJobConfigurationTest());
    tests.push_back(new ClamAvJobConfigurationTest());
    tests.push_back(new ShutdownJobConfigurationTest());
    tests.push_back(new UserConsoleJobConfigurationTest());

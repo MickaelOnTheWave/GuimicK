@@ -12,16 +12,20 @@
 #include "filetools.h"
 #include "gittesttools.h"
 #include "serverconfiguration.h"
+#include "stringtools.h"
 #include "tools.h"
 
 using namespace std;
 
-static const string suiteTag = "TaskFeature/";
-static const string reportDir = "report/";
-static const string reportFile = "report.html";
+namespace
+{
+   const wstring suiteTag = L"TaskFeature/";
+   const wstring reportDir = L"report/";
+   const wstring reportFile = L"report.html";
+}
 
-TaskFeatureTest::TaskFeatureTest(const std::string& _dataFolder,
-                                 const std::string& _errorFolder)
+TaskFeatureTest::TaskFeatureTest(const wstring& _dataFolder,
+                                 const wstring& _errorFolder)
     : suiteFolder(_dataFolder + suiteTag), errorFolder(_errorFolder)
 {
 }
@@ -29,16 +33,16 @@ TaskFeatureTest::TaskFeatureTest(const std::string& _dataFolder,
 void TaskFeatureTest::init()
 {
     cleanup();
-    currentTestCaseName = QTest::currentDataTag();
-    currentTestCaseFolder = suiteFolder + currentTestCaseName + "/";
+    currentTestCaseName = StringTools::Utf8ToUnicode(QTest::currentDataTag());
+    currentTestCaseFolder = suiteFolder + currentTestCaseName + L"/";
 
     CopyDataFolders();
 }
 
 void TaskFeatureTest::cleanup()
 {
-    string unusedOutput;
-    Tools::RunExternalCommandToBuffer("rm -Rf *", unusedOutput, true);
+    wstring unusedOutput;
+    Tools::RunExternalCommandToBuffer(L"rm -Rf *", unusedOutput, true);
 }
 
 void TaskFeatureTest::testRun_data()
@@ -47,15 +51,15 @@ void TaskFeatureTest::testRun_data()
     QTest::addColumn<QString>("reportFile");
     QTest::addColumn<QStringList>("attachmentFiles");
 
-    QStringList testCases = FileTestUtils::GetFolderList(suiteFolder.c_str());
-    for (auto it=testCases.begin(); it!=testCases.end(); ++it)
+    QStringList testCases = FileTestUtils::GetFolderList(QString::fromStdWString(suiteFolder));
+    for (const auto& testCase : testCases)
     {
-        if (*it == "." || *it == "..")
+        if (testCase == "." || testCase == "..")
             continue;
 
-        string stdString = it->toStdString();
-        QStringList attachments = GetAttachmentFiles(suiteFolder + "/" + stdString);
-        QTest::newRow(stdString.c_str())    << QString("configuration.txt")
+        const wstring stdString = testCase.toStdWString();
+        QStringList attachments = GetAttachmentFiles(suiteFolder + L"/" + stdString);
+        QTest::newRow(testCase.toUtf8())    << QString("configuration.txt")
                                             << QString("report.html")
                                             << attachments;
     }
@@ -65,12 +69,12 @@ void TaskFeatureTest::testRun()
 {
     QFETCH(QString, configurationFile);
 
-    MainToolModule mainTool("AutoTest");
+    MainToolModule mainTool(L"AutoTest");
     mainTool.EnableTimedRuns(false);
     mainTool.SetFallbackDispatcher(new FileReportDispatcher());
 
-    map<string,string> parameters;
-    parameters["conffile"] = currentTestCaseFolder + configurationFile.toStdString();
+    map<wstring,wstring> parameters;
+    parameters[L"conffile"] = currentTestCaseFolder + configurationFile.toStdWString();
     mainTool.RunFromParameterMap(parameters);
 
     CheckFinalReport();
@@ -78,40 +82,42 @@ void TaskFeatureTest::testRun()
 
 void TaskFeatureTest::CheckFinalReport()
 {
-    const string reportContents = FileTools::GetTextFileContent(reportDir + reportFile);
-    vector<string> attachments = GetAttachmentFiles();
+    const wstring reportContents = FileTools::GetTextFileContent(reportDir + reportFile);
+    const vector<wstring> attachments = GetAttachmentFiles();
 
     CheckReport(reportContents);
     CheckAttachments(attachments);
 }
 
-vector<string> TaskFeatureTest::GetAttachmentFiles() const
+TaskFeatureTest::StdStringVector TaskFeatureTest::GetAttachmentFiles() const
 {
-    QStringList fileList = FileTestUtils::GetFileList(reportDir.c_str());
-    fileList.removeAll(reportFile.c_str());
+    QStringList fileList = FileTestUtils::GetFileList(QString::fromStdWString(reportDir));
+    fileList.removeAll(QString::fromStdWString(reportFile));
 
-    vector<string> stdFileList;
+    StdStringVector stdFileList;
     for (auto&& it : fileList)
-        stdFileList.push_back(it.toStdString());
+        stdFileList.push_back(it.toStdWString());
     return stdFileList;
 }
 
 void TaskFeatureTest::CopyDataFolders()
 {
-    string unusedOutput;
-    QStringList currentDataFolders = FileTestUtils::GetFolderList(currentTestCaseFolder.c_str());
+    wstring unusedOutput;
+    QStringList currentDataFolders = FileTestUtils::GetFolderList(
+             QString::fromStdWString(currentTestCaseFolder)
+             );
     for (auto it : currentDataFolders)
     {
-        string currentFolder = it.toStdString();
-        string command = string("cp -R ") + currentTestCaseFolder + currentFolder + " ./";
+        const wstring currentFolder = it.toStdWString();
+        const wstring command = L"cp -R " + currentTestCaseFolder + currentFolder + L" ./";
         Tools::RunExternalCommandToBuffer(command, unusedOutput, true);
     }
 }
 
-QStringList TaskFeatureTest::GetAttachmentFiles(const string &folder)
+QStringList TaskFeatureTest::GetAttachmentFiles(const wstring &folder)
 {
     QDir currentDir = QDir::current();
-    currentDir.cd(folder.c_str());
+    currentDir.cd(QString::fromStdWString(folder));
     return currentDir.entryList(QStringList({"attachment*.txt"}), QDir::Files);
 }
 
@@ -119,52 +125,58 @@ void TaskFeatureTest::ReadConfiguration(TaskManagerConfiguration& configuration)
 {
     QFETCH(QString, configurationFile);
 
-    vector<string> errors;
-    const string configurationFilePath = currentTestCaseFolder + configurationFile.toStdString();
+    StdStringVector errors;
+    const wstring configurationFilePath = currentTestCaseFolder + configurationFile.toStdWString();
     bool confOk = configuration.LoadFromFile(configurationFilePath, errors);
     QCOMPARE(confOk, true);
     QCOMPARE(errors.size(), 0ul);
 }
 
-void TaskFeatureTest::CheckReport(const string &reportContent)
+void TaskFeatureTest::CheckReport(const wstring& reportContent)
 {
     QFETCH(QString, reportFile);
-    const string referenceReportFile = currentTestCaseFolder + reportFile.toStdString();
-    string expectedContent = FileTools::GetTextFileContent(referenceReportFile);
+    const wstring stdReportFile = reportFile.toStdWString();
+
+    const wstring referenceReportFile = currentTestCaseFolder + stdReportFile;
+    const wstring expectedContent = FileTools::GetTextFileContent(referenceReportFile);
     bool areContentAsExpected = (reportContent == expectedContent);
     if (areContentAsExpected == false)
-        FileTools::WriteBufferToFile(errorFolder + currentTestCaseName + "_" + reportFile.toStdString(),
-                                     reportContent);
+    {
+        FileTools::WriteBufferToFile(
+                 errorFolder + currentTestCaseName + L"_" + stdReportFile,
+                 reportContent);
+    }
     QCOMPARE(reportContent, expectedContent);
 }
 
-void TaskFeatureTest::CheckAttachments(const std::vector<string> &files)
+void TaskFeatureTest::CheckAttachments(const StdStringVector& files)
 {   
-    vector<string> resultAttachmentContents;
+    StdStringVector resultAttachmentContents;
     for (auto&& it : files)
     {
-        const string content = FileTools::GetTextFileContent(reportDir + it);
+        const wstring content = FileTools::GetTextFileContent(reportDir + it);
         resultAttachmentContents.push_back(content);
     }
 
     QFETCH(QStringList, attachmentFiles);
-    vector<string> expectedAttachmentContents;
+    StdStringVector expectedAttachmentContents;
     GetAttachmentContents(attachmentFiles, expectedAttachmentContents);
 
     CheckAttachmentContentsAreEqual(resultAttachmentContents, expectedAttachmentContents);
 }
 
-void TaskFeatureTest::GetAttachmentContents(const QStringList &fileList, std::vector<string> &contentList)
+void TaskFeatureTest::GetAttachmentContents(const QStringList &fileList,
+                                            StdStringVector& contentList)
 {
-    for (auto it : fileList)
+    for (auto&& it : fileList)
     {
-        string content = FileTools::GetTextFileContent(currentTestCaseFolder + it.toStdString());
+        const wstring content = FileTools::GetTextFileContent(currentTestCaseFolder + it.toStdWString());
         contentList.push_back(content);
     }
 }
 
-void TaskFeatureTest::CheckAttachmentContentsAreEqual(const std::vector<string> &contents,
-                                                      const std::vector<string> &expectedContents)
+void TaskFeatureTest::CheckAttachmentContentsAreEqual(const StdStringVector& contents,
+                                                      const StdStringVector& expectedContents)
 {
     if (contents.size() != expectedContents.size())
     {
@@ -186,9 +198,9 @@ void TaskFeatureTest::CheckAttachmentContentsAreEqual(const std::vector<string> 
     }
 }
 
-void TaskFeatureTest::WriteAttachment(const string &content, const int number)
+void TaskFeatureTest::WriteAttachment(const wstring &content, const int number)
 {
-    stringstream name;
+    wstringstream name;
     name << "attachment" << number << ".txt";
-    FileTools::WriteBufferToFile(errorFolder + currentTestCaseName + "_" + name.str(), content);
+    FileTools::WriteBufferToFile(errorFolder + currentTestCaseName + L"_" + name.str(), content);
 }

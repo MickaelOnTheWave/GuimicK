@@ -1,7 +1,6 @@
 #ifndef TASKTESTSUITES_H
 #define TASKTESTSUITES_H
 
-#include "changescreensaverjobconfigurationtest.h"
 #include "clamavjobconfigurationtest.h"
 #include "clientworkmanagertest.h"
 #include "consolejobtest.h"
