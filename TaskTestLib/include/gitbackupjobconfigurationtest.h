@@ -20,7 +20,8 @@ protected:
     virtual AbstractJobConfiguration* CreateNewConfiguration() const override;
 
 private:
-    void TestWriteLogsProperty(const std::string& propertyValue, const bool expectedValue);
+    void TestWriteLogsProperty(const std::wstring& propertyValue,
+                               const bool expectedValue);
 };
 
 #endif // GITBACKUPJOBCONFIGURATIONTEST_H

@@ -30,11 +30,11 @@ protected:
 private:
     virtual void CreateBackupItemObjectsTestData() override;
 
-    void TestRepositoryProperty(const std::string &propertyValue);
-    void TestFullConfigurationProperty(const std::string &propertyValue);
-    void TestWaitProperty(const std::string& propertyValue, const bool expected);
-    void TestTemplateConfigurationProperty(const std::string &propertyValue);
-    void TestMaxBackupCountProperty(const std::string& propertyValue, const int expected);
+    void TestRepositoryProperty(const std::wstring& propertyValue);
+    void TestFullConfigurationProperty(const std::wstring &propertyValue);
+    void TestWaitProperty(const std::wstring& propertyValue, const bool expected);
+    void TestTemplateConfigurationProperty(const std::wstring &propertyValue);
+    void TestMaxBackupCountProperty(const std::wstring& propertyValue, const int expected);
 
 };
 

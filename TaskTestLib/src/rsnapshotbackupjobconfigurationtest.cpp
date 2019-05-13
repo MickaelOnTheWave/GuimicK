@@ -35,12 +35,12 @@ void RsnapshotBackupJobConfigurationTest::CreateBackupItemObjectsTestData()
 
 void RsnapshotBackupJobConfigurationTest::testConfigure_RepositoryProperty()
 {
-    TestRepositoryProperty("some/value");
+    TestRepositoryProperty(L"some/value");
 }
 
 void RsnapshotBackupJobConfigurationTest::testConfigure_FullConfigurationProperty()
 {
-    TestFullConfigurationProperty("some/value");
+    TestFullConfigurationProperty(L"some/value");
 }
 
 void RsnapshotBackupJobConfigurationTest::testConfigure_WaitProperty_data()
@@ -58,12 +58,12 @@ void RsnapshotBackupJobConfigurationTest::testConfigure_WaitProperty()
 {
     QFETCH(QString, propertyValue);
     QFETCH(bool, expectedValue);
-    TestWaitProperty(propertyValue.toStdString(), expectedValue);
+    TestWaitProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 void RsnapshotBackupJobConfigurationTest::testConfigure_TemplateConfigurationProperty()
 {
-    TestTemplateConfigurationProperty("some/value");
+    TestTemplateConfigurationProperty(L"some/value");
 }
 
 void RsnapshotBackupJobConfigurationTest::testConfigure_MaxBackupCountProperty_data()
@@ -83,15 +83,15 @@ void RsnapshotBackupJobConfigurationTest::testConfigure_MaxBackupCountProperty()
 {
     QFETCH(QString, propertyValue);
     QFETCH(int, expectedValue);
-    TestMaxBackupCountProperty(propertyValue.toStdString(), expectedValue);
+    TestMaxBackupCountProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 
-void RsnapshotBackupJobConfigurationTest::TestRepositoryProperty(const string& propertyValue)
+void RsnapshotBackupJobConfigurationTest::TestRepositoryProperty(const wstring& propertyValue)
 {
     ConfigurationObject* confObject = new ConfigurationObject();
-    confObject->SetProperty(RsnapshotBackupJobConfiguration::FullConfigurationProperty, "blabla");
-    if (propertyValue != "")
+    confObject->SetProperty(RsnapshotBackupJobConfiguration::FullConfigurationProperty, L"blabla");
+    if (propertyValue != L"")
         confObject->SetProperty(RsnapshotBackupJobConfiguration::RepositoryProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
@@ -104,7 +104,7 @@ void RsnapshotBackupJobConfigurationTest::TestRepositoryProperty(const string& p
     delete confObject;
 }
 
-void RsnapshotBackupJobConfigurationTest::TestFullConfigurationProperty(const string &propertyValue)
+void RsnapshotBackupJobConfigurationTest::TestFullConfigurationProperty(const wstring &propertyValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 RsnapshotBackupJobConfiguration::FullConfigurationProperty, propertyValue);
@@ -119,7 +119,7 @@ void RsnapshotBackupJobConfigurationTest::TestFullConfigurationProperty(const st
     delete confObject;
 }
 
-void RsnapshotBackupJobConfigurationTest::TestWaitProperty(const std::string &propertyValue,
+void RsnapshotBackupJobConfigurationTest::TestWaitProperty(const std::wstring& propertyValue,
                                                            const bool expected)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
@@ -135,7 +135,7 @@ void RsnapshotBackupJobConfigurationTest::TestWaitProperty(const std::string &pr
     delete confObject;
 }
 
-void RsnapshotBackupJobConfigurationTest::TestTemplateConfigurationProperty(const string &propertyValue)
+void RsnapshotBackupJobConfigurationTest::TestTemplateConfigurationProperty(const wstring& propertyValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 RsnapshotBackupJobConfiguration::TemplateConfigurationProperty, propertyValue);
@@ -150,7 +150,7 @@ void RsnapshotBackupJobConfigurationTest::TestTemplateConfigurationProperty(cons
     delete confObject;
 }
 
-void RsnapshotBackupJobConfigurationTest::TestMaxBackupCountProperty(const string &propertyValue,
+void RsnapshotBackupJobConfigurationTest::TestMaxBackupCountProperty(const wstring& propertyValue,
                                                                      const int expected)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(

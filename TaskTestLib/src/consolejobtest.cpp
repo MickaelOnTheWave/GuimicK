@@ -3,6 +3,7 @@
 #include <QTest>
 
 #include "filetools.h"
+#include "pathtools.h"
 #include "tools.h"
 #include "userconsolejob.h"
 
@@ -14,8 +15,8 @@ ConsoleJobTest::ConsoleJobTest()
 
 void ConsoleJobTest::init()
 {
-    string unused;
-    Tools::RunExternalCommandToBuffer("rm -Rf *", unused);
+    wstring unused;
+    Tools::RunExternalCommandToBuffer(L"rm -Rf *", unused);
 }
 
 void ConsoleJobTest::cleanup()
@@ -38,7 +39,7 @@ void ConsoleJobTest::testRunOk()
 
 void ConsoleJobTest::testRunError()
 {
-    job = CreateDefaultJob("ls", "nonexistingfolder");
+    job = CreateDefaultJob(L"ls", L"nonexistingfolder");
     RunAndCheckNoAttachments(JobStatus::Error,
                              GetExpectedErrorDescription(0, 2));
 }
@@ -54,18 +55,18 @@ void ConsoleJobTest::testCommandWithSeparatedParameter()
 }
 
 void ConsoleJobTest::TestCommandWithParameter(const int expectedCode,
-                                              const string &expectedMessage,
-                                              const string &expectedOutput,
+                                              const wstring &expectedMessage,
+                                              const wstring &expectedOutput,
                                               const bool appendCommand)
 {
-    const string fileContent = "my super content";
-    const string filename = "myfile.txt";
+    const wstring fileContent = L"my super content";
+    const wstring filename = L"myfile.txt";
     FileTools::WriteBufferToFile(filename, fileContent);
 
-    const string fullFilename = FileTools::GetCurrentFullPath() + "/" + filename;
+    const wstring fullFilename = PathTools::GetCurrentFullPath() + L"/" + filename;
 
-    const string catCommand = (appendCommand) ? string("cat ") + fullFilename : string("cat");
-    const string catParam = (appendCommand) ? string("") : fullFilename;
+    const wstring catCommand = (appendCommand) ? wstring(L"cat ") + fullFilename : wstring(L"cat");
+    const wstring catParam = (appendCommand) ? wstring(L"") : fullFilename;
 
     job = CreateDefaultJob(catCommand, catParam);
     RunAndCheckNoAttachments(expectedCode, expectedMessage);
@@ -73,41 +74,42 @@ void ConsoleJobTest::TestCommandWithParameter(const int expectedCode,
     QCOMPARE(job->GetCommandOutput().c_str(), expectedOutput.c_str());
 }
 
-string ConsoleJobTest::GetExpectedOkDescription()
+wstring ConsoleJobTest::GetExpectedOkDescription()
 {
-    return string("");
+    return L"";
 }
 
-string ConsoleJobTest::GetExpectedErrorDescription(const int, const int)
+wstring ConsoleJobTest::GetExpectedErrorDescription(const int, const int)
 {
-    return string("");
+    return L"";
 }
 
 AbstractConsoleJob *ConsoleJobTest::CreateDefaultJob(void)
 {
-    return CreateDefaultJob("ls");
+    return CreateDefaultJob(L"ls");
 }
 
-AbstractConsoleJob *ConsoleJobTest::CreateDefaultJob(const string &command, const string &params)
+AbstractConsoleJob *ConsoleJobTest::CreateDefaultJob(const wstring &command,
+                                                     const wstring &params)
 {
     return new ConsoleJob(command, params);
 }
 
 void ConsoleJobTest::RunAndCheckNoAttachments(const int expectedCode,
-                                              const std::string &expectedDescription)
+                                              const std::wstring &expectedDescription)
 {
     RunAndCheck(expectedCode, expectedDescription);
     CheckAttachmentCount(0, 0);
 }
 
 void ConsoleJobTest::RunAndCheckOneAttachment(const int expectedCode,
-                                              const string &expectedDescription,
-                                              const string &expectedAttachmentContent)
+                                              const wstring &expectedDescription,
+                                              const wstring &expectedAttachmentContent)
 {
     RunAndCheck(expectedCode, expectedDescription);
     CheckAttachmentCount(0, 1);
 
-    vector<pair<string,string> > buffers;
+    vector<pair<wstring,wstring> > buffers;
     status->GetFileBuffers(buffers);
     if (buffers.size() == 0)
         QFAIL("No attachment to check");
@@ -116,7 +118,7 @@ void ConsoleJobTest::RunAndCheckOneAttachment(const int expectedCode,
 }
 
 void ConsoleJobTest::RunAndCheck(const int expectedCode,
-                                 const string &expectedDescription)
+                                 const wstring& expectedDescription)
 {
     status = job->Run();
     QCOMPARE(status->GetCode(), expectedCode);
@@ -126,8 +128,8 @@ void ConsoleJobTest::RunAndCheck(const int expectedCode,
 void ConsoleJobTest::CheckAttachmentCount(const unsigned long fileCount,
                                           const unsigned long bufferCount)
 {
-    vector<string> filenames;
-    vector<pair<string, string> > filebuffers;
+    vector<wstring> filenames;
+    vector<pair<wstring, wstring> > filebuffers;
     status->GetExternalFilenames(filenames);
     status->GetFileBuffers(filebuffers);
     QCOMPARE(filenames.size(), fileCount);
@@ -136,10 +138,10 @@ void ConsoleJobTest::CheckAttachmentCount(const unsigned long fileCount,
 
 void ConsoleJobTest::TestCommandWithAppendedParameter()
 {
-    TestCommandWithParameter(JobStatus::Ok, "", "my super content", true);
+    TestCommandWithParameter(JobStatus::Ok, L"", L"my super content", true);
 }
 
 void ConsoleJobTest::TestCommandWithSeparatedParameter()
 {
-    TestCommandWithParameter(JobStatus::Ok, "", "my super content", false);
+    TestCommandWithParameter(JobStatus::Ok, L"", L"my super content", false);
 }

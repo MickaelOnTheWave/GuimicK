@@ -5,6 +5,6 @@
 #include <vector>
 
 void GetParserLibTests(std::vector<QObject*>& tests,
-                       const std::string& dataPathPrefix = "");
+                       const std::wstring& dataPathPrefix = L"");
 
 #endif // PARSERSTESTLIB_H

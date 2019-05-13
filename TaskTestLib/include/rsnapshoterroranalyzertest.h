@@ -7,7 +7,7 @@ class RsnapshotErrorAnalyzerTest : public QtTestSuite
 {
     Q_OBJECT
 public:
-     RsnapshotErrorAnalyzerTest(const std::string& dataFolderPrefix);
+     RsnapshotErrorAnalyzerTest(const std::wstring& dataFolderPrefix);
 
 private Q_SLOTS:
     void init();

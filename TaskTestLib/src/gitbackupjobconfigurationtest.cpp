@@ -21,7 +21,7 @@ void GitBackupJobConfigurationTest::testConfigure_WriteLogsProperty()
 {
     QFETCH(QString, propertyValue);
     QFETCH(bool, expectedValue);
-    TestWriteLogsProperty(propertyValue.toStdString(), expectedValue);
+    TestWriteLogsProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 AbstractJobConfiguration *GitBackupJobConfigurationTest::CreateNewConfiguration() const
@@ -29,7 +29,7 @@ AbstractJobConfiguration *GitBackupJobConfigurationTest::CreateNewConfiguration(
     return new GitBackupJobConfiguration();
 }
 
-void GitBackupJobConfigurationTest::TestWriteLogsProperty(const string &propertyValue,
+void GitBackupJobConfigurationTest::TestWriteLogsProperty(const wstring &propertyValue,
                                                           const bool expectedValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(

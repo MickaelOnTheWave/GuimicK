@@ -27,22 +27,23 @@ private Q_SLOTS:
     void testConfigure_BackupItemObjects();
 
 private:
-    using BackupValues = std::vector<std::pair<std::vector<std::string>, std::vector<std::string> > >;
+    using BackupValues = std::vector<std::pair<std::vector<std::wstring>, std::vector<std::wstring> > >;
 
     virtual void CreateBackupItemObjectsTestData();
 
-    void testConfigure_TargetProperty(const std::string& propertyValue,
+    void testConfigure_TargetProperty(const std::wstring& propertyValue,
                                       const bool expectedValue);
 
-    void testConfigure_JoinReportsProperty(const std::string& propertyValue,
+    void testConfigure_JoinReportsProperty(const std::wstring& propertyValue,
                                            const bool expectedValue);
     void testConfigure_BackupItemObjects(
-            const BackupValues& values, const AbstractBackupJob::BackupCollection& expectedItems,
-            const std::vector<std::string> &expectedErrors);
+            const BackupValues& values,
+            const AbstractBackupJob::BackupCollection& expectedItems,
+            const std::vector<std::wstring>& expectedErrors);
 
     ConfigurationObject* CreateBackupConfigurationObject(const BackupValues& values);
-    ConfigurationObject* CreateBackupItemObject(const std::vector<std::string>& properties,
-                                                const std::vector<std::string>& values);
+    ConfigurationObject* CreateBackupItemObject(const std::vector<std::wstring>& properties,
+                                                const std::vector<std::wstring>& values);
 
     void CheckCollectionsAreEqual(const AbstractBackupJob::BackupCollection& items,
                                   const AbstractBackupJob::BackupCollection& expectedItems);
@@ -52,9 +53,9 @@ private:
     AbstractBackupJob::BackupCollection BuildOneItemBackupCollection(
             const QString& source, const QString& destination);
 
-    std::string GetConfigurationBackupItemName() const;
+    std::wstring GetConfigurationBackupItemName() const;
 
-    std::string backupItemName;
+    std::wstring backupItemName;
 };
 
 #endif // ABSTRACTBACKUPJOBCONFIGURATIONTEST_H

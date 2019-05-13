@@ -9,8 +9,8 @@ class AbstractBackupJobTest : public QtTestSuite
 {
    Q_OBJECT
 public:
-   AbstractBackupJobTest(const std::string& dataPrefix,
-                         const std::string& errorPrefix);
+   AbstractBackupJobTest(const std::wstring& dataPrefix,
+                         const std::wstring& errorPrefix);
    virtual ~AbstractBackupJobTest() = default;
 
 protected:   
@@ -18,10 +18,10 @@ protected:
 
    virtual AbstractBackupJob* CreateNewJob() = 0;
 
-   const std::string backupRepository = "repository/";
-   std::string currentSourceFolder = "currentFolderToBackup";
-   std::string currentTestCaseFolder = "";
-   std::string currentTestCaseName = "";
+   const std::wstring backupRepository = L"repository/";
+   std::wstring currentSourceFolder = L"currentFolderToBackup";
+   std::wstring currentTestCaseFolder = L"";
+   std::wstring currentTestCaseName = L"";
 
 private Q_SLOTS:
     void init();
@@ -31,12 +31,12 @@ private Q_SLOTS:
     void testBackupAndRestore();
 
 private:
-    void RunBackup(AbstractBackupJob* job, const std::string& folder);
-    void RunRestore(AbstractBackupJob* job, const std::string& folder);
+    void RunBackup(AbstractBackupJob* job, const std::wstring& folder);
+    void RunRestore(AbstractBackupJob* job, const std::wstring& folder);
 
-    void PrepareBackup(AbstractBackupJob* job, const std::string& folder);
+    void PrepareBackup(AbstractBackupJob* job, const std::wstring& folder);
 
-    virtual std::string GetBackupDestination() const;
+    virtual std::wstring GetBackupDestination() const;
 };
 
 #endif // ABSTRACTBACKUPJOBTEST_H

@@ -7,8 +7,8 @@
 
 using namespace std;
 
-AbstractCopyFsBackupJobTest::AbstractCopyFsBackupJobTest(const std::string &dataPrefix,
-                                                         const std::string& errorPrefix)
+AbstractCopyFsBackupJobTest::AbstractCopyFsBackupJobTest(const std::wstring &dataPrefix,
+                                                         const std::wstring& errorPrefix)
  : AbstractFsBackupJobTest(dataPrefix, errorPrefix)
 {
 }

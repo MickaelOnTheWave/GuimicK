@@ -10,7 +10,7 @@ using namespace std;
 
 void SshConsoleJobConfigurationTest::testJobIsSsh()
 {
-    ConfigurationObject* confObject = CreateSimpleConfigurationObject("", "");
+    ConfigurationObject* confObject = CreateSimpleConfigurationObject(L"", L"");
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
     auto castJob = dynamic_cast<SshConsoleJob*>(job);
@@ -68,7 +68,7 @@ void SshConsoleJobConfigurationTest::FinalCheckUserAttachments(AbstractJob* job,
    auto castJob = dynamic_cast<SshConsoleJob*>(job);
    QVERIFY(castJob != nullptr);
 
-   vector<string> actualUserAttachments;
+   vector<wstring> actualUserAttachments;
    castJob->GetUserAttachments(actualUserAttachments);
 
    TestUtils::CheckListsAreEqual(attachments, actualUserAttachments);

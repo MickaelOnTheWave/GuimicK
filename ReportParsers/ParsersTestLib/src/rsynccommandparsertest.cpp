@@ -6,9 +6,9 @@
 
 using namespace std;
 
-const string suitePrefix = "RsyncCommand/";
+const wstring suitePrefix = L"RsyncCommand/";
 
-RsyncCommandParserTest::RsyncCommandParserTest(const std::string& dataPrefix)
+RsyncCommandParserTest::RsyncCommandParserTest(const wstring& dataPrefix)
     : FileBackupParserAbstractTest(dataPrefix + suitePrefix)
 {
 }

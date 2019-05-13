@@ -7,13 +7,13 @@
 class GitRepository
 {
 public:
-    GitRepository(const std::string& _source, const std::string& _destination,
+    GitRepository(const std::wstring& _source, const std::wstring& _destination,
                   const QStringList& _added, const QStringList& _modified, const QStringList& _removed,
                   const bool _mustAlreadyExist);
 
 
-    std::string source;
-    std::string destination;
+    std::wstring source;
+    std::wstring destination;
     QStringList added;
     QStringList modified;
     QStringList removed;

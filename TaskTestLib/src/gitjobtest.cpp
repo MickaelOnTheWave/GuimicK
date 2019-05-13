@@ -21,20 +21,20 @@ void GitJobTest::init()
 {
     cleanup();
 
-    CreateDefaultData(sourceRepository.toStdString());
-    GitTestTools::Init(sourceRepository.toStdString());
+    CreateDefaultData(sourceRepository.toStdWString());
+    GitTestTools::Init(sourceRepository.toStdWString());
 }
 
 void GitJobTest::cleanup()
 {
     delete currentStatus;
     currentStatus = nullptr;
-    ConsoleJob::Run("rm", "-Rf *");
+    ConsoleJob::Run(L"rm", L"-Rf *");
 }
 
 void GitJobTest::testCreate_InvalidSource()
 {
-    RunGitBackup(invalidRepository.toStdString(), destinationRepository.toStdString());
+    RunGitBackup(invalidRepository.toStdWString(), destinationRepository.toStdWString());
     CheckGitJobReturn(JobStatus::Error, 0, messageInvalidSource);
     FileTestUtils::CheckFolderExistence(invalidRepository, false);
     FileTestUtils::CheckFolderExistence(destinationRepository, false);
@@ -42,11 +42,11 @@ void GitJobTest::testCreate_InvalidSource()
 
 void GitJobTest::testCreateOne_Ok()
 {
-    RunGitBackup(sourceRepository.toStdString(), destinationRepository.toStdString());
+    RunGitBackup(sourceRepository.toStdWString(), destinationRepository.toStdWString());
     CheckGitJobReturn(JobStatus::Ok, 0, "Repository cloned successfully");
     FileTestUtils::CheckFolderExistence(sourceRepository, true);
     FileTestUtils::CheckFolderExistence(destinationRepository, true);
-    CheckGitHeadContent(destinationRepository.toStdString(), defaultRepositoryContent);
+    CheckGitHeadContent(destinationRepository.toStdWString(), defaultRepositoryContent);
 }
 
 void GitJobTest::testUpdate_data()
@@ -70,8 +70,8 @@ void GitJobTest::testUpdate()
     QFETCH(QStringList, modified);
     QFETCH(QStringList, removed);
 
-    const std::string stdSource = sourceRepository.toStdString();
-    const std::string stdDestination = destinationRepository.toStdString();
+    const std::wstring stdSource = sourceRepository.toStdWString();
+    const std::wstring stdDestination = destinationRepository.toStdWString();
     GitTestTools::Clone(stdSource, stdDestination, true);
     sleep(1);
 
@@ -105,48 +105,48 @@ void GitJobTest::testUpdate_MultipleRepositories()
 
 void GitJobTest::testUpdate_InvalidSource()
 {
-    const std::string stdSource = sourceRepository.toStdString();
-    const std::string stdDestination = destinationRepository.toStdString();
-    const std::string errorInvalidTarget = "Invalid source repository";
+    const std::wstring stdSource = sourceRepository.toStdWString();
+    const std::wstring stdDestination = destinationRepository.toStdWString();
+    const std::wstring errorInvalidTarget = L"Invalid source repository";
 
     GitTestTools::Clone(stdSource, stdDestination);
     QDir dir(sourceRepository);
     dir.removeRecursively();
     RunGitBackup(stdSource, stdDestination);
 
-    CheckGitJobReturn(JobStatus::Error, 1, QString(errorInvalidTarget.c_str()));
+    CheckGitJobReturn(JobStatus::Error, 1, QString::fromStdWString(errorInvalidTarget));
 }
 
 std::vector<GitRepository*> GitJobTest::CreateMultipleRepositories()
 {
     std::vector<GitRepository*> repositories;
     repositories.push_back(new GitRepository(
-        "source0",
-        "dest0",
+        L"source0",
+        L"dest0",
         QStringList(),
         QStringList(),
         QStringList(),
         false
     ));
     repositories.push_back(new GitRepository(
-        "source1",
-        "dest1",
+        L"source1",
+        L"dest1",
         QStringList(),
         QStringList(),
         QStringList(),
         true
     ));
     repositories.push_back(new GitRepository(
-        "source2",
-        "dest2",
+        L"source2",
+        L"dest2",
         QStringList({"add0", "add1"}),
         QStringList({"file0", "file1", "file2"}),
         QStringList(),
         true
     ));
     repositories.push_back(new GitRepository(
-        "source3",
-        "dest3",
+        L"source3",
+        L"dest3",
         QStringList(),
         QStringList({"file0", "file1", "file3"}),
         QStringList("file2"),
@@ -169,19 +169,20 @@ void GitJobTest::CreateInitialRepositoryData(const std::vector<GitRepository*>& 
     }
 }
 
-void GitJobTest::CreateDefaultData(const std::string& repository)
+void GitJobTest::CreateDefaultData(const std::wstring& repository)
 {
-    FileTestUtils::CreatePopulatedFolder(repository, defaultRepositoryContent);
+    FileTestUtils::CreatePopulatedFolder(QString::fromStdWString(repository),
+                                         defaultRepositoryContent);
 }
 
-void GitJobTest::RunGitBackup(const std::string &source, const std::string &destination)
+void GitJobTest::RunGitBackup(const wstring& source, const wstring& destination)
 {
-    std::vector<std::pair<std::string, std::string> > repositoryList;
+    RepositoryList repositoryList;
     repositoryList.push_back(make_pair(source, destination));
     RunGitBackup(repositoryList);
 }
 
-void GitJobTest::RunGitBackup(const std::vector<std::pair<std::string, std::string> >& repositoryList)
+void GitJobTest::RunGitBackup(const RepositoryList& repositoryList)
 {
     GitBackupJob job(repositoryList);
     job.InitializeFromClient(nullptr);
@@ -205,16 +206,19 @@ void GitJobTest::CheckGitJobReturn(const int expectedStatus,
 {
     QCOMPARE(currentStatus->GetCode(), expectedStatus);
     const bool isSameDescription = (currentStatus->GetDescription() ==
-                                    description.toStdString());
+                                    description.toStdWString());
     if (!isSameDescription)
     {
-        string message = "Description is different :\n";
-        message += "\texpected: " + description.toStdString() + "\n";
-        message += "\tgot: " + currentStatus->GetDescription() + "\n";
-        QFAIL(message.c_str());
+       const QString newLine = "\n";
+       const QString tab = "\t";
+       QString message = "Description is different :" + newLine;
+       message += tab + "expected: " + description + newLine;
+       message += tab + "got: " + QString::fromStdWString(currentStatus->GetDescription());
+       message += newLine;
+       QFAIL(message.toUtf8());
     }
 
-    std::vector<std::pair<std::string,std::string> > reportFiles;
+    std::vector<std::pair<std::wstring,std::wstring> > reportFiles;
     currentStatus->GetFileBuffers(reportFiles);
     QCOMPARE(reportFiles.size(), expectedReportFileCount);
 }
@@ -234,7 +238,7 @@ QString GitJobTest::BuildMultiDescriptionString(const std::vector<GitRepository 
 
 void GitJobTest::UpdateSourceRepository(const QStringList &added, const QStringList &modified, const QStringList &removed)
 {
-    GitTestTools::Update(sourceRepository.toStdString(), added, modified, removed);
+    GitTestTools::Update(sourceRepository.toStdWString(), added, modified, removed);
 }
 
 QStringList GitJobTest::CreatedExpectedDestinationRepositoryContent(const QStringList &added, const QStringList &removed)
@@ -246,24 +250,25 @@ QStringList GitJobTest::CreatedExpectedDestinationRepositoryContent(const QStrin
     return expected;
 }
 
-const std::vector<std::pair<std::string, std::string> > GitJobTest::CreateRepositoryListForBackup(
+const GitJobTest::RepositoryList GitJobTest::CreateRepositoryListForBackup(
         const std::vector<GitRepository *> &repositories
 )
 {
-    std::vector<std::pair<std::string, std::string> > repositoryTargetList;
+    RepositoryList repositoryTargetList;
     for (auto it=repositories.begin(); it!=repositories.end(); ++it)
-        repositoryTargetList.push_back(std::pair<std::string, std::string>((*it)->source, (*it)->destination));
+        repositoryTargetList.push_back(make_pair((*it)->source, (*it)->destination));
     return repositoryTargetList;
 }
 
-void GitJobTest::CheckGitHeadContent(const string &repository,
+void GitJobTest::CheckGitHeadContent(const wstring &repository,
                                      const QStringList& expectedContents)
 {
-    const string checkFolder = "checkFolder";
-    const string params = string("clone ") + repository + " " + checkFolder;
-    ConsoleJob::Run("git", params);
+    const QString checkFolder = "checkFolder";
+    const wstring stdCheckFolder = checkFolder.toStdWString();
+    const wstring params = wstring(L"clone ") + repository + L" " + stdCheckFolder;
+    ConsoleJob::Run(L"git", params);
 
     FileTestUtils::CheckFolderContent(checkFolder, expectedContents);
 
-    ConsoleJob::Run("rm", string("-Rf ") + checkFolder);
+    ConsoleJob::Run(L"rm", wstring(L"-Rf ") + stdCheckFolder);
 }

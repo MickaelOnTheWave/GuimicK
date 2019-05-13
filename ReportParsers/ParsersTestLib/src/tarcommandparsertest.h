@@ -8,7 +8,7 @@ class TarCommandParserTest : public FileBackupParserAbstractTest
     Q_OBJECT
 
 public:
-    TarCommandParserTest(const std::string& dataPrefix);
+    TarCommandParserTest(const std::wstring& dataPrefix);
 
 private Q_SLOTS:
     void testParse();

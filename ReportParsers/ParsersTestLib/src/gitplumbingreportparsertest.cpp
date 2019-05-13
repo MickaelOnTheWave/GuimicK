@@ -5,9 +5,9 @@
 
 using namespace std;
 
-const string suiteFolder = "GitPlumbing/";
+const wstring suiteFolder = L"GitPlumbing/";
 
-GitPlumbingReportParserTest::GitPlumbingReportParserTest(const std::string &dataPrefix)
+GitPlumbingReportParserTest::GitPlumbingReportParserTest(const wstring& dataPrefix)
     : FileBackupParserAbstractTest(dataPrefix + suiteFolder)
 {
 }

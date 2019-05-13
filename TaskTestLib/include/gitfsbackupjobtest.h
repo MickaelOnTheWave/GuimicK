@@ -8,8 +8,8 @@ class GitFsBackupJobTest : public AbstractFsBackupJobTest
     Q_OBJECT
 
 public:
-    GitFsBackupJobTest(const std::string& dataPrefix,
-                       const std::string &errorPrefix);
+    GitFsBackupJobTest(const std::wstring& dataPrefix,
+                       const std::wstring& errorPrefix);
     virtual ~GitFsBackupJobTest() = default;
 
 private Q_SLOTS:

@@ -17,9 +17,9 @@ private Q_SLOTS:
     void testConfigure_TitleProperty();
 
 private:
-    void TestShowDebugProperty(const std::string& propertyValue,
-                                         const int expectedValue);
-    void TestTitleProperty(const std::string& value);
+    void TestShowDebugProperty(const std::wstring& propertyValue,
+                               const int expectedValue);
+    void TestTitleProperty(const std::wstring& value);
 
 };
 

@@ -6,14 +6,14 @@
 
 using namespace std;
 
-const string clientName = "Test Client";
+const wstring clientName = L"Test Client";
 static const char* okMessage                = "Ok";
 static const char* okWithWarningsMessage    = "Executed with minor errors";
 static const char* errorMessage             = "Error";
 static const char* notExecutedMessage       = "Not executed";
 
 ClientWorkManagerTest::ClientWorkManagerTest()
-    : QtTestSuite("")
+    : QtTestSuite(L"")
 {
 }
 
@@ -31,48 +31,48 @@ void ClientWorkManagerTest::testAddRemoveJob()
 {
     CheckJobList(QStringList());
 
-    manager->AddJob(new DummyJob("Job 1"));
-    manager->AddJob(new DummyJob("Job 2"));
-    manager->AddJob(new DummyJob("Job 3"));
+    manager->AddJob(new DummyJob(L"Job 1"));
+    manager->AddJob(new DummyJob(L"Job 2"));
+    manager->AddJob(new DummyJob(L"Job 3"));
 
     CheckJobList(QStringList({"Job 1", "Job 2", "Job 3"}));
 
-    manager->RemoveJob("Job 1");
-    manager->RemoveJob("Job 2");
-    manager->RemoveJob("Job 3");
+    manager->RemoveJob(L"Job 1");
+    manager->RemoveJob(L"Job 2");
+    manager->RemoveJob(L"Job 3");
 
     CheckJobList(QStringList());
 }
 
 void ClientWorkManagerTest::testRemoveJob()
 {
-    manager->AddJob(new DummyJob("Job 1"));
-    manager->AddJob(new DummyJob("Job 2"));
+    manager->AddJob(new DummyJob(L"Job 1"));
+    manager->AddJob(new DummyJob(L"Job 2"));
 
-    bool result = manager->RemoveJob("Invalid Job");
+    bool result = manager->RemoveJob(L"Invalid Job");
     CheckJobList(QStringList({"Job 1", "Job 2"}));
     QCOMPARE(result, false);
 
-    result = manager->RemoveJob("Job 1");
+    result = manager->RemoveJob(L"Job 1");
     CheckJobList(QStringList({"Job 2"}));
     QCOMPARE(result, true);
 }
 
 void ClientWorkManagerTest::testRemoveAllButJobs()
 {
-    manager->AddJob(new DummyJob("Job 1"));
-    manager->AddJob(new DummyJob("Job 2"));
-    manager->AddJob(new DummyJob("Job 3"));
+    manager->AddJob(new DummyJob(L"Job 1"));
+    manager->AddJob(new DummyJob(L"Job 2"));
+    manager->AddJob(new DummyJob(L"Job 3"));
 
-    bool result = manager->RemoveAllButJobs("Job 3");
+    bool result = manager->RemoveAllButJobs(L"Job 3");
     CheckJobList(QStringList({"Job 3"}));
     QCOMPARE(result, true);
 
-    result = manager->RemoveAllButJobs("Job 3");
+    result = manager->RemoveAllButJobs(L"Job 3");
     CheckJobList(QStringList({"Job 3"}));
     QCOMPARE(result, false);
 
-    result = manager->RemoveAllButJobs("Invalid Job");
+    result = manager->RemoveAllButJobs(L"Invalid Job");
     CheckJobList(QStringList());
     QCOMPARE(result, true);
 }
@@ -126,7 +126,7 @@ void ClientWorkManagerTest::CheckJobList(const QStringList &expectedList)
     auto itExpected = expectedList.begin();
     auto itResult = jobList.begin();
     for (; itExpected != expectedList.end(); ++itExpected, ++itResult)
-        QCOMPARE((*itResult)->GetName(), itExpected->toStdString());
+        QCOMPARE(QString::fromStdWString((*itResult)->GetName()), *itExpected);
 }
 
 void ClientWorkManagerTest::SetupJobList()
@@ -138,9 +138,11 @@ void ClientWorkManagerTest::SetupJobList()
 
     for (int i=0; i<expectedNames.size(); ++i)
     {
-        DummyJob* newJob = new DummyJob(expectedNames.at(i).toStdString(),
-                                        JobStatus::GetCodeFromDescription(expectedCodes.at(i).toStdString()),
-                                        expectedDescriptions.at(i).toStdString());
+        DummyJob* newJob = new DummyJob(
+                 expectedNames.at(i).toStdWString(),
+                 JobStatus::GetCodeFromDescription(expectedCodes.at(i).toStdWString()),
+                 expectedDescriptions.at(i).toStdWString()
+        );
         if (failingInitializations.at(i) != "")
             newJob->SetInitialization(false);
         manager->AddJob(newJob);
@@ -150,7 +152,10 @@ void ClientWorkManagerTest::SetupJobList()
 void ClientWorkManagerTest::CheckGlobalResult(WorkResultData *result)
 {
     QCOMPARE(result->allClientsResults.size(), 1ul);
-    QCOMPARE(result->allClientsResults.front().first, clientName);
+    QCOMPARE(
+      QString::fromStdWString(result->allClientsResults.front().first),
+      QString::fromStdWString(clientName)
+    );
 }
 
 void ClientWorkManagerTest::CheckClientResult(ClientJobResults *results)
@@ -159,32 +164,32 @@ void ClientWorkManagerTest::CheckClientResult(ClientJobResults *results)
     QFETCH(QStringList, expectedCodes);
     QFETCH(QStringList, expectedDescriptions);
 
-    vector<string> jobNames;
+    vector<wstring> jobNames;
     GetJobNames(results, jobNames);
     TestUtils::CheckListsAreEqual(expectedNames, jobNames);
 
-    vector<string> descriptions;
+    vector<wstring> descriptions;
     GetJobDescriptions(results, descriptions);
     TestUtils::CheckListsAreEqual(expectedDescriptions, descriptions);
 
-    vector<string> codes;
+    vector<wstring> codes;
     GetJobCodes(results, codes);
     TestUtils::CheckListsAreEqual(expectedCodes, codes);
 }
 
-void ClientWorkManagerTest::GetJobNames(ClientJobResults *results, std::vector<string> &values)
+void ClientWorkManagerTest::GetJobNames(ClientJobResults *results, std::vector<wstring>& values)
 {
     for (auto it = results->begin(); it != results->end(); ++it)
         values.push_back(it->first);
 }
 
-void ClientWorkManagerTest::GetJobCodes(ClientJobResults *results, std::vector<string> &values)
+void ClientWorkManagerTest::GetJobCodes(ClientJobResults *results, std::vector<wstring>& values)
 {
     for (auto it = results->begin(); it != results->end(); ++it)
         values.push_back(it->second->GetCodeDescription());
 }
 
-void ClientWorkManagerTest::GetJobDescriptions(ClientJobResults *results, std::vector<string> &values)
+void ClientWorkManagerTest::GetJobDescriptions(ClientJobResults *results, std::vector<wstring>& values)
 {
     for (auto it = results->begin(); it != results->end(); ++it)
         values.push_back(it->second->GetDescription());

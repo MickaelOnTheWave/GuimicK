@@ -12,8 +12,8 @@ class RsnapshotJobTest : public AbstractFsBackupJobTest
     Q_OBJECT
 
 public:
-    RsnapshotJobTest(const std::string& dataPrefix,
-                     const std::string& errorPrefix);
+    RsnapshotJobTest(const std::wstring& dataPrefix,
+                     const std::wstring& errorPrefix);
     virtual ~RsnapshotJobTest();
 
 private Q_SLOTS:
@@ -34,9 +34,9 @@ protected:
     virtual AbstractBackupJob* CreateNewJob();
 
 private:
-    JobStatus* RunRsnapshotJob(const std::string& tempConfigurationFile = "");
+    JobStatus* RunRsnapshotJob(const std::wstring& tempConfigurationFile = L"");
 
-    std::string GetRsnapshotBackupFolder(const int number) const;
+    QString GetRsnapshotBackupFolder(const int number) const;
 
     unsigned int GetFileNumberInCurrentFolder();
 };

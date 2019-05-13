@@ -9,17 +9,17 @@ public:
     MockParser() = default;
     virtual ~MockParser() = default;
 
-    virtual bool ParseBuffer(const std::string& buffer);
+    virtual bool ParseBuffer(const std::wstring& buffer);
 
-    virtual std::string GetMiniDescription();
-    virtual std::string GetFullDescription();
+    virtual std::wstring GetMiniDescription();
+    virtual std::wstring GetFullDescription();
 
-    std::string GetFileContent() const;
-    void SetFullDescription(const std::string& description);
+    std::wstring GetFileContent() const;
+    void SetFullDescription(const std::wstring& description);
 
 private:
-    std::string parsedContent = "";
-    std::string contentToWrite = "";
+    std::wstring parsedContent = L"";
+    std::wstring contentToWrite = L"";
 };
 
 #endif // MOCKPARSER_H

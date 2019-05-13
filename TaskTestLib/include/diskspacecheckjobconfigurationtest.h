@@ -22,8 +22,8 @@ protected:
     virtual AbstractJobConfiguration* CreateNewConfiguration() const override;
 
 private:
-    void TestDriveProperty(const std::string& propertyValue);
-    void TestTargetProperty(const std::string& propertyValue,
+    void TestDriveProperty(const std::wstring& propertyValue);
+    void TestTargetProperty(const std::wstring& propertyValue,
                             const bool expectedValue);
 };
 

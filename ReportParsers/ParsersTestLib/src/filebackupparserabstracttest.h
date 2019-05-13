@@ -14,7 +14,7 @@ class FileBackupParserAbstractTest : public QtTestSuite
 {
     Q_OBJECT
 public:
-    FileBackupParserAbstractTest(const std::string& dataPrefix);
+    FileBackupParserAbstractTest(const std::wstring& dataPrefix);
 
 private Q_SLOTS:
     void init();
@@ -30,11 +30,12 @@ protected:
 
     void testParse_generic();
 
-    void GetReportDataFromCorrectFile(const std::string& inputFile);
+    void GetReportDataFromCorrectFile(const std::wstring& inputFile);
     void CheckReportDataFiles(const QStringList &added,
                               const QStringList &modified,
                               const QStringList &removed);
-    void CheckListsAreEqual(const std::vector<std::string> &actual, const QStringList &expected);
+    void CheckListsAreEqual(const std::vector<std::wstring> &actual,
+                            const QStringList &expected);
 
     FileBackupReport* report = nullptr;
 };

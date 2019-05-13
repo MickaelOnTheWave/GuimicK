@@ -8,8 +8,8 @@
 
 using namespace std;
 
-DfCommandParserTest::DfCommandParserTest(const string &dataPath)
-    : QtTestSuite(dataPath + "DfCommand/")
+DfCommandParserTest::DfCommandParserTest(const wstring& dataPath)
+    : QtTestSuite(dataPath + L"DfCommand/")
 {
 }
 
@@ -101,16 +101,17 @@ void DfCommandParserTest::testDescriptions()
     CheckAndParse(parser);
 
     QFETCH(QString, miniDescription);
-    QCOMPARE(QString::fromStdString(parser.GetMiniDescription()), miniDescription);
+    QCOMPARE(QString::fromStdWString(parser.GetMiniDescription()), miniDescription);
 
     QFETCH(QString, fullDescription);
-    QCOMPARE(QString::fromStdString(parser.GetFullDescription()), fullDescription);
+    QCOMPARE(QString::fromStdWString(parser.GetFullDescription()), fullDescription);
 }
 
 void DfCommandParserTest::CheckAndParse(DfCommandParser &parser)
 {
     QFETCH(QString, file);
-    string content = FileTools::GetTextFileContent(GetDataFolder() + file.toStdString());
+    const wstring content = FileTools::GetTextFileContent(GetDataFolder() +
+                                                          file.toStdWString());
 
     bool ok = parser.ParseBuffer(content);
     QCOMPARE(ok, true);
@@ -118,10 +119,11 @@ void DfCommandParserTest::CheckAndParse(DfCommandParser &parser)
 
 void DfCommandParserTest::CheckDataIsTheSame(const vector<Drive> &data,
                                              const QStringList &expectedData,
-                                             function<string(Drive)> propertyGetter)
+                                             function<wstring(Drive)> propertyGetter)
 {
     QCOMPARE(data.size(), static_cast<unsigned long>(expectedData.size()));
 
     for (unsigned int i=0; i<data.size(); ++i)
-        QCOMPARE(propertyGetter(data[i]), expectedData.at(i).toStdString());
+        QCOMPARE(QString::fromStdWString(propertyGetter(data[i])),
+                 expectedData.at(i));
 }

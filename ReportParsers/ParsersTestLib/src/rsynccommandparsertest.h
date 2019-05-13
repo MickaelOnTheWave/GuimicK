@@ -8,7 +8,7 @@ class RsyncCommandParserTest : public FileBackupParserAbstractTest
     Q_OBJECT
 
 public:
-    RsyncCommandParserTest(const std::string& dataPrefix);
+    RsyncCommandParserTest(const std::wstring& dataPrefix);
 
 private Q_SLOTS:
     void testParse();

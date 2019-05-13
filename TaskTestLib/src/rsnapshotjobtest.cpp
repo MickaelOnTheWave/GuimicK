@@ -14,10 +14,10 @@
 
 using namespace std;
 
-const string templateConfigurationFile = "rsnapshot.conf";
-const string suiteFolder = "Rsnapshot/";
+const wstring templateConfigurationFile = L"rsnapshot.conf";
+const wstring suiteFolder = L"Rsnapshot/";
 
-RsnapshotJobTest::RsnapshotJobTest(const string &dataPrefix, const string &errorPrefix)
+RsnapshotJobTest::RsnapshotJobTest(const wstring& dataPrefix, const wstring& errorPrefix)
     : AbstractFsBackupJobTest(dataPrefix + suiteFolder, errorPrefix)
 {
 }
@@ -29,15 +29,15 @@ RsnapshotJobTest::~RsnapshotJobTest()
 void RsnapshotJobTest::testCreate_InvalidSource()
 {
     AbstractBackupJob* job = CreateNewJob();
-    job->AddFolder("dummySource", "dummyName");
+    job->AddFolder(L"dummySource", L"dummyName");
     JobStatus* status = job->Run();
     delete job;
 
     QCOMPARE(status->GetCode(), JobStatus::Error);
-    const string expectedMessage = "Tried to backup invalid folder";
+    const wstring expectedMessage = L"Tried to backup invalid folder";
     QCOMPARE(status->GetDescription(), expectedMessage);
 
-    vector<pair<string,string> > buffers;
+    vector<pair<wstring,wstring> > buffers;
     status->GetFileBuffers(buffers);
     QCOMPARE(buffers.size(), 0ul);
 
@@ -63,8 +63,8 @@ void RsnapshotJobTest::testSmartCreator_TempFileIsCleaned()
 
 void RsnapshotJobTest::testSmartCreator_TempFileDoesNotOverwrite()
 {
-    const string dummyContent = "First line\nAnd second line of data\n";
-    const string existingFileName = "existingFile.txt";
+    const wstring dummyContent = L"First line\nAnd second line of data\n";
+    const wstring existingFileName = L"existingFile.txt";
     FileTools::WriteBufferToFile(existingFileName, dummyContent);
 
     unsigned int beforeFileCount = GetFileNumberInCurrentFolder();
@@ -76,7 +76,7 @@ void RsnapshotJobTest::testSmartCreator_TempFileDoesNotOverwrite()
     unsigned int afterFileCount = GetFileNumberInCurrentFolder();
     QCOMPARE(afterFileCount, beforeFileCount);
 
-    const string fileContent = FileTools::GetTextFileContent(existingFileName);
+    const wstring fileContent = FileTools::GetTextFileContent(existingFileName);
     QCOMPARE(fileContent, dummyContent);
 }
 
@@ -88,15 +88,17 @@ void RsnapshotJobTest::ProcessingBetweenBackups()
 void RsnapshotJobTest::CheckBackedUpDataIsOk()
 {
     QFETCH(QString, sourceBefore);
-    FileTestUtils::CheckFoldersHaveSameContent(GetRsnapshotBackupFolder(1),
-                                               currentTestCaseFolder + sourceBefore.toStdString());
+    FileTestUtils::CheckFoldersHaveSameContent(
+             GetRsnapshotBackupFolder(1),
+             QString::fromStdWString(currentTestCaseFolder) + sourceBefore);
 
     QFETCH(QString, sourceNow);
-    FileTestUtils::CheckFoldersHaveSameContent(GetRsnapshotBackupFolder(0),
-                                               currentTestCaseFolder + sourceNow.toStdString());
+    FileTestUtils::CheckFoldersHaveSameContent(
+             GetRsnapshotBackupFolder(0),
+             QString::fromStdWString(currentTestCaseFolder) + sourceNow);
 
     FileTestUtils::CheckFoldersHaveSameContent(GetRsnapshotBackupFolder(0),
-                                               currentSourceFolder);
+                                               QString::fromStdWString(currentSourceFolder));
 }
 
 AbstractBackupJob *RsnapshotJobTest::CreateNewJob()
@@ -108,22 +110,22 @@ AbstractBackupJob *RsnapshotJobTest::CreateNewJob()
     return job;
 }
 
-JobStatus *RsnapshotJobTest::RunRsnapshotJob(const string &tempConfigurationFile)
+JobStatus *RsnapshotJobTest::RunRsnapshotJob(const wstring &tempConfigurationFile)
 {
     RsnapshotSmartBackupJob job;
     job.SetTemplateConfigurationFile(GetDataFolder() + templateConfigurationFile);
-    if (tempConfigurationFile != "")
+    if (tempConfigurationFile != L"")
         job.SetTemporaryFile(tempConfigurationFile);
     job.SetRepository(backupRepository);
 
     return job.Run();
 }
 
-string RsnapshotJobTest::GetRsnapshotBackupFolder(const int number) const
+QString RsnapshotJobTest::GetRsnapshotBackupFolder(const int number) const
 {
-    stringstream stream;
+    wstringstream stream;
     stream << backupRepository << "weekly." << number << "/repository";
-    return stream.str();
+    return QString::fromStdWString(stream.str());
 }
 
 unsigned int RsnapshotJobTest::GetFileNumberInCurrentFolder()

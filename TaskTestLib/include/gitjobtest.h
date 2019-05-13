@@ -26,12 +26,13 @@ private Q_SLOTS:
     void testUpdate_InvalidSource();
 
 private:
+    using RepositoryList = std::vector<std::pair<std::wstring, std::wstring>>;
     std::vector<GitRepository*> CreateMultipleRepositories();
     void CreateInitialRepositoryData(const std::vector<GitRepository*>& repositories);
-    void CreateDefaultData(const std::string& repository);
+    void CreateDefaultData(const std::wstring& repository);
 
-    void RunGitBackup(const std::string &source, const std::string &destination);
-    void RunGitBackup(const std::vector<std::pair<std::string, std::string> >& repositoryList);
+    void RunGitBackup(const std::wstring &source, const std::wstring &destination);
+    void RunGitBackup(const RepositoryList& repositoryList);
 
     void CheckGitJobReturnsError(const QString& description);
     void CheckGitJobReturnsOk(const QString& description);
@@ -46,11 +47,11 @@ private:
                                 const QStringList& removed);
     QStringList CreatedExpectedDestinationRepositoryContent(const QStringList& added,
                                                             const QStringList& removed);
-    const std::vector<std::pair<std::string, std::string> > CreateRepositoryListForBackup(
+    const RepositoryList CreateRepositoryListForBackup(
             const std::vector<GitRepository*>& repositories
     );
 
-    void CheckGitHeadContent(const std::string& repository,
+    void CheckGitHeadContent(const std::wstring& repository,
                              const QStringList &expectedContents);
 
     const QString sourceRepository = "GitRepository";

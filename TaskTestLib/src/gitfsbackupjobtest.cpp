@@ -8,10 +8,10 @@
 
 using namespace std;
 
-const string suitePrefix = "GitFsBackup/";
+const wstring suitePrefix = L"GitFsBackup/";
 
-GitFsBackupJobTest::GitFsBackupJobTest(const string &dataPrefix,
-                                       const string& errorPrefix)
+GitFsBackupJobTest::GitFsBackupJobTest(const wstring &dataPrefix,
+                                       const wstring& errorPrefix)
     : AbstractFsBackupJobTest(dataPrefix + suitePrefix, errorPrefix)
 {
 }

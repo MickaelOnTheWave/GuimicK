@@ -11,7 +11,7 @@ class AbstractOutputParserTest : public QtTestSuite
     Q_OBJECT
 
 public:
-    AbstractOutputParserTest(const std::string& dataPrefix);
+    AbstractOutputParserTest(const std::wstring& dataPrefix);
 
 private Q_SLOTS:
     void test_ParseFile_InvalidFile();
@@ -19,7 +19,7 @@ private Q_SLOTS:
     void test_WriteFullDescriptionToFile_Ok();
 
 private:
-    QString GetContentFromFile(const std::string& file);
+    QString GetContentFromFile(const std::wstring& file);
 };
 
 #endif // ABSTRACTOUTPUTPARSERTEST_H

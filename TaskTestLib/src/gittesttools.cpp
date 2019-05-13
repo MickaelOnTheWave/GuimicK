@@ -9,35 +9,44 @@
 
 using namespace std;
 
-void GitTestTools::Init(const string& repository)
+namespace
 {
-    string command = string("git init ") + repository;
-    string unusedOutput;
+   QString CreateFullFilename(const wstring& repository,
+                              const QString& file)
+   {
+      return QString::fromStdWString(repository) + "/" + file;
+   }
+}
+
+void GitTestTools::Init(const wstring& repository)
+{
+    const wstring command = wstring(L"git init ") + repository;
+    wstring unusedOutput;
     Tools::RunExternalCommandToBuffer(command, unusedOutput);
 
     CommitAllChanges(repository);
 }
 
-void GitTestTools::Clone(const string &source, const string &destination, const bool isMirror)
+void GitTestTools::Clone(const wstring &source, const wstring &destination, const bool isMirror)
 {
-    std::string command("git clone ");
+    std::wstring command(L"git clone ");
     if (isMirror)
-        command += "--mirror ";
-    command += source + " " + destination;
-    command += " 2>&1 > /dev/null";
-    std::string unusedOutput;
+        command += L"--mirror ";
+    command += source + L" " + destination;
+    command += L" 2>&1 > /dev/null";
+    std::wstring unusedOutput;
     Tools::RunExternalCommandToBuffer(command, unusedOutput);
 }
 
-void GitTestTools::CommitAllChanges(const string &repository)
+void GitTestTools::CommitAllChanges(const wstring &repository)
 {
-    string fullCommand = "cd " + repository + "/ ";
-    fullCommand += "&& git add -A && git commit -m \"auto\"";
-    string output;
+    wstring fullCommand = L"cd " + repository + L"/ ";
+    fullCommand += L"&& git add -A && git commit -m \"auto\"";
+    wstring output;
     Tools::RunExternalCommandToBuffer(fullCommand, output);
 }
 
-void GitTestTools::Update(const std::string &repository,
+void GitTestTools::Update(const std::wstring &repository,
                                 const QStringList &added,
                                 const QStringList &modified,
                                 const QStringList &removed)
@@ -49,35 +58,44 @@ void GitTestTools::Update(const std::string &repository,
     GitTestTools::RemoveFilesAndCommit(repository, removed);
 }
 
-void GitTestTools::AddProceduralFilesAndCommit(const string &repository,
+void GitTestTools::AddProceduralFilesAndCommit(const wstring &repository,
                                           const QStringList &list,
                                           const size_t size)
 {
-    for (int i=0; i<list.size(); ++i)
-    {
-        std::string fullname = repository + "/" + list.at(i).toStdString();
-        Q_ASSERT(FileTools::CreateFile(fullname, size, true));
-    }
-    GitTestTools::CommitAllChanges(repository);
+   CreateProceduralFiles(repository, list, size);
+   GitTestTools::CommitAllChanges(repository);
 }
 
-void GitTestTools::ChangeProcedurallyFilesAndCommit(const string &repository, const QStringList &list)
+void GitTestTools::ChangeProcedurallyFilesAndCommit(const wstring &repository,
+                                                    const QStringList &list)
 {
-    for (int i=0; i<list.size(); ++i)
-    {
-        std::string fullname = repository + "/" + list.at(i).toStdString();
-        std::remove(fullname.c_str());
-        Q_ASSERT(FileTools::CreateFile(fullname, 4000, true));
-    }
-    GitTestTools::CommitAllChanges(repository);
+   RemoveFiles(repository, list);
+   CreateProceduralFiles(repository, list, 4000);
+   GitTestTools::CommitAllChanges(repository);
 }
 
-void GitTestTools::RemoveFilesAndCommit(const string &repository, const QStringList &list)
+void GitTestTools::RemoveFilesAndCommit(const wstring &repository, const QStringList &list)
 {
-    for (int i=0; i<list.size(); ++i)
-    {
-        std::string fullname = repository + "/" + list.at(i).toStdString();
-        std::remove(fullname.c_str());
-    }
-    GitTestTools::CommitAllChanges(repository);
+   RemoveFiles(repository, list);
+   GitTestTools::CommitAllChanges(repository);
+}
+
+void GitTestTools::CreateProceduralFiles(const wstring& repository,
+                                         const QStringList& list,
+                                         const size_t size)
+{
+   for (const auto& file : list)
+   {
+       const QString fullname = CreateFullFilename(repository, file);
+       Q_ASSERT(FileTools::CreateDummyFile(fullname.toStdWString(), size, true));
+   }
+}
+
+void GitTestTools::RemoveFiles(const wstring& repository, const QStringList& list)
+{
+   for (const auto& file : list)
+   {
+       const QString fullname = CreateFullFilename(repository, file);
+       remove(fullname.toUtf8());
+   }
 }

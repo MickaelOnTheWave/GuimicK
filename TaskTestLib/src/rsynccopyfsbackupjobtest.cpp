@@ -2,10 +2,10 @@
 
 #include "rsynccopyfsbackupjob.h"
 
-const std::string suitePrefix = "RsyncCopyFsBackup/";
+const std::wstring suitePrefix = L"RsyncCopyFsBackup/";
 
-RsyncCopyFsBackupJobTest::RsyncCopyFsBackupJobTest(const std::string &dataPrefix,
-                                                   const std::string &errorPrefix)
+RsyncCopyFsBackupJobTest::RsyncCopyFsBackupJobTest(const std::wstring &dataPrefix,
+                                                   const std::wstring &errorPrefix)
     : AbstractCopyFsBackupJobTest(dataPrefix + suitePrefix, errorPrefix)
 {
 }

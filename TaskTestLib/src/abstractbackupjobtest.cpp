@@ -4,13 +4,14 @@
 
 #include "filetestutils.h"
 #include "filetools.h"
+#include "stringtools.h"
 #include "tools.h"
 
 using namespace std;
 
 AbstractBackupJobTest::AbstractBackupJobTest(
-   const string &dataPrefix,
-   const string &errorPrefix
+      const wstring& dataPrefix,
+      const wstring& errorPrefix
    ) : QtTestSuite(dataPrefix, errorPrefix)
 {
 }
@@ -22,8 +23,8 @@ void AbstractBackupJobTest::init()
 
 void AbstractBackupJobTest::cleanup()
 {
-    string unusedOutput;
-    Tools::RunExternalCommandToBuffer("rm -Rf *", unusedOutput, true);
+    wstring unusedOutput;
+    Tools::RunExternalCommandToBuffer(L"rm -Rf *", unusedOutput, true);
 }
 
 void AbstractBackupJobTest::testBackupAndRestore_data()
@@ -34,16 +35,18 @@ void AbstractBackupJobTest::testBackupAndRestore_data()
 void AbstractBackupJobTest::testBackupAndRestore()
 {
    QFETCH(QString, sourceNow);
-   currentTestCaseName = QTest::currentDataTag();
-   currentTestCaseFolder = GetDataFolder() + currentTestCaseName + "/";
+   currentTestCaseName = StringTools::Utf8ToUnicode(QTest::currentDataTag());
+   currentTestCaseFolder = GetDataFolder() + currentTestCaseName + L"/";
 
-   const string sourceFolder = currentTestCaseFolder + sourceNow.toStdString();
-   const string restoreFolder = "restore/";
+   const wstring sourceFolder = currentTestCaseFolder + sourceNow.toStdWString();
+   const wstring restoreFolder = L"restore/";
 
    AbstractBackupJob* job = CreateNewJob();
    RunBackup(job, sourceFolder);
    RunRestore(job, restoreFolder);
-   FileTestUtils::CheckFoldersHaveSameContent(sourceFolder, restoreFolder);
+   FileTestUtils::CheckFoldersHaveSameContent(
+            QString::fromStdWString(sourceFolder),
+            QString::fromStdWString(restoreFolder));
    delete job;
 }
 
@@ -55,7 +58,7 @@ void AbstractBackupJobTest::LoadExternalDataSamples(const bool isRemote)
     QTest::addColumn<QString>("report");
     QTest::addColumn<bool>("remote");
 
-    QStringList testCases = FileTestUtils::GetFolderList(GetDataFolder().c_str());
+    QStringList testCases = FileTestUtils::GetFolderList(QString::fromStdWString(GetDataFolder()));
     for (auto it=testCases.begin(); it!=testCases.end(); ++it)
     {
         string stdString = it->toStdString();
@@ -68,7 +71,7 @@ void AbstractBackupJobTest::LoadExternalDataSamples(const bool isRemote)
     }
 }
 
-void AbstractBackupJobTest::RunBackup(AbstractBackupJob* job, const string& folder)
+void AbstractBackupJobTest::RunBackup(AbstractBackupJob* job, const wstring& folder)
 {
    PrepareBackup(job, folder);
    job->SetTargetLocal();
@@ -77,7 +80,7 @@ void AbstractBackupJobTest::RunBackup(AbstractBackupJob* job, const string& fold
    delete status;
 }
 
-void AbstractBackupJobTest::RunRestore(AbstractBackupJob* job, const string& folder)
+void AbstractBackupJobTest::RunRestore(AbstractBackupJob* job, const wstring& folder)
 {
    QCOMPARE(FileTools::CreateFolder(folder), true);
    JobStatus* status = job->RestoreBackupFromServer(folder);
@@ -86,7 +89,7 @@ void AbstractBackupJobTest::RunRestore(AbstractBackupJob* job, const string& fol
 }
 
 void AbstractBackupJobTest::PrepareBackup(AbstractBackupJob* job,
-                                          const string& folder)
+                                          const wstring& folder)
 {
    QCOMPARE(FileTools::CreateFolder(backupRepository), true);
    currentSourceFolder = folder;
@@ -94,7 +97,7 @@ void AbstractBackupJobTest::PrepareBackup(AbstractBackupJob* job,
    job->AddFolder(currentSourceFolder, GetBackupDestination());
 }
 
-string AbstractBackupJobTest::GetBackupDestination() const
+wstring AbstractBackupJobTest::GetBackupDestination() const
 {
-   return string("SingleFolder");
+   return wstring(L"SingleFolder");
 }

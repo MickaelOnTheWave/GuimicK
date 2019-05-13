@@ -19,22 +19,22 @@ private Q_SLOTS:
 
 protected:
     AbstractJob *TestConfiguration(ConfigurationObject* confObject,
-                                   const std::vector<std::string>& expectedErrorMessages);
+                                   const std::vector<std::wstring>& expectedErrorMessages);
     AbstractJob *TestConfigurationWithoutErrors(ConfigurationObject* confObject);
 
     virtual AbstractJobConfiguration* CreateNewConfiguration() const = 0;
 
     ConfigurationObject* CreateSimpleConfigurationObject(
-            const std::string& property, const std::string& value);
+            const std::wstring& property, const std::wstring& value);
 
 private:
     AbstractJob* RunConfiguration(ConfigurationObject* confObject,
-                                  std::vector<std::string> &errorMessages);
-    void CheckErrorMessages(const std::vector<std::string> &errorMessages,
-                            const std::vector<std::string> &expectedErrorMessages);
+                                  std::vector<std::wstring> &errorMessages);
+    void CheckErrorMessages(const std::vector<std::wstring> &errorMessages,
+                            const std::vector<std::wstring> &expectedErrorMessages);
 
-    std::string BuildUnknownError(const std::string& object,
-                                  const std::string& name) const;
+    std::wstring BuildUnknownError(const std::wstring& object,
+                                   const std::wstring& name) const;
 
 };
 

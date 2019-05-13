@@ -23,25 +23,25 @@ private Q_SLOTS:
 
 protected:
     virtual void TestCommandWithParameter(const int codeOnAppended,
-                                          const std::string& expectedMessage,
-                                          const std::string &expectedOutput,
+                                          const std::wstring& expectedMessage,
+                                          const std::wstring& expectedOutput,
                                           const bool appendCommand);
-    virtual std::string GetExpectedOkDescription();
-    virtual std::string GetExpectedErrorDescription(const int expectedCode,
+    virtual std::wstring GetExpectedOkDescription();
+    virtual std::wstring GetExpectedErrorDescription(const int expectedCode,
                                                     const int receivedCode);
 
     virtual AbstractConsoleJob* CreateDefaultJob(void);
-    virtual AbstractConsoleJob* CreateDefaultJob(const std::string& command,
-                                                 const std::string& params = "");
+    virtual AbstractConsoleJob* CreateDefaultJob(const std::wstring& command,
+                                                 const std::wstring& params = L"");
 
     void RunAndCheckNoAttachments(const int expectedCode,
-                                  const std::string& expectedDescription);
+                                  const std::wstring& expectedDescription);
     void RunAndCheckOneAttachment(const int expectedCode,
-                                  const std::string &expectedDescription,
-                                  const std::string &expectedAttachmentContent);
+                                  const std::wstring& expectedDescription,
+                                  const std::wstring& expectedAttachmentContent);
 
     void RunAndCheck(const int expectedCode,
-                     const std::string& expectedDescription);
+                     const std::wstring& expectedDescription);
     void CheckAttachmentCount(const unsigned long fileCount,
                               const unsigned long bufferCount);
 

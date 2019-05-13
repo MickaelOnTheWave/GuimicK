@@ -8,7 +8,7 @@ class GitPorcelainReportParserTest : public FileBackupParserAbstractTest
     Q_OBJECT
 
 public :
-    GitPorcelainReportParserTest(const std::string& dataPrefix);
+    GitPorcelainReportParserTest(const std::wstring& dataPrefix);
 
 private Q_SLOTS:
     void testParse();

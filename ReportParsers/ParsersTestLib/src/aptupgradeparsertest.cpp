@@ -6,7 +6,7 @@
 
 using namespace std;
 
-AptUpgradeParserTest::AptUpgradeParserTest(const string &dataPrefix)
+AptUpgradeParserTest::AptUpgradeParserTest(const wstring &dataPrefix)
     : QtTestSuite(dataPrefix)
 {
 }
@@ -24,7 +24,7 @@ void AptUpgradeParserTest::cleanup()
 void AptUpgradeParserTest::testParse_InexistentFile()
 {
     AptGetUpgradeParser parser;
-    bool returnValue = parser.ParseFile("InexistentFile");
+    bool returnValue = parser.ParseFile(L"InexistentFile");
     QCOMPARE(returnValue, false);
 }
 
@@ -75,14 +75,14 @@ void AptUpgradeParserTest::testParse()
     QFETCH(QStringList, removed);
     QFETCH(QString,     updateFileSize);
 
-    GetReportFromFile(QString(GetDataFolder().c_str()) + file);
+    GetReportFromFile(QString::fromStdWString(GetDataFolder()) + file);
     CheckReportData(obsolete, kept, upgraded, installed, removed, updateFileSize);
 }
 
 void AptUpgradeParserTest::GetReportFromFile(const QString &file)
 {
     AptGetUpgradeParser parser;
-    bool returnValue = parser.ParseFile(file.toStdString());
+    bool returnValue = parser.ParseFile(file.toStdWString());
     QCOMPARE(returnValue, true);
 
     parser.GetReport(report);
@@ -101,15 +101,17 @@ void AptUpgradeParserTest::CheckReportData(const QStringList& obsolete,
     CheckListsAreEqual(report.removedPackages, removed);
     CheckListsAreEqual(report.upgradedPackages, upgraded);
 
-    QCOMPARE(report.updateFileSize, updateFileSizeDescription.toStdString());
+    QCOMPARE(QString::fromStdWString(report.updateFileSize),
+             updateFileSizeDescription);
 }
 
 // TODO : refactor here to remove duplication with other test suites
-void AptUpgradeParserTest::CheckListsAreEqual(const vector<string> &actual, const QStringList &expected)
+void AptUpgradeParserTest::CheckListsAreEqual(const std::vector<wstring>& actual,
+                                              const QStringList &expected)
 {
     QCOMPARE(actual.size(), static_cast<unsigned long>(expected.size()));
-    std::vector<std::string>::const_iterator it=actual.begin();
+    vector<wstring>::const_iterator it=actual.begin();
     for (; it!=actual.end(); ++it)
-        QCOMPARE(expected.contains(QString((*it).c_str())), true);
+        QCOMPARE(expected.contains(QString::fromStdWString((*it))), true);
 
 }

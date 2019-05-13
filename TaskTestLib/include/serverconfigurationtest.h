@@ -10,7 +10,7 @@ class ServerConfigurationTest : public QtTestSuite
 {
     Q_OBJECT
 public:
-    ServerConfigurationTest(const std::string& dataPrefix);
+    ServerConfigurationTest(const std::wstring& dataPrefix);
 
 private Q_SLOTS:
     void init();

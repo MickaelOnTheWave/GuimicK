@@ -5,9 +5,9 @@
 
 using namespace std;
 
-const string suiteFolder = "TarCommand/";
+const wstring suiteFolder = L"TarCommand/";
 
-TarCommandParserTest::TarCommandParserTest(const string &dataPrefix)
+TarCommandParserTest::TarCommandParserTest(const wstring& dataPrefix)
     : FileBackupParserAbstractTest(dataPrefix + suiteFolder)
 {
 }
@@ -24,7 +24,7 @@ FileBackupReport *TarCommandParserTest::CreateReport()
 
 AbstractFileBackupParser *TarCommandParserTest::CreateParser()
 {
-    return new TarCommandParser("/bin/tar");
+    return new TarCommandParser(L"/bin/tar");
 }
 
 void TarCommandParserTest::PopulateTestData()

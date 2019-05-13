@@ -8,7 +8,7 @@ class GitPlumbingReportParserTest : public FileBackupParserAbstractTest
     Q_OBJECT
 
 public :
-    GitPlumbingReportParserTest(const std::string& dataPrefix);
+    GitPlumbingReportParserTest(const std::wstring& dataPrefix);
 
 private Q_SLOTS:
     void testParse();

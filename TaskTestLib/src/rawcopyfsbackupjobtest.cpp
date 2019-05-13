@@ -2,10 +2,10 @@
 
 #include "oscopyfsbackupjob.h"
 
-const std::string suitePrefix = "RawCopyFsBackup/";
+const std::wstring suitePrefix = L"RawCopyFsBackup/";
 
-RawCopyFsBackupJobTest::RawCopyFsBackupJobTest(const std::string &dataPrefix,
-                                               const std::string& errorPrefix)
+RawCopyFsBackupJobTest::RawCopyFsBackupJobTest(const std::wstring &dataPrefix,
+                                               const std::wstring& errorPrefix)
     : AbstractCopyFsBackupJobTest(dataPrefix + suitePrefix, errorPrefix)
 {
 }

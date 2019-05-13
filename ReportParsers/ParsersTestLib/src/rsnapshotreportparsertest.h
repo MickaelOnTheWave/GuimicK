@@ -13,7 +13,7 @@ class RsnapshotReportParserTest : public FileBackupParserAbstractTest
     Q_OBJECT
 
 public:
-    RsnapshotReportParserTest(const std::string& dataPrefix);
+    RsnapshotReportParserTest(const std::wstring& dataPrefix);
 
 private Q_SLOTS:
     void testParse();

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-FileBackupParserAbstractTest::FileBackupParserAbstractTest(const string &dataPrefix)
+FileBackupParserAbstractTest::FileBackupParserAbstractTest(const wstring& dataPrefix)
     : QtTestSuite(dataPrefix)
 {
 }
@@ -36,11 +36,11 @@ void FileBackupParserAbstractTest::testParse_generic()
     QFETCH(QStringList, modified);
     QFETCH(QStringList, removed);
 
-    GetReportDataFromCorrectFile(GetDataFolder() + file.toStdString());
+    GetReportDataFromCorrectFile(GetDataFolder() + file.toStdWString());
     CheckReportDataFiles(added, modified, removed);
 }
 
-void FileBackupParserAbstractTest::GetReportDataFromCorrectFile(const string &inputFile)
+void FileBackupParserAbstractTest::GetReportDataFromCorrectFile(const wstring &inputFile)
 {
     AbstractFileBackupParser* parser = CreateParser();
 
@@ -55,7 +55,7 @@ void FileBackupParserAbstractTest::CheckReportDataFiles(const QStringList &added
                                                         const QStringList &modified,
                                                         const QStringList &removed)
 {
-   vector<string> listToCheck;
+   vector<wstring> listToCheck;
 
    report->GetAddedFiles(listToCheck);
    CheckListsAreEqual(listToCheck, added);
@@ -67,11 +67,10 @@ void FileBackupParserAbstractTest::CheckReportDataFiles(const QStringList &added
    CheckListsAreEqual(listToCheck, removed);
 }
 
-void FileBackupParserAbstractTest::CheckListsAreEqual(const vector<string> &actual,
+void FileBackupParserAbstractTest::CheckListsAreEqual(const vector<wstring>& actual,
                                                       const QStringList &expected)
 {
     QCOMPARE(actual.size(), static_cast<unsigned long>(expected.size()));
-    vector<string>::const_iterator it=actual.begin();
-    for (; it!=actual.end(); ++it)
-        QCOMPARE(expected.contains(QString((*it).c_str())), true);
+    for (const auto& it : actual)
+        QCOMPARE(expected.contains(QString::fromStdWString(it)), true);
 }

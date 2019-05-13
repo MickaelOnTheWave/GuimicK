@@ -8,7 +8,7 @@ using namespace std;
 
 void DiskSpaceCheckJobConfigurationTest::testConfigure_DriveProperty()
 {
-    TestDriveProperty("/dev/myhd");
+    TestDriveProperty(L"/dev/myhd");
 }
 
 void DiskSpaceCheckJobConfigurationTest::testConfigure_TargetProperty_data()
@@ -26,7 +26,7 @@ void DiskSpaceCheckJobConfigurationTest::testConfigure_TargetProperty()
 {
     QFETCH(QString, propertyValue);
     QFETCH(bool, expectedValue);
-    TestTargetProperty(propertyValue.toStdString(), expectedValue);
+    TestTargetProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 AbstractJobConfiguration *DiskSpaceCheckJobConfigurationTest::CreateNewConfiguration() const
@@ -34,7 +34,7 @@ AbstractJobConfiguration *DiskSpaceCheckJobConfigurationTest::CreateNewConfigura
     return new DiskSpaceCheckJobConfiguration();
 }
 
-void DiskSpaceCheckJobConfigurationTest::TestDriveProperty(const string &propertyValue)
+void DiskSpaceCheckJobConfigurationTest::TestDriveProperty(const wstring &propertyValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                 DiskSpaceCheckJobConfiguration::DriveProperty, propertyValue);
@@ -49,7 +49,7 @@ void DiskSpaceCheckJobConfigurationTest::TestDriveProperty(const string &propert
     delete confObject;
 }
 
-void DiskSpaceCheckJobConfigurationTest::TestTargetProperty(const string &propertyValue,
+void DiskSpaceCheckJobConfigurationTest::TestTargetProperty(const wstring& propertyValue,
                                                             const bool expectedValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(

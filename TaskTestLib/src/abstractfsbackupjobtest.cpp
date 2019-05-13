@@ -4,15 +4,16 @@
 
 #include "filetestutils.h"
 #include "filetools.h"
+#include "stringtools.h"
 #include "tools.h"
 
 using namespace std;
 
-static const string sshUser = "mickael";
-static const string sshHost = "192.168.1.101";
+static const wstring sshUser = L"mickael";
+static const wstring sshHost = L"192.168.1.101";
 
-AbstractFsBackupJobTest::AbstractFsBackupJobTest(const std::string &dataPrefix,
-                                                 const string &errorPrefix)
+AbstractFsBackupJobTest::AbstractFsBackupJobTest(const wstring &dataPrefix,
+                                                 const wstring &errorPrefix)
     : AbstractBackupJobTest(dataPrefix, errorPrefix)
 {
 }
@@ -27,10 +28,10 @@ void AbstractFsBackupJobTest::testRunBackup()
     QFETCH(QString, sourceBefore);
     QFETCH(QString, sourceNow);
     QFETCH(bool, remote);
-    currentTestCaseName = QTest::currentDataTag();
-    currentTestCaseFolder = GetDataFolder() + currentTestCaseName + "/";
-    const string beforeFolder = currentTestCaseFolder + sourceBefore.toStdString();
-    const string nowFolder = currentTestCaseFolder + sourceNow.toStdString();
+    currentTestCaseName = StringTools::Utf8ToUnicode(QTest::currentDataTag());
+    currentTestCaseFolder = GetDataFolder() + currentTestCaseName + L"/";
+    const wstring beforeFolder = currentTestCaseFolder + sourceBefore.toStdWString();
+    const wstring nowFolder = currentTestCaseFolder + sourceNow.toStdWString();
 
     JobStatus* status = RunBackups(beforeFolder, nowFolder, remote);
 
@@ -45,7 +46,9 @@ void AbstractFsBackupJobTest::ProcessingBetweenBackups()
 
 void AbstractFsBackupJobTest::CheckBackedUpDataIsOk()
 {
-   FileTestUtils::CheckFoldersHaveSameContent(backupRepository, currentSourceFolder);
+   FileTestUtils::CheckFoldersHaveSameContent(
+            QString::fromStdWString(backupRepository),
+            QString::fromStdWString(currentSourceFolder));
 }
 
 JobStatus *AbstractFsBackupJobTest::RunBackupJob(const bool isRemote,
@@ -58,8 +61,8 @@ JobStatus *AbstractFsBackupJobTest::RunBackupJob(const bool isRemote,
     return status;
 }
 
-JobStatus* AbstractFsBackupJobTest::RunBackups(const string &folderBefore,
-                                               const string &folderNow,
+JobStatus* AbstractFsBackupJobTest::RunBackups(const wstring &folderBefore,
+                                               const wstring &folderNow,
                                                const bool isRemote,
                                                const bool useDebug)
 {
@@ -71,7 +74,7 @@ JobStatus* AbstractFsBackupJobTest::RunBackups(const string &folderBefore,
     return RunBackupOnDataFolder(folderNow, isRemote, useDebug);
 }
 
-JobStatus *AbstractFsBackupJobTest::RunBackupOnDataFolder(const string &folder,
+JobStatus *AbstractFsBackupJobTest::RunBackupOnDataFolder(const wstring &folder,
                                                           const bool isRemote,
                                                           const bool useDebug)
 {
@@ -87,7 +90,7 @@ void AbstractFsBackupJobTest::CheckStatus(JobStatus *status)
     QFETCH(QString, description);
     CheckTextContent(status->GetDescription(), description);
 
-    vector<pair<string,string> > buffers;
+    vector<pair<wstring,wstring> > buffers;
     status->GetFileBuffers(buffers);
     QCOMPARE(buffers.size(), 1ul);
 
@@ -95,14 +98,14 @@ void AbstractFsBackupJobTest::CheckStatus(JobStatus *status)
     CheckTextContent(buffers.front().second, report);
 }
 
-void AbstractFsBackupJobTest::CheckTextContent(const string &content, const QString &referenceFile)
+void AbstractFsBackupJobTest::CheckTextContent(const wstring &content, const QString &referenceFile)
 {
-    string stdReferenceFile = currentTestCaseFolder + referenceFile.toStdString();
-    string expectedContent = FileTools::GetTextFileContent(stdReferenceFile);
+    wstring stdReferenceFile = currentTestCaseFolder + referenceFile.toStdWString();
+    wstring expectedContent = FileTools::GetTextFileContent(stdReferenceFile);
     bool isContentAsExpected = (content == expectedContent);
     if (!isContentAsExpected)
     {
-        const string filename = currentTestCaseName + "_" + referenceFile.toStdString();
+        const wstring filename = currentTestCaseName + L"_" + referenceFile.toStdWString();
         FileTools::WriteBufferToFile(GetErrorFolder() + filename, content);
     }
     QCOMPARE(isContentAsExpected, true);
@@ -111,13 +114,13 @@ void AbstractFsBackupJobTest::CheckTextContent(const string &content, const QStr
 
 void AbstractFsBackupJobTest::testCreatesOnlyOneAttachment()
 {
-    vector<string> expectedAttachments = {GetJobAttachmentName()};
+    vector<wstring> expectedAttachments = {GetJobAttachmentName()};
     testCheckJobAttachments(false, expectedAttachments);
 }
 
 void AbstractFsBackupJobTest::testCreatesDebugAttachment()
 {
-    vector<string> expectedAttachments =
+    vector<wstring> expectedAttachments =
     {
         GetJobAttachmentName(),
         GetJobDebugName()
@@ -127,7 +130,7 @@ void AbstractFsBackupJobTest::testCreatesDebugAttachment()
 }
 
 void AbstractFsBackupJobTest::testCheckJobAttachments(
-        const bool debugOutput,const std::vector<string> &expectedAttachments)
+        const bool debugOutput,const vector<wstring> &expectedAttachments)
 {
     JobStatus* status = RunDummyBackup(debugOutput);
     CheckStatusAttachments(status, expectedAttachments);
@@ -153,8 +156,8 @@ JobStatus *AbstractFsBackupJobTest::RunBackupJob(AbstractBackupJob *job,
 
 JobStatus *AbstractFsBackupJobTest::RunDummyBackup(const bool debugOutput)
 {
-    const string dummyBefore = "dummyBefore";
-    const string dummyNow = "dummyNow";
+    const wstring dummyBefore = L"dummyBefore";
+    const wstring dummyNow = L"dummyNow";
 
     FileTools::CreateFolder(dummyBefore);
     FileTools::CreateFolder(dummyNow);
@@ -163,13 +166,13 @@ JobStatus *AbstractFsBackupJobTest::RunDummyBackup(const bool debugOutput)
 }
 
 void AbstractFsBackupJobTest::CheckStatusAttachments(JobStatus *status,
-                                                     const std::vector<string> &expectedAttachments)
+                                                     const vector<wstring> &expectedAttachments)
 {
     JobStatus::FileBufferList fileBuffers;
     status->GetFileBuffers(fileBuffers);
     QCOMPARE(fileBuffers.size(), expectedAttachments.size());
 
-    vector<string> attachmentNames;
+    vector<wstring> attachmentNames;
     for (auto&& it : fileBuffers)
         attachmentNames.push_back(it.first);
 
@@ -178,21 +181,21 @@ void AbstractFsBackupJobTest::CheckStatusAttachments(JobStatus *status,
     QCOMPARE(isEqual, true);
 }
 
-string AbstractFsBackupJobTest::GetJobAttachmentName()
+wstring AbstractFsBackupJobTest::GetJobAttachmentName()
 {
     AbstractBackupJob* dummyJob = CreateNewJob();
-    string name = dummyJob->GetAttachmentName();
+    const wstring name = dummyJob->GetAttachmentName();
     delete dummyJob;
 
     return name;
 }
 
 // TODO : remove duplication with debug manager
-string AbstractFsBackupJobTest::GetJobDebugName()
+wstring AbstractFsBackupJobTest::GetJobDebugName()
 {
     AbstractBackupJob* dummyJob = CreateNewJob();
-    string name = dummyJob->GetName();
+    const wstring name = dummyJob->GetName();
     delete dummyJob;
 
-    return name + " - Debug.txt";
+    return name + L" - Debug.txt";
 }

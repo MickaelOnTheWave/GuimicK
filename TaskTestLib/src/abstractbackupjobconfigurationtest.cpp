@@ -29,7 +29,7 @@ void AbstractBackupJobConfigurationTest::testConfigure_TargetProperty()
     QFETCH(QString, propertyValue);
     QFETCH(bool, expectedValue);
 
-    testConfigure_TargetProperty(propertyValue.toStdString(), expectedValue);
+    testConfigure_TargetProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 void AbstractBackupJobConfigurationTest::testConfigure_JoinReports_data()
@@ -48,7 +48,7 @@ void AbstractBackupJobConfigurationTest::testConfigure_JoinReports()
     QFETCH(QString, propertyValue);
     QFETCH(bool, expectedValue);
 
-    testConfigure_JoinReportsProperty(propertyValue.toStdString(), expectedValue);
+    testConfigure_JoinReportsProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 void AbstractBackupJobConfigurationTest::testConfigure_BackupItemObjects_data()
@@ -74,7 +74,7 @@ void AbstractBackupJobConfigurationTest::testConfigure_BackupItemObjects()
     AbstractBackupJob::BackupCollection expectedItems = BuildOneItemBackupCollection(
                 expectedSource, expectedDestination);
 
-    testConfigure_BackupItemObjects(backupValues, expectedItems, QtTools::ToStdStringVector(errors));
+    testConfigure_BackupItemObjects(backupValues, expectedItems, QtTools::ToStdWStringVector(errors));
 }
 
 void AbstractBackupJobConfigurationTest::CreateBackupItemObjectsTestData()
@@ -97,11 +97,11 @@ void AbstractBackupJobConfigurationTest::CreateBackupItemObjectsTestData()
                                                << "valueSrc" << "valueDst" << QStringList();
 }
 
-void AbstractBackupJobConfigurationTest::testConfigure_TargetProperty(const string &propertyValue,
+void AbstractBackupJobConfigurationTest::testConfigure_TargetProperty(const wstring &propertyValue,
                                                                       const bool expectedValue)
 {
     ConfigurationObject* confObject = new ConfigurationObject();
-    if (propertyValue != "")
+    if (propertyValue != L"")
         confObject->SetProperty(AbstractBackupJobConfiguration::TargetProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
@@ -114,11 +114,11 @@ void AbstractBackupJobConfigurationTest::testConfigure_TargetProperty(const stri
     delete confObject;
 }
 
-void AbstractBackupJobConfigurationTest::testConfigure_JoinReportsProperty(const string &propertyValue,
+void AbstractBackupJobConfigurationTest::testConfigure_JoinReportsProperty(const wstring &propertyValue,
                                                                         const bool expectedValue)
 {
     ConfigurationObject* confObject = new ConfigurationObject();
-    if (propertyValue != "")
+    if (propertyValue != L"")
         confObject->SetProperty(AbstractBackupJobConfiguration::JoinReportsProperty, propertyValue);
 
     AbstractJob* job = TestConfigurationWithoutErrors(confObject);
@@ -133,7 +133,7 @@ void AbstractBackupJobConfigurationTest::testConfigure_JoinReportsProperty(const
 
 void AbstractBackupJobConfigurationTest::testConfigure_BackupItemObjects(
         const BackupValues& values, const AbstractBackupJob::BackupCollection& expectedItems,
-        const vector<string>& expectedErrors)
+        const vector<wstring>& expectedErrors)
 {
     auto confObject = CreateBackupConfigurationObject(values);
     AbstractJob* job = TestConfiguration(confObject, expectedErrors);
@@ -162,7 +162,7 @@ ConfigurationObject *AbstractBackupJobConfigurationTest::CreateBackupConfigurati
 }
 
 ConfigurationObject *AbstractBackupJobConfigurationTest::CreateBackupItemObject(
-        const std::vector<string> &properties, const std::vector<string> &values)
+        const vector<wstring> &properties, const vector<wstring> &values)
 {
     auto backupObject = new ConfigurationObject(backupItemName);
 
@@ -194,8 +194,8 @@ AbstractBackupJobConfigurationTest::BackupValues AbstractBackupJobConfigurationT
         const QStringList& values)
 {
     BackupValues backupValues;
-    const vector<string> stdProperties = QtTools::ToStdStringVector(properties);
-    const vector<string> stdValues = QtTools::ToStdStringVector(values);
+    const vector<wstring> stdProperties = QtTools::ToStdWStringVector(properties);
+    const vector<wstring> stdValues = QtTools::ToStdWStringVector(values);
     backupValues.push_back(make_pair(stdProperties, stdValues));
     return backupValues;
 }
@@ -205,15 +205,15 @@ AbstractBackupJob::BackupCollection AbstractBackupJobConfigurationTest::BuildOne
 {
     AbstractBackupJob::BackupCollection collection;
     if (source != "" || destination != "")
-        collection.push_back(make_pair(source.toStdString(), destination.toStdString()));
+        collection.push_back(make_pair(source.toStdWString(), destination.toStdWString()));
     return collection;
 }
 
-string AbstractBackupJobConfigurationTest::GetConfigurationBackupItemName() const
+wstring AbstractBackupJobConfigurationTest::GetConfigurationBackupItemName() const
 {
     auto configuration = CreateNewConfiguration();
     auto castConfiguration = static_cast<AbstractBackupJobConfiguration*>(configuration);
-    string backupItemName = castConfiguration->GetBackupItemName();
+    wstring backupItemName = castConfiguration->GetBackupItemName();
 
     delete configuration;
     return backupItemName;

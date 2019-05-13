@@ -31,7 +31,7 @@
 #include "abstractjobdisplay.h"
 #include "consolejobdisplay.h"
 #include "diskspacejobdisplay.h"
-#include "wakejobdisplay.h"
+#include "wakejob/wakejobdisplay.h"
 
 #include "gitbackupjob.h"
 #include "gitfsbackupjob.h"

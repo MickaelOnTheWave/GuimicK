@@ -2,28 +2,28 @@
 
 using namespace std;
 
-bool MockParser::ParseBuffer(const string &buffer)
+bool MockParser::ParseBuffer(const wstring &buffer)
 {
     parsedContent = buffer;
     return true;
 }
 
-string MockParser::GetMiniDescription()
+wstring MockParser::GetMiniDescription()
 {
-    return string("dummy mini description");
+    return wstring(L"dummy mini description");
 }
 
-string MockParser::GetFullDescription()
+wstring MockParser::GetFullDescription()
 {
     return contentToWrite;
 }
 
-string MockParser::GetFileContent() const
+wstring MockParser::GetFileContent() const
 {
     return parsedContent;
 }
 
-void MockParser::SetFullDescription(const string &description)
+void MockParser::SetFullDescription(const wstring &description)
 {
     contentToWrite = description;
 }

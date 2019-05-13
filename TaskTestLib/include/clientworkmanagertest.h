@@ -31,9 +31,9 @@ private:
     void CheckGlobalResult(WorkResultData* result);
     void CheckClientResult(ClientJobResults* results);
 
-    void GetJobNames(ClientJobResults* results, std::vector<std::string>& values);
-    void GetJobCodes(ClientJobResults* results, std::vector<std::string>& values);
-    void GetJobDescriptions(ClientJobResults* results, std::vector<std::string>& values);
+    void GetJobNames(ClientJobResults* results, std::vector<std::wstring>& values);
+    void GetJobCodes(ClientJobResults* results, std::vector<std::wstring>& values);
+    void GetJobDescriptions(ClientJobResults* results, std::vector<std::wstring>& values);
 
     ClientWorkManager* manager;
 };

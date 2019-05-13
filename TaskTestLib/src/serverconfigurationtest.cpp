@@ -7,9 +7,19 @@
 
 using namespace std;
 
-const string suitePrefix = "Configuration/";
+namespace
+{
+   const wstring suitePrefix = L"Configuration/";
 
-ServerConfigurationTest::ServerConfigurationTest(const string &dataPrefix) :
+   void Compare(const wstring& actual, const string& expected)
+   {
+      const QString qActual = QString::fromStdWString(actual);
+      const QString qExpected = QString::fromStdString(expected);
+      QCOMPARE(qActual, qExpected);
+   }
+}
+
+ServerConfigurationTest::ServerConfigurationTest(const wstring &dataPrefix) :
     QtTestSuite(dataPrefix + suitePrefix)
 {
 }
@@ -54,12 +64,12 @@ void ServerConfigurationTest::testLoadFromFile_Agent_Valid()
     LoadFromFile("valid.txt", true, QStringList());
 
     const Agent* agent = GetTypedConfiguration()->GetAgent();
-    QCOMPARE(agent->GetName().c_str(), "Testing Agent");
+    Compare(agent->GetName(), "Testing Agent");
 
     const EmailData emailData = agent->GetEmailData();
-    QCOMPARE(emailData.GetAddress().c_str(), "invalid.email@provider.com");
-    QCOMPARE(emailData.GetPassword().c_str(), "itisabadhabittostoreaclearpassword");
-    QCOMPARE(emailData.GetSmtpServer().c_str(), "smtp.provider.com");
+    Compare(emailData.GetAddress(), "invalid.email@provider.com");
+    Compare(emailData.GetPassword(), "itisabadhabittostoreaclearpassword");
+    Compare(emailData.GetSmtpServer(), "smtp.provider.com");
     QCOMPARE(emailData.GetSmtpPort(), 123);
     QCOMPARE(emailData.GetUseSsl(), true);
 }
@@ -70,11 +80,11 @@ void ServerConfigurationTest::testLoadFromFile_Client_Valid()
 
     Client* client = GetTypedConfiguration()->GetClient();
 
-    QCOMPARE(client->GetName().c_str(), "Machine to manage");
-    QCOMPARE(client->GetProperty("mac").c_str(), "00:11:22:33:44:55");
-    QCOMPARE(client->GetProperty("ip").c_str(), "10.11.12.13");
-    QCOMPARE(client->GetProperty("broadcast").c_str(), "10.11.12.255");
-    QCOMPARE(client->GetProperty("sshuser").c_str(), "userusedforremotetasks");
+    Compare(client->GetName(), "Machine to manage");
+    Compare(client->GetProperty(L"mac"), "00:11:22:33:44:55");
+    Compare(client->GetProperty(L"ip"), "10.11.12.13");
+    Compare(client->GetProperty(L"broadcast"), "10.11.12.255");
+    Compare(client->GetProperty(L"sshuser"), "userusedforremotetasks");
 }
 
 void ServerConfigurationTest::testBuildSimpleWorkList()
@@ -86,11 +96,11 @@ void ServerConfigurationTest::testBuildSimpleWorkList()
     manager->GetJobList(jobList);
 
     QCOMPARE(jobList.size(), 5ul);
-    QCOMPARE(jobList[0]->GetName().c_str(), "Wake");
-    QCOMPARE(jobList[1]->GetName().c_str(), "Rsnapshot Backup");
-    QCOMPARE(jobList[2]->GetName().c_str(), "ClamAV Scan");
-    QCOMPARE(jobList[3]->GetName().c_str(), "Change Screen Saver");
-    QCOMPARE(jobList[4]->GetName().c_str(), "Shutdown");
+    Compare(jobList[0]->GetName(), "Wake");
+    Compare(jobList[1]->GetName(), "Rsnapshot Backup");
+    Compare(jobList[2]->GetName(), "ClamAV Scan");
+    Compare(jobList[3]->GetName(), "Change Screen Saver");
+    Compare(jobList[4]->GetName(), "Shutdown");
 }
 /*
 void ConfigurationTest::testRemoteJobList()
@@ -183,7 +193,7 @@ void ServerConfigurationTest::LoadClientExamples()
     QTest::newRow("Client - No job list")
                             << "client - no job list.txt"
                             << true
-                            << QStringList({QString(LocalClientConfiguration::MsgClientWithoutJobs.c_str())});
+                            << QStringList({QString::fromStdWString(LocalClientConfiguration::MsgClientWithoutJobs)});
     QTest::newRow("Client - empty job list")
                             << "client - empty job list.txt"
                             << true
@@ -245,10 +255,10 @@ void ServerConfigurationTest::LoadRemoteJobListExamples()
 void ServerConfigurationTest::LoadFromFile(const QString &file, const bool expectedResult,
                                      const QStringList &expectedErrors)
 {
-    const string fullFilename = GetDataFolder() + file.toStdString();
+    const wstring fullFilename = GetDataFolder() + file.toStdWString();
 
-    vector<string> errors;
-    bool result = configuration->LoadFromFile(fullFilename, errors);
+    vector<wstring> errors;
+    const bool result = configuration->LoadFromFile(fullFilename, errors);
     QCOMPARE(result, expectedResult);
     TestUtils::CheckListsAreEqual(expectedErrors, errors);
 }

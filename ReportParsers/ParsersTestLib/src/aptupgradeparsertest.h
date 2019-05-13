@@ -10,7 +10,7 @@ class AptUpgradeParserTest : public QtTestSuite
     Q_OBJECT
 
 public:
-    AptUpgradeParserTest(const std::string& dataPrefix);
+    AptUpgradeParserTest(const std::wstring& dataPrefix);
 
 private Q_SLOTS:
     void init();
@@ -29,7 +29,7 @@ private:
                          const QStringList& installed,
                          const QStringList& removed,
                          const QString &updateFileSizeDescription);
-    void CheckListsAreEqual(const std::vector<std::string>& actual,
+    void CheckListsAreEqual(const std::vector<std::wstring>& actual,
                             const QStringList &expected);
 
     AptGetUpgradeReport report;

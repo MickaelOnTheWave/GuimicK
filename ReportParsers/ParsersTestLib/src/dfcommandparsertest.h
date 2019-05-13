@@ -11,7 +11,7 @@ class DfCommandParserTest : public QtTestSuite
     Q_OBJECT
 
 public:
-    DfCommandParserTest(const std::string& dataPath = "");
+    DfCommandParserTest(const std::wstring& dataPath = L"");
 
 private Q_SLOTS:
     void init();
@@ -27,7 +27,7 @@ private:
     void CheckAndParse(DfCommandParser& parser);
     void CheckDataIsTheSame(const std::vector<Drive>& data,
                             const QStringList& expectedData,
-                            std::function<std::string(Drive)> propertyGetter);
+                            std::function<std::wstring(Drive)> propertyGetter);
 };
 
 #endif // DFCOMMANDPARSERTEST_H

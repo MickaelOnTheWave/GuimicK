@@ -9,7 +9,6 @@ class RemoteJobsRunnerConfigurationTest : public AbstractJobConfigurationTest
 
 public:
    RemoteJobsRunnerConfigurationTest() = default;
-   //RemoteJobsRunnerConfigurationTest();
    virtual ~RemoteJobsRunnerConfigurationTest() = default;
 
 private Q_SLOTS:
@@ -22,8 +21,8 @@ protected:
    AbstractJobConfiguration* CreateNewConfiguration() const override;
 
 private:
-    void TestConfFileProperty(const std::string& propertyValue);
-    void TestTimedRunProperty(const std::string& propertyValue, const bool expectedValue);
+    void TestConfFileProperty(const std::wstring& propertyValue);
+    void TestTimedRunProperty(const std::wstring& propertyValue, const bool expectedValue);
 };
 
 #endif // REMOTEJOBSRUNNERCONFIGURATIONTEST_H

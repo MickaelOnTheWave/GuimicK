@@ -11,7 +11,7 @@
 
 void RemoteJobsRunnerConfigurationTest::testConfigure_ConfFileProperty()
 {
-   TestConfFileProperty("dummyConfigurationFile.txt");
+   TestConfFileProperty(L"dummyConfigurationFile.txt");
 }
 
 void RemoteJobsRunnerConfigurationTest::testConfigure_TimedRunProperty_data()
@@ -29,7 +29,7 @@ void RemoteJobsRunnerConfigurationTest::testConfigure_TimedRunProperty()
 {
    QFETCH(QString, propertyValue);
    QFETCH(bool, expectedValue);
-   TestTimedRunProperty(propertyValue.toStdString(), expectedValue);
+   TestTimedRunProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 AbstractJobConfiguration*RemoteJobsRunnerConfigurationTest::CreateNewConfiguration() const
@@ -37,7 +37,7 @@ AbstractJobConfiguration*RemoteJobsRunnerConfigurationTest::CreateNewConfigurati
    return new RemoteJobsRunnerConfiguration();
 }
 
-void RemoteJobsRunnerConfigurationTest::TestConfFileProperty(const std::string& propertyValue)
+void RemoteJobsRunnerConfigurationTest::TestConfFileProperty(const std::wstring& propertyValue)
 {
    ConfigurationObject* confObject = CreateSimpleConfigurationObject(
                RemoteJobsRunnerConfiguration::ConfFileProperty, propertyValue);
@@ -52,7 +52,7 @@ void RemoteJobsRunnerConfigurationTest::TestConfFileProperty(const std::string& 
    delete confObject;
 }
 
-void RemoteJobsRunnerConfigurationTest::TestTimedRunProperty(const std::string& propertyValue,
+void RemoteJobsRunnerConfigurationTest::TestTimedRunProperty(const std::wstring& propertyValue,
                                                              const bool expectedValue)
 {
    ConfigurationObject* confObject = CreateSimpleConfigurationObject(

@@ -5,9 +5,9 @@
 
 using namespace std;
 
-const string suiteFolder = "GitPull/";
+const wstring suiteFolder = L"GitPull/";
 
-GitPorcelainReportParserTest::GitPorcelainReportParserTest(const string &dataPrefix)
+GitPorcelainReportParserTest::GitPorcelainReportParserTest(const wstring &dataPrefix)
     : FileBackupParserAbstractTest(dataPrefix + suiteFolder)
 {
 }
