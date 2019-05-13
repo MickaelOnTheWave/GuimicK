@@ -1,4 +1,14 @@
-08/05/2019 (2.5h)
+12/05/2019 (2.6h)
+    Working :-) Now trying to run automated test. Unfortunately, tests haven't been
+    migrated to wide strings. Doing it now...
+Next planned work:
+    - Finish tests migration
+    - Run Disk space test suite
+
+09/05/2019 (0.5h)
+    Created Disk job configuration and refactored Linux disk space. Now needs testing...
+
+08/05/2019 (2.6h)
     Finished refactoring, created both classes. Refactored Linux Freespace Check
     job and created Windows hard drive check accordingly. Now trying to test Linux
     job. A bug in conf editor prevents this, trying to fix it. Fixed it, it was
@@ -6,6 +16,7 @@
     Checked linux job : it is ok. Now moving to Windows..
     Created Check Disk configuration dialog. Updated Windows command, however it
     can't work for now as tool hasn't been updated.
+    Reorganized all Wakejob code into specific folder (experimenting with organization)
 Next planned work:
     - Update TaskTool to support Check Disk job
     - Create Check Disk job configuration
