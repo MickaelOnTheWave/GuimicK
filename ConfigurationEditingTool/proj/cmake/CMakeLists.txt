@@ -28,14 +28,17 @@ file(GLOB rootSources "${rootDir}/*")
 file(GLOB schedulerSources "${scheduleDir}/*")
 file(GLOB winSchedulerSources "${scheduleDir}/windows/*")
 
+file(GLOB wakeJobSources "${rootDir}/wakejob/*")
+
+set(sources ${rootSources} ${schedulerSources} ${wakeJobSources})
+
 if(WIN32)
-	set(sources ${rootSources} ${schedulerSources} ${winSchedulerSources})
-else(WIN32)
-	set(sources ${rootSources} ${schedulerSources})
+        list(APPEND sources ${winSchedulerSources})
 endif(WIN32)
 
 add_executable(ConfigurationEditingTool ${sources})
 
+target_include_directories(ConfigurationEditingTool PRIVATE ${rootDir})
 target_include_directories(ConfigurationEditingTool PRIVATE ${scheduleDir})
 
 target_link_libraries (ConfigurationEditingTool TaskLib ToolsLib QtToolsLib Qt5::Widgets)
