@@ -22,8 +22,8 @@ protected:
     virtual AbstractJobConfiguration* CreateNewConfiguration() const override;
 
 private:
-    void TestTimeoutProperty(const std::string& propertyValue, const int expectedValue);
-    void TestRetriesProperty(const std::string& propertyValue, const int expectedValue);
+    void TestTimeoutProperty(const std::wstring& propertyValue, const int expectedValue);
+    void TestRetriesProperty(const std::wstring& propertyValue, const int expectedValue);
 };
 
 #endif // WAKEJOBCONFIGURATIONTEST_H

@@ -2,6 +2,7 @@
 #include <unistd.h>
 
 #include "filetools.h"
+#include "pathtools.h"
 #include "parserstestsuites.h"
 #include "qtprogresscountertest.h"
 #include "tasktestsuites.h"
@@ -9,19 +10,19 @@
 
 using namespace std;
 
-const string progRoot    = "/home/mickael/Prog";
-const string taskLibDir  = progRoot + "/TaskManager/TaskTestLib/data/";
-const string parsersDir  = progRoot + "/TaskManager/ReportParsers/ParsersTestLib/data/";
-const string toolsLibDir = progRoot + "/Tools/ToolsTestLib/data/";
-const string errorDir    = progRoot + "/TaskManager/TaskTestLib/data/errors/";
+const wstring progRoot    = L"/home/mickael/Prog";
+const wstring taskLibDir  = progRoot + L"/TaskManager/TaskTestLib/data/";
+const wstring parsersDir  = progRoot + L"/TaskManager/ReportParsers/ParsersTestLib/data/";
+const wstring toolsLibDir = progRoot + L"/Tools/ToolsTestLib/data/";
+const wstring errorDir    = progRoot + L"/TaskManager/TaskTestLib/data/errors/";
 
-const string testingFolder = "TaskManagerTestSuites/";
+const wstring testingFolder = L"TaskManagerTestSuites/";
 
 int main(int argc, char* argv[])
 {
     if (FileTools::FolderExists(testingFolder) == false)
         FileTools::CreateFolder(testingFolder);
-    chdir(testingFolder.c_str());
+    PathTools::ChangeCurrentDir(testingFolder);
 
     //QObject* testSuite = new RsnapshotJobTest(taskLibDir, errorDir);
     //QObject* testSuite = new RsnapshotErrorAnalyzerTest(taskLibDir);

@@ -1,3 +1,9 @@
+13/05/2019 (1.2h)
+    Finished resolving compilation issues. Now there is a link issue with Qt 5 :
+    it doesn't seem installed. Tried adding it to link list in cmake without success.
+    Tried instally a dummy package from apt, no success either. Next bet :
+    google for the link error.
+
 12/05/2019 (3.4h)
     Working :-) Now trying to run automated test. Unfortunately, tests haven't been
     migrated to wide strings. Doing it now...

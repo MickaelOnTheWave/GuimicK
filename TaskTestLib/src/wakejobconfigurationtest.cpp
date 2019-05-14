@@ -23,7 +23,7 @@ void WakeJobConfigurationTest::testConfigure_TimeoutProperty()
 {
     QFETCH(QString, propertyValue);
     QFETCH(int, expectedValue);
-    TestTimeoutProperty(propertyValue.toStdString(), expectedValue);
+    TestTimeoutProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 void WakeJobConfigurationTest::testConfigure_RetriesProperty_data()
@@ -43,7 +43,7 @@ void WakeJobConfigurationTest::testConfigure_RetriesProperty()
 {
     QFETCH(QString, propertyValue);
     QFETCH(int, expectedValue);
-    TestRetriesProperty(propertyValue.toStdString(), expectedValue);
+    TestRetriesProperty(propertyValue.toStdWString(), expectedValue);
 }
 
 AbstractJobConfiguration *WakeJobConfigurationTest::CreateNewConfiguration() const
@@ -51,7 +51,7 @@ AbstractJobConfiguration *WakeJobConfigurationTest::CreateNewConfiguration() con
     return new WakeJobConfiguration();
 }
 
-void WakeJobConfigurationTest::TestTimeoutProperty(const std::string &propertyValue,
+void WakeJobConfigurationTest::TestTimeoutProperty(const wstring &propertyValue,
                                                    const int expectedValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(
@@ -67,7 +67,7 @@ void WakeJobConfigurationTest::TestTimeoutProperty(const std::string &propertyVa
     delete confObject;
 }
 
-void WakeJobConfigurationTest::TestRetriesProperty(const std::string &propertyValue,
+void WakeJobConfigurationTest::TestRetriesProperty(const wstring& propertyValue,
                                                    const int expectedValue)
 {
     ConfigurationObject* confObject = CreateSimpleConfigurationObject(

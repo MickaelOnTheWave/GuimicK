@@ -5,20 +5,20 @@
 #include "libwakejob.h"
 
 WakeJobTest::WakeJobTest()
-   : QtTestSuite("", "")
+   : QtTestSuite(L"", L"")
 {
 }
 
 void WakeJobTest::testWake_OkOnSelf()
 {
    TestWake(CreateSelfClient(),
-            new JobStatus(JobStatus::Ok, ""));
+            new JobStatus(JobStatus::Ok, L""));
 }
 
 void WakeJobTest::testWake_FailsWakingInvalidMachine()
 {
    TestWake(CreateInvalidClient(),
-            new JobStatus(JobStatus::Error, "Machine still not awake"));
+            new JobStatus(JobStatus::Error, L"Machine still not awake"));
 }
 
 void WakeJobTest::TestWake(Client* client, JobStatus* expectedStatus)
@@ -42,18 +42,18 @@ void WakeJobTest::TestWake(Client* client, JobStatus* expectedStatus)
 
 Client* WakeJobTest::CreateSelfClient()
 {
-   auto client = new Client("Self Client");
-   client->AddProperty("mac", "00:11:22:33:44:55");
-   client->AddProperty("broadcast", "0.0.0.255");
-   client->AddProperty("ip", "127.0.0.1");
+   auto client = new Client(L"Self Client");
+   client->AddProperty(L"mac", L"00:11:22:33:44:55");
+   client->AddProperty(L"broadcast", L"0.0.0.255");
+   client->AddProperty(L"ip", L"127.0.0.1");
    return client;
 }
 
 Client* WakeJobTest::CreateInvalidClient()
 {
-   auto client = new Client("Invalid Client");
-   client->AddProperty("mac", "00:11:22:33:44:55");
-   client->AddProperty("broadcast", "0.0.0.255");
-   client->AddProperty("ip", "0.0.0.1");
+   auto client = new Client(L"Invalid Client");
+   client->AddProperty(L"mac", L"00:11:22:33:44:55");
+   client->AddProperty(L"broadcast", L"0.0.0.255");
+   client->AddProperty(L"ip", L"0.0.0.1");
    return client;
 }

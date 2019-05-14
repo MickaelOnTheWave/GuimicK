@@ -3,6 +3,7 @@
 #include <QTest>
 #include "filetestutils.h"
 #include "filetools.h"
+#include "pathtools.h"
 #include "tarbackupjob.h"
 
 using namespace std;
@@ -34,7 +35,9 @@ void ZipAndCopyFsBackupJobTest::CheckBackedUpDataIsOk()
     bool ok = TarBackupJob::Restore(archiveName, restoredFolder);
     QCOMPARE(ok, true);
 
-    FileTestUtils::CheckFoldersHaveSameContent(currentSourceFolder, restoredFolder);
+    FileTestUtils::CheckFoldersHaveSameContent(
+             QString::fromStdWString(currentSourceFolder),
+             QString::fromStdWString(restoredFolder));
 }
 
 JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob(const bool isRemote,
@@ -44,7 +47,7 @@ JobStatus *ZipAndCopyFsBackupJobTest::RunBackupJob(const bool isRemote,
     // the rest of the code should be used from parent class.
     TarBackupJob* job = new TarBackupJob();
     job->InitializeFromClient(nullptr);
-    job->AddFolder(FileTools::BuildFullPathIfRelative(currentSourceFolder), archiveName);
+    job->AddFolder(PathTools::BuildFullPathIfRelative(currentSourceFolder), archiveName);
 
     job->SetLocalDestination(localArchive);
 

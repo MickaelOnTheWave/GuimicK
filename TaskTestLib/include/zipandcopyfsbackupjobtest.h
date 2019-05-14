@@ -17,12 +17,12 @@ private Q_SLOTS:
 
 protected:
     virtual void CheckBackedUpDataIsOk() override;
-    virtual JobStatus* RunBackupJob(const bool isRemote,
-                                    const bool useDebug) override;
+    JobStatus* RunBackupJob(const bool isRemote,
+                            const bool useDebug) override;
 
-    virtual std::wstring GetBackupDestination() const override;
+    std::wstring GetBackupDestination() const override;
 
-    virtual AbstractBackupJob* CreateNewJob() override;
+    AbstractBackupJob* CreateNewJob() override;
 };
 
 #endif // ZIPANDCOPYFSBACKUPJOBTEST_H
