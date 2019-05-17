@@ -1,3 +1,9 @@
+16/05/2019 (1h)
+    Nothing was found on internet. Checking AllTest project : same problem.
+    Fixed its compilation issues, but the same linking error is there.
+Next planned work:
+    - Leave tests broken for now. Back to windows check disk job.
+
 13/05/2019 (1.2h)
     Finished resolving compilation issues. Now there is a link issue with Qt 5 :
     it doesn't seem installed. Tried adding it to link list in cmake without success.
