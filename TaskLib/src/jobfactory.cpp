@@ -15,6 +15,7 @@
 #include "tarincrementalbackupjobconfiguration.h"
 #include "userconsolejobconfiguration.h"
 #include "wakejobconfiguration.h"
+#include "windowscheckdiskjobconfiguration.h"
 
 using namespace std;
 
@@ -91,6 +92,7 @@ void JobFactory::FillSupportedJobsList()
    supportedJobs.push_back(new SevenZipBackupJobConfiguration());
    supportedJobs.push_back(new RemoteJobsRunnerConfiguration());
    supportedJobs.push_back(new TarIncrementalBackupJobConfiguration());
+   supportedJobs.push_back(new WindowsCheckDiskJobConfiguration());
 }
 
 void JobFactory::FreeSupportedJobsList()

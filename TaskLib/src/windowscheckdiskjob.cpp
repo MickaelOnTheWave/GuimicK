@@ -1,5 +1,6 @@
 #include "windowscheckdiskjob.h"
 
+#include "chkdskcommandparser.h"
 #include "consolejob.h"
 
 using namespace std;
@@ -37,6 +38,5 @@ AbstractConsoleJob* WindowsCheckdiskJob::CreateJobInstance() const
 
 AbstractOutputParser* WindowsCheckdiskJob::CreateOutputParser() const
 {
-   //return new DfCommandParser();
-   return nullptr;
+   return new ChkdskCommandParser();
 }

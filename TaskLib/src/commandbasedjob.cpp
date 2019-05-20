@@ -20,8 +20,8 @@ JobStatus *CommandBasedJob::Run()
     debugManager->AddDataLine<wstring>(L"Parameters", job->GetCommandParameters());
 
     JobStatus* status = job->Run();
-    if (status->GetCode() == JobStatus::Ok)
-       AddJobOutputToStatus(status, job);
+    if (status->GetCode() != JobStatus::NotExecuted)
+        AddJobOutputToStatus(status, job);
 
     delete job;
     return debugManager->UpdateStatus(status);
@@ -50,7 +50,9 @@ void CommandBasedJob::AddParsedOutputToStatus(JobStatus* status,
     }
     else
     {
-        status->SetCode(JobStatus::OkWithWarnings);
+        if (status->GetCode() == JobStatus::Ok)
+            status->SetCode(JobStatus::OkWithWarnings);
+
         status->SetDescription(L"Failed to parse output");
         reportContent = job->GetCommandOutput();
     }

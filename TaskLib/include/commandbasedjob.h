@@ -14,14 +14,16 @@ public:
 
    virtual JobStatus* Run();
 
+protected:
+   virtual void AddJobOutputToStatus(
+           JobStatus* status,
+           AbstractConsoleJob* job
+        );
+
 private:
    virtual AbstractConsoleJob* CreateJobInstance() const = 0;
    virtual AbstractOutputParser* CreateOutputParser() const = 0;
 
-   void AddJobOutputToStatus(
-           JobStatus* status,
-           AbstractConsoleJob* job
-        );
    void AddParsedOutputToStatus(
            JobStatus* status,
            AbstractOutputParser* parser,
