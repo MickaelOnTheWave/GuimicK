@@ -42,10 +42,7 @@ bool DfCommandParser::ParseBuffer(const wstring& buffer)
     StringTools::Tokenize(buffer, '\n', lines);
 
     if (lines.size() > 1)
-    {
-        FillDriveData(lines);
-        return true;
-    }
+        return FillDriveData(lines);
     else
         return false;
 }
@@ -76,7 +73,7 @@ Drive DfCommandParser::GetFirstDrive() const
     return driveList.front();
 }
 
-void DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
+bool DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
 {
     std::vector<wstring>::const_iterator it=lines.begin()+1;
     for (; it!=lines.end(); ++it)
@@ -87,6 +84,7 @@ void DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
         if (IsDesirableDriveName(tokens[0]))
             driveList.push_back(Drive(tokens));
     }
+    return (!driveList.empty());
 }
 
 void DfCommandParser::TokenizeUsingWhitespaces(const wstring &buffer,
