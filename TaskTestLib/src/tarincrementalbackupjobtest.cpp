@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <QTest>
-#include <unistd.h>
 
 #include "filetestutils.h"
 #include "filetools.h"
@@ -193,7 +192,7 @@ void TarIncrementalBackupJobTest::AddFiles(const QStringList& names,
 void TarIncrementalBackupJobTest::ModifyFiles(const QStringList& names,
                                               const QStringList& contents)
 {
-   sleep(2);
+   Tools::Wait(2);
    auto itName = names.begin();
    auto itContent = contents.begin();
    for (; itName != names.end(); ++itName, ++itContent)

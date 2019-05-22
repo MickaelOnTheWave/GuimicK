@@ -1,6 +1,5 @@
 #include "gittesttools.h"
 
-#include <unistd.h>
 #include <QDir>
 #include <QTest>
 
@@ -52,9 +51,9 @@ void GitTestTools::Update(const std::wstring &repository,
                                 const QStringList &removed)
 {
     GitTestTools::AddProceduralFilesAndCommit(repository, added, 10000);
-    sleep(1);
+    Tools::Wait(1);
     GitTestTools::ChangeProcedurallyFilesAndCommit(repository, modified);
-    sleep(1);
+    Tools::Wait(1);
     GitTestTools::RemoveFilesAndCommit(repository, removed);
 }
 

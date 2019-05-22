@@ -1,6 +1,5 @@
 #include "gitjobtest.h"
 
-#include <unistd.h>
 #include <QDir>
 #include <QTest>
 
@@ -73,7 +72,7 @@ void GitJobTest::testUpdate()
     const std::wstring stdSource = sourceRepository.toStdWString();
     const std::wstring stdDestination = destinationRepository.toStdWString();
     GitTestTools::Clone(stdSource, stdDestination, true);
-    sleep(1);
+    Tools::Wait(1);
 
     UpdateSourceRepository(added, modified, removed);
     RunGitBackup(stdSource, stdDestination);

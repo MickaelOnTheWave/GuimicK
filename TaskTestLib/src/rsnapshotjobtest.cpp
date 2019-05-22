@@ -4,7 +4,6 @@
 #include <QTest>
 
 #include <sstream>
-#include <unistd.h>
 
 #include "filetestutils.h"
 #include "filetools.h"
@@ -82,7 +81,7 @@ void RsnapshotJobTest::testSmartCreator_TempFileDoesNotOverwrite()
 
 void RsnapshotJobTest::ProcessingBetweenBackups()
 {
-    sleep(1);
+    Tools::Wait(1);
 }
 
 void RsnapshotJobTest::CheckBackedUpDataIsOk()

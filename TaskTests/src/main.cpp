@@ -1,5 +1,4 @@
 #include <QTest>
-#include <unistd.h>
 
 #include "filetools.h"
 #include "pathtools.h"
