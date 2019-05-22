@@ -1,3 +1,11 @@
+20/05/2019 (2.6h)
+    Added support for Chkdsk job. Started implementing its parsers...
+    Updated generic Command based parser too.
+ Next planned work:
+    - Add support for return code in parser choice for parser based jobs
+    - Finish chkdsk parser implementation
+    - Start testing new job
+
 16/05/2019 (1h)
     Nothing was found on internet. Checking AllTest project : same problem.
     Fixed its compilation issues, but the same linking error is there.
