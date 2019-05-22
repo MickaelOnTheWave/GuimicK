@@ -12,7 +12,6 @@ static const wstring DriveOkMessage = L"Drive is OK";
 
 ChkdskCommandParser::ChkdskCommandParser()
 {
-
 }
 
 bool ChkdskCommandParser::ParseBuffer(const wstring &buffer)
@@ -23,7 +22,7 @@ bool ChkdskCommandParser::ParseBuffer(const wstring &buffer)
     vector<wstring> reportLines;
     GetReportLines(tokens, reportLines);
 
-    CreateDriveDataFromReport(reportLines);
+    return CreateDriveDataFromReport(reportLines);
 }
 
 std::wstring ChkdskCommandParser::GetMiniDescription()
@@ -36,6 +35,7 @@ std::wstring ChkdskCommandParser::GetMiniDescription()
 
 std::wstring ChkdskCommandParser::GetFullDescription()
 {
+    return L"";
 }
 
 void ChkdskCommandParser::GetReportLines(const std::vector<wstring> &input,
@@ -51,5 +51,10 @@ void ChkdskCommandParser::GetReportLines(const std::vector<wstring> &input,
         if (foundReportInit)
             output.push_back(*it);
     }
+}
+
+bool ChkdskCommandParser::CreateDriveDataFromReport(const vector<wstring>& reportLines)
+{
+    return true;
 }
 

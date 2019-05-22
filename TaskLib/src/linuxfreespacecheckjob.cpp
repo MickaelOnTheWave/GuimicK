@@ -77,7 +77,7 @@ AbstractConsoleJob* LinuxFreeSpaceCheckJob::CreateJobInstance() const
     }
 }
 
-AbstractOutputParser* LinuxFreeSpaceCheckJob::CreateOutputParser() const
+AbstractOutputParser* LinuxFreeSpaceCheckJob::CreateOutputParser(const int) const
 {
    return new DfCommandParser();
 }

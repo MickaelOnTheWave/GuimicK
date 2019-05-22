@@ -3,14 +3,14 @@
 
 #include "abstractoutputparser.h"
 
-class ChkdskCommandErrorParser
+class ChkdskCommandErrorParser : public AbstractOutputParser
 {
 public:
     ChkdskCommandErrorParser();
 
-    virtual bool ParseBuffer(const std::wstring& buffer) = 0;
-    virtual std::wstring GetMiniDescription() = 0;
-    virtual std::wstring GetFullDescription() = 0;
+    virtual bool ParseBuffer(const std::wstring& buffer);
+    virtual std::wstring GetMiniDescription();
+    virtual std::wstring GetFullDescription();
 
 private:
     bool IsNoAdminRightsError(const std::wstring& buffer) const;

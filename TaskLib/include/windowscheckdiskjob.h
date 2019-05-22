@@ -17,7 +17,7 @@ public:
 
 private:
    virtual AbstractConsoleJob *CreateJobInstance() const;
-   virtual AbstractOutputParser* CreateOutputParser() const;
+   virtual AbstractOutputParser* CreateOutputParser(const int jobStatus) const;
 };
 
 #endif // WINDOWSCHECKDISKJOB_H

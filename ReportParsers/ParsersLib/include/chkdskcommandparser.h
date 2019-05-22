@@ -5,6 +5,16 @@
 
 #include <vector>
 
+class WindowsDrive
+{
+public:
+    bool HasBadSectors() {return false;}
+
+    std::wstring badSectors;
+    std::wstring totalSpace;
+    std::wstring freeSpace;
+};
+
 class ChkdskCommandParser : public AbstractOutputParser
 {
 public:
@@ -19,6 +29,10 @@ public:
 private:
     void GetReportLines(const std::vector<std::wstring>& input,
                         std::vector<std::wstring> &output) const;
+
+    bool CreateDriveDataFromReport(const std::vector<std::wstring>& reportLines);
+
+    WindowsDrive drive;
 };
 
 #endif // CHKDSKCOMMANDPARSER_H

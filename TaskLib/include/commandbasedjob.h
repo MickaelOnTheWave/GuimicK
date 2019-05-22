@@ -22,7 +22,7 @@ protected:
 
 private:
    virtual AbstractConsoleJob* CreateJobInstance() const = 0;
-   virtual AbstractOutputParser* CreateOutputParser() const = 0;
+   virtual AbstractOutputParser* CreateOutputParser(const int jobStatus) const = 0;
 
    void AddParsedOutputToStatus(
            JobStatus* status,

@@ -29,7 +29,7 @@ JobStatus *CommandBasedJob::Run()
 
 void CommandBasedJob::AddJobOutputToStatus(JobStatus* status, AbstractConsoleJob* job)
 {
-    AbstractOutputParser* parser = CreateOutputParser();
+    AbstractOutputParser* parser = CreateOutputParser(status->GetCode());
     if (parser)
         AddParsedOutputToStatus(status, parser, job);
     else
