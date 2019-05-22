@@ -1,5 +1,6 @@
 #include "windowscheckdiskjob.h"
 
+#include "chkdskcommanderrorparser.h"
 #include "chkdskcommandparser.h"
 #include "consolejob.h"
 
@@ -36,7 +37,10 @@ AbstractConsoleJob* WindowsCheckdiskJob::CreateJobInstance() const
     return new ConsoleJob(L"chkdsk", parameters);
 }
 
-AbstractOutputParser* WindowsCheckdiskJob::CreateOutputParser() const
+AbstractOutputParser* WindowsCheckdiskJob::CreateOutputParser(const int jobStatus) const
 {
-   return new ChkdskCommandParser();
+   if (jobStatus == JobStatus::Ok)
+    return new ChkdskCommandParser();
+   else
+    return new ChkdskCommandErrorParser();
 }
