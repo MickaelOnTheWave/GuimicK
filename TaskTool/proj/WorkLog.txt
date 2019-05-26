@@ -1,3 +1,27 @@
+26/05/2019 (18.7)
+    Abandoned test driven fixture, too much work for only two cases. Going for
+    factoring with functions. Finished test cases, now going for Windows command.
+
+22/05/2019 (2h)
+    Created dummy example for future uses of google test. Now going to "move"
+    existing tests to google test. Creating Global Task Manager test suite project..
+    Changed the idea : creating executable for Parser Test only. Created tests and
+    did basic tests.
+Next planned work:
+    - Finish DfCommandParser test suite : create data driven test
+        (https://blog.jetbrains.com/rscpp/unit-testing-google-test/)
+    - Create Windows command parser test suite
+    - Install Synology compiler suite and update TaskTool on Synology
+
+21/05/2019 (1.1h)
+    Finished return code support and basic implementation of Chkdsk job
+    and parsers. However they need testing! And for this, we need to resurrect
+    automated tests.
+    Fixed automated tests compilation issues in Windows. Now there is the same
+    link issue with tests than on Linux.
+Next planned work:
+    - Resolve link issue with automated tests
+
 20/05/2019 (2.6h)
     Added support for Chkdsk job. Started implementing its parsers...
     Updated generic Command based parser too.

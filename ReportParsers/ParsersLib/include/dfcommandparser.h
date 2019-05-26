@@ -10,6 +10,10 @@ class Drive
 public :
     Drive();
     Drive(const std::vector<std::wstring>& properties);
+    Drive(const std::wstring& _name,
+          const std::wstring& _totalSpace,
+          const std::wstring& _usedSpace,
+          const std::wstring& _ratio);
 
     std::wstring name;
     std::wstring totalSpace;
@@ -34,7 +38,7 @@ public:
     Drive GetFirstDrive() const;
 
 private:
-    void FillDriveData(const std::vector<std::wstring>& lines);
+    bool FillDriveData(const std::vector<std::wstring>& lines);
     void TokenizeUsingWhitespaces(const std::wstring& buffer,
                                   std::vector<std::wstring>& tokens) const;
     bool IsDesirableDriveName(const std::wstring& name) const;
