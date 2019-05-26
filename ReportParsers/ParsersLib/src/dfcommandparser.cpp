@@ -19,7 +19,12 @@ Drive::Drive(const vector<wstring> &properties)
     ratio = properties[4];
 }
 
-
+Drive::Drive(const wstring& _name, const wstring& _totalSpace,
+             const wstring& _usedSpace, const wstring& _ratio)
+   : name(_name), totalSpace(_totalSpace), usedSpace(_usedSpace),
+     freeSpace(L""), ratio(_ratio)
+{
+}
 
 wstring Drive::CreateFormattedSize(const wstring &rawSize) const
 {

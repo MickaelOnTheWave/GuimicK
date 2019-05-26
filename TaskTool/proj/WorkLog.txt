@@ -1,3 +1,7 @@
+26/05/2019 (18.7)
+    Abandoned test driven fixture, too much work for only two cases. Going for
+    factoring with functions. Finished test cases, now going for Windows command.
+
 22/05/2019 (2h)
     Created dummy example for future uses of google test. Now going to "move"
     existing tests to google test. Creating Global Task Manager test suite project..
@@ -7,6 +11,7 @@ Next planned work:
     - Finish DfCommandParser test suite : create data driven test
         (https://blog.jetbrains.com/rscpp/unit-testing-google-test/)
     - Create Windows command parser test suite
+    - Install Synology compiler suite and update TaskTool on Synology
 
 21/05/2019 (1.1h)
     Finished return code support and basic implementation of Chkdsk job

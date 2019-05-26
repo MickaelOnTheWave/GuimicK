@@ -10,6 +10,10 @@ class Drive
 public :
     Drive();
     Drive(const std::vector<std::wstring>& properties);
+    Drive(const std::wstring& _name,
+          const std::wstring& _totalSpace,
+          const std::wstring& _usedSpace,
+          const std::wstring& _ratio);
 
     std::wstring name;
     std::wstring totalSpace;

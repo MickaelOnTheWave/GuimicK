@@ -22,6 +22,19 @@ void CheckDrives(const vector<Drive>& actual, const vector<Drive>& expected)
       CheckDrive(*itActual, *itExpected);
 }
 
+void TestReportParsing(const wstring& input,
+                       const vector<Drive>& expectedDrives)
+{
+   DfCommandParser parser;
+   const bool ok = parser.ParseBuffer(input);
+   ASSERT_EQ(ok, true);
+
+   vector<Drive> actualDrives;
+   parser.GetDrives(actualDrives);
+
+   CheckDrives(actualDrives, expectedDrives);
+}
+
 TEST(DfCommandParser, doesnt_crash_when_parsing_invalid_buffer)
 {
    DfCommandParser parser;
@@ -35,13 +48,8 @@ TEST(DfCommandParser, doesnt_crash_when_parsing_invalid_buffer)
 
 TEST(DfCommandParser, creates_one_drive_report)
 {
-   DfCommandParser parser;
-
    const wstring buffer = L"Sist.fichs      Tama  Ocup Livre Uso% Montado em \n"
                           L"/dev/sda2       230G  168G   50G  78% /";
-
-   const bool ok = parser.ParseBuffer(buffer);
-   ASSERT_EQ(ok, true);
 
    Drive expectedDrive;
    expectedDrive.name = L"/dev/sda2";
@@ -49,14 +57,28 @@ TEST(DfCommandParser, creates_one_drive_report)
    expectedDrive.usedSpace = L"168 Gb";
    expectedDrive.ratio = L"78%";
 
-   vector<Drive> expectedDrives = {expectedDrive};
-   vector<Drive> actualDrives;
-   parser.GetDrives(actualDrives);
-
-   CheckDrives(actualDrives, expectedDrives);
+   TestReportParsing(buffer, {expectedDrive});
 }
 
 TEST(DfCommandParser, creates_multiple_drive_report)
 {
-   FAIL();
+   const wstring buffer = L"Sist.fichs      Tama  Ocup Livre Uso% Montado em\n"
+                          L"udev             12G  4.0K   12G   1% /dev\n"
+                          L"tmpfs           2.4G  1.6M  2.4G   1% /run\n"
+                          L"/dev/sda2       230G  168G   50G  78% /\n"
+                          L"none            4.0K     0  4.0K   0% /sys/fs/cgroup\n"
+                          L" none            5.0M     0  5.0M   0% /run/lock\n"
+                          L"none             12G   76K   12G   1% /run/shm\n"
+                          L"none            100M   20K  100M   1% /run/user\n"
+                          L"/dev/sda1        37M  6.3M   31M  18% /boot/efi\n"
+                          L"/dev/sdb1       334G  268G   67G  81% /mnt/datadrive\n"
+                          L"/dev/sdc2       962G   72M  913G   1% /mnt/linuxdata";
+
+   vector<Drive> expectedDrives;
+   expectedDrives.push_back(Drive(L"/dev/sda2", L"230 Gb", L"168 Gb", L"78%"));
+   expectedDrives.push_back(Drive(L"/dev/sda1", L"37 Mb", L"6.3 Mb", L"18%"));
+   expectedDrives.push_back(Drive(L"/dev/sdb1", L"334 Gb", L"268 Gb", L"81%"));
+   expectedDrives.push_back(Drive(L"/dev/sdc2", L"962 Gb", L"72 Mb", L"1%"));
+
+   TestReportParsing(buffer, expectedDrives);
 }
