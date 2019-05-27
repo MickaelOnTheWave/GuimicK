@@ -1,6 +1,13 @@
-26/05/2019 (18.7)
+26/05/2019 (2h)
     Abandoned test driven fixture, too much work for only two cases. Going for
     factoring with functions. Finished test cases, now going for Windows command.
+    Trying to install Gtest on Windows. No success so far without changing completely
+    Cmake file. Back to Linux... Creating test suite.
+    Created test suite structure, now creating data for testing.
+Next planned work:
+    - Finish data samples for chkdsk
+    - Finish test suite
+    - Finish parser implementation
 
 22/05/2019 (2h)
     Created dummy example for future uses of google test. Now going to "move"
