@@ -1,21 +1,9 @@
 #ifndef CHKDSKCOMMANDPARSER_H
 #define CHKDSKCOMMANDPARSER_H
 
-#include "abstractoutputparser.h"
+#include "abstractdiskcommandparser.h"
 
-#include <vector>
-
-class WindowsDrive
-{
-public:
-    bool HasBadSectors() {return false;}
-
-    std::wstring badSectors;
-    std::wstring totalSpace;
-    std::wstring freeSpace;
-};
-
-class ChkdskCommandParser : public AbstractOutputParser
+class ChkdskCommandParser : public AbstractDiskCommandParser
 {
 public:
     ChkdskCommandParser();
@@ -32,7 +20,6 @@ private:
 
     bool CreateDriveDataFromReport(const std::vector<std::wstring>& reportLines);
 
-    WindowsDrive drive;
 };
 
 #endif // CHKDSKCOMMANDPARSER_H

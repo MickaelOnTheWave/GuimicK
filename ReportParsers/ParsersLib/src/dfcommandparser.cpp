@@ -5,33 +5,23 @@
 
 using namespace std;
 
-Drive::Drive()
-    : name(L""), totalSpace(L""), usedSpace(L""), freeSpace(L""), ratio(L"")
-{
-}
-
-Drive::Drive(const vector<wstring> &properties)
-{
-    name = properties[0];
-    totalSpace = CreateFormattedSize(properties[1]);
-    usedSpace = CreateFormattedSize(properties[2]);
-    freeSpace = CreateFormattedSize(properties[3]);
-    ratio = properties[4];
-}
-
-Drive::Drive(const wstring& _name, const wstring& _totalSpace,
-             const wstring& _usedSpace, const wstring& _ratio)
-   : name(_name), totalSpace(_totalSpace), usedSpace(_usedSpace),
-     freeSpace(L""), ratio(_ratio)
-{
-}
-
-wstring Drive::CreateFormattedSize(const wstring &rawSize) const
+wstring CreateFormattedSize(const wstring &rawSize)
 {
     const size_t lastCharPos = rawSize.size()-1;
     wstring formattedSize = rawSize.substr(0, lastCharPos);
     formattedSize += wstring(L" ") + rawSize[lastCharPos] + L"b";
     return formattedSize;
+}
+
+LogicalDrive BuildDriveFromTokens(const vector<wstring> &properties)
+{
+   LogicalDrive drive;
+   drive.name = properties[0];
+   drive.totalSpace = CreateFormattedSize(properties[1]);
+   drive.usedSpace = CreateFormattedSize(properties[2]);
+   drive.freeSpace = CreateFormattedSize(properties[3]);
+   drive.ratio = properties[4];
+   return drive;
 }
 
 
@@ -68,16 +58,6 @@ wstring DfCommandParser::GetFullDescription()
         return CreateFullDescription();
 }
 
-void DfCommandParser::GetDrives(std::vector<Drive> &drives) const
-{
-    copy(driveList.begin(), driveList.end(), back_inserter(drives));
-}
-
-Drive DfCommandParser::GetFirstDrive() const
-{
-    return driveList.front();
-}
-
 bool DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
 {
     std::vector<wstring>::const_iterator it=lines.begin()+1;
@@ -87,7 +67,7 @@ bool DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
         TokenizeUsingWhitespaces(*it, tokens);
 
         if (IsDesirableDriveName(tokens[0]))
-            driveList.push_back(Drive(tokens));
+            driveList.push_back(BuildDriveFromTokens(tokens));
     }
     return (!driveList.empty());
 }
@@ -117,7 +97,7 @@ bool DfCommandParser::IsDesirableDriveName(const wstring &name) const
     return (name.length() > 0 && name[0] == '/');
 }
 
-wstring DfCommandParser::CreateResumedMiniDescription(const Drive &drive) const
+wstring DfCommandParser::CreateResumedMiniDescription(const LogicalDrive& drive) const
 {
     return drive.freeSpace + L" available (" + drive.ratio + L" used)";
 }
@@ -132,7 +112,7 @@ wstring DfCommandParser::CreateDriveListDescription() const
 wstring DfCommandParser::CreateFullDescription() const
 {
     wstringstream stream;
-    vector<Drive>::const_iterator it = driveList.begin();
+    vector<LogicalDrive>::const_iterator it = driveList.begin();
     for (;it != driveList.end(); ++it)
     {
         stream << it->name << " : " << it->totalSpace << " total, ";

@@ -27,7 +27,7 @@ bool ChkdskCommandParser::ParseBuffer(const wstring &buffer)
 
 std::wstring ChkdskCommandParser::GetMiniDescription()
 {
-    if (drive.HasBadSectors())
+    if (GetFirstDrive().HasBadSectors())
         return BadSectorsMessage;
     else
         return DriveOkMessage;
