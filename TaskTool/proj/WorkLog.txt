@@ -1,3 +1,10 @@
+29/05/2019 (19.3)
+    Finished collecting data samples. Worked with regexp to have them directly
+    in C++ strings to be inside code.
+    Refactored test suites and parsers : now there is a single drive class, an
+    abstract DiskParser class and a test fixture with common tests. Specialized
+    fixtures only set the parser to be tested.
+
 26/05/2019 (2h)
     Abandoned test driven fixture, too much work for only two cases. Going for
     factoring with functions. Finished test cases, now going for Windows command.
