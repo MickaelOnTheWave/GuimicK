@@ -1,9 +1,14 @@
-29/05/2019 (19.3)
+29/05/2019 (2.7h)
     Finished collecting data samples. Worked with regexp to have them directly
     in C++ strings to be inside code.
     Refactored test suites and parsers : now there is a single drive class, an
     abstract DiskParser class and a test fixture with common tests. Specialized
     fixtures only set the parser to be tested.
+    Mostly Finished fixing Chkdsk test suite and test data.
+Next planned work:
+    - Finish data samples for chkdsk : run chkdsk on Native Win7 (no VM)
+    - Finish setting chkdsk tests data
+    - Implement chkdsk parser
 
 26/05/2019 (2h)
     Abandoned test driven fixture, too much work for only two cases. Going for

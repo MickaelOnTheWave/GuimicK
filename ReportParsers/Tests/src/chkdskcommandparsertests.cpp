@@ -4,18 +4,22 @@
 
 using namespace std;
 
-TEST_F(ChkdskParserFixture, doesnt_crash_when_parsing_invalid_buffer)
+namespace
 {
-   ChkdskCommandParser parser;
-
-   const wstring buffer = L"Dummy buffer\n"
-                          L"With sr@ange symb0lS{}.";
-
-   const bool ok = parser.ParseBuffer(buffer);
-   ASSERT_EQ(ok, false);
+   LogicalDrive BuildDrive(const wstring& name, const wstring& totalSpace,
+                           const wstring& freeSpace, const wstring& badSectors)
+   {
+      LogicalDrive drive;
+      return drive;
+   }
 }
 
-TEST(ChkdskParserFixture, creates_one_drive_report)
+TEST_F(ChkdskParserFixture, doesnt_crash_when_parsing_invalid_buffer)
+{
+   TestNoCrashOnInvalidBuffer();
+}
+
+TEST_F(ChkdskParserFixture, creates_one_drive_report)
 {
    FAIL();
    const wstring buffer = L"The type of the file system is NTFS.\n"
@@ -285,10 +289,17 @@ TEST(ChkdskParserFixture, creates_one_drive_report)
                           L"   5230741 allocation units available on disk.\n";
 
 
-   //TestReportParsing(buffer, {});
+   const wstring expectedMiniReport = L"drive OK";
+   const wstring expectedFullReport = L"Drive C:"
+                                      L"\tTotal Space : 97.5 Gb\n"
+                                      L"\tFree Space : 19.9 Gb\n"
+                                      L"\tBad Sectors : 0 Kb\n";
+
+   LogicalDrive expectedDrive = BuildDrive(L"", L"97.5 Gb", L"19.9 Gb", L"0");
+   TestParseOk(buffer, {expectedDrive}, expectedMiniReport, expectedFullReport);
 }
 
-TEST(ChkdskParserFixture, creates_multiple_drive_report)
+TEST_F(ChkdskParserFixture, creates_multiple_drive_report)
 {
    FAIL();
 }
