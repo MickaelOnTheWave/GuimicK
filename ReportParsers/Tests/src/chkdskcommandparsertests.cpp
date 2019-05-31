@@ -10,6 +10,10 @@ namespace
                            const wstring& freeSpace, const wstring& badSectors)
    {
       LogicalDrive drive;
+      drive.name = name;
+      drive.totalSpace = totalSpace;
+      drive.freeSpace = freeSpace;
+      drive.badSectors = badSectors;
       return drive;
    }
 }
@@ -21,7 +25,6 @@ TEST_F(ChkdskParserFixture, doesnt_crash_when_parsing_invalid_buffer)
 
 TEST_F(ChkdskParserFixture, creates_one_drive_report)
 {
-   FAIL();
    const wstring buffer = L"The type of the file system is NTFS.\n"
                           L"\n"
                           L"WARNING!  F parameter not specified.\n"
@@ -291,15 +294,29 @@ TEST_F(ChkdskParserFixture, creates_one_drive_report)
 
    const wstring expectedMiniReport = L"drive OK";
    const wstring expectedFullReport = L"Drive C:"
-                                      L"\tTotal Space : 97.5 Gb\n"
+                                      L"\tTotal Space : 97.56 Gb\n"
                                       L"\tFree Space : 19.9 Gb\n"
-                                      L"\tBad Sectors : 0 Kb\n";
+                                      L"\tBad Sectors : 0.00 bytes\n";
 
-   LogicalDrive expectedDrive = BuildDrive(L"", L"97.5 Gb", L"19.9 Gb", L"0");
+   LogicalDrive expectedDrive = BuildDrive(L"", L"97.56 Gb", L"19.9 Gb", L"0.00 bytes");
    TestParseOk(buffer, {expectedDrive}, expectedMiniReport, expectedFullReport);
 }
 
 TEST_F(ChkdskParserFixture, creates_multiple_drive_report)
 {
-   FAIL();
+   const wstring buffer = L"dummy buffer";
+   const wstring expectedMiniReport = L"2 drives OK";
+   const wstring expectedFullReport = L"Drive C:"
+                                      L"\tTotal Space : 97.5 Gb\n"
+                                      L"\tFree Space : 19.9 Gb\n"
+                                      L"\tBad Sectors : 0 Kb\n"
+                                      L"Drive D:"
+                                      L"\tTotal Space : 97.5 Gb\n"
+                                      L"\tFree Space : 19.9 Gb\n"
+                                      L"\tBad Sectors : 0 Kb\n";
+
+   vector<LogicalDrive> expectedDrives;
+   expectedDrives.push_back(BuildDrive(L"C", L"97.5 Gb", L"19.9 Gb", L"0"));
+   expectedDrives.push_back(BuildDrive(L"D", L"97.5 Gb", L"19.9 Gb", L"0"));
+   TestParseOk(buffer, expectedDrives, expectedMiniReport, expectedFullReport);
 }

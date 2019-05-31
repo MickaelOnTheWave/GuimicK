@@ -1,3 +1,11 @@
+30/05/2019 (1.5h)
+    Not in the mood to go to Windows to take samples. Continuing with tests :
+    finished them, only missing buffer for multiple drive. Starting implementing
+    parser : it now correctly handles drive data.
+Next planned work:
+    - Finish parser implementation : handle mini/full reports
+    - Finish data samples for chkdsk on native Win7
+
 29/05/2019 (2.7h)
     Finished collecting data samples. Worked with regexp to have them directly
     in C++ strings to be inside code.

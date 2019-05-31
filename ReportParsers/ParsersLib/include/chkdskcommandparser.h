@@ -18,7 +18,10 @@ private:
     void GetReportLines(const std::vector<std::wstring>& input,
                         std::vector<std::wstring> &output) const;
 
+    bool ParseSummarySection(const std::vector<std::wstring>& summary);
+
     bool CreateDriveDataFromReport(const std::vector<std::wstring>& reportLines);
+
 
 };
 
