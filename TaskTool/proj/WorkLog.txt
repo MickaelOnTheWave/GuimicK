@@ -1,3 +1,7 @@
+02/06/2019 (1h)
+    Finished parser implementation. Now only waiting for data sample for chkdsk
+    on native Win7. Moving to Win7 now (even though this means playing...)
+
 30/05/2019 (1.5h)
     Not in the mood to go to Windows to take samples. Continuing with tests :
     finished them, only missing buffer for multiple drive. Starting implementing

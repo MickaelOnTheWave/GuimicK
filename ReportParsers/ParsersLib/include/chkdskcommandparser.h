@@ -22,7 +22,15 @@ private:
 
     bool CreateDriveDataFromReport(const std::vector<std::wstring>& reportLines);
 
+    std::wstring CreateOneDriveDescription() const;
+    std::wstring CreateMultiDriveDescription() const;
 
+    bool AllDrivesOk() const;
+    bool AllDrivesFailing() const;
+
+    std::wstring CreateAllDrivesOkMessage() const;
+    std::wstring CreateAllDrivesFailingMessage() const;
+    std::wstring CreateMixedResultsMessage() const;
 };
 
 #endif // CHKDSKCOMMANDPARSER_H

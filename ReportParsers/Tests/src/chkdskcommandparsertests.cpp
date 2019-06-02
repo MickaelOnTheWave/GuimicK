@@ -292,11 +292,11 @@ TEST_F(ChkdskParserFixture, creates_one_drive_report)
                           L"   5230741 allocation units available on disk.\n";
 
 
-   const wstring expectedMiniReport = L"drive OK";
-   const wstring expectedFullReport = L"Drive C:"
+   const wstring expectedMiniReport = L"Drive is OK";
+   const wstring expectedFullReport = L"Drive :\n"
                                       L"\tTotal Space : 97.56 Gb\n"
-                                      L"\tFree Space : 19.9 Gb\n"
-                                      L"\tBad Sectors : 0.00 bytes\n";
+                                      L"\tFree Space : 19.95 Gb\n"
+                                      L"\tBad Sectors : 0.00 bytes\n\n";
 
    LogicalDrive expectedDrive = BuildDrive(L"", L"97.56 Gb", L"19.9 Gb", L"0.00 bytes");
    TestParseOk(buffer, {expectedDrive}, expectedMiniReport, expectedFullReport);

@@ -22,6 +22,7 @@ public :
     std::wstring freeSpace;
     std::wstring ratio;
     std::wstring badSectors;
+    bool hasBadSectors;
 };
 
 #endif // LOGICALDRIVE_H

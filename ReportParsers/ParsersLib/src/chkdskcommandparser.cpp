@@ -1,5 +1,7 @@
 #include "chkdskcommandparser.h"
 
+#include <algorithm>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -49,17 +51,23 @@ wstring GetFirstNonEmptyToken(const StringLines& tokens)
    return L"";
 }
 
-wstring GetSizeStringFromLine(const wstring& line)
+long long GetSizeValueFromLine(const wstring& line)
 {
    vector<wstring> tokens;
    StringTools::Tokenize(line, L' ', tokens);
 
    const wstring sizeString = GetFirstNonEmptyToken(tokens);
    if (sizeString != L"")
-   {
-      long long sizeValue = StringTools::ToLongLong(sizeString) * 1024;
-      return ByteString<wstring>::Format(sizeValue);
-   }
+      return StringTools::ToLongLong(sizeString) * 1024;
+   else
+      return -1;
+}
+
+wstring GetSizeStringFromLine(const wstring& line)
+{
+   const long long value = GetSizeValueFromLine(line);
+   if (value != -1)
+      return ByteString<wstring>::Format(value);
    else
       return L"";
 }
@@ -76,7 +84,19 @@ void SetFreeSpace(LogicalDrive& drive, const wstring& line)
 
 void SetBadSectors(LogicalDrive& drive, const wstring& line)
 {
-   drive.badSectors = GetSizeStringFromLine(line);
+   const long long byteValue = GetSizeValueFromLine(line);
+   drive.hasBadSectors = (byteValue > 0);
+   drive.badSectors = ByteString<wstring>::Format(byteValue);
+}
+
+wstring DriveWord(const size_t count)
+{
+   return (count == 1) ? L" drive " : L" drives ";
+}
+
+bool IsDriveFailing(const LogicalDrive& drive)
+{
+   return drive.HasBadSectors();
 }
 
 
@@ -98,23 +118,35 @@ bool ChkdskCommandParser::ParseBuffer(const wstring &buffer)
    return ok;
 }
 
-std::wstring ChkdskCommandParser::GetMiniDescription()
+wstring ChkdskCommandParser::GetMiniDescription()
 {
    if (driveList.empty())
       return NoDriveMessage;
-   else if (GetFirstDrive().HasBadSectors())
-      return BadSectorsMessage;
+   else if (driveList.size() == 1)
+      return CreateOneDriveDescription();
    else
-      return DriveOkMessage;
+      return CreateMultiDriveDescription();
 }
 
-std::wstring ChkdskCommandParser::GetFullDescription()
+wstring ChkdskCommandParser::GetFullDescription()
 {
-    return L"";
+   const wstring tab = L"\t";
+   const wstring eol = L"\n";
+   wstring fullDescription;
+   vector<LogicalDrive>::const_iterator it = driveList.begin();
+   for (; it != driveList.end(); ++it)
+   {
+      fullDescription += L"Drive " + it->name + L":" + eol;
+      fullDescription += tab + L"Total Space : " + it->totalSpace + eol;
+      fullDescription += tab + L"Free Space : " + it->freeSpace + eol;
+      fullDescription += tab + L"Bad Sectors : " + it->badSectors + eol;
+      fullDescription += eol;
+   }
+   return fullDescription;
 }
 
-void ChkdskCommandParser::GetReportLines(const std::vector<wstring> &input,
-                                         std::vector<wstring> &output) const
+void ChkdskCommandParser::GetReportLines(const vector<wstring> &input,
+                                         vector<wstring> &output) const
 {
     vector<wstring>::const_iterator it=input.begin();
     bool foundReportInit = false;
@@ -160,6 +192,61 @@ bool ChkdskCommandParser::ParseSummarySection(const vector<wstring>& summary)
 
 bool ChkdskCommandParser::CreateDriveDataFromReport(const vector<wstring>& reportLines)
 {
-    return true;
+   return true;
 }
+
+wstring ChkdskCommandParser::CreateOneDriveDescription() const
+{
+   const LogicalDrive drive = GetFirstDrive();
+   if (drive.HasBadSectors())
+      return BadSectorsMessage;
+   else
+      return DriveOkMessage;
+}
+
+wstring ChkdskCommandParser::CreateMultiDriveDescription() const
+{
+   if (AllDrivesOk())
+      return CreateAllDrivesOkMessage();
+   else if (AllDrivesFailing())
+      return CreateAllDrivesFailingMessage();
+   else
+      return CreateMixedResultsMessage();
+}
+
+bool ChkdskCommandParser::AllDrivesOk() const
+{
+   none_of(driveList.begin(), driveList.end(), IsDriveFailing);
+}
+
+bool ChkdskCommandParser::AllDrivesFailing() const
+{
+   all_of(driveList.begin(), driveList.end(), IsDriveFailing);
+}
+
+wstring ChkdskCommandParser::CreateAllDrivesOkMessage() const
+{
+   wstringstream stream;
+   stream << driveList.size() << L" drives OK";
+   return stream.str();
+}
+
+wstring ChkdskCommandParser::CreateAllDrivesFailingMessage() const
+{
+   wstringstream stream;
+   stream << driveList.size() << L" drives failing";
+   return stream.str();
+}
+
+wstring ChkdskCommandParser::CreateMixedResultsMessage() const
+{
+   const int failCount = count_if(driveList.begin(), driveList.end(), IsDriveFailing);
+   const int okCount = driveList.size() - failCount;
+
+   wstringstream stream;
+   stream << okCount << DriveWord(okCount) << L"ok, ";
+   stream << failCount << DriveWord(failCount) << L"failing.";
+   return stream.str();
+}
+
 
