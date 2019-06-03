@@ -302,21 +302,3 @@ TEST_F(ChkdskParserFixture, creates_one_drive_report)
    TestParseOk(buffer, {expectedDrive}, expectedMiniReport, expectedFullReport);
 }
 
-TEST_F(ChkdskParserFixture, creates_multiple_drive_report)
-{
-   const wstring buffer = L"dummy buffer";
-   const wstring expectedMiniReport = L"2 drives OK";
-   const wstring expectedFullReport = L"Drive C:"
-                                      L"\tTotal Space : 97.5 Gb\n"
-                                      L"\tFree Space : 19.9 Gb\n"
-                                      L"\tBad Sectors : 0 Kb\n"
-                                      L"Drive D:"
-                                      L"\tTotal Space : 97.5 Gb\n"
-                                      L"\tFree Space : 19.9 Gb\n"
-                                      L"\tBad Sectors : 0 Kb\n";
-
-   vector<LogicalDrive> expectedDrives;
-   expectedDrives.push_back(BuildDrive(L"C", L"97.5 Gb", L"19.9 Gb", L"0"));
-   expectedDrives.push_back(BuildDrive(L"D", L"97.5 Gb", L"19.9 Gb", L"0"));
-   TestParseOk(buffer, expectedDrives, expectedMiniReport, expectedFullReport);
-}
