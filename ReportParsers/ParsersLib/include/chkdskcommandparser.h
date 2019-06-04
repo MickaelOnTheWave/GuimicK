@@ -20,8 +20,6 @@ private:
 
     bool ParseSummarySection(const std::vector<std::wstring>& summary);
 
-    bool CreateDriveDataFromReport(const std::vector<std::wstring>& reportLines);
-
     std::wstring CreateOneDriveDescription() const;
     std::wstring CreateMultiDriveDescription() const;
 

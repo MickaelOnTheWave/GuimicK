@@ -190,11 +190,6 @@ bool ChkdskCommandParser::ParseSummarySection(const vector<wstring>& summary)
    return isDriveOk;
 }
 
-bool ChkdskCommandParser::CreateDriveDataFromReport(const vector<wstring>& reportLines)
-{
-   return true;
-}
-
 wstring ChkdskCommandParser::CreateOneDriveDescription() const
 {
    const LogicalDrive drive = GetFirstDrive();
@@ -240,8 +235,8 @@ wstring ChkdskCommandParser::CreateAllDrivesFailingMessage() const
 
 wstring ChkdskCommandParser::CreateMixedResultsMessage() const
 {
-   const int failCount = count_if(driveList.begin(), driveList.end(), IsDriveFailing);
-   const int okCount = driveList.size() - failCount;
+   const size_t failCount = count_if(driveList.begin(), driveList.end(), IsDriveFailing);
+   const size_t okCount = driveList.size() - failCount;
 
    wstringstream stream;
    stream << okCount << DriveWord(okCount) << L"ok, ";

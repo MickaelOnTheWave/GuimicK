@@ -33,8 +33,7 @@ bool WindowsCheckdiskJob::IsInitialized()
 
 AbstractConsoleJob* WindowsCheckdiskJob::CreateJobInstance() const
 {
-    const wstring parameters = drive + wstring(L" /f");
-    return new ConsoleJob(L"chkdsk", parameters);
+    return new ConsoleJob(L"chkdsk", drive);
 }
 
 AbstractOutputParser* WindowsCheckdiskJob::CreateOutputParser(const int jobStatus) const
