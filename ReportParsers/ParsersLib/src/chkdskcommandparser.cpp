@@ -216,12 +216,12 @@ wstring ChkdskCommandParser::CreateMultiDriveDescription() const
 
 bool ChkdskCommandParser::AllDrivesOk() const
 {
-   none_of(driveList.begin(), driveList.end(), IsDriveFailing);
+   return none_of(driveList.begin(), driveList.end(), IsDriveFailing);
 }
 
 bool ChkdskCommandParser::AllDrivesFailing() const
 {
-   all_of(driveList.begin(), driveList.end(), IsDriveFailing);
+   return all_of(driveList.begin(), driveList.end(), IsDriveFailing);
 }
 
 wstring ChkdskCommandParser::CreateAllDrivesOkMessage() const
