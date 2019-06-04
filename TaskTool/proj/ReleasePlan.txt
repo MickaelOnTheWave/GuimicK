@@ -36,10 +36,10 @@ Features implemented:
         17/03/2019 - [045] Make Windows client work with (nearly) all features
         23/04/2019 - [032] Property handle encodings for strings
         28/04/2019 - [058] Add support for Windows "cron" entries from editor
+        03/06/2019 - [006] Include Harddrive check job
 
 Features to implement:
 	[005] Include AntiVirus scan job
-	[006] Include Harddrive check job
 	[007] Include Defragmentation job
 	[008] Use another time level of backup for other jobs (monly/yearly...)
 	[010] Implement all TODOs in code
@@ -86,6 +86,7 @@ Pending bugs :
 	[010] Some tests are failing in GitJob only in Release. Make all test suites pass 100% in both Debug and Release.
 	[012] Debug flag is not handled as it should. Check that global one works as default and can be overridden by local ones.
         [014] There should be error reporting when simple copy backup fails (see on windows, using system folder)
+        [018] Disk check job doesn't work by default - make it ask admin mode
 
 -------------
 Release plan

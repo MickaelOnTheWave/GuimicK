@@ -1,6 +1,13 @@
-03/06/2019 (20.9)
+03/06/2019 (1.1h)
     Took sample from native Win7. However there seems to be no multidrive option,
     so really current state is ok.
+    Fixed last bug in chkdsk job. Checked in dev Win and it worked as expected.
+    Reported admin rights bug to be fixed next. Also updated version numbers.
+    And finally updated release plan :-)
+Next planned work:
+    - Check Windows install in non-dev Windows machine
+    - Fix admin rights bug
+    - Investigate other Windows tools for ideas on new UI
 
 02/06/2019 (1h)
     Finished parser implementation. Now only waiting for data sample for chkdsk
