@@ -102,7 +102,7 @@ void TaskToolRunDialog::on_runButton_clicked()
 
       PathTools::ChangeCurrentDir(currentDirectory);
 
-      outputText = (result > -1) ? QString::fromStdWString(commandOutput)
+      outputText = (result == 0) ? QString::fromStdWString(commandOutput)
                                  : CreateExecutionErrorMessage(result, commandOutput);
    }
    else
@@ -154,13 +154,31 @@ QString TaskToolRunDialog::CreateChdirErrorMessage() const
 QString TaskToolRunDialog::CreateExecutionErrorMessage(const int returnValue,
                                                        const std::wstring& output) const
 {
-   QString errorMessage = "Error running Task tool command.\n";
-   errorMessage += "\tError code : " + QString::number(returnValue) + "\n";
-   errorMessage += "\tOutput : " + QString::fromStdWString(output) + "\n";
-   errorMessage += "\tRun Path : " + runPath + "\n";
-   errorMessage += "\tExecutable : " + taskToolExecutable + "\n";
-   errorMessage += "\tConfiguration file : " + configurationFile + "\n";
-   return errorMessage;
+   if (returnValue == 1)
+       return CreateConfigurationFileErrorMessage();
+   else
+       return CreateGenericExecutionErrorMessage(returnValue, output);
+}
+
+QString TaskToolRunDialog::CreateConfigurationFileErrorMessage() const
+{
+    QString errorMessage = "Error running Task tool command : ";
+    errorMessage += "Configuration file not found.\n";
+    errorMessage += "\tConfiguration file : " + configurationFile + "\n";
+    errorMessage += "\tRun Path : " + runPath + "\n";
+    errorMessage += "\tExecutable : " + taskToolExecutable + "\n";
+    return errorMessage;
+}
+
+QString TaskToolRunDialog::CreateGenericExecutionErrorMessage(const int returnValue, const std::wstring &output) const
+{
+    QString errorMessage = "Error running Task tool command.\n";
+    errorMessage += "\tError code : " + QString::number(returnValue) + "\n";
+    errorMessage += "\tOutput : " + QString::fromStdWString(output) + "\n";
+    errorMessage += "\tRun Path : " + runPath + "\n";
+    errorMessage += "\tExecutable : " + taskToolExecutable + "\n";
+    errorMessage += "\tConfiguration file : " + configurationFile + "\n";
+    return errorMessage;
 }
 
 void TaskToolRunDialog::SetupReportDisplay()

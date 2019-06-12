@@ -33,6 +33,9 @@ private:
    QString CreateChdirErrorMessage() const;
    QString CreateExecutionErrorMessage(const int returnValue,
                                        const std::wstring& output) const;
+   QString CreateConfigurationFileErrorMessage() const;
+   QString CreateGenericExecutionErrorMessage(const int returnValue,
+                                       const std::wstring& output) const;
    void SetupReportDisplay();
 
    void SetupReportFilesDisplay();

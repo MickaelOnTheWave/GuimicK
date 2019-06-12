@@ -13,10 +13,12 @@ cd %ROOT%\bin\WindowsInstallPackage
 copy %ROOT%\scripts\WindowsInstallerScript.nsi WindowsInstallerScript.nsi
 copy %ROOT%\TaskTool\bin\Win64Vs\Release\TaskTool.exe TaskTool.exe
 copy %ROOT%\ConfigurationEditingTool\bin\Win64Vs\Release\ConfigurationEditingTool.exe ConfigurationEditingTool.exe
-copy %ROOT%\data\7z.exe 7z.exe
-copy %ROOT%\data\msvcp140.dll msvcp140.dll
-copy %ROOT%\data\vcruntime140.dll vcruntime140.dll
-copy %ROOT%\data\license.txt license.txt
+REM copy %ROOT%\data\7z.exe 7z.exe
+REM copy %ROOT%\data\7z.dll 7z.dll
+REM copy %ROOT%\data\msvcp140.dll msvcp140.dll
+REM copy %ROOT%\data\vcruntime140.dll vcruntime140.dll
+REM copy %ROOT%\data\license.txt license.txt
+xcopy %ROOT%\data /Y
 xcopy %ROOT%\lib /Y
 
 windeployqt ConfigurationEditingTool.exe

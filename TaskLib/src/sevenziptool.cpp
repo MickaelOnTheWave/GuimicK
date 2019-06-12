@@ -6,8 +6,18 @@
 using namespace std;
 
 const wstring DefaultSevenZipCommand = L"7z.exe";
-const wstring SevenZipNotFoundwstring = L"not recognized as an internal or external command";
+const wstring SevenZipNotFoundString = L"not recognized as an internal or external command";
+const wstring moduleString = L"Can't load module";
+const wstring dllString = L".dll";
 const wstring error7zipNotFound = L"7zip not found";
+const wstring error7zipDllNotFound = L"7zip Dll not found";
+const wstring error7zipError = L"7zip execution error";
+
+bool IsDllError(const wstring& output)
+{
+    return (output.find(moduleString) != wstring::npos &&
+            output.find(dllString) != wstring::npos);
+}
 
 SevenZipTool::SevenZipTool()
    : ArchiveTool(), sevenZipExecutable(DefaultSevenZipCommand)
@@ -55,18 +65,30 @@ void SevenZipTool::Run7zipCommand(const wstring& command, ArchiveToolResult& res
    ParseOutput(output, returnValue, result);
 }
 
+#include <iostream>
+
 void SevenZipTool::ParseOutput(const wstring& output,
                                const int returnValue,
                                ArchiveToolResult& result) const
 {
    result.isOk = (returnValue == 0);
 
-   if (output.find(SevenZipNotFoundwstring) != wstring::npos)
-      result.errorMessage = error7zipNotFound;
-   else
+   if (result.isOk)
    {
       SevenZipCommandParser parser;
       parser.ParseBuffer(output);
       ConvertToArchiveResult(parser, result);
+   }
+   else
+   {
+       wcout << output << endl;
+       if (output.find(SevenZipNotFoundString) != wstring::npos)
+          result.errorMessage = error7zipNotFound;
+       else if (returnValue == 2)
+          result.errorMessage = error7zipDllNotFound;
+       else {
+           result.errorMessage = error7zipError;
+       }
+
    }
 }

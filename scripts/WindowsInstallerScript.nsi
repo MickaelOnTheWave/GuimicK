@@ -1,6 +1,6 @@
 ;--------------------------------
 
-!define VERSION "1.0.00"
+!define VERSION "1.0.02"
 ; The name of the installer
 Name "Task Manager ${VERSION}"
 
@@ -37,8 +37,11 @@ Section "" ;No components page, name is not important
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
   
+  EnVar::SetHKLM
+  
   ; Put file there
   File 7z.exe
+  File 7z.dll
   File ConfigurationEditingTool.exe
   File msvcp140.dll
   File vcruntime140.dll
@@ -71,7 +74,7 @@ Section "" ;No components page, name is not important
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "NoRepair" 1  
   
   WriteUninstaller "uninstall.exe"
-  
+  EnVar::AddValue "Path" "$INSTDIR"  
 SectionEnd ; end the section
 
 Section "Uninstall"
