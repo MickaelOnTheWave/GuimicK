@@ -15,6 +15,10 @@ public:
 
    virtual bool IsInitialized(void);
 
+   virtual JobStatus* Run();
+
+   virtual bool NeedsAdminRights() const;
+
 private:
    virtual AbstractConsoleJob *CreateJobInstance() const;
    virtual AbstractOutputParser* CreateOutputParser(const int jobStatus) const;
