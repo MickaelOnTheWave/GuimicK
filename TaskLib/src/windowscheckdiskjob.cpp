@@ -6,6 +6,18 @@
 
 using namespace std;
 
+JobStatus* CreateNoAdminRightsStatus()
+{
+   return new JobStatus(JobStatus::Error, L"Couldn't get admin rights");
+}
+
+bool GetAdminRights()
+{
+   return false;
+}
+
+//----------------------------------------------------------------------
+
 WindowsCheckdiskJob::WindowsCheckdiskJob(const wstring& _drive)
    : DiskRelatedJob(L"Disk checking", _drive)
 {
@@ -29,6 +41,20 @@ bool WindowsCheckdiskJob::InitializeFromClient(Client *client)
 bool WindowsCheckdiskJob::IsInitialized()
 {
    return (drive != L"");
+}
+
+JobStatus* WindowsCheckdiskJob::Run()
+{
+   const bool adminRightsObtained = GetAdminRights();
+   if (adminRightsObtained)
+      return DiskRelatedJob::Run();
+   else
+      return CreateNoAdminRightsStatus();
+}
+
+bool WindowsCheckdiskJob::NeedsAdminRights() const
+{
+   return true;
 }
 
 AbstractConsoleJob* WindowsCheckdiskJob::CreateJobInstance() const

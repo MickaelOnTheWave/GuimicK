@@ -1,6 +1,36 @@
-03/06/2019 (20.9)
+13/06/2019 (18.9)
+
+12/06/2019 (0.1)
+    Checking admin rights. Going first for test run. It looks like the proper way is
+    using "Manifest files". More can be found at docs.microsoft.com
+    executing-priviledge-operations-using-c-
+
+11/06/2019 (2.7h)
+    Testing. Work check list :
+    OK - Register job
+    OK - Registered job runs
+    KO - Test run
+    KO - All jobs run
+    There are errors with 7zip job. Also, this is no default css. Going first for
+    7zip issue. Improved error messages, but the issue is deep : Task Manager currently
+    requires 7zip to be installed to work, it needs the dll. Trying simple copy of the dll
+    to see if it solves.. It doesn't solve. Maybe there is an in-between solution :
+    add TaskManager to path via installer. Trying it... It worked!
+    7zip issue is resolved and tested.
+Next planned work:
+    - Fix admin rights bug
+    - Investigate other Windows tools for ideas on new UI
+
+03/06/2019 (1.1h)
     Took sample from native Win7. However there seems to be no multidrive option,
     so really current state is ok.
+    Fixed last bug in chkdsk job. Checked in dev Win and it worked as expected.
+    Reported admin rights bug to be fixed next. Also updated version numbers.
+    And finally updated release plan :-)
+Next planned work:
+    - Check Windows install in non-dev Windows machine
+    - Fix admin rights bug
+    - Investigate other Windows tools for ideas on new UI
 
 02/06/2019 (1h)
     Finished parser implementation. Now only waiting for data sample for chkdsk
