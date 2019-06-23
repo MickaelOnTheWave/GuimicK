@@ -34,7 +34,8 @@ private:
    bool SetTaskTriggerData(ITaskDefinition* taskDefinition,
                            ScheduleData* data);
    bool SetTaskAction(ITaskDefinition* taskDefinition);
-
+   bool SetTaskSecuritySettings(ITaskDefinition* taskDefinition);
+   bool SetTaskOtherSettings(ITaskDefinition* taskDefinition);
 
    bool winApiAvailable = true;
    bool taskServiceAvailable = true;

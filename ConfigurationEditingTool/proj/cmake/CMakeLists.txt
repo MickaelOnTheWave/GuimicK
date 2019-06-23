@@ -47,11 +47,14 @@ if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)" OR "${CMAKE_GENERATOR}" MATCHES 
     set(isCompilerWin64 TRUE)
 endif()
 
+set(toolsLibPath "${TOOLS_ROOT}/ToolsLib/lib")
 if (isCompilerWin64)
-    target_link_libraries (ConfigurationEditingTool "${TOOLS_ROOT}/ToolsLib/lib/ws2_64.lib")
-    target_link_libraries (ConfigurationEditingTool "${TASKMANAGER_ROOT}/ConfigurationEditingTool/lib/taskschd_64.lib")
+    set(editToolLibPath "${TASKMANAGER_ROOT}/ConfigurationEditingTool/lib")
+    target_link_libraries (ConfigurationEditingTool "${toolsLibPath}/ws2_64.lib")
+    target_link_libraries (ConfigurationEditingTool "${editToolLibPath}/taskschd_64.lib")
+    target_link_libraries (ConfigurationEditingTool "${editToolLibPath}/credui_64.lib")
 elseif(WIN32)
-    target_link_libraries (ConfigurationEditingTool "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
+    target_link_libraries (ConfigurationEditingTool "${toolsLibPath}/ws2_32.lib")
 endif(isCompilerWin64)
 
 
