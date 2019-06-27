@@ -3,6 +3,7 @@
 #include <comdef.h>
 #include "scheduletriggerreader.h"
 #include "scheduletriggerwriter.h"
+#include "windowscredentialsmanager.h"
 #include "windowsschedulererrormanager.h"
 
 #include <wbemidl.h>
@@ -14,10 +15,6 @@ namespace
    const wchar_t* defaultAuthor = L"Task Manager";
    const wchar_t* defaultDescription = L"This task runs periodically TaskManager. \n"
                                  L"It was created automatically by the Configuration editor.";
-   const char* needsAdminToRunOutOfSession = "In order to run the task list even when you are not "
-                                             "logged, we need your credentials.\n"
-                                             "If you choose to not provide them, the tasks will only run "
-                                             "when you are logged.";
 
    TASK_TRIGGER_TYPE2 TranslateTriggerType(ScheduleData* data)
    {
@@ -31,15 +28,25 @@ namespace
          return TASK_TRIGGER_IDLE;
    }
 
+   _variant_t ToVariant(const std::string& input)
+   {
+       _variant_t vt;
+       _bstr_t bs(input.c_str());
+       reinterpret_cast<_variant_t&>(vt) = bs;
+       return vt;
+   }
+
    HRESULT RegisterTask(
                IRegisteredTask** registeredTask,
-               const variant_t& username, const variant_t& password,
+               const Credentials& credentials,
                ITaskFolder* taskFolder, ITaskDefinition* taskDefinition,
            TASK_LOGON_TYPE logonType)
    {
        const HRESULT hr = taskFolder->RegisterTaskDefinition(
           _bstr_t(defaultTaskName), taskDefinition,
-          TASK_CREATE_OR_UPDATE, username, password,
+          TASK_CREATE_OR_UPDATE,
+          ToVariant(credentials.domain + "\\" + credentials.username),
+          ToVariant(credentials.password),
           logonType,
           _variant_t(L""),
           registeredTask
@@ -49,11 +56,11 @@ namespace
 
    HRESULT RegisterTaskAsOutOfSession(
                IRegisteredTask** registeredTask,
-               const variant_t& username, const variant_t& password,
+               const Credentials& credentials,
                ITaskFolder* taskFolder, ITaskDefinition* taskDefinition)
    {
        return RegisterTask(registeredTask,
-                           username, password,
+                           credentials,
                            taskFolder, taskDefinition,
                            TASK_LOGON_INTERACTIVE_TOKEN_OR_PASSWORD);
    }
@@ -62,61 +69,11 @@ namespace
                IRegisteredTask** registeredTask,
                ITaskFolder* taskFolder, ITaskDefinition* taskDefinition)
    {
+       Credentials emptyCredentials;
        return RegisterTask(registeredTask,
-                           _variant_t(), _variant_t(),
+                           emptyCredentials,
                            taskFolder, taskDefinition,
                            TASK_LOGON_NONE);
-   }
-
-   HRESULT GetCredentials(variant_t& username, variant_t& password)
-   {
-       CREDUI_INFO cui;
-           TCHAR singleUsername[CREDUI_MAX_USERNAME_LENGTH] = "";
-           TCHAR singlePassword[CREDUI_MAX_PASSWORD_LENGTH] = "";
-           BOOL fSave;
-           DWORD dwErr;
-
-           cui.cbSize = sizeof(CREDUI_INFO);
-           cui.hwndParent = nullptr;
-           cui.pszMessageText = TEXT(needsAdminToRunOutOfSession);
-           cui.pszCaptionText = TEXT("User credentials needed");
-           cui.hbmBanner = nullptr;
-           fSave = FALSE;
-
-           PCSTR target = TEXT("");
-
-           //  Create the UI asking for the credentials.
-           dwErr = CredUIPromptForCredentials(
-               &cui,                             //  CREDUI_INFO structure
-               target,                         //  Target for credentials
-               nullptr,                             //  Reserved
-               0,                                //  Reason
-               singleUsername,                          //  User name
-               CREDUI_MAX_USERNAME_LENGTH,       //  Max number for user name
-               singlePassword,                           //  Password
-               CREDUI_MAX_PASSWORD_LENGTH,       //  Max number for password
-               &fSave,                           //  State of save check box
-               CREDUI_FLAGS_GENERIC_CREDENTIALS |
-                       CREDUI_FLAGS_ALWAYS_SHOW_UI |
-                       CREDUI_FLAGS_DO_NOT_PERSIST |
-                       CREDUI_FLAGS_REQUEST_ADMINISTRATOR |
-                       CREDUI_FLAGS_VALIDATE_USERNAME |
-                       CREDUI_FLAGS_INCORRECT_PASSWORD |
-                       CREDUI_FLAGS_EXPECT_CONFIRMATION);
-
-           bool canceled = (dwErr == ERROR_CANCELLED);
-           bool flags = (dwErr == ERROR_INVALID_FLAGS);
-           bool param = (dwErr == ERROR_INVALID_PARAMETER);
-           bool session = (dwErr == ERROR_NO_SUCH_LOGON_SESSION);
-           bool ok = (dwErr == NO_ERROR);
-
-           BOOL valid = TRUE;
-           CredUIConfirmCredentials(target, valid);
-
-           username = _bstr_t(singleUsername);
-           password = _bstr_t(singlePassword);
-
-           return (ok) ? 0 : -1;
    }
 }
 
@@ -221,14 +178,13 @@ bool WindowsScheduler::RegisterTask(ITaskFolder* taskFolder,
 {
    IRegisteredTask* registeredTask = nullptr;
 
-   _variant_t username;
-   _variant_t password;
-   HRESULT result = GetCredentials(username, password);
+   WindowsCredentialsManager credentialsManager;
+   HRESULT result = credentialsManager.AskUser();
    if (SUCCEEDED(result))
    {
        result = RegisterTaskAsOutOfSession(
                    &registeredTask,
-                   username, password,
+                   credentialsManager.GetCredentials(),
                    taskFolder, taskDefinition
                    );
    }
@@ -372,8 +328,8 @@ bool WindowsScheduler::SetTaskSecuritySettings(ITaskDefinition* taskDefinition)
 {
     IPrincipal* taskSecuritySettings = nullptr;
     HRESULT hr = taskDefinition->get_Principal(&taskSecuritySettings);
-    if (SUCCEEDED(hr))
-        hr = taskSecuritySettings->put_RunLevel(TASK_RUNLEVEL_HIGHEST);
+//    if (SUCCEEDED(hr))
+//        hr = taskSecuritySettings->put_RunLevel(TASK_RUNLEVEL_HIGHEST);
 
     errorManager.UpdateLastErrorMessage(hr);
     return SUCCEEDED(hr);
