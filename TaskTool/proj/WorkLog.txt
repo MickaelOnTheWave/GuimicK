@@ -1,4 +1,65 @@
-13/06/2019 (18.9)
+27/06/2019 (1.5h)
+    Finished credentials validation - the problem was with username
+    mixed up with domain. Now it works for ANSI and Unicode logins.
+ Next planned work:
+     - Improve error message upon 2nd try
+     - Back to High priviledge issue. If no solution, message it to the user
+     so that he can fix the option manually.
+
+26/06/2019 (1.5h)
+    Finished SSPLogonUser. It always fails. Back to LogonUser. Same failure.
+    Trying hardcoded credentials, and fails too.
+Next planned work:
+    - Create a user account with ANSI chars and password and try LogonUser
+    - Once validation method works for ANSI, make it work for Unicode
+    - Improve error message upon 2nd try
+    - Back to High priviledge issue. If no solution, message it to the user
+    so that he can fix the option manually.
+
+24/06/2019 (1.5h)
+    No answer on SO. Going to credentials management..
+    Went through internet, found 2 ways to do so... one seems better than
+    the other though. Implementing SSPLogonUser as found on Microsoft docs.
+ Next planned work:
+    - Finish implementation
+
+23/06/2019 (1.5h)
+    Found no way to resolve the access denied issue. Posted a question on SO
+    about it.
+Next planned work:
+    - Check SO. If no solution is found, leave it for now and organize code for
+    credentials.
+    - Start checking other tools UI.
+
+20/06/2019 (0.8h)
+    Testing priviledge option in task scheduler. It seems to work, trying it again
+    without to confirm. Confirmed. Now trying to find the option in API...
+    Found the options in the API, both for making Windows wake to run task and
+    to check the "Highest priviledge" option. However it fails with Access denied
+    when trying to register the task with the priviledge option.
+ Next planned work:
+    - Check if there is something to do to use the priviledge option. Maybe ask
+    on StackOverflow?
+    - Once this is done, find a way to properly ask credentials
+
+18/06/2019 (2h)
+    System UI is not for priviledge escalation, it is for getting user credentials
+    and thus can probably only be used for task registering. Trying to integrate it,
+    but there are some missing points.
+Next planned work :
+    - Find a way to check for valid credentials and loop back when they are invalid
+    - Find a way to "Run with Highest priviledges" in task scheduler
+    - Check if task really runs with admin rights
+
+13/06/2019 (1h)
+    Found code to ask for priviledges in TaskRegister examples. Not sure if it
+    only works for TaskScheduler registering, but trying it. It seems to compile but
+    needs linking.
+Next planned work:
+    - Finish check if priviledge escalation is working
+    - Check if it works for TaskRegister
+    - Figure out if it is usable for Run, if there is another easy way or if it just
+    should be notified to the user that the job will fail as user.
 
 12/06/2019 (0.1)
     Checking admin rights. Going first for test run. It looks like the proper way is
