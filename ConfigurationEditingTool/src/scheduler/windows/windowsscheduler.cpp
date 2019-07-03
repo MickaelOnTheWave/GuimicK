@@ -45,7 +45,7 @@ namespace
        const HRESULT hr = taskFolder->RegisterTaskDefinition(
           _bstr_t(defaultTaskName), taskDefinition,
           TASK_CREATE_OR_UPDATE,
-          ToVariant(credentials.domain + "\\" + credentials.username),
+          ToVariant(credentials.GetDomainUsername()),
           ToVariant(credentials.password),
           logonType,
           _variant_t(L""),

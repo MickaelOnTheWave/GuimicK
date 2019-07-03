@@ -9,13 +9,15 @@ namespace  {
                                               "logged, we need your credentials.\n"
                                               "If you choose to not provide them, the tasks will only run "
                                               "when you are logged.";
+    const char* wrongCredentials = "Invalid credentials";
 
-    CREDUI_INFO CreateCredentialsData()
+    CREDUI_INFO CreateCredentialsData(const bool firstTime)
     {
+        const char* message = (firstTime) ? needsAdminToRunOutOfSession : wrongCredentials;
         CREDUI_INFO dataStructure;
         dataStructure.cbSize = sizeof(CREDUI_INFO);
         dataStructure.hwndParent = nullptr;
-        dataStructure.pszMessageText = TEXT(needsAdminToRunOutOfSession);
+        dataStructure.pszMessageText = TEXT(message);
         dataStructure.pszCaptionText = TEXT("User credentials needed");
         dataStructure.hbmBanner = nullptr;
         return dataStructure;
@@ -26,9 +28,11 @@ HRESULT WindowsCredentialsManager::AskUser()
 {
     bool credentialsProvided = false;
     bool shouldAskCredentials = true;
+    bool firstTimeAsking = true;
     while (shouldAskCredentials)
     {
-        const DWORD result = AskUserOnce();
+        const DWORD result = AskUserOnce(firstTimeAsking);
+        firstTimeAsking = false;
         credentialsProvided = (result == NO_ERROR);
         if (credentialsProvided)
             shouldAskCredentials = !AreCredentialsValid();
@@ -44,9 +48,9 @@ Credentials WindowsCredentialsManager::GetCredentials() const
     return credentials;
 }
 
-DWORD WindowsCredentialsManager::AskUserOnce()
+DWORD WindowsCredentialsManager::AskUserOnce(const bool firstTime)
 {
-    CREDUI_INFO cui = CreateCredentialsData();
+    CREDUI_INFO cui = CreateCredentialsData(firstTime);
     BOOL fSave = FALSE;
     DWORD result;
 
@@ -76,7 +80,8 @@ DWORD WindowsCredentialsManager::AskUserOnce()
         optionFlags
     );
 
-    FillCredentials(domainAndUser, passwordBuffer);
+    if (result == NO_ERROR)
+        FillCredentials(domainAndUser, passwordBuffer);
     return result;
 }
 

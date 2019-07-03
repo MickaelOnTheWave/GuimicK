@@ -15,7 +15,7 @@ public:
     Credentials GetCredentials() const;
 
 private:
-    DWORD AskUserOnce();
+    DWORD AskUserOnce(const bool firstTime);
 
     void FillCredentials(const char* domainAndUser,
                          const char *password);
