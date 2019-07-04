@@ -17,7 +17,8 @@ class SchedulerDialog : public QDialog
    Q_OBJECT
 
 public:
-   explicit SchedulerDialog(QWidget *parent = 0);
+   explicit SchedulerDialog(QWidget *parent,
+                            const bool _runAsAdmin);
    ~SchedulerDialog();
 
    void SetConfigurationFile(const QString& file);
@@ -74,6 +75,7 @@ private:
    AbstractScheduler* scheduler = nullptr;
    std::map<QCheckBox*,int> monthlyCheckboxes;
    QString taskToolExecutable = "";
+   bool runAsAdmin = false;
 };
 
 #endif // SCHEDULERDIALOG_H

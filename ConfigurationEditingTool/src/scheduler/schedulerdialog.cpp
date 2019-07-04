@@ -9,9 +9,11 @@
    #include "windows/windowsscheduler.h"
 #endif
 
-SchedulerDialog::SchedulerDialog(QWidget *parent) :
+SchedulerDialog::SchedulerDialog(QWidget *parent,
+                                 const bool _runAsAdmin) :
    QDialog(parent),
-   ui(new Ui::SchedulerDialog)
+   ui(new Ui::SchedulerDialog),
+   runAsAdmin(_runAsAdmin)
 {
    ui->setupUi(this);
    setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint);
@@ -97,7 +99,7 @@ void SchedulerDialog::InitializeScheduler()
 void SchedulerDialog::CreateScheduler()
 {
 #ifdef _WIN32
-   scheduler = new WindowsScheduler();
+   scheduler = new WindowsScheduler(runAsAdmin);
 #else
    scheduler = nullptr;
 #endif

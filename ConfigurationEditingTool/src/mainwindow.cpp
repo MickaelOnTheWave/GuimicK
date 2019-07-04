@@ -19,6 +19,7 @@
 #include "filetools.h"
 #include "jobdelegate.h"
 #include "jobeditdialogfactory.h"
+#include "ostools.h"
 #include "pathtools.h"
 #include "scheduler/schedulerdialog.h"
 #include "selectbackupfolderdialog.h"
@@ -115,6 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
    model.SetDefaultServerOptions();
    SetupAddJobMenu();
+   isRunningAsAdministrator = OsTools::IsRunningAsAdministrator();
 }
 
 MainWindow::~MainWindow()
@@ -710,7 +712,7 @@ void MainWindow::on_actionTask_Tool_triggered()
 
 void MainWindow::on_actionSchedule_Execution_triggered()
 {
-   SchedulerDialog dialog(this);
+   SchedulerDialog dialog(this, isRunningAsAdministrator);
    dialog.SetConfigurationFile(currentConfigurationFile);
    dialog.SetTaskToolExecutable(GetTaskToolExecutable());
    dialog.exec();

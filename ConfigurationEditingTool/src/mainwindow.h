@@ -134,6 +134,7 @@ private:
 
    bool hasConfigurationChanged = false;
    QString currentConfigurationFile = "";
+   bool isRunningAsAdministrator = false;
 };
 
 #endif // MAINWINDOW_H

@@ -77,9 +77,10 @@ namespace
    }
 }
 
-WindowsScheduler::WindowsScheduler()
+WindowsScheduler::WindowsScheduler(const bool runAsAdmin)
+    : runningAsAdmin(runAsAdmin)
 {
-   InitializeWindowsApi();
+    InitializeWindowsApi();
 }
 
 WindowsScheduler::~WindowsScheduler()
@@ -242,7 +243,7 @@ ITaskDefinition* WindowsScheduler::CreateTaskFromData(ScheduleData* data)
       if (ok)
          ok = SetTaskAction(taskDefinition);
 
-      if (ok)
+      if (runningAsAdmin && ok)
           ok = SetTaskSecuritySettings(taskDefinition);
 
       if (ok)
@@ -328,8 +329,8 @@ bool WindowsScheduler::SetTaskSecuritySettings(ITaskDefinition* taskDefinition)
 {
     IPrincipal* taskSecuritySettings = nullptr;
     HRESULT hr = taskDefinition->get_Principal(&taskSecuritySettings);
-//    if (SUCCEEDED(hr))
-//        hr = taskSecuritySettings->put_RunLevel(TASK_RUNLEVEL_HIGHEST);
+    if (SUCCEEDED(hr))
+        hr = taskSecuritySettings->put_RunLevel(TASK_RUNLEVEL_HIGHEST);
 
     errorManager.UpdateLastErrorMessage(hr);
     return SUCCEEDED(hr);

@@ -9,7 +9,7 @@
 class WindowsScheduler : public AbstractScheduler
 {
 public:
-   WindowsScheduler();
+   WindowsScheduler(const bool runAsAdmin);
    virtual ~WindowsScheduler();
 
    bool Read(ScheduleData** data) const override;
@@ -37,6 +37,7 @@ private:
    bool SetTaskSecuritySettings(ITaskDefinition* taskDefinition);
    bool SetTaskOtherSettings(ITaskDefinition* taskDefinition);
 
+   bool runningAsAdmin = false;
    bool winApiAvailable = true;
    bool taskServiceAvailable = true;
    ITaskService* taskService = nullptr;
