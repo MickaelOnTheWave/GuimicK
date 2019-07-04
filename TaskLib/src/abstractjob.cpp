@@ -57,6 +57,11 @@ void AbstractJob::SetParentDebugManager(JobDebugInformationManager* manager)
     }
 }
 
+bool AbstractJob::NeedsAdminRights() const
+{
+   return false;
+}
+
 std::wstring AbstractJob::GetAttachmentName()
 {
     return GetName() + L".txt";

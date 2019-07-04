@@ -42,6 +42,8 @@ public:
 
    void SetParentDebugManager(JobDebugInformationManager* manager);
 
+   virtual bool NeedsAdminRights() const;
+
 protected:
     JobDebugInformationManager* debugManager;
     bool isDebugManagerParent;

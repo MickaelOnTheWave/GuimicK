@@ -87,3 +87,14 @@ void Client::AddJob(AbstractJob* job)
 {
    jobList.push_back(job);
 }
+
+bool Client::DoesJobListNeedAdminRights() const
+{
+   list<AbstractJob*>::const_iterator it = jobList.begin();
+   for (; it != jobList.end(); ++it)
+   {
+      if ((*it)->NeedsAdminRights())
+         return true;
+   }
+   return false;
+}

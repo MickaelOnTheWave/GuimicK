@@ -1,3 +1,18 @@
+03/07/2019 (4.5h)
+    Fixed issue with failing SYnology backup - it was Google account
+    sender setting that was blocking smtp send.
+    Fixed Windows Scheduler bugs and put a proper message for invalid
+    credentials error.
+    Fixed Administrator rights management : now the High priviledge
+    option is set only when editor is run with Administrator rights.
+    Now adding Warning messages (and icon) for running without Admin
+    rights. Having to create a qrc file for icons. Having to change
+    folder structure for qrc and data files.
+Next planned work:
+    - Finish and validate structure with qrc file and icons
+    - Finish warning signs for Run and Schedule dialogs
+    - Move on to check other tools UI
+
 27/06/2019 (1.5h)
     Finished credentials validation - the problem was with username
     mixed up with domain. Now it works for ANSI and Unicode logins.

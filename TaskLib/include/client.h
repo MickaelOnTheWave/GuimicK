@@ -37,6 +37,8 @@ public:
 
     void AddJob(AbstractJob* job);
 
+    bool DoesJobListNeedAdminRights() const;
+
 
 protected:
     std::wstring name;
