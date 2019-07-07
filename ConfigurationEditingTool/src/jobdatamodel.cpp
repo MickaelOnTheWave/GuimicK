@@ -80,3 +80,14 @@ std::vector<AbstractJob*> JobDataModel::GetJobs()
    return jobs;
 }
 
+
+bool JobDataModel::DoesJobListNeedAdminRights() const
+{
+   vector<AbstractJob*>::const_iterator it = jobs.begin();
+   for (; it != jobs.end(); ++it)
+   {
+      if ((*it)->NeedsAdminRights())
+         return true;
+   }
+   return false;
+}

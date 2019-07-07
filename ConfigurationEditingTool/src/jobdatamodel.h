@@ -28,6 +28,8 @@ public:
    AbstractJob* GetJob(const QModelIndex &index);
    std::vector<AbstractJob*> GetJobs();
 
+   bool DoesJobListNeedAdminRights() const;
+
 private:
    std::vector<AbstractJob*> jobs;
 };

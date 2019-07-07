@@ -57,7 +57,7 @@ using namespace std;
 
 namespace
 {
-   const wstring version = L"1.03";
+   const wstring version = L"1.04";
 
    QString GetDefaultTaskToolExecutable()
    {
@@ -681,7 +681,7 @@ wstring MainWindow::SaveConfigurationToTempLocation()
 
 bool MainWindow::NeedsAdminRightsWarning()
 {
-   return (!isRunningAsAdministrator && model.GetClient()->DoesJobListNeedAdminRights());
+   return (!isRunningAsAdministrator && jobListModel.DoesJobListNeedAdminRights());
 }
 
 void MainWindow::on_actionRun_triggered()
