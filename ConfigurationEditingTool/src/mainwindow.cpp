@@ -631,7 +631,7 @@ void MainWindow::UpdateAddJobMenuEntries()
 
 void MainWindow::OpenRunDialog(const wstring& reportFile)
 {
-   TaskToolRunDialog dialog(this);
+   TaskToolRunDialog dialog(this, NeedsAdminRightsWarning());
    dialog.SetRunPath(GetTempFolder());
    dialog.SetConfigurationFile(GetTempConfigFilename());
    dialog.SetToolExecutable(GetTaskToolExecutable());
@@ -679,6 +679,11 @@ wstring MainWindow::SaveConfigurationToTempLocation()
    return reportFile;
 }
 
+bool MainWindow::NeedsAdminRightsWarning()
+{
+   return (!isRunningAsAdministrator && model.GetClient()->DoesJobListNeedAdminRights());
+}
+
 void MainWindow::on_actionRun_triggered()
 {
    const wstring reportFile = SaveConfigurationToTempLocation();
@@ -712,7 +717,7 @@ void MainWindow::on_actionTask_Tool_triggered()
 
 void MainWindow::on_actionSchedule_Execution_triggered()
 {
-   SchedulerDialog dialog(this, isRunningAsAdministrator);
+   SchedulerDialog dialog(this, isRunningAsAdministrator, NeedsAdminRightsWarning());
    dialog.SetConfigurationFile(currentConfigurationFile);
    dialog.SetTaskToolExecutable(GetTaskToolExecutable());
    dialog.exec();

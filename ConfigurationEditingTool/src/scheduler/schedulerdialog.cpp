@@ -10,7 +10,8 @@
 #endif
 
 SchedulerDialog::SchedulerDialog(QWidget *parent,
-                                 const bool _runAsAdmin) :
+                                 const bool _runAsAdmin,
+                                 const bool showAdminWarning) :
    QDialog(parent),
    ui(new Ui::SchedulerDialog),
    runAsAdmin(_runAsAdmin)
@@ -24,6 +25,9 @@ SchedulerDialog::SchedulerDialog(QWidget *parent,
 
    InitializePathWidget();
    InitializeScheduler();
+
+   if (showAdminWarning)
+      AddAdminWarning();
 }
 
 SchedulerDialog::~SchedulerDialog()
@@ -325,6 +329,13 @@ bool SchedulerDialog::IsOneMonthlyCheckboxChecked() const
    }
 
    return false;
+}
+
+void SchedulerDialog::AddAdminWarning()
+{
+   warningWidget = new AdminRightsWarning(this);
+   auto mainLayout = static_cast<QVBoxLayout*>(layout());
+   mainLayout->insertWidget(0, warningWidget);
 }
 
 void SchedulerDialog::on_closeButtonBox_accepted()

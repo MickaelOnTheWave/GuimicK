@@ -6,6 +6,7 @@
 #include <QDialog>
 
 #include "abstractscheduler.h"
+#include "adminrightswarning.h"
 #include "scheduledata.h"
 
 namespace Ui {
@@ -18,7 +19,7 @@ class SchedulerDialog : public QDialog
 
 public:
    explicit SchedulerDialog(QWidget *parent,
-                            const bool _runAsAdmin);
+                            const bool _runAsAdmin, const bool showAdminWarning);
    ~SchedulerDialog();
 
    void SetConfigurationFile(const QString& file);
@@ -71,7 +72,11 @@ private:
 
    bool IsOneMonthlyCheckboxChecked() const;
 
+   void AddAdminWarning();
+
    Ui::SchedulerDialog *ui;
+   AdminRightsWarning* warningWidget;
+
    AbstractScheduler* scheduler = nullptr;
    std::map<QCheckBox*,int> monthlyCheckboxes;
    QString taskToolExecutable = "";

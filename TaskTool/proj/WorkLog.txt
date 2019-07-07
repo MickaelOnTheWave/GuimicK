@@ -1,3 +1,6 @@
+07/07/2019 (16.6)
+    Integrated warning signs. Now testing result on Windows..
+
 03/07/2019 (4.5h)
     Fixed issue with failing SYnology backup - it was Google account
     sender setting that was blocking smtp send.

@@ -126,6 +126,8 @@ private:
    QString GetTempReportFolder() const;
    std::wstring SaveConfigurationToTempLocation();
 
+   bool NeedsAdminRightsWarning();
+
    Ui::MainWindow *ui;
    TooledConfiguration model;
    JobDataModel jobListModel;

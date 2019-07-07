@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QLabel>
 #include <QMessageBox>
+#include <QVBoxLayout>
 
 #include "filetools.h"
 #include "pathtools.h"
@@ -44,11 +45,13 @@ namespace
    }
 }
 
-TaskToolRunDialog::TaskToolRunDialog(QWidget *parent) :
+TaskToolRunDialog::TaskToolRunDialog(QWidget *parent, const bool showAdminWarning) :
    QDialog(parent),
    ui(new Ui::TaskToolRunDialog)
 {
    ui->setupUi(this);
+   if (showAdminWarning)
+      AddAdminRightsWarning();
 }
 
 TaskToolRunDialog::~TaskToolRunDialog()
@@ -208,7 +211,7 @@ void TaskToolRunDialog::SetupReportFilesDisplay()
 void TaskToolRunDialog::ClearFileBox()
 {
    QLayoutItem* item;
-   while ((item = ui->filesBox->layout()->takeAt(0)) != 0)
+   while ((item = ui->filesBox->layout()->takeAt(0)) != nullptr)
    {
       if (item->widget())
          item->widget()->setParent(nullptr);
@@ -251,4 +254,11 @@ void TaskToolRunDialog::CleanPreviousReport()
                               "Please make sure Report data is cleaned before each Run,\n"
                               "otherwise previous data will be present in current report.");
    }
+}
+
+void TaskToolRunDialog::AddAdminRightsWarning()
+{
+   warningWidget = new AdminRightsWarning(this);
+   auto mainLayout = static_cast<QVBoxLayout*>(layout());
+   mainLayout->insertWidget(0, warningWidget);
 }

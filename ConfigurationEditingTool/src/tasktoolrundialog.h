@@ -2,6 +2,7 @@
 #define TASKTOOLRUNDIALOG_H
 
 #include <QDialog>
+#include "adminrightswarning.h"
 
 namespace Ui {
    class TaskToolRunDialog;
@@ -12,7 +13,7 @@ class TaskToolRunDialog : public QDialog
    Q_OBJECT
 
 public:
-   explicit TaskToolRunDialog(QWidget *parent = 0);
+   explicit TaskToolRunDialog(QWidget *parent, const bool showAdminWarning);
    ~TaskToolRunDialog();
 
    void SetRunPath(const QString& value);
@@ -46,7 +47,12 @@ private:
 
    void CleanPreviousReport();
 
+   void AddAdminRightsWarning();
+
    Ui::TaskToolRunDialog *ui;
+   AdminRightsWarning* warningWidget;
+
+
 
    QString runPath = "";
    QString configurationFile = "";
