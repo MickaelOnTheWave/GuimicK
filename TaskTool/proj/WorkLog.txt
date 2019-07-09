@@ -1,5 +1,18 @@
-07/07/2019 (16.6)
+08/07/2019 (21.7-22.4)
+    Left threaded run for now : UI needs to be updated to easily
+    use a threaded execution. Updated UI : now only relevant
+    information is shown, and there is a "wait screen" with proper
+    UI disabling and wait cursor.
+
+07/07/2019 (2.9h)
     Integrated warning signs. Now testing result on Windows..
+    Working mostly as expected. Fixed bug where warning sign does
+    not reflect changes on UI.
+    Now implementing asynchronous run of TaskTool to prevent UI freeze.
+    Icons are left for final phase.
+Next planned work:
+    - Finish asynchronous runs
+    - Start researching other tools UIs
 
 03/07/2019 (4.5h)
     Fixed issue with failing SYnology backup - it was Google account

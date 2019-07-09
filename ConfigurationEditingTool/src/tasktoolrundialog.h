@@ -2,6 +2,7 @@
 #define TASKTOOLRUNDIALOG_H
 
 #include <QDialog>
+#include <QThread>
 #include "adminrightswarning.h"
 
 namespace Ui {
@@ -23,8 +24,13 @@ public:
    void SetReportFolder(const QString& value);
    void SetReportType(const std::wstring& value);
 
+signals:
+   void StartTaskTool();
+
 private slots:
    void on_runButton_clicked();
+   void OnStartTaskTool();
+   void OnFinishedRunningTaskTool();
 
 private:
    std::wstring CreateTaskToolCommand() const;
@@ -49,6 +55,11 @@ private:
 
    void AddAdminRightsWarning();
 
+   QString RunTaskTool(const std::wstring& currentDirectory);
+
+   void SetUiWaitState();
+   void SetUiResultState();
+
    Ui::TaskToolRunDialog *ui;
    AdminRightsWarning* warningWidget;
 
@@ -60,6 +71,8 @@ private:
    QString reportFile = "";
    QString reportFolder = "";
    std::wstring reportType = L"";
+
+   QThread taskToolWork;
 };
 
 #endif // TASKTOOLRUNDIALOG_H

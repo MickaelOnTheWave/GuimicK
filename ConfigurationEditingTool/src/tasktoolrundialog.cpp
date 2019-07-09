@@ -8,6 +8,7 @@
 
 #include "filetools.h"
 #include "pathtools.h"
+#include "tasktoolrunner.h"
 #include "tools.h"
 
 #ifdef _MSC_VER
@@ -57,6 +58,8 @@ TaskToolRunDialog::TaskToolRunDialog(QWidget *parent, const bool showAdminWarnin
 TaskToolRunDialog::~TaskToolRunDialog()
 {
    delete ui;
+   taskToolWork.quit();
+   taskToolWork.wait();
 }
 
 void TaskToolRunDialog::SetRunPath(const QString& value)
@@ -91,6 +94,7 @@ void TaskToolRunDialog::SetReportType(const std::wstring& value)
 
 void TaskToolRunDialog::on_runButton_clicked()
 {
+   ui->taskWidget->setCurrentIndex(0);
    CleanPreviousReport();
 
    ui->outputTextEdit->setPlainText("");
@@ -98,25 +102,32 @@ void TaskToolRunDialog::on_runButton_clicked()
    const std::wstring currentDirectory = PathTools::GetCurrentFullPath();
    if (PathTools::ChangeCurrentDir(runPath.toStdWString()))
    {
-      std::wstring commandOutput;
-      const std::wstring command = CreateTaskToolCommand();
-      const int result = Tools::RunExternalCommandToBuffer(
-                                    command, commandOutput, true);
-
-      PathTools::ChangeCurrentDir(currentDirectory);
-
-      outputText = (result == 0) ? QString::fromStdWString(commandOutput)
-                                 : CreateExecutionErrorMessage(result, commandOutput);
+      SetUiWaitState();
+      outputText = RunTaskTool(currentDirectory);
+      SetUiResultState();
    }
    else
    {
       outputText = CreateChdirErrorMessage();
-      ui->taskWidget->setCurrentIndex(1);
+      ui->taskWidget->setCurrentIndex(3);
    }
 
    ui->outputTextEdit->setPlainText(outputText);   
    SetupReportDisplay();
    SetupReportFilesDisplay();
+}
+
+void TaskToolRunDialog::OnStartTaskTool()
+{
+
+}
+
+void TaskToolRunDialog::OnFinishedRunningTaskTool()
+{
+   /*PathTools::ChangeCurrentDir(currentDirectory);
+   return (result == 0) ? QString::fromStdWString(commandOutput)
+                        : CreateExecutionErrorMessage(result, commandOutput);
+*/
 }
 
 std::wstring TaskToolRunDialog::CreateTaskToolCommand() const
@@ -261,4 +272,40 @@ void TaskToolRunDialog::AddAdminRightsWarning()
    warningWidget = new AdminRightsWarning(this);
    auto mainLayout = static_cast<QVBoxLayout*>(layout());
    mainLayout->insertWidget(0, warningWidget);
+}
+
+QString TaskToolRunDialog::RunTaskTool(const std::wstring& currentDirectory)
+{
+   std::wstring commandOutput;
+   const std::wstring command = CreateTaskToolCommand();
+
+   int result = Tools::RunExternalCommandToBuffer(command, commandOutput, true);
+
+   PathTools::ChangeCurrentDir(currentDirectory);
+      return (result == 0) ? QString::fromStdWString(commandOutput)
+                           : CreateExecutionErrorMessage(result, commandOutput);
+
+   // Testing thread stuff
+   /*TaskToolRunner runner(command);
+
+   runner.moveToThread(&taskToolWork);
+   //connect(this, SIGNAL())
+
+   return "Blabla";*/
+
+}
+
+void TaskToolRunDialog::SetUiWaitState()
+{
+   setEnabled(false);
+   QApplication::setOverrideCursor(Qt::WaitCursor);
+   ui->taskWidget->setCurrentIndex(1);
+   ui->taskWidget->repaint();
+}
+
+void TaskToolRunDialog::SetUiResultState()
+{
+   setEnabled(true);
+   QApplication::restoreOverrideCursor();
+   ui->taskWidget->setCurrentIndex(2);
 }
