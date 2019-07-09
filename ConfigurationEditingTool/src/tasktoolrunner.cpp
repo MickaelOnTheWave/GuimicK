@@ -4,15 +4,15 @@
 
 using namespace std;
 
-TaskToolRunner::TaskToolRunner(const wstring& _command)
-   : command(_command)
-{
-}
-
 void TaskToolRunner::Run()
 {
    result = Tools::RunExternalCommandToBuffer(command, output, true);
    emit finished();
+}
+
+void TaskToolRunner::SetCommand(const wstring& value)
+{
+   command = value;
 }
 
 wstring TaskToolRunner::GetOutput() const

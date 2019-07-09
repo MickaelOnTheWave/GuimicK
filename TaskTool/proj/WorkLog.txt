@@ -1,8 +1,16 @@
-08/07/2019 (21.7-22.4)
+09/07/2019 (19.3)
+    Finished asynchronous run : it works well on Linux. Testing
+    it on Windows..
+
+08/07/2019 (1.2h)
     Left threaded run for now : UI needs to be updated to easily
     use a threaded execution. Updated UI : now only relevant
     information is shown, and there is a "wait screen" with proper
     UI disabling and wait cursor.
+    Now back to thread code..
+Next planned work:
+    - Finish asynchronous runs
+    - Start researching other tools UIs
 
 07/07/2019 (2.9h)
     Integrated warning signs. Now testing result on Windows..

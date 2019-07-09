@@ -3,7 +3,9 @@
 
 #include <QDialog>
 #include <QThread>
+
 #include "adminrightswarning.h"
+#include "tasktoolrunner.h"
 
 namespace Ui {
    class TaskToolRunDialog;
@@ -24,12 +26,8 @@ public:
    void SetReportFolder(const QString& value);
    void SetReportType(const std::wstring& value);
 
-signals:
-   void StartTaskTool();
-
 private slots:
    void on_runButton_clicked();
-   void OnStartTaskTool();
    void OnFinishedRunningTaskTool();
 
 private:
@@ -55,10 +53,16 @@ private:
 
    void AddAdminRightsWarning();
 
-   QString RunTaskTool(const std::wstring& currentDirectory);
+   void InitializeThreadedTaskToolRun();
+   void StartTaskTool();
 
    void SetUiWaitState();
-   void SetUiResultState();
+   void UnfreezeUi();
+
+   void UpdateTaskToolUiWithResults(
+         const bool success,
+         const QString& output
+   );
 
    Ui::TaskToolRunDialog *ui;
    AdminRightsWarning* warningWidget;
@@ -72,7 +76,9 @@ private:
    QString reportFolder = "";
    std::wstring reportType = L"";
 
-   QThread taskToolWork;
+   std::wstring currentDirectory = L"";
+   QThread taskToolThread;
+   TaskToolRunner taskToolRunner;
 };
 
 #endif // TASKTOOLRUNDIALOG_H

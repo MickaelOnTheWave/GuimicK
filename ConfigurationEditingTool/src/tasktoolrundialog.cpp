@@ -8,7 +8,6 @@
 
 #include "filetools.h"
 #include "pathtools.h"
-#include "tasktoolrunner.h"
 #include "tools.h"
 
 #ifdef _MSC_VER
@@ -44,6 +43,11 @@ namespace
             return GetErrnoMessage();
       }
    }
+
+   const int taskToolEmptyPage = 0;
+   const int taskToolWaitPage = 1;
+   const int taskToolReportPage = 2;
+   const int taskToolOutputPage = 3;
 }
 
 TaskToolRunDialog::TaskToolRunDialog(QWidget *parent, const bool showAdminWarning) :
@@ -51,6 +55,7 @@ TaskToolRunDialog::TaskToolRunDialog(QWidget *parent, const bool showAdminWarnin
    ui(new Ui::TaskToolRunDialog)
 {
    ui->setupUi(this);
+   InitializeThreadedTaskToolRun();
    if (showAdminWarning)
       AddAdminRightsWarning();
 }
@@ -58,8 +63,8 @@ TaskToolRunDialog::TaskToolRunDialog(QWidget *parent, const bool showAdminWarnin
 TaskToolRunDialog::~TaskToolRunDialog()
 {
    delete ui;
-   taskToolWork.quit();
-   taskToolWork.wait();
+   taskToolThread.quit();
+   taskToolThread.wait();
 }
 
 void TaskToolRunDialog::SetRunPath(const QString& value)
@@ -94,40 +99,32 @@ void TaskToolRunDialog::SetReportType(const std::wstring& value)
 
 void TaskToolRunDialog::on_runButton_clicked()
 {
-   ui->taskWidget->setCurrentIndex(0);
+   ui->taskWidget->setCurrentIndex(taskToolEmptyPage);
    CleanPreviousReport();
 
    ui->outputTextEdit->setPlainText("");
    QString outputText;
-   const std::wstring currentDirectory = PathTools::GetCurrentFullPath();
+   currentDirectory = PathTools::GetCurrentFullPath();
    if (PathTools::ChangeCurrentDir(runPath.toStdWString()))
    {
       SetUiWaitState();
-      outputText = RunTaskTool(currentDirectory);
-      SetUiResultState();
+      StartTaskTool();
    }
    else
-   {
-      outputText = CreateChdirErrorMessage();
-      ui->taskWidget->setCurrentIndex(3);
-   }
-
-   ui->outputTextEdit->setPlainText(outputText);   
-   SetupReportDisplay();
-   SetupReportFilesDisplay();
-}
-
-void TaskToolRunDialog::OnStartTaskTool()
-{
-
+      UpdateTaskToolUiWithResults(false, CreateChdirErrorMessage());
 }
 
 void TaskToolRunDialog::OnFinishedRunningTaskTool()
 {
-   /*PathTools::ChangeCurrentDir(currentDirectory);
-   return (result == 0) ? QString::fromStdWString(commandOutput)
-                        : CreateExecutionErrorMessage(result, commandOutput);
-*/
+   PathTools::ChangeCurrentDir(currentDirectory);
+
+   std::wstring commandOutput = taskToolRunner.GetOutput();
+   const bool ok = (taskToolRunner.GetReturnCode() == 0);
+   const QString displayOutput =
+         (ok) ? QString::fromStdWString(commandOutput)
+              : CreateExecutionErrorMessage(taskToolRunner.GetReturnCode(), commandOutput);
+   UpdateTaskToolUiWithResults(ok, displayOutput);
+   UnfreezeUi();
 }
 
 std::wstring TaskToolRunDialog::CreateTaskToolCommand() const
@@ -274,38 +271,37 @@ void TaskToolRunDialog::AddAdminRightsWarning()
    mainLayout->insertWidget(0, warningWidget);
 }
 
-QString TaskToolRunDialog::RunTaskTool(const std::wstring& currentDirectory)
+void TaskToolRunDialog::InitializeThreadedTaskToolRun()
 {
-   std::wstring commandOutput;
-   const std::wstring command = CreateTaskToolCommand();
+   taskToolRunner.moveToThread(&taskToolThread);
+   connect(&taskToolRunner, &TaskToolRunner::finished, this, &TaskToolRunDialog::OnFinishedRunningTaskTool);
+}
 
-   int result = Tools::RunExternalCommandToBuffer(command, commandOutput, true);
-
-   PathTools::ChangeCurrentDir(currentDirectory);
-      return (result == 0) ? QString::fromStdWString(commandOutput)
-                           : CreateExecutionErrorMessage(result, commandOutput);
-
-   // Testing thread stuff
-   /*TaskToolRunner runner(command);
-
-   runner.moveToThread(&taskToolWork);
-   //connect(this, SIGNAL())
-
-   return "Blabla";*/
-
+void TaskToolRunDialog::StartTaskTool()
+{
+   taskToolRunner.SetCommand(CreateTaskToolCommand());
+   taskToolThread.start();
+   taskToolRunner.Run();
 }
 
 void TaskToolRunDialog::SetUiWaitState()
 {
    setEnabled(false);
    QApplication::setOverrideCursor(Qt::WaitCursor);
-   ui->taskWidget->setCurrentIndex(1);
+   ui->taskWidget->setCurrentIndex(taskToolWaitPage);
    ui->taskWidget->repaint();
 }
 
-void TaskToolRunDialog::SetUiResultState()
+void TaskToolRunDialog::UnfreezeUi()
 {
    setEnabled(true);
    QApplication::restoreOverrideCursor();
-   ui->taskWidget->setCurrentIndex(2);
+}
+
+void TaskToolRunDialog::UpdateTaskToolUiWithResults(const bool success, const QString& output)
+{
+   ui->outputTextEdit->setPlainText(output);
+   SetupReportDisplay();
+   SetupReportFilesDisplay();
+   ui->taskWidget->setCurrentIndex(success ? taskToolReportPage : taskToolOutputPage);
 }
