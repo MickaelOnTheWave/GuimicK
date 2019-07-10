@@ -12,7 +12,8 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5Widgets REQUIRED)
 
-set (PROG_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../../..")
+set (projectRoot "${CMAKE_CURRENT_SOURCE_DIR}/../..")
+set (PROG_ROOT "${projectRoot}/../..")
 set (TASKMANAGER_ROOT "${PROG_ROOT}/TaskManager")
 set (TOOLS_ROOT "${PROG_ROOT}/Tools")
 
@@ -21,7 +22,7 @@ add_subdirectory ("${TASKMANAGER_ROOT}/ReportParsers/ParsersLib/proj/cmake" "./P
 add_subdirectory ("${TOOLS_ROOT}/ToolsLib/proj/cmake" "./ToolsLib") 
 add_subdirectory ("${PROG_ROOT}/QtTools/QtTools/proj/cmake" "./QtTools")
 
-set (rootDir "../../src")
+set (rootDir "${projectRoot}/src")
 set (scheduleDir "${rootDir}/scheduler")
 
 file(GLOB rootSources "${rootDir}/*")
@@ -36,7 +37,7 @@ if(WIN32)
         list(APPEND sources ${winSchedulerSources})
 endif(WIN32)
 
-add_executable(ConfigurationEditingTool ${sources})
+add_executable(ConfigurationEditingTool ${sources} "${projectRoot}/resources/resources.qrc")
 
 target_include_directories(ConfigurationEditingTool PRIVATE ${rootDir})
 target_include_directories(ConfigurationEditingTool PRIVATE ${scheduleDir})

@@ -1,3 +1,18 @@
+10/07/2019 (0.9h)
+    Downloaded and installed 3 backup software : EaseUs, Cobian Backup and
+    Paragon. Only EaseUs correctly ran, and its GUI had nothing inspiring.
+    Going for self inspiration... First choosing a main application icon.
+    Looking on what is available on Internet. There are sites for interactive
+    logo making and loads of free icons. Logo making doesn't seem that
+    straightforward and icon choosing neither. Probably paying a professional
+    service is a good idea (and a cheap one).
+    So first going to prepare Editor to use resources, images and the like.
+    Added qrc file to Cmake build. Added several icons to resource and used
+    them in GUI.
+Next planned work:
+    - Make icons appear in executable
+    - Rethink the GUI
+
 09/07/2019 (1.1h)
     Finished asynchronous run : it works well on Linux. Testing
     it on Windows.. It works as well :-) Considering this topic finished.

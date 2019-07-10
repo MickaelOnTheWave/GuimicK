@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="warning">warning-icon-png-2746.png</file>
+        <file alias="delete">icons8-excluir-50.png</file>
+        <file alias="moveDown">icons8-flecha-grossa-apontando-para-baixo-50.png</file>
+        <file alias="moveUp">icons8-flecha-grossa-apontando-para-cima-50.png</file>
+        <file alias="settings_50">icons8-configurações-50.png</file>
+        <file alias="quit_50">icons8-exportar-50.png</file>
+        <file alias="about_50">icons8-informações-50.png</file>
+        <file alias="run_50">icons8-reproduzir-50.png</file>
+        <file alias="save_50">icons8-salvar-50.png</file>
+        <file alias="saveas_50">icons8-salvar-como-50.png</file>
+    </qresource>
+</RCC>
