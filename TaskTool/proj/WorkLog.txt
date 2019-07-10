@@ -1,6 +1,10 @@
-09/07/2019 (19.3)
+09/07/2019 (1.1h)
     Finished asynchronous run : it works well on Linux. Testing
-    it on Windows..
+    it on Windows.. It works as well :-) Considering this topic finished.
+Next planned work:
+    - Start researching other tools UIs
+    - Choose/Add app icon
+    - Resolve qrc topic
 
 08/07/2019 (1.2h)
     Left threaded run for now : UI needs to be updated to easily
