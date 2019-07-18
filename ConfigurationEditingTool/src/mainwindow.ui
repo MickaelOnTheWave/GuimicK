@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Configuration Editing Tool</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/resources.qrc">
+    <normaloff>:/icons/mainIcon</normaloff>:/icons/mainIcon</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
@@ -45,8 +49,8 @@
            <string>Move down</string>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>../resources/icons8-flecha-grossa-apontando-para-baixo-50.png</normaloff>../resources/icons8-flecha-grossa-apontando-para-baixo-50.png</iconset>
+           <iconset resource="../resources/resources.qrc">
+            <normaloff>:/icons/moveDown</normaloff>:/icons/moveDown</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -165,11 +169,19 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icons/new</normaloff>:/icons/new</iconset>
+   </property>
    <property name="text">
     <string>New</string>
    </property>
   </action>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset>
+     <normaloff>../resources/open-file-icon.png</normaloff>../resources/open-file-icon.png</iconset>
+   </property>
    <property name="text">
     <string>Open</string>
    </property>
@@ -216,6 +228,10 @@
    </property>
   </action>
   <action name="actionGeneral">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icons/settings_50</normaloff>:/icons/settings_50</iconset>
+   </property>
    <property name="text">
     <string>General</string>
    </property>

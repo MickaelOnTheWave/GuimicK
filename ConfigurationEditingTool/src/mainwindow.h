@@ -76,6 +76,11 @@ private:
                         const QString& title,
                         AbstractJob* job);
 
+   void AddJobMenuEntry(QMenu* subMenu,
+                        const QString& icon,
+                        const QString& title,
+                        AbstractJob* job);
+
    bool ShouldDiscardCurrentChanges();
 
    void CreateNewFile();

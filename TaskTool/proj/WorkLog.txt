@@ -1,3 +1,18 @@
+17/07/2019 (1.3h)
+    Trying to create new project with icons to check.. New project OK,
+    but with Qmake. Searching once more on Internet, found the AUTORCC
+    command and it worked! But not for all icons. Checking..
+    Everything is now working as expected. Put icons for every action, only
+    open is missing.
+Next planned work:
+    - Put the Open icon
+    - Check that all icons are displayed as expected on Windows
+    - Check App icon in Start menu / executable file
+    - Start rethinking main window
+
+16/07/2019 (0.1h)
+    Tried manual set of icon, with alias and filename. No success.
+
 10/07/2019 (0.9h)
     Downloaded and installed 3 backup software : EaseUs, Cobian Backup and
     Paragon. Only EaseUs correctly ran, and its GUI had nothing inspiring.

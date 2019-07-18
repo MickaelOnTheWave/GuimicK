@@ -472,10 +472,10 @@ void MainWindow::SetupAddJobMenu()
 
 void MainWindow::SetupWindowsAddJobMenu()
 {
-   AddJobMenuEntry("Simple Copy Backup", new OsCopyFsBackupJob);
-   AddJobMenuEntry("7zip Backup", new SevenZipBackupJob);
-   AddJobMenuEntry("Check disk", new WindowsCheckdiskJob);
-   AddJobMenuEntry("Custom command", new UserConsoleJob);
+   AddJobMenuEntry(ui->menuAdd_Job, ":/icons/folderBackup", "Simple Copy Backup", new OsCopyFsBackupJob);
+   AddJobMenuEntry(ui->menuAdd_Job, ":/icons/7zip", "7zip Backup", new SevenZipBackupJob);
+   AddJobMenuEntry(ui->menuAdd_Job, ":/icons/hd", "Check disk", new WindowsCheckdiskJob);
+   AddJobMenuEntry(ui->menuAdd_Job, ":/icons/console_50", "Custom command", new UserConsoleJob);
 }
 
 void MainWindow::SetupLinuxAddJobMenu()
@@ -487,7 +487,7 @@ void MainWindow::SetupLinuxAddJobMenu()
    }
 
    QMenu* subMenuBackup = new QMenu("Backup");
-   AddJobMenuEntry(subMenuBackup, "Raw Copy", new OsCopyFsBackupJob);
+   AddJobMenuEntry(subMenuBackup, ":/icons/folderBackup", "Raw Copy", new OsCopyFsBackupJob);
    AddJobMenuEntry(subMenuBackup, "Rsync Copy", new RsyncCopyFsBackupJob);
    AddJobMenuEntry(subMenuBackup, "Tar Backup", new TarBackupJob);
    AddJobMenuEntry(subMenuBackup, "Git (filesystems)", new GitFsBackupJob);
@@ -495,10 +495,10 @@ void MainWindow::SetupLinuxAddJobMenu()
    AddJobMenuEntry(subMenuBackup, "Rsnapshot", new RsnapshotSmartBackupJob);
    ui->menuAdd_Job->addMenu(subMenuBackup);
 
-   AddJobMenuEntry("Disk Space Check", new LinuxFreeSpaceCheckJob);
+   AddJobMenuEntry(ui->menuAdd_Job, ":/icons/hd", "Disk Space Check", new LinuxFreeSpaceCheckJob);
    if (configurationType != StandaloneConfigurationType)
    {
-      AddJobMenuEntry("Custom command (server)", new UserConsoleJob);
+      AddJobMenuEntry(ui->menuAdd_Job, ":/icons/console_50", "Custom command (server)", new UserConsoleJob);
       AddJobMenuEntry("Custom command (client)", new SshConsoleJob(new UserConsoleJob));
    }
    else
@@ -515,6 +515,15 @@ void MainWindow::AddJobMenuEntry(QMenu* subMenu,
                                  AbstractJob* job)
 {
    subMenu->addAction(title, [this, job](){InsertNewJob(job->Clone());});
+}
+
+void MainWindow::AddJobMenuEntry(QMenu* subMenu,
+                                 const QString& icon,
+                                 const QString& title,
+                                 AbstractJob* job)
+{
+   subMenu->addAction(QIcon(icon), title,
+                      [this, job](){InsertNewJob(job->Clone());});
 }
 
 
