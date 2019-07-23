@@ -237,16 +237,28 @@
    </property>
   </action>
   <action name="actionRun">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icons/run_50</normaloff>:/icons/run_50</iconset>
+   </property>
    <property name="text">
     <string>Run</string>
    </property>
   </action>
   <action name="actionTask_Tool">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icons/icons8-trabalho-50.png</normaloff>:/icons/icons8-trabalho-50.png</iconset>
+   </property>
    <property name="text">
     <string>Task Tool</string>
    </property>
   </action>
   <action name="actionSchedule_Execution">
+   <property name="icon">
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icons/config2_80</normaloff>:/icons/config2_80</iconset>
+   </property>
    <property name="text">
     <string>Schedule Execution</string>
    </property>

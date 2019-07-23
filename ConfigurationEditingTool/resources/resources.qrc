@@ -18,5 +18,7 @@
         <file alias="open">open-file-icon.png</file>
         <file alias="config_50">config-50.png</file>
         <file alias="info_50">info-50.png</file>
+        <file alias="config2_80">icons8-schedule-80.png</file>
+        <file>icons8-trabalho-50.png</file>
     </qresource>
 </RCC>
