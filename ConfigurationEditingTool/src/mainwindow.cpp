@@ -59,6 +59,11 @@ namespace
 {
    const wstring version = L"1.05";
 
+   const QString iconBackupCopy = ":/icons/folderBackup";
+   const QString iconBackup7zip = ":/icons/7zip";
+   const QString iconConsole = ":/icons/console_50";
+   const QString iconHd = ":/icons/hd_50";
+
    QString GetDefaultTaskToolExecutable()
    {
 #ifdef _MSC_VER
@@ -472,10 +477,10 @@ void MainWindow::SetupAddJobMenu()
 
 void MainWindow::SetupWindowsAddJobMenu()
 {
-   AddJobMenuEntry(ui->menuAdd_Job, ":/icons/folderBackup", "Simple Copy Backup", new OsCopyFsBackupJob);
-   AddJobMenuEntry(ui->menuAdd_Job, ":/icons/7zip", "7zip Backup", new SevenZipBackupJob);
-   AddJobMenuEntry(ui->menuAdd_Job, ":/icons/hd", "Check disk", new WindowsCheckdiskJob);
-   AddJobMenuEntry(ui->menuAdd_Job, ":/icons/console_50", "Custom command", new UserConsoleJob);
+   AddJobMenuEntry(ui->menuAdd_Job, iconBackupCopy, "Simple Copy Backup", new OsCopyFsBackupJob);
+   AddJobMenuEntry(ui->menuAdd_Job, iconBackup7zip, "7zip Backup", new SevenZipBackupJob);
+   AddJobMenuEntry(ui->menuAdd_Job, iconHd, "Check disk", new WindowsCheckdiskJob);
+   AddJobMenuEntry(ui->menuAdd_Job, iconConsole, "Custom command", new UserConsoleJob);
 }
 
 void MainWindow::SetupLinuxAddJobMenu()
@@ -487,7 +492,7 @@ void MainWindow::SetupLinuxAddJobMenu()
    }
 
    QMenu* subMenuBackup = new QMenu("Backup");
-   AddJobMenuEntry(subMenuBackup, ":/icons/folderBackup", "Raw Copy", new OsCopyFsBackupJob);
+   AddJobMenuEntry(subMenuBackup, iconBackupCopy, "Raw Copy", new OsCopyFsBackupJob);
    AddJobMenuEntry(subMenuBackup, "Rsync Copy", new RsyncCopyFsBackupJob);
    AddJobMenuEntry(subMenuBackup, "Tar Backup", new TarBackupJob);
    AddJobMenuEntry(subMenuBackup, "Git (filesystems)", new GitFsBackupJob);
@@ -495,14 +500,17 @@ void MainWindow::SetupLinuxAddJobMenu()
    AddJobMenuEntry(subMenuBackup, "Rsnapshot", new RsnapshotSmartBackupJob);
    ui->menuAdd_Job->addMenu(subMenuBackup);
 
-   AddJobMenuEntry(ui->menuAdd_Job, ":/icons/hd", "Disk Space Check", new LinuxFreeSpaceCheckJob);
+   AddJobMenuEntry(ui->menuAdd_Job, iconHd, "Disk Space Check", new LinuxFreeSpaceCheckJob);
    if (configurationType != StandaloneConfigurationType)
    {
-      AddJobMenuEntry(ui->menuAdd_Job, ":/icons/console_50", "Custom command (server)", new UserConsoleJob);
-      AddJobMenuEntry("Custom command (client)", new SshConsoleJob(new UserConsoleJob));
+      AddJobMenuEntry(ui->menuAdd_Job, iconConsole,
+                      "Custom command (server)", new UserConsoleJob);
+      AddJobMenuEntry(ui->menuAdd_Job, iconConsole,
+                      "Custom command (client)", new SshConsoleJob(new UserConsoleJob));
    }
    else
-      AddJobMenuEntry("Custom command", new UserConsoleJob);
+      AddJobMenuEntry(ui->menuAdd_Job, iconConsole,
+                      "Custom command", new UserConsoleJob);
 }
 
 void MainWindow::AddJobMenuEntry(const QString& title, AbstractJob* job)

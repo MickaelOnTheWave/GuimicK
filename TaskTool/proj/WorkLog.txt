@@ -1,3 +1,12 @@
+22/07/2019 (21.1)
+    Tried to fix production issue with shutdown. Unfortunately it seems
+    that something changed in default configs : now shutdown needs to be
+    run with sudo (on top of having sudoers file properly configured).
+    Fixed in code but a new release will be needed to effectively fix
+    the issue on production. Which means having Synology build back...
+    Back on Windows GUI issues.
+    Added missing icons. Now checking on Windows...
+
 17/07/2019 (1.3h)
     Trying to create new project with icons to check.. New project OK,
     but with Qmake. Searching once more on Internet, found the AUTORCC

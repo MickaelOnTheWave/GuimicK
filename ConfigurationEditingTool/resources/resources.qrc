@@ -12,11 +12,11 @@
         <file alias="saveas_50">icons8-salvar-como-50.png</file>
         <file alias="mainIcon">32x32.png</file>
         <file alias="new">new-file-icon.png</file>
-        <file alias="open">open-file-icon.png</file>
         <file alias="console_50">icons8-terminal-50.png</file>
         <file alias="folderBackup">ModernXP-54-Folder-Backup-Scheduled-icon.png</file>
         <file alias="hd_50">icons8-hdd-50.png</file>
         <file alias="backup">Misc-New-Database-icon.png</file>
         <file alias="7zip">7zip-icon.png</file>
+        <file alias="open">open-file-icon.png</file>
     </qresource>
 </RCC>

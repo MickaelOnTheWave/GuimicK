@@ -179,8 +179,8 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset>
-     <normaloff>../resources/open-file-icon.png</normaloff>../resources/open-file-icon.png</iconset>
+    <iconset resource="../resources/resources.qrc">
+     <normaloff>:/icons/open</normaloff>:/icons/open</iconset>
    </property>
    <property name="text">
     <string>Open</string>
