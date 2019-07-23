@@ -203,7 +203,7 @@
   <action name="actionAbout">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/about_50</normaloff>:/icons/about_50</iconset>
+     <normaloff>:/icons/info_50</normaloff>:/icons/info_50</iconset>
    </property>
    <property name="text">
     <string>About</string>
@@ -230,7 +230,7 @@
   <action name="actionGeneral">
    <property name="icon">
     <iconset resource="../resources/resources.qrc">
-     <normaloff>:/icons/settings_50</normaloff>:/icons/settings_50</iconset>
+     <normaloff>:/icons/config_50</normaloff>:/icons/config_50</iconset>
    </property>
    <property name="text">
     <string>General</string>
