@@ -11,7 +11,7 @@ LinuxShutdownJob::LinuxShutdownJob()
     : AbstractJob(L"Shutdown"),
       computer(L""), jobTimeoutInSeconds(defaultTimeout)
 {
-    shutdownJob = new SshConsoleJob(L"Shutdown", L"shutdown -h now");
+    shutdownJob = new SshConsoleJob(L"Shutdown", L"sudo shutdown -h now");
 }
 
 LinuxShutdownJob::LinuxShutdownJob(const LinuxShutdownJob &other)
