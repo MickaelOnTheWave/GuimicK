@@ -145,7 +145,7 @@ void MainWindow::on_actionNew_triggered()
    if (!proceed)
       return;
 
-   CreateNewFile();
+   TryCreatingNewFile();
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -354,15 +354,13 @@ void MainWindow::OpenDefaultFile()
    if (checkFile.exists() && checkFile.isFile())
       OpenFile(standardFile, false);
    else
-      CreateNewFile();
+      TryCreatingNewFile();
 }
 
 void MainWindow::CreateNewFile()
 {
-    configurationType = ChooseConfigurationType();
     model.SetConfigurationType(configurationType);
     model.ClearJobs();
-
     UpdateUiOnFileChange("");
 }
 
@@ -551,6 +549,24 @@ bool MainWindow::ShouldDiscardCurrentChanges()
       return true;
 }
 
+void MainWindow::TryCreatingNewFile()
+{
+   if (restrictToStandaloneMode)
+   {
+      configurationType = StandaloneConfigurationType;
+      CreateNewFile();
+   }
+   else
+   {
+      ConfigurationTypeDialog dialog;
+      if (dialog.exec() == QDialog::Accepted)
+      {
+         configurationType = dialog.GetChosenType();
+         CreateNewFile();
+      }
+   }
+}
+
 QString MainWindow::GetBackupFolder(AbstractBackupJob* job) const
 {
    QString selectedBackupFolder("");
@@ -590,18 +606,6 @@ void MainWindow::RestoreBackup(
    const BackupRestoreTarget target = {L"192.168.1.256", L"user", L"userPassword"};
    if (folderName != "")
       job->RestoreBackupFromClient(parameters, target);
-}
-
-ConfigurationType MainWindow::ChooseConfigurationType() const
-{
-   if (restrictToStandaloneMode)
-      return StandaloneConfigurationType;
-   else
-   {
-      ConfigurationTypeDialog dialog;
-      dialog.exec();
-      return dialog.GetChosenType();
-   }
 }
 
 void MainWindow::UpdateModificationStatus()

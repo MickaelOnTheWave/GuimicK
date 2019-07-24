@@ -83,7 +83,9 @@ private:
 
    bool ShouldDiscardCurrentChanges();
 
+   void TryCreatingNewFile();
    void CreateNewFile();
+
    void OpenFile(const QString& filename,
                  const bool showStatusIfOk);
    bool SaveFile(const QString& filename);
@@ -113,8 +115,6 @@ private:
    int GetBackupTimeIndex(AbstractBackupJob* job, const QString& backupFolder) const;
 
    void RestoreBackup(AbstractBackupJob* job, const QString& backupFolder, const int timeIndex) const;
-
-   ConfigurationType ChooseConfigurationType() const;
 
    void UpdateModificationStatus();
 
