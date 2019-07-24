@@ -1,7 +1,13 @@
-24/07/2019 (18.6)
+24/07/2019 (0.8h)
     Fixed bug where creating a new file but closing the window without
     choosing created a new file. Fixed another UI bug with SaveAs not
     triggering desired Window title change.
+    Added Windows Application Icon, and it worked! :-)
+Next planned work:
+    - Change Windows App icon - put the same as main window icon
+    - Hide/disable testing/dev features
+    - Check existing bugs - fix them if found
+    - Start rethinking main window
 
 22/07/2019 (0.9h)
     Tried to fix production issue with shutdown. Unfortunately it seems
