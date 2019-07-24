@@ -38,7 +38,11 @@ if(WIN32)
         list(APPEND sources ${winSchedulerSources})
 endif(WIN32)
 
-add_executable(ConfigurationEditingTool ${sources} "${projectRoot}/resources/resources.qrc")
+if(WIN32)
+        add_executable(ConfigurationEditingTool ${sources} "${projectRoot}/resources/resources.qrc" "${projectRoot}/resources/ConfigurationEditingTool.rc")
+else(WIN32)
+	add_executable(ConfigurationEditingTool ${sources} "${projectRoot}/resources/resources.qrc")
+endif(WIN32)
 
 target_include_directories(ConfigurationEditingTool PRIVATE ${rootDir})
 target_include_directories(ConfigurationEditingTool PRIVATE ${scheduleDir})
