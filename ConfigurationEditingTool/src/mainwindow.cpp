@@ -180,7 +180,10 @@ void MainWindow::on_actionSave_As_triggered()
    {
       const bool ok = SaveFile(filename);
       if (ok)
+      {
          currentConfigurationFile = filename;
+         setWindowTitle(CreateWindowTitle());
+      }
    }
 }
 
