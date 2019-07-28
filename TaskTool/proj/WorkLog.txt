@@ -1,3 +1,9 @@
+28/07/2019 (0.4h)
+    Changed Windows app icon. Created version information class.
+Next planned work:
+    - Finish version class.
+    - Use it to show/hide os/dev features
+
 24/07/2019 (0.8h)
     Fixed bug where creating a new file but closing the window without
     choosing created a new file. Fixed another UI bug with SaveAs not
