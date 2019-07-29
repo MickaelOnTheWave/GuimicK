@@ -1,14 +1,15 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-AboutDialog::AboutDialog(const QString& versionInfo,
-                         const ConfigurationType configurationType,
+#include "editorversion.h"
+
+AboutDialog::AboutDialog(const ConfigurationType configurationType,
                          QWidget *parent) :
    QDialog(parent),
    ui(new Ui::AboutDialog)
 {
    ui->setupUi(this);
-   SetExeInfo(versionInfo, configurationType);
+   SetExeInfo(configurationType);
 }
 
 AboutDialog::~AboutDialog()
@@ -16,9 +17,9 @@ AboutDialog::~AboutDialog()
    delete ui;
 }
 
-void AboutDialog::SetExeInfo(const QString& versionInfo,
-                             const ConfigurationType configurationType)
+void AboutDialog::SetExeInfo(const ConfigurationType configurationType)
 {
+   const QString versionInfo = QString::fromStdWString(EditorVersion::GetVersionTag());
    QString fullExeInfo("Configuration Editor v");
    fullExeInfo.append(versionInfo).append("\t (");
    fullExeInfo.append(CreateModeString(configurationType)).append(")");

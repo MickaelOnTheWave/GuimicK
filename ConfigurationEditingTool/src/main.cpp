@@ -2,8 +2,20 @@
    #include <Windows.h>
 #endif   
 
-#include "mainwindow.h"
 #include <QApplication>
+
+#include "editorversion.h"
+#include "mainwindow.h"
+#include "ostools.h"
+
+void InitializeVersion()
+{
+#ifdef _WIN32
+   EditorVersion::CreateAsClientVersion(OsTools::IsOnWindows());
+#else
+   EditorVersion::CreateAsDevelopmentVersion(OsTools::IsOnWindows());
+#endif
+}
 
 int main(int argc, char *argv[])
 {
@@ -15,10 +27,8 @@ int main(int argc, char *argv[])
    QCoreApplication::setOrganizationName("Task Manager");
    QCoreApplication::setApplicationName("Configuration Editor");
 
+   InitializeVersion();
    MainWindow w;
-#ifdef _WIN32
-   w.RestrictToStandaloneMode();
-#endif
 
    w.OpenDefaultFile();
    w.show();

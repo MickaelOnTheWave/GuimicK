@@ -16,6 +16,7 @@
 #include "configurationcheckdialog.h"
 #include "configurationtype.h"
 #include "configurationtypedialog.h"
+#include "editorversion.h"
 #include "filetools.h"
 #include "jobdelegate.h"
 #include "jobeditdialogfactory.h"
@@ -57,8 +58,6 @@ using namespace std;
 
 namespace
 {
-   const wstring version = L"1.05";
-
    const QString iconBackupCopy = ":/icons/folderBackup";
    const QString iconBackup7zip = ":/icons/7zip";
    const QString iconConsole = ":/icons/console_50";
@@ -127,11 +126,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
    delete ui;
-}
-
-void MainWindow::RestrictToStandaloneMode()
-{
-   restrictToStandaloneMode = true;
 }
 
 void MainWindow::closeEvent(QCloseEvent*)
@@ -205,7 +199,7 @@ void MainWindow::on_actionGeneral_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-   AboutDialog dialog(QString::fromStdWString(version), configurationType);
+   AboutDialog dialog(configurationType);
    dialog.exec();
 }
 
@@ -554,7 +548,7 @@ bool MainWindow::ShouldDiscardCurrentChanges()
 
 void MainWindow::TryCreatingNewFile()
 {
-   if (restrictToStandaloneMode)
+   if (EditorVersion::IsStandaloneOnly())
    {
       configurationType = StandaloneConfigurationType;
       CreateNewFile();

@@ -1,22 +1,35 @@
 #ifndef EDITORVERSION_H
 #define EDITORVERSION_H
 
+#include <string>
 
 class EditorVersion
 {
 public:
-   static void CreateInstance();
+   static void CreateAsClientVersion(const bool _isWindows);
+   static void CreateAsDevelopmentVersion(const bool _isWindows);
 
+   static bool IsStandaloneOnly();
    static bool HasDevelopmentFeatures();
    static bool IsWindowsVersion();
    static bool IsLinuxVersion();
 
+   static std::wstring GetVersionTag();
+
 private:
    EditorVersion() = default;
+
+   static void Initialize(
+      const bool _isWindows,
+      const bool _hasDevFeatures,
+      const bool _isStandaloneOnly
+   );
 
    static EditorVersion* instance;
    bool hasDevelopmentFeatures;
    bool isWindows;
+   bool isStandaloneOnly;
+   const std::wstring version = L"1.06";
 };
 
 #endif // EDITORVERSION_H

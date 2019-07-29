@@ -22,8 +22,6 @@ public:
    explicit MainWindow(QWidget *parent = 0);
    ~MainWindow();
 
-   void RestrictToStandaloneMode();
-
    void OpenDefaultFile();
 
 protected:
@@ -137,7 +135,6 @@ private:
    TooledConfiguration model;
    JobDataModel jobListModel;
    ConfigurationType configurationType;
-   bool restrictToStandaloneMode = false;
 
    bool hasConfigurationChanged = false;
    QString currentConfigurationFile = "";

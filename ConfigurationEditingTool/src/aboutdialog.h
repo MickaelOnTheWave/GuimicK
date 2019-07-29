@@ -13,14 +13,12 @@ class AboutDialog : public QDialog
    Q_OBJECT
 
 public:
-   explicit AboutDialog(const QString& versionInfo,
-                        const ConfigurationType configurationType,
+   explicit AboutDialog(const ConfigurationType configurationType,
                         QWidget *parent = 0);
    ~AboutDialog();
 
 private:
-   void SetExeInfo(const QString& versionInfo,
-                   const ConfigurationType configurationType);
+   void SetExeInfo(const ConfigurationType configurationType);
 
    QString CreateModeString(const ConfigurationType configurationType) const;
 
