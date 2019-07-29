@@ -19,12 +19,6 @@ public:
 private:
    EditorVersion() = default;
 
-   static void Initialize(
-      const bool _isWindows,
-      const bool _hasDevFeatures,
-      const bool _isStandaloneOnly
-   );
-
    static EditorVersion* instance;
    bool hasDevelopmentFeatures;
    bool isWindows;
