@@ -1,6 +1,11 @@
-29/07/2019 (19.7)
+29/07/2019 (1.7h)
     Finished version class. Now going for hiding dev features in
-    client version.
+    client version. Hid all development only features.
+Next planned work:
+    - Copy css file to install and set it as default (Windows)
+    - Check output with css on report folder : spacings
+    - Change "unsaved changes" behaviour : ask to save instead of
+    asking to discard.
 
 28/07/2019 (0.4h)
     Changed Windows app icon. Created version information class.
