@@ -33,7 +33,10 @@ private:
    void InitializeCssSelectionWidget();
    void InitializeReportFolderSelectionWidget();
    void Initialize7zipWidget();
+   void InitializeReportDispatchBox();
+
    void HideClientTab();
+   void HideDevelopmentFeatures();
 
    Ui::SettingsDialog *ui;
    StandaloneConfiguration* configuration;

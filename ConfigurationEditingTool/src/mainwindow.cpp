@@ -115,6 +115,7 @@ MainWindow::MainWindow(QWidget *parent) :
    ui->jobListView->setItemDelegate(new JobDelegate(new AbstractJobDisplay()));
    ui->jobListView->setResizeMode(QListView::Adjust);
    ui->checkBackupsButton->setVisible(false);
+   ui->actionTask_Tool->setVisible(EditorVersion::HasDevelopmentFeatures());
 
    MoveToScreenCenter();
 
@@ -463,11 +464,10 @@ void MainWindow::MoveToScreenCenter()
 
 void MainWindow::SetupAddJobMenu()
 {
-#ifdef _WIN32
-   SetupWindowsAddJobMenu();
-#else
-   SetupLinuxAddJobMenu();
-#endif
+   if (EditorVersion::IsWindowsVersion())
+      SetupWindowsAddJobMenu();
+   else
+      SetupLinuxAddJobMenu();
 }
 
 void MainWindow::SetupWindowsAddJobMenu()

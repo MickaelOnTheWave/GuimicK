@@ -3,6 +3,7 @@
 
 #include <QFileDialog>
 
+#include "editorversion.h"
 #include "ostools.h"
 #include "serverconfiguration.h"
 #include "settingsconfigurationupdater.h"
@@ -26,13 +27,18 @@ SettingsDialog::SettingsDialog(StandaloneConfiguration* _configuration,
    InitializeCssSelectionWidget();
    InitializeReportFolderSelectionWidget();
    Initialize7zipWidget();
+   InitializeReportDispatchBox();
+
+   ui->cssWidget->setVisible(true); // default : HTML
+   ui->dispatcherWidget->setCurrentIndex(0); // default : Local files
 
    SettingsUiUpdater::Update(ui, configuration);
 
-   ui->cssWidget->setVisible(true);
-
    if (IsConfigurationServer(configuration) == false)
       HideClientTab();
+
+   if (EditorVersion::HasDevelopmentFeatures() == false)
+      HideDevelopmentFeatures();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -94,9 +100,27 @@ void SettingsDialog::Initialize7zipWidget()
    ui->sevenZipWidget->setVisible(OsTools::IsOnWindows());
 }
 
+void SettingsDialog::InitializeReportDispatchBox()
+{
+   ui->reportDispatchBox->addItem("Local folder");
+   if (EditorVersion::HasDevelopmentFeatures())
+   {
+      ui->reportDispatchBox->addItem("Email");
+      ui->reportDispatchBox->addItem("Console");
+   }
+}
+
 void SettingsDialog::HideClientTab()
 {
    ui->settingsWidget->removeTab(1);
+}
+
+void SettingsDialog::HideDevelopmentFeatures()
+{
+   ui->agentNameLabel->setVisible(false);
+   ui->agentNameEdit->setVisible(false);
+   ui->reportDispatchLabel->setVisible(false);
+   ui->reportDispatchBox->setVisible(false);
 }
 
 void SettingsDialog::on_reportFormatBox_currentIndexChanged(const QString &arg1)

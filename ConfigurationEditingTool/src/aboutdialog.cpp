@@ -21,8 +21,12 @@ void AboutDialog::SetExeInfo(const ConfigurationType configurationType)
 {
    const QString versionInfo = QString::fromStdWString(EditorVersion::GetVersionTag());
    QString fullExeInfo("Configuration Editor v");
-   fullExeInfo.append(versionInfo).append("\t (");
-   fullExeInfo.append(CreateModeString(configurationType)).append(")");
+   fullExeInfo.append(versionInfo);
+   if (EditorVersion::IsStandaloneOnly() == false)
+   {
+      fullExeInfo.append("\t (");
+      fullExeInfo.append(CreateModeString(configurationType)).append(")");
+   }
    ui->labelExeInfo->setText(fullExeInfo);
 }
 

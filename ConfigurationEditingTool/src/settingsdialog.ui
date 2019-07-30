@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>469</width>
-    <height>488</height>
+    <width>463</width>
+    <height>334</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="agentNameLabel">
          <property name="text">
           <string>Name</string>
          </property>
@@ -33,6 +33,12 @@
        </item>
        <item row="0" column="2">
         <widget class="QLineEdit" name="agentNameEdit">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="text">
           <string>Task Manager Agent</string>
          </property>
@@ -47,6 +53,21 @@
        </item>
        <item row="1" column="3">
         <widget class="QComboBox" name="reportFormatBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="currentIndex">
+          <number>1</number>
+         </property>
          <item>
           <property name="text">
            <string>Plain Text</string>
@@ -60,7 +81,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="label_9">
+        <widget class="QLabel" name="reportDispatchLabel">
          <property name="text">
           <string>Send report to</string>
          </property>
@@ -68,21 +89,18 @@
        </item>
        <item row="2" column="3">
         <widget class="QComboBox" name="reportDispatchBox">
-         <item>
-          <property name="text">
-           <string>Console</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Email</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Local files</string>
-          </property>
-         </item>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>120</width>
+           <height>0</height>
+          </size>
+         </property>
         </widget>
        </item>
        <item row="3" column="0" colspan="2">
@@ -96,14 +114,64 @@
         </widget>
        </item>
        <item row="4" column="2">
-        <widget class="PathSelectionControl" name="cssWidget" native="true"/>
+        <widget class="PathSelectionControl" name="cssWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
        <item row="5" column="0" colspan="4">
         <widget class="QStackedWidget" name="dispatcherWidget">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>60</height>
+          </size>
+         </property>
          <property name="currentIndex">
           <number>0</number>
          </property>
-         <widget class="QWidget" name="emptyPage"/>
+         <widget class="QWidget" name="filePage">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>60</height>
+           </size>
+          </property>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
+            <widget class="PathSelectionControl" name="reportFolderWidget" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>40</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
          <widget class="QWidget" name="emailPage">
           <layout class="QGridLayout" name="gridLayout_4">
            <item row="1" column="2">
@@ -204,13 +272,7 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="filePage">
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="0">
-            <widget class="PathSelectionControl" name="reportFolderWidget" native="true"/>
-           </item>
-          </layout>
-         </widget>
+         <widget class="QWidget" name="emptyPage"/>
         </widget>
        </item>
        <item row="6" column="1" colspan="2">
