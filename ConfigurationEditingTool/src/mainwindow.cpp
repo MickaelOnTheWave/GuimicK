@@ -702,8 +702,53 @@ bool MainWindow::NeedsAdminRightsWarning()
    return (!isRunningAsAdministrator && jobListModel.DoesJobListNeedAdminRights());
 }
 
+wstring MainWindow::GetDefaultReportFolder()
+{
+    const QString folder = QDir::homePath() + "/Task Manager Report/";
+    return folder.toStdWString();
+}
+
+wstring MainWindow::GetDefaultReportCss()
+{
+   const QString file = QDir::currentPath() + "/report.css";
+   return file.toStdWString();
+}
+
+void MainWindow::SetupDefaultFolder()
+{
+    wstring reportFolder = model.GetAgent()->GetReportFolder();
+    if (reportFolder == L"")
+    {
+        reportFolder = GetDefaultReportFolder();
+        model.GetAgent()->SetReportFolder(reportFolder);
+    }
+
+    if (FileTools::FolderExists(reportFolder) == false)
+    {
+        const bool ok = FileTools::CreateFolder(reportFolder);
+        if (!ok)
+        {
+            QMessageBox::warning(this, "Error with ReportFolder",
+                                 "Specified report folder does not exist and can't be created.\n"
+                                 "Please choose a report folder without the read-only attribute.\n"
+                                 "You can specify one in the \"Settings\" section.");
+        }
+    }
+}
+
+void MainWindow::SetupDefaultCss()
+{
+   wstring reportCss = model.GetTmpConfiguration()->GetReportCss();
+   if (reportCss == L"")
+   {
+      reportCss = GetDefaultReportCss();
+      model.GetTmpConfiguration()->SetReportCss(reportCss);
+   }
+}
+
 void MainWindow::on_actionRun_triggered()
 {
+   SetupDefaultCss();
    const wstring reportFile = SaveConfigurationToTempLocation();
    const wstring tempConfigFilename = GetTempConfigFilename().toStdWString();
    if (FileTools::FileExists(tempConfigFilename) == false)
@@ -714,7 +759,10 @@ void MainWindow::on_actionRun_triggered()
                            "You can specify one in the \"Settings->Task Tool\" section.");
    }
    else
+   {
+      SetupDefaultFolder();
       OpenRunDialog(reportFile);
+   }
 }
 
 void MainWindow::on_actionTask_Tool_triggered()

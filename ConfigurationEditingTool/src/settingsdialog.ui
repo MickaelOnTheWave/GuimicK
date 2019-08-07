@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>463</width>
-    <height>334</height>
+    <width>524</width>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -110,16 +110,6 @@
          </property>
          <property name="text">
           <string>Shutdown on Finish</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="PathSelectionControl" name="cssWidget" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
          </property>
         </widget>
        </item>
@@ -275,8 +265,31 @@
          <widget class="QWidget" name="emptyPage"/>
         </widget>
        </item>
-       <item row="6" column="1" colspan="2">
-        <widget class="PathSelectionControl" name="sevenZipWidget" native="true"/>
+       <item row="6" column="0" colspan="3">
+        <widget class="PathSelectionControl" name="sevenZipWidget" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="4">
+        <widget class="PathSelectionControl" name="cssWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

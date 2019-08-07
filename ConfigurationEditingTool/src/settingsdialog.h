@@ -30,6 +30,11 @@ private slots:
 
 private:
    void SetDefaultValues();
+   void SetDefaultClientName();
+   void SetDefaultAgentName();
+   void SetDefaultCss();
+   void SetDefaultReportFolder();
+
    void InitializeCssSelectionWidget();
    void InitializeReportFolderSelectionWidget();
    void Initialize7zipWidget();

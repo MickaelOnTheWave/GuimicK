@@ -131,6 +131,12 @@ private:
 
    bool NeedsAdminRightsWarning();
 
+   static std::wstring GetDefaultReportFolder();
+   static std::wstring GetDefaultReportCss();
+
+   void SetupDefaultFolder();
+   void SetupDefaultCss();
+
    Ui::MainWindow *ui;
    TooledConfiguration model;
    JobDataModel jobListModel;

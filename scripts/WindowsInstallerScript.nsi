@@ -1,6 +1,6 @@
 ;--------------------------------
 
-!define VERSION "1.0.06"
+!define VERSION "1.0.07"
 ; The name of the installer
 Name "Task Manager ${VERSION}"
 
@@ -50,6 +50,7 @@ Section "" ;No components page, name is not important
   File Qt5Widgets.dll
   File TaskTool.exe  
   File license.txt  
+  File report.css
   File /r "iconengines"
   File /r "imageformats"
   File /r "platforms"

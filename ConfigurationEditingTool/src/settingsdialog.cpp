@@ -59,12 +59,43 @@ void SettingsDialog::on_exitButtonBox_rejected()
 
 void SettingsDialog::SetDefaultValues()
 {
-   Client* client = configuration->GetClient();
-   Agent* agent = configuration->GetAgent();
-   if (client->GetName() == L"")
-      client->SetName(L"Local Client");
-   if (agent->GetName() == L"")
-      agent->SetName(L"Task Manager Agent");
+   SetDefaultClientName();
+   SetDefaultAgentName();
+   SetDefaultCss();
+   SetDefaultReportFolder();
+}
+
+void SettingsDialog::SetDefaultClientName()
+{
+    Client* client = configuration->GetClient();
+    if (client->GetName() == L"")
+       client->SetName(L"Local Client");
+}
+
+void SettingsDialog::SetDefaultAgentName()
+{
+    Agent* agent = configuration->GetAgent();
+    if (agent->GetName() == L"")
+       agent->SetName(L"Task Manager Agent");
+}
+
+void SettingsDialog::SetDefaultCss()
+{
+    if (configuration->GetReportCss() == L"")
+    {
+        const QString defaultCss = QDir::currentPath() + "/report.css";
+        configuration->SetReportCss(defaultCss.toStdWString());
+    }
+}
+
+void SettingsDialog::SetDefaultReportFolder()
+{
+    Agent* agent = configuration->GetAgent();
+    if (agent->GetReportFolder() == L"")
+    {
+        const QString defaultFolder = QDir::homePath() + "/Task Manager Report/";
+        agent->SetReportFolder(defaultFolder.toStdWString());
+    }
 }
 
 void SettingsDialog::InitializeCssSelectionWidget()
@@ -121,6 +152,7 @@ void SettingsDialog::HideDevelopmentFeatures()
    ui->agentNameEdit->setVisible(false);
    ui->reportDispatchLabel->setVisible(false);
    ui->reportDispatchBox->setVisible(false);
+   ui->sevenZipWidget->setVisible(false);
 }
 
 void SettingsDialog::on_reportFormatBox_currentIndexChanged(const QString &arg1)
