@@ -19,8 +19,8 @@ class MainWindow : public QMainWindow
    Q_OBJECT
 
 public:
-   explicit MainWindow(QWidget *parent = 0);
-   ~MainWindow();
+   explicit MainWindow(QWidget *parent = nullptr);
+   virtual ~MainWindow();
 
    void OpenDefaultFile();
 
@@ -61,6 +61,7 @@ private slots:
    void on_actionSchedule_Execution_triggered();
 
 private:
+   void SetDefaultJobsButtonsState();
    void MoveToScreenCenter();
 
    void SetupAddJobMenu();
@@ -136,6 +137,8 @@ private:
 
    void SetupDefaultFolder();
    void SetupDefaultCss();
+
+   void UpdateUiOnJobSelection(const int index);
 
    Ui::MainWindow *ui;
    TooledConfiguration model;
