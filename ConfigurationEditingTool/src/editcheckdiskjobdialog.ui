@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>303</width>
-    <height>136</height>
+    <width>241</width>
+    <height>154</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,6 +28,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Job Name</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QLineEdit" name="jobnameEdit"/>
@@ -70,20 +77,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="selectedDiskLabel">
-       <property name="text">
-        <string>none</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="chooseDiskButton">
-       <property name="text">
-        <string>...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -99,17 +92,7 @@
     </layout>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
+    <layout class="QHBoxLayout" name="drivesLayout"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="closeButtonBox">

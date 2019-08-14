@@ -116,7 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
    ui->jobListView->setResizeMode(QListView::Adjust);
    ui->actionTask_Tool->setVisible(EditorVersion::HasDevelopmentFeatures());
 
-   SetInitialButtonStates();
+   SetDefaultJobsButtonsState();
 
    MoveToScreenCenter();
 
@@ -229,6 +229,7 @@ void MainWindow::InsertNewJob(AbstractJob* job)
    ForceJobListViewUpdate();
    hasConfigurationChanged = true;
    UpdateModificationStatus();
+   UpdateUiOnJobSelection(insertIndex);
 }
 
 void MainWindow::MoveItem(const int currentIndex, const int newIndex)
@@ -242,6 +243,7 @@ void MainWindow::MoveItem(const int currentIndex, const int newIndex)
    ForceJobListViewUpdate();
    hasConfigurationChanged = true;
    UpdateModificationStatus();
+   UpdateUiOnJobSelection(newIndex);
 }
 
 void MainWindow::MoveDelegates(const int currentIndex, const int newIndex)
@@ -343,6 +345,7 @@ void MainWindow::on_deleteButton_clicked()
       ForceJobListViewUpdate();
       hasConfigurationChanged = true;
       UpdateModificationStatus();
+      SetDefaultJobsButtonsState();
    }
 }
 
@@ -427,12 +430,13 @@ void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
    }
 }
 
-void MainWindow::on_jobListView_clicked(const QModelIndex &)
+void MainWindow::on_jobListView_clicked(const QModelIndex& index)
 {
+   UpdateUiOnJobSelection(index.row());
    //AbstractJob* job = jobListModel.GetJob(index);
    //const bool isBackupJob = (dynamic_cast<AbstractBackupJob*>(job) != nullptr);
    const bool isBackupJob = false; // Pending - see task [056].
-   ui->checkBackupsButton->setVisible(isBackupJob);
+   ui->checkBackupsButton->setVisible(isBackupJob);   
 }
 
 void MainWindow::on_checkBackupsButton_clicked()
@@ -640,6 +644,7 @@ void MainWindow::UpdateUiOnFileChange(const QString& newFile)
    hasConfigurationChanged = false;
    UpdateModificationStatus();
    UpdateAddJobMenuEntries();
+   SetDefaultJobsButtonsState();
 }
 
 void MainWindow::UpdateAddJobMenuEntries()
@@ -747,6 +752,13 @@ void MainWindow::SetupDefaultCss()
    }
 }
 
+void MainWindow::UpdateUiOnJobSelection(const int index)
+{
+   ui->upButton->setVisible(index > 0);
+   ui->downButton->setVisible(index < jobListModel.rowCount()-1);
+   ui->deleteButton->setVisible(true);
+}
+
 void MainWindow::on_actionRun_triggered()
 {
    SetupDefaultCss();
@@ -790,7 +802,10 @@ void MainWindow::on_actionSchedule_Execution_triggered()
    dialog.exec();
 }
 
-void MainWindow::SetInitialButtonStates()
+void MainWindow::SetDefaultJobsButtonsState()
 {
+   ui->upButton->setVisible(false);
+   ui->downButton->setVisible(false);
+   ui->deleteButton->setVisible(false);
    ui->checkBackupsButton->setVisible(false);
 }

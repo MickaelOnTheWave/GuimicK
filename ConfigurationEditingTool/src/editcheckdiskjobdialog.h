@@ -3,6 +3,10 @@
 
 #include "abstracteditjobdialog.h"
 
+#include <map>
+#include <QButtonGroup>
+#include <QRadioButton>
+
 namespace Ui {
 class EditCheckDiskJobDialog;
 }
@@ -16,14 +20,23 @@ public:
     virtual ~EditCheckDiskJobDialog();
 
 private slots:
-    void on_chooseDiskButton_pressed();
 
 protected:
     void UpdateUiFromJob() override;
     void UpdateJobFromUi() override;
 
 private:
+   void SetupUiWithDrives();
+
+   QStringList DetectDrives();
+   void AddDriveButtons(const QStringList& drives);
+
+   void SelectDriveOnUi(const QString& drive);
+
     Ui::EditCheckDiskJobDialog *ui;
+
+    QButtonGroup* driveGroup;
+    std::map<QString, QAbstractButton*> driveButtonMap;
 };
 
 #endif // EDITCHECKDISKJOBDIALOG_H

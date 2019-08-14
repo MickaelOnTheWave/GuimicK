@@ -2,6 +2,7 @@
 #include "ui_editconsolejobdialog.h"
 
 #include "choosefiledialog.h"
+#include "editorversion.h"
 #include "sshconsolejob.h"
 #include "userconsolejob.h"
 
@@ -12,7 +13,7 @@ EditConsoleJobDialog::EditConsoleJobDialog(AbstractJob* _job) :
    ui(new Ui::EditConsoleJobDialog)
 {
    ui->setupUi(this);
-   ui->tabWidget->removeTab(2); // Ssh jobs must be this client.
+   InitializeUi();
    UpdateUiFromJob();
 }
 
@@ -43,6 +44,13 @@ void EditConsoleJobDialog::UpdateJobFromUi()
 {
    UpdateJobFromUi_Basic();
    UpdateJobFromUi_User();
+}
+
+void EditConsoleJobDialog::InitializeUi()
+{
+   ui->tabWidget->removeTab(2); // Ssh jobs must be this client.
+   if (EditorVersion::HasDevelopmentFeatures() == false)
+      ui->tabWidget->removeTab(1); // Remove User Properties tab
 }
 
 void EditConsoleJobDialog::UpdateJobTypeLabel()

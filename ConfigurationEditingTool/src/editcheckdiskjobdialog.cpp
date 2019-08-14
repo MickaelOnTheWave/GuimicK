@@ -1,25 +1,18 @@
 #include "editcheckdiskjobdialog.h"
 #include "ui_editcheckdiskjobdialog.h"
 
+#include <QButtonGroup>
 #include <QDir>
 #include <QFileDialog>
+#include <QRadioButton>
 #include "diskrelatedjob.h"
-
-namespace
-{
-    const QString uiNoDrive = "none";
-
-    QString GetDrive(const QString& path)
-    {
-        return path.section('/', 0, 0);
-    }
-}
 
 EditCheckDiskJobDialog::EditCheckDiskJobDialog(AbstractJob *_job) :
     AbstractEditJobDialog(_job),
     ui(new Ui::EditCheckDiskJobDialog)
 {
     ui->setupUi(this);
+    SetupUiWithDrives();
     UpdateUiFromJob();
 
     connect(ui->closeButtonBox, SIGNAL(accepted()), this, SLOT(OnCloseAccepting()));
@@ -31,31 +24,14 @@ EditCheckDiskJobDialog::~EditCheckDiskJobDialog()
     delete ui;
 }
 
-void EditCheckDiskJobDialog::on_chooseDiskButton_pressed()
-{
-    // TODO : setup a real widget based on this to select the drive
-    /*for (const QFileInfo& device : QDir::drives())
-    {
-        auto temp = device.baseName();
-    }*/
-
-
-    QFileDialog dialog(this);
-    dialog.setFileMode(QFileDialog::Directory);
-    dialog.setOption(QFileDialog::ShowDirsOnly, true);
-    if (dialog.exec() == QDialog::Accepted)
-        ui->selectedDiskLabel->setText(GetDrive(dialog.selectedFiles().first()));
-}
-
 void EditCheckDiskJobDialog::UpdateUiFromJob()
 {
     ui->jobnameEdit->setText(QString::fromStdWString(job->GetName()));
 
     auto castJob = dynamic_cast<DiskRelatedJob*>(job);
-    QString drive = QString::fromStdWString(castJob->GetDrive());
-    if (drive == "")
-        drive = uiNoDrive;
-    ui->selectedDiskLabel->setText(drive);
+    const QString drive = QString::fromStdWString(castJob->GetDrive());
+    if (drive != "")
+       SelectDriveOnUi(drive);
 }
 
 void EditCheckDiskJobDialog::UpdateJobFromUi()
@@ -63,8 +39,39 @@ void EditCheckDiskJobDialog::UpdateJobFromUi()
     job->SetName(ui->jobnameEdit->text().toStdWString());
 
     auto castJob = dynamic_cast<DiskRelatedJob*>(job);
-    QString drive = ui->selectedDiskLabel->text();
-    if (drive == uiNoDrive)
-        drive = "";
+    const QString drive = driveGroup->checkedButton()->text();
     castJob->SetDrive(drive.toStdWString());
+}
+
+void EditCheckDiskJobDialog::SetupUiWithDrives()
+{
+   AddDriveButtons(DetectDrives());
+}
+
+void EditCheckDiskJobDialog::SelectDriveOnUi(const QString& drive)
+{
+   QAbstractButton* driveButton = driveButtonMap[drive];
+   driveButton->setChecked(true);
+}
+
+QStringList EditCheckDiskJobDialog::DetectDrives()
+{
+   QStringList driveNames;
+   QFileInfoList drivesInfo = QDir::drives();
+   for (const auto& driveInfo : drivesInfo)
+      driveNames.push_back(driveInfo.filePath());
+   return driveNames;
+}
+
+void EditCheckDiskJobDialog::AddDriveButtons(const QStringList& drives)
+{
+   driveGroup = new QButtonGroup();
+   for (const QString& drive : drives)
+   {
+      auto button = new QRadioButton(drive);
+      button->setIcon(QIcon(":/icons/hd_50"));
+      driveGroup->addButton(button);
+      ui->drivesLayout->addWidget(button);
+      driveButtonMap[drive] = button;
+   }
 }

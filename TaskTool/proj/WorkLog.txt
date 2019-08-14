@@ -1,3 +1,36 @@
+14/08/2019 (18.6)
+
+07/08/2019 (0.7h)
+    HTML is generated as it should be. CSS could be corrected,
+    but as it is ok for report leaving it as it is. Going for
+    save behaviour.. Also leaving behaviour as it is, it doesn't
+    harm and is consistent. Going for adjustments on main window :
+    only showing move/delete buttons on relevant selection.
+    Implemented all the show/hide logic for all known cases of
+    main window job handling.
+Next planned work:
+    - Hide dev features from job edit widgets
+    - Improve Backup edit widget
+    - Improve main window job data : more graphics? more relevant info?
+
+06/08/2019 (0.8h)
+    Fixed default folder and css issues. Fixed some UI issues
+    with controls not at required size.
+Next planned work:
+    - Check output with css on report folder : spacings
+    - Change "unsaved changes" behaviour : ask to save instead of
+    asking to discard.
+
+05/08/2019 (1.5h)
+    Copied Css file in installed version. Now changing
+    defaults to have the css file used and a decent Report folder
+    even without user going to Settings.
+    Css worked fine for Release Installed version (not dev) but not
+    default report folder. Probably needs to be created...
+Next planned work:
+    - Fix default report folder issue : create folder?
+    - See previous roadmap
+
 29/07/2019 (1.7h)
     Finished version class. Now going for hiding dev features in
     client version. Hid all development only features.
@@ -784,7 +817,7 @@ Next planned work:
     - Fix remaining error in nsis script
     - Back to 7zip implementation
 
-28/01/2018 (2h)
+28/01/2019 (2h)
     Installed Windows SDK. Now there is a 64-bit ws2_32.lib.
     Ajusted Cmake to link to it. Still same issue.
     Removing some warnings from ToolsLib. There are too much of them
