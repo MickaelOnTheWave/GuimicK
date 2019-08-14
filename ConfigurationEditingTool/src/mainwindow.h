@@ -61,6 +61,7 @@ private slots:
    void on_actionSchedule_Execution_triggered();
 
 private:
+   void SetInitialButtonStates();
    void MoveToScreenCenter();
 
    void SetupAddJobMenu();

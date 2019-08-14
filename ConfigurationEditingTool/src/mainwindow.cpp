@@ -114,8 +114,9 @@ MainWindow::MainWindow(QWidget *parent) :
    ui->jobListView->setModel(&jobListModel);
    ui->jobListView->setItemDelegate(new JobDelegate(new AbstractJobDisplay()));
    ui->jobListView->setResizeMode(QListView::Adjust);
-   ui->checkBackupsButton->setVisible(false);
    ui->actionTask_Tool->setVisible(EditorVersion::HasDevelopmentFeatures());
+
+   SetInitialButtonStates();
 
    MoveToScreenCenter();
 
@@ -787,4 +788,9 @@ void MainWindow::on_actionSchedule_Execution_triggered()
    dialog.SetConfigurationFile(currentConfigurationFile);
    dialog.SetTaskToolExecutable(GetTaskToolExecutable());
    dialog.exec();
+}
+
+void MainWindow::SetInitialButtonStates()
+{
+   ui->checkBackupsButton->setVisible(false);
 }
