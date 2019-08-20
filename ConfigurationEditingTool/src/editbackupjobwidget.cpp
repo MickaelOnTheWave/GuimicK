@@ -97,16 +97,14 @@ void EditBackupJobWidget::on_backupPointsWidget_itemSelectionChanged()
 
 void EditBackupJobWidget::OnFinishedSourceEditing(const QString& value)
 {
-   const int currentRow = ui->backupPointsWidget->currentRow();
-   if (currentRow != -1)
-      ui->backupPointsWidget->setItem(currentRow, 0, new QTableWidgetItem(value));
+   OnFinishedPathEditing(value, 0);
 }
 
 void EditBackupJobWidget::OnFinishedDestinationEditing(const QString& value)
 {
-   const int currentRow = ui->backupPointsWidget->currentRow();
-   if (currentRow != -1)
-      ui->backupPointsWidget->setItem(currentRow, 1, new QTableWidgetItem(value));
+   const QString valueWithZipExtension = AddZipExtension(value);
+   OnFinishedPathEditing(valueWithZipExtension, 1);
+   ui->destinationWidget->SetPath(valueWithZipExtension);
 }
 
 void EditBackupJobWidget::SetFolderWidgetValue(
@@ -136,5 +134,19 @@ void EditBackupJobWidget::EnableControls(const bool value)
    ui->removeBackupPointButton->setEnabled(value);
    ui->sourceWidget->Enable(value);
    ui->destinationWidget->Enable(value);
+}
+
+void EditBackupJobWidget::OnFinishedPathEditing(const QString& value,
+                                                const int columnIndex)
+{
+   const int currentRow = ui->backupPointsWidget->currentRow();
+   if (currentRow != -1)
+      ui->backupPointsWidget->setItem(currentRow, columnIndex, new QTableWidgetItem(value));
+}
+
+QString EditBackupJobWidget::AddZipExtension(const QString& value)
+{
+   const QString zipExtension = ".zip";
+   return (value.endsWith(zipExtension)) ? value : value + zipExtension;
 }
 

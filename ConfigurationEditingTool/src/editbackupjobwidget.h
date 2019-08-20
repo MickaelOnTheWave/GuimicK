@@ -45,6 +45,11 @@ private:
    void InitializeControls();
    void EnableControls(const bool value);
 
+   void OnFinishedPathEditing(const QString& value,
+                              const int columnIndex);
+
+   static QString AddZipExtension(const QString& value);
+
    Ui::EditBackupJobWidget *ui;
 };
 
