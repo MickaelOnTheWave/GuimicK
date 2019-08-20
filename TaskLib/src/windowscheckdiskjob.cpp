@@ -19,7 +19,7 @@ bool GetAdminRights()
 //----------------------------------------------------------------------
 
 WindowsCheckdiskJob::WindowsCheckdiskJob(const wstring& _drive)
-   : DiskRelatedJob(L"Disk checking", _drive)
+   : DiskRelatedJob(L"HD Integrity Check", _drive)
 {
 }
 

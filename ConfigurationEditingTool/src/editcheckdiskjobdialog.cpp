@@ -39,7 +39,8 @@ void EditCheckDiskJobDialog::UpdateJobFromUi()
     job->SetName(ui->jobnameEdit->text().toStdWString());
 
     auto castJob = dynamic_cast<DiskRelatedJob*>(job);
-    const QString drive = driveGroup->checkedButton()->text();
+    QAbstractButton* selectedDrive = driveGroup->checkedButton();
+    const QString drive = (selectedDrive) ? selectedDrive->text() : "";
     castJob->SetDrive(drive.toStdWString());
 }
 

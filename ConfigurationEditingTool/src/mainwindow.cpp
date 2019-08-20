@@ -299,7 +299,7 @@ AbstractDisplay* MainWindow::CreateDisplay(AbstractJob* job) const
       return new WakeJobDisplay();
    else if (dynamic_cast<AbstractBackupJob*>(job))
       return new AbstractBackupJobDisplay();
-   else if (dynamic_cast<LinuxFreeSpaceCheckJob*>(job))
+   else if (dynamic_cast<DiskRelatedJob*>(job))
       return new DiskSpaceJobDisplay();
    else if (dynamic_cast<AbstractConsoleJob*>(job))
       return new ConsoleJobDisplay();
