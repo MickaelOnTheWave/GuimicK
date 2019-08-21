@@ -18,6 +18,8 @@ public:
    virtual void Initialize(AbstractJob* job) override;
 
 private:
+   void SetIcon(AbstractJob* job);
+
    Ui::AbstractBackupJobDisplay *ui;
 };
 

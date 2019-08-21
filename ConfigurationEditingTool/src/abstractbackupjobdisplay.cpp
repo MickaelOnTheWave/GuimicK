@@ -2,6 +2,7 @@
 #include "ui_abstractbackupjobdisplay.h"
 
 #include "abstractbackupjob.h"
+#include "sevenzipbackupjob.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ AbstractBackupJobDisplay::~AbstractBackupJobDisplay()
 
 void AbstractBackupJobDisplay::Initialize(AbstractJob* job)
 {
+   SetIcon(job);
    auto backupJob = dynamic_cast<AbstractBackupJob*>(job);
    if (backupJob)
    {
@@ -40,4 +42,15 @@ void AbstractBackupJobDisplay::Initialize(AbstractJob* job)
       else
          ui->backupInfoWidget->setCurrentIndex(2);
    }
+}
+
+void AbstractBackupJobDisplay::SetIcon(AbstractJob* job)
+{
+   QString iconName;
+   if (dynamic_cast<SevenZipBackupJob*>(job))
+      iconName = ":/icons/7zip";
+   else
+      iconName = ":/icons/folderBackup";
+   ui->imageLabel->setPixmap(QPixmap(iconName));
+
 }
