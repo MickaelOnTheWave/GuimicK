@@ -12,8 +12,8 @@ class AbstractBackupJobDisplay : public AbstractDisplay
    Q_OBJECT
 
 public:
-   explicit AbstractBackupJobDisplay(QWidget *parent = 0);
-   ~AbstractBackupJobDisplay();
+   explicit AbstractBackupJobDisplay(QWidget *parent = nullptr);
+   ~AbstractBackupJobDisplay() override;
 
    virtual void Initialize(AbstractJob* job) override;
 
