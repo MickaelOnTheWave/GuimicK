@@ -1,3 +1,41 @@
+21/08/2019 (1.4h)
+    Fixed remaining issues. Now the editor is visually
+    ok. Making a quick test : everything seems OK.
+    Installing on the clean Windows : most things seem OK.
+    There is a little use issue : on error, console job
+    does not link output.
+    Also, scheduled run did not create report. After a
+    small check, it seems that the report can't be created
+    and is being output on console.
+Next planned work:
+    - Attach output on console job error
+    - Check why registering run did not create report
+    - Once those fixed, think about giving the program for
+    selected friends/testers
+    - Start thinking about distribution / website
+
+20/08/2019 (1.6h)
+    Cross-tools with newer compiler seem very difficult.
+    The actual issue probably is caused by cross tools being
+    for a newer kernel. Next step to solve this issue:
+    Build cross tools from scratch. This is not the time
+    to spend that much time on this, moving on to Windows
+    features.
+    Added Automated Zip extension to 7zip backup destinations.
+
+19/08/2019 (1h)
+    Trying again to compile for Synology. Reinstalled
+    Synology provided toolchain, but there are several issues
+    with using a C++03 compiler. Trying once more a modern one...
+    Installed it and it compiled, but there is an error on execution
+    on Synology. So far, all generated test cpp files didn't execute properly.
+    Even following all solutions on Internet.
+Next planned work:
+    - Finish trying using standard cross compiler
+    - Change zip file choose : either find a better dialog
+    or force zip extension if not set
+    - See previous roadmap
+
 14/08/2019 (1.8h)
     Checked console dev features on Windows. Improved
     Check Disk widget with drive detection and selection
