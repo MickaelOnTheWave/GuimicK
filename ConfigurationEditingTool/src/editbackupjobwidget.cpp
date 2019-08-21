@@ -47,7 +47,7 @@ void EditBackupJobWidget::AddBackupPointsToUi(
 {
    ui->backupPointsWidget->setRowCount(backupPoints.size());
    int index = 0;
-   for (const auto it : backupPoints)
+   for (const auto& it : backupPoints)
    {
       ui->backupPointsWidget->setItem(index, 0, new QTableWidgetItem(QString::fromStdWString(it.first)));
       ui->backupPointsWidget->setItem(index, 1, new QTableWidgetItem(QString::fromStdWString(it.second)));
