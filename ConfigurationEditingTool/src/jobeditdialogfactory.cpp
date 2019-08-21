@@ -21,8 +21,8 @@
 #include "editrsnapshotbackupjobdialog.h"
 #include "editrsyncfsbackupjobdialog.h"
 #include "editshutdownjobdialog.h"
-#include "wakejob/editwakejobdialog.h"
 #include "editzipcopybackupdialog.h"
+#include "wakejob/editwakejobdialog.h"
 
 AbstractEditJobDialog* JobEditDialogFactory::Create(AbstractJob* job)
 {

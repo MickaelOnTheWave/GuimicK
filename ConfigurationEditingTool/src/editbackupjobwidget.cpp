@@ -102,9 +102,7 @@ void EditBackupJobWidget::OnFinishedSourceEditing(const QString& value)
 
 void EditBackupJobWidget::OnFinishedDestinationEditing(const QString& value)
 {
-   const QString valueWithZipExtension = AddZipExtension(value);
-   OnFinishedPathEditing(valueWithZipExtension, 1);
-   ui->destinationWidget->SetPath(valueWithZipExtension);
+   FinishedDestinationEditing(value);
 }
 
 void EditBackupJobWidget::SetFolderWidgetValue(
@@ -144,9 +142,13 @@ void EditBackupJobWidget::OnFinishedPathEditing(const QString& value,
       ui->backupPointsWidget->setItem(currentRow, columnIndex, new QTableWidgetItem(value));
 }
 
-QString EditBackupJobWidget::AddZipExtension(const QString& value)
+void EditBackupJobWidget::FinishedDestinationEditing(const QString& value)
 {
-   const QString zipExtension = ".zip";
-   return (value.endsWith(zipExtension)) ? value : value + zipExtension;
+   OnFinishedPathEditing(value, 1);
+}
+
+void EditBackupJobWidget::SetDestinationWidgetPath(const QString& value)
+{
+   ui->destinationWidget->SetPath(value);
 }
 

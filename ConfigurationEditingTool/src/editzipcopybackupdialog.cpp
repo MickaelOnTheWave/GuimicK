@@ -2,6 +2,7 @@
 #include "ui_editzipcopybackupdialog.h"
 
 #include "archivefsbackupjob.h"
+#include "sevenzipbackupwidget.h"
 
 namespace
 {
@@ -53,7 +54,7 @@ void EditZipCopyBackupDialog::UpdateJobFromUi()
 void EditZipCopyBackupDialog::CreateBasicBackupWidget()
 {
    const QString fileFilter = "Archive files (*." + fileSuffix + ")";
-   basicBackupWidget = new EditBackupJobWidget();
+   basicBackupWidget = new SevenZipBackupWidget();
    basicBackupWidget->SetupDestinationAsFile("Choose Destination Archive",
                                              fileFilter);
 

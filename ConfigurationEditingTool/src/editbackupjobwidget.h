@@ -15,13 +15,18 @@ class EditBackupJobWidget : public QWidget
    Q_OBJECT
 
 public:
-   explicit EditBackupJobWidget(QWidget *parent = 0);
-   ~EditBackupJobWidget();
+   explicit EditBackupJobWidget(QWidget *parent = nullptr);
+   virtual ~EditBackupJobWidget();
 
    void SetupDestinationAsFile(const QString& message, const QString& fileFilter);
 
    void UpdateUiFromJob(AbstractBackupJob* job);
    void UpdateJobFromUi(AbstractBackupJob* job) const;
+
+protected:
+   virtual void FinishedDestinationEditing(const QString& value);
+
+   void SetDestinationWidgetPath(const QString& value);
 
 private slots:
    void on_addBackupPointButton_clicked();
@@ -47,8 +52,6 @@ private:
 
    void OnFinishedPathEditing(const QString& value,
                               const int columnIndex);
-
-   static QString AddZipExtension(const QString& value);
 
    Ui::EditBackupJobWidget *ui;
 };

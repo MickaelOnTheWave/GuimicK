@@ -1,6 +1,7 @@
 #include "consolejobdisplay.h"
 #include "ui_consolejobdisplay.h"
 
+#include "editorversion.h"
 #include "userconsolejob.h"
 #include "sshconsolejob.h"
 
@@ -30,12 +31,17 @@ void ConsoleJobDisplay::Initialize(AbstractJob* job)
 
 void ConsoleJobDisplay::InitializeTypeLabel(AbstractConsoleJob* job)
 {
-   if (dynamic_cast<UserConsoleJob*>(job))
-      ui->typeLabel->setText("Custom command (Server)");
-   else if (dynamic_cast<SshConsoleJob*>(job))
-      ui->typeLabel->setText("Custom command (Client)");
+   if (EditorVersion::HasDevelopmentFeatures())
+   {
+      if (dynamic_cast<UserConsoleJob*>(job))
+         ui->typeLabel->setText("Custom command (Server)");
+      else if (dynamic_cast<SshConsoleJob*>(job))
+         ui->typeLabel->setText("Custom command (Client)");
+      else
+         ui->typeLabel->setText("Custom command (Internal)");
+   }
    else
-      ui->typeLabel->setText("Custom command (Internal)");
+      ui->typeLabel->setText("Custom command");
 }
 
 void ConsoleJobDisplay::InitializeCommandLabel(AbstractConsoleJob* job)
@@ -50,6 +56,29 @@ void ConsoleJobDisplay::InitializeCommandLabel(AbstractConsoleJob* job)
 
 void ConsoleJobDisplay::InitializeParserLabel(AbstractConsoleJob* job)
 {
+   if (EditorVersion::HasDevelopmentFeatures())
+   {
+      UserConsoleJob* userJob = GetUserJob(job);
+      if (userJob)
+      {
+         const QString parserCommand = QString::fromStdWString(userJob->GetMiniDescriptionParserCommand());
+         if (parserCommand != "")
+            ui->parserValueLabel->setText(parserCommand);
+         else
+            ui->parserValueLabel->setText("None");
+      }
+      else
+         ui->parserValueLabel->setText("Not Available");
+   }
+   else
+   {
+      ui->parserLabel->setVisible(false);
+      ui->parserValueLabel->setVisible(false);
+   }
+}
+
+UserConsoleJob* ConsoleJobDisplay::GetUserJob(AbstractConsoleJob* job)
+{
    UserConsoleJob* userJob = dynamic_cast<UserConsoleJob*>(job);
    if (!userJob)
    {
@@ -57,15 +86,5 @@ void ConsoleJobDisplay::InitializeParserLabel(AbstractConsoleJob* job)
       if (sshJob)
          userJob = dynamic_cast<UserConsoleJob*>(sshJob->GetRemoteJob());
    }
-
-   if (userJob)
-   {
-      const QString parserCommand = QString::fromStdWString(userJob->GetMiniDescriptionParserCommand());
-      if (parserCommand != "")
-         ui->parserLabel->setText(parserCommand);
-      else
-         ui->parserLabel->setText("None");
-   }
-   else
-      ui->parserLabel->setText("Not Available");
+   return userJob;
 }
