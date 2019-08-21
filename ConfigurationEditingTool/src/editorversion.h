@@ -23,7 +23,7 @@ private:
    bool hasDevelopmentFeatures;
    bool isWindows;
    bool isStandaloneOnly;
-   const std::wstring version = L"1.07";
+   const std::wstring version = L"1.08";
 };
 
 #endif // EDITORVERSION_H
