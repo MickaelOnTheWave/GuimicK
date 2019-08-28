@@ -1,3 +1,8 @@
+28/08/2019 (19.8)
+    Added save configuration step before entering
+    scheduling dialog. This is to prevent form
+    registering erroneous runs.
+
 26/08/2019 (1.7h)
     Console error output was not a mere feature mistake,
     it was a bug with accented chars not being written

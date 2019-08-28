@@ -796,10 +796,27 @@ void MainWindow::on_actionTask_Tool_triggered()
 
 void MainWindow::on_actionSchedule_Execution_triggered()
 {
-   SchedulerDialog dialog(this, isRunningAsAdministrator, NeedsAdminRightsWarning());
-   dialog.SetConfigurationFile(currentConfigurationFile);
-   dialog.SetTaskToolExecutable(GetTaskToolExecutable());
-   dialog.exec();
+   if (currentConfigurationFile == "")
+   {
+      QMessageBox::StandardButton button = QMessageBox::warning(
+               this, "Configuration file not saved",
+               "Current configuration hasn't been saved.\n"
+               "It needs to be saved to a file before it can be scheduled for execution.\n"
+               "Do you want to save current configuration?",
+               QMessageBox::Yes | QMessageBox::No,
+               QMessageBox::Yes
+               );
+      if (button == QMessageBox::Yes)
+         on_actionSave_As_triggered();
+   }
+
+   if (currentConfigurationFile != "")
+   {
+      SchedulerDialog dialog(this, isRunningAsAdministrator, NeedsAdminRightsWarning());
+      dialog.SetConfigurationFile(currentConfigurationFile);
+      dialog.SetTaskToolExecutable(GetTaskToolExecutable());
+      dialog.exec();
+   }
 }
 
 void MainWindow::SetDefaultJobsButtonsState()
