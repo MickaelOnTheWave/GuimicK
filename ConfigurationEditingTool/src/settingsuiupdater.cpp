@@ -66,9 +66,9 @@ void SettingsUiUpdater::UpdateReportDispatching()
    if (reportDispatching == L"email")
       SetReportDispatchControls(1);
    else if (reportDispatching == L"console")
-      SetReportDispatchControls(0);
-   else if (reportDispatching == L"file")
       SetReportDispatchControls(2);
+   else if (reportDispatching == L"file")
+      SetReportDispatchControls(0);
    else
       SetReportDispatchControls(0);
 }

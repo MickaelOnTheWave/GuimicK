@@ -23,7 +23,7 @@ StandaloneConfiguration::StandaloneConfiguration()
    : AbstractTypeConfiguration(),
      client(new Client(defaultClientName)), reportCreator(NULL), agent(new Agent()),
      reportType(L"html"), cssFile(L""),
-     masterEmail(L""), reportDispatching(L"console"), shutdown(false)
+     masterEmail(L""), reportDispatching(L"file"), shutdown(false)
 {
 }
 

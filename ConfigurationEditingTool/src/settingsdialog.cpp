@@ -30,7 +30,6 @@ SettingsDialog::SettingsDialog(StandaloneConfiguration* _configuration,
    InitializeReportDispatchBox();
 
    ui->cssWidget->setVisible(true); // default : HTML
-   ui->dispatcherWidget->setCurrentIndex(0); // default : Local files
 
    SettingsUiUpdater::Update(ui, configuration);
 
