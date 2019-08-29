@@ -39,7 +39,7 @@ private:
     AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const StandaloneConfiguration& configuration,
                                        const std::vector<std::wstring>& configurationErrors);
 
-    void DispatchReport(AbstractReportCreator* reportCreator,
+    bool DispatchReport(AbstractReportCreator* reportCreator,
                         const StandaloneConfiguration& configuration,
                         const CommandLineManager& commandLine);
 
