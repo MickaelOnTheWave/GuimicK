@@ -24,11 +24,16 @@ static const int TM_NO_ERROR           = 0;
 static const int CONFIGURATION_ERROR   = 1;
 static const int SHUTDOWN_ERROR        = 2;
 static const int WINDOWS_INIT_ERROR    = 3;
+static const int DISPATCH_ERROR        = 4;
 
 MainToolModule::MainToolModule(const wstring &_version)
     : version(_version), replacer(NULL), timedRuns(true)
 {
+#ifdef _WIN32
+   fallbackDispatcher = nullptr;
+#else
     fallbackDispatcher = new FileReportDispatcher();
+#endif
 
 #ifdef _WIN32
     const HRESULT hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
@@ -117,11 +122,14 @@ int MainToolModule::Run(CommandLineManager &commandLine)
     SetupSingleJobOption(workList, commandLine);
 
     AbstractReportCreator* reportCreator = RunWorkList(workList, *typedConfiguration, configurationErrors);
-    DispatchReport(reportCreator, *typedConfiguration, commandLine);
+    const bool dispatched = DispatchReport(reportCreator, *typedConfiguration, commandLine);
     delete reportCreator;
 
     const bool ok = RunLocalShutdown(localShutdown);
-    return (ok) ? TM_NO_ERROR : SHUTDOWN_ERROR;
+    if (ok)
+       return (dispatched) ? TM_NO_ERROR : DISPATCH_ERROR;
+    else
+       return SHUTDOWN_ERROR;
 }
 
 bool MainToolModule::SetupCommandLine(CommandLineManager& manager)
@@ -187,7 +195,7 @@ AbstractReportCreator* MainToolModule::RunWorkList(ClientWorkManager* workList,
     return reportCreator;
 }
 
-void MainToolModule::DispatchReport(AbstractReportCreator* reportCreator,
+bool MainToolModule::DispatchReport(AbstractReportCreator* reportCreator,
                     const StandaloneConfiguration& configuration,
                     const CommandLineManager& commandLine)
 {
@@ -199,15 +207,16 @@ void MainToolModule::DispatchReport(AbstractReportCreator* reportCreator,
         reportDispatcher = replacer->Run(reportDispatcher, configuration);
 
     bool ok = DispatchReport(reportCreator, reportDispatcher);
-    if (!ok)
-        DispatchReport(reportCreator, fallbackDispatcher);
+    if (!ok && fallbackDispatcher)
+        ok = DispatchReport(reportCreator, fallbackDispatcher);
+    return ok;
 }
 
 bool MainToolModule::DispatchReport(AbstractReportCreator *reportCreator,
                                     AbstractReportDispatcher *dispatcher)
 {
     bool ok = dispatcher->Dispatch(reportCreator);
-    if (!ok)
+    if (!ok && fallbackDispatcher)
     {
         const wstring fallbackName = (dispatcher != fallbackDispatcher) ?
                     fallbackDispatcher->GetName() :
