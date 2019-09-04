@@ -1,4 +1,4 @@
-04/09/2019 (17.3)
+04/09/2019 (1.8h)
     Leaving Cmake install behind... from its behaviour it
     expects to install the binaries on the machine, not to
     generate a clean folder with "To-Be-Installed" data.
@@ -7,7 +7,15 @@
     Now going for the test itself...
     Created test and now unicode bug is highlighted. Also
     created tests for other related and essential functions.
-    Now going to focus on resolving the issue...
+    Now going to focus on resolving the issue... Fixed!! :-)
+    Now testing on Windows...
+    Trying to install Gtest. Installing Python, built
+    sources and installed target. Not detected.
+    Things to try :
+        - Reinstall Cmake and pray for it to autodetect Gtest
+        - Check on VisualStudio if it works and how
+Next planned work:
+   - Make Gtest work and test pass on Windows
 
 03/09/2019 (0.5h)
     Finished creating template C++ projects. Back
