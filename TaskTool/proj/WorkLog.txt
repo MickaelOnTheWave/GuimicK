@@ -1,3 +1,14 @@
+04/09/2019 (17.3)
+    Leaving Cmake install behind... from its behaviour it
+    expects to install the binaries on the machine, not to
+    generate a clean folder with "To-Be-Installed" data.
+    Going for tests... Added a "copy data to bin" step.
+    Leaving off template for now, it might be too specific.
+    Now going for the test itself...
+    Created test and now unicode bug is highlighted. Also
+    created tests for other related and essential functions.
+    Now going to focus on resolving the issue...
+
 03/09/2019 (0.5h)
     Finished creating template C++ projects. Back
     to TaskManager. Creating test suite for Tools..
