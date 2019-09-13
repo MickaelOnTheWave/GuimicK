@@ -1,3 +1,23 @@
+12/09/2019 (1h)
+    Looked at AltoQi example. There is no magic : it seems a
+    custom Cmake file was made to build it with MT/MD. Looking
+    at current Cmake to see if it can be used...
+    Changed default settings of provided Gtest cmake. With it,
+    built MD versions of libs. Updated ToolsTest cmake to use
+    them on Windows. Fixed minor issues in FileTools, and it
+    seems that all tests are passing. The real issue probably
+    exists but leaving it for now, focus on shipping/selling
+    the software.
+Next planned work:
+    - Distribute the software to friends and gather their feedback
+    - Think about how to distribute/advertise TaskManager
+
+11/09/2019 (1.5h)
+    Changed build script on Windows to build googletest.
+    It worked, although uglily having hardcoded paths and
+    requiring a manual rebuild. However there is still a linking
+    issue afterwards. Now going for building a simple Gtest example.
+
 04/09/2019 (1.8h)
     Leaving Cmake install behind... from its behaviour it
     expects to install the binaries on the machine, not to
