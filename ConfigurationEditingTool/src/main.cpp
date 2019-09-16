@@ -14,6 +14,7 @@ void InitializeVersion()
    EditorVersion::CreateAsClientVersion(OsTools::IsOnWindows());
 #else
    EditorVersion::CreateAsDevelopmentVersion(OsTools::IsOnWindows());
+   //EditorVersion::CreateAsClientVersion(OsTools::IsOnWindows());
 #endif
 }
 
@@ -29,8 +30,6 @@ int main(int argc, char *argv[])
 
    InitializeVersion();
    MainWindow w;
-
-   w.OpenDefaultFile();
    w.show();
    return a.exec();
 }
