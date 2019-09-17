@@ -1,5 +1,6 @@
 #include "editbackupjobwidget.h"
 #include "ui_editbackupjobwidget.h"
+#include "destinationpathvalidator.h"
 
 using namespace std;
 
@@ -21,6 +22,10 @@ void EditBackupJobWidget::SetupDestinationAsFile(const QString& message,
                                                  const QString& fileFilter)
 {
    ui->destinationWidget->InitializeAsFile("Destination", message, "", fileFilter);
+
+   auto destinationValidator = new DestinationPathValidator(ui->sourceWidget->GetPath());
+   ui->destinationWidget->SetValidator(destinationValidator);
+   connect(ui->sourceWidget, SIGNAL(PathChanged(QString)), destinationValidator, SLOT(UpdateSourcePath(QString)));
 }
 
 void EditBackupJobWidget::UpdateUiFromJob(AbstractBackupJob* job)
@@ -45,7 +50,7 @@ void EditBackupJobWidget::AddBackupPointsToUi(
    const vector<pair<wstring, wstring> >& backupPoints
 )
 {
-   ui->backupPointsWidget->setRowCount(backupPoints.size());
+   ui->backupPointsWidget->setRowCount(static_cast<int>(backupPoints.size()));
    int index = 0;
    for (const auto& it : backupPoints)
    {

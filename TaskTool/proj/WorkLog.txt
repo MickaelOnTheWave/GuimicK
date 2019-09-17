@@ -1,3 +1,15 @@
+16/09/2019 (2h)
+    Updated version numbers and rebuilt install package.
+    Did test on clean Windows : did not work. First going
+    to fix small issue with GUI letting user choose a destination
+    folder/file inside source.
+    Created a validator (Qt"s way), but it is not satisfactory.
+Next planned work:
+    - At least show an error tooltip on not valid input
+    - Improve error management to see clearly what is wrong
+    with test on clean Windows
+    - Fix issue
+
 12/09/2019 (1h)
     Looked at AltoQi example. There is no magic : it seems a
     custom Cmake file was made to build it with MT/MD. Looking
