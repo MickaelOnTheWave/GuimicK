@@ -1,6 +1,15 @@
-17/09/2019 (1.8h)
+17/09/2019 (2h)
     Finally managed to correctly display and prevent
-    erroneous destinations.
+    erroneous destinations. Now looking at Windows error...
+    This is a report dispatch error. Best way to resolve this
+    is probably to check report creation before scheduling..
+    Error does not seem to occur when outputting to console.
+    This is probably the old unicode issue.
+Next planned work:
+    - Update automated tests. Try creating with same path as report.
+    - Build and run test suite on clean Windows machine
+    - If problem is still not resolved, put an option in Editor
+    to check report creation
 
 16/09/2019 (2h)
     Updated version numbers and rebuilt install package.
