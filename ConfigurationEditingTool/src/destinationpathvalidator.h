@@ -14,11 +14,14 @@ public:
 
 signals:
    void Error(const QString& msg) const;
+   void ValidDestination(const QString& msg) const;
 
 public slots:
    void UpdateSourcePath(const QString& value);
 
 private:
+   bool IsInSourcePath(const QString& value) const;
+
    QString sourcePath;
 };
 

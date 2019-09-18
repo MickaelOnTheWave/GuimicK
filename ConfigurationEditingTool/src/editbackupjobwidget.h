@@ -38,16 +38,20 @@ private slots:
    void OnFinishedSourceEditing(const QString& value);
    void OnFinishedDestinationEditing(const QString& value);
 
+   void OnInvalidDestination(const QString& message);
+
 private:
    void AddBackupPointsToUi(
       const std::vector<std::pair<std::wstring,std::wstring> >& backupPoints
    );
    void AddBackupPointsToJob(AbstractBackupJob* job) const;
 
+   QString GetTableValue(const int rowIndex, const int columnIndex) const;
    void SetFolderWidgetValue(PathSelectionControl* widget,
                              const int rowIndex, const int columnIndex);
 
    void InitializeControls();
+   void InitializeDestinationWidget();
    void EnableControls(const bool value);
 
    void OnFinishedPathEditing(const QString& value,

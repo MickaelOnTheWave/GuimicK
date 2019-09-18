@@ -22,10 +22,6 @@ void EditBackupJobWidget::SetupDestinationAsFile(const QString& message,
                                                  const QString& fileFilter)
 {
    ui->destinationWidget->InitializeAsFile("Destination", message, "", fileFilter);
-
-   auto destinationValidator = new DestinationPathValidator(ui->sourceWidget->GetPath());
-   ui->destinationWidget->SetValidator(destinationValidator);
-   connect(ui->sourceWidget, SIGNAL(PathChanged(QString)), destinationValidator, SLOT(UpdateSourcePath(QString)));
 }
 
 void EditBackupJobWidget::UpdateUiFromJob(AbstractBackupJob* job)
@@ -75,6 +71,12 @@ void EditBackupJobWidget::AddBackupPointsToJob(AbstractBackupJob* job) const
    }
 }
 
+QString EditBackupJobWidget::GetTableValue(const int rowIndex, const int columnIndex) const
+{
+   QTableWidgetItem* tableItem = ui->backupPointsWidget->item(rowIndex, columnIndex);
+   return (tableItem) ? tableItem->text() : QString("");
+}
+
 void EditBackupJobWidget::on_addBackupPointButton_clicked()
 {
    const int currentIndex = ui->backupPointsWidget->currentRow();
@@ -95,7 +97,10 @@ void EditBackupJobWidget::on_backupPointsWidget_itemSelectionChanged()
    EnableControls(isIndexValid);
    if (isIndexValid)
    {
-      SetFolderWidgetValue(ui->sourceWidget, currentRowIndex, 0);
+      const QString value = GetTableValue(currentRowIndex, 0);
+      ui->sourceWidget->SetPath(value);
+      emit ui->sourceWidget->PathChanged(value);
+
       SetFolderWidgetValue(ui->destinationWidget, currentRowIndex, 1);
    }
 }
@@ -107,15 +112,22 @@ void EditBackupJobWidget::OnFinishedSourceEditing(const QString& value)
 
 void EditBackupJobWidget::OnFinishedDestinationEditing(const QString& value)
 {
+   ui->destinationWidget->setStyleSheet("color: black;");
+   ui->destinationWidget->setToolTip("");
    FinishedDestinationEditing(value);
+}
+
+void EditBackupJobWidget::OnInvalidDestination(const QString& message)
+{
+   ui->destinationWidget->setStyleSheet("color: red;");
+   ui->destinationWidget->setToolTip(message);
 }
 
 void EditBackupJobWidget::SetFolderWidgetValue(
       PathSelectionControl* widget,
       const int rowIndex, const int columnIndex)
 {
-   QTableWidgetItem* tableItem = ui->backupPointsWidget->item(rowIndex, columnIndex);
-   const QString value = (tableItem) ? tableItem->text() : QString("");
+   const QString value = GetTableValue(rowIndex, columnIndex);
    widget->SetPath(value);
 }
 
@@ -124,12 +136,25 @@ void EditBackupJobWidget::InitializeControls()
    ui->sourceWidget->InitializeAsFolder("Source", "Select folder to backup", "");
    connect(ui->sourceWidget, SIGNAL(PathChanged(QString)),
            this, SLOT(OnFinishedSourceEditing(QString)));
-   ui->destinationWidget->InitializeAsFolder("Destination", "Select backup destination", "");
-   connect(ui->destinationWidget, SIGNAL(PathChanged(QString)),
-           this, SLOT(OnFinishedDestinationEditing(QString)));
+
+   InitializeDestinationWidget();
 
    QHeaderView* header = ui->backupPointsWidget->horizontalHeader();
    header->setSectionResizeMode(QHeaderView::Stretch);
+}
+
+void EditBackupJobWidget::InitializeDestinationWidget()
+{
+   ui->destinationWidget->InitializeAsFolder("Destination", "Select backup destination", "");
+
+   auto destinationValidator = new DestinationPathValidator(ui->sourceWidget->GetPath());
+   ui->destinationWidget->SetValidator(destinationValidator);
+
+   connect(ui->sourceWidget, SIGNAL(PathChanged(QString)), destinationValidator, SLOT(UpdateSourcePath(QString)));
+
+   connect(destinationValidator, SIGNAL(ValidDestination(QString)),
+              this, SLOT(OnFinishedDestinationEditing(QString)));
+   connect(destinationValidator, SIGNAL(Error(QString)), this, SLOT(OnInvalidDestination(QString)));
 }
 
 void EditBackupJobWidget::EnableControls(const bool value)

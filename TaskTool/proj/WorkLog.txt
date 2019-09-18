@@ -1,3 +1,7 @@
+17/09/2019 (1.8h)
+    Finally managed to correctly display and prevent
+    erroneous destinations.
+
 16/09/2019 (2h)
     Updated version numbers and rebuilt install package.
     Did test on clean Windows : did not work. First going
