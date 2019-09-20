@@ -1,3 +1,15 @@
+18/09/2019 (0.5h)
+    Created test to highlight the issue. It happens with
+    absolute path with unicode foldername. Probably it is due
+    to being forced to match folder name (creating it will
+    create with wrong chars).
+    No idea how to resolve the bug out of the box...
+Next planned work:
+    - Have a look on Internet on the issue
+    - Fix it
+    - Try to improve the test to have a relative path (in
+    test data folder)
+
 17/09/2019 (2h)
     Finally managed to correctly display and prevent
     erroneous destinations. Now looking at Windows error...
