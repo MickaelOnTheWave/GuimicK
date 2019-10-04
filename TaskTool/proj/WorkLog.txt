@@ -1,3 +1,26 @@
+03/10/2019 (2.5h)
+    Cleaned up test and made it friendly : it uses
+    a local folder. The issue is still the same.
+    Checked the initial issue : it disappeared locally.
+    Building a new version... a new crash was found. Fixing it.
+    Fixed crash, it was due to validator recursively dispatching
+    a change. Now there is another crash, probably
+    due to not having anymore default config.
+ Next planned work:
+    - Check if validators still work. If not, disable them.
+    - Fix crash in model with null configuration type.
+    - Check if original issue (no report created) is still present
+
+23/09/2019 (1h)
+    - Had a look. Saw a very interesting article at
+    https://www.cprogramming.com/tutorial/unicode.html
+    It seems the problem is of literals in C++ code.
+    Modifying example to read value from file with API :
+    works.
+ Next planned work:
+    - Clean up current test
+    - Check initial issue : is it only that?
+
 18/09/2019 (0.5h)
     Created test to highlight the issue. It happens with
     absolute path with unicode foldername. Probably it is due
