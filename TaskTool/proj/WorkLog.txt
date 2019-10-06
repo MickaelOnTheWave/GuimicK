@@ -1,3 +1,14 @@
+06/10/2019 (1.2h)
+    Validator is still working. Going for crash.
+    Fixed crash with null configuration : back to
+    having a default file being opened. Now going for
+    original issue...
+    Found another issue : default agent values are invalid.
+    Fixed that.
+Next planned work:
+    - Check that default agent values are now ok
+    - Proceed with original bug
+
 03/10/2019 (2.5h)
     Cleaned up test and made it friendly : it uses
     a local folder. The issue is still the same.
