@@ -1,3 +1,9 @@
+07/10/2019 (2h)
+    Checked default values : now there are all ok.
+    Checked original bug : it is resolved!!
+Next planned work:
+    - Send software to friends for "peer review"
+
 06/10/2019 (1.2h)
     Validator is still working. Going for crash.
     Fixed crash with null configuration : back to
