@@ -14,7 +14,7 @@ public:
 
 signals:
    void Error(const QString& msg) const;
-   void ValidDestination(const QString& msg) const;
+   void ValidDestination() const;
 
 public slots:
    void UpdateSourcePath(const QString& value);

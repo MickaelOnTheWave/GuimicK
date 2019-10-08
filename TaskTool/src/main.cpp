@@ -7,7 +7,7 @@
    #include <shellapi.h>
 #endif
 
-static const std::wstring PROGRAM_VERSION = L"1.05";
+static const std::wstring PROGRAM_VERSION = L"1.0.11";
 
 int main(int argc, char* argv[])
 {
