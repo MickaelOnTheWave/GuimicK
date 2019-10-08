@@ -117,6 +117,12 @@ void EditBackupJobWidget::OnFinishedDestinationEditing(const QString& value)
    FinishedDestinationEditing(value);
 }
 
+void EditBackupJobWidget::OnValidDestination()
+{
+   ui->destinationWidget->setStyleSheet("color: black;");
+   ui->destinationWidget->setToolTip("");
+}
+
 void EditBackupJobWidget::OnInvalidDestination(const QString& message)
 {
    ui->destinationWidget->setStyleSheet("color: red;");
@@ -151,9 +157,9 @@ void EditBackupJobWidget::InitializeDestinationWidget()
    ui->destinationWidget->SetValidator(destinationValidator);
 
    connect(ui->sourceWidget, SIGNAL(PathChanged(QString)), destinationValidator, SLOT(UpdateSourcePath(QString)));
+   connect(ui->destinationWidget, SIGNAL(PathChanged(QString)), this, SLOT(OnFinishedDestinationEditing(QString)));
 
-   connect(destinationValidator, SIGNAL(ValidDestination(QString)),
-              this, SLOT(OnFinishedDestinationEditing(QString)));
+   connect(destinationValidator, SIGNAL(ValidDestination()), this, SLOT(OnValidDestination()));
    connect(destinationValidator, SIGNAL(Error(QString)), this, SLOT(OnInvalidDestination(QString)));
 }
 
@@ -179,6 +185,8 @@ void EditBackupJobWidget::FinishedDestinationEditing(const QString& value)
 
 void EditBackupJobWidget::SetDestinationWidgetPath(const QString& value)
 {
+   // Used to prevent the change from firing validator and change recursively
+   ui->destinationWidget->blockSignals(true);
    ui->destinationWidget->SetPath(value);
+   ui->destinationWidget->blockSignals(false);
 }
-

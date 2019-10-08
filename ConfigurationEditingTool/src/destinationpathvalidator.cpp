@@ -13,7 +13,7 @@ QValidator::State DestinationPathValidator::validate(QString& input, int&) const
    if (isInSourcePath)
       emit Error("Destination is inside source");
    else
-      emit ValidDestination(input);
+      emit ValidDestination();
 
    if (isInSourcePath)
        return QValidator::Invalid;

@@ -103,6 +103,19 @@ namespace
       const QStringList defaultFolders = QStandardPaths::standardLocations(QStandardPaths::TempLocation);
       return (defaultFolders.empty()) ? QString("") : defaultFolders.first();
    }
+
+   void SetDefaultConfigurationValues(TooledConfiguration& configuration)
+   {
+      Agent* agent = configuration.GetAgent();
+      agent->SetName(L"Task Manager Agent");
+      agent->SetReportFile(L"report.html");
+
+      const QString defaultFolder = QDir::homePath() + "/Task Manager Report/";
+      agent->SetReportFolder(defaultFolder.toStdWString());
+
+      const QString defaultCss = QDir::currentPath() + "/report.css";
+      configuration.GetTmpConfiguration()->SetReportCss(defaultCss.toStdWString());
+   }
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -363,6 +376,7 @@ void MainWindow::CreateNewFile()
 {
     model.SetConfigurationType(configurationType);
     model.ClearJobs();
+    SetDefaultConfigurationValues(model);
     UpdateUiOnFileChange("");
 }
 

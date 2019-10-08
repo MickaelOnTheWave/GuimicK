@@ -38,6 +38,7 @@ private slots:
    void OnFinishedSourceEditing(const QString& value);
    void OnFinishedDestinationEditing(const QString& value);
 
+   void OnValidDestination();
    void OnInvalidDestination(const QString& message);
 
 private:
