@@ -1,3 +1,29 @@
+16/10/2019 (0.5h)
+    Got feedback from Ewerton (Windows 10). Installed and launched
+    correctly, but error at simple backup try. Probably Windows 10
+    copy command is different from Windows 7. Downloading and installing
+    a Windows 10 VM...
+    Meanwhile, best option for Lud seems to provide her with dll. Located Dll
+    on VM and sending it to Lud.
+Next planned work:
+    - Install and launch VM for Windows 10 to test copy command
+    - Fix duplicated entries in configuration for client
+    - Wait for Ludmila Feedback
+
+14/10/2019 (0.1h)
+    Talked to Lud : she is using Windows 7. Back to clean Windows 7
+    to check it out...
+
+10/10/2019 (0.5h)
+    Got first feedback from Lud : missing dll. It seems it
+    is MS Redistribuable. Check with Qt tool if it resolves
+    the matter...
+    It is possible to get all dependencies of Windows 10,
+    but needs a Windows 10 machine...
+Next planned work:
+    - Find out how to resolve the Windows 10 dependency. Buy Windows?
+    - Resolve the client mode bug. Refactor MainWindow and configurations?
+
 07/10/2019 (2h)
     Checked default values : now there are all ok.
     Checked original bug : it is resolved!!

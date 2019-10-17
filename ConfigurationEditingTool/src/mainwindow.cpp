@@ -376,7 +376,8 @@ void MainWindow::CreateNewFile()
 {
     model.SetConfigurationType(configurationType);
     model.ClearJobs();
-    SetDefaultConfigurationValues(model);
+    if (configurationType != ClientConfigurationType)
+      SetDefaultConfigurationValues(model);
     UpdateUiOnFileChange("");
 }
 
