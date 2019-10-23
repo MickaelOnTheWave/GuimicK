@@ -99,7 +99,7 @@ void CurlConsoleReportDispatcher::WriteReportContentToFile(AbstractReportCreator
     const string emailContent = CreateEmailContent(reportCreator);
 
     ofstream mailFile;
-    mailFile.open(StringTools::UnicodeToUtf8(filename));
+    mailFile.open(StringTools::UnicodeToUtf8(filename).c_str());
     mailFile << emailContent;
     mailFile.close();
 }

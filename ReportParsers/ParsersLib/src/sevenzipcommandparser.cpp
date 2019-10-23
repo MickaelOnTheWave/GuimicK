@@ -10,7 +10,7 @@ const wchar_t updateChar = 'U';
 
 bool IsFileLine(const wstring& lineData)
 {
-   const wchar_t firstChar = lineData.front();
+   const wchar_t firstChar = *lineData.begin();
    const bool isFirstCharValid = (firstChar == addChar ||
                                   firstChar == removeChar ||
                                   firstChar == updateChar);
@@ -56,14 +56,17 @@ void SevenZipCommandParser::FillReportData(const vector<wstring> &lines)
    for (; it != lines.end(); ++it)
    {
       if (!it->empty() && IsFileLine(*it))
-      {
-         const wchar_t firstChar = it->front();
-         if (firstChar == updateChar)
-            reportData->AddAsModified(ExtractFilename(*it));
-         else if (firstChar == addChar)
-            reportData->AddAsAdded(ExtractFilename(*it));
-         else if (firstChar == removeChar)
-            reportData->AddAsRemoved(ExtractFilename(*it));
-      }
+         UpdateReportData(it);
    }
+}
+
+void SevenZipCommandParser::UpdateReportData(vector<wstring>::const_iterator& it)
+{
+   const wchar_t firstChar = *it->begin();
+   if (firstChar == updateChar)
+      reportData->AddAsModified(ExtractFilename(*it));
+   else if (firstChar == addChar)
+      reportData->AddAsAdded(ExtractFilename(*it));
+   else if (firstChar == removeChar)
+      reportData->AddAsRemoved(ExtractFilename(*it));
 }

@@ -16,15 +16,15 @@ static const wstring remoteCleaningError = L"remote archive not cleaned";
 ArchiveFsBackupJob::ArchiveFsBackupJob(const wstring& jobName,
                                        ArchiveTool* _archiveTool)
     : AbstractBackupJob(jobName),
-      localDestination(L""),
-      archiveTool(_archiveTool)
+      archiveTool(_archiveTool),
+      localDestination(L"")
 {
 }
 
 ArchiveFsBackupJob::ArchiveFsBackupJob(const ArchiveFsBackupJob& other)
     : AbstractBackupJob(other),
-      localDestination(other.localDestination),
-      archiveTool(other.archiveTool->Clone())
+      archiveTool(other.archiveTool->Clone()),
+      localDestination(other.localDestination)
 {
 }
 

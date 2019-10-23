@@ -11,8 +11,8 @@ FileBackupReport::FileBackupReport()
 
 FileBackupReport::FileBackupReport(const FileBackupReport& other)
    : added(other.added),
-   removed(other.removed),
-   modified(other.modified)
+     modified(other.modified),
+     removed(other.removed)
 {
 }
 

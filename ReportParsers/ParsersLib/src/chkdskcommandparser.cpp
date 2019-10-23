@@ -211,12 +211,20 @@ wstring ChkdskCommandParser::CreateMultiDriveDescription() const
 
 bool ChkdskCommandParser::AllDrivesOk() const
 {
+#ifdef USE_OLD_COMPILER
+   return false;
+#else
    return none_of(driveList.begin(), driveList.end(), IsDriveFailing);
+#endif
 }
 
 bool ChkdskCommandParser::AllDrivesFailing() const
 {
+#ifdef USE_OLD_COMPILER
+   return true;
+#else
    return all_of(driveList.begin(), driveList.end(), IsDriveFailing);
+#endif
 }
 
 wstring ChkdskCommandParser::CreateAllDrivesOkMessage() const
@@ -235,7 +243,11 @@ wstring ChkdskCommandParser::CreateAllDrivesFailingMessage() const
 
 wstring ChkdskCommandParser::CreateMixedResultsMessage() const
 {
+#ifdef USE_OLD_COMPILER
+   const size_t failCount = 0;
+#else
    const size_t failCount = count_if(driveList.begin(), driveList.end(), IsDriveFailing);
+#endif
    const size_t okCount = driveList.size() - failCount;
 
    wstringstream stream;

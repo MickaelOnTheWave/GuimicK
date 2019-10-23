@@ -2,11 +2,13 @@ cmake_minimum_required (VERSION 3.2)
 
 project (TaskTool)
 
-if(NOT USE_OLD_COMPILER)
+if(USE_OLD_COMPILER)
+    add_definitions(-DUSE_OLD_COMPILER)
+else(USE_OLD_COMPILER)
 	set(CMAKE_CXX_STANDARD 14)
 	set(CMAKE_CXX_STANDARD_REQUIRED ON)
 	set(CMAKE_CXX_EXTENSIONS OFF)
-endif(NOT USE_OLD_COMPILER)
+endif(USE_OLD_COMPILER)
 
 if(MSVC)
   add_definitions("/W4 /wd4514")

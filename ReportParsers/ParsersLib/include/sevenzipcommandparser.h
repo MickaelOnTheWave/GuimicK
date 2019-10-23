@@ -14,6 +14,8 @@ public:
 
 private:
     void FillReportData(const std::vector<std::wstring>& lines);
+
+    void UpdateReportData(std::vector<std::wstring>::const_iterator& it);
 };
 
 #endif // SEVENZIPCOMMANDPARSER_H

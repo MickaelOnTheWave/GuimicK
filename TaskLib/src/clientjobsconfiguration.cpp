@@ -20,8 +20,9 @@ ClientJobsConfiguration::ClientJobsConfiguration(const ClientJobsConfiguration& 
    : AbstractTypeConfiguration(other),
      debugOption(other.debugOption)
 {
-   for (const auto it : other.jobList)
-      jobList.push_back(it->Clone());
+   std::list<AbstractJob*>::const_iterator it = other.jobList.begin();
+   for (; it != other.jobList.end(); ++it)
+      jobList.push_back((*it)->Clone());
 }
 
 ConfigurationType ClientJobsConfiguration::GetType() const

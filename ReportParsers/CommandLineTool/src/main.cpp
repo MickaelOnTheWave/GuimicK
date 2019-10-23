@@ -15,20 +15,20 @@ static const int PARSER_ERROR   = 1;
 static const int PARSING_ERROR  = 2;
 static const int USAGE_ERROR    = 3;
 
-AbstractOutputParser* CreateParser(const std::string& name);
+AbstractOutputParser* CreateParser(const std::wstring& name);
 
 int main(int argc, char* argv[])
 {
     CommandLineManager commandLine(argc, argv);
 
-    commandLine.AddParameter("input", "[REPORT_FILE]");
-    commandLine.AddParameter("output", "[OUTPUT_FILE]");
-    commandLine.AddParameter("parser", "[PARSER]");
-    commandLine.AddParameter("direct", "Outputs raw data without \"headers\". For automated usage.");
-    commandLine.AddParameter("inputbuffer", "Uses input directly from command line instead of file. "
-                             "Must be between \"\".");
+    commandLine.AddParameter(L"input", L"[REPORT_FILE]");
+    commandLine.AddParameter(L"output", L"[OUTPUT_FILE]");
+    commandLine.AddParameter(L"parser", L"[PARSER]");
+    commandLine.AddParameter(L"direct", L"Outputs raw data without \"headers\". For automated usage.");
+    commandLine.AddParameter(L"inputbuffer", L"Uses input directly from command line instead of file. "
+                             L"Must be between \"\".");
 
-    bool isDirectUsage = commandLine.HasParameter("direct");
+    bool isDirectUsage = commandLine.HasParameter(L"direct");
 
     if (!isDirectUsage)
     {
@@ -39,13 +39,13 @@ int main(int argc, char* argv[])
             return USAGE_ERROR;
     }
 
-    const string inputFile(commandLine.GetParameterValue("input"));
-    const string inputBuffer(commandLine.GetParameterValue("inputbuffer"));
-    const string outputFile(commandLine.GetParameterValue("output"));
-    const string parserAlgorithm(commandLine.GetParameterValue("parser"));
-    const bool isInputValid = (inputFile != "" || inputBuffer != "");
+    const wstring inputFile(commandLine.GetParameterValue(L"input"));
+    const wstring inputBuffer(commandLine.GetParameterValue(L"inputbuffer"));
+    const wstring outputFile(commandLine.GetParameterValue(L"output"));
+    const wstring parserAlgorithm(commandLine.GetParameterValue(L"parser"));
+    const bool isInputValid = (inputFile != L"" || inputBuffer != L"");
 
-    if (isInputValid == false || parserAlgorithm == "")
+    if (isInputValid == false || parserAlgorithm == L"")
     {
         if (!isDirectUsage)
             commandLine.ShowUsageInformation();
@@ -56,13 +56,13 @@ int main(int argc, char* argv[])
     if (parser == NULL)
     {
         if (!isDirectUsage)
-            cout << "Error : Parser " << parserAlgorithm << "is not handled." << endl;
+            wcout << L"Error : Parser " << parserAlgorithm << L"is not handled." << endl;
         return PARSER_ERROR;
     }
 
 
     bool result = false;
-    if (inputFile != "")
+    if (inputFile != L"")
         result = parser->ParseFile(inputFile);
     else
         result = parser->ParseBuffer(inputBuffer);
@@ -78,22 +78,22 @@ int main(int argc, char* argv[])
 
     if (!isDirectUsage)
         cout << "Mini description : ";
-     cout << parser->GetMiniDescription() << endl;
+     wcout << parser->GetMiniDescription() << endl;
 
     return OK;
 }
 
-AbstractOutputParser* CreateParser(const std::string& name)
+AbstractOutputParser* CreateParser(const std::wstring& name)
 {
-    if (name == "aptupgrade")
+    if (name == L"aptupgrade")
         return new AptGetUpgradeParser();
-    else if (name == "clamav")
+    else if (name == L"clamav")
         return new ClamAvReportParser();
-    else if (name == "rsnapshot")
+    else if (name == L"rsnapshot")
         return new RSnapshotReportParser();
-    else if (name == "git")
+    else if (name == L"git")
         return new GitPorcelainReportParser();
-    else if (name == "df")
+    else if (name == L"df")
         return new DfCommandParser();
     else
         return NULL;
