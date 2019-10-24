@@ -1,3 +1,33 @@
+23/10/2019 (2.1h)
+    Extracting VM for installation. Meanwhile going on code update...
+    Finished updating code. Chkdsk parser is not working for Synology,
+    if in the future it needs to run on Synology it will need refactoring.
+    Also removed some warnings and fixed compilation for old forgotten
+    tools.
+    New version deployed in Production. Linux version seems to work fine.
+    Windows remains...
+    Now going for installing VM... And running it. It seems OK. Freezing
+    it for later.
+    Tested Windows build : it builds and runs. So it seems that it works as
+    expected.
+ Next planned work:
+    - Install TaskManager on Windows 10 and check how it runs. Check copy
+    command.
+    - Resolve Ewerton issue.
+    - Check production run.
+
+17/10/2019 (1.2h)
+    Updating production backup to backup more data. Fixing configuration
+    errors. Got another idea to keep an up-to-date version of TaskTool
+    for Synology : put use of std unicode conversions into ifdefs. Maybe a
+    simplified version of conversions is enough for Synology?
+    Updating code accordingly...
+Next planned work:
+    - Finish updating code.
+    - Make build work again for Linux (and Windows!)
+    - Deploy new version on Production
+    - Back to previous roadmap
+
 16/10/2019 (0.5h)
     Got feedback from Ewerton (Windows 10). Installed and launched
     correctly, but error at simple backup try. Probably Windows 10
