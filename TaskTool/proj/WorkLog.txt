@@ -1,3 +1,15 @@
+28/10/2019 (1.1h)
+    Production run did shutdown client, but nearly all jobs are failing
+    and there are uninitialized string issues. But focusing on Windows 10
+    for now. Found a way to copy installer to Windows 10 : through
+    Windows 7 VM. And test worked : both startmenu, run and registered
+    run. Folder also was correctly created.
+    Now going for production run issues.. Fixed "Git not installed" bug.
+Next planned work:
+    - Check with Ewerton the issue. Ask for him to save the file
+    and send it to me.
+    - Install and test new version to check if issue is fixed
+
 23/10/2019 (2.1h)
     Extracting VM for installation. Meanwhile going on code update...
     Finished updating code. Chkdsk parser is not working for Synology,

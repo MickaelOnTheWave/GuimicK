@@ -50,7 +50,7 @@ AbstractJob *GitFsBackupJob::Clone()
 
 JobStatus *GitFsBackupJob::Run()
 {
-    if (IsGitInstalled() == false)
+    if (IsTargetLocal() && IsGitInstalled() == false)
         return new JobStatus(JobStatus::Error, errorGitNotInstalled);
     else
        return AbstractBackupJob::Run();
