@@ -1,10 +1,14 @@
-30/10/2019 (17.1)
+30/10/2019 (1.6h)
     Going for new version validation... Compiled and deployed new version.
     No apparent reason for bad name bug and for remote execution bug.
     Waiting for next production run...
     Meanwhile testing debug features on Windows 10 VM.. They work,
     bug current version doesn't output enough information to be usefull.
-    Fixing this..
+    Fixing this.. Now it seems OK. Testing Windows shutdown job on VM..
+    Local shutdown not working.
+    Debugging session with Ewerton scheduled for today.
+Next planned work:
+    - Check other software presentation. Text? Website?
 
 28/10/2019 (1.1h)
     Production run did shutdown client, but nearly all jobs are failing
