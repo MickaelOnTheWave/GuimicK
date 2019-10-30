@@ -10,6 +10,9 @@
 using namespace std;
 
 wstring RemoteJobsRunner::TargetNotAccessibleError = L"Client is offline";
+wstring RemoteJobsRunner::ConfigurationFileNotFoundError = L"Configuration file not found";
+wstring RemoteJobsRunner::PasswordNeededError = L"Password needed";
+wstring RemoteJobsRunner::GenericRetrieveError = L"Error trying to retrieve configuration";
 
 RemoteJobsRunner::RemoteJobsRunner()
     : AbstractJob(L"RemoteJobsRunner"),
@@ -107,19 +110,17 @@ bool RemoteJobsRunner::RetrieveRemoteConfiguration(wstring& output)
    remoteRetrieveJob.SetTarget(user, host);
 
    JobStatus* status = remoteRetrieveJob.Run();
-
    const bool success = (status->GetCode() == JobStatus::Ok);
+   delete status;
+
    const wstring commandOutput = remoteRetrieveJob.GetCommandOutput();
    if (success)
      output = commandOutput;
-   else if (IsInvalidFileError(commandOutput, configurationFile))
-     output = L"Configuration file not found";
-   else if (IsPasswordError(commandOutput))
-     output = L"Password needed";
    else
-     output = L"Error trying to retrieve configuration";
-
-   delete status;
+   {
+      debugManager->AddDataLine<wstring>(L"Retrieve command output", commandOutput);
+      SetErrorMessage(commandOutput, output);
+   }
    return success;
 }
 
@@ -156,4 +157,14 @@ wstring RemoteJobsRunner::CreateConfigurationErrorDescription(const std::vector<
    for (; it!=errors.end(); ++it)
       content += wstring(L"\t") + *it + L"\n";
    return content;
+}
+
+void RemoteJobsRunner::SetErrorMessage(const wstring& commandOutput, wstring& message) const
+{
+   if (IsInvalidFileError(commandOutput, configurationFile))
+     message = ConfigurationFileNotFoundError;
+   else if (IsPasswordError(commandOutput))
+     message = PasswordNeededError;
+   else
+     message = GenericRetrieveError;
 }

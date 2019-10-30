@@ -7,6 +7,9 @@ class RemoteJobsRunner : public AbstractJob
 {
 public:
     static std::wstring TargetNotAccessibleError;
+    static std::wstring ConfigurationFileNotFoundError;
+    static std::wstring PasswordNeededError;
+    static std::wstring GenericRetrieveError;
 
     RemoteJobsRunner();
     RemoteJobsRunner(const RemoteJobsRunner& other);
@@ -34,6 +37,8 @@ private:
     bool IsPasswordError(const std::wstring& output) const;
 
     std::wstring CreateConfigurationErrorDescription(const std::vector<std::wstring>& errors) const;
+
+    void SetErrorMessage(const std::wstring& commandOutput, std::wstring& message) const;
 
     std::wstring configurationFile;
     std::wstring host, user;
