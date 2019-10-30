@@ -37,6 +37,8 @@ private:
                  ResultCollection& results);
 
     void CreateCopyErrorReport(const std::wstring &message, ResultCollection& results);
+
+    void AddCommandDebugInformation(const ConsoleJob& job);
 };
 
 #endif // ABSTRACTCOPYFSBACKUPJOB_H

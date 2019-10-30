@@ -1,3 +1,11 @@
+30/10/2019 (17.1)
+    Going for new version validation... Compiled and deployed new version.
+    No apparent reason for bad name bug and for remote execution bug.
+    Waiting for next production run...
+    Meanwhile testing debug features on Windows 10 VM.. They work,
+    bug current version doesn't output enough information to be usefull.
+    Fixing this..
+
 28/10/2019 (1.1h)
     Production run did shutdown client, but nearly all jobs are failing
     and there are uninitialized string issues. But focusing on Windows 10

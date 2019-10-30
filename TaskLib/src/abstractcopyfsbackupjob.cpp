@@ -29,10 +29,7 @@ int AbstractCopyFsBackupJob::RunOnParameters(const wstring &source, const wstrin
     PrepareCopyCommand(source, destination, commandJob);
 
     commandJob.RunWithoutStatus();
-
-    debugManager->AddDataLine<wstring>(L"Copy command", commandJob.GetCommand() + L" " + commandJob.GetCommandParameters());
-    debugManager->AddDataLine<wstring>(L"Copy output", commandJob.GetCommandOutput());
-    debugManager->AddDataLine<int>(L"Copy value", commandJob.GetCommandReturnCode());
+    AddCommandDebugInformation(commandJob);
 
     return commandJob.GetCommandReturnCode();
 }
@@ -61,6 +58,7 @@ void AbstractCopyFsBackupJob::RunCopy(const wstring &source, const wstring &dest
     ConsoleJob copyCommand;
     PrepareCopyCommand(source, destination, copyCommand);
     JobStatus* status = copyCommand.Run();
+    AddCommandDebugInformation(copyCommand);
 
     if (status->GetCode() == JobStatus::Ok)
         CreateReport(destination, copyCommand.GetCommandOutput(), results);
@@ -73,4 +71,12 @@ void AbstractCopyFsBackupJob::CreateCopyErrorReport(const std::wstring& message,
     JobStatus* status = new JobStatus(JobStatus::Error, errorCopyCommand);
     status->AddFileBuffer(GetAttachmentName(), message);
     results.push_back(make_pair(status, new FileBackupReport()));
+}
+
+void AbstractCopyFsBackupJob::AddCommandDebugInformation(const ConsoleJob& job)
+{
+   const wstring fullCommand = job.GetCommand() + L" " + job.GetCommandParameters();
+   debugManager->AddDataLine<wstring>(L"Copy command", fullCommand);
+   debugManager->AddDataLine<wstring>(L"Copy output", job.GetCommandOutput());
+   debugManager->AddDataLine<int>(L"Copy value", job.GetCommandReturnCode());
 }
