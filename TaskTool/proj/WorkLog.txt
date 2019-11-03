@@ -1,6 +1,9 @@
-03/11/2019 (15.4)
+03/11/2019 (0.5h)
     Organizing all Ewerton feedbacks before starting fixes. Now going
-    for fixes...
+    for fixes... There seems to be a but in Win7 VM : can't run test run.
+ Next planned work:
+    - Try creating installed version to try test run and finish xcopy fix
+    - Go on next issues
 
 30/10/2019 (2h)
     Going for new version validation... Compiled and deployed new version.
