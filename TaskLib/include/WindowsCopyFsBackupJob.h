@@ -22,6 +22,8 @@ protected:
 private:
    FileBackupReport* CreateBackupReport(const std::wstring& output) const;
 
+   static std::wstring ToWindowsProtectedPath(const std::wstring& value);
+
 };
 
 #endif // WINDOWSCOPYFSBACKUPJOB_H

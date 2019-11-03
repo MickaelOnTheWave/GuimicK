@@ -1,0 +1,48 @@
+Raw :
+Put numbers on newly created (duplicated) jobs
+Handle space in paths (xcopy)
+Report window too slim.
+Report window must be maximizable.
+Start menu (win10) : there should be one icon (configure would be the only entry)
+Implement drag n drop
+Implement shortcuts (Ctrl+S, Ctrl+N...)
+Check Threaded run : on Ewerton's machine it hang as if there was no thread.
+Admin rights for HD check job : running as admin doesn't work. Find a way...
+Registered run rights : no one understands. Create a different window.
+
+By Priority :
+Handle space in paths (xcopy)
+Admin rights for HD check job : running as admin doesn't work. Find a way...
+Registered run rights : no one understands. Create a different window.
+Put numbers on newly created (duplicated) jobs
+Start menu (win10) : there should be one icon (configure would be the only entry)
+Report window must be maximizable.
+Report window too slim.
+Check Threaded run : on Ewerton's machine it hang as if there was no thread.
+Implement shortcuts (Ctrl+S, Ctrl+N...)
+Implement drag n drop
+
+By Difficulty :
+Handle space in paths (xcopy)
+Implement shortcuts (Ctrl+S, Ctrl+N...)
+Put numbers on newly created (duplicated) jobs
+Report window must be maximizable.
+Start menu (win10) : there should be one icon (configure would be the only entry)
+Report window too slim.
+Implement drag n drop
+Check Threaded run : on Ewerton's machine it hang as if there was no thread.
+Admin rights for HD check job : running as admin doesn't work. Find a way...
+Registered run rights : no one understands. Create a different window.
+
+
+Final Priority :
+1. Handle space in paths (xcopy)
+2. Put numbers on newly created (duplicated) jobs
+3. Start menu (win10) : there should be one icon (configure would be the only entry)
+4. Report window must be maximizable.
+5. Report window too slim.
+6. Admin rights for HD check job : running as admin doesn't work. Find a way...
+7. Registered run rights : no one understands. Create a different window.
+8. Implement shortcuts (Ctrl+S, Ctrl+N...)
+9. Check Threaded run : on Ewerton's machine it hang as if there was no thread.
+10. Implement drag n drop

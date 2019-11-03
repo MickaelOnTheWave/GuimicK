@@ -1,4 +1,8 @@
-30/10/2019 (1.6h)
+03/11/2019 (15.4)
+    Organizing all Ewerton feedbacks before starting fixes. Now going
+    for fixes...
+
+30/10/2019 (2h)
     Going for new version validation... Compiled and deployed new version.
     No apparent reason for bad name bug and for remote execution bug.
     Waiting for next production run...
@@ -7,8 +11,11 @@
     Fixing this.. Now it seems OK. Testing Windows shutdown job on VM..
     Local shutdown not working.
     Debugging session with Ewerton scheduled for today.
+    First brainstorming session for finding a better product name...
 Next planned work:
     - Check other software presentation. Text? Website?
+    - Fix local shutdown bug
+    - Create other build scripts for Windows Dev / Linux Client
 
 28/10/2019 (1.1h)
     Production run did shutdown client, but nearly all jobs are failing

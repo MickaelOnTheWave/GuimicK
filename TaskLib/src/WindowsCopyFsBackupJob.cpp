@@ -23,8 +23,8 @@ void WindowsCopyFsBackupJob::PrepareCopyCommand(const std::wstring &source,
                                             const std::wstring &destination,
                                             ConsoleJob &commandJob)
 {
-    const wstring params = PathTools::ToWindowsPath(source) + L" " +
-                           PathTools::ToWindowsPath(destination) + L" /e /y";
+    const wstring params = ToWindowsProtectedPath(source) + L" " +
+                           ToWindowsProtectedPath(destination) + L" /e /y";
     commandJob.SetCommand(L"xcopy");
     commandJob.SetCommandParameters(params);
 }
@@ -49,4 +49,10 @@ FileBackupReport* WindowsCopyFsBackupJob::CreateBackupReport(const wstring& outp
    FileBackupReport* report = new FileBackupReport();
    report->AddAsAdded(fileList);
    return report;
+}
+
+wstring WindowsCopyFsBackupJob::ToWindowsProtectedPath(const wstring& value)
+{
+   const wstring protect = L"\"";
+   return protect + PathTools::ToWindowsPath(value) + protect;
 }

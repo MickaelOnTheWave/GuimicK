@@ -88,6 +88,7 @@ Pending bugs :
 	[012] Debug flag is not handled as it should. Check that global one works as default and can be overridden by local ones.
         [014] There should be error reporting when simple copy backup fails (see on windows, using system folder)
         [015] Jobs are duplicated when changes are saved from Editor in Client mode.
+        [016] Local shutdown not working on Windows for Standalone mode
 
 -------------
 Release plan
