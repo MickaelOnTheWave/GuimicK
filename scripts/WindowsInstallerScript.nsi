@@ -1,6 +1,6 @@
 ;--------------------------------
 
-!define VERSION "1.0.11"
+!define VERSION "1.0.13"
 ; The name of the installer
 Name "Task Manager ${VERSION}"
 
