@@ -42,9 +42,9 @@ OK - 2. Put numbers on newly created (duplicated) jobs
 OK - 4. Report window must be maximizable.
 OK - 5. Report window too slim.
 6. Change save dialogs to defaults : wanna save?
-6. Admin rights for HD check job : running as admin doesn't work. Find a way...
-7. Registered run rights : no one understands. Create a different window.
-8. Change CSS - no red colors
-9. Implement shortcuts (Ctrl+S, Ctrl+N...)
-10. Check Threaded run : on Ewerton's machine it hang as if there was no thread.
-11. Implement drag n drop
+7. Admin rights for HD check job : running as admin doesn't work. Find a way...
+8. Registered run rights : no one understands. Create a different window.
+9. Change CSS - no red colors
+OK - 10. Implement shortcuts (Ctrl+S, Ctrl+N...)
+11. Check Threaded run : on Ewerton's machine it hang as if there was no thread.
+12. Implement drag n drop
