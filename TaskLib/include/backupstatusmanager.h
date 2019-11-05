@@ -32,13 +32,17 @@ private:
     std::wstring CreateRepositoriesMiniDescription();
     int ComputeSuccessCount() const;
 
-    std::wstring BuildRepositoryHeader(const std::wstring &name);
-    std::wstring BuildFooter();
+    static std::wstring BuildRepositoryHeader(const std::wstring &name);
+    static std::wstring BuildFooter();
 
     std::wstring GetCorrectMiniDescription(
             const AbstractBackupJob::ResultEntry& result) const;
 
     FileBackupReport* CreateGlobalReport() const;
+
+    std::wstring BuildRepositoryOkReport(FileBackupReport* report) const;
+
+    std::wstring BuildRepositoryErrorReport(JobStatus* status) const;
 
     const AbstractBackupJob::ResultCollection* resultCollection;
     const AbstractBackupJob::BackupCollection* backupCollection;

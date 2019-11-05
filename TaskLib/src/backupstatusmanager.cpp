@@ -141,9 +141,11 @@ wstring BackupStatusManager::CreateStatusesDescription()
     AbstractBackupJob::ResultCollection::const_iterator it = resultCollection->begin();
     for (; it!=resultCollection->end(); ++it, ++itDestination)
     {
-        fullDescription += BuildRepositoryHeader(itDestination->second);
-        if (it->second)
-            fullDescription += it->second->GetFullDescription();
+       fullDescription += BuildRepositoryHeader(itDestination->second);
+       if (it->first->IsOk())
+          fullDescription += BuildRepositoryOkReport(it->second);
+       else
+          fullDescription += BuildRepositoryErrorReport(it->first);
     }
     if (fullDescription != L"")
       fullDescription += BuildFooter();
@@ -163,7 +165,7 @@ wstring BackupStatusManager::CreateRepositoriesMiniDescription()
     }
 
     if (failureCount > 0)
-        miniDescription << failureCount << "failed.";
+        miniDescription << failureCount << " failed.";
 
     return miniDescription.str();
 }
@@ -215,4 +217,16 @@ FileBackupReport *BackupStatusManager::CreateGlobalReport() const
             report->AddWithPrefix(*it->second, itDestination->second);
     }
     return report;
+}
+
+wstring BackupStatusManager::BuildRepositoryOkReport(FileBackupReport* report) const
+{
+   return (report) ? report->GetFullDescription() : L"";
+}
+
+wstring BackupStatusManager::BuildRepositoryErrorReport(JobStatus* status) const
+{
+   wstring description = status->GetCodeDescription() + L"\n";
+   description += status->GetDescription();
+   return description;
 }

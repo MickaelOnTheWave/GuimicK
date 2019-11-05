@@ -152,6 +152,8 @@ bool GitBackupJob::FetchUpdates(const wstring &gitRepository,
 {
     ConsoleJob command(L"git", L"remote update");
     command.RunWithoutStatus();
+    debugManager->AddDataLine<wstring>(L"\tFechUpdate output", command.GetCommandOutput());
+    debugManager->AddDataLine<int>(L"\tFechUpdate return code", command.GetCommandReturnCode());
     if (!command.IsRunOk())
     {
         wstring errorMessage;
@@ -177,11 +179,14 @@ void GitBackupJob::ComputeChanges(
     params += oldCommitId + L" " + newCommitId;
     ConsoleJob command(L"git", params);
     command.RunWithoutStatus();
+
+    debugManager->AddDataLine<wstring>(L"\tComputeChanges output", command.GetCommandOutput());
+    debugManager->AddDataLine<int>(L"\tComputeChanges return code", command.GetCommandReturnCode());
+
     if (command.IsRunOk())
         CreateReport(gitRepository, command.GetCommandOutput(), statusList);
     else
         throw command.GetCommandOutput();
-
 }
 
 void GitBackupJob::CreateReport(
