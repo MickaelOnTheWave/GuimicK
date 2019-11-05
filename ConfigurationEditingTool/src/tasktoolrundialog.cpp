@@ -55,6 +55,7 @@ TaskToolRunDialog::TaskToolRunDialog(QWidget *parent, const bool showAdminWarnin
    ui(new Ui::TaskToolRunDialog)
 {
    ui->setupUi(this);
+   setWindowFlag(Qt::WindowMaximizeButtonHint);
    InitializeThreadedTaskToolRun();
    if (showAdminWarning)
       AddAdminRightsWarning();
