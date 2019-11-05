@@ -230,6 +230,7 @@ void MainWindow::UpdateJobListWidget()
 
 void MainWindow::InsertNewJob(AbstractJob* job)
 {
+   SetNewNameIfNecessary(job);
    const int maxIndex = jobListModel.rowCount();
    const int currentIndex = ui->jobListView->currentIndex().row();
    const int insertIndex = (currentIndex+1 > maxIndex) ? maxIndex : currentIndex+1;
@@ -772,6 +773,19 @@ void MainWindow::UpdateUiOnJobSelection(const int index)
    ui->upButton->setVisible(index > 0);
    ui->downButton->setVisible(index < jobListModel.rowCount()-1);
    ui->deleteButton->setVisible(true);
+}
+
+void MainWindow::SetNewNameIfNecessary(AbstractJob* job)
+{
+   int index = 1;
+   wstring newName = job->GetName();
+   while (jobListModel.IsNameAlreadyUsed(newName))
+   {
+      wstringstream nameStream;
+      nameStream << job->GetName() << L" " << index++;
+      newName = nameStream.str();
+   }
+   job->SetName(newName);
 }
 
 void MainWindow::on_actionRun_triggered()

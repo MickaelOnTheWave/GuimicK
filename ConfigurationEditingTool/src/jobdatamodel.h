@@ -29,6 +29,7 @@ public:
    std::vector<AbstractJob*> GetJobs();
 
    bool DoesJobListNeedAdminRights() const;
+   bool IsNameAlreadyUsed(const std::wstring& name) const;
 
 private:
    std::vector<AbstractJob*> jobs;

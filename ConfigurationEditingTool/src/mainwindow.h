@@ -140,6 +140,8 @@ private:
 
    void UpdateUiOnJobSelection(const int index);
 
+   void SetNewNameIfNecessary(AbstractJob* job);
+
    Ui::MainWindow *ui;
    TooledConfiguration model;
    JobDataModel jobListModel;

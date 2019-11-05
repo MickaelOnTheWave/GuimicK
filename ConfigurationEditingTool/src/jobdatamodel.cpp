@@ -1,5 +1,6 @@
 #include "jobdatamodel.h"
 
+#include <algorithm>
 #include <QSize>
 #include "qtmetatypes.h"
 
@@ -72,7 +73,7 @@ bool JobDataModel::removeRows(int row, int count, const QModelIndex& parent)
 
 AbstractJob* JobDataModel::GetJob(const QModelIndex& index)
 {
-   return jobs[index.row()];
+   return jobs[static_cast<unsigned long>(index.row())];
 }
 
 std::vector<AbstractJob*> JobDataModel::GetJobs()
@@ -83,11 +84,12 @@ std::vector<AbstractJob*> JobDataModel::GetJobs()
 
 bool JobDataModel::DoesJobListNeedAdminRights() const
 {
-   vector<AbstractJob*>::const_iterator it = jobs.begin();
-   for (; it != jobs.end(); ++it)
-   {
-      if ((*it)->NeedsAdminRights())
-         return true;
-   }
-   return false;
+   auto predicate = [](AbstractJob* job) { return job->NeedsAdminRights(); };
+   return std::any_of(jobs.begin(), jobs.end(), predicate);
+}
+
+bool JobDataModel::IsNameAlreadyUsed(const wstring& name) const
+{
+   auto predicate = [&name](AbstractJob* job) { return job->GetName() == name; };
+   return std::any_of(jobs.begin(), jobs.end(), predicate);
 }
