@@ -1,8 +1,12 @@
-05/11/2019 (17.5)
+05/11/2019 (1.7h)
     First fixing shutdown error in production run - it is a dummy error.
     Fixed it. Now going for Git repositories backup..
     Improved error management, now failing repositories export the error
-    in report instead of empty report.
+    in report instead of empty report. Finished known production errors,
+    moving back to Ewerton's feedback issues.
+    Updated Save window.
+Next planned work:
+    - Continue/finish Ewerton Feedback changes
 
 04/11/2019 (1.8h)
     Problem is in fact due to compiled version being Client : no way

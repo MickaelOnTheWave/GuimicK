@@ -7,7 +7,9 @@
     #include <shellapi.h>
 #endif
 
-static const std::wstring PROGRAM_VERSION = L"1.0.13";
+// TODO : put version number on Cmake for coherence with
+// editor, tool and installer
+static const std::wstring PROGRAM_VERSION = L"1.0.14";
 
 int main(int argc, char* argv[])
 {

@@ -34,14 +34,13 @@ Check Threaded run : on Ewerton's machine it hang as if there was no thread.
 Admin rights for HD check job : running as admin doesn't work. Find a way...
 Registered run rights : no one understands. Create a different window.
 
-
 Final Priority :
 OK - 1. Handle space in paths (xcopy)
 OK - 2. Put numbers on newly created (duplicated) jobs
 3. Start menu (win10) : there should be one icon (configure would be the only entry)
 OK - 4. Report window must be maximizable.
 OK - 5. Report window too slim.
-6. Change save dialogs to defaults : wanna save?
+OK - 6. Change save dialogs to defaults : wanna save?
 7. Admin rights for HD check job : running as admin doesn't work. Find a way...
 8. Registered run rights : no one understands. Create a different window.
 9. Change CSS - no red colors

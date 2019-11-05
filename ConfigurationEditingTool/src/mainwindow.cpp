@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include <QCloseEvent>
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMenu>
@@ -143,14 +144,18 @@ MainWindow::~MainWindow()
    delete ui;
 }
 
-void MainWindow::closeEvent(QCloseEvent*)
+void MainWindow::closeEvent(QCloseEvent* event)
 {
-   QuitApplication();
+   const bool proceed = ManageUserActionIfModified();
+   if (proceed)
+      QWidget::closeEvent(event);
+   else
+      event->ignore();
 }
 
 void MainWindow::on_actionNew_triggered()
 {
-   const bool proceed = ShouldDiscardCurrentChanges();
+   const bool proceed = ManageUserActionIfModified();
    if (!proceed)
       return;
 
@@ -159,7 +164,7 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-   const bool proceed = ShouldDiscardCurrentChanges();
+   const bool proceed = ManageUserActionIfModified();
    if (!proceed)
       return;
 
@@ -198,7 +203,7 @@ void MainWindow::on_actionSave_As_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-   QuitApplication();
+   close();
 }
 
 void MainWindow::on_actionGeneral_triggered()
@@ -424,9 +429,7 @@ bool MainWindow::SaveConfigurationToFile(TooledConfiguration& customConfig,
 
 void MainWindow::QuitApplication()
 {
-   const bool proceed = ShouldDiscardCurrentChanges();
-   if (proceed)
-      close();
+
 }
 
 void MainWindow::on_jobListView_doubleClicked(const QModelIndex &index)
@@ -551,17 +554,20 @@ void MainWindow::AddJobMenuEntry(QMenu* subMenu,
 }
 
 
-bool MainWindow::ShouldDiscardCurrentChanges()
+bool MainWindow::ManageUserActionIfModified()
 {
    if (hasConfigurationChanged)
    {
-      const int button = QMessageBox::warning(this, tr("Configuration Editing Tool"),
-                                     tr("Current changes will be discarded.\n"
-                                        "Do you want to continue?"),
-                                     QMessageBox::Yes | QMessageBox::No,
-                                     QMessageBox::No
+      const int button = QMessageBox::warning(this, tr("Unsaved changes"),
+                                     tr("Your current configuration has modifications.\n"
+                                        "What to you want to do ?"),
+                                     QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
+                                     QMessageBox::Cancel
                                      );
-      return (button == QMessageBox::Yes);
+      if (button == QMessageBox::Save)
+         on_actionSave_triggered();
+
+      return (button != QMessageBox::Cancel);
    }
    else
       return true;

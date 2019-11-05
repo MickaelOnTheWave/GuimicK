@@ -80,7 +80,7 @@ private:
                         const QString& title,
                         AbstractJob* job);
 
-   bool ShouldDiscardCurrentChanges();
+   bool ManageUserActionIfModified();
 
    void TryCreatingNewFile();
    void CreateNewFile();
