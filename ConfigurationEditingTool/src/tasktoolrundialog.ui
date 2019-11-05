@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>698</width>
-    <height>449</height>
+    <width>823</width>
+    <height>652</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,6 +33,10 @@
       <widget class="QPushButton" name="runButton">
        <property name="text">
         <string>Run</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../resources/resources.qrc">
+         <normaloff>:/icons/run_100</normaloff>:/icons/run_100</iconset>
        </property>
       </widget>
      </item>
@@ -190,7 +194,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>closeButton</sender>

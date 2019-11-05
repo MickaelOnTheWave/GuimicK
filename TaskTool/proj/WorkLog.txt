@@ -1,3 +1,12 @@
+04/11/2019 (19.0 (-0.8) )
+    Problem is in fact due to compiled version being Client : no way
+    to configure where is TaskTool. Ignoring and testing installed version :
+    fix is ok. Moving to next one..
+    Fixed job naming. Moving on next Linux bug..
+    Added maximize button to report window in Windows. Changed default size
+    and added icon to run button. Moving on next...
+
+
 03/11/2019 (0.5h)
     Organizing all Ewerton feedbacks before starting fixes. Now going
     for fixes... There seems to be a but in Win7 VM : can't run test run.

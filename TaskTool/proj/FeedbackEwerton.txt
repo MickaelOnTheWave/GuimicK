@@ -36,13 +36,15 @@ Registered run rights : no one understands. Create a different window.
 
 
 Final Priority :
-1. Handle space in paths (xcopy)
-2. Put numbers on newly created (duplicated) jobs
+OK - 1. Handle space in paths (xcopy)
+OK - 2. Put numbers on newly created (duplicated) jobs
 3. Start menu (win10) : there should be one icon (configure would be the only entry)
-4. Report window must be maximizable.
-5. Report window too slim.
+OK - 4. Report window must be maximizable.
+OK - 5. Report window too slim.
+6. Change save dialogs to defaults : wanna save?
 6. Admin rights for HD check job : running as admin doesn't work. Find a way...
 7. Registered run rights : no one understands. Create a different window.
-8. Implement shortcuts (Ctrl+S, Ctrl+N...)
-9. Check Threaded run : on Ewerton's machine it hang as if there was no thread.
-10. Implement drag n drop
+8. Change CSS - no red colors
+9. Implement shortcuts (Ctrl+S, Ctrl+N...)
+10. Check Threaded run : on Ewerton's machine it hang as if there was no thread.
+11. Implement drag n drop

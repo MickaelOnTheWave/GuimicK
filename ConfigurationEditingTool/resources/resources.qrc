@@ -20,5 +20,7 @@
         <file alias="info_50">info-50.png</file>
         <file alias="config2_80">icons8-schedule-80.png</file>
         <file>icons8-trabalho-50.png</file>
+        <file alias="run_100">icons8-reproduzir-100.png</file>
+        <file alias="alt_run">play-video-button.png</file>
     </qresource>
 </RCC>
