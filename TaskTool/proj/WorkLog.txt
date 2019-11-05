@@ -1,3 +1,7 @@
+05/11/2019 (17.5)
+    First fixing shutdown error in production run - it is a dummy error.
+    Fixed it. Now going for Git repositories backup..
+
 04/11/2019 (1.8h)
     Problem is in fact due to compiled version being Client : no way
     to configure where is TaskTool. Ignoring and testing installed version :

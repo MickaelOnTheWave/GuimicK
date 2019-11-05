@@ -56,7 +56,7 @@ JobStatus *LinuxShutdownJob::Run()
 
     debugManager->AddDataLine<int>(L"Return code", shutdownJob->GetCommandReturnCode());
     debugManager->AddDataLine<wstring>(L"Output", shutdownJob->GetCommandOutput());
-    if (status->GetCode() != JobStatus::Error)
+    if (IsShutdownOk(status))
     {
         int secondsToShutdown = WaitForComputerToGoDown();
         if (secondsToShutdown > jobTimeoutInSeconds)
@@ -92,4 +92,20 @@ int LinuxShutdownJob::WaitForComputerToGoDown() const
     }
 
     return secondsCounter;
+}
+
+bool LinuxShutdownJob::IsShutdownOk(JobStatus* status) const
+{
+   if (status->GetCode() == JobStatus::Error)
+   {
+      if (shutdownJob->GetCommandReturnCode() == 255)
+      {
+         const wstring output = shutdownJob->GetCommandOutput();
+         const bool startsWithConnection = (output.find(L"Connection") == 0);
+         const bool hasClosedByRemoteHost = (output.find(L"closed by remote host") != string::npos);
+         return startsWithConnection && hasClosedByRemoteHost;
+      }
+   }
+   else
+      return true;
 }

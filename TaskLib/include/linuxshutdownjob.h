@@ -28,6 +28,8 @@ private:
      */
     int WaitForComputerToGoDown() const;
 
+    bool IsShutdownOk(JobStatus* status) const;
+
     SshConsoleJob* shutdownJob;
     std::wstring computer;
     int jobTimeoutInSeconds;
