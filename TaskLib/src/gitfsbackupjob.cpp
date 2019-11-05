@@ -90,37 +90,39 @@ void GitFsBackupJob::RunRepositoryBackup(const wstring &source,
                                          ResultCollection& results)
 {
    const wstring fullDestination = repository + destination;
-    JobStatus* status = new JobStatus(JobStatus::Ok);
-    if (FileTools::FolderExists(fullDestination) == false)
-        CreateGitRepository(fullDestination, status);
+   debugManager->AddDataLine(L"Repository", fullDestination);
 
-    if (status->GetCode() == JobStatus::Ok)
-        CopyData(source, fullDestination, status);
+   JobStatus* status = new JobStatus(JobStatus::Ok);
+   if (FileTools::FolderExists(fullDestination) == false)
+     CreateGitRepository(fullDestination, status);
 
-    wstring originalDirectory = PathTools::GetCurrentFullPath();
-    bool ok = GitCommonTools::ChangeCurrentDir(fullDestination, results);
-    if (!ok)
-        return;
+   if (status->GetCode() == JobStatus::Ok)
+     CopyData(source, fullDestination, status);
 
-    FileBackupReport* report = new FileBackupReport();
-    const bool hasChanges = HasChangesInRepository();
-    debugManager->AddDataLine<bool>(L"Changes detected", hasChanges);
-    if (hasChanges)
-    {
-        if (status->GetCode() == JobStatus::Ok)
-            AddData(status);
+   wstring originalDirectory = PathTools::GetCurrentFullPath();
+   bool ok = GitCommonTools::ChangeCurrentDir(fullDestination, results);
+   if (!ok)
+     return;
 
-        wstring commitId(L"");
-        if (status->GetCode() == JobStatus::Ok)
-            commitId = CommitData(status);
+   FileBackupReport* report = new FileBackupReport();
+   const bool hasChanges = HasChangesInRepository();
+   debugManager->AddDataLine<bool>(L"Changes detected", hasChanges);
+   if (hasChanges)
+   {
+     if (status->GetCode() == JobStatus::Ok)
+         AddData(status);
 
-        if (status->GetCode() == JobStatus::Ok)
-            CreateReport(commitId, status, *report);
-    }
+     wstring commitId(L"");
+     if (status->GetCode() == JobStatus::Ok)
+         commitId = CommitData(status);
 
-    GitCommonTools::ChangeCurrentDir(originalDirectory, results);
+     if (status->GetCode() == JobStatus::Ok)
+         CreateReport(commitId, status, *report);
+   }
 
-    results.push_back(make_pair(status, report));
+   GitCommonTools::ChangeCurrentDir(originalDirectory, results);
+
+   results.push_back(make_pair(status, report));
 }
 
 void GitFsBackupJob::CreateGitRepository(const wstring &path, JobStatus *status)
