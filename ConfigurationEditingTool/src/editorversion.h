@@ -14,6 +14,8 @@ public:
    static bool IsWindowsVersion();
    static bool IsLinuxVersion();
 
+   static std::wstring GetProductName();
+   static std::wstring GetEditorName();
    static std::wstring GetVersionTag();
 
 private:
@@ -23,6 +25,8 @@ private:
    bool hasDevelopmentFeatures;
    bool isWindows;
    bool isStandaloneOnly;
+   const std::wstring productName = L"GuimicK";
+   const std::wstring editorName = L"GuimicK Configuration";
    const std::wstring version = L"1.0.14";
 };
 

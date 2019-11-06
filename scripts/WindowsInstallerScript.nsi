@@ -1,18 +1,21 @@
 ;--------------------------------
 
-!define VERSION "1.0.13"
+!define ProductDisplayName "GuimicK"
+!define ProductName "GuimicK"
+!define VERSION "1.0.14"
+
 ; The name of the installer
-Name "Task Manager ${VERSION}"
+Name "${ProductDisplayName} ${VERSION}"
 
 ; The file to write
-OutFile "..\TaskManagerSetup-${VERSION}.exe"
+OutFile "..\${ProductName}Setup-${VERSION}.exe"
 
 ; The default installation directory
-InstallDir $PROGRAMFILES64\TaskManager
+InstallDir "$PROGRAMFILES64\${ProductDisplayName}"
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
-InstallDirRegKey HKLM "Software\TaskManager" "Install_Dir"
+InstallDirRegKey HKLM "Software\${ProductName}" "Install_Dir"
 
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
@@ -57,22 +60,25 @@ Section "" ;No components page, name is not important
   File /r "styles"
   File /r "translations"
 
-  ; Start menu shortcuts
-  CreateDirectory "$SMPROGRAMS\TaskManager"
-  CreateShortcut "$SMPROGRAMS\TaskManager\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortcut "$SMPROGRAMS\TaskManager\Configure.lnk" "$INSTDIR\ConfigurationEditingTool.exe" "" "$INSTDIR\ConfigurationEditingTool.exe" 0
+  ; Start menu shortcuts - Windows 7
+  ;CreateDirectory "$SMPROGRAMS\TaskManager"
+  ;CreateShortcut "$SMPROGRAMS\TaskManager\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+  ;CreateShortcut "$SMPROGRAMS\TaskManager\Configure.lnk" "$INSTDIR\ConfigurationEditingTool.exe" "" "$INSTDIR\ConfigurationEditingTool.exe" 0
+  
+  ; Start menu shortcuts - Windows 10
+  CreateShortcut "$SMPROGRAMS\${ProductDisplayName}.lnk" "$INSTDIR\ConfigurationEditingTool.exe" "" "$INSTDIR\ConfigurationEditingTool.exe" 0
   
   ; Reg Keys
-  WriteRegStr HKLM "Software\TaskManager" "Install_Dir" "$INSTDIR"
+  WriteRegStr HKLM "Software\${ProductName}" "Install_Dir" "$INSTDIR"
   
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\App Paths\TaskTool.exe" "" "$INSTDIR\TaskTool.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\App Paths\TaskTool.exe" "Path" "$INSTDIR"
   
   ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "DisplayName" "Task Manager"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "UninstallString" '"$INSTDIR\uninstall.exe"'
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "NoModify" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager" "NoRepair" 1  
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProductName}" "DisplayName" "${ProductDisplayName}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProductName}" "UninstallString" '"$INSTDIR\uninstall.exe"'
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProductName}" "NoModify" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProductName}" "NoRepair" 1  
   
   WriteUninstaller "uninstall.exe"
   EnVar::AddValue "Path" "$INSTDIR"  
@@ -82,14 +88,17 @@ Section "Uninstall"
   
   RMDir /r $INSTDIR
 
-  ; Remove Start menu shortcuts
-  Delete "$SMPROGRAMS\TaskManager\*.*"
-  RMDir "$SMPROGRAMS\TaskManager"  
+  ; Remove Start menu shortcuts - Windows 7
+  ;Delete "$SMPROGRAMS\TaskManager\*.*"
+  ;RMDir "$SMPROGRAMS\TaskManager"  
+  
+  ; Remove Start menu shortcuts - Windows 10
+  Delete "$SMPROGRAMS\${ProductDisplayName}.lnk"
   
   ; Remove registry keys
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\App Paths\TaskTool.exe"
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TaskManager"
-  DeleteRegKey HKLM "Software\TaskManager"
-  DeleteRegKey HKCU "Software\Task Manager"
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProductDisplayName}"
+  DeleteRegKey HKLM "Software\${ProductName}"
+  DeleteRegKey HKCU "Software\${ProductDisplayName}"
   
 SectionEnd

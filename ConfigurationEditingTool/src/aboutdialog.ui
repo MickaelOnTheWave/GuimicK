@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0" colspan="2">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="labelPartOfInfo">
      <property name="text">
       <string>This editor is part of Task Manager</string>
      </property>
@@ -51,7 +51,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="labelExeInfo">
      <property name="text">
-      <string>Configuration Editor v0.6</string>
+      <string>Configuration Editor v1.0</string>
      </property>
     </widget>
    </item>

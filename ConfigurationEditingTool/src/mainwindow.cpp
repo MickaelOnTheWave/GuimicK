@@ -642,7 +642,7 @@ QString MainWindow::CreateWindowTitle() const
 {
    const QString separator = " - ";
    const QString modificationMarker = "*";
-   QString newWindowTitle = "Configuration Editing Tool";
+   QString newWindowTitle = QString::fromStdWString(EditorVersion::GetEditorName());
    const bool isValidFile = (currentConfigurationFile != "");
    if (hasConfigurationChanged || isValidFile)
    {

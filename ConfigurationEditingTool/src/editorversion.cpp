@@ -38,6 +38,16 @@ bool EditorVersion::IsLinuxVersion()
    return !instance->isWindows;
 }
 
+std::wstring EditorVersion::GetProductName()
+{
+   return instance->productName;
+}
+
+std::wstring EditorVersion::GetEditorName()
+{
+   return instance->editorName;
+}
+
 std::wstring EditorVersion::GetVersionTag()
 {
    return instance->version;
