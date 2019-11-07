@@ -1,3 +1,16 @@
+06/11/2019 (1.5h)
+    Checking Uninstall feature : it works from Windows uninstall panel.
+    So the option can be safely removed from start menu!
+    Updated menu entry to be more Windows 10 friendly, and it worked :-)
+    Also updated product name to GuimicK, and refactored so that product
+    name is centralized, on NSIS script and Editor.
+    Start checking for running tasktool as Administrator from editor.
+    It seems that the manifest file way seems promising...
+Next planned work:
+    - Check manifest file in Editor for Admin rights
+    - If not successfull, check admin rights for subprocess/popen
+    - Continue/finish Ewerton Feedback changes
+
 05/11/2019 (1.7h)
     First fixing shutdown error in production run - it is a dummy error.
     Fixed it. Now going for Git repositories backup..

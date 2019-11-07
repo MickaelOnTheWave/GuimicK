@@ -37,7 +37,7 @@ Registered run rights : no one understands. Create a different window.
 Final Priority :
 OK - 1. Handle space in paths (xcopy)
 OK - 2. Put numbers on newly created (duplicated) jobs
-3. Start menu (win10) : there should be one icon (configure would be the only entry)
+OK - 3. Start menu (win10) : there should be one icon (configure would be the only entry)
 OK - 4. Report window must be maximizable.
 OK - 5. Report window too slim.
 OK - 6. Change save dialogs to defaults : wanna save?
