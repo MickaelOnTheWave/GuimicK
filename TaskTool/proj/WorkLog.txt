@@ -1,3 +1,15 @@
+12/11/2019 (1.5h)
+    First checking actual code. There seems to be an easy way to
+    get output : redirection. Trying it!
+    First creating class architecture for task tool runners (lin/win)
+    and updating code accordingly.
+    Created dedicated folder with separated windows implementation.
+    Checked on Linux : seems to work.
+    It seems that envelopping app will be needed
+Next planned work:
+    - Create Windows implementation of TaskToolRunner
+    - Create app for windows TaskToolRunner
+
 11/11/2019 (1.5h)
     Production run did not work at all. Title issue spread to
     whole report. But still focusing on getting Admin rights for

@@ -47,3 +47,7 @@ OK - 6. Change save dialogs to defaults : wanna save?
 OK - 10. Implement shortcuts (Ctrl+S, Ctrl+N...)
 11. Check Threaded run : on Ewerton's machine it hang as if there was no thread.
 12. Implement drag n drop
+
+-- Added after --
+
+13. Have icon in Uninstall window

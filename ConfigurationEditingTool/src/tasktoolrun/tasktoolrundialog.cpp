@@ -7,11 +7,14 @@
 #include <QVBoxLayout>
 
 #include "filetools.h"
+#include "tasktoolrun/linuxtasktoolrunner.h"
+#include "ostools.h"
 #include "pathtools.h"
 #include "tools.h"
 
 #ifdef _MSC_VER
    #include <direct.h>
+   #include "tasktoolrun/windows/windowstasktoolrunner.h"
 #else
    #include <unistd.h>
    #define _chdir chdir
@@ -66,6 +69,7 @@ TaskToolRunDialog::~TaskToolRunDialog()
    delete ui;
    taskToolThread.quit();
    taskToolThread.wait();
+   delete taskToolRunner;
 }
 
 void TaskToolRunDialog::SetRunPath(const QString& value)
@@ -119,11 +123,11 @@ void TaskToolRunDialog::OnFinishedRunningTaskTool()
 {
    PathTools::ChangeCurrentDir(currentDirectory);
 
-   std::wstring commandOutput = taskToolRunner.GetOutput();
-   const bool ok = (taskToolRunner.GetReturnCode() == 0);
+   std::wstring commandOutput = taskToolRunner->GetOutput();
+   const bool ok = (taskToolRunner->GetReturnCode() == 0);
    const QString displayOutput =
          (ok) ? QString::fromStdWString(commandOutput)
-              : CreateExecutionErrorMessage(taskToolRunner.GetReturnCode(), commandOutput);
+              : CreateExecutionErrorMessage(taskToolRunner->GetReturnCode(), commandOutput);
    UpdateTaskToolUiWithResults(ok, displayOutput);
    UnfreezeUi();
 }
@@ -274,15 +278,16 @@ void TaskToolRunDialog::AddAdminRightsWarning()
 
 void TaskToolRunDialog::InitializeThreadedTaskToolRun()
 {
-   taskToolRunner.moveToThread(&taskToolThread);
-   connect(&taskToolRunner, &TaskToolRunner::finished, this, &TaskToolRunDialog::OnFinishedRunningTaskTool);
+   taskToolRunner = CreateRunner();
+   taskToolRunner->moveToThread(&taskToolThread);
+   connect(taskToolRunner, &AbstractTaskToolRunner::finished, this, &TaskToolRunDialog::OnFinishedRunningTaskTool);
 }
 
 void TaskToolRunDialog::StartTaskTool()
 {
-   taskToolRunner.SetCommand(CreateTaskToolCommand());
+   taskToolRunner->SetCommand(CreateTaskToolCommand());
    taskToolThread.start();
-   taskToolRunner.Run();
+   taskToolRunner->Run();
 }
 
 void TaskToolRunDialog::SetUiWaitState()
@@ -305,4 +310,13 @@ void TaskToolRunDialog::UpdateTaskToolUiWithResults(const bool success, const QS
    SetupReportDisplay();
    SetupReportFilesDisplay();
    ui->taskWidget->setCurrentIndex(success ? taskToolReportPage : taskToolOutputPage);
+}
+
+AbstractTaskToolRunner* TaskToolRunDialog::CreateRunner()
+{
+#ifdef _WIN32
+   return new WindowsTaskToolRunner();
+#else
+   return new LinuxTaskToolRunner();
+#endif
 }

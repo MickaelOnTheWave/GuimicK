@@ -5,7 +5,7 @@
 #include <QThread>
 
 #include "adminrightswarning.h"
-#include "tasktoolrunner.h"
+#include "abstracttasktoolrunner.h"
 
 namespace Ui {
    class TaskToolRunDialog;
@@ -64,6 +64,8 @@ private:
          const QString& output
    );
 
+   AbstractTaskToolRunner* CreateRunner();
+
    Ui::TaskToolRunDialog *ui;
    AdminRightsWarning* warningWidget;
 
@@ -78,7 +80,7 @@ private:
 
    std::wstring currentDirectory = L"";
    QThread taskToolThread;
-   TaskToolRunner taskToolRunner;
+   AbstractTaskToolRunner* taskToolRunner = nullptr;
 };
 
 #endif // TASKTOOLRUNDIALOG_H

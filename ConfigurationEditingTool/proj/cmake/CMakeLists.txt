@@ -25,17 +25,19 @@ add_subdirectory ("${PROG_ROOT}/QtTools/QtTools/proj/cmake" "./QtTools")
 
 set (rootDir "${projectRoot}/src")
 set (scheduleDir "${rootDir}/scheduler")
+set (toolRunDir "${rootDir}/tasktoolrun")
 
 file(GLOB rootSources "${rootDir}/*")
 file(GLOB schedulerSources "${scheduleDir}/*")
-file(GLOB winSchedulerSources "${scheduleDir}/windows/*")
-
+file(GLOB toolRunSources "${toolRunDir}/*")
 file(GLOB wakeJobSources "${rootDir}/wakejob/*")
+file(GLOB winSchedulerSources "${scheduleDir}/windows/*")
+file(GLOB winToolRunSources "${toolRunDir}/windows/*")
 
-set(sources ${rootSources} ${schedulerSources} ${wakeJobSources})
+set(sources ${rootSources} ${schedulerSources} ${toolRunSources} ${wakeJobSources})
 
 if(WIN32)
-        list(APPEND sources ${winSchedulerSources})
+        list(APPEND sources ${winSchedulerSources} ${winToolRunSources})
 endif(WIN32)
 
 if(WIN32)
@@ -46,6 +48,7 @@ endif(WIN32)
 
 target_include_directories(ConfigurationEditingTool PRIVATE ${rootDir})
 target_include_directories(ConfigurationEditingTool PRIVATE ${scheduleDir})
+target_include_directories(ConfigurationEditingTool PRIVATE ${toolRunDir})
 
 target_link_libraries (ConfigurationEditingTool TaskLib ToolsLib QtToolsLib Qt5::Widgets)
 

@@ -27,7 +27,7 @@
 #include "selectbackupfolderdialog.h"
 #include "serverconfiguration.h"
 #include "settingsdialog.h"
-#include "tasktoolrundialog.h"
+#include "tasktoolrun/tasktoolrundialog.h"
 #include "tasktoolsettingsdialog.h"
 
 #include "abstractbackupjobdisplay.h"

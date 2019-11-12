@@ -1,14 +1,14 @@
-#ifndef TASKTOOLRUNNER_H
-#define TASKTOOLRUNNER_H
+#ifndef ABSTRACTTASKTOOLRUNNER_H
+#define ABSTRACTTASKTOOLRUNNER_H
 
 #include <QObject>
 #include <string>
 
-class TaskToolRunner : public QObject
+class AbstractTaskToolRunner : public QObject
 {
    Q_OBJECT
 public:
-   void Run();
+   virtual void Run() = 0;
 
    void SetCommand(const std::wstring& value);
 
@@ -18,7 +18,7 @@ public:
 signals:
    void finished();
 
-private:
+protected:
    std::wstring command = L"";
    std::wstring output = L"";
    int result = -1;
