@@ -1,3 +1,26 @@
+11/11/2019 (1.5h)
+    Production run did not work at all. Title issue spread to
+    whole report. But still focusing on getting Admin rights for
+    tasktool running... Created a manifest file, nothing changed.
+    However, thinking again about it, it won't change. Starting editor
+    as admin already doesn't solve the issue. The problem is that console
+    needs to be created as admin. Looking for popen... it seems there is
+    no way to make it use admin rights. So ShellExecute remains.
+    Checking if there is an easy way to get its console output... impossible.
+    So here are possible solutions that will need to be mixed :
+    1. Run with ShellExecute : gets admin rights but no output
+    2. Popen/CreateProcess : gets output but no admin rights
+    Right solution seems to be to create an app that will
+    embed popen and return output to temp file?
+    This app will be launched with ShellExecute.
+    First test with ShellExecute worked. Next step is building the
+    "app" to run tasktool...
+ Next planned work:
+    - Create the app to envelop tasktool
+    - Finish solution with proper ShellExecute call
+    - Make solution portable : it either runs ShellExecute on Windows
+    or does a simple call as previously on linux
+
 06/11/2019 (1.5h)
     Checking Uninstall feature : it works from Windows uninstall panel.
     So the option can be safely removed from start menu!
