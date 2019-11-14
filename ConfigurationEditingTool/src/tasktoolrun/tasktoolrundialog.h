@@ -59,6 +59,8 @@ private:
    void SetUiWaitState();
    void UnfreezeUi();
 
+   void UpdateTaskToolUiWithRunResult();
+
    void UpdateTaskToolUiWithResults(
          const bool success,
          const QString& output

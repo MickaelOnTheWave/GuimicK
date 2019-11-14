@@ -122,13 +122,7 @@ void TaskToolRunDialog::on_runButton_clicked()
 void TaskToolRunDialog::OnFinishedRunningTaskTool()
 {
    PathTools::ChangeCurrentDir(currentDirectory);
-
-   std::wstring commandOutput = taskToolRunner->GetOutput();
-   const bool ok = (taskToolRunner->GetReturnCode() == 0);
-   const QString displayOutput =
-         (ok) ? QString::fromStdWString(commandOutput)
-              : CreateExecutionErrorMessage(taskToolRunner->GetReturnCode(), commandOutput);
-   UpdateTaskToolUiWithResults(ok, displayOutput);
+   UpdateTaskToolUiWithRunResult();
    UnfreezeUi();
 }
 
@@ -302,6 +296,16 @@ void TaskToolRunDialog::UnfreezeUi()
 {
    setEnabled(true);
    QApplication::restoreOverrideCursor();
+}
+
+void TaskToolRunDialog::UpdateTaskToolUiWithRunResult()
+{
+   std::wstring commandOutput = taskToolRunner->GetOutput();
+   const bool ok = (taskToolRunner->GetReturnCode() == 0);
+   const QString displayOutput =
+         (ok) ? QString::fromStdWString(commandOutput)
+              : CreateExecutionErrorMessage(taskToolRunner->GetReturnCode(), commandOutput);
+   UpdateTaskToolUiWithResults(ok, displayOutput);
 }
 
 void TaskToolRunDialog::UpdateTaskToolUiWithResults(const bool success, const QString& output)

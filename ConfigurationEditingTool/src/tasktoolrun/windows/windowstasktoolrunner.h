@@ -8,6 +8,13 @@ class WindowsTaskToolRunner : public AbstractTaskToolRunner
     Q_OBJECT
 public:
    void Run() override;
+
+private:
+   bool ExecuteTaskToolAsAdmin();
+   void WaitUntilExecutionIsComplete();
+   void SetErrorMessage();
+
+   unsigned long shellExecuteErrorCode;
 };
 
 #endif // WINDOWSTASKTOOLRUNNER_H
