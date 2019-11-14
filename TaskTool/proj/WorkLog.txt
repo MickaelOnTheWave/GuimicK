@@ -1,3 +1,12 @@
+13/11/2019 (1.2h)
+    Starting Windows implementation. Did a small refactor, but
+    there is an architectural problem with error message handling.
+    Windows implementation has new possible error messages, and
+    the architecture must permit them to be set.
+Next planned work:
+    - Find a solution for error message handling
+    - Finish Windows implementation
+
 12/11/2019 (1.5h)
     First checking actual code. There seems to be an easy way to
     get output : redirection. Trying it!
