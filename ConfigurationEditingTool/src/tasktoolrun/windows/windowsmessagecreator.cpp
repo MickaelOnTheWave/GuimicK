@@ -22,7 +22,7 @@ QString WindowsMessageCreator::CreateMessage(
 QString WindowsMessageCreator::CreateShellExecuteError() const
 {
    QString errorMessage = "Error running Task tool command.\n";
-   errorMessage += "\t" + CreateWindowsErrorMessage() + "\n";
+   errorMessage += "\tTaskToolLauncher : " + CreateWindowsErrorMessage() + "\n";
    return errorMessage;
 }
 

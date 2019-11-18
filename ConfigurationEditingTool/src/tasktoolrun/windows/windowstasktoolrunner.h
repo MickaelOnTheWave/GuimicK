@@ -7,6 +7,8 @@ class WindowsTaskToolRunner : public AbstractTaskToolRunner
 {
     Q_OBJECT
 public:
+   WindowsTaskToolRunner();
+
    void Run() override;
 
    ErrorMessageCreator* CreateMessageCreator() override;
@@ -14,9 +16,19 @@ public:
 private:
    bool ExecuteTaskToolAsAdmin();
    void WaitUntilExecutionIsComplete();
-   void SetErrorMessage();
+
+   void PrepareTaskToolLaunch();
+
+   void CreateTaskToolLauncherFullPath();
+
+   static std::wstring GetLauncherExecutablePath();
+
+   int GetTaskToolReturnCode() const;
+   std::wstring GetTaskToolOutput() const;
 
    unsigned long shellExecuteErrorCode;
+   std::string launcherFullPath;
+   const std::wstring returnCodeFile = L"taskToolReturnCode";
 };
 
 #endif // WINDOWSTASKTOOLRUNNER_H

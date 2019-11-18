@@ -3,16 +3,21 @@
 #include <Windows.h>
 #include <shellapi.h>
 
+#include "filetools.h"
+#include "pathtools.h"
+#include "stringtools.h"
 #include "windowsmessagecreator.h"
+
+WindowsTaskToolRunner::WindowsTaskToolRunner()
+{
+   CreateTaskToolLauncherFullPath();
+}
 
 void WindowsTaskToolRunner::Run()
 {
-   const bool ok = ExecuteTaskToolAsAdmin();
-   if (ok)
+   runData.isOk = ExecuteTaskToolAsAdmin();
+   if (runData.isOk)
       WaitUntilExecutionIsComplete();
-   else
-      SetErrorMessage();
-
    emit finished();
 }
 
@@ -23,13 +28,14 @@ ErrorMessageCreator* WindowsTaskToolRunner::CreateMessageCreator()
 
 bool WindowsTaskToolRunner::ExecuteTaskToolAsAdmin()
 {
+   PrepareTaskToolLaunch();
    HINSTANCE errorCode = ShellExecute(
             NULL,
             "runas",
-            "c:\\Windows\\notepad.exe",
+            launcherFullPath.c_str(),
             "",
             "",
-            SW_SHOWNORMAL
+            SW_HIDE
             );
    shellExecuteErrorCode = reinterpret_cast<unsigned long>(errorCode);
    return (shellExecuteErrorCode > 32 );
@@ -37,23 +43,41 @@ bool WindowsTaskToolRunner::ExecuteTaskToolAsAdmin()
 
 void WindowsTaskToolRunner::WaitUntilExecutionIsComplete()
 {
-   // TODO test and implement
+   while (FileTools::FileExists(returnCodeFile) == false)
+      Sleep(500);
 
+   runData.returnCode = GetTaskToolReturnCode();
+   runData.output = GetTaskToolOutput();
+   runData.isOk = (runData.returnCode == 0);
 }
 
-void WindowsTaskToolRunner::SetErrorMessage()
+void WindowsTaskToolRunner::PrepareTaskToolLaunch()
 {
-   LPSTR messageBuffer = nullptr;
-   const DWORD flags = FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                 FORMAT_MESSAGE_FROM_SYSTEM |
-                 FORMAT_MESSAGE_IGNORE_INSERTS;
-   const size_t size = FormatMessage(
-                          flags, NULL,
-                          shellExecuteErrorCode,
-                          MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                          (LPSTR)&messageBuffer,
-                          0, NULL);
+   FileTools::RemoveFile(returnCodeFile);
 
-   std::string message(messageBuffer, size);
-   LocalFree(messageBuffer);
+   const std::wstring envelopeInputFile = L"taskToolCommand";
+   FileTools::WriteBufferToFile(envelopeInputFile, command);
+}
+
+void WindowsTaskToolRunner::CreateTaskToolLauncherFullPath()
+{
+   const std::wstring wstringLauncher = GetLauncherExecutablePath();
+   launcherFullPath = StringTools::UnicodeToUtf8(wstringLauncher);
+}
+
+std::wstring WindowsTaskToolRunner::GetLauncherExecutablePath()
+{
+   const std::wstring launcherFile = L"\\TaskToolLauncher.exe";
+   const std::wstring executionPath = PathTools::GetPathOnly(PathTools::GetCurrentExecutablePath());
+   return executionPath + L"\\" + launcherFile;
+}
+
+int WindowsTaskToolRunner::GetTaskToolReturnCode() const
+{
+   return std::stoi(FileTools::GetTextFileContent(returnCodeFile));
+}
+
+std::wstring WindowsTaskToolRunner::GetTaskToolOutput() const
+{
+   return FileTools::GetTextFileContent(L"taskToolOutput");
 }
