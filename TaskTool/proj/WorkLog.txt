@@ -1,7 +1,14 @@
-18/11/2019 (15.9)
+18/11/2019 (3.8h)
     Refactored existing Linux code, and it worked. Now going
     for Windows implementation... Created implementation and
     it seems to work. Now going for the envelope implementation.
+    Envelope implemented. Updating Windows runner implementation
+    to use it... Done, it seems to work. To be sure of it,
+    installer needs to be updated to install Launcher.
+    Updated installer and tested : Launcher runs OK but
+    admin issue still persists. What to do next?
+Next planned work:
+    - Find out another way of running console app elevated
 
 17/11/2019 (1h)
     Created new architecture.
