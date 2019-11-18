@@ -1,9 +1,15 @@
 #include "linuxtasktoolrunner.h"
 
+#include "errormessagecreator.h"
 #include "tools.h"
 
 void LinuxTaskToolRunner::Run()
 {
-   result = Tools::RunExternalCommandToBuffer(command, output, true);
+   runData.returnCode = Tools::RunExternalCommandToBuffer(command, runData.output, true);
    emit finished();
+}
+
+ErrorMessageCreator* LinuxTaskToolRunner::CreateMessageCreator()
+{
+   return new ErrorMessageCreator();
 }

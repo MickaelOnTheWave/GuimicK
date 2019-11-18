@@ -4,24 +4,27 @@
 #include <QObject>
 #include <string>
 
+#include "errormessagecreator.h"
+#include "tasktooldata.h"
+
 class AbstractTaskToolRunner : public QObject
 {
    Q_OBJECT
 public:
    virtual void Run() = 0;
 
-   void SetCommand(const std::wstring& value);
+   virtual ErrorMessageCreator* CreateMessageCreator() = 0;
 
-   std::wstring GetOutput() const;
-   int GetReturnCode() const;
+   TaskToolRunData GetRunData() const;
+
+   void SetCommand(const std::wstring& value);
 
 signals:
    void finished();
 
 protected:
    std::wstring command = L"";
-   std::wstring output = L"";
-   int result = -1;
+   TaskToolRunData runData;
 };
 
 #endif // TASKTOOLRUNNER_H

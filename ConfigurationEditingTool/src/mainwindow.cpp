@@ -678,9 +678,13 @@ void MainWindow::UpdateAddJobMenuEntries()
 void MainWindow::OpenRunDialog(const wstring& reportFile)
 {
    TaskToolRunDialog dialog(this, NeedsAdminRightsWarning());
-   dialog.SetRunPath(GetTempFolder());
-   dialog.SetConfigurationFile(GetTempConfigFilename());
-   dialog.SetToolExecutable(GetTaskToolExecutable());
+   TaskToolConfigurationData data(
+            GetTempConfigFilename(),
+            GetTempFolder(),
+            GetTaskToolExecutable()
+            );
+   dialog.SetConfigurationData(data);
+
    dialog.SetReportFile(QString::fromStdWString(reportFile));
    dialog.SetReportFolder(GetTempReportFolder());
 

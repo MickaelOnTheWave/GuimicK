@@ -6,6 +6,7 @@
 
 #include "adminrightswarning.h"
 #include "abstracttasktoolrunner.h"
+#include "tasktooldata.h"
 
 namespace Ui {
    class TaskToolRunDialog;
@@ -19,9 +20,7 @@ public:
    explicit TaskToolRunDialog(QWidget *parent, const bool showAdminWarning);
    ~TaskToolRunDialog();
 
-   void SetRunPath(const QString& value);
-   void SetConfigurationFile(const QString& value);
-   void SetToolExecutable(const QString& value);
+   void SetConfigurationData(const TaskToolConfigurationData& data);
    void SetReportFile(const QString& value);
    void SetReportFolder(const QString& value);
    void SetReportType(const std::wstring& value);
@@ -73,9 +72,7 @@ private:
 
 
 
-   QString runPath = "";
-   QString configurationFile = "";
-   QString taskToolExecutable = "";
+   TaskToolConfigurationData configData;
    QString reportFile = "";
    QString reportFolder = "";
    std::wstring reportType = L"";

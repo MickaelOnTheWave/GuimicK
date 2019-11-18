@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QVBoxLayout>
 
+#include "errormessagecreator.h"
 #include "filetools.h"
 #include "tasktoolrun/linuxtasktoolrunner.h"
 #include "ostools.h"
@@ -72,19 +73,9 @@ TaskToolRunDialog::~TaskToolRunDialog()
    delete taskToolRunner;
 }
 
-void TaskToolRunDialog::SetRunPath(const QString& value)
+void TaskToolRunDialog::SetConfigurationData(const TaskToolConfigurationData& data)
 {
-   runPath = value;
-}
-
-void TaskToolRunDialog::SetConfigurationFile(const QString& value)
-{
-   configurationFile = value;
-}
-
-void TaskToolRunDialog::SetToolExecutable(const QString& value)
-{
-   taskToolExecutable = value;
+   configData = data;
 }
 
 void TaskToolRunDialog::SetReportFile(const QString& value)
@@ -110,7 +101,7 @@ void TaskToolRunDialog::on_runButton_clicked()
    ui->outputTextEdit->setPlainText("");
    QString outputText;
    currentDirectory = PathTools::GetCurrentFullPath();
-   if (PathTools::ChangeCurrentDir(runPath.toStdWString()))
+   if (PathTools::ChangeCurrentDir(configData.runPath.toStdWString()))
    {
       SetUiWaitState();
       StartTaskTool();
@@ -139,56 +130,26 @@ std::wstring TaskToolRunDialog::CreateWindowsTaskToolCommand() const
 {
    const std::wstring stringToken = L"\"";
    std::wstring command = stringToken;
-   command += PathTools::ToWindowsPath(taskToolExecutable.toStdWString()) + stringToken;
+   command += PathTools::ToWindowsPath(configData.executable.toStdWString()) + stringToken;
    command += L" --conffile ";
-   command += PathTools::ToWindowsPath(configurationFile.toStdWString());
+   command += PathTools::ToWindowsPath(configData.configurationFile.toStdWString());
    return command;
 }
 
 std::wstring TaskToolRunDialog::CreateLinuxTaskToolCommand() const
 {
-   std::wstring command = taskToolExecutable.toStdWString();
+   std::wstring command = configData.executable.toStdWString();
    command += L" --conffile ";
-   command += configurationFile.toStdWString();
+   command += configData.configurationFile.toStdWString();
    return command;
 }
 
 QString TaskToolRunDialog::CreateChdirErrorMessage() const
 {
    QString errorMessage = "Failed to change directory : " + GetDetailedError() + "\n";
-   errorMessage += "  Target directory : " + runPath + "\n";
+   errorMessage += "  Target directory : " + configData.runPath + "\n";
    errorMessage += "  Current directory : " + QString::fromStdWString(PathTools::GetCurrentFullPath()) + "\n";
    return errorMessage;
-}
-
-QString TaskToolRunDialog::CreateExecutionErrorMessage(const int returnValue,
-                                                       const std::wstring& output) const
-{
-   if (returnValue == 1)
-       return CreateConfigurationFileErrorMessage();
-   else
-       return CreateGenericExecutionErrorMessage(returnValue, output);
-}
-
-QString TaskToolRunDialog::CreateConfigurationFileErrorMessage() const
-{
-    QString errorMessage = "Error running Task tool command : ";
-    errorMessage += "Configuration file not found.\n";
-    errorMessage += "\tConfiguration file : " + configurationFile + "\n";
-    errorMessage += "\tRun Path : " + runPath + "\n";
-    errorMessage += "\tExecutable : " + taskToolExecutable + "\n";
-    return errorMessage;
-}
-
-QString TaskToolRunDialog::CreateGenericExecutionErrorMessage(const int returnValue, const std::wstring &output) const
-{
-    QString errorMessage = "Error running Task tool command.\n";
-    errorMessage += "\tError code : " + QString::number(returnValue) + "\n";
-    errorMessage += "\tOutput : " + QString::fromStdWString(output) + "\n";
-    errorMessage += "\tRun Path : " + runPath + "\n";
-    errorMessage += "\tExecutable : " + taskToolExecutable + "\n";
-    errorMessage += "\tConfiguration file : " + configurationFile + "\n";
-    return errorMessage;
 }
 
 void TaskToolRunDialog::SetupReportDisplay()
@@ -300,12 +261,10 @@ void TaskToolRunDialog::UnfreezeUi()
 
 void TaskToolRunDialog::UpdateTaskToolUiWithRunResult()
 {
-   std::wstring commandOutput = taskToolRunner->GetOutput();
-   const bool ok = (taskToolRunner->GetReturnCode() == 0);
-   const QString displayOutput =
-         (ok) ? QString::fromStdWString(commandOutput)
-              : CreateExecutionErrorMessage(taskToolRunner->GetReturnCode(), commandOutput);
-   UpdateTaskToolUiWithResults(ok, displayOutput);
+   ErrorMessageCreator* messageCreator = taskToolRunner->CreateMessageCreator();
+   const TaskToolRunData runData = taskToolRunner->GetRunData();
+   const QString displayOutput = messageCreator->CreateMessage(configData, runData);
+   UpdateTaskToolUiWithResults(runData.isOk, displayOutput);
 }
 
 void TaskToolRunDialog::UpdateTaskToolUiWithResults(const bool success, const QString& output)
