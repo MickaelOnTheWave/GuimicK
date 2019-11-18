@@ -8,7 +8,14 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-file(GLOB sources "../../src/*")
+set(projectRoot "${CMAKE_SOURCE_DIR}/../..")
+set(toolsRoot "${projectRoot}/../../Tools/")
+
+add_subdirectory ("${toolsRoot}/ToolsLib/proj/cmake" "./ToolsLib")
+
+file(GLOB sources "${projectRoot}/src/*")
 
 add_executable(${PROJECT_NAME} ${sources})
+
+target_link_libraries (${PROJECT_NAME} ToolsLib)
 
