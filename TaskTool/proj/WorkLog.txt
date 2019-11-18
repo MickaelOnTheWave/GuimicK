@@ -1,3 +1,11 @@
+18/11/2019 (15.9)
+    Refactored existing Linux code, and it worked. Now going
+    for Windows implementation... Created implementation and
+    it seems to work. Now going for the envelope implementation.
+
+17/11/2019 (1h)
+    Created new architecture.
+
 13/11/2019 (1.2h)
     Starting Windows implementation. Did a small refactor, but
     there is an architectural problem with error message handling.
