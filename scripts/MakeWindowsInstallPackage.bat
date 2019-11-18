@@ -8,11 +8,14 @@ cd %ROOT%\TaskTool\scripts
 CALL MakeWin64VsRelease.bat
 cd %ROOT%\ConfigurationEditingTool\scripts
 CALL MakeWin64VsRelease.bat
+cd %ROOT%\TaskToolLauncher\scripts
+CALL MakeWin64VsRelease.bat
 
 cd %ROOT%\bin\WindowsInstallPackage
 copy %ROOT%\scripts\WindowsInstallerScript.nsi WindowsInstallerScript.nsi
 copy %ROOT%\TaskTool\bin\Win64Vs\Release\TaskTool.exe TaskTool.exe
 copy %ROOT%\ConfigurationEditingTool\bin\Win64Vs\Release\ConfigurationEditingTool.exe ConfigurationEditingTool.exe
+copy %ROOT%\TaskToolLauncher\bin\Win64Vs\Release\TaskToolLauncher.exe TaskToolLauncher.exe
 xcopy %ROOT%\data /Y
 xcopy %ROOT%\lib /Y
 

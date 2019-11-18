@@ -27,7 +27,7 @@ private:
    bool isStandaloneOnly;
    const std::wstring productName = L"GuimicK";
    const std::wstring editorName = L"GuimicK Configuration";
-   const std::wstring version = L"1.0.14";
+   const std::wstring version = L"1.0.15";
 };
 
 #endif // EDITORVERSION_H

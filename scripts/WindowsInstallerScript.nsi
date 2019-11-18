@@ -2,7 +2,7 @@
 
 !define ProductDisplayName "GuimicK"
 !define ProductName "GuimicK"
-!define VERSION "1.0.14"
+!define VERSION "1.0.15"
 
 ; The name of the installer
 Name "${ProductDisplayName} ${VERSION}"
@@ -51,7 +51,8 @@ Section "" ;No components page, name is not important
   File Qt5Core.dll
   File Qt5Gui.dll
   File Qt5Widgets.dll
-  File TaskTool.exe  
+  File TaskTool.exe
+  File TaskToolLauncher.exe
   File license.txt  
   File report.css
   File /r "iconengines"
