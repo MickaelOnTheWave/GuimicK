@@ -9,6 +9,8 @@ class WindowsTaskToolRunner : public AbstractTaskToolRunner
 public:
    void Run() override;
 
+   ErrorMessageCreator* CreateMessageCreator() override;
+
 private:
    bool ExecuteTaskToolAsAdmin();
    void WaitUntilExecutionIsComplete();

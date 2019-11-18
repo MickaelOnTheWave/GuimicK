@@ -17,7 +17,7 @@ class TaskToolRunDialog : public QDialog
    Q_OBJECT
 
 public:
-   explicit TaskToolRunDialog(QWidget *parent, const bool showAdminWarning);
+   explicit TaskToolRunDialog(QWidget *parent, const bool _needsAdminRights);
    ~TaskToolRunDialog();
 
    void SetConfigurationData(const TaskToolConfigurationData& data);
@@ -80,6 +80,7 @@ private:
    std::wstring currentDirectory = L"";
    QThread taskToolThread;
    AbstractTaskToolRunner* taskToolRunner = nullptr;
+   const bool needsAdminRights;
 };
 
 #endif // TASKTOOLRUNDIALOG_H

@@ -1,10 +1,5 @@
 #include "errormessagecreator.h"
 
-ErrorMessageCreator::ErrorMessageCreator()
-{
-
-}
-
 QString ErrorMessageCreator::CreateMessage(
       const TaskToolConfigurationData& configurationData,
       const TaskToolRunData& runData)

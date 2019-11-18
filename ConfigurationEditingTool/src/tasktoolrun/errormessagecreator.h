@@ -8,9 +8,10 @@
 class ErrorMessageCreator
 {
 public:
-   ErrorMessageCreator();
+   ErrorMessageCreator() = default;
+   virtual ~ErrorMessageCreator() = default;
 
-   QString CreateMessage(
+   virtual QString CreateMessage(
        const TaskToolConfigurationData& configurationData,
        const TaskToolRunData& runData
    );

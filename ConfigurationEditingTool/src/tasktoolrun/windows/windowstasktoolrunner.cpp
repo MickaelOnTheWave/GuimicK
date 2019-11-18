@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <shellapi.h>
 
+#include "windowsmessagecreator.h"
+
 void WindowsTaskToolRunner::Run()
 {
    const bool ok = ExecuteTaskToolAsAdmin();
@@ -12,6 +14,11 @@ void WindowsTaskToolRunner::Run()
       SetErrorMessage();
 
    emit finished();
+}
+
+ErrorMessageCreator* WindowsTaskToolRunner::CreateMessageCreator()
+{
+   return new WindowsMessageCreator(shellExecuteErrorCode);
 }
 
 bool WindowsTaskToolRunner::ExecuteTaskToolAsAdmin()
@@ -30,6 +37,7 @@ bool WindowsTaskToolRunner::ExecuteTaskToolAsAdmin()
 
 void WindowsTaskToolRunner::WaitUntilExecutionIsComplete()
 {
+   // TODO test and implement
 
 }
 

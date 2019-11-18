@@ -54,14 +54,15 @@ namespace
    const int taskToolOutputPage = 3;
 }
 
-TaskToolRunDialog::TaskToolRunDialog(QWidget *parent, const bool showAdminWarning) :
+TaskToolRunDialog::TaskToolRunDialog(QWidget *parent, const bool _needsAdminRights) :
    QDialog(parent),
-   ui(new Ui::TaskToolRunDialog)
+   ui(new Ui::TaskToolRunDialog),
+   needsAdminRights(_needsAdminRights)
 {
    ui->setupUi(this);
    setWindowFlag(Qt::WindowMaximizeButtonHint);
    InitializeThreadedTaskToolRun();
-   if (showAdminWarning)
+   if (needsAdminRights)
       AddAdminRightsWarning();
 }
 
@@ -278,7 +279,10 @@ void TaskToolRunDialog::UpdateTaskToolUiWithResults(const bool success, const QS
 AbstractTaskToolRunner* TaskToolRunDialog::CreateRunner()
 {
 #ifdef _WIN32
-   return new WindowsTaskToolRunner();
+   if (needsAdminRights)
+      return new WindowsTaskToolRunner();
+   else
+      return new LinuxTaskToolRunner();
 #else
    return new LinuxTaskToolRunner();
 #endif
