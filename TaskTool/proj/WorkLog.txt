@@ -1,3 +1,13 @@
+21/11/2019 (0.4h)
+    Little time... going for something simpler. A TODO maybe?
+    TODOs are too deep and need proper tests. Focusing on automated
+    tests... Found the way to include test suites in FullTestSuite :
+    separate test classes in child test suites and include them
+    directly for compilation.. And it worked :-)
+Next planned work:
+    - Find out another way of running console app elevated
+    - Include ToolsTestLib in FullTestSuite
+
 18/11/2019 (3.8h)
     Refactored existing Linux code, and it worked. Now going
     for Windows implementation... Created implementation and
