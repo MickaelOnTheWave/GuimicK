@@ -1,5 +1,8 @@
 24/11/2019 (11.5)
     Little time again. Going on automated tests...
+    Included ToolsTests in FullTestSuite. Now going to fix
+    tests failures... Fixed them, it was the data copy command
+    that was not present in master test suite.
 
 21/11/2019 (0.4h)
     Little time... going for something simpler. A TODO maybe?
