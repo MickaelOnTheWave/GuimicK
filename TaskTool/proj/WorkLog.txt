@@ -1,3 +1,6 @@
+24/11/2019 (11.5)
+    Little time again. Going on automated tests...
+
 21/11/2019 (0.4h)
     Little time... going for something simpler. A TODO maybe?
     TODOs are too deep and need proper tests. Focusing on automated

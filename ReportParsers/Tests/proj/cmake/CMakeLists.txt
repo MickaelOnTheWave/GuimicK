@@ -12,7 +12,6 @@ add_subdirectory ("${taskManagerRoot}/../Tools/ToolsLib/proj/cmake" "./ToolsLib"
 
 set(srcDir "../../src")
 file(GLOB testSources "${srcDir}/tests/*")
-
 set(sources ${testSources} "${srcDir}/main.cpp")
 
 add_executable(${PROJECT_NAME} ${sources})
