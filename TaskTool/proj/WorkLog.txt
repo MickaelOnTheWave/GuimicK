@@ -1,8 +1,13 @@
-24/11/2019 (11.5)
+24/11/2019 (0.8h)
     Little time again. Going on automated tests...
     Included ToolsTests in FullTestSuite. Now going to fix
     tests failures... Fixed them, it was the data copy command
     that was not present in master test suite.
+    Moving old existing FileTools test to google test suite.
+    Creating new tests that seem too relevant to not exist.
+ Next planned work:
+    - Find out another way of running console app elevated
+    - Finish migrating/creating folder tests
 
 21/11/2019 (0.4h)
     Little time... going for something simpler. A TODO maybe?
