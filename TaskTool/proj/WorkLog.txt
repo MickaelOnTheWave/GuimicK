@@ -1,3 +1,11 @@
+25/11/2019 (0.5h)
+    Continuing tests...
+    Created tests for FolderExists and finished migrating
+    RemoveFolder tests.
+Next planned work:
+   - Find out another way of running console app elevated
+   - Finish ToolsTests migration
+
 24/11/2019 (0.8h)
     Little time again. Going on automated tests...
     Included ToolsTests in FullTestSuite. Now going to fix
