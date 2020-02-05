@@ -8,13 +8,32 @@
 #include "mainwindow.h"
 #include "ostools.h"
 
-void InitializeVersion()
-{
-#ifdef _WIN32
-   EditorVersion::CreateAsClientVersion(OsTools::IsOnWindows());
+namespace  {
+   bool HasDevelopmentTools()
+   {
+#ifdef NO_DEV_TOOLS
+      return false;
 #else
-   EditorVersion::CreateAsDevelopmentVersion(OsTools::IsOnWindows());
+      return true;
 #endif
+   }
+
+   bool IsStandaloneOnly()
+   {
+#ifdef STANDALONE_ONLY
+      return true;
+#else
+      return false;
+#endif
+   }
+
+   void InitializeVersion()
+   {
+      EditorVersion* version = EditorVersion::Create();
+      version->SetAsWindowsVersion(OsTools::IsOnWindows());
+      version->SetAsDevelopmentVersion(HasDevelopmentTools());
+      version->SetAsStandaloneOnly(IsStandaloneOnly());
+   }
 }
 
 int main(int argc, char *argv[])

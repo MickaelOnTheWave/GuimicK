@@ -6,8 +6,13 @@
 class EditorVersion
 {
 public:
-   static void CreateAsClientVersion(const bool _isWindows);
-   static void CreateAsDevelopmentVersion(const bool _isWindows);
+   /**
+    * @brief Creates the global instance
+    * @return A pointer to the global instance for
+    * setup purposes. nullptr if the global instance
+    * was already created.
+    */
+   static EditorVersion* Create();
 
    static bool IsStandaloneOnly();
    static bool HasDevelopmentFeatures();
@@ -17,6 +22,10 @@ public:
    static std::wstring GetProductName();
    static std::wstring GetEditorName();
    static std::wstring GetVersionTag();
+
+   void SetAsDevelopmentVersion(const bool value);
+   void SetAsWindowsVersion(const bool value);
+   void SetAsStandaloneOnly(const bool value);
 
 private:
    EditorVersion() = default;

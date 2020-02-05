@@ -5,10 +5,10 @@
 #include <vector>
 
 #include <QCloseEvent>
-#include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMenu>
 #include <QMessageBox>
+#include <QScreen>
 #include <QSettings>
 #include <QStandardPaths>
 
@@ -479,8 +479,7 @@ void MainWindow::on_checkBackupsButton_clicked()
 
 void MainWindow::MoveToScreenCenter()
 {
-   QDesktopWidget desktop;
-   const QRect screenArea = desktop.availableGeometry();
+   const QRect screenArea = QGuiApplication::primaryScreen()->availableGeometry();
    const QRect mainWindowArea = geometry();
    const QPoint targetPosition = screenArea.center() - mainWindowArea.center();
    move(targetPosition);

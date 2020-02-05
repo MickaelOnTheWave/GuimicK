@@ -1,3 +1,9 @@
+05/02/2020 (17.1)
+    After a hardware failure, holidays and a VR headset,
+    back to work!
+    First going to check/fix existing bugs in Linux with
+    Editor.
+
 25/11/2019 (0.5h)
     Continuing tests...
     Created tests for FolderExists and finished migrating

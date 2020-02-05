@@ -2,20 +2,15 @@
 
 EditorVersion* EditorVersion::instance = nullptr;
 
-void EditorVersion::CreateAsClientVersion(const bool _isWindows)
+EditorVersion* EditorVersion::Create()
 {
-   instance = new EditorVersion();
-   instance->hasDevelopmentFeatures = false;
-   instance->isWindows = _isWindows;
-   instance->isStandaloneOnly = true;
-}
-
-void EditorVersion::CreateAsDevelopmentVersion(const bool _isWindows)
-{
-   instance = new EditorVersion();
-   instance->hasDevelopmentFeatures = true;
-   instance->isWindows = _isWindows;
-   instance->isStandaloneOnly = false;
+   if (instance == nullptr)
+   {
+      instance = new EditorVersion();
+      return instance;
+   }
+   else
+      return nullptr;
 }
 
 bool EditorVersion::IsStandaloneOnly()
@@ -51,4 +46,19 @@ std::wstring EditorVersion::GetEditorName()
 std::wstring EditorVersion::GetVersionTag()
 {
    return instance->version;
+}
+
+void EditorVersion::SetAsDevelopmentVersion(const bool value)
+{
+   hasDevelopmentFeatures = value;
+}
+
+void EditorVersion::SetAsWindowsVersion(const bool value)
+{
+   isWindows = value;
+}
+
+void EditorVersion::SetAsStandaloneOnly(const bool value)
+{
+   isStandaloneOnly = value;
 }
