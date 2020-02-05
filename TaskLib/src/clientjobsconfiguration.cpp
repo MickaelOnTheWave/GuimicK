@@ -58,6 +58,7 @@ void ClientJobsConfiguration::GetJobList(std::list<AbstractJob*>& _jobList)
 
 void ClientJobsConfiguration::SetJobList(const std::vector<AbstractJob*>& _jobList)
 {
+   jobList.clear();
    copy(_jobList.begin(), _jobList.end(), back_inserter(jobList));
 }
 

@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 
    InitializeVersion();
    MainWindow w;
-   w.OpenDefaultFile();
+   w.CreateDefaultFile();
    w.show();
    return a.exec();
 }

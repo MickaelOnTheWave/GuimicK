@@ -22,6 +22,7 @@ public:
    explicit MainWindow(QWidget *parent = nullptr);
    virtual ~MainWindow();
 
+   void CreateDefaultFile();
    void OpenDefaultFile();
 
 protected:
@@ -82,7 +83,6 @@ private:
 
    bool ManageUserActionIfModified();
 
-   void TryCreatingNewFile();
    void CreateNewFile();
 
    void OpenFile(const QString& filename,

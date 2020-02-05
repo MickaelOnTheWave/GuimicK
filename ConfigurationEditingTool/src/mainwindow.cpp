@@ -159,7 +159,7 @@ void MainWindow::on_actionNew_triggered()
    if (!proceed)
       return;
 
-   TryCreatingNewFile();
+   CreateDefaultFile();
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -368,6 +368,24 @@ void MainWindow::on_deleteButton_clicked()
    }
 }
 
+void MainWindow::CreateDefaultFile()
+{
+   if (EditorVersion::IsStandaloneOnly())
+   {
+      configurationType = StandaloneConfigurationType;
+      CreateNewFile();
+   }
+   else
+   {
+      ConfigurationTypeDialog dialog;
+      if (dialog.exec() == QDialog::Accepted)
+      {
+         configurationType = dialog.GetChosenType();
+         CreateNewFile();
+      }
+   }
+}
+
 void MainWindow::OpenDefaultFile()
 {
    const QString standardFile = QDir::homePath() + "/.taskmanager";
@@ -375,7 +393,7 @@ void MainWindow::OpenDefaultFile()
    if (checkFile.exists() && checkFile.isFile())
       OpenFile(standardFile, false);
    else
-      TryCreatingNewFile();
+      CreateDefaultFile();
 }
 
 void MainWindow::CreateNewFile()
@@ -570,24 +588,6 @@ bool MainWindow::ManageUserActionIfModified()
    }
    else
       return true;
-}
-
-void MainWindow::TryCreatingNewFile()
-{
-   if (EditorVersion::IsStandaloneOnly())
-   {
-      configurationType = StandaloneConfigurationType;
-      CreateNewFile();
-   }
-   else
-   {
-      ConfigurationTypeDialog dialog;
-      if (dialog.exec() == QDialog::Accepted)
-      {
-         configurationType = dialog.GetChosenType();
-         CreateNewFile();
-      }
-   }
 }
 
 QString MainWindow::GetBackupFolder(AbstractBackupJob* job) const
