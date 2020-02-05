@@ -1,8 +1,15 @@
-05/02/2020 (17.1)
+05/02/2020 (1.5h)
     After a hardware failure, holidays and a VR headset,
     back to work!
     First going to check/fix existing bugs in Linux with
     Editor.
+    Fixed duplicating bug. Refactored EditorVersion to allow
+    control over version from Cmake. Changed behaviour at
+    startup : Editor no longer opens default file.
+    Now going to resurrect Synology...
+    Since last year, router has changed its ip, desktop
+    motherboard changed too and synology is invisible.
+    Set up router again but Synology is still invisible...
 
 25/11/2019 (0.5h)
     Continuing tests...
