@@ -87,9 +87,9 @@ void SettingsConfigurationUpdater::Update7zipPathProperty(const QString& value)
       configuration->GetClient()->AddProperty(L"7zipExecutable", value.toStdWString());
 }
 
-EmailData SettingsConfigurationUpdater::CreateEmailData()
+EmailAccountData SettingsConfigurationUpdater::CreateEmailData()
 {
-   EmailData emailData;
+   EmailAccountData emailData;
    emailData.SetAddress(GetValue(ui->emailEdit));
    emailData.SetPassword(GetValue(ui->passwordEdit));
    emailData.SetSmtpServer(GetValue(ui->smtpServerEdit));

@@ -18,6 +18,8 @@ private:
     void WriteReportContentToFile(AbstractReportCreator* reportCreator,
                                   const std::wstring& filename);
     std::string CreateEmailContent(AbstractReportCreator* reportCreator) const;
+
+    EmailData CreateEmailData(AbstractReportCreator* reportCreator) const;
 };
 
 #endif // CURLCONSOLEEMAILSENDER_H

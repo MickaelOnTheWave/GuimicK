@@ -32,7 +32,7 @@ void AbstractEmailReportDispatcher::Initialize(
    {
       const Agent* agent = standaloneConfiguration->GetAgent();
       displayName = agent->GetName();
-      emailData = agent->GetEmailData();
+      emailAccountData = agent->GetEmailData();
 
       isHtml = standaloneConfiguration->IsReportHtml();
       destEmail = standaloneConfiguration->GetMasterEmail();
@@ -54,9 +54,9 @@ void AbstractEmailReportDispatcher::SetVerboseMode()
 wstring AbstractEmailReportDispatcher::GetSmtpUrl() const
 {
 	wstring smtpUrl(L"smtp://");
-   smtpUrl += emailData.GetSmtpServer() + L":";
+   smtpUrl += emailAccountData.GetSmtpServer() + L":";
 	wstringstream s;
-   s << emailData.GetSmtpPort();
+   s << emailAccountData.GetSmtpPort();
 	smtpUrl += s.str();
 	return smtpUrl;
 }

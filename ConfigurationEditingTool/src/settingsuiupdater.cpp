@@ -41,7 +41,7 @@ void SettingsUiUpdater::UpdateClientData()
    ui->sevenZipWidget->SetPath(QString::fromStdWString(sevenZipPath));
 }
 
-void SettingsUiUpdater::UpdateEmailData(const EmailData& emailData)
+void SettingsUiUpdater::UpdateEmailData(const EmailAccountData& emailData)
 {
    SetValue(ui->emailEdit, emailData.GetAddress());
    SetValue(ui->passwordEdit, emailData.GetPassword());

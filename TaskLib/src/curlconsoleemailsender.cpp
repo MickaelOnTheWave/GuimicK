@@ -84,10 +84,10 @@ wstring CurlConsoleReportDispatcher::BuildCurlParams(const wstring &mailFilename
 {
     wstring params;
     params += L" --url \"" + GetSmtpUrl() + L"\" --ssl-reqd ";
-    params += L"--mail-from \"" + emailData.GetAddress() + L"\" ";
+    params += L"--mail-from \"" + emailAccountData.GetAddress() + L"\" ";
     params += L"--mail-rcpt \"" + destEmail + L"\" ";
     params += L"--upload-file " + mailFilename + L" ";
-    params += L"--user \"" + emailData.GetAddress() + L":" + emailData.GetPassword() + L"\" ";
+    params += L"--user \"" + emailAccountData.GetAddress() + L":" + emailAccountData.GetPassword() + L"\" ";
     params += L"--insecure --show-error ";
     params += isVerbose ? L"--verbose" : L"--silent";
     return params;
@@ -110,18 +110,27 @@ std::string CurlConsoleReportDispatcher::CreateEmailContent(AbstractReportCreato
    vector<pair<wstring, wstring> > fileBuffers;
    reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
 
+   const EmailData emailData = CreateEmailData(reportCreator);
    MimeTools mimeCreator;
+
    const string emailContent = mimeCreator.CreateEmailContent(
-      isHtml, 
       StringTools::UnicodeToUtf8(displayName),
-      StringTools::UnicodeToUtf8(emailData.GetAddress()),
-      StringTools::UnicodeToUtf8(destEmail),
-      StringTools::UnicodeToUtf8(cc),
-      StringTools::UnicodeToUtf8(bcc),
-      StringTools::UnicodeToUtf8(subject),
-      StringTools::UnicodeToUtf8(reportCreator->GetReportContent()),
+      StringTools::UnicodeToUtf8(emailAccountData.GetAddress()),
+      emailData,
       ToUtf8(externalFiles),
       ToUtf8(fileBuffers)
    );
    return emailContent;
+}
+
+EmailData CurlConsoleReportDispatcher::CreateEmailData(AbstractReportCreator* reportCreator) const
+{
+   EmailData data;
+   data.SetTo(destEmail);
+   data.SetCc(cc);
+   data.SetBcc(bcc);
+   data.SetSubject(subject);
+   data.SetBody(reportCreator->GetReportContent());
+   data.SetIsHtml(isHtml);
+   return data;
 }

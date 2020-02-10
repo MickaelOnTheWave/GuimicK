@@ -17,7 +17,7 @@ private:
    void UpdateReportDispatching() override;
    void UpdateOtherData() override;
 
-   void UpdateEmailData(const EmailData& emailData);
+   void UpdateEmailData(const EmailAccountData& emailData);
    void SetReportDispatchControls(const int index);
 };
 

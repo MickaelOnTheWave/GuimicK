@@ -21,10 +21,10 @@ public:
     void SetVerboseMode();
 
 protected:
-    std::wstring GetSmtpUrl() const;
+   std::wstring GetSmtpUrl() const;
 
-	std::wstring displayName;
-   EmailData emailData;
+   std::wstring displayName;
+   EmailAccountData emailAccountData;
    bool outputDebugInformation;
    bool isVerbose;
 

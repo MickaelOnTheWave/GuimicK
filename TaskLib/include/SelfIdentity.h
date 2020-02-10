@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "configurationobject.h"
-#include "emaildata.h"
+#include "emailaccountdata.h"
 
 class Agent
 {
@@ -26,18 +26,24 @@ public:
     std::wstring GetReportFolder() const;
     void SetReportFolder(const std::wstring& value);
 
-    EmailData GetEmailData() const;
-    void SetEmailData(const EmailData& value);
+    EmailAccountData GetEmailData() const;
+    void SetEmailData(const EmailAccountData& value);
     bool HasValidEmailData() const;
 
 private:
+
+    void SaveToFile(
+       const EmailAccountData& emailData,
+       std::wofstream& fileStream
+    );
+
     std::wstring BuildUnhandledPropertyMessage(const std::wstring& property) const;
 
     // TODO : change all this to a property map, like Client.
     std::wstring name;
     std::wstring reportFile;
     std::wstring reportFolder;
-    EmailData emailData;
+    EmailAccountData emailData;
 };
 
 #endif // AGENT_H

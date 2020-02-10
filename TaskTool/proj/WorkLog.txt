@@ -1,3 +1,14 @@
+10/02/2020 (15.5 -0.5 19.1)
+    Synology resurrected, Ip got from Assistant on Windows.
+    Updated its setup, now it is back to work.
+    Trying to put production backup back on track. Mac/Ip
+    updated, but there is an email dispatch error.
+    Investigating...
+    Refactored email code with dedicated data classes.
+    Prepared Email UI for extended error messages about
+    sending errors.
+    Updated Version number and copyright information.
+
 05/02/2020 (1.5h)
     After a hardware failure, holidays and a VR headset,
     back to work!

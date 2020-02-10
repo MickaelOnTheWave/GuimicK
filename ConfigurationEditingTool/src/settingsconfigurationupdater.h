@@ -19,7 +19,7 @@ private:
 
    void Update7zipPathProperty(const QString& value);
 
-   EmailData CreateEmailData();
+   EmailAccountData CreateEmailData();
 
    std::wstring GetDefaultReportFilename() const;
 };

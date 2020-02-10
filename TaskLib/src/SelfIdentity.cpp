@@ -54,7 +54,7 @@ void Agent::SaveToOpenedFile(wofstream& fileStream)
    ConfigurationTools::SaveValueToFile(fileStream, L"Name", name);
    ConfigurationTools::SaveValueToFile(fileStream, L"ReportFile", reportFile);
    ConfigurationTools::SaveValueToFile(fileStream, L"ReportFolder", reportFolder);
-   emailData.SaveToOpenedFile(fileStream);
+   SaveToFile(emailData, fileStream);
    fileStream << "}" << endl;
 }
 
@@ -88,12 +88,12 @@ void Agent::SetReportFolder(const wstring& value)
    reportFolder = value;
 }
 
-EmailData Agent::GetEmailData() const
+EmailAccountData Agent::GetEmailData() const
 {
    return emailData;
 }
 
-void Agent::SetEmailData(const EmailData& value)
+void Agent::SetEmailData(const EmailAccountData& value)
 {
    emailData = value;
 }
@@ -101,6 +101,21 @@ void Agent::SetEmailData(const EmailData& value)
 bool Agent::HasValidEmailData() const
 {
    return emailData.IsValid();
+}
+
+void Agent::SaveToFile(
+   const EmailAccountData& emailData,
+   std::wofstream& fileStream
+)
+{
+   if (emailData.IsValid())
+   {
+      ConfigurationTools::SaveValueToFile(fileStream, L"Email", emailData.GetAddress());
+      ConfigurationTools::SaveValueToFile(fileStream, L"Password", emailData.GetPassword());
+      ConfigurationTools::SaveValueToFile(fileStream, L"SmtpAddress", emailData.GetSmtpServer());
+      ConfigurationTools::SaveValueToFile(fileStream, L"SmtpPort", emailData.GetSmtpPort());
+      ConfigurationTools::SaveValueToFile(fileStream, L"UseSSL", emailData.GetUseSsl());
+   }
 }
 
 wstring Agent::BuildUnhandledPropertyMessage(const wstring &property) const
