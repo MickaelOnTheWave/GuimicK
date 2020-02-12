@@ -47,11 +47,6 @@ CurlConsoleReportDispatcher::CurlConsoleReportDispatcher()
 
 }
 
-wstring CurlConsoleReportDispatcher::GetName() const
-{
-   return L"CurlConsole Email";
-}
-
 bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 {
    JobDebugInformationManager debugInfo(outputDebugInformation, L"EmailSend");
