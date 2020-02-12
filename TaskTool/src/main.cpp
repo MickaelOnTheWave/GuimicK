@@ -9,7 +9,7 @@
 
 // TODO : put version number on Cmake for coherence with
 // editor, tool and installer
-static const std::wstring PROGRAM_VERSION = L"1.0.16";
+static const std::wstring PROGRAM_VERSION = L"1.0.18";
 
 int main(int argc, char* argv[])
 {

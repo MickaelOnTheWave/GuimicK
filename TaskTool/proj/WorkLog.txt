@@ -1,4 +1,4 @@
-12/02/2020 (11.7)
+12/02/2020 (3h)
     Chose keeping both systems : "LastError" and debug information.
     Production doing its coming back : today first automated run worked
     with email and server shutdown. However client was not woken up.
@@ -6,7 +6,12 @@
     Back to refactoring...
     Finished implementing LastError. Finished adding debug information.
     Refactored email account configuration and related classes.
-    Now testing everything from Synology...
+    Now testing everything from Synology... Made some fixes, but now
+    everything is as expected.
+Next planned work:
+    - Check that production backup ran as expected
+    - Check automated tests : finish what was started
+    - Back to Windows 10 : first check VM, then native
 
 11/02/2020 (0.3h)
     Refactoring email data configuration..
