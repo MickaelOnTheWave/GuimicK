@@ -7,7 +7,12 @@ using namespace std;
 
 wstring ConsoleReportDispatcher::GetName() const
 {
-    return L"Console";
+   return L"Console";
+}
+
+wstring ConsoleReportDispatcher::GetLastError() const
+{
+   return L"";
 }
 
 void ConsoleReportDispatcher::Initialize(const AbstractTypeConfiguration*)

@@ -14,6 +14,7 @@ class AbstractReportDispatcher
 public :
     virtual ~AbstractReportDispatcher() {}
     virtual std::wstring GetName(void) const = 0;
+    virtual std::wstring GetLastError(void) const = 0;
     virtual void Initialize(const AbstractTypeConfiguration* configuration) = 0;
     virtual bool Dispatch(AbstractReportCreator* reportCreator) = 0;
 };

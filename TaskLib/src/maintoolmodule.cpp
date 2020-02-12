@@ -222,7 +222,9 @@ bool MainToolModule::DispatchReport(AbstractReportCreator *reportCreator,
                     fallbackDispatcher->GetName() :
                     wstring(L"");
 
-        reportCreator->UpdateWithDispatchError(dispatcher->GetName(), fallbackName);
+        reportCreator->UpdateWithDispatchError(
+                 dispatcher->GetName(), dispatcher->GetLastError(),
+                 fallbackName);
     }
     return ok;
 }

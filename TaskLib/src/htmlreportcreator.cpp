@@ -25,11 +25,14 @@ AbstractReportCreator* HtmlReportCreator::Copy() const
 }
 
 void HtmlReportCreator::UpdateWithDispatchError(const wstring &failedDispatcher,
+                                                const wstring &dispatchError,
                                                 const wstring &fallbackDispatcher)
 {
     fullReport = L"";
 
-    dispatchErrors << "<tr><td>" << failedDispatcher << " dispatch failed.";
+    dispatchErrors << "<tr><td>" << failedDispatcher << " dispatch failed : ";
+    dispatchErrors << dispatchError << ".";
+
     if (fallbackDispatcher != L"")
         dispatchErrors << " Using " << fallbackDispatcher << " dispatch.";
     dispatchErrors << "</tr></td>" << endl;

@@ -21,7 +21,8 @@ public:
                        const std::vector<std::wstring>& configErrors,
                        const std::wstring& version) = 0;
    virtual void UpdateWithDispatchError(const std::wstring& failedDispatcher,
-                                      const std::wstring& fallbackDispatcher) = 0;
+                                        const std::wstring& dispatchError,
+                                        const std::wstring& fallbackDispatcher) = 0;
 
    std::wstring GetReportContent(void) const;
    void GetAssociatedFiles(std::vector<std::wstring>& _externalFiles,

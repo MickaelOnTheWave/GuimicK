@@ -1,4 +1,17 @@
-10/02/2020 (15.5 -0.5 19.1)
+12/02/2020 (11.7)
+    Chose keeping both systems : "LastError" and debug information.
+    Production doing its coming back : today first automated run worked
+    with email and server shutdown. However client was not woken up.
+    Set WOL back on it, next run should see client being awaken.
+    Back to refactoring...
+    Finished implementing LastError. Finished adding debug information.
+    Refactored email account configuration and related classes.
+    Now testing everything from Synology...
+
+11/02/2020 (0.3h)
+    Refactoring email data configuration..
+
+10/02/2020 (4.5h)
     Synology resurrected, Ip got from Assistant on Windows.
     Updated its setup, now it is back to work.
     Trying to put production backup back on track. Mac/Ip
@@ -8,6 +21,13 @@
     Prepared Email UI for extended error messages about
     sending errors.
     Updated Version number and copyright information.
+    Now adding debug information to Email dispatch information.
+Next planned work:
+    - Choose between adding debug information to dispatch or
+    keeping a "LastError" for dispatchers.
+    - Test new version on Synology with error : it should display
+    the issue.
+    - Get production backups running
 
 05/02/2020 (1.5h)
     After a hardware failure, holidays and a VR headset,

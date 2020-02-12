@@ -15,10 +15,8 @@ public:
     virtual ~AbstractEmailReportDispatcher();
 
     virtual std::wstring GetName(void) const;
+    virtual std::wstring GetLastError(void) const;
     virtual void Initialize(const AbstractTypeConfiguration* configuration);
-
-    void SetOutputDebugInformationOnFailure(const bool value);
-    void SetVerboseMode();
 
 protected:
    std::wstring GetSmtpUrl() const;
@@ -32,6 +30,8 @@ protected:
    std::wstring destEmail;
    std::wstring cc;
    std::wstring bcc;
+   std::wstring lastError;
+
    static const std::wstring subject;
 };
 

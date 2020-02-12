@@ -13,6 +13,8 @@ public:
    static std::wstring CreateWarning(const std::wstring& message);
    static std::wstring CreateError(const std::wstring& message);
 
+   static std::wstring CreateUnhandledProperty(const std::wstring& property);
+
    template <class T>
    static void SaveValueToFile(std::wofstream& file,
                                const std::wstring& name,

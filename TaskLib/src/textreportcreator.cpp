@@ -26,11 +26,13 @@ AbstractReportCreator* TextReportCreator::Copy() const
 }
 
 void TextReportCreator::UpdateWithDispatchError(const std::wstring& failedDispatcher,
+                                                const wstring& dispatchError,
                                                 const std::wstring& fallbackDispatcher)
 {
     fullReport = L"";
 
-    dispatchErrors << failedDispatcher << " failed.";
+    dispatchErrors << failedDispatcher << " failed : ";
+    dispatchErrors << dispatchError << ".";
     if (fallbackDispatcher != L"")
         dispatchErrors << " Using " << fallbackDispatcher << ".";
     dispatchErrors << endl;

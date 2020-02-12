@@ -62,13 +62,13 @@ bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
         FileTools::RemoveFile(mailFileName);
     else
     {
+       lastError = status->GetDescription();
         debugInfo.AddDataLine<wstring>(L"Command executable", curl.GetCommand());
         debugInfo.AddDataLine<int>(L"Return code", curl.GetCommandReturnCode());
         debugInfo.AddDataLine<wstring>(L"Output", curl.GetCommandOutput());
         debugInfo.AddDataLine<wstring>(L"Curl version", GetCurlVersion());
         debugInfo.WriteToFile();
     }
-
 
     return (status->GetCode() == JobStatus::Ok);
 }
@@ -111,8 +111,8 @@ std::string CurlConsoleReportDispatcher::CreateEmailContent(AbstractReportCreato
    reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
 
    const EmailData emailData = CreateEmailData(reportCreator);
-   MimeTools mimeCreator;
 
+   MimeTools mimeCreator;
    const string emailContent = mimeCreator.CreateEmailContent(
       StringTools::UnicodeToUtf8(displayName),
       StringTools::UnicodeToUtf8(emailAccountData.GetAddress()),

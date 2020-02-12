@@ -30,20 +30,38 @@ public:
     void SetEmailData(const EmailAccountData& value);
     bool HasValidEmailData() const;
 
+    bool ShouldOutputDebugInformation() const;
+
+    bool IsDispatcherVerbose() const;
+
 private:
+    void LoadSubobjects(
+        ConfigurationObject *confObject,
+        std::vector<std::wstring> &errorMessages
+    );
+
+    void LoadProperties(
+        ConfigurationObject *confObject,
+        std::vector<std::wstring> &errorMessages
+    );
+
+    void LoadProperty(
+        const std::pair<std::wstring, std::wstring>& property,
+        std::vector<std::wstring> &errorMessages
+    );
 
     void SaveToFile(
        const EmailAccountData& emailData,
        std::wofstream& fileStream
     );
 
-    std::wstring BuildUnhandledPropertyMessage(const std::wstring& property) const;
-
     // TODO : change all this to a property map, like Client.
     std::wstring name;
     std::wstring reportFile;
     std::wstring reportFolder;
     EmailAccountData emailData;
+    bool isDispatcherVerbose;
+    bool shouldOutputDispatcherDebugInformation;
 };
 
 #endif // AGENT_H

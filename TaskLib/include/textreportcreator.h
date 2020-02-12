@@ -17,7 +17,8 @@ public:
    virtual AbstractReportCreator* Copy() const;
 
    virtual void UpdateWithDispatchError(const std::wstring& failedDispatcher,
-                                      const std::wstring& fallbackDispatcher);
+                                        const std::wstring& dispatchError,
+                                        const std::wstring& fallbackDispatcher);
 
 protected:
    virtual void AddHeader(void);

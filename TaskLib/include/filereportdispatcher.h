@@ -9,6 +9,8 @@ public:
     FileReportDispatcher();
 
     virtual std::wstring GetName(void) const;
+    virtual std::wstring GetLastError(void) const;
+
     virtual void Initialize(const AbstractTypeConfiguration* configuration);
     virtual bool Dispatch(AbstractReportCreator* reportCreator);
 
@@ -20,6 +22,7 @@ private:
 
     std::wstring reportFolder;
     std::wstring reportFile;
+    std::wstring lastError;
 };
 
 #endif // FILEREPORTDISPATCHER_H

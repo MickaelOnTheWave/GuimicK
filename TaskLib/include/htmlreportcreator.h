@@ -15,6 +15,7 @@ public:
     virtual AbstractReportCreator* Copy() const;
 
     virtual void UpdateWithDispatchError(const std::wstring& failedDispatcher,
+                                         const std::wstring& dispatchError,
                                          const std::wstring& fallbackDispatcher);
 
     void SetCssFile(const std::wstring& _cssFile);    

@@ -15,6 +15,12 @@ wstring ConfigurationTools::CreateError(const wstring& message)
    return CreateMessage(L"Error", message);
 }
 
+wstring ConfigurationTools::CreateUnhandledProperty(const wstring& property)
+{
+   const wstring warningMessage = L"Warning : unhandled property ";
+   return warningMessage + property;
+}
+
 void ConfigurationTools::SaveJobListToFile(wofstream& file,
                                            const list<AbstractJob*>& jobList)
 {
@@ -57,10 +63,4 @@ wstring ConfigurationTools::CreateMessage(const wstring& tag, const wstring& mes
    else
       return L"";
 }
-/*
-template<class T>
-void ConfigurationTools::SaveValueToFile(ofstream& file, const wstring& name, const ConfigurationTools::T value)
-{
-   const wstring tab = "\t";
-   file << tab << name << " = \"" << value << "\";" << endl;
-}*/
+

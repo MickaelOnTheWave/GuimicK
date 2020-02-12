@@ -9,7 +9,8 @@ using namespace std;
 const wstring AbstractEmailReportDispatcher::subject = L"Maintenance Report";
 
 AbstractEmailReportDispatcher::AbstractEmailReportDispatcher()
-    : outputDebugInformation(false), isVerbose(false)
+    : outputDebugInformation(false), isVerbose(false),
+      lastError(L"")
 {
 }
 
@@ -19,7 +20,12 @@ AbstractEmailReportDispatcher::~AbstractEmailReportDispatcher()
 
 wstring AbstractEmailReportDispatcher::GetName() const
 {
-    return L"Email";
+   return L"Email";
+}
+
+wstring AbstractEmailReportDispatcher::GetLastError() const
+{
+   return lastError;
 }
 
 void AbstractEmailReportDispatcher::Initialize(
@@ -34,21 +40,14 @@ void AbstractEmailReportDispatcher::Initialize(
       displayName = agent->GetName();
       emailAccountData = agent->GetEmailData();
 
+      outputDebugInformation = agent->ShouldOutputDebugInformation();
+      isVerbose = agent->IsDispatcherVerbose();
+
       isHtml = standaloneConfiguration->IsReportHtml();
       destEmail = standaloneConfiguration->GetMasterEmail();
       cc = L"";
       bcc = L"";
    }
-}
-
-void AbstractEmailReportDispatcher::SetOutputDebugInformationOnFailure(const bool value)
-{
-    outputDebugInformation = value;
-}
-
-void AbstractEmailReportDispatcher::SetVerboseMode()
-{
-    isVerbose = true;
 }
 
 wstring AbstractEmailReportDispatcher::GetSmtpUrl() const

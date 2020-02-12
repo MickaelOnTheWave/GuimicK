@@ -11,13 +11,19 @@ static const wstring defaultReportFile = L"report.log";
 
 FileReportDispatcher::FileReportDispatcher()
    : reportFolder(defaultReportFolder),
-     reportFile(defaultReportFile)
+     reportFile(defaultReportFile),
+     lastError(L"")
 {
 }
 
 wstring FileReportDispatcher::GetName() const
 {
-    return L"File";
+   return L"File";
+}
+
+wstring FileReportDispatcher::GetLastError() const
+{
+   return lastError;
 }
 
 void FileReportDispatcher::Initialize(const AbstractTypeConfiguration* configuration)
@@ -38,11 +44,14 @@ bool FileReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
         FileTools::RemoveFolder(reportFolder, false);
     FileTools::CreateFolder(reportFolder);
 
-    bool ok = FileTools::WriteBufferToFile(reportFolder+reportFile,
+    const wstring absoluteFilename = reportFolder+reportFile;
+    bool ok = FileTools::WriteBufferToFile(absoluteFilename,
                                            reportCreator->GetReportContent());
     if (ok)
         ok = WriteAttachments(reportCreator);
 
+    if (!ok)
+       lastError = wstring(L"Could not open file ") + absoluteFilename;
     return ok;
 }
 
