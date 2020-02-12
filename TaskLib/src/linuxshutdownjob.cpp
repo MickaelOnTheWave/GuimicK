@@ -105,6 +105,8 @@ bool LinuxShutdownJob::IsShutdownOk(JobStatus* status) const
          const bool hasClosedByRemoteHost = (output.find(L"closed by remote host") != string::npos);
          return startsWithConnection && hasClosedByRemoteHost;
       }
+      else
+         return false;
    }
    else
       return true;

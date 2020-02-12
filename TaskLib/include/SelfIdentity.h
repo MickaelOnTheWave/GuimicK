@@ -30,7 +30,7 @@ public:
     void SetEmailData(const EmailAccountData& value);
     bool HasValidEmailData() const;
 
-    bool ShouldOutputDebugInformation() const;
+    int GetOutputDebugInformation() const;
 
     bool IsDispatcherVerbose() const;
 
@@ -61,7 +61,7 @@ private:
     std::wstring reportFolder;
     EmailAccountData emailData;
     bool isDispatcherVerbose;
-    bool shouldOutputDispatcherDebugInformation;
+    int outputDispatcherDebugInformation;
 };
 
 #endif // AGENT_H

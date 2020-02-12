@@ -47,30 +47,37 @@ CurlConsoleReportDispatcher::CurlConsoleReportDispatcher()
 
 }
 
+wstring CurlConsoleReportDispatcher::GetName() const
+{
+   return L"CurlConsole Email";
+}
+
 bool CurlConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 {
-    JobDebugInformationManager debugInfo(outputDebugInformation, L"EmailSend");
+   JobDebugInformationManager debugInfo(outputDebugInformation, L"EmailSend");
+   debugInfo.AddTagLine(L"CurlConsoleReportDispatcher");
 
-    WriteReportContentToFile(reportCreator, mailFileName);
+   WriteReportContentToFile(reportCreator, mailFileName);
 
-    const wstring curlParams = BuildCurlParams(mailFileName);
+   const wstring curlParams = BuildCurlParams(mailFileName);
 
-    debugInfo.AddDataLine<wstring>(L"Params", curlParams);
-    ConsoleJob curl(L"curl", curlParams);
-    JobStatus* status = curl.Run();
-    if (status->GetCode() == JobStatus::Ok)
-        FileTools::RemoveFile(mailFileName);
-    else
-    {
-       lastError = status->GetDescription();
-        debugInfo.AddDataLine<wstring>(L"Command executable", curl.GetCommand());
-        debugInfo.AddDataLine<int>(L"Return code", curl.GetCommandReturnCode());
-        debugInfo.AddDataLine<wstring>(L"Output", curl.GetCommandOutput());
-        debugInfo.AddDataLine<wstring>(L"Curl version", GetCurlVersion());
-        debugInfo.WriteToFile();
-    }
+   debugInfo.AddDataLine<wstring>(L"Params", curlParams);
+   ConsoleJob curl(L"curl", curlParams);
+   JobStatus* status = curl.Run();
+   if (status->GetCode() == JobStatus::Ok)
+      FileTools::RemoveFile(mailFileName);
+   else
+      lastError = status->GetDescription();
 
-    return (status->GetCode() == JobStatus::Ok);
+   debugInfo.AddDataLine<wstring>(L"Command executable", curl.GetCommand());
+   debugInfo.AddDataLine<int>(L"Return code", curl.GetCommandReturnCode());
+   debugInfo.AddDataLine<wstring>(L"Output", curl.GetCommandOutput());
+   debugInfo.AddDataLine<wstring>(L"Curl version", GetCurlVersion());
+
+   if (debugInfo.ShouldAttachDebugInformation(status->GetCode()))
+      debugInfo.WriteToFile();
+
+   return (status->GetCode() == JobStatus::Ok);
 }
 
 wstring CurlConsoleReportDispatcher::GetCurlVersion() const

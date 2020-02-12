@@ -23,7 +23,7 @@ protected:
 
    std::wstring displayName;
    EmailAccountData emailAccountData;
-   bool outputDebugInformation;
+   int outputDebugInformation;
    bool isVerbose;
 
    bool isHtml;

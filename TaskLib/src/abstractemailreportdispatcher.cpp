@@ -9,7 +9,8 @@ using namespace std;
 const wstring AbstractEmailReportDispatcher::subject = L"Maintenance Report";
 
 AbstractEmailReportDispatcher::AbstractEmailReportDispatcher()
-    : outputDebugInformation(false), isVerbose(false),
+    : outputDebugInformation(DebugOutput::NEVER),
+      isVerbose(false),
       lastError(L"")
 {
 }
@@ -40,7 +41,7 @@ void AbstractEmailReportDispatcher::Initialize(
       displayName = agent->GetName();
       emailAccountData = agent->GetEmailData();
 
-      outputDebugInformation = agent->ShouldOutputDebugInformation();
+      outputDebugInformation = agent->GetOutputDebugInformation();
       isVerbose = agent->IsDispatcherVerbose();
 
       isHtml = standaloneConfiguration->IsReportHtml();

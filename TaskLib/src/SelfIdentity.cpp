@@ -10,7 +10,7 @@ using namespace std;
 Agent::Agent() : name(L""),
    reportFile(L""), reportFolder(L""),
    isDispatcherVerbose(false),
-   shouldOutputDispatcherDebugInformation(false)
+   outputDispatcherDebugInformation(DebugOutput::NEVER)
 {
 }
 
@@ -19,7 +19,7 @@ Agent::Agent(const Agent& other)
      reportFile(other.reportFile), reportFolder(other.reportFolder),
      emailData(other.emailData),
      isDispatcherVerbose(other.isDispatcherVerbose),
-     shouldOutputDispatcherDebugInformation(other.shouldOutputDispatcherDebugInformation)
+     outputDispatcherDebugInformation(other.outputDispatcherDebugInformation)
 {
 }
 
@@ -85,9 +85,9 @@ bool Agent::HasValidEmailData() const
    return emailData.IsValid();
 }
 
-bool Agent::ShouldOutputDebugInformation() const
+int Agent::GetOutputDebugInformation() const
 {
-   return shouldOutputDispatcherDebugInformation;
+   return outputDispatcherDebugInformation;
 }
 
 bool Agent::IsDispatcherVerbose() const
@@ -129,9 +129,9 @@ void Agent::LoadProperty(
    else if (property.first == L"ReportFolder")
      reportFolder = property.second;
    else if (property.first == L"DispatcherVerbose")
-     isDispatcherVerbose = (property.second == L"yes");
+     isDispatcherVerbose = (property.second == L"true");
    else if (property.first == L"OutputDebugInformation")
-     shouldOutputDispatcherDebugInformation = (property.second == L"yes");
+     outputDispatcherDebugInformation = DebugOutput::GetValue(property.second);
    else
      errorMessages.push_back(ConfigurationTools::CreateUnhandledProperty(property.first));
 }
