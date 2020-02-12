@@ -35,9 +35,9 @@ public:
     JobStatus* CreateStatus(const int code, const std::wstring &description) const;
     void WriteToFile() const;
 
-private:
     bool ShouldAttachDebugInformation(const int statusCode) const;
 
+private:
     std::wstring debugFilename;
     int debugUse;
     std::wstring allData;
