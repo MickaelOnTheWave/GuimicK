@@ -1,3 +1,4 @@
 bin/
-TaskManager.pro.user
 TaskTestLib/data/errors/
+CMakeLists.txt.user*
+*.pro.user*
