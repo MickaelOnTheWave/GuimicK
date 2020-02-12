@@ -23,7 +23,6 @@ public:
    virtual ~MainWindow();
 
    void CreateDefaultFile();
-   void OpenDefaultFile();
 
 protected:
    void closeEvent(QCloseEvent *event) override;
@@ -62,6 +61,13 @@ private slots:
    void on_actionSchedule_Execution_triggered();
 
 private:
+
+   /**
+    * @return true if new configuration was chosen,
+    * false if no choice was made
+    */
+   bool ChooseNewConfigurationType();
+
    void SetDefaultJobsButtonsState();
    void MoveToScreenCenter();
 

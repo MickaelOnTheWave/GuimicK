@@ -1,3 +1,10 @@
+12/02/2020 (0.4h)
+    Fixing errors in Curl Console. Now going to usability issues in
+    Configuration Editor. Keyboard shortcuts seem a but more complicated,
+    and "current" ones are default and are not even working properly.
+    Changed default file behaviour : always assuming standalone configuration
+    to get rid of annoying dialog on startup.
+
 12/02/2020 (3h)
     Chose keeping both systems : "LastError" and debug information.
     Production doing its coming back : today first automated run worked

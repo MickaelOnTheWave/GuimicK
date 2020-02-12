@@ -159,7 +159,9 @@ void MainWindow::on_actionNew_triggered()
    if (!proceed)
       return;
 
-   CreateDefaultFile();
+   const bool choiceMade = ChooseNewConfigurationType();
+   if (choiceMade)
+      CreateNewFile();
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -370,30 +372,8 @@ void MainWindow::on_deleteButton_clicked()
 
 void MainWindow::CreateDefaultFile()
 {
-   if (EditorVersion::IsStandaloneOnly())
-   {
-      configurationType = StandaloneConfigurationType;
-      CreateNewFile();
-   }
-   else
-   {
-      ConfigurationTypeDialog dialog;
-      if (dialog.exec() == QDialog::Accepted)
-      {
-         configurationType = dialog.GetChosenType();
-         CreateNewFile();
-      }
-   }
-}
-
-void MainWindow::OpenDefaultFile()
-{
-   const QString standardFile = QDir::homePath() + "/.taskmanager";
-   QFileInfo checkFile(standardFile);
-   if (checkFile.exists() && checkFile.isFile())
-      OpenFile(standardFile, false);
-   else
-      CreateDefaultFile();
+   configurationType = StandaloneConfigurationType;
+   CreateNewFile();
 }
 
 void MainWindow::CreateNewFile()
@@ -855,6 +835,22 @@ void MainWindow::on_actionSchedule_Execution_triggered()
       dialog.SetTaskToolExecutable(GetTaskToolExecutable());
       dialog.exec();
    }
+}
+
+bool MainWindow::ChooseNewConfigurationType()
+{
+   if (EditorVersion::IsStandaloneOnly())
+      configurationType = StandaloneConfigurationType;
+   else
+   {
+      ConfigurationTypeDialog dialog;
+      if (dialog.exec() == QDialog::Accepted)
+         configurationType = dialog.GetChosenType();
+      else
+         return false;
+   }
+
+   return true;
 }
 
 void MainWindow::SetDefaultJobsButtonsState()
