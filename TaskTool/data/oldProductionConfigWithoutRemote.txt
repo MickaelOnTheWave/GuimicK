@@ -1,0 +1,84 @@
+Agent
+{
+	Name = "Cristiana Araujo";
+	Email = "cristiana.araujo.ai@gmail.com";
+	Password = "y3r8V5k8M75Nn5";
+	SmtpAddress = "smtp.gmail.com";
+	SmtpPort = 587;
+	UseSSL = true;
+	DefaultBinPaths("/bin", "/sbin", "/opt/bin", "/opt/sbin");
+}
+
+Client
+{
+	Name = "Desktop computer";
+	mac = "74:d4:35:bc:1a:5e";
+	ip = "192.168.1.101";
+	broadcast = "192.168.1.255";
+	sshuser = "mickael";
+	JobList
+	{
+		Wake();
+		GitFsBackup
+		{
+			target = "remote";
+			Folder
+			{
+				source = "/home/mickael/Documents";
+				dest = "/volume1/backups/important/documents/";
+			}
+		}		
+		GitBackup
+		{
+			Repository
+			{
+				source = "~/Prog/NoteReader";
+				dest = "/volume1/backups/repositories/NoteReader";
+			}
+			Repository
+			{
+				source = "~/Prog/TaskManager";
+				dest = "/volume1/backups/repositories/TaskManager";
+			}
+			Repository
+			{
+				source = "~/Prog/Tools";
+				dest = "/volume1/backups/repositories/Tools";
+			}
+			Repository
+			{
+				source = "~/Prog/QtTools";
+				dest = "/volume1/backups/repositories/QtTools";
+			}
+			Repository
+			{
+				source = "~/Prog/WorklogAnalyzer";
+				dest = "/volume1/backups/repositories/WorklogAnalyzer";
+			}
+			Repository
+			{
+				source = "~/Prog/homescripts";
+				dest = "/volume1/backups/repositories/homescripts";
+			}
+		}
+		SshConsole
+		{
+			title = "Package list update";
+			command = "sudo";
+			params = "apt-get update";
+			returnCode = 0;
+		}
+		DiskSpaceCheck("/dev/sda3");
+		Shutdown();
+	}
+}
+
+Report
+{
+	type = "html";
+	css = "report.css";
+}
+
+MasterEmail = "mickael.dacruz@gmail.com";
+SendReportByEmail = true;
+ShutdownOnFinish = true;

@@ -1,3 +1,10 @@
+17/02/2020 (17.8-18.1l)
+    Production did not run at all. Checking what happened...
+    Production did not have anymore log folder, so it is impossible
+    to know what happened. Also, dev version was installed.
+    Deploying production version...
+    Now going for automated tests.
+
 12/02/2020 (0.4h)
     Fixing errors in Curl Console. Now going to usability issues in
     Configuration Editor. Keyboard shortcuts seem a but more complicated,
