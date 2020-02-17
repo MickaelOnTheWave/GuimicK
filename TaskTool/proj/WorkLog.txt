@@ -1,9 +1,19 @@
-17/02/2020 (17.8-18.1l)
+17/02/2020 (2.2h)
     Production did not run at all. Checking what happened...
     Production did not have anymore log folder, so it is impossible
     to know what happened. Also, dev version was installed.
     Deploying production version...
-    Now going for automated tests.
+    Now going for automated tests... Migrated configuration parser tests
+    to full test suite with Google tests. Removed obsolete ToolsTestLib
+    and cleaned the repository.
+    Now going back to Windows 10... It seems that Virtual Box VMs are totally
+    unusable due to motherboard change. Going back to tests, checking if
+    ReportParser tests can be cleaned too... seems too complicated.
+    Back to work : will check on native Win10 if there is an easy dev
+    toolkit with Qt/MinGW.
+Next planned work:
+    - Check production run
+    - Restart Win10 development
 
 12/02/2020 (0.4h)
     Fixing errors in Curl Console. Now going to usability issues in
