@@ -43,13 +43,13 @@ bool TarTools::CreateArchive(const wstring& commandLineParameters,
            parser.GetReport(*report);
 
            status->SetCode(JobStatus::Ok);
-           results.push_back(pair<JobStatus*, FileBackupReport*>(status, report));
+           results.push_back(BackupJobStatus(*status, report));
        }
        else
        {
            status->SetCode(JobStatus::OkWithWarnings);
            status->SetDescription(reportCreationError);
-           results.push_back(pair<JobStatus*, FileBackupReport*>(status, NULL));
+           results.push_back(BackupJobStatus(*status, NULL));
        }
        returnValue = true;
    }
@@ -59,7 +59,7 @@ bool TarTools::CreateArchive(const wstring& commandLineParameters,
        status->SetDescription(tarCommandError);
        parentDebugManager->AddDataLine<wstring>(L"tar output", commandJob->GetCommandOutput());
        parentDebugManager->AddDataLine<int>(L"tar code", commandJob->GetCommandReturnCode());
-       results.push_back(pair<JobStatus*, FileBackupReport*>(status, NULL));
+       results.push_back(BackupJobStatus(*status, NULL));
        returnValue = false;
    }
 
@@ -88,7 +88,7 @@ bool TarTools::CreateIncrementalArchive(const wstring& commandLineParameters,
       status->SetDescription(L"Incremental Archive not created");
    }
 
-   results.push_back(pair<JobStatus*, FileBackupReport*>(status, finalReport));
+   results.push_back(BackupJobStatus(*status, finalReport));
    return ok;
 }
 

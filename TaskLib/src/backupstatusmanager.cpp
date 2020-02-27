@@ -71,12 +71,13 @@ JobStatus *BackupStatusManager::CreateSingleStatus()
 {
    if (debugManager)
       debugManager->AddTagLine(L"Creating Single status");
-   const AbstractBackupJob::ResultEntry& result = resultCollection->front();
+   const BackupJobStatus& result = resultCollection->front();
 
-   JobStatus* status = new JobStatus(result.first->GetCode());
+   JobStatus* status = new JobStatus(result.GetCode());
    status->SetDescription(GetCorrectMiniDescription(result));
-   if (result.second)
-     status->AddFileBuffer(attachmentName, result.second->GetFullDescription());
+   FileBackupReport* backupReport = result.GetFileReport();
+   if (backupReport)
+     status->AddFileBuffer(attachmentName, backupReport->GetFullDescription());
    return status;
 }
 
@@ -123,7 +124,7 @@ bool BackupStatusManager::AreAllStatusesEqual(const int expectedCode)
     AbstractBackupJob::ResultCollection::const_iterator it = resultCollection->begin();
     for (; it != resultCollection->end(); ++it)
     {
-        if (it->first->GetCode() != expectedCode)
+        if (it->GetCode() != expectedCode)
         {
             areAllOk = false;
             break;
@@ -142,10 +143,10 @@ wstring BackupStatusManager::CreateStatusesDescription()
     for (; it!=resultCollection->end(); ++it, ++itDestination)
     {
        fullDescription += BuildRepositoryHeader(itDestination->second);
-       if (it->first->IsOk())
-          fullDescription += BuildRepositoryOkReport(it->second);
+       if (it->IsOk())
+          fullDescription += BuildRepositoryOkReport(it->GetFileReport());
        else
-          fullDescription += BuildRepositoryErrorReport(it->first);
+          fullDescription += BuildRepositoryErrorReport(&*it);
     }
     if (fullDescription != L"")
       fullDescription += BuildFooter();
@@ -176,7 +177,7 @@ int BackupStatusManager::ComputeSuccessCount() const
     AbstractBackupJob::ResultCollection::const_iterator it = resultCollection->begin();
     for (; it!=resultCollection->end(); ++it)
     {
-        if (it->first->GetCode() == JobStatus::Ok)
+        if (it->GetCode() == JobStatus::Ok)
             ++count;
     }
     return count;
@@ -193,16 +194,16 @@ wstring BackupStatusManager::BuildFooter()
 }
 
 wstring BackupStatusManager::GetCorrectMiniDescription(
-        const AbstractBackupJob::ResultEntry &result) const
+        const BackupJobStatus& result) const
 {
-    const int statusCode = result.first->GetCode();
+    const int statusCode = result.GetCode();
     const bool isStatusCodeAcceptable = (statusCode == JobStatus::Ok ||
                                          statusCode == JobStatus::OkWithWarnings);
     wstring description;
-    if (isStatusCodeAcceptable && result.second != NULL)
-        description = result.second->GetMiniDescription();
+    if (isStatusCodeAcceptable && result.GetFileReport() != NULL)
+        description = result.GetFileReport()->GetMiniDescription();
     else
-        description = result.first->GetDescription();
+        description = result.GetDescription();
     return description;
 }
 
@@ -213,8 +214,8 @@ FileBackupReport *BackupStatusManager::CreateGlobalReport() const
     AbstractBackupJob::ResultCollection::const_iterator it = resultCollection->begin();
     for (; it!=resultCollection->end(); ++it, ++itDestination)
     {
-        if (it->second != NULL)
-            report->AddWithPrefix(*it->second, itDestination->second);
+        if (it->GetFileReport() != NULL)
+            report->AddWithPrefix(*it->GetFileReport(), itDestination->second);
     }
     return report;
 }
@@ -224,7 +225,7 @@ wstring BackupStatusManager::BuildRepositoryOkReport(FileBackupReport* report) c
    return (report) ? report->GetFullDescription() : L"";
 }
 
-wstring BackupStatusManager::BuildRepositoryErrorReport(JobStatus* status) const
+wstring BackupStatusManager::BuildRepositoryErrorReport(const JobStatus* status) const
 {
    wstring description = status->GetCodeDescription() + L"\n";
    description += status->GetDescription();

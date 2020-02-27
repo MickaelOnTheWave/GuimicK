@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <sstream>
 
+#include "backupjobstatus.h"
 #include "consolejob.h"
 #include "copyjobchooser.h"
 #include "filetools.h"
@@ -72,7 +73,7 @@ void GitFsBackupJob::SetForceRawCopyUse(const bool value)
 }
 
 JobStatus* GitFsBackupJob::RestoreBackupFromServer(const wstring& source,
-                                         const wstring& destination)
+                                                   const wstring& destination)
 {
    wstring originalDirectory = PathTools::GetCurrentFullPath();
    JobStatus* status = GitCommonTools::ChangeCurrentDir(source);
@@ -92,37 +93,68 @@ void GitFsBackupJob::RunRepositoryBackup(const wstring &source,
    const wstring fullDestination = repository + destination;
    debugManager->AddDataLine(L"Repository", fullDestination);
 
-   JobStatus* status = new JobStatus(JobStatus::Ok);
-   if (FileTools::FolderExists(fullDestination) == false)
-     CreateGitRepository(fullDestination, status);
 
-   if (status->GetCode() == JobStatus::Ok)
-     CopyData(source, fullDestination, status);
+   /**
+   try {
+      if (FileTools::FolderExists(fullDestination) == false)
+        CreateGitRepository(fullDestination, backupReport);
+
+      const wstring originalDirectory = PathTools::GetCurrentFullPath();
+      ChangeCurrentDir(fullDestination, backupReport);
+
+      CopyData(source, fullDestination, backupReport);
+
+      if (HasChangesInRepository())
+      {
+         AddData(backupReport);
+         const wstring commitId = CommitData(backupReport);
+         CreateReport(commitId, backupReport);
+
+      }
+
+      ChangeCurrentDir(originalDirectory, results);
+
+   }
+   catch (...) {}
+
+   results.push_back(backupReport);
+
+   /**/
+
+   BackupJobStatus status(JobStatus::Ok);
+   if (FileTools::FolderExists(fullDestination) == false)
+     CreateGitRepository(fullDestination, &status);
+
+   if (status.GetCode() == JobStatus::Ok)
+     CopyData(source, fullDestination, &status);
 
    wstring originalDirectory = PathTools::GetCurrentFullPath();
    bool ok = GitCommonTools::ChangeCurrentDir(fullDestination, results);
    if (!ok)
      return;
 
-   FileBackupReport* report = new FileBackupReport();
    const bool hasChanges = HasChangesInRepository();
    debugManager->AddDataLine<bool>(L"Changes detected", hasChanges);
    if (hasChanges)
    {
-     if (status->GetCode() == JobStatus::Ok)
-         AddData(status);
+     if (status.GetCode() == JobStatus::Ok)
+         AddData(&status);
 
      wstring commitId(L"");
-     if (status->GetCode() == JobStatus::Ok)
-         commitId = CommitData(status);
+     if (status.GetCode() == JobStatus::Ok)
+         commitId = CommitData(&status);
 
-     if (status->GetCode() == JobStatus::Ok)
-         CreateReport(commitId, status, *report);
+     if (status.GetCode() == JobStatus::Ok)
+     {
+        FileBackupReport* report = new FileBackupReport();
+         CreateReport(commitId, &status, *report);
+         status.SetFileReport(report);
+     }
    }
 
    GitCommonTools::ChangeCurrentDir(originalDirectory, results);
 
-   results.push_back(make_pair(status, report));
+   results.push_back(status);
 }
 
 void GitFsBackupJob::CreateGitRepository(const wstring &path, JobStatus *status)
@@ -253,7 +285,7 @@ int GitFsBackupJob::GetRevisionCount() const
     ConsoleJob commandJob(L"git", L"rev-list --all --count");
     commandJob.RunWithoutStatus();
     if (commandJob.GetCommandReturnCode() == 0)
-       return StringTools::ToInt(commandJob.GetCommandOutput());
+       return static_cast<int>(StringTools::ToInt(commandJob.GetCommandOutput()));
     else
        return -1;
 }

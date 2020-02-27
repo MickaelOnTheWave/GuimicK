@@ -36,13 +36,13 @@ private:
     static std::wstring BuildFooter();
 
     std::wstring GetCorrectMiniDescription(
-            const AbstractBackupJob::ResultEntry& result) const;
+            const BackupJobStatus& result) const;
 
     FileBackupReport* CreateGlobalReport() const;
 
     std::wstring BuildRepositoryOkReport(FileBackupReport* report) const;
 
-    std::wstring BuildRepositoryErrorReport(JobStatus* status) const;
+    std::wstring BuildRepositoryErrorReport(const JobStatus* status) const;
 
     const AbstractBackupJob::ResultCollection* resultCollection;
     const AbstractBackupJob::BackupCollection* backupCollection;

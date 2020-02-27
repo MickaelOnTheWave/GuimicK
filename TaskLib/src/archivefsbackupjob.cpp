@@ -81,12 +81,12 @@ JobStatus* ArchiveFsBackupJob::RestoreBackupFromServer(const wstring& source,
 void AddResultToCollection(const ArchiveToolResult& result,
                            AbstractBackupJob::ResultCollection &results)
 {
-   JobStatus* jobStatus = new JobStatus();
-   jobStatus->SetCode(result.isOk ? JobStatus::Ok : JobStatus::Error);
+   FileBackupReport* backupReport = new FileBackupReport(result.FileList);
+   BackupJobStatus jobStatus(backupReport);
+   jobStatus.SetCode(result.isOk ? JobStatus::Ok : JobStatus::Error);
    if (result.errorMessage != L"")
-      jobStatus->SetDescription(result.errorMessage);
-
-   results.push_back(make_pair(jobStatus, new FileBackupReport(result.FileList)));
+      jobStatus.SetDescription(result.errorMessage);
+   results.push_back(jobStatus);
 }
 
 // TODO : maybe there is a better architectural option to these result collections :
@@ -151,6 +151,5 @@ bool ArchiveFsBackupJob::CleanBackupArchiveFromSource(AbstractBackupJob::ResultC
 void ArchiveFsBackupJob::AddStatusToResults(AbstractBackupJob::ResultCollection &results,
                                                const int code, const wstring &message)
 {
-    JobStatus* status = new JobStatus(code, message);
-    results.push_back(pair<JobStatus*, FileBackupReport*>(status, NULL));
+    results.push_back(BackupJobStatus(code, message));
 }

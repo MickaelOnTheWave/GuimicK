@@ -41,7 +41,7 @@ void LinuxCopyFsBackupJob::CreateReport(const std::wstring &destination,
                                         AbstractBackupJob::ResultCollection &results)
 {
     FileBackupReport* report = new FileBackupReport();
-    JobStatus* status = new JobStatus();
+    BackupJobStatus status;
 
     // TODO : change this to a proper recursive command.
     ConsoleJob lsCommand(L"ls", destination);
@@ -52,16 +52,17 @@ void LinuxCopyFsBackupJob::CreateReport(const std::wstring &destination,
         StringTools::Tokenize(lsCommand.GetCommandOutput(), '\n', fileList);
 
         report->AddAsAdded(fileList);
-        status->SetCode(JobStatus::Ok);
-        status->SetDescription(report->GetMiniDescription());
-        status->AddFileBuffer(GetAttachmentName(), report->GetFullDescription());
+        status.SetCode(JobStatus::Ok);
+        status.SetDescription(report->GetMiniDescription());
+        status.AddFileBuffer(GetAttachmentName(), report->GetFullDescription());
+        status.SetFileReport(report);
     }
     else
     {
-        status->SetCode(JobStatus::OkWithWarnings);
-        status->SetDescription(errorReportCreation);
-        status->AddFileBuffer(GetAttachmentName(), lsCommand.GetCommandOutput());
+        status.SetCode(JobStatus::OkWithWarnings);
+        status.SetDescription(errorReportCreation);
+        status.AddFileBuffer(GetAttachmentName(), lsCommand.GetCommandOutput());
     }
 
-    results.push_back(make_pair(status, report));
+    results.push_back(status);
 }

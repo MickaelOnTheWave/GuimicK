@@ -49,7 +49,7 @@ bool AbstractBackupJob::IsInitialized()
 
 JobStatus *AbstractBackupJob::Run()
 {
-    vector<pair<JobStatus*, FileBackupReport*> > results;
+    ResultCollection results;
     vector<pair<wstring, wstring> >::const_iterator it=folderList.begin();
     for (; it!=folderList.end(); it++)
         RunRepositoryBackup(it->first, it->second, results);

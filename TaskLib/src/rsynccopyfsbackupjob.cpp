@@ -77,13 +77,13 @@ void RsyncCopyFsBackupJob::CreateReport(const std::wstring &,
         status->SetDescription(parser.GetMiniDescription());
         status->AddFileBuffer(L"RsyncCopy.txt", parser.GetFullDescription());
         parser.GetReport(*report);
-        results.push_back(make_pair(status, report));
+        results.push_back(BackupJobStatus(*status, report));
     }
     else
     {
         status->SetCode(JobStatus::OkWithWarnings);
         status->SetDescription(L"Report parsing failed");
-        results.push_back(make_pair(status, new FileBackupReport()));
+        results.push_back(BackupJobStatus(*status, NULL));
     }
 }
 

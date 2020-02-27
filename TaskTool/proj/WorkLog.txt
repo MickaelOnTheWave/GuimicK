@@ -1,3 +1,22 @@
+26/02/2020 (18.7 -0.8 )
+    Back to refactoring...
+
+20/02/2020 (1.2h)
+    Production "ran" : sent email and woke/shutdown client, however run
+    was very chaotic with apparent memory corruption. Trying to find out...
+    No obvious error on client name. Reporting bug...
+    Now going for backup reports : they need more information about errors.
+    Refactoring report management in backup jobs.
+Next planned work:
+    - Finish report management refactoring
+
+18/02/2020 (1.6h)
+    Installed WinMerge+Git+Cmake+Notepadd++ on native Win10.
+    Cloned repositories on Synology, but can't read/write them
+    from command line. Tried with GitHub, same issue.
+Next planned work:
+    - Find a way to have Git working
+
 17/02/2020 (2.2h)
     Production did not run at all. Checking what happened...
     Production did not have anymore log folder, so it is impossible

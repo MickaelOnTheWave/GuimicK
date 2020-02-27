@@ -34,10 +34,10 @@ void WindowsCopyFsBackupJob::CreateReport(const std::wstring&,
                                         AbstractBackupJob::ResultCollection &results)
 {
    FileBackupReport* report = CreateBackupReport(output);
-   JobStatus* status = new JobStatus(JobStatus::Ok, L"");
-   status->SetDescription(report->GetMiniDescription());
-   status->AddFileBuffer(GetAttachmentName(), report->GetFullDescription());
-   results.push_back(make_pair(status, report));
+   BackupJobStatus status (JobStatus::Ok, L"");
+   status.SetDescription(report->GetMiniDescription());
+   status.AddFileBuffer(GetAttachmentName(), report->GetFullDescription());
+   results.push_back(status);
 }
 
 FileBackupReport* WindowsCopyFsBackupJob::CreateBackupReport(const wstring& output) const

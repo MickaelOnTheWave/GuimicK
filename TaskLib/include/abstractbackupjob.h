@@ -2,7 +2,7 @@
 #define ABSTRACTBACKUPJOB_H
 
 #include "abstractjob.h"
-
+#include "backupjobstatus.h"
 #include "filebackupreport.h"
 #include "jobdebuginformationmanager.h"
 #include "jobexecutiontarget.h"
@@ -28,8 +28,7 @@ public:
 class AbstractBackupJob : public AbstractJob
 {
 public:
-    typedef std::pair<JobStatus*, FileBackupReport*> ResultEntry;
-    typedef std::vector<ResultEntry> ResultCollection;
+    typedef std::vector<BackupJobStatus> ResultCollection;
     typedef std::vector<std::pair<std::wstring, std::wstring> > BackupCollection;
 
     AbstractBackupJob(const std::wstring& _title);

@@ -12,8 +12,7 @@ bool GitCommonTools::ChangeCurrentDir(const wstring &newDir,
 {
    JobStatus* status = ChangeCurrentDir(newDir);
    if (!status->IsOk())
-     statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
-
+      statusList.push_back(BackupJobStatus(*status, NULL));
    return status->IsOk();
 }
 

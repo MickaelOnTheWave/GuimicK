@@ -68,9 +68,9 @@ void AbstractCopyFsBackupJob::RunCopy(const wstring &source, const wstring &dest
 
 void AbstractCopyFsBackupJob::CreateCopyErrorReport(const std::wstring& message, AbstractBackupJob::ResultCollection &results)
 {
-    JobStatus* status = new JobStatus(JobStatus::Error, errorCopyCommand);
-    status->AddFileBuffer(GetAttachmentName(), message);
-    results.push_back(make_pair(status, new FileBackupReport()));
+    BackupJobStatus status(JobStatus::Error, errorCopyCommand);
+    status.AddFileBuffer(GetAttachmentName(), message);
+    results.push_back(status);
 }
 
 void AbstractCopyFsBackupJob::AddCommandDebugInformation(const ConsoleJob& job)

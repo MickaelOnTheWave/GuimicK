@@ -162,8 +162,8 @@ bool GitBackupJob::FetchUpdates(const wstring &gitRepository,
         else
             errorMessage = fetchUpdateError;
 
-        JobStatus* status = new JobStatus(JobStatus::Error, invalidSourceRepositoryError);
-        statusList.push_back(make_pair(status, new FileBackupReport()));
+        BackupJobStatus status(JobStatus::Error, invalidSourceRepositoryError);
+        statusList.push_back(status);
         AddToAttachedArchive(gitRepository, command.GetCommandOutput());
     }
 
@@ -201,16 +201,17 @@ void GitBackupJob::CreateReport(
     {
         FileBackupReport* report = new FileBackupReport();
         parser.GetReport(*report);
-        JobStatus* status = new JobStatus(JobStatus::Ok, parser.GetMiniDescription());
+        BackupJobStatus status(JobStatus::Ok, parser.GetMiniDescription());
+        status.SetFileReport(report);
         AddToAttachedArchive(gitRepository, report->GetFullDescription());
-        statusList.push_back(make_pair(status, report));
+        statusList.push_back(status);
     }
     else
     {
         debugManager->AddDataLine<wstring>(L"Parser input", commandOutput);
-        JobStatus* status = new JobStatus(JobStatus::OkWithWarnings, reportCreationError);
+        BackupJobStatus status(JobStatus::OkWithWarnings, reportCreationError);
         AddToAttachedArchive(gitRepository, commandOutput);
-        statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
+        statusList.push_back(status);
     }
 }
 
@@ -240,7 +241,7 @@ void GitBackupJob::RunGitClone(const wstring &source,
         AddToAttachedArchive(source, L"Repository cloned");
     }
 
-    statusList.push_back(make_pair(status, static_cast<FileBackupReport*>(NULL)));
+    statusList.push_back(BackupJobStatus(*status, NULL));
     delete gitCommand;
 }
 
