@@ -93,34 +93,6 @@ void GitFsBackupJob::RunRepositoryBackup(const wstring &source,
    const wstring fullDestination = repository + destination;
    debugManager->AddDataLine(L"Repository", fullDestination);
 
-
-   /**
-   try {
-      if (FileTools::FolderExists(fullDestination) == false)
-        CreateGitRepository(fullDestination, backupReport);
-
-      const wstring originalDirectory = PathTools::GetCurrentFullPath();
-      ChangeCurrentDir(fullDestination, backupReport);
-
-      CopyData(source, fullDestination, backupReport);
-
-      if (HasChangesInRepository())
-      {
-         AddData(backupReport);
-         const wstring commitId = CommitData(backupReport);
-         CreateReport(commitId, backupReport);
-
-      }
-
-      ChangeCurrentDir(originalDirectory, results);
-
-   }
-   catch (...) {}
-
-   results.push_back(backupReport);
-
-   /**/
-
    BackupJobStatus status(JobStatus::Ok);
    if (FileTools::FolderExists(fullDestination) == false)
      CreateGitRepository(fullDestination, &status);
@@ -128,7 +100,10 @@ void GitFsBackupJob::RunRepositoryBackup(const wstring &source,
    if (status.GetCode() == JobStatus::Ok)
      CopyData(source, fullDestination, &status);
 
-   wstring originalDirectory = PathTools::GetCurrentFullPath();
+   const wstring originalDirectory = PathTools::GetCurrentFullPath();
+   debugManager->AddTagLine(L"Changing dir");
+   debugManager->AddDataLine<wstring>(L"  oldDir", originalDirectory);
+   debugManager->AddDataLine<wstring>(L"  newDir", fullDestination);
    bool ok = GitCommonTools::ChangeCurrentDir(fullDestination, results);
    if (!ok)
      return;
@@ -215,6 +190,7 @@ void GitFsBackupJob::AddData(JobStatus *status)
     debugManager->AddTagLine(L"Adding data to git");
     ConsoleJob commandJob(L"git", L"add -A :/");
     commandJob.RunWithoutStatus();
+    debugManager->AddDataLine<wstring>(L"Command parameters", commandJob.GetCommandParameters());
     debugManager->AddDataLine<wstring>(L"Add output", commandJob.GetCommandOutput());
     debugManager->AddDataLine<int>(L"Add value", commandJob.GetCommandReturnCode());
     if (commandJob.GetCommandReturnCode() == 0)
