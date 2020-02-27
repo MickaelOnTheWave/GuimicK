@@ -1,5 +1,11 @@
-26/02/2020 (18.7 -0.8 )
-    Back to refactoring...
+26/02/2020 (2.1h)
+    Back to refactoring... Finished creating BackupJobStatus. Didn't change
+    much in codebase. Left behind error management / exceptions refactoring :
+    too big for now. Added debug information about git add command.
+    Improved git backup error report.
+Next planned work:
+    - Check production run errors
+    - Fix errors and/or restart windows development
 
 20/02/2020 (1.2h)
     Production "ran" : sent email and woke/shutdown client, however run

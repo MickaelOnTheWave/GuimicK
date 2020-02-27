@@ -147,6 +147,7 @@ wstring BackupStatusManager::CreateStatusesDescription()
           fullDescription += BuildRepositoryOkReport(it->GetFileReport());
        else
           fullDescription += BuildRepositoryErrorReport(&*it);
+       fullDescription += L"\n";
     }
     if (fullDescription != L"")
       fullDescription += BuildFooter();
@@ -227,7 +228,7 @@ wstring BackupStatusManager::BuildRepositoryOkReport(FileBackupReport* report) c
 
 wstring BackupStatusManager::BuildRepositoryErrorReport(const JobStatus* status) const
 {
-   wstring description = status->GetCodeDescription() + L"\n";
+   wstring description = status->GetCodeDescription() + L" : ";
    description += status->GetDescription();
    return description;
 }
