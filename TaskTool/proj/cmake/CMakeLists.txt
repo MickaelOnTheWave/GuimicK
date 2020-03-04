@@ -17,7 +17,6 @@ else(MSVC)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -O2")
 endif(MSVC)
 
-
 set(PROJECT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 set(TASKMANAGER_ROOT "${PROJECT_ROOT}/..")
 set(TOOLS_ROOT "${TASKMANAGER_ROOT}/../Tools")
@@ -40,6 +39,12 @@ endif (USE_CURL_LIB)
 
 add_executable(TaskTool ${SOURCES}) 
 
+if(MSVC)
+else(MSVC)
+  target_compile_options(TaskTool PRIVATE -Wall -Wextra -pedantic)
+endif(MSVC)
+
+
 file(GLOB DataFiles "${PROJECT_ROOT}/data/*")
 add_custom_target(Data SOURCES ${DataFiles})
 
@@ -53,16 +58,11 @@ if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)" OR "${CMAKE_GENERATOR}" MATCHES 
 endif()
 
 if (isCompilerWin64)
-	target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_64.lib")
+    target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_64.lib")
 elseif (WIN32)
-	target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
-	target_link_libraries (TaskTool "-static-libgcc" "-static-libstdc++")
+    target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
+    target_link_libraries (TaskTool "-static-libgcc" "-static-libstdc++")
 endif(isCompilerWin64)
-
-if(MSVC)
-else(MSVC)
-  target_compile_options(TaskTool PRIVATE -Wall -Wextra -pedantic)
-endif(MSVC)
 
 ### Fake Projects, only for display in IDE
 add_custom_target(ProjectFiles SOURCES

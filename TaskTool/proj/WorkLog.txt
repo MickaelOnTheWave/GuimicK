@@ -1,6 +1,13 @@
-04/03/2020 (20-)
+04/03/2020 (1.2h)
     Downloaded sources from GitHub. Fixing basic compilation issues with MinGW
-    Compiler...
+    Compiler... Remaining issues are :
+    - Linking issue with sockets in QtCreator
+    - Building through scripts - MinGW not found/usable
+    Updated build scripts but they still don't work.
+Next planned work:
+    - Try again to build existing MinGW with scripts. If not working, try installing
+    a standalone version of MinGW or VC compiler only.
+    - Resolve linking issue with sockets
 
 26/02/2020 (2.1h)
     Back to refactoring... Finished creating BackupJobStatus. Didn't change
