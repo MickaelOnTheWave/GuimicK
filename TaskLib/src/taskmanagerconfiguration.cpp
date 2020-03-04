@@ -39,7 +39,7 @@ bool TaskManagerConfiguration::LoadFromFile(const wstring &fileName, vector<wstr
 
 bool TaskManagerConfiguration::SaveToFile(const wstring& filename)
 {
-#ifdef _WIN32
+#ifdef _MSC_VER
    wofstream filestream(filename.c_str());
 #else
    const string utf8Filename = StringTools::UnicodeToUtf8(filename);

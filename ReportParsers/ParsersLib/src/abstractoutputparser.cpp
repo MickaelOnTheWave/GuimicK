@@ -26,7 +26,7 @@ bool AbstractOutputParser::ParseFile(const wstring &inputFile)
 
 void AbstractOutputParser::WriteFullDescriptionToFile(const wstring &filename)
 {
-#ifdef _WIN32
+#ifdef _MSC_VER
     wofstream outFile(filename.c_str());
 #else
    const string utf8Filename = StringTools::UnicodeToUtf8(filename);
