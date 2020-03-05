@@ -53,7 +53,7 @@ if (USE_CURL_LIB)
 	target_link_libraries (TaskTool NetworkToolsLib curl)
 endif (USE_CURL_LIB)
 
-if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)" OR "${CMAKE_GENERATOR}" MATCHES "Ninja")
+if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)" OR "${CMAKE_GENERATOR}" MATCHES "Ninja" OR "${CMAKE_GENERATOR}" MATCHES "Visual Studio")
     set(isCompilerWin64 TRUE)
 endif()
 
