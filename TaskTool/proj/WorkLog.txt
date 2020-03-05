@@ -1,3 +1,7 @@
+05/03/2020 (19)
+    Refactored Windows builds scripts to avoid code duplication. Installed
+    VC++ Build Tools; now build is working but with same linking issue.
+
 04/03/2020 (1.2h)
     Downloaded sources from GitHub. Fixing basic compilation issues with MinGW
     Compiler... Remaining issues are :
