@@ -1,8 +1,12 @@
-05/03/2020 (19)
+05/03/2020 (1h)
+    Trying to make VS toolchain work on QtCreator. Without success (with Qt)...
+
+04/03/2020 (19-21.2)
     Refactored Windows builds scripts to avoid code duplication. Installed
     VC++ Build Tools; now build is working but with same linking issue.
+    Fixed linking issue - it was Cmake incorrectly detecting VS as 32bit.
 
-04/03/2020 (1.2h)
+03/03/2020 (1.2h)
     Downloaded sources from GitHub. Fixing basic compilation issues with MinGW
     Compiler... Remaining issues are :
     - Linking issue with sockets in QtCreator

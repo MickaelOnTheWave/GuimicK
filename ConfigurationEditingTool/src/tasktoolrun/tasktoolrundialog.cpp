@@ -13,7 +13,7 @@
 #include "pathtools.h"
 #include "tools.h"
 
-#ifdef _MSC_VER
+#ifdef _WIN32
    #include <direct.h>
    #include "tasktoolrun/windows/windowstasktoolrunner.h"
 #else
@@ -27,7 +27,7 @@ namespace
    {
       const int bufferSize = 256;
       char buffer[bufferSize];
-#ifdef _MSC_VER
+#ifdef _WIN32
       strerror_s(buffer, bufferSize, errno);
 #else
       strerror_r(errno, buffer, bufferSize);

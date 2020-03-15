@@ -1,15 +1,5 @@
+set buildname="ClientVersion"
+set buildtype="Release"
+set flags="-DCLIENT_VERSION"
 
-set buildname="Win64Vs"
-
-IF NOT EXIST ..\bin (
-	mkdir ..\bin
-)
-cd ..\bin
-
-IF NOT EXIST %buildname% (
-	mkdir %buildname%
-)
-cd %buildname%
-
-cmake ../../proj/cmake -G "Visual Studio 15 2017 Win64" -DCLIENT_VERSION
-cmake --build . --config Release -j 8
+call MakeWindowsVsBuild.cmd %buildname% %buildtype% %flags%
