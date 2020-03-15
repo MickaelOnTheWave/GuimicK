@@ -17,6 +17,12 @@ Next planned work:
     a standalone version of MinGW or VC compiler only.
     - Resolve linking issue with sockets
 
+27/02/2020 (1.2h)
+    Production did not run yet. So first step for windows is having an
+    external Git repository. Checking on Internet about permissions...
+    Can't make Synology work as Git server. Trying with GitHub..
+    With Success!! Now going on Windows for checking...
+
 26/02/2020 (2.1h)
     Back to refactoring... Finished creating BackupJobStatus. Didn't change
     much in codebase. Left behind error management / exceptions refactoring :
