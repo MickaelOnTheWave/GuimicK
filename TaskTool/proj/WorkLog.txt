@@ -1,3 +1,16 @@
+15/03/2020 (0.8h)
+    Back to work. Added Linux changes to GitHub.
+    Going back to previous issues to see what is the easiest path.
+- Visual Studio :
+    Qt Creator's Cmake not recognizing compiler, so can't even open project.
+
+-MinGW :
+    Linking issue with winsockets lib.
+    Issue win Windows API (get/set scheduler data).
+
+    Linking issue with MinGW fixed : refactored Cmake to properly handle windows and
+    32/64bit compilers.
+
 05/03/2020 (1h)
     Trying to make VS toolchain work on QtCreator. Without success (with Qt)...
 

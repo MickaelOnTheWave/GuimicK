@@ -53,16 +53,19 @@ if (USE_CURL_LIB)
 	target_link_libraries (TaskTool NetworkToolsLib curl)
 endif (USE_CURL_LIB)
 
-if ("${CMAKE_GENERATOR}" MATCHES "(Win64|IA64)" OR "${CMAKE_GENERATOR}" MATCHES "Ninja" OR "${CMAKE_GENERATOR}" MATCHES "Visual Studio")
-    set(isCompilerWin64 TRUE)
-endif()
 
-if (isCompilerWin64)
-    target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_64.lib")
-elseif (WIN32)
-    target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
-    target_link_libraries (TaskTool "-static-libgcc" "-static-libstdc++")
-endif(isCompilerWin64)
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+    if (${CMAKE_SIZEOF_VOID_P} STREQUAL "4")
+        target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_32.lib")
+    elseif (${CMAKE_SIZEOF_VOID_P} STREQUAL "8")
+        target_link_libraries (TaskTool ToolsLib "${TOOLS_ROOT}/ToolsLib/lib/ws2_64.lib")
+    endif()
+
+    if ("${CMAKE_GENERATOR}" MATCHES "MinGW")
+        target_link_libraries (TaskTool "-static-libgcc" "-static-libstdc++")
+    endif()
+endif ()
+
 
 ### Fake Projects, only for display in IDE
 add_custom_target(ProjectFiles SOURCES
