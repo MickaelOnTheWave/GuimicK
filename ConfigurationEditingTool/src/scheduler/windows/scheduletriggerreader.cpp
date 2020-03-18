@@ -1,6 +1,7 @@
 #include "scheduletriggerreader.h"
 
 #include <comdef.h>
+#include <math.h>
 
 namespace
 {

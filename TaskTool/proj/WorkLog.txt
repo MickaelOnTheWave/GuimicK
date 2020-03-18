@@ -1,3 +1,12 @@
+17/03/2020 (19.4)
+    Back to work. MinGW error with task scheduler API seems to be a
+    MinGW limitation. Subscribing to mailing list to see if a solution
+    can be found / contribution can be made.
+    Tried to brute copy Windows SDK version of task scheduler to MinGW,
+    didn't work. Reverting.
+    Fixed issue with ClientVersion in Cmake. Also updated Cmake for editor.
+    Fixed a compilation issue in task scheduler interface.
+
 15/03/2020 (0.8h)
     Back to work. Added Linux changes to GitHub.
     Going back to previous issues to see what is the easiest path.
