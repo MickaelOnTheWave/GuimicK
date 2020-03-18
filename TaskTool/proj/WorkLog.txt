@@ -1,4 +1,4 @@
-17/03/2020 (19.4)
+17/03/2020 (2.3h)
     Back to work. MinGW error with task scheduler API seems to be a
     MinGW limitation. Subscribing to mailing list to see if a solution
     can be found / contribution can be made.
@@ -6,6 +6,14 @@
     didn't work. Reverting.
     Fixed issue with ClientVersion in Cmake. Also updated Cmake for editor.
     Fixed a compilation issue in task scheduler interface.
+    Found a way to make VS compiler work on command line : added qt bin path
+    to PATH.
+    Tried again to make VS compiler work in Qt Creator : no success.
+    Updating build scripts for global installer : updated TaskToolLauncher.
+Next planned work:
+    - Finish updating build scripts : refactor TaskTool scripts
+    - Finish having full package build : maybe install NSYS
+    - Back to missing features for Windows
 
 15/03/2020 (0.8h)
     Back to work. Added Linux changes to GitHub.
