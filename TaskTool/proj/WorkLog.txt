@@ -1,5 +1,11 @@
 23/03/2020 (13.3)
     Finished updating TaskTool build scripts. Removed unused ones.
+    Now going for full install...
+    Installed NSIS and EnVar plugin. Now installer gets created, but
+    editor doesn't open. Needs debugging...
+    Fixed issue with VS toolking in Qt Creator, found solution on Internet:
+    Standard kit configuration was faulty : generator needs to be Ninja, not JOM.
+    Now editor working on QtCreator :)
 
 17/03/2020 (2.3h)
     Back to work. MinGW error with task scheduler API seems to be a

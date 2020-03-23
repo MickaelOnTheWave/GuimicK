@@ -7,7 +7,7 @@ call :CreateAndCd WindowsInstallPackage
 cd %ROOT%\TaskTool\scripts
 CALL MakeWin64VsRelease.bat
 cd %ROOT%\ConfigurationEditingTool\scripts
-CALL MakeWin64VsRelease.bat
+CALL MakeWin64ClientRelease.bat
 cd %ROOT%\TaskToolLauncher\scripts
 CALL MakeWin64VsRelease.bat
 
