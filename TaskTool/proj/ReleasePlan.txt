@@ -90,6 +90,8 @@ Pending bugs :
         [014] There should be error reporting when simple copy backup fails (see on windows, using system folder)
         [016] Local shutdown not working on Windows for Standalone mode
         [017] Client name sometimes get random string content
+        [018] Installer takes bad dlls from windeployqt when several Qt versions are installed
+        [019] Software isn't reported in Applications list in Windows 10
 
 -------------
 Release plan
