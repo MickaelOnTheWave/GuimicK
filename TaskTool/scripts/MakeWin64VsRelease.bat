@@ -1,5 +1,6 @@
+set buildname="Win64Vs"
 set buildtype="Release"
-call MakeWindowsVsBuild.cmd %buildtype%
+call ..\..\scripts\MakeWindowsVsBuild.cmd %buildname% %buildtype%
 
 
 

@@ -1,3 +1,6 @@
+23/03/2020 (13.3)
+    Finished updating TaskTool build scripts. Removed unused ones.
+
 17/03/2020 (2.3h)
     Back to work. MinGW error with task scheduler API seems to be a
     MinGW limitation. Subscribing to mailing list to see if a solution

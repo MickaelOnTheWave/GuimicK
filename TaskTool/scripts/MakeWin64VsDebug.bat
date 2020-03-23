@@ -1,2 +1,3 @@
+set buildname="Win64Vs"
 set buildtype="Debug"
-call MakeWindowsVsBuild.cmd %buildtype%
+call ..\..\scripts\MakeWindowsVsBuild.cmd %buildname% %buildtype%
