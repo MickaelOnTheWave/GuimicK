@@ -1,4 +1,4 @@
-23/03/2020 (13.3)
+23/03/2020 (3.2h)
     Finished updating TaskTool build scripts. Removed unused ones.
     Now going for full install...
     Installed NSIS and EnVar plugin. Now installer gets created, but
@@ -9,7 +9,8 @@
     Investigating... issue isn't with Installer but with Qt dlls : they are from
     a different version. Reporting bug.
     Back to missing features...
-
+Next planned work:
+    - Find out about app manifests : Editor needs to run as admin.
 
 17/03/2020 (2.3h)
     Back to work. MinGW error with task scheduler API seems to be a
