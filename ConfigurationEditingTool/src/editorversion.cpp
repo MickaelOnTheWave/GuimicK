@@ -1,5 +1,7 @@
 #include "editorversion.h"
 
+#include "ostools.h"
+
 EditorVersion* EditorVersion::instance = nullptr;
 
 EditorVersion* EditorVersion::Create()
@@ -15,22 +17,30 @@ EditorVersion* EditorVersion::Create()
 
 bool EditorVersion::IsStandaloneOnly()
 {
-   return instance->isStandaloneOnly;
+#ifdef STANDALONE_ONLY
+   return true;
+#else
+   return false;
+#endif
 }
 
 bool EditorVersion::HasDevelopmentFeatures()
 {
-    return instance->hasDevelopmentFeatures;
+#ifdef NO_DEV_TOOLS
+   return false;
+#else
+   return true;
+#endif
 }
 
 bool EditorVersion::IsWindowsVersion()
 {
-    return instance->isWindows;
+   return OsTools::IsOnWindows();
 }
 
 bool EditorVersion::IsLinuxVersion()
 {
-   return !instance->isWindows;
+   return !IsWindowsVersion();
 }
 
 std::wstring EditorVersion::GetProductName()
@@ -46,19 +56,4 @@ std::wstring EditorVersion::GetEditorName()
 std::wstring EditorVersion::GetVersionTag()
 {
    return instance->version;
-}
-
-void EditorVersion::SetAsDevelopmentVersion(const bool value)
-{
-   hasDevelopmentFeatures = value;
-}
-
-void EditorVersion::SetAsWindowsVersion(const bool value)
-{
-   isWindows = value;
-}
-
-void EditorVersion::SetAsStandaloneOnly(const bool value)
-{
-   isStandaloneOnly = value;
 }

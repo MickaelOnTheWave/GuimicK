@@ -23,10 +23,6 @@ public:
    static std::wstring GetEditorName();
    static std::wstring GetVersionTag();
 
-   void SetAsDevelopmentVersion(const bool value);
-   void SetAsWindowsVersion(const bool value);
-   void SetAsStandaloneOnly(const bool value);
-
 private:
    EditorVersion() = default;
 
@@ -36,7 +32,7 @@ private:
    bool isStandaloneOnly;
    const std::wstring productName = L"GuimicK";
    const std::wstring editorName = L"GuimicK Configuration";
-   const std::wstring version = L"1.0.16";
+   const std::wstring version = L"1.0.20";
 };
 
 #endif // EDITORVERSION_H

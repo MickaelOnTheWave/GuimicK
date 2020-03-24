@@ -9,46 +9,50 @@
 #include "ostools.h"
 
 namespace  {
-   bool HasDevelopmentTools()
+   int RunEditorMain(int argc, char *argv[])
    {
-#ifdef NO_DEV_TOOLS
-      return false;
-#else
-      return true;
-#endif
+   #ifdef _WIN32
+      ::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+   #endif
+
+      QApplication a(argc, argv);
+      QCoreApplication::setOrganizationName("Task Manager");
+      QCoreApplication::setApplicationName("Configuration Editor");
+
+      EditorVersion::Create();
+      MainWindow w;
+      w.CreateDefaultFile();
+      w.show();
+      return a.exec();
    }
 
-   bool IsStandaloneOnly()
+   bool NeedsAdminElevation()
    {
-#ifdef STANDALONE_ONLY
-      return true;
-#else
-      return false;
-#endif
+      return OsTools::IsOnWindows() && !OsTools::IsRunningAsAdministrator();
    }
 
-   void InitializeVersion()
+   int RunElevated()
    {
-      EditorVersion* version = EditorVersion::Create();
-      version->SetAsWindowsVersion(OsTools::IsOnWindows());
-      version->SetAsDevelopmentVersion(HasDevelopmentTools());
-      version->SetAsStandaloneOnly(IsStandaloneOnly());
+      char szPath[MAX_PATH];
+      if (GetModuleFileName(NULL, szPath, ARRAYSIZE(szPath)))
+      {
+         SHELLEXECUTEINFO sei = { sizeof(sei) };
+
+         sei.lpVerb = "runas";
+         sei.lpFile = szPath;
+         sei.hwnd = NULL;
+         sei.nShow = SW_NORMAL;
+
+         ShellExecuteEx(&sei);
+      }
+      return 0;
    }
 }
 
 int main(int argc, char *argv[])
 {
-#ifdef _WIN32
-   ::ShowWindow(::GetConsoleWindow(), SW_HIDE);
-#endif
-
-   QApplication a(argc, argv);
-   QCoreApplication::setOrganizationName("Task Manager");
-   QCoreApplication::setApplicationName("Configuration Editor");
-
-   InitializeVersion();
-   MainWindow w;
-   w.CreateDefaultFile();
-   w.show();
-   return a.exec();
+   if (NeedsAdminElevation())
+      return RunElevated();
+   else
+      return RunEditorMain(argc, argv);
 }

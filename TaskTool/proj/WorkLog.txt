@@ -1,3 +1,8 @@
+24/03/2020 (17.0)
+    Read about app manifests.. There is a console tool to embed manifests, but
+    Windows SDK needs to be installed to have it. However found a simpler way
+    to elevate priviledges on Editor main. Did it.
+
 23/03/2020 (3.2h)
     Finished updating TaskTool build scripts. Removed unused ones.
     Now going for full install...
