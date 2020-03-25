@@ -7,13 +7,18 @@
     #include <shellapi.h>
 #endif
 
-// TODO : put version number on Cmake for coherence with
-// editor, tool and installer
-static const std::wstring PROGRAM_VERSION = L"1.0.19";
+std::wstring GetVersionTag()
+{
+#ifdef VERSION
+   return VERSION;
+#else
+   return L"1.0.20-static";
+#endif
+}
 
 int main(int argc, char* argv[])
 {
-    MainToolModule mainTool(PROGRAM_VERSION);
+    MainToolModule mainTool(GetVersionTag());
     mainTool.SetDispatcherReplacer(new CurlDispatcherReplacer());
     
 #ifdef WIN32

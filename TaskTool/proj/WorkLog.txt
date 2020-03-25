@@ -1,7 +1,14 @@
-24/03/2020 (17.0)
+24/03/2020 (1.5h)
     Read about app manifests.. There is a console tool to embed manifests, but
     Windows SDK needs to be installed to have it. However found a simpler way
     to elevate priviledges on Editor main. Did it.
+    Now checking TaskTool run...
+    In order to check TaskTool, an installer needs to be generated. And other issues,
+    or improvements, were spotted on the go.
+Next planned work:
+    - Finish centralizing version on text file (for Editor, TaskTool and NSIS)
+    - Fix uninstall missing from installer on Windows 10
+    - Move on to TaskTool testing
 
 23/03/2020 (3.2h)
     Finished updating TaskTool build scripts. Removed unused ones.

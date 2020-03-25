@@ -1,8 +1,8 @@
 cd ../
 set ROOT=%CD%
 
-call CreateAndCd.cmd bin
-call CreateAndCd.cmd WindowsInstallPackage
+call scripts/CreateAndCd.cmd bin
+call ../scripts/CreateAndCd.cmd WindowsInstallPackage
 
 cd %ROOT%\TaskTool\scripts
 CALL MakeWin64VsRelease.bat
@@ -16,7 +16,7 @@ copy %ROOT%\scripts\WindowsInstallerScript.nsi WindowsInstallerScript.nsi
 copy %ROOT%\TaskTool\bin\Win64Vs\Release\TaskTool.exe TaskTool.exe
 copy %ROOT%\ConfigurationEditingTool\bin\ClientVersion\Release\ConfigurationEditingTool.exe ConfigurationEditingTool.exe
 copy %ROOT%\TaskToolLauncher\bin\Win64Vs\Release\TaskToolLauncher.exe TaskToolLauncher.exe
-xcopy %ROOT%\data /Y
+xcopy %ROOT%\data\toShip /Y
 xcopy %ROOT%\lib /Y
 
 windeployqt ConfigurationEditingTool.exe

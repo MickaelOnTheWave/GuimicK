@@ -55,5 +55,9 @@ std::wstring EditorVersion::GetEditorName()
 
 std::wstring EditorVersion::GetVersionTag()
 {
-   return instance->version;
+#ifdef VERSION
+   return VERSION;
+#else
+   return L"1.0.20-static";
+#endif
 }
