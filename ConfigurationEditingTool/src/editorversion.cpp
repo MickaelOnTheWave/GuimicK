@@ -1,6 +1,7 @@
 #include "editorversion.h"
 
 #include "ostools.h"
+#include "stringtools.h"
 
 EditorVersion* EditorVersion::instance = nullptr;
 
@@ -56,7 +57,7 @@ std::wstring EditorVersion::GetEditorName()
 std::wstring EditorVersion::GetVersionTag()
 {
 #ifdef VERSION
-   return VERSION;
+   return StringTools::Utf8ToUnicode(VERSION);
 #else
    return L"1.0.20-static";
 #endif

@@ -1,6 +1,11 @@
-26/03/2020 (20.9)
+26/03/2020 (1.7h)
     Updated NSIS to use version from text file. Now checking why it didn't work for
-    editor and CLI tool...
+    editor and CLI tool... It was a Cmake issue : it had to pass its define to target.
+    And targets had to properly manage the string define. CLI tool now done, checking
+    editor : OK.
+Next planned work:
+    - Fix uninstall missing from installer on Windows 10
+    - Move on to TaskTool testing
 
 24/03/2020 (1.5h)
     Read about app manifests.. There is a console tool to embed manifests, but

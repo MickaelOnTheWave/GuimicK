@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 3.2)
 
 project (TaskTool)
 
+add_definitions(-DVERSION="${VERSION}")
+
 if(USE_OLD_COMPILER)
     add_definitions(-DUSE_OLD_COMPILER)
 else(USE_OLD_COMPILER)

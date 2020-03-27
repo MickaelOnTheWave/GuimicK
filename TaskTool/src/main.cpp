@@ -1,5 +1,6 @@
 #include "curldispatcherreplacer.h"
 #include "maintoolmodule.h"
+#include "stringtools.h"
 
 #ifdef WIN32
     #include <Windows.h>
@@ -10,7 +11,7 @@
 std::wstring GetVersionTag()
 {
 #ifdef VERSION
-   return VERSION;
+   return StringTools::Utf8ToUnicode(VERSION);
 #else
    return L"1.0.20-static";
 #endif
