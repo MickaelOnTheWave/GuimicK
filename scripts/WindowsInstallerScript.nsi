@@ -2,7 +2,6 @@
 
 !define ProductDisplayName "GuimicK"
 !define ProductName "GuimicK"
-!define VERSION "1.0.19"
 
 ; The name of the installer
 Name "${ProductDisplayName} ${VERSION}"

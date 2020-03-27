@@ -1,3 +1,7 @@
+26/03/2020 (20.9)
+    Updated NSIS to use version from text file. Now checking why it didn't work for
+    editor and CLI tool...
+
 24/03/2020 (1.5h)
     Read about app manifests.. There is a console tool to embed manifests, but
     Windows SDK needs to be installed to have it. However found a simpler way

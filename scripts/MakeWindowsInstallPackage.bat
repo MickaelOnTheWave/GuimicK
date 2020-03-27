@@ -21,7 +21,9 @@ xcopy %ROOT%\lib /Y
 
 windeployqt ConfigurationEditingTool.exe
 
-"c:\Program Files (x86)\NSIS\Bin\makensis.exe" %ROOT%\bin\WindowsInstallPackage\WindowsInstallerScript.nsi
+set /p version=<"%ROOT%\data\globalVersion.txt"
+
+"c:\Program Files (x86)\NSIS\Bin\makensis.exe" -DVERSION=%version% %ROOT%\bin\WindowsInstallPackage\WindowsInstallerScript.nsi
 
 pause
 EXIT /B 0
