@@ -3,17 +3,13 @@
 #include "chkdskcommanderrorparser.h"
 #include "chkdskcommandparser.h"
 #include "consolejob.h"
+#include "ostools.h"
 
 using namespace std;
 
 JobStatus* CreateNoAdminRightsStatus()
 {
    return new JobStatus(JobStatus::Error, L"Couldn't get admin rights");
-}
-
-bool GetAdminRights()
-{
-   return false;
 }
 
 //----------------------------------------------------------------------
@@ -45,8 +41,7 @@ bool WindowsCheckdiskJob::IsInitialized()
 
 JobStatus* WindowsCheckdiskJob::Run()
 {
-   const bool adminRightsObtained = GetAdminRights();
-   if (adminRightsObtained)
+   if (OsTools::IsRunningAsAdministrator())
       return DiskRelatedJob::Run();
    else
       return CreateNoAdminRightsStatus();

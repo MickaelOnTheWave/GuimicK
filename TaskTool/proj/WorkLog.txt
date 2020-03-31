@@ -1,8 +1,16 @@
-30/03/2020 (19.8)
+30/03/2020 (2h)
     Uninstall is already working. Moving to TaskTool testing...
     Problems with installer : windeployqt appears to copy wrong files. Trying changing
     path variables. No success. Debugging install script : probably obsolete copy
     qt dll command that was the problem. Removing it.
+    Now installed version is working correctly. Moving to rights issue...
+    TaskToolLauncher does not seem to be the issue. Debugging directly TaskTool...
+    executing as admin will make it able to run DiskCheck job in Administrator?
+    Tried adding elevation code from editor, but no output. First step might be
+    to do a "standalone" mode, where it runs without getting data from command line.
+Next planned work:
+    - Finish checking if it is possible to run tasktool elevated with command line options
+    - If not, try debugging with a "runas" option to debug it running
 
 26/03/2020 (1.7h)
     Updated NSIS to use version from text file. Now checking why it didn't work for

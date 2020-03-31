@@ -279,10 +279,7 @@ void TaskToolRunDialog::UpdateTaskToolUiWithResults(const bool success, const QS
 AbstractTaskToolRunner* TaskToolRunDialog::CreateRunner()
 {
 #ifdef _WIN32
-   if (needsAdminRights)
-      return new WindowsTaskToolRunner();
-   else
-      return new LinuxTaskToolRunner();
+   return new WindowsTaskToolRunner();
 #else
    return new LinuxTaskToolRunner();
 #endif
