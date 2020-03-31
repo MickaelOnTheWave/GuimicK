@@ -1,3 +1,9 @@
+30/03/2020 (19.8)
+    Uninstall is already working. Moving to TaskTool testing...
+    Problems with installer : windeployqt appears to copy wrong files. Trying changing
+    path variables. No success. Debugging install script : probably obsolete copy
+    qt dll command that was the problem. Removing it.
+
 26/03/2020 (1.7h)
     Updated NSIS to use version from text file. Now checking why it didn't work for
     editor and CLI tool... It was a Cmake issue : it had to pass its define to target.

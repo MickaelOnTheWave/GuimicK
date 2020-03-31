@@ -17,9 +17,8 @@ copy %ROOT%\TaskTool\bin\Win64Vs\Release\TaskTool.exe TaskTool.exe
 copy %ROOT%\ConfigurationEditingTool\bin\ClientVersion\Release\ConfigurationEditingTool.exe ConfigurationEditingTool.exe
 copy %ROOT%\TaskToolLauncher\bin\Win64Vs\Release\TaskToolLauncher.exe TaskToolLauncher.exe
 xcopy %ROOT%\data\toShip /Y
-xcopy %ROOT%\lib /Y
 
-windeployqt ConfigurationEditingTool.exe
+"C:\Qt\Qt5.14.1\5.14.1\msvc2017_64\bin\windeployqt" ConfigurationEditingTool.exe
 
 set /p version=<"%ROOT%\data\globalVersion.txt"
 
