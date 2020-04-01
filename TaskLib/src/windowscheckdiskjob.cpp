@@ -54,7 +54,7 @@ bool WindowsCheckdiskJob::NeedsAdminRights() const
 
 AbstractConsoleJob* WindowsCheckdiskJob::CreateJobInstance() const
 {
-    return new ConsoleJob(L"chkdsk", drive);
+    return new ConsoleJob(L"chkdsk", GetWindowsDrive());
 }
 
 AbstractOutputParser* WindowsCheckdiskJob::CreateOutputParser(const int jobStatus) const
@@ -63,4 +63,12 @@ AbstractOutputParser* WindowsCheckdiskJob::CreateOutputParser(const int jobStatu
     return new ChkdskCommandParser();
    else
     return new ChkdskCommandErrorParser();
+}
+
+std::wstring WindowsCheckdiskJob::GetWindowsDrive() const
+{
+   if (drive != L"")
+      return drive.substr(0, drive.length()-1);
+   else
+      return L"";
 }

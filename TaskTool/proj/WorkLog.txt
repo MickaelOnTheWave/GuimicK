@@ -1,3 +1,8 @@
+01/04/2020 (17.8)
+    Changed TaskTool to run elevated. It worked. Now checking chkdsk job : there was
+    an error in drive parameter. Fixing it resolved the issue! The job runs (mostly)
+    as expected, remaining a parsing issue.
+
 30/03/2020 (2h)
     Uninstall is already working. Moving to TaskTool testing...
     Problems with installer : windeployqt appears to copy wrong files. Trying changing

@@ -22,6 +22,8 @@ public:
 private:
    virtual AbstractConsoleJob *CreateJobInstance() const;
    virtual AbstractOutputParser* CreateOutputParser(const int jobStatus) const;
+
+   std::wstring GetWindowsDrive() const;
 };
 
 #endif // WINDOWSCHECKDISKJOB_H

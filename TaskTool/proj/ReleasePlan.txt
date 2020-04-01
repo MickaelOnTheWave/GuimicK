@@ -77,6 +77,8 @@ Fixed bugs :
         05/05/2019 - [017] Windows Monthly trigger randomly fails with set.
         24/07/2019 - [018] Disk check job doesn't work by default - make it ask admin mode
         05/02/2020 - [015] Jobs are duplicated when changes are saved from Editor in Client mode.
+        01/04/2020 - [019] Software isn't reported in Applications list in Windows 10
+        01/04/2020 - [018] Installer takes bad dlls from windeployqt when several Qt versions are installed
 
 Pending bugs :
 	[001] Git report parser crashes when trying to parse a report coming from git asking for ssh password.
@@ -90,8 +92,6 @@ Pending bugs :
         [014] There should be error reporting when simple copy backup fails (see on windows, using system folder)
         [016] Local shutdown not working on Windows for Standalone mode
         [017] Client name sometimes get random string content
-        [018] Installer takes bad dlls from windeployqt when several Qt versions are installed
-        [019] Software isn't reported in Applications list in Windows 10
 
 -------------
 Release plan
