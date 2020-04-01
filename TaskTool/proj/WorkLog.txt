@@ -1,7 +1,11 @@
-01/04/2020 (17.8)
+01/04/2020 (1.2h)
     Changed TaskTool to run elevated. It worked. Now checking chkdsk job : there was
     an error in drive parameter. Fixing it resolved the issue! The job runs (mostly)
     as expected, remaining a parsing issue.
+    First going for Task register dialog.. Removing the credentials window.
+Next planned work:
+    - Finish removing credentials window and check that it still works fine
+    - Fix parsing issue for chkdsk job
 
 30/03/2020 (2h)
     Uninstall is already working. Moving to TaskTool testing...
