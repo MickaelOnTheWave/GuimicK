@@ -41,8 +41,8 @@ OK - 3. Start menu (win10) : there should be one icon (configure would be the on
 OK - 4. Report window must be maximizable.
 OK - 5. Report window too slim.
 OK - 6. Change save dialogs to defaults : wanna save?
-7. Admin rights for HD check job : running as admin doesn't work. Find a way...
-8. Registered run rights : no one understands. Create a different window.
+OK - 7. Admin rights for HD check job : running as admin doesn't work. Find a way...
+OK - 8. Registered run rights : no one understands. Create a different window.
 9. Change CSS - no red colors
 OK - 10. Implement shortcuts (Ctrl+S, Ctrl+N...)
 11. Check Threaded run : on Ewerton's machine it hang as if there was no thread.
@@ -51,5 +51,5 @@ OK - 10. Implement shortcuts (Ctrl+S, Ctrl+N...)
 -- Added after --
 
 13. Have icon in Uninstall window
-14. Fix bug where app is not listed in Windows 10 app list
-15. DEV : fix windeployqt bug
+OK - 14. Fix bug where app is not listed in Windows 10 app list
+OK - 15. DEV : fix windeployqt bug

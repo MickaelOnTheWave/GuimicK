@@ -1,8 +1,15 @@
-06/04/2020 (21)
+06/04/2020 (0.7h)
     Analyzing task registration : it doesn't make much sense to "only run when
     user is logged in" as it is intended as a maintenance tool. Going the other way:
     requiring at every change user credentials. If valid credentials are not provided,
     the task is not registered at all.
+Next planned work:
+    - Fix parsing issue for chkdsk job
+    - Back to Feedback list
+
+02/04/2020 (0.2h)
+    Checking that everything still builds on Linux : TaskTool OK, editor with minor errors.
+    Now all is OK :-)
 
 01/04/2020 (1.2h)
     Changed TaskTool to run elevated. It worked. Now checking chkdsk job : there was

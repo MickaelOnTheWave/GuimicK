@@ -33,6 +33,7 @@ namespace  {
 
    int RunElevated()
    {
+#ifdef _WIN32
       char szPath[MAX_PATH];
       if (GetModuleFileName(NULL, szPath, ARRAYSIZE(szPath)))
       {
@@ -45,6 +46,7 @@ namespace  {
 
          ShellExecuteEx(&sei);
       }
+#endif
       return 0;
    }
 }
