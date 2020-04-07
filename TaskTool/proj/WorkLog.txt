@@ -1,3 +1,9 @@
+07/04/2020 (17)
+    Tried to install GoogleTest to run test suite on Windows... no success in
+    making Cmake detect GoogleTest. Aborting...
+    Fixing manually Chkdsk parser : it was due to being based on language. Fixed
+    it to use fixed position data, now it works as expected.
+
 06/04/2020 (0.7h)
     Analyzing task registration : it doesn't make much sense to "only run when
     user is logged in" as it is intended as a maintenance tool. Going the other way:

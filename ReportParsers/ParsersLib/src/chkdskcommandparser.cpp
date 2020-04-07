@@ -162,22 +162,10 @@ void ChkdskCommandParser::GetReportLines(const vector<wstring> &input,
 
 bool ChkdskCommandParser::ParseSummarySection(const vector<wstring>& summary)
 {
-   const wstring totalSpaceMarker = L"total disk space";
-   const wstring freeSpaceMarker = L"available on disk";
-   const wstring badSectorsMarker = L"bad sectors";
-
    LogicalDrive drive;
-
-   StringLines::const_iterator it = summary.begin();
-   for(; it!=summary.end(); ++it)
-   {
-      if (HasMarker(*it, totalSpaceMarker))
-         SetTotalSpace(drive, *it);
-      else if (HasMarker(*it, freeSpaceMarker))
-         SetFreeSpace(drive, *it);
-      else if (HasMarker(*it, badSectorsMarker))
-         SetBadSectors(drive, *it);
-   }
+   SetTotalSpace(drive, summary[0]);
+   SetBadSectors(drive, summary[3]);
+   SetFreeSpace(drive, summary[6]);
 
    const bool isDriveOk = (
          drive.badSectors != L"" &&
