@@ -11,6 +11,11 @@ public:
        return lastError;
    }
 
+   void SetLastError(const QString& message)
+   {
+       lastError = message;
+   }
+
 protected:
    QString lastError = "";
 };

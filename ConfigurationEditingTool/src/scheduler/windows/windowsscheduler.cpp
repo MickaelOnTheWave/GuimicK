@@ -15,6 +15,7 @@ namespace
    const wchar_t* defaultAuthor = L"Task Manager";
    const wchar_t* defaultDescription = L"This task runs periodically TaskManager. \n"
                                  L"It was created automatically by the Configuration editor.";
+   const QString noUserRightError = "User credentials needed for task registration";
 
    TASK_TRIGGER_TYPE2 TranslateTriggerType(ScheduleData* data)
    {
@@ -177,26 +178,33 @@ ITaskFolder* WindowsScheduler::GetTaskRootFolder() const
 bool WindowsScheduler::RegisterTask(ITaskFolder* taskFolder,
                                     ITaskDefinition* taskDefinition)
 {
-   IRegisteredTask* registeredTask = nullptr;
-
    WindowsCredentialsManager credentialsManager;
-   HRESULT result = credentialsManager.AskUser();
-   if (SUCCEEDED(result))
-   {
-       result = RegisterTaskAsOutOfSession(
-                   &registeredTask,
-                   credentialsManager.GetCredentials(),
-                   taskFolder, taskDefinition
-                   );
-   }
-   else
-       result = RegisterTaskOnlyInsideSession(&registeredTask, taskFolder, taskDefinition);
-
-   const bool ok = SUCCEEDED(result);
+   const HRESULT result = credentialsManager.AskUser();
+   bool ok = SUCCEEDED(result);
    if (ok)
-      registeredTask->Release();
+      ok = RegisterTask(taskFolder, taskDefinition, credentialsManager.GetCredentials());
    else
-      errorManager.UpdateLastErrorMessage(result);
+      errorManager.SetLastError(noUserRightError);
+
+   return ok;
+}
+
+bool WindowsScheduler::RegisterTask(ITaskFolder* taskFolder,
+                                    ITaskDefinition* taskDefinition,
+                                    const Credentials& credentials)
+{
+   IRegisteredTask* registeredTask = nullptr;
+   const HRESULT result = RegisterTaskAsOutOfSession(
+                &registeredTask,
+                credentials,
+                taskFolder, taskDefinition
+                );
+
+    const bool ok = SUCCEEDED(result);
+    if (ok)
+       registeredTask->Release();
+    else
+       errorManager.UpdateLastErrorMessage(result);
    return ok;
 }
 
@@ -346,3 +354,4 @@ bool WindowsScheduler::SetTaskOtherSettings(ITaskDefinition *taskDefinition)
     errorManager.UpdateLastErrorMessage(hr);
     return SUCCEEDED(hr);
 }
+

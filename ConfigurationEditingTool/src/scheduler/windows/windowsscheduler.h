@@ -2,7 +2,7 @@
 #define WINDOWSSCHEDULER_H
 
 #include "abstractscheduler.h"
-
+#include "credentials.h"
 #include <taskschd.h>
 #include "windowsschedulererrormanager.h"
 
@@ -25,6 +25,10 @@ private:
 
    bool RegisterTask(ITaskFolder* taskFolder,
                      ITaskDefinition* taskDefinition);
+
+   bool RegisterTask(ITaskFolder* taskFolder,
+                     ITaskDefinition* taskDefinition,
+                     const Credentials& credentials);
 
    ScheduleData* CreateDataFromTask(IRegisteredTask* task) const;
 

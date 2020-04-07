@@ -5,10 +5,8 @@
 #include "stringtools.h"
 
 namespace  {
-    const char* needsAdminToRunOutOfSession = "In order to run the task list even when you are not "
-                                              "logged, we need your credentials.\n"
-                                              "If you choose to not provide them, the tasks will only run "
-                                              "when you are logged.";
+    const char* needsAdminToRunOutOfSession = "Your credentials are needed to register your tasks "
+                                              "on Windows System scheduler.";
     const char* wrongCredentials = "Invalid credentials";
 
     CREDUI_INFO CreateCredentialsData(const bool firstTime)
