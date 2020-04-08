@@ -1,4 +1,4 @@
-07/04/2020 (17)
+07/04/2020 (2.5h)
     Tried to install GoogleTest to run test suite on Windows... no success in
     making Cmake detect GoogleTest. Aborting...
     Fixing manually Chkdsk parser : it was due to being based on language. Fixed
@@ -6,6 +6,12 @@
     Also fixed issue where client version still used dev tool because of settings.
     Added uninstall icon. Now checking CSS... As an afterthought, it has been decided
     to leave CSS as it is. Existing examples seem clumsy and heavy, and with license issues.
+    Analyzing threading issue : even a simple sleep function blocks the whole GUI...
+    Abandoning it. So : done with features.
+Next planned work :
+    - Rewrite EULA
+    - Create beta package and distribute it
+    - Start checking for publishing
 
 06/04/2020 (0.7h)
     Analyzing task registration : it doesn't make much sense to "only run when
