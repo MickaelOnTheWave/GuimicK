@@ -50,6 +50,6 @@ OK - 10. Implement shortcuts (Ctrl+S, Ctrl+N...)
 
 -- Added after --
 
-13. Have icon in Uninstall window
+OK - 13. Have icon in Uninstall window
 OK - 14. Fix bug where app is not listed in Windows 10 app list
 OK - 15. DEV : fix windeployqt bug

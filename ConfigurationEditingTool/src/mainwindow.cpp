@@ -758,12 +758,9 @@ void MainWindow::SetupDefaultFolder()
 
 void MainWindow::SetupDefaultCss()
 {
-   wstring reportCss = model.GetTmpConfiguration()->GetReportCss();
+   const wstring reportCss = model.GetTmpConfiguration()->GetReportCss();
    if (reportCss == L"")
-   {
-      reportCss = GetDefaultReportCss();
-      model.GetTmpConfiguration()->SetReportCss(reportCss);
-   }
+      model.GetTmpConfiguration()->SetReportCss(GetDefaultReportCss());
 }
 
 void MainWindow::UpdateUiOnJobSelection(const int index)

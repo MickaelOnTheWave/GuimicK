@@ -4,6 +4,8 @@
     Fixing manually Chkdsk parser : it was due to being based on language. Fixed
     it to use fixed position data, now it works as expected.
     Also fixed issue where client version still used dev tool because of settings.
+    Added uninstall icon. Now checking CSS... As an afterthought, it has been decided
+    to leave CSS as it is. Existing examples seem clumsy and heavy, and with license issues.
 
 06/04/2020 (0.7h)
     Analyzing task registration : it doesn't make much sense to "only run when
