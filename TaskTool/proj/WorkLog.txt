@@ -3,6 +3,7 @@
     making Cmake detect GoogleTest. Aborting...
     Fixing manually Chkdsk parser : it was due to being based on language. Fixed
     it to use fixed position data, now it works as expected.
+    Also fixed issue where client version still used dev tool because of settings.
 
 06/04/2020 (0.7h)
     Analyzing task registration : it doesn't make much sense to "only run when

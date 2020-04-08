@@ -72,7 +72,8 @@ endif ()
 ### Fake Projects, only for display in IDE
 add_custom_target(ProjectFiles SOURCES
 	"../WorkLog.txt"
-	"../ReleasePlan.txt")
+        "../ReleasePlan.txt"
+        "../FeedbackEwerton.txt")
 
 add_custom_target(BuildScripts SOURCES
 	"../../scripts/BuildTools.sh"

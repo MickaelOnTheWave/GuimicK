@@ -66,7 +66,7 @@ namespace
 
    QString GetDefaultTaskToolExecutable()
    {
-#ifdef _MSC_VER
+#ifdef _WIN32
       const std::wstring path = PathTools::GetCurrentExecutablePath();
       const std::wstring taskToolExe = PathTools::GetPathOnly(path) + L"\\TaskTool.exe";
       return QString::fromStdWString(taskToolExe);
@@ -76,15 +76,24 @@ namespace
 
    }
 
-   QString GetTaskToolExecutable()
+   QString GetTaskToolExecutableFromSettings()
    {
       QSettings settings;
-      
       QVariant keyValue = settings.value("taskTool", GetDefaultTaskToolExecutable());
       if (keyValue.isValid())
          return keyValue.toString();
       else
          return QString("");
+   }
+
+   QString GetTaskToolExecutable()
+   {
+#ifdef NO_DEV_TOOLS
+      return GetDefaultTaskToolExecutable();
+#else
+      return GetTaskToolExecutableFromSettings();
+
+#endif
    }
 
    wstring CreateReportFile(const wstring& type)
