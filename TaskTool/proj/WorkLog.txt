@@ -1,3 +1,8 @@
+08/04/2020 (18.3)
+    First, check old issue : shutdown not working. Fixed it!
+    Revised EULA : put real names and removed not relevant parts.
+    Creating final beta package...
+
 07/04/2020 (2.5h)
     Tried to install GoogleTest to run test suite on Windows... no success in
     making Cmake detect GoogleTest. Aborting...

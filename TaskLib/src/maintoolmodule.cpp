@@ -234,12 +234,22 @@ bool MainToolModule::RunLocalShutdown(const bool isLocalShutdownEnabled)
     if (isLocalShutdownEnabled == false)
         return true;
 
-    ConsoleJob finalShutdown(L"/sbin/poweroff");
-    JobStatus* status = finalShutdown.Run();
+    ConsoleJob* finalShutdown = CreateLocalShutdownJob();
+    JobStatus* status = finalShutdown->Run();
     const bool shutdownError = (status->GetCode() != JobStatus::Ok);
     if (shutdownError)
         wcout << "Local shutdown failed : " << status->GetDescription() << endl;
 
     delete status;
+    delete finalShutdown;
     return !shutdownError;
+}
+
+ConsoleJob* MainToolModule::CreateLocalShutdownJob() const
+{
+#ifdef _WIN32
+   return new ConsoleJob(L"shutdown.exe", L"-f -s");
+#else
+   return new ConsoleJob(L"/sbin/poweroff");
+#endif
 }

@@ -5,6 +5,7 @@
 #include "abstractreportdispatcherreplacer.h"
 #include "clientworkmanager.h"
 #include "commandlinemanager.h"
+#include "consolejob.h"
 #include "standaloneconfiguration.h"
 
 class MainToolModule
@@ -50,6 +51,8 @@ private:
                                                        const StandaloneConfiguration& configuration);
 
     bool RunLocalShutdown(const bool isLocalShutdownEnabled);
+
+    ConsoleJob* CreateLocalShutdownJob() const;
 
     const std::wstring version;
     AbstractReportDispatcherReplacer* replacer;

@@ -50,7 +50,7 @@ bool LinuxShutdownJob::IsInitialized()
     return shutdownJob->IsInitialized() && computer != L"";
 }
 
-JobStatus *LinuxShutdownJob::Run()
+JobStatus* LinuxShutdownJob::Run()
 {
     JobStatus* status = shutdownJob->Run();
 
