@@ -11,13 +11,14 @@ class AbstractTaskToolRunner : public QObject
 {
    Q_OBJECT
 public:
-   virtual void Run() = 0;
-
    virtual ErrorMessageCreator* CreateMessageCreator() = 0;
 
    TaskToolRunData GetRunData() const;
 
    void SetCommand(const std::wstring& value);
+
+public slots:
+   void Run();
 
 signals:
    void finished();
@@ -25,6 +26,9 @@ signals:
 protected:
    std::wstring command = L"";
    TaskToolRunData runData;
+
+private:
+   virtual void RunFunction() = 0;
 };
 
 #endif // TASKTOOLRUNNER_H

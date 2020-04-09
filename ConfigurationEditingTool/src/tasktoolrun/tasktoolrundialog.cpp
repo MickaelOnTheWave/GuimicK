@@ -71,7 +71,6 @@ TaskToolRunDialog::~TaskToolRunDialog()
    delete ui;
    taskToolThread.quit();
    taskToolThread.wait();
-   delete taskToolRunner;
 }
 
 void TaskToolRunDialog::SetConfigurationData(const TaskToolConfigurationData& data)
@@ -236,14 +235,17 @@ void TaskToolRunDialog::InitializeThreadedTaskToolRun()
 {
    taskToolRunner = CreateRunner();
    taskToolRunner->moveToThread(&taskToolThread);
+
+   connect(&taskToolThread, &QThread::finished, taskToolRunner, &QObject::deleteLater);
+   connect(this, &TaskToolRunDialog::StartRun, taskToolRunner, &AbstractTaskToolRunner::Run);
    connect(taskToolRunner, &AbstractTaskToolRunner::finished, this, &TaskToolRunDialog::OnFinishedRunningTaskTool);
+   taskToolThread.start();
 }
 
 void TaskToolRunDialog::StartTaskTool()
 {
    taskToolRunner->SetCommand(CreateTaskToolCommand());
-   taskToolThread.start();
-   taskToolRunner->Run();
+   emit StartRun();
 }
 
 void TaskToolRunDialog::SetUiWaitState()

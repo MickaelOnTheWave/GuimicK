@@ -1,7 +1,14 @@
-08/04/2020 (18.3)
+08/04/2020 (1.8h)
     First, check old issue : shutdown not working. Fixed it!
     Revised EULA : put real names and removed not relevant parts.
-    Creating final beta package...
+    Creating final beta package... And distributing it to "beta" users :
+    Ewerton, Malany, Alan.
+    Having a last check at threading issue... Fixed. Also fixed the crash
+    after threaded run. Fixing another minor issue in Eula and... SHIP IT!!
+    Sent it to three first users, now waiting for feedback.
+Next planned work:
+    - Check first users feedback
+    - Resolve issues in production
 
 07/04/2020 (2.5h)
     Tried to install GoogleTest to run test suite on Windows... no success in

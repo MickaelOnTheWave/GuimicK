@@ -7,9 +7,10 @@ class LinuxTaskToolRunner : public AbstractTaskToolRunner
 {
     Q_OBJECT
 public:
-   void Run() override;
-
    ErrorMessageCreator* CreateMessageCreator() override;
+
+private:
+   void RunFunction() override;
 };
 
 #endif // LINUXTASKTOOLRUNNER_H

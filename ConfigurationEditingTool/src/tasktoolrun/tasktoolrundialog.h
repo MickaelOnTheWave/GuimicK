@@ -25,6 +25,9 @@ public:
    void SetReportFolder(const QString& value);
    void SetReportType(const std::wstring& value);
 
+signals:
+   void StartRun();
+
 private slots:
    void on_runButton_clicked();
    void OnFinishedRunningTaskTool();

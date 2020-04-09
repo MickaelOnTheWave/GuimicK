@@ -13,17 +13,17 @@ WindowsTaskToolRunner::WindowsTaskToolRunner()
    CreateTaskToolLauncherFullPath();
 }
 
-void WindowsTaskToolRunner::Run()
+ErrorMessageCreator* WindowsTaskToolRunner::CreateMessageCreator()
+{
+   return new WindowsMessageCreator(shellExecuteErrorCode);
+}
+
+void WindowsTaskToolRunner::RunFunction()
 {
    runData.isOk = ExecuteTaskToolAsAdmin();
    if (runData.isOk)
       WaitUntilExecutionIsComplete();
    emit finished();
-}
-
-ErrorMessageCreator* WindowsTaskToolRunner::CreateMessageCreator()
-{
-   return new WindowsMessageCreator(shellExecuteErrorCode);
 }
 
 bool WindowsTaskToolRunner::ExecuteTaskToolAsAdmin()

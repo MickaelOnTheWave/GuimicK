@@ -11,3 +11,8 @@ void AbstractTaskToolRunner::SetCommand(const wstring& value)
 {
    command = value;
 }
+
+void AbstractTaskToolRunner::Run()
+{
+   RunFunction();
+}

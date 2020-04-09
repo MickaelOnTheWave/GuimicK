@@ -1,6 +1,6 @@
 End-User License Agreement (EULA) of GuimicK
 
-This End-User License Agreement ("EULA") is a legal agreement between you and Mickaël da Cruz Guimarães, the author of this software ("Author").
+This End-User License Agreement ("EULA") is a legal agreement between you and Mickael da Cruz Guimaraes, the author of this software ("Author").
 This EULA agreement governs your acquisition and use of our GuimicK software ("Software") directly from the Author or indirectly through an authorized distributor (a "Reseller").
 Please read this EULA agreement carefully before completing the installation process and using the GuimicK software. It provides a license to use the GuimicK software and contains warranty information and liability disclaimers.
 By clicking "accept" or installing and/or using the GuimicK software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.
