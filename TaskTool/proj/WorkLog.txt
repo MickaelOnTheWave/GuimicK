@@ -1,3 +1,19 @@
+15/04/2020 (1h)
+    Still no user feedback... Sent link to Ludmila, but there is
+    still the dll issue...
+    Meanwhile, started to check about publishing. Microsoft Store seemed
+    as a good option, but it needs payment and special installer. Left alone...
+    Sites such as CNET, Baixaki etc... don't seem to have a "submit" option.
+    Checking about creating custom website for presentation. Checked and created
+    websites on two places :
+    Wix : https://mickaeldacruz1.wixsite.com/guimmick
+    Gsites : https://sites.google.com/view/guimmick/home
+Next planned work:
+    - Create relevant description for GuimmicK. See Cryptomator as example.
+    - Create simple "tutorial" for using GuimmicK.
+    - Create/find relevant images for GuimmicK.
+    - Find how to include a real download link into either sites
+
 08/04/2020 (1.8h)
     First, check old issue : shutdown not working. Fixed it!
     Revised EULA : put real names and removed not relevant parts.
