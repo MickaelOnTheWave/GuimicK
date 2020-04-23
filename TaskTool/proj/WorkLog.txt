@@ -1,3 +1,7 @@
+22/04/2020 (1h)
+    Working on a description for website. And changing all references of
+    "TaskManager" to "GuimicK".
+
 15/04/2020 (1h)
     Still no user feedback... Sent link to Ludmila, but there is
     still the dll issue...

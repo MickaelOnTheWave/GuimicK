@@ -91,7 +91,7 @@ void TextReportCreator::AddConfigurationErrorsData(const std::vector<wstring> &e
 
 void TextReportCreator::AddProgramData(const wstring &version)
 {
-    programVersion << "Task Manager version " << version << endl;
+    programVersion << "GuimicK version " << version << endl;
 }
 
 void TextReportCreator::UpdateNameCellSize(ClientJobResults *data)

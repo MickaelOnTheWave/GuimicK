@@ -90,6 +90,6 @@ StandaloneConfiguration* TooledConfiguration::GetTmpConfiguration()
 Agent* TooledConfiguration::CreateDefaultAgent()
 {
    Agent* agent = new Agent();
-   agent->SetName(L"TaskManager Agent");
+   agent->SetName(L"GuimicK Agent");
    return agent;
 }

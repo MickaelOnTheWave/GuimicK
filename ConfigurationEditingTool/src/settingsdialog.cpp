@@ -75,7 +75,7 @@ void SettingsDialog::SetDefaultAgentName()
 {
     Agent* agent = configuration->GetAgent();
     if (agent->GetName() == L"")
-       agent->SetName(L"Task Manager Agent");
+       agent->SetName(L"GuimicK Agent");
 }
 
 void SettingsDialog::SetDefaultCss()
@@ -92,7 +92,7 @@ void SettingsDialog::SetDefaultReportFolder()
     Agent* agent = configuration->GetAgent();
     if (agent->GetReportFolder() == L"")
     {
-        const QString defaultFolder = QDir::homePath() + "/Task Manager Report/";
+        const QString defaultFolder = QDir::homePath() + "/GuimicK Report/";
         agent->SetReportFolder(defaultFolder.toStdWString());
     }
 }

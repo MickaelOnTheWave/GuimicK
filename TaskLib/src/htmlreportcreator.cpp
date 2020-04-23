@@ -105,7 +105,7 @@ void HtmlReportCreator::AddConfigurationErrorsData(const std::vector<wstring> &e
 
 void HtmlReportCreator::AddProgramData(const std::wstring& version)
 {
-    programVersion << "<small>Task Manager version " << version << "</small>" << endl;
+    programVersion << "<small>GuimicK version " << version << "</small>" << endl;
     programVersion << "</body>" << endl;
     programVersion << "</html>" << endl;
 }
