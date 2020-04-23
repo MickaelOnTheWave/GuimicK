@@ -1,3 +1,7 @@
+22/05/2020 (1h)
+    Working on a description for website. And changing all references of
+    "TaskManager" to "GuimicK".
+
 08/04/2020 (1.8h)
     First, check old issue : shutdown not working. Fixed it!
     Revised EULA : put real names and removed not relevant parts.

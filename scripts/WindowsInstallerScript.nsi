@@ -47,6 +47,7 @@ Section "" ;No components page, name is not important
   File ConfigurationEditingTool.exe
   File msvcp140.dll
   File vcruntime140.dll
+  File vcruntime140_1.dll
   File Qt5Core.dll
   File Qt5Gui.dll
   File Qt5Widgets.dll

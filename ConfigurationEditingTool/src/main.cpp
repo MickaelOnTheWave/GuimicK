@@ -16,7 +16,7 @@ namespace  {
    #endif
 
       QApplication a(argc, argv);
-      QCoreApplication::setOrganizationName("Task Manager");
+      QCoreApplication::setOrganizationName("GuimicK");
       QCoreApplication::setApplicationName("Configuration Editor");
 
       EditorVersion::Create();

@@ -11,9 +11,9 @@
 
 namespace
 {
-   const wchar_t* defaultTaskName = L"TaskManager Automated Task";
-   const wchar_t* defaultAuthor = L"Task Manager";
-   const wchar_t* defaultDescription = L"This task runs periodically TaskManager. \n"
+   const wchar_t* defaultTaskName = L"GuimicK Automated Task";
+   const wchar_t* defaultAuthor = L"GuimicK";
+   const wchar_t* defaultDescription = L"This task runs GuimicK periodically. \n"
                                  L"It was created automatically by the Configuration editor.";
    const QString noUserRightError = "User credentials needed for task registration";
 

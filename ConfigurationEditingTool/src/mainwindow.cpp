@@ -699,7 +699,7 @@ QString MainWindow::GetTempConfigFilename() const
 
 QString MainWindow::GetTempReportFolder() const
 {
-   return GetTempFolder() + "/TaskManagerReport/";
+   return GetTempFolder() + "/GuimicKReport/";
 }
 
 wstring MainWindow::SaveConfigurationToTempLocation()
@@ -724,7 +724,7 @@ bool MainWindow::NeedsAdminRightsWarning()
 
 wstring MainWindow::GetDefaultReportFolder()
 {
-    const QString folder = QDir::homePath() + "/Task Manager Report/";
+    const QString folder = QDir::homePath() + "/GuimicK Report/";
     return folder.toStdWString();
 }
 
