@@ -1,7 +1,16 @@
-30/04/2020 (16.2)
+30/04/2020 (2.4h)
     Default report folder did not work well. Fixing the standardPath
     implementation.. Fixed it and tested it : everything works as expected.
     Creating missing screenshots and updating Tutorial. Now it's done :-)
+    Updloaded new final version of GuimicK. Now going for download counter...
+    Found somehow how to do it with GoogleAnalytics (if it ever works), however
+    it breaks link.
+    Trying to find out how to do it with wixLocation.to(), so far without success.
+Next planned work:
+    - Make wixLocation.to() work
+    - Make download counter work (either Google Analytics or database)
+    - Update Download button art : proper download icon + Win10 + 64
+    - Update Wix images : computer+clock instead of cellphones
 
 29/04/2020 (2.6h)
     Taking screenshots of installation + use. Found issues in use,
