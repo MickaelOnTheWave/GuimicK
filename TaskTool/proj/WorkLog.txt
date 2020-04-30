@@ -1,7 +1,21 @@
-29/04/2020 (18.2)
+29/04/2020 (2.6h)
     Taking screenshots of installation + use. Found issues in use,
     generating new version.
+    New website is in https://mickaelcguimaraes.wixsite.com/guimick
     Added publisher and version information in Windows uninstall.
+    Created nearly all screenshots for tutorial. Created the tutorial
+    with illustrations and deployed everything. Only tutorial features
+    missing need the new version : default report needs to be "Guimick Report"
+    and not task manager.
+    Created new version but can't test it for now, needs reboot.
+Next planned work:
+    - Check version 1.0.29 : default report should be GuimicK folder in
+    Documents folder. If not, fix it.
+    - Once version if OK, finish screenshots and tutorial.
+    - Upload new GuimicK version to wix.
+    - Check/implement a download counter on wix links.
+    - Update Download button art : proper download icon + Win10 + 64
+    - Update Wix images : computer+clock instead of cellphones
 
 28/04/2020 (2h)
     Recreating Wix website with a proper template a data.
