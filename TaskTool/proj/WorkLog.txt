@@ -1,3 +1,8 @@
+30/04/2020 (16.2)
+    Default report folder did not work well. Fixing the standardPath
+    implementation.. Fixed it and tested it : everything works as expected.
+    Creating missing screenshots and updating Tutorial. Now it's done :-)
+
 29/04/2020 (2.6h)
     Taking screenshots of installation + use. Found issues in use,
     generating new version.

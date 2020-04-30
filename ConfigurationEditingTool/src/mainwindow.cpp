@@ -114,14 +114,19 @@ namespace
       return (defaultFolders.empty()) ? QString("") : defaultFolders.first();
    }
 
+   QString GetDefaultReportFolder()
+   {
+      const QStringList docFolders = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+      const QString docFolder = (docFolders.empty()) ? QDir::homePath() : docFolders.first();
+      return docFolder + "/GuimicK Report/";
+   }
+
    void SetDefaultConfigurationValues(TooledConfiguration& configuration)
    {
       Agent* agent = configuration.GetAgent();
       agent->SetName(L"GuimicK Agent");
       agent->SetReportFile(L"report.html");
-
-      const QString defaultFolder = QStandardPaths::DocumentsLocation + "/GuimicK Report/";
-      agent->SetReportFolder(defaultFolder.toStdWString());
+      agent->SetReportFolder(GetDefaultReportFolder().toStdWString());
 
       const QString defaultCss = QDir::currentPath() + "/report.css";
       configuration.GetTmpConfiguration()->SetReportCss(defaultCss.toStdWString());
