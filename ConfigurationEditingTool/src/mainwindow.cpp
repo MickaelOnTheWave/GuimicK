@@ -117,10 +117,10 @@ namespace
    void SetDefaultConfigurationValues(TooledConfiguration& configuration)
    {
       Agent* agent = configuration.GetAgent();
-      agent->SetName(L"Task Manager Agent");
+      agent->SetName(L"GuimicK Agent");
       agent->SetReportFile(L"report.html");
 
-      const QString defaultFolder = QDir::homePath() + "/Task Manager Report/";
+      const QString defaultFolder = QStandardPaths::DocumentsLocation + "/GuimicK Report/";
       agent->SetReportFolder(defaultFolder.toStdWString());
 
       const QString defaultCss = QDir::currentPath() + "/report.css";

@@ -1,3 +1,17 @@
+29/04/2020 (18.2)
+    Taking screenshots of installation + use. Found issues in use,
+    generating new version.
+    Added publisher and version information in Windows uninstall.
+
+28/04/2020 (2h)
+    Recreating Wix website with a proper template a data.
+    Website is available with downloadable app and some description
+Next planned work:
+    - Create tutorial
+    - Update graphics
+    - Add/check if there is a download counter
+    - Change download icon. It must have a Windows 10 / 64bit logo
+
 22/04/2020 (1h)
     Working on a description for website. And changing all references of
     "TaskManager" to "GuimicK".
