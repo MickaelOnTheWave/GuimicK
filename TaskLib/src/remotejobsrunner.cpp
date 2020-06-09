@@ -42,7 +42,7 @@ bool RemoteJobsRunner::InitializeFromClient(Client *client)
    bool ok = AbstractJob::InitializeFromClient(client);
    if (ok)
    {
-      originalClient = client;
+      originalClient = client->Clone();
       host = client->GetProperty(L"ip");
       user = client->GetProperty(L"sshuser");
       return IsInitialized();

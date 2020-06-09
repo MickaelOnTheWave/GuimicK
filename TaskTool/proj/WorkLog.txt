@@ -1,3 +1,19 @@
+09/06-2020 (1.5)
+    Fixed version creation for Synology and Linux : added new version
+    support and fixed Synology compilation issue.
+    Now app is doing nothing / crashing. Found issue : it was the
+    garbaged client name bug. Fixed it (double delete). Now simple
+    runs are "working" (bad description, but that's another issue and it
+    is already registered).
+Next planned work:
+    - Check email sending
+    - Check scheduled run
+
+08/06/2020 (1.5h)
+    Back to production backups. Making first checks : no email is
+    send, nothing seems to run. First going for compiling new version :
+    problems found.
+
 04/05/2020 (1.7h)
     Updated Wix images. Now going for Download button..
     Download button images finished. Updating tutorial page...
