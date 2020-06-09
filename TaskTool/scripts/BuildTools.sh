@@ -5,5 +5,6 @@ source ../../scripts/BuildTools.sh
 runCmakeForLinux()
 {
 	MODE=$1
-	cmake ../../proj/cmake -DCMAKE_BUILD_TYPE=$MODE -DUSE_CURL_LIB=TRUE
+	version=`cat ../../data/globalVersion.txt`
+	cmake ../../proj/cmake -DVERSION=$version -DCMAKE_BUILD_TYPE=$MODE -DUSE_CURL_LIB=TRUE
 }

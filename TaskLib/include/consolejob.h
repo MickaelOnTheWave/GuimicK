@@ -60,11 +60,12 @@ public:
    static std::vector<std::wstring> appSearchPaths;
 
 protected:
-
     virtual bool RunCommand();
 
     virtual JobStatus* CreateSuccessStatus();
     virtual JobStatus* CreateErrorStatus();
+
+   void SetCommandWithAbsolutePath();
 
     std::wstring command;
     std::wstring commandParams;

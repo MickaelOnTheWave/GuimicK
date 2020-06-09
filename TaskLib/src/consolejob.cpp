@@ -18,12 +18,6 @@ ConsoleJob::ConsoleJob(const wstring &_command,
       command(_command), commandParams(_params), commandOutput(L""),
       expectedReturnCode(_expectedReturnCode), receivedReturnCode(-1)
 {
-   if (command != L"")
-   {
-      wstring foundCommandFullName = PathTools::GetCommandPath(command, appSearchPaths);
-      if (foundCommandFullName != L"")
-        command = foundCommandFullName;
-   }
 }
 
 ConsoleJob::ConsoleJob(const ConsoleJob &other)
@@ -163,5 +157,15 @@ JobStatus *ConsoleJob::CreateSuccessStatus()
 
 JobStatus *ConsoleJob::CreateErrorStatus()
 {
-    return new JobStatus(JobStatus::Error, L"");
+   return new JobStatus(JobStatus::Error, L"");
+}
+
+void ConsoleJob::SetCommandWithAbsolutePath()
+{
+   if (command != L"")
+   {
+      wstring foundCommandFullName = PathTools::GetCommandPath(command, appSearchPaths);
+      if (foundCommandFullName != L"")
+        command = foundCommandFullName;
+   }
 }

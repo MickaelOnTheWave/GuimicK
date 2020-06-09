@@ -62,6 +62,7 @@ void UserConsoleJob::Initialize(const wstring &_command, int _expectedReturnCode
     attachOutputToStatus = false;
     useParserWithBuffer = false;
 
+    SetCommandWithAbsolutePath();
     IsInitialized();
 }
 

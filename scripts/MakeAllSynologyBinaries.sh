@@ -16,7 +16,17 @@ BuildSynologyTarget()
 	build
 }
 
-BuildSynologyTarget $TASKMANAGERROOT"/TaskTool/bin"
+BuildSynologyTaskTool()
+{
+    version=`cat "$TASKMANAGERROOT/data/globalVersion.txt"`
+    cd $TASKMANAGERROOT"/TaskTool/bin"
+	prepareForBuild "Synology"
+	cmake ../../proj/cmake -DVERSION=$version -DCMAKE_BUILD_TYPE=RELEASE -DUSE_OLD_COMPILER=TRUE -DCMAKE_TOOLCHAIN_FILE=$TASKSCRIPTS/synology.cmake
+	build
+}
+
+
+BuildSynologyTaskTool
 BuildSynologyTarget $TASKMANAGERROOT"/ReportParsers/CommandLineTool/bin"
 BuildSynologyTarget $TOOLSROOT"/NetworkTester/bin"
 cd $SCRIPTDIR
