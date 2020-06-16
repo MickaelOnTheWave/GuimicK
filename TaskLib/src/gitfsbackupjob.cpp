@@ -188,7 +188,16 @@ void GitFsBackupJob::CopyData(const wstring &source, const wstring &destination,
 void GitFsBackupJob::AddData(JobStatus *status)
 {
     debugManager->AddTagLine(L"Adding data to git");
-    ConsoleJob commandJob(L"git", L"add -A :/");
+
+    const wstring gitAbsoluteCommand = PathTools::GetCommandPath(L"git", ConsoleJob::appSearchPaths);
+
+    debugManager->AddDataLine<int>(L"App Search Paths : ", ConsoleJob::appSearchPaths.size());
+    for (auto it = ConsoleJob::appSearchPaths.begin(); it != ConsoleJob::appSearchPaths.end(); ++it)
+       debugManager->AddTagLine(*it);
+
+    debugManager->AddDataLine<wstring>(L"Git Absolute Path", gitAbsoluteCommand);
+
+    ConsoleJob commandJob(gitAbsoluteCommand, L"add -A :/");
     commandJob.RunWithoutStatus();
     debugManager->AddDataLine<wstring>(L"Command parameters", commandJob.GetCommandParameters());
     debugManager->AddDataLine<wstring>(L"Add output", commandJob.GetCommandOutput());

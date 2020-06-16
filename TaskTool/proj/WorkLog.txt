@@ -1,4 +1,13 @@
-09/06-2020 (1.5)
+16/06/2020 (1.5h)
+    Production run still failing with git add issue. Email sending is now
+    working - again, Google configuration for non-secure SMTPs.
+    Making tests : still can't run git add. Apparently command is not found
+    in app search paths. Putting more debug data to see search paths.
+Next planned work:
+    - Keep debugging until finding the issue
+    - Fix it
+
+09/06/2020 (1.5)
     Fixed version creation for Synology and Linux : added new version
     support and fixed Synology compilation issue.
     Now app is doing nothing / crashing. Found issue : it was the
