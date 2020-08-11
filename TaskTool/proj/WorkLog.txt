@@ -1,6 +1,13 @@
-11/08/2020 (7.3)
+11/08/2020 (1.1h)
    Previous bug with git add fixed, it was with configuration not having
    the good type. Back to Git Repository Backups.
+   Fixed them and improved git toolbox organization.
+   Ran once but no output. Waiting for production run to check that it is ok.
+Next planned work:
+   - Check production : backups should now be ok.
+   - Check/Fix Check Disk job on production
+   - Check/Fix Shutdown job on production
+   - Add/create test suite for configuration parser on global test suite
 
 10/08/2020 (1h)
    Investigating on source backup issues. It seems it is because of
