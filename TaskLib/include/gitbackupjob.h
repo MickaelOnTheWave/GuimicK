@@ -63,7 +63,7 @@ private:
 
     bool IsRemoteValid(const std::wstring &remoteUrl) const;
 
-    std::wstring GetRemoteUrl(const std::wstring &destination) const;
+    std::wstring GetRemoteUrl() const;
 
     BackupJobStatus CreateWrongRemoteError(const std::wstring& remoteUrl) const;
 

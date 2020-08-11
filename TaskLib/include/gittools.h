@@ -16,9 +16,17 @@ public:
 
     static ConsoleJob CreateRunJob(const std::wstring& parameters);
 
-    static std::wstring GetRemoteUrlFromCommandOutput(const std::wstring& output);
+    static std::vector<std::wstring> GetRemotesUrls();
 
 private:
+    static std::vector<std::wstring> GetRemotesUrlsFromCommandOutput(
+          const std::wstring& output
+          );
+
+    static std::vector<std::wstring> CreateRemotesUrls(
+          const std::vector<std::wstring>& remotesLines
+          );
+
     static std::wstring GetRemoteUrl(const std::wstring& lineOutput);
 };
 

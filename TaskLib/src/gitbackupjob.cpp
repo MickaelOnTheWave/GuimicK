@@ -114,10 +114,10 @@ bool GitBackupJob::IsRemoteValid(const wstring& remoteUrl) const
    return command.IsRunOk();
 }
 
-wstring GitBackupJob::GetRemoteUrl(const wstring& destination) const
+wstring GitBackupJob::GetRemoteUrl() const
 {
-   ConsoleJob command = GitTools::Run(L"remote -v");
-   return GitTools::GetRemoteUrlFromCommandOutput(command.GetCommandOutput());
+   const vector<wstring> remotes = GitTools::GetRemotesUrls();
+   return (remotes.empty()) ? L"" : remotes.front();
 }
 
 BackupJobStatus GitBackupJob::CreateWrongRemoteError(const wstring& remoteUrl) const
@@ -147,7 +147,7 @@ void GitBackupJob::UpdateGitRepositoryIfPossible(const std::wstring &gitReposito
    if (!ok)
        return;
 
-   const wstring remoteUrl = GetRemoteUrl(gitRepository);
+   const wstring remoteUrl = GetRemoteUrl();
    if (IsRemoteValid(remoteUrl))
       UpdateGitRepository(gitRepository, statusList);
    else
