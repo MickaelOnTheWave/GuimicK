@@ -64,6 +64,10 @@ private:
 
     void RunGitExport(const std::wstring& destination, JobStatus* status);
 
+    void DebugGitPathData();
+
+    void DebugSearchPathsInformation();
+
     bool forceRawCopy;
 };
 

@@ -234,7 +234,7 @@ void StandaloneConfiguration::FillGlobalProperties(ConfigurationObject* object,
            shutdown = ConfigurationTools::GetBooleanValue(currentProp.second,
                                                           errorMessages);
        }
-       else
+       else if (currentProp.first != L"Type")
        {
            wstring message = L"Warning : unknown property \"";
            message += currentProp.first + L"\"";

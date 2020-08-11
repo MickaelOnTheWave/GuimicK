@@ -34,6 +34,7 @@ Report
 	css = "report.css";
 }
 
+Type="Server";
 MasterEmail = "mickael.dacruz@gmail.com";
 ReportDispatching = "email";
 ShutdownOnFinish = true;

@@ -1,3 +1,11 @@
+11/08/2020 (7.3)
+   Previous bug with git add fixed, it was with configuration not having
+   the good type. Back to Git Repository Backups.
+
+10/08/2020 (1h)
+   Investigating on source backup issues. It seems it is because of
+   wrong remote Urls. Adding support for wrong remote detection.
+
 16/06/2020 (1.5h)
     Production run still failing with git add issue. Email sending is now
     working - again, Google configuration for non-secure SMTPs.

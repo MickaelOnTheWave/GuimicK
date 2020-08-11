@@ -31,7 +31,10 @@ private:
     bool InitializeRemoteTarget(Client* client);
     bool AreSourcesConsistent() const;
 
-    void UpdateGitRepository(const std::wstring &repository,
+    void UpdateGitRepositoryIfPossible(const std::wstring &gitRepository,
+                                       ResultCollection& statusList);
+
+    void UpdateGitRepository(const std::wstring &gitRepository,
                              ResultCollection& statusList);
 
     std::wstring GetRepositoryHeadId() const;
@@ -57,6 +60,12 @@ private:
                                      const bool mirror) const;
 
     bool IsInvalidSourceError(const ConsoleJob &job) const;
+
+    bool IsRemoteValid(const std::wstring &remoteUrl) const;
+
+    std::wstring GetRemoteUrl(const std::wstring &destination) const;
+
+    BackupJobStatus CreateWrongRemoteError(const std::wstring& remoteUrl) const;
 
     bool writeLogsToFile;
     std::wstring archiveContent;

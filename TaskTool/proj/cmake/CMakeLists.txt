@@ -80,4 +80,6 @@ add_custom_target(BuildScripts SOURCES
         "../../scripts/MakeLinuxGccDebug.sh"
         "../../scripts/MakeLinuxGccRelease.sh"
 )
+
+add_custom_target(GlobalData SOURCES "../../../data/globalVersion.txt")
 ###

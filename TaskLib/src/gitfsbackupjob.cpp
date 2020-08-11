@@ -8,7 +8,7 @@
 #include "copyjobchooser.h"
 #include "filetools.h"
 #include "gitplumbingreportparser.h"
-#include "gitcommontools.h"
+#include "gittools.h"
 #include "linuxcopyfsbackupjob.h"
 #include "pathtools.h"
 #include "rsynccopyfsbackupjob.h"
@@ -76,11 +76,11 @@ JobStatus* GitFsBackupJob::RestoreBackupFromServer(const wstring& source,
                                                    const wstring& destination)
 {
    wstring originalDirectory = PathTools::GetCurrentFullPath();
-   JobStatus* status = GitCommonTools::ChangeCurrentDir(source);
+   JobStatus* status = GitTools::ChangeCurrentDir(source);
    if (status->IsOk())
    {
       RunGitExport(originalDirectory + L"/" + destination, status);
-      GitCommonTools::ChangeCurrentDir(originalDirectory);
+      GitTools::ChangeCurrentDir(originalDirectory);
    }
 
    return status;
@@ -104,7 +104,7 @@ void GitFsBackupJob::RunRepositoryBackup(const wstring &source,
    debugManager->AddTagLine(L"Changing dir");
    debugManager->AddDataLine<wstring>(L"  oldDir", originalDirectory);
    debugManager->AddDataLine<wstring>(L"  newDir", fullDestination);
-   bool ok = GitCommonTools::ChangeCurrentDir(fullDestination, results);
+   bool ok = GitTools::ChangeCurrentDir(fullDestination, results);
    if (!ok)
      return;
 
@@ -112,6 +112,8 @@ void GitFsBackupJob::RunRepositoryBackup(const wstring &source,
    debugManager->AddDataLine<bool>(L"Changes detected", hasChanges);
    if (hasChanges)
    {
+     DebugGitPathData();
+
      if (status.GetCode() == JobStatus::Ok)
          AddData(&status);
 
@@ -127,7 +129,7 @@ void GitFsBackupJob::RunRepositoryBackup(const wstring &source,
      }
    }
 
-   GitCommonTools::ChangeCurrentDir(originalDirectory, results);
+   GitTools::ChangeCurrentDir(originalDirectory, results);
 
    results.push_back(status);
 }
@@ -139,11 +141,7 @@ void GitFsBackupJob::CreateGitRepository(const wstring &path, JobStatus *status)
     FixCRLFIssue();
 
     const wstring params = wstring(L"init ") + path;
-    ConsoleJob commandJob(L"git", params);
-    commandJob.RunWithoutStatus();
-    debugManager->AddDataLine<wstring>(L"Create repository params", params);
-    debugManager->AddDataLine<wstring>(L"Create repository output", commandJob.GetCommandOutput());
-    debugManager->AddDataLine<int>(L"Create repository value", commandJob.GetCommandReturnCode());
+    ConsoleJob commandJob = GitTools::Run(params);
     if (commandJob.GetCommandReturnCode() == 0)
         status->SetCode(JobStatus::Ok);
     else
@@ -151,6 +149,10 @@ void GitFsBackupJob::CreateGitRepository(const wstring &path, JobStatus *status)
         status->SetCode(JobStatus::Error);
         status->SetDescription(errorCreatingRepository);
     }
+
+    debugManager->AddDataLine<wstring>(L"Create repository params", params);
+    debugManager->AddDataLine<wstring>(L"Create repository output", commandJob.GetCommandOutput());
+    debugManager->AddDataLine<int>(L"Create repository value", commandJob.GetCommandReturnCode());
 }
 
 void GitFsBackupJob::CleanDestination(const wstring &destination, JobStatus *status)
@@ -187,45 +189,38 @@ void GitFsBackupJob::CopyData(const wstring &source, const wstring &destination,
 
 void GitFsBackupJob::AddData(JobStatus *status)
 {
-    debugManager->AddTagLine(L"Adding data to git");
+    debugManager->AddTagLine(L"GitFsBackupJob::AddData");
 
-    const wstring gitAbsoluteCommand = PathTools::GetCommandPath(L"git", ConsoleJob::appSearchPaths);
-
-    debugManager->AddDataLine<int>(L"App Search Paths : ", ConsoleJob::appSearchPaths.size());
-    for (auto it = ConsoleJob::appSearchPaths.begin(); it != ConsoleJob::appSearchPaths.end(); ++it)
-       debugManager->AddTagLine(*it);
-
-    debugManager->AddDataLine<wstring>(L"Git Absolute Path", gitAbsoluteCommand);
-
-    ConsoleJob commandJob(gitAbsoluteCommand, L"add -A :/");
-    commandJob.RunWithoutStatus();
-    debugManager->AddDataLine<wstring>(L"Command parameters", commandJob.GetCommandParameters());
-    debugManager->AddDataLine<wstring>(L"Add output", commandJob.GetCommandOutput());
-    debugManager->AddDataLine<int>(L"Add value", commandJob.GetCommandReturnCode());
-    if (commandJob.GetCommandReturnCode() == 0)
+    ConsoleJob gitJob = GitTools::Run(L"add -A :/");
+    if (gitJob.GetCommandReturnCode() == 0)
         status->SetCode(JobStatus::Ok);
     else
     {
         status->SetCode(JobStatus::Error);
         status->SetDescription(errorAddingData);
     }
+
+    debugManager->AddDataLine<wstring>(L"Command parameters", gitJob.GetCommandParameters());
+    debugManager->AddDataLine<wstring>(L"Add output", gitJob.GetCommandOutput());
+    debugManager->AddDataLine<int>(L"Add value", gitJob.GetCommandReturnCode());
 }
 
 wstring GitFsBackupJob::CommitData(JobStatus *status)
 {
-    debugManager->AddTagLine(L"Committing data to git");
-    ConsoleJob commandJob(L"git", L"commit -m \"Automated backup\"");
-    commandJob.RunWithoutStatus();
-    LogDebugCommand(L"Commit", commandJob);
-    if (commandJob.GetCommandReturnCode() == gitNotConfiguredError)
+    debugManager->AddTagLine(L"GitFsBackupJob::CommitData");
+
+    ConsoleJob gitJob = GitTools::Run(L"commit -m \"Automated backup\"");
+
+    LogDebugCommand(L"Commit", gitJob);
+    if (gitJob.GetCommandReturnCode() == gitNotConfiguredError)
     {
         ConfigureGitRepository();
-        commandJob.RunWithoutStatus();
-        LogDebugCommand(L"Commit", commandJob);
+        gitJob.RunWithoutStatus();
+        LogDebugCommand(L"Commit", gitJob);
     }
 
-    if (IsCommitCodeOk(commandJob.GetCommandReturnCode()))
-        return GetCommitId(commandJob.GetCommandOutput());
+    if (IsCommitCodeOk(gitJob.GetCommandReturnCode()))
+        return GetCommitId(gitJob.GetCommandOutput());
     else
     {
         status->SetCode(JobStatus::Error);
@@ -236,9 +231,8 @@ wstring GitFsBackupJob::CommitData(JobStatus *status)
 
 bool GitFsBackupJob::HasChangesInRepository() const
 {
-    ConsoleJob commandJob(L"git", L"status --porcelain");
-    commandJob.RunWithoutStatus();
-    return (commandJob.GetCommandOutput() != L"");
+    ConsoleJob gitJob = GitTools::Run(L"status --porcelain");
+    return (gitJob.GetCommandOutput() != L"");
 }
 
 void GitFsBackupJob::CreateReport(const wstring& commitId, JobStatus *status,
@@ -253,22 +247,21 @@ void GitFsBackupJob::CreateReport(const wstring& commitId, JobStatus *status,
 
 void GitFsBackupJob::FixCRLFIssue()
 {
-    ConsoleJob::Run(L"git", L"config --local core.autocrlf false");
-    ConsoleJob::Run(L"git", L"config --local core.safecrlf false");
+    GitTools::Run(L"config --local core.autocrlf false");
+    GitTools::Run(L"config --local core.safecrlf false");
 }
 
 // TODO : check this. THere was an error that suggested that it is not working
 // as expected. There is an improved version of it, ConfigureGitRepository().
 void GitFsBackupJob::SetGitUserToFixUtf8Warning()
 {
-    ConsoleJob::Run(L"git", L"config --local user.name \"TaskManager\"");
-    ConsoleJob::Run(L"git", L"config --local user.email task@manager.com");
+    GitTools::Run(L"config --local user.name \"TaskManager\"");
+    GitTools::Run(L"config --local user.email task@manager.com");
 }
 
 int GitFsBackupJob::GetRevisionCount() const
 {
-    ConsoleJob commandJob(L"git", L"rev-list --all --count");
-    commandJob.RunWithoutStatus();
+    ConsoleJob commandJob = GitTools::Run(L"rev-list --all --count");
     if (commandJob.GetCommandReturnCode() == 0)
        return static_cast<int>(StringTools::ToInt(commandJob.GetCommandOutput()));
     else
@@ -311,8 +304,7 @@ void GitFsBackupJob::CreateDifferentialReport(const wstring &commitId, JobStatus
 {
     debugManager->AddDataLine<wstring>(L"Creating Differential Report", L"");
     const wstring params = wstring(L"diff-tree --no-commit-id --name-status -r ") + commitId;
-    ConsoleJob commandJob(L"git", params);
-    commandJob.RunWithoutStatus();
+    ConsoleJob commandJob = GitTools::Run(params);
     if (commandJob.GetCommandReturnCode() == 0)
     {
         GitPlumbingReportParser parser;
@@ -337,8 +329,7 @@ wstring GitFsBackupJob::GetCommitId(const wstring &output)
 
 bool GitFsBackupJob::IsGitInstalled() const
 {
-    ConsoleJob checkGitCommand(L"git", L"--version");
-    checkGitCommand.RunWithoutStatus();
+    ConsoleJob checkGitCommand = GitTools::Run(L"--version");
     return (checkGitCommand.GetCommandReturnCode() == 0);
 }
 
@@ -420,8 +411,7 @@ bool GitFsBackupJob::ConfigureGitRepository()
 bool GitFsBackupJob::SetupGitConfig(const wstring &configuration, const wstring &value)
 {
     const wstring param = wstring(L"config user.") + configuration + L" \"" + value + L"\"";
-    ConsoleJob job(L"git", param);
-    job.RunWithoutStatus();
+    ConsoleJob job = GitTools::Run(param);
     if (!job.IsRunOk())
         LogDebugCommand(wstring(L"Git config ") + configuration, job);
 
@@ -439,8 +429,24 @@ wstring GitFsBackupJob::CreateFilteredFileName(const wstring &name)
 void GitFsBackupJob::RunGitExport(const wstring& destination, JobStatus* status)
 {
    const wstring params = wstring(L"checkout-index --prefix=") + destination + L" -a";
-   ConsoleJob commandJob(L"git", params);
+   ConsoleJob commandJob = GitTools::CreateRunJob(params);
    JobStatus* childStatus = commandJob.Run();
    *status = *childStatus;
    delete childStatus;
+}
+
+void GitFsBackupJob::DebugGitPathData()
+{
+   DebugSearchPathsInformation();
+   const wstring gitAbsoluteCommand = PathTools::GetCommandPath(L"git", ConsoleJob::appSearchPaths);
+   debugManager->AddDataLine<wstring>(L"Git Absolute Path", gitAbsoluteCommand);
+}
+
+void GitFsBackupJob::DebugSearchPathsInformation()
+{
+   debugManager->AddDataLine<size_t>(L"App Search Paths : ", ConsoleJob::appSearchPaths.size());
+   vector<wstring>::const_iterator it = ConsoleJob::appSearchPaths.begin();
+   vector<wstring>::const_iterator end = ConsoleJob::appSearchPaths.end();
+   for ( ; it != end; ++it)
+      debugManager->AddTagLine(*it);
 }
