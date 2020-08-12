@@ -29,18 +29,29 @@ void DiskCommandParserTest::TestNoCrashOnInvalidBuffer()
 }
 
 void DiskCommandParserTest::TestParseOk(const wstring& inputBuffer,
-                                        const vector<LogicalDrive>& expectedDrives,
-                                        const wstring& miniReport,
-                                        const wstring& fullReport)
+                                        const DiskOutput& expectedOutput)
+{
+   TestParse(inputBuffer, expectedOutput, true);
+}
+
+void DiskCommandParserTest::TestParseError(const wstring& inputBuffer,
+                                           const DiskOutput& expectedOutput)
+{
+   TestParse(inputBuffer, expectedOutput, false);
+}
+
+void DiskCommandParserTest::TestParse(const wstring& inputBuffer,
+                                      const DiskOutput& expectedOutput,
+                                      const bool expectedResult)
 {
    const bool ok = parser->ParseBuffer(inputBuffer);
-   ASSERT_EQ(ok, true);
+   ASSERT_EQ(ok, expectedResult);
 
    vector<LogicalDrive> actualDrives;
    parser->GetDrives(actualDrives);
 
-   CheckDrives(actualDrives, expectedDrives);
-   CheckReports(miniReport, fullReport);
+   CheckDrives(actualDrives, expectedOutput.drives);
+   CheckReports(expectedOutput.miniReport, expectedOutput.fullReport);
 }
 
 void DiskCommandParserTest::CheckDrives(const vector<LogicalDrive>& actual,

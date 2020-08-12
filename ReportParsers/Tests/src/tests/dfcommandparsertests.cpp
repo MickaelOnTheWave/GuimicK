@@ -31,11 +31,11 @@ TEST_F(DfParserFixture, creates_one_drive_report)
                           L"/dev/sda2       230G  168G   50G  78% /";
 
    LogicalDrive expectedDrive = BuildDrive(L"/dev/sda2", L"230 Gb", L"168 Gb", L"78%");
-
    const wstring expectedMiniReport = L"50 Gb available (78% used)";
    const wstring expectedFullReport = L"";
+   const DiskOutput expectedOutput = {{expectedDrive}, expectedMiniReport, expectedFullReport};
 
-   TestParseOk(buffer, {expectedDrive}, expectedMiniReport, expectedFullReport);
+   TestParseOk(buffer, expectedOutput);
 }
 
 TEST_F(DfParserFixture, creates_multiple_drive_report)
@@ -52,17 +52,35 @@ TEST_F(DfParserFixture, creates_multiple_drive_report)
                           L"/dev/sdb1       334G  268G   67G  81% /mnt/datadrive\n"
                           L"/dev/sdc2       962G   72M  913G   1% /mnt/linuxdata";
 
-   vector<LogicalDrive> expectedDrives;
-   expectedDrives.push_back(BuildDrive(L"/dev/sda2", L"230 Gb", L"168 Gb", L"78%"));
-   expectedDrives.push_back(BuildDrive(L"/dev/sda1", L"37 Mb", L"6.3 Mb", L"18%"));
-   expectedDrives.push_back(BuildDrive(L"/dev/sdb1", L"334 Gb", L"268 Gb", L"81%"));
-   expectedDrives.push_back(BuildDrive(L"/dev/sdc2", L"962 Gb", L"72 Mb", L"1%"));
+   const vector<LogicalDrive> expectedDrives = {
+      BuildDrive(L"/dev/sda2", L"230 Gb", L"168 Gb", L"78%"),
+      BuildDrive(L"/dev/sda1", L"37 Mb", L"6.3 Mb", L"18%"),
+      BuildDrive(L"/dev/sdb1", L"334 Gb", L"268 Gb", L"81%"),
+      BuildDrive(L"/dev/sdc2", L"962 Gb", L"72 Mb", L"1%")
+   };
 
    const wstring expectedMiniReport = L"4 drives checked, see report";
-   const wstring expectedFullReport = L"/dev/sda2 : 230 Gb total, 50 Gb available (78% used)\n"
-                                      L"/dev/sda1 : 37 Mb total, 31 Mb available (18% used)\n"
-                                      L"/dev/sdb1 : 334 Gb total, 67 Gb available (81% used)\n"
-                                      L"/dev/sdc2 : 962 Gb total, 913 Gb available (1% used)\n";
+   const wstring expectedFullReport = L"Drive List\n"
+                                      L"\t/dev/sda2 : 230 Gb total, 50 Gb available (78% used)\n"
+                                      L"\t/dev/sda1 : 37 Mb total, 31 Mb available (18% used)\n"
+                                      L"\t/dev/sdb1 : 334 Gb total, 67 Gb available (81% used)\n"
+                                      L"\t/dev/sdc2 : 962 Gb total, 913 Gb available (1% used)\n\n";
 
-   TestParseOk(buffer, expectedDrives, expectedMiniReport, expectedFullReport);
+   const DiskOutput expectedOutput = {expectedDrives, expectedMiniReport, expectedFullReport};
+
+   TestParseOk(buffer, expectedOutput);
 }
+
+TEST_F(DfParserFixture, reports_one_drive_not_found_error)
+{
+   const wstring buffer = L"Filesystem                Size      Used Available Use% Mounted on\n"
+                          L"df: /dev/sda2: can't find mount point";
+
+   vector<LogicalDrive> expectedDrives = {};
+   const wstring expectedMiniReport = L"Drive /dev/sda2 not found";
+   const wstring expectedFullReport = L"";
+   const DiskOutput expectedOutput = {expectedDrives, expectedMiniReport, expectedFullReport};
+
+   TestParseError(buffer, expectedOutput);
+}
+

@@ -6,6 +6,13 @@
 
 #include "abstractdiskcommandparser.h"
 
+struct DiskOutput
+{
+   std::vector<LogicalDrive> drives;
+   std::wstring miniReport;
+   std::wstring fullReport;
+};
+
 class DiskCommandParserTest : public ::testing::Test
 {
 public:
@@ -14,15 +21,21 @@ public:
    void TearDown();
 
    void TestNoCrashOnInvalidBuffer();
+
    void TestParseOk(const std::wstring& inputBuffer,
-                    const std::vector<LogicalDrive>& expectedDrives,
-                    const std::wstring& miniReport,
-                    const std::wstring& fullReport);
+                    const DiskOutput& expectedOutput);
+
+   void TestParseError(const std::wstring& inputBuffer,
+                       const DiskOutput& expectedOutput);
 
 protected:
    AbstractDiskCommandParser* parser = nullptr;
 
 private:
+   void TestParse(const std::wstring& inputBuffer,
+                  const DiskOutput& expectedOutput,
+                  const bool expectedResult);
+
     void CheckDrives(const std::vector<LogicalDrive>& actual,
                      const std::vector<LogicalDrive>& expected);
     void CheckReports(const std::wstring& miniReport,

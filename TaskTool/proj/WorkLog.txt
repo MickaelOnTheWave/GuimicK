@@ -1,3 +1,7 @@
+12/08/2020 (17.3)
+   Added error detection support for df parser. Added test for error.
+   Improved code usage and readability.
+
 11/08/2020 (1.1h)
    Previous bug with git add fixed, it was with configuration not having
    the good type. Back to Git Repository Backups.

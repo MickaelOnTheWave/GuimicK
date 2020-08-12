@@ -3,6 +3,8 @@
 
 #include "abstractdiskcommandparser.h"
 
+#include <sstream>
+
 class DfCommandParser : public AbstractDiskCommandParser
 {
 public:
@@ -17,10 +19,16 @@ private:
     void TokenizeUsingWhitespaces(const std::wstring& buffer,
                                   std::vector<std::wstring>& tokens) const;
     bool IsDesirableDriveName(const std::wstring& name) const;
+    bool IsDfError(const std::wstring& name) const;
 
     std::wstring CreateResumedMiniDescription(const LogicalDrive& drive) const;
+    std::wstring CreateResumedMiniDescription(const ErrorDrive& drive) const;
+
     std::wstring CreateDriveListDescription() const;
     std::wstring CreateFullDescription() const;
+
+    void AddHealthyDrivesData(std::wstringstream& descriptionStream) const;
+    void AddErrorDrivesData(std::wstringstream& descriptionStream) const;
 };
 
 #endif // DFCOMMANDPARSER_H

@@ -24,6 +24,30 @@ LogicalDrive BuildDriveFromTokens(const vector<wstring> &properties)
    return drive;
 }
 
+int GuessErrorType(const vector<wstring> &properties)
+{
+   int errorType = ErrorDrive::UNDEFINED;
+   if (properties[2] == L"can't" && properties[3] == L"find")
+      errorType = ErrorDrive::NOT_FOUND;
+   return errorType;
+}
+
+ErrorDrive CreateDriveError(const vector<wstring> &properties)
+{
+   ErrorDrive drive;
+   drive.name = properties[1].substr(0, properties[1].length()-1);
+   drive.errorType = GuessErrorType(properties);
+   return drive;
+}
+
+wstring GetErrorDescription(const int errorType)
+{
+   if (errorType == ErrorDrive::NOT_FOUND)
+      return L"Drive not found";
+   else
+      return L"Unknown error";
+}
+
 
 DfCommandParser::DfCommandParser()
 {
@@ -44,8 +68,14 @@ bool DfCommandParser::ParseBuffer(const wstring& buffer)
 
 wstring DfCommandParser::GetMiniDescription()
 {
-    if (driveList.size() == 1)
-        return CreateResumedMiniDescription(driveList.front());
+   const size_t totalDriveCount = driveList.size() + errorDriveList.size();
+    if (totalDriveCount == 1)
+    {
+       if (errorDriveList.empty())
+         return CreateResumedMiniDescription(driveList.front());
+       else
+         return CreateResumedMiniDescription(errorDriveList.front());
+    }
     else
         return CreateDriveListDescription();
 }
@@ -68,8 +98,10 @@ bool DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
 
         if (IsDesirableDriveName(tokens[0]))
             driveList.push_back(BuildDriveFromTokens(tokens));
+        else if (IsDfError(tokens[0]))
+           errorDriveList.push_back(CreateDriveError(tokens));
     }
-    return (!driveList.empty());
+    return (!driveList.empty() && errorDriveList.empty());
 }
 
 void DfCommandParser::TokenizeUsingWhitespaces(const wstring &buffer,
@@ -94,12 +126,25 @@ void DfCommandParser::TokenizeUsingWhitespaces(const wstring &buffer,
 
 bool DfCommandParser::IsDesirableDriveName(const wstring &name) const
 {
-    return (name.length() > 0 && name[0] == '/');
+   return (name.length() > 0 && name[0] == '/');
+}
+
+bool DfCommandParser::IsDfError(const wstring& name) const
+{
+   return (name == L"df:");
 }
 
 wstring DfCommandParser::CreateResumedMiniDescription(const LogicalDrive& drive) const
 {
-    return drive.freeSpace + L" available (" + drive.ratio + L" used)";
+   return drive.freeSpace + L" available (" + drive.ratio + L" used)";
+}
+
+wstring DfCommandParser::CreateResumedMiniDescription(const ErrorDrive& drive) const
+{
+   if (drive.errorType == ErrorDrive::NOT_FOUND)
+      return L"Drive " + drive.name + L" not found";
+   else
+      return L"Unknown error on " + drive.name;
 }
 
 wstring DfCommandParser::CreateDriveListDescription() const
@@ -111,14 +156,41 @@ wstring DfCommandParser::CreateDriveListDescription() const
 
 wstring DfCommandParser::CreateFullDescription() const
 {
-    wstringstream stream;
-    vector<LogicalDrive>::const_iterator it = driveList.begin();
-    for (;it != driveList.end(); ++it)
-    {
-        stream << it->name << " : " << it->totalSpace << " total, ";
-        stream << CreateResumedMiniDescription(*it) << endl;
-    }
+   wstringstream stream;
+   AddHealthyDrivesData(stream);
+   AddErrorDrivesData(stream);
+   return stream.str();
+}
 
-    return stream.str();
+void DfCommandParser::AddHealthyDrivesData(wstringstream& descriptionStream) const
+{
+   const wstring tab = L"\t";
+   descriptionStream << "Drive List" << endl;
+
+   vector<LogicalDrive>::const_iterator it = driveList.begin();
+   for (;it != driveList.end(); ++it)
+   {
+     descriptionStream << tab << it->name << " : " << it->totalSpace << " total, ";
+     descriptionStream << CreateResumedMiniDescription(*it) << endl;
+   }
+   descriptionStream << endl;
+}
+
+void DfCommandParser::AddErrorDrivesData(wstringstream& descriptionStream) const
+{
+   if (!errorDriveList.empty())
+   {
+      const wstring tab = L"\t";
+      descriptionStream << endl << endl << L"Drives with errors";
+
+      vector<ErrorDrive>::const_iterator it = errorDriveList.begin();
+      for (;it != errorDriveList.end(); ++it)
+      {
+        descriptionStream << tab << it->name << " : ";
+        descriptionStream << GetErrorDescription(it->errorType) << endl;
+      }
+
+      descriptionStream << endl;
+   }
 }
 

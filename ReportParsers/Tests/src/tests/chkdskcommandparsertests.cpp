@@ -299,6 +299,7 @@ TEST_F(ChkdskParserFixture, creates_one_drive_report)
                                       L"\tBad Sectors : 0.00 bytes\n\n";
 
    LogicalDrive expectedDrive = BuildDrive(L"", L"97.56 Gb", L"19.9 Gb", L"0.00 bytes");
-   TestParseOk(buffer, {expectedDrive}, expectedMiniReport, expectedFullReport);
+   const DiskOutput expectedOutput = {{expectedDrive}, expectedMiniReport, expectedFullReport};
+   TestParseOk(buffer, expectedOutput);
 }
 
