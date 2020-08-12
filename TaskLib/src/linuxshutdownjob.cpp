@@ -52,24 +52,26 @@ bool LinuxShutdownJob::IsInitialized()
 
 JobStatus* LinuxShutdownJob::Run()
 {
-    JobStatus* status = shutdownJob->Run();
+   JobStatus* status = shutdownJob->Run();
 
-    debugManager->AddDataLine<int>(L"Return code", shutdownJob->GetCommandReturnCode());
-    debugManager->AddDataLine<wstring>(L"Output", shutdownJob->GetCommandOutput());
-    if (IsShutdownOk(status))
-    {
-        int secondsToShutdown = WaitForComputerToGoDown();
-        if (secondsToShutdown > jobTimeoutInSeconds)
-        {
-            status->SetCode(JobStatus::Error);
-            status->SetDescription(L"Machine still running");
-        }
+   debugManager->AddDataLine<int>(L"Return code", shutdownJob->GetCommandReturnCode());
+   debugManager->AddDataLine<wstring>(L"Output", shutdownJob->GetCommandOutput());
+   if (IsShutdownOk(status))
+   {
+      const int secondsToShutdown = WaitForComputerToGoDown();
+      if (secondsToShutdown > jobTimeoutInSeconds)
+      {
+         status->SetCode(JobStatus::Error);
+         status->SetDescription(L"Machine still running");
+      }
+      else
+         status->SetCode(JobStatus::Ok);
 
-        debugManager->AddDataLine<int>(L"Seconds counter", secondsToShutdown);
-        debugManager->AddDataLine<int>(L"Timeout", jobTimeoutInSeconds);
-    }
+      debugManager->AddDataLine<int>(L"Seconds counter", secondsToShutdown);
+      debugManager->AddDataLine<int>(L"Timeout", jobTimeoutInSeconds);
+   }
 
-    return debugManager->UpdateStatus(status);
+   return debugManager->UpdateStatus(status);
 }
 
 int LinuxShutdownJob::GetTimeout() const

@@ -1,6 +1,9 @@
 12/08/2020 (17.3)
    Added error detection support for df parser. Added test for error.
    Improved code usage and readability.
+   Fixed mistake in Shutdown job's logic.
+Next planned work:
+   - Wait for production and check result
 
 11/08/2020 (1.1h)
    Previous bug with git add fixed, it was with configuration not having
