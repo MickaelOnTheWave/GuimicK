@@ -1,3 +1,13 @@
+24/08/2020 (0.5h)
+   Checked production : tried to resolve config issue with source repositories.
+   Apparently there is something else : config seems ok. Added new source
+   and moved to other issue : Check Disk parse.
+   Fixed error in parser logic and found job issue : drive is wrong.
+   Waiting for next production run to fix config.
+Next planned work:
+   - Wait for production and check result
+   - Create branch and start new state-based configuration parser
+
 12/08/2020 (2.1h)
    Added error detection support for df parser. Added test for error.
    Improved code usage and readability.

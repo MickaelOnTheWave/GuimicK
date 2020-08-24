@@ -55,15 +55,16 @@ DfCommandParser::DfCommandParser()
 
 bool DfCommandParser::ParseBuffer(const wstring& buffer)
 {
-    driveList.clear();
+   driveList.clear();
 
-    vector<wstring> lines;
-    StringTools::Tokenize(buffer, '\n', lines);
+   vector<wstring> lines;
+   StringTools::Tokenize(buffer, '\n', lines);
 
-    if (lines.size() > 1)
-        return FillDriveData(lines);
-    else
-        return false;
+   const bool hasDriveData = (lines.size() > 1);
+   if (hasDriveData)
+     FillDriveData(lines);
+
+   return hasDriveData;
 }
 
 wstring DfCommandParser::GetMiniDescription()
@@ -88,7 +89,7 @@ wstring DfCommandParser::GetFullDescription()
         return CreateFullDescription();
 }
 
-bool DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
+void DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
 {
     std::vector<wstring>::const_iterator it=lines.begin()+1;
     for (; it!=lines.end(); ++it)
@@ -101,7 +102,6 @@ bool DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
         else if (IsDfError(tokens[0]))
            errorDriveList.push_back(CreateDriveError(tokens));
     }
-    return (!driveList.empty() && errorDriveList.empty());
 }
 
 void DfCommandParser::TokenizeUsingWhitespaces(const wstring &buffer,
