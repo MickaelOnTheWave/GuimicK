@@ -15,7 +15,7 @@ public:
     virtual std::wstring GetFullDescription();
 
 private:
-    void FillDriveData(const std::vector<std::wstring>& lines);
+    bool FillDriveData(const std::vector<std::wstring>& lines);
     void TokenizeUsingWhitespaces(const std::wstring& buffer,
                                   std::vector<std::wstring>& tokens) const;
     bool IsDesirableDriveName(const std::wstring& name) const;

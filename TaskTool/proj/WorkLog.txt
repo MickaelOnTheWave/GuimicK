@@ -1,6 +1,7 @@
 31/08/2020 (17.6)
    Changed check disk drive to correct one. Also fixed remote urls on
    repositories.
+   Updated unit tests with new parser behaviour.
 
 24/08/2020 (0.5h)
    Checked production : tried to resolve config issue with source repositories.

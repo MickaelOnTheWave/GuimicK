@@ -60,9 +60,9 @@ bool DfCommandParser::ParseBuffer(const wstring& buffer)
    vector<wstring> lines;
    StringTools::Tokenize(buffer, '\n', lines);
 
-   const bool hasDriveData = (lines.size() > 1);
+   bool hasDriveData = (lines.size() > 1);
    if (hasDriveData)
-     FillDriveData(lines);
+     hasDriveData = FillDriveData(lines);
 
    return hasDriveData;
 }
@@ -89,19 +89,24 @@ wstring DfCommandParser::GetFullDescription()
         return CreateFullDescription();
 }
 
-void DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
+bool DfCommandParser::FillDriveData(const std::vector<wstring> &lines)
 {
-    std::vector<wstring>::const_iterator it=lines.begin()+1;
-    for (; it!=lines.end(); ++it)
-    {
-        vector<wstring> tokens;
-        TokenizeUsingWhitespaces(*it, tokens);
+   bool hasUnrecognizedData = false;
+   std::vector<wstring>::const_iterator it=lines.begin()+1;
+   for (; it!=lines.end(); ++it)
+   {
+     vector<wstring> tokens;
+     TokenizeUsingWhitespaces(*it, tokens);
 
-        if (IsDesirableDriveName(tokens[0]))
-            driveList.push_back(BuildDriveFromTokens(tokens));
-        else if (IsDfError(tokens[0]))
-           errorDriveList.push_back(CreateDriveError(tokens));
-    }
+     if (IsDesirableDriveName(tokens[0]))
+         driveList.push_back(BuildDriveFromTokens(tokens));
+     else if (IsDfError(tokens[0]))
+        errorDriveList.push_back(CreateDriveError(tokens));
+     else
+        hasUnrecognizedData = true;
+   }
+   const bool isDataInvalid = hasUnrecognizedData && driveList.empty() && errorDriveList.empty();
+   return !isDataInvalid;
 }
 
 void DfCommandParser::TokenizeUsingWhitespaces(const wstring &buffer,

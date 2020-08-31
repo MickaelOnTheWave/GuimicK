@@ -81,6 +81,6 @@ TEST_F(DfParserFixture, reports_one_drive_not_found_error)
    const wstring expectedFullReport = L"";
    const DiskOutput expectedOutput = {expectedDrives, expectedMiniReport, expectedFullReport};
 
-   TestParseError(buffer, expectedOutput);
+   TestParseOk(buffer, expectedOutput);
 }
 
