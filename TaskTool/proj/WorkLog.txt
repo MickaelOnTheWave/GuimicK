@@ -1,7 +1,11 @@
-31/08/2020 (17.6)
+31/08/2020 (1.3h)
    Changed check disk drive to correct one. Also fixed remote urls on
    repositories.
-   Updated unit tests with new parser behaviour.
+   Updated unit tests with new parser behaviour. Cleaning Configuration
+   parser code before starting bigger refactor.
+Next planned work:
+   - Wait for production and check result
+   - Continue Configuration parser cleaning
 
 24/08/2020 (0.5h)
    Checked production : tried to resolve config issue with source repositories.
