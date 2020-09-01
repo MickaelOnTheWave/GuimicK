@@ -110,26 +110,27 @@ void FileBackupReport::AddWithPrefix(const FileBackupReport &otherReport, const 
     CopyPrefixed(removed, otherReport.removed, prefix);
 }
 
-void FileBackupReport::GetAddedFiles(std::vector<wstring>& files)
+void FileBackupReport::GetAddedFiles(vector<wstring>& files)
 {
    files = added;
 }
 
-void FileBackupReport::GetModifiedFiles(std::vector<wstring>& files)
+void FileBackupReport::GetModifiedFiles(vector<wstring>& files)
 {
    files = modified;
 }
 
-void FileBackupReport::GetRemovedFiles(std::vector<wstring>& files)
+void FileBackupReport::GetRemovedFiles(vector<wstring>& files)
 {
    files = removed;
 }
 
-wstring FileBackupReport::FileListDescription(const std::vector<wstring> &fileList,
+wstring FileBackupReport::FileListDescription(const vector<wstring> &fileList,
                                              const wstring &operation) const
 {
     wstringstream description;
-    description << fileList.size() << " files " << operation << std::endl;
+    const wstring fileWord = (fileList.size() == 1) ? "file" : "files";
+    description << fileList.size() << " " << fileWord << " " << operation << std::endl;
 
     vector<wstring>::const_iterator it=fileList.begin();
     vector<wstring>::const_iterator end=fileList.end();
