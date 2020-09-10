@@ -11,15 +11,25 @@ CurlLibReportDispatcher::CurlLibReportDispatcher()
 bool CurlLibReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 {
     CurlLibEmailSender sender;
-    sender.SetSenderData(displayName,
-                         emailData.GetAddress(), emailData.GetPassword(),
-                         emailData.GetSmtpServer(), emailData.GetSmtpPort(),
-                         emailData.GetUseSsl());
+    sender.SetSenderData(emailAccountData);
 
-    vector<string> externalFiles;
-    vector<pair<string,string> > fileBuffers;
+    vector<wstring> externalFiles;
+    vector<pair<wstring,wstring> > fileBuffers;
     reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
-    const string body = reportCreator->GetReportContent();
 
-    return sender.Send(isHtml, destEmail, cc, bcc, subject, body, externalFiles, fileBuffers);
+    return sender.Send(CreateEmailData(reportCreator),
+                       ToUtf8(externalFiles),
+                       ToUtf8(fileBuffers));
+}
+
+EmailData CurlLibReportDispatcher::CreateEmailData(AbstractReportCreator *reportCreator) const
+{
+   EmailData emailData;
+   emailData.SetTo(destEmail);
+   emailData.SetCc(cc);
+   emailData.SetBcc(bcc);
+   emailData.SetSubject(subject);
+   emailData.SetBody(reportCreator->GetReportContent());
+   emailData.SetIsHtml(isHtml);
+   return emailData;
 }

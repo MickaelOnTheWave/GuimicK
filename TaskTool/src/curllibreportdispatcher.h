@@ -9,6 +9,9 @@ public:
     CurlLibReportDispatcher();
 
     virtual bool Dispatch(AbstractReportCreator* reportCreator);
+
+private:
+    EmailData CreateEmailData(AbstractReportCreator *reportCreator) const;
 };
 
 #endif // CURLLIBREPORTDISPATCHER_H

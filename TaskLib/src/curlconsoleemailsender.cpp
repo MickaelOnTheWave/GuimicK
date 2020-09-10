@@ -11,32 +11,6 @@
 
 using namespace std;
 
-vector<string> ToUtf8(const vector<wstring>& input)
-{
-   vector<string> output;
-   output.reserve(input.size());
-   vector<wstring>::const_iterator it = input.begin();
-   vector<wstring>::const_iterator end = input.end();
-   for (; it != end; ++it)
-      output.push_back(StringTools::UnicodeToUtf8(*it));
-   return output;
-}
-
-vector<pair<string, string> > ToUtf8(const vector<pair<wstring, wstring> >& input)
-{
-   vector<pair<string, string> > output;
-   output.reserve(input.size());
-   vector<pair<wstring, wstring> >::const_iterator it = input.begin();
-   vector<pair<wstring, wstring> >::const_iterator end = input.end();
-   for (; it != end; ++it)
-   {
-      const string first = StringTools::UnicodeToUtf8(it->first);
-      const string second = StringTools::UnicodeToUtf8(it->second);
-      output.push_back(make_pair(first, second));
-   }
-   return output;
-}
-
 static const wstring mailFileName = L"mailContents.txt";
 
 // @TODO Make proper implementation without clear password

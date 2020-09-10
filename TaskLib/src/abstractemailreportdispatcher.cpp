@@ -3,6 +3,7 @@
 #include <sstream>
 #include "serverconfiguration.h"
 #include "standaloneconfiguration.h"
+#include "stringtools.h"
 
 using namespace std;
 
@@ -59,4 +60,32 @@ wstring AbstractEmailReportDispatcher::GetSmtpUrl() const
    s << emailAccountData.GetSmtpPort();
 	smtpUrl += s.str();
 	return smtpUrl;
+}
+
+vector<string> AbstractEmailReportDispatcher::ToUtf8(const vector<wstring>& input) const
+{
+   vector<string> output;
+   output.reserve(input.size());
+   vector<wstring>::const_iterator it = input.begin();
+   vector<wstring>::const_iterator end = input.end();
+   for (; it != end; ++it)
+      output.push_back(StringTools::UnicodeToUtf8(*it));
+   return output;
+}
+
+vector<pair<string, string> > AbstractEmailReportDispatcher::ToUtf8(
+   const vector<pair<wstring, wstring> >& input
+) const
+{
+   vector<pair<string, string> > output;
+   output.reserve(input.size());
+   vector<pair<wstring, wstring> >::const_iterator it = input.begin();
+   vector<pair<wstring, wstring> >::const_iterator end = input.end();
+   for (; it != end; ++it)
+   {
+      const string first = StringTools::UnicodeToUtf8(it->first);
+      const string second = StringTools::UnicodeToUtf8(it->second);
+      output.push_back(make_pair(first, second));
+   }
+   return output;
 }

@@ -129,7 +129,7 @@ wstring FileBackupReport::FileListDescription(const vector<wstring> &fileList,
                                              const wstring &operation) const
 {
     wstringstream description;
-    const wstring fileWord = (fileList.size() == 1) ? "file" : "files";
+    const wstring fileWord = (fileList.size() == 1) ? L"file" : L"files";
     description << fileList.size() << " " << fileWord << " " << operation << std::endl;
 
     vector<wstring>::const_iterator it=fileList.begin();

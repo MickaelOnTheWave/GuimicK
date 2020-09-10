@@ -21,6 +21,12 @@ public:
 protected:
    std::wstring GetSmtpUrl() const;
 
+   std::vector<std::string> ToUtf8(const std::vector<std::wstring>& input) const;
+
+   std::vector<std::pair<std::string, std::string> > ToUtf8(
+      const std::vector<std::pair<std::wstring, std::wstring> >& input
+   ) const;
+
    std::wstring displayName;
    EmailAccountData emailAccountData;
    int outputDebugInformation;
