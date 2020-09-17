@@ -1,4 +1,11 @@
-09/09/2020 (20.4)
+17/09/2020 (0.4h)
+   Fixed version handling in linux builds. Fixed Music backup
+   config.
+Next planned work:
+   - Wait for production and check result
+
+09/09/2020 (1.2h)
+   Fixed linux build and new version system. Fixed curl lib sender.
 
 31/08/2020 (1.3h)
    Changed check disk drive to correct one. Also fixed remote urls on

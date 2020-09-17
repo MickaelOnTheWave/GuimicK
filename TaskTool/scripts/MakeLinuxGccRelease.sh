@@ -3,5 +3,5 @@
 source BuildTools.sh
 
 prepareForBuild "LinuxGccRelease"
-runCmakeForLinux "RELEASE"
+runCmakeForLinux "RELEASE" $1
 build
