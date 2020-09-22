@@ -1,3 +1,6 @@
+21/09/2020 (21.1)
+   Fixed tool name when ran from gui.
+
 17/09/2020 (0.4h)
    Fixed version handling in linux builds. Fixed Music backup
    config.

@@ -71,15 +71,14 @@ namespace
       const std::wstring taskToolExe = PathTools::GetPathOnly(path) + L"\\TaskTool.exe";
       return QString::fromStdWString(taskToolExe);
 #else
-      return QString("/usr/local/bin/taskmanagerTool");
+      return QString("/usr/local/bin/guimickTool");
 #endif
-
    }
 
    QString GetTaskToolExecutableFromSettings()
    {
       QSettings settings;
-      QVariant keyValue = settings.value("taskTool", GetDefaultTaskToolExecutable());
+      QVariant keyValue = settings.value("guimickTool", GetDefaultTaskToolExecutable());
       if (keyValue.isValid())
          return keyValue.toString();
       else
