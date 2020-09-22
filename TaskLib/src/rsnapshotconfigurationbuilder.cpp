@@ -10,17 +10,6 @@ using namespace std;
 
 const wstring defaultConfigurationFile = L"rsnapshotConfigurationFile.conf";
 
-static const wstring defaultTemplateConfiguration =
-        L"config_version	1.2\n"
-        L"cmd_rm		/opt/bin/rm\n"
-        L"cmd_rsync	/opt/bin/rsync\n"
-        L"cmd_ssh	/opt/bin/ssh\n"
-        L"verbose		3\n"
-        L"loglevel	4\n"
-        L"logfile	/var/log/rsnapshot\n"
-        L"lockfile	/var/run/rsnapshot.pid\n"
-        L"rsync_long_args	--delete --numeric-ids --delete-excluded\n";
-
 RsnapshotConfigurationBuilder::RsnapshotConfigurationBuilder(const wstring &templateConfigurationFile)
     : templateFile(templateConfigurationFile), configurationFile(defaultConfigurationFile),
       repository(L"")
@@ -66,7 +55,22 @@ wstring RsnapshotConfigurationBuilder::GetTemplateConfiguration() const
     if (templateFile != L"")
         return FileTools::GetTextFileContent(templateFile);
     else
-        return defaultTemplateConfiguration;
+       return CreateTemplateConfiguration();
+}
+
+wstring RsnapshotConfigurationBuilder::CreateTemplateConfiguration() const
+{
+   wstring templateConfiguration =
+           L"config_version	1.2\n"
+           L"cmd_rm\t" + GetCommandPath(L"rm") + L"\n"
+           L"cmd_rsync\t" + GetCommandPath(L"rsync") + L"\n"
+           L"cmd_ssh\t" + GetCommandPath(L"ssh") + L"\n"
+           L"verbose		3\n"
+           L"loglevel	4\n"
+           L"logfile	/var/log/rsnapshot\n"
+           L"lockfile	/var/run/rsnapshot.pid\n"
+           L"rsync_long_args	--delete --numeric-ids --delete-excluded\n";
+   return templateConfiguration;
 }
 
 void RsnapshotConfigurationBuilder::AppendMaxBackups(wstring &configurationData, const int maxBackups)
@@ -103,4 +107,18 @@ void RsnapshotConfigurationBuilder::CheckAndFixConfigurationFile()
     }
 
     configurationFile = newConfigurationFile;
+}
+
+wstring RsnapshotConfigurationBuilder::GetCommandPath(const wstring& command) const
+{
+   wstring absoluteCommand = PathTools::GetCommandPath(command, ConsoleJob::appSearchPaths);
+   if (absoluteCommand == L"")
+   {
+      vector<wstring> standardPaths;
+      standardPaths.push_back(L"/bin");
+      standardPaths.push_back(L"/opt/bin");
+      standardPaths.push_back(L"/usr/local/bin");
+      absoluteCommand = PathTools::GetCommandPath(command, standardPaths);
+   }
+   return absoluteCommand;
 }

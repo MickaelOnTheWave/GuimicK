@@ -20,10 +20,14 @@ private:
                                 const int maxBackups);
     std::wstring GetTemplateConfiguration(void) const;
 
+    std::wstring CreateTemplateConfiguration(void) const;
+
     void AppendMaxBackups(std::wstring& configurationData, const int maxBackups);
     void AppendBackupData(std::wstring& configurationData,
                           const AbstractBackupJob::BackupCollection &dataToBackup) const;
     void CheckAndFixConfigurationFile(void);
+
+    std::wstring GetCommandPath(const std::wstring& command) const;
 
     std::wstring templateFile;
     std::wstring configurationFile;
