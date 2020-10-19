@@ -54,11 +54,6 @@ void RsnapshotSmartBackupJob::SetRepository(const wstring& value)
    AbstractBackupJob::SetRepository(BuildFinalPath(value));
 }
 
-void RsnapshotSmartBackupJob::AddFolder(const wstring& source, const wstring& destination)
-{
-   AbstractBackupJob::AddFolder(BuildFinalPath(source), destination);
-}
-
 wstring RsnapshotSmartBackupJob::GetTemplateConfigurationFile() const
 {
     return templateConfigurationFile;
@@ -96,7 +91,7 @@ int RsnapshotSmartBackupJob::GetMaxBackupCount() const
 
 void RsnapshotSmartBackupJob::SetMaxBackupCount(const int value)
 {
-    maxBackupCount = value;
+   maxBackupCount = value;
 }
 
 void RsnapshotSmartBackupJob::RunRepositoryBackup(const wstring&,
@@ -143,7 +138,9 @@ JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
 
    JobStatus* status = rawBackupJob->Run();
 
-   FileTools::RemoveFile(configuration);
+   if (temporaryFile == L"")
+      FileTools::RemoveFile(configuration);
+
    delete rawBackupJob;
    return status;
 }
@@ -176,7 +173,8 @@ wstring RsnapshotSmartBackupJob::CreateConfiguration() const
    builder.SetRepository(repository);
    if (temporaryFile != L"")
        builder.SetGeneratedConfigurationFile(temporaryFile);
-   return builder.CreateConfigurationFile(folderList, maxBackupCount);
+   debugManager->AddDataLine<wstring>(L"Rsnapshot config file", temporaryFile);
+   return builder.CreateConfigurationFile(CreateRsnapshotBackupList(), maxBackupCount);
 }
 
 RsnapshotRawBackupJob* RsnapshotSmartBackupJob::CreateRawJob(const wstring& configuration) const
@@ -194,6 +192,18 @@ wstring RsnapshotSmartBackupJob::BuildFinalPath(const wstring& inputPath) const
    const bool shouldBuildPath = (target.isLocal && !PathTools::IsAbsolutePath(inputPath));
    debugManager->AddDataLine<bool>(L"WillBuildAbsolutePath", shouldBuildPath);
    return (shouldBuildPath) ? PathTools::BuildFullPath(inputPath) : inputPath;
+}
+
+AbstractBackupJob::BackupCollection RsnapshotSmartBackupJob::CreateRsnapshotBackupList() const
+{
+   BackupCollection finalBackupList;
+   BackupCollection::const_iterator it = folderList.begin();
+   for (; it!=folderList.end(); ++it)
+   {
+      const pair<wstring,wstring> newEntry(BuildFinalPath(it->first), it->second);
+      finalBackupList.push_back(newEntry);
+   }
+   return finalBackupList;
 }
 
 

@@ -12,6 +12,7 @@ const wstring RsnapshotBackupJobConfiguration::WaitProperty = L"waitAfterRun";
 const wstring RsnapshotBackupJobConfiguration::TemplateConfigurationProperty = L"templateConfigurationFile";
 const wstring RsnapshotBackupJobConfiguration::RepositoryProperty = L"repository";
 const wstring RsnapshotBackupJobConfiguration::MaxBackupCountProperty = L"maxBackupCount";
+const wstring RsnapshotBackupJobConfiguration::TemporaryFile = L"temporaryFile";
 
 RsnapshotBackupJobConfiguration::RsnapshotBackupJobConfiguration()
     : AbstractBackupJobConfiguration(L"RsnapshotBackup"),
@@ -71,6 +72,7 @@ void RsnapshotBackupJobConfiguration::FillKnownProperties(std::vector<std::wstri
     properties.push_back(WaitProperty);
     properties.push_back(TemplateConfigurationProperty);
     properties.push_back(MaxBackupCountProperty);
+    properties.push_back(TemporaryFile);
 }
 
 wstring RsnapshotBackupJobConfiguration::GetBackupItemName() const
@@ -90,6 +92,7 @@ void RsnapshotBackupJobConfiguration::ConfigureSmartJob(RsnapshotSmartBackupJob 
     job->SetRepository(GetRepositoryValue(confObject));
     job->SetWaitBeforeRun(GetWaitBeforeRunValue(confObject));
     SetMaxBackupCount(job, confObject);
+    job->SetTemporaryFile(confObject->GetProperty(TemporaryFile));
 }
 
 void RsnapshotBackupJobConfiguration::ConfigureRawJob(RsnapshotRawBackupJob *job,
@@ -144,4 +147,5 @@ void RsnapshotBackupJobConfiguration::CreateSmartConfiguration(
    wstringstream maxBackupCountStr;
    maxBackupCountStr << job->GetMaxBackupCount();
    conf->SetProperty(MaxBackupCountProperty, maxBackupCountStr.str());
+   conf->SetProperty(TemporaryFile, job->GetTemporaryFile());
 }

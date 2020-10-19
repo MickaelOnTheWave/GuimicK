@@ -13,6 +13,7 @@ public:
     static const std::wstring TemplateConfigurationProperty;
     static const std::wstring RepositoryProperty;
     static const std::wstring MaxBackupCountProperty;
+    static const std::wstring TemporaryFile;
 
     RsnapshotBackupJobConfiguration();
 

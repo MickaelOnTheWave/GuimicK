@@ -23,7 +23,6 @@ public:
     virtual std::wstring GetTypeName() const;
 
     virtual void SetRepository(const std::wstring& value);
-    virtual void AddFolder(const std::wstring& source, const std::wstring& destination);
 
     virtual JobStatus* RestoreBackupFromClient( const BackupRestoreParameters& parameters,
                                                 const BackupRestoreTarget& target);
@@ -61,6 +60,8 @@ private:
     RsnapshotRawBackupJob* CreateRawJob(const std::wstring& configuration) const;
 
     std::wstring BuildFinalPath(const std::wstring& inputPath) const;
+
+    BackupCollection CreateRsnapshotBackupList() const;
 
     std::wstring templateConfigurationFile;
     std::wstring temporaryFile;

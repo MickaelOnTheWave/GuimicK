@@ -1,3 +1,18 @@
+19/10/2020 (1.7h)
+   Still having error with Rsnapshot backups. Created test config
+   for server and client for quick testing. Running first test : failed.
+   Apparently rshapshot is adding a folder to remote target. Looking for
+   issue...
+   Fixed the issue, now waiting for production run.
+Next planned work:
+   - Wait for production and check result
+   - If OK, add Videos, Archives and Courses to backup
+
+22/09/2020 (0.6h)
+   Fixed configuration based on old server config.
+Next planned work:
+   - Wait for production and check result
+
 21/09/2020 (1.1h)
    Fixed tool name when ran from gui.
 
