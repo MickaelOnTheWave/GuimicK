@@ -33,11 +33,11 @@ Features implemented:
 	29/04/2018 - [023] Remove wakelan executable dependency
 	13/08/2018 - [049] Make build be at least partially static (internal dependencies static)
 	20/08/2018 - [016] Create a package with binaries for easy install
-        17/03/2019 - [045] Make Windows client work with (nearly) all features
-        23/04/2019 - [032] Property handle encodings for strings
-        28/04/2019 - [058] Add support for Windows "cron" entries from editor
-        03/06/2019 - [006] Include Harddrive check job
-        09/10/2019 - [059] Add icons/graphics to UI. Improve its usability.
+   17/03/2019 - [045] Make Windows client work with (nearly) all features
+   23/04/2019 - [032] Property handle encodings for strings
+   28/04/2019 - [058] Add support for Windows "cron" entries from editor
+   03/06/2019 - [006] Include Harddrive check job
+   09/10/2019 - [059] Add icons/graphics to UI. Improve its usability.
 
 Features to implement:
 	[005] Include AntiVirus scan job
@@ -66,20 +66,20 @@ Abandoned features :
 	[022] Remove Screensaver script dependency
 
 Fixed bugs :
-        18/09/2017 - [002] Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
-	16/10/2017 - [006] Occasionally a test in TaskFeature test will fail. Reproduce issue, check what it is and fix it!!
-	26/10/2017 - [012] Local debug option of wake job is not working.
-	16/04/2018 - [009] MIME email content is still buggy - some junk chars at the end of each archive. Looks like the counting is wrong in relation with message size.
-	26/09/2018 - [011] Configuration parser fails to parse empty string properties. See TODO.
-	13/12/2018 - [013] Configuration Editor Backup UI : folder controls should be disabled when no selection
-        15/04/2019 - [015] Jobs with same type just created are always edited together
-        28/04/2019 - [016] Windows - error when trying to create a monthly scheduled run. It is in Windows API.
-        05/05/2019 - [017] Windows Monthly trigger randomly fails with set.
-        24/07/2019 - [018] Disk check job doesn't work by default - make it ask admin mode
-        05/02/2020 - [015] Jobs are duplicated when changes are saved from Editor in Client mode.
-        01/04/2020 - [019] Software isn't reported in Applications list in Windows 10
-        01/04/2020 - [018] Installer takes bad dlls from windeployqt when several Qt versions are installed
-        09/06/2020 - [017] Client name sometimes get random string content
+   18/09/2017 - [002] Rsnapshot report parsing fails when parsing first backup (no weekly.1 folder)
+   16/10/2017 - [006] Occasionally a test in TaskFeature test will fail. Reproduce issue, check what it is and fix it!!
+   26/10/2017 - [012] Local debug option of wake job is not working.
+   16/04/2018 - [009] MIME email content is still buggy - some junk chars at the end of each archive. Looks like the counting is wrong in relation with message size.
+   26/09/2018 - [011] Configuration parser fails to parse empty string properties. See TODO.
+   13/12/2018 - [013] Configuration Editor Backup UI : folder controls should be disabled when no selection
+   15/04/2019 - [015] Jobs with same type just created are always edited together
+   28/04/2019 - [016] Windows - error when trying to create a monthly scheduled run. It is in Windows API.
+   05/05/2019 - [017] Windows Monthly trigger randomly fails with set.
+   24/07/2019 - [018] Disk check job doesn't work by default - make it ask admin mode
+   05/02/2020 - [015] Jobs are duplicated when changes are saved from Editor in Client mode.
+   01/04/2020 - [019] Software isn't reported in Applications list in Windows 10
+   01/04/2020 - [018] Installer takes bad dlls from windeployqt when several Qt versions are installed
+   09/06/2020 - [017] Client name sometimes get random string content
 
 Pending bugs :
 	[001] Git report parser crashes when trying to parse a report coming from git asking for ssh password.
@@ -90,44 +90,44 @@ Pending bugs :
 	[008] Git FS backup doesn't work with first data report (git diff command).
 	[010] Some tests are failing in GitJob only in Release. Make all test suites pass 100% in both Debug and Release.
 	[012] Debug flag is not handled as it should. Check that global one works as default and can be overridden by local ones.
-        [014] There should be error reporting when simple copy backup fails (see on windows, using system folder)
-        [016] Local shutdown not working on Windows for Standalone mode
+   [014] There should be error reporting when simple copy backup fails (see on windows, using system folder)
+   [016] Local shutdown not working on Windows for Standalone mode
 
 -------------
 Release plan
 -------------
 
 v2.0 :
-        [027] Manage email commands
+   [027] Manage email commands
 	[015] Make a stat job for longer time level (yearly?)
 
 v1.4 (Server/Client Version) :
-        [026] Support multiple clients with multiple job lists
+   [026] Support multiple clients with multiple job lists
 	[010] Implement all TODOs in code
 	[025] Use libssh instead of using command line
 	[024] Remove ping executable dependency
 	[056] Create VMs for testing remote jobs and wake
 
 v1.3 :
-        [047] Have a Restore option in backup jobs
+   [047] Have a Restore option in backup jobs
 	[007] Include Defragmentation job
 	[008] Use another time level of backup for other jobs (monly/yearly...)
 	[052] Support other compilers
 
 v1.2 (Final Paid Version) :
-        [005] Include AntiVirus scan job
-	[050] Create a backup job for cloud service
-	[043] Create an archive differential File backup job
-        [051] Implement a licensing system : either CD-Key or online activation. Use crypto.
-        [046] Include a Windows update job
-        [055] Create a download job
-        [057] Support translations and create default ones (EN/PT/FR)
+   [005] Include AntiVirus scan job
+   [050] Create a backup job for cloud service
+   [043] Create an archive differential File backup job
+   [051] Implement a licensing system : either CD-Key or online activation. Use crypto.
+   [046] Include a Windows update job
+   [055] Create a download job
+   [057] Support translations and create default ones (EN/PT/FR)
 
 v1.1 (Final Free Version) : 09/10/2019
 	[045] Make Windows client work with (nearly) all features
-        [058] Add support for Windows "cron" entries from editor
-        [006] Include Harddrive check job
-        [059] Add icons/graphics to UI. Improve its usability.
+   [058] Add support for Windows "cron" entries from editor
+   [006] Include Harddrive check job
+   [059] Add icons/graphics to UI. Improve its usability.
 
 v1.0 : 20/08/2018
 	[023] Remove wakelan executable dependency

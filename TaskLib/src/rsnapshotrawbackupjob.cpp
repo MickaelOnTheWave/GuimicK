@@ -214,11 +214,21 @@ bool RsnapshotRawBackupJob::IsFirstBackup() const
 ConsoleJob *RsnapshotRawBackupJob::CreateBackupCommandJob()
 {
     const wstring parameters = wstring(L"-c ") + configurationFile + L" weekly";
-    return new ConsoleJob(L"rsnapshot", parameters);
+    return CreateChildCommandJob(L"rsnapshot", parameters);
 }
 
 ConsoleJob *RsnapshotRawBackupJob::CreateReportCommandJob()
 {
     const wstring parameters = wstring(L"-v ") + repository + L"/weekly.0 " + repository + L"/weekly.1 2>&1";
-    return new ConsoleJob(L"rsnapshot-diff", parameters);
+    return CreateChildCommandJob(L"rsnapshot-diff", parameters);
+}
+
+ConsoleJob* RsnapshotRawBackupJob::CreateChildCommandJob(
+   const wstring& command,
+   const wstring& parameters
+)
+{
+   ConsoleJob* job = new ConsoleJob(command, parameters);
+   job->SetParentDebugManager(debugManager);
+   return job;
 }

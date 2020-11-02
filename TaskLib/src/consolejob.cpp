@@ -141,6 +141,7 @@ void ConsoleJob::ClearAppSearchPaths()
 bool ConsoleJob::RunCommand()
 {
     wstring commandToRun = command + L" " + commandParams;
+    debugManager->AddDataLine<wstring>(L"Command To Run", commandToRun);
     int rawCode = Tools::RunExternalCommandToBuffer(commandToRun, commandOutput, true);
 #ifdef __linux__
     receivedReturnCode = WEXITSTATUS(rawCode);

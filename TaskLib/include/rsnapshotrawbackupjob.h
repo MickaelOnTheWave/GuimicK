@@ -41,6 +41,10 @@ private:
 
     ConsoleJob* CreateBackupCommandJob();
     ConsoleJob* CreateReportCommandJob();
+    ConsoleJob* CreateChildCommandJob(
+       const std::wstring& command,
+       const std::wstring& parameters
+    );
 
     std::wstring configurationFile;
     std::wstring repository;
