@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "filetools.h"
+#include "pathtools.h"
 #include "rsnapshoterroranalyzer.h"
 #include "tools.h"
 
@@ -228,7 +229,8 @@ ConsoleJob* RsnapshotRawBackupJob::CreateChildCommandJob(
    const wstring& parameters
 )
 {
-   ConsoleJob* job = new ConsoleJob(command, parameters);
+   const wstring absoluteCommand = PathTools::GetCommandPath(command, ConsoleJob::appSearchPaths);
+   ConsoleJob* job = new ConsoleJob(absoluteCommand, parameters);
    job->SetParentDebugManager(debugManager);
    return job;
 }
