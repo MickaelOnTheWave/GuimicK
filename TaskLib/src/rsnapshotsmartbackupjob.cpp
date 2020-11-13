@@ -133,7 +133,8 @@ wstring RsnapshotSmartBackupJob::CreateBackupSourcePath(const wstring& backupTag
 JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
 {
    debugManager->AddDataLine<bool>(L"Running - IsTargetLocal", target.isLocal);
-   wstring configuration = CreateConfiguration();
+   const wstring configuration = CreateConfiguration();
+   debugManager->AddDataLine<bool>(L"Rsnapshot configuration file", configuration);
    RsnapshotRawBackupJob* rawBackupJob = CreateRawJob(configuration);
 
    JobStatus* status = rawBackupJob->Run();
@@ -173,7 +174,6 @@ wstring RsnapshotSmartBackupJob::CreateConfiguration() const
    builder.SetRepository(repository);
    if (temporaryFile != L"")
        builder.SetGeneratedConfigurationFile(temporaryFile);
-   debugManager->AddDataLine<wstring>(L"Rsnapshot config file", temporaryFile);
    return builder.CreateConfigurationFile(CreateRsnapshotBackupList(), maxBackupCount);
 }
 
