@@ -134,7 +134,7 @@ JobStatus *RsnapshotSmartBackupJob::RunConfiguredBackupJob()
 {
    debugManager->AddDataLine<bool>(L"Running - IsTargetLocal", target.isLocal);
    const wstring configuration = CreateConfiguration();
-   debugManager->AddDataLine<bool>(L"Rsnapshot configuration file", configuration);
+   debugManager->AddDataLine<wstring>(L"Rsnapshot configuration file", configuration);
    RsnapshotRawBackupJob* rawBackupJob = CreateRawJob(configuration);
 
    JobStatus* status = rawBackupJob->Run();
