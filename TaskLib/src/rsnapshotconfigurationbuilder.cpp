@@ -10,9 +10,14 @@ using namespace std;
 
 const wstring defaultConfigurationFile = L"rsnapshotConfigurationFile.conf";
 
-RsnapshotConfigurationBuilder::RsnapshotConfigurationBuilder(const wstring &templateConfigurationFile)
-    : templateFile(templateConfigurationFile), configurationFile(defaultConfigurationFile),
-      repository(L"")
+RsnapshotConfigurationBuilder::RsnapshotConfigurationBuilder(
+      const wstring &templateConfigurationFile,
+      JobDebugInformationManager* _debugManager
+)  : templateFile(templateConfigurationFile),
+      configurationFile(defaultConfigurationFile),
+      repository(L""),
+      debugManager(_debugManager)
+
 {
 }
 
@@ -47,7 +52,10 @@ void RsnapshotConfigurationBuilder::BuildConfigurationFile(
     AppendMaxBackups(configurationContent, maxBackups);
     AppendBackupData(configurationContent, dataToBackup);
     CheckAndFixConfigurationFile();
-    FileTools::WriteBufferToFile(configurationFile, configurationContent);
+    debugManager->AddDataLine<wstring>(L"Configuration File", configurationFile);
+    debugManager->AddDataLine<wstring>(L"Configuration Content", configurationContent);
+    const bool ok = FileTools::WriteBufferToFile(configurationFile, configurationContent);
+    debugManager->AddDataLine<bool>(L"Configuration file written", ok);
 }
 
 wstring RsnapshotConfigurationBuilder::GetTemplateConfiguration() const

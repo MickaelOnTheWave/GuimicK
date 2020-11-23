@@ -170,7 +170,7 @@ wstring RsnapshotSmartBackupJob::AppendTrailingSlash(const wstring value) const
 
 wstring RsnapshotSmartBackupJob::CreateConfiguration() const
 {
-   RsnapshotConfigurationBuilder builder(templateConfigurationFile);
+   RsnapshotConfigurationBuilder builder(templateConfigurationFile, debugManager);
    builder.SetRepository(repository);
    if (temporaryFile != L"")
        builder.SetGeneratedConfigurationFile(temporaryFile);

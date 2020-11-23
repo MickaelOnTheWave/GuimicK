@@ -1,3 +1,8 @@
+23/11/2020 (0.8h)
+   Added full Rsnapshot configuration file to debug data, along
+   with file write return (suspecting this is the issue).
+   Waiting for Production run...
+
 13/11/2020 (0.3h)
    Production failed again. It looks like it is a rsnapshot temp
    config file bug. Adding debug information...

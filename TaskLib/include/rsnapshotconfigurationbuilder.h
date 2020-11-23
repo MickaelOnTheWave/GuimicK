@@ -6,7 +6,8 @@
 class RsnapshotConfigurationBuilder
 {
 public:
-    RsnapshotConfigurationBuilder(const std::wstring& templateConfigurationFile = L"");
+    RsnapshotConfigurationBuilder(const std::wstring& templateConfigurationFile = L"",
+                                  JobDebugInformationManager* _debugManager = NULL);
 
     void SetRepository(const std::wstring& value);
     void SetTemplateConfigurationFile(const std::wstring& file);
@@ -32,6 +33,7 @@ private:
     std::wstring templateFile;
     std::wstring configurationFile;
     std::wstring repository;
+    JobDebugInformationManager* debugManager;
 };
 
 #endif // RSNAPSHOTCONFIGURATIONBUILDER_H
