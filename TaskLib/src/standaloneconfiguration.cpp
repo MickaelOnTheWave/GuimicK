@@ -193,16 +193,16 @@ void StandaloneConfiguration::FillRootObjects(const list<ConfigurationObject*>& 
    {
        bool returnValue = true;
        ConfigurationObject* currentObject = *it;
-       if (currentObject->name == L"Client")
+       if (currentObject->GetName() == L"Client")
            returnValue = CreateClient(currentObject, errorMessages);
-       else if (currentObject->name == L"Agent")
+       else if (currentObject->GetName() == L"Agent")
            CreateAgent(currentObject, errorMessages);
-       else if (currentObject->name == L"Report")
+       else if (currentObject->GetName() == L"Report")
            CreateReport(currentObject, errorMessages);
        else
        {
            wstring message = L"Warning : unknown object \"";
-           message += currentObject->name + L"\"";
+           message += currentObject->GetName() + L"\"";
            errorMessages.push_back(message);
        }
 
@@ -220,8 +220,8 @@ void StandaloneConfiguration::FillGlobalProperties(ConfigurationObject* object,
        return;
    }
 
-   map<wstring, wstring>::iterator itProp = object->propertyList.begin();
-   map<wstring, wstring>::iterator endProp = object->propertyList.end();
+   map<wstring, wstring>::iterator itProp = object->BeginProperties();
+   map<wstring, wstring>::iterator endProp = object->EndProperties();
    for (; itProp != endProp; itProp++)
    {
        pair<wstring, wstring> currentProp = *itProp;

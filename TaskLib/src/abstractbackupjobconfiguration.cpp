@@ -64,12 +64,12 @@ void AbstractBackupJobConfiguration::ConfigureItemList(AbstractBackupJob *job,
                                                        ConfigurationObject *confObject,
                                                        vector<wstring> &errorMessages)
 {
-    list<ConfigurationObject*>::const_iterator it = confObject->objectList.begin();
-    for (; it != confObject->objectList.end(); ++it)
+    list<ConfigurationObject*>::const_iterator it = confObject->BeginObjects();
+    for (; it != confObject->EndObjects(); ++it)
     {
         ConfigurationObject* currentObj = *it;
 
-        if (currentObj->name == GetBackupItemName())
+        if (currentObj->GetName() == GetBackupItemName())
         {
             const wstring source(currentObj->GetProperty(L"source"));
             const wstring dest(currentObj->GetProperty(L"dest"));

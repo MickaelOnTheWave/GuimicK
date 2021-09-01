@@ -70,8 +70,8 @@ void AbstractJobConfiguration::CheckKnownProperties(ConfigurationObject *confObj
     FillKnownProperties(knownProperties);
     FillNumberedProperties(knownProperties);
 
-    map<wstring, wstring>::iterator itProperty = confObject->propertyList.begin();
-    for (; itProperty!=confObject->propertyList.end(); ++itProperty)
+    map<wstring, wstring>::iterator itProperty = confObject->BeginProperties();
+    for (; itProperty!=confObject->EndProperties(); ++itProperty)
     {
         if (HasValue(knownProperties, itProperty->first) == false)
             errorMessages.push_back(BuildErrorMessage(L"property", itProperty->first));
@@ -84,11 +84,11 @@ void AbstractJobConfiguration::CheckKnownSubObjects(ConfigurationObject *confObj
     vector<wstring> knownObjects;
     FillKnownSubObjects(knownObjects);
 
-    list<ConfigurationObject*>::iterator it = confObject->objectList.begin();
-    for (; it!=confObject->objectList.end(); ++it)
+    list<ConfigurationObject*>::iterator it = confObject->BeginObjects();
+    for (; it!=confObject->EndObjects(); ++it)
     {
-        if (HasValue(knownObjects, (*it)->name) == false)
-            errorMessages.push_back(BuildErrorMessage(L"sub object", (*it)->name));
+        if (HasValue(knownObjects, (*it)->GetName()) == false)
+            errorMessages.push_back(BuildErrorMessage(L"sub object", (*it)->GetName()));
     }
 }
 

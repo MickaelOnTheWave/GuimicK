@@ -56,8 +56,8 @@ void ServerConfiguration::CreateAgent(ConfigurationObject* confObject,
    ConfigurationObject* pathsObject = confObject->GetObject(L"DefaultBinPaths");
    if (pathsObject)
    {
-       map<wstring, wstring>::iterator itPath = pathsObject->propertyList.begin();
-       map<wstring, wstring>::iterator endPath = pathsObject->propertyList.end();
+       map<wstring, wstring>::iterator itPath = pathsObject->BeginProperties();
+       map<wstring, wstring>::iterator endPath = pathsObject->EndProperties();
        for (; itPath != endPath; itPath++)
        {
            pair<wstring, wstring> currentPathPair = *itPath;

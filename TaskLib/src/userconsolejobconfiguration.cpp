@@ -85,8 +85,8 @@ void UserConsoleJobConfiguration::ConfigureJob(AbstractJob *job, ConfigurationOb
     if (parserUsingBuffer == L"true")
         castJob->SetParsingUsingBuffer(true);
 
-    list<ConfigurationObject*>::iterator it = confObject->objectList.begin();
-    for (; it != confObject->objectList.end(); ++it)
+    list<ConfigurationObject*>::iterator it = confObject->BeginObjects();
+    for (; it != confObject->EndObjects(); ++it)
     {
        if ((*it)->GetName() == UserAttachmentObject)
           castJob->AddUserAttachment((*it)->GetProperty(L"param0"));

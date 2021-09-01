@@ -109,8 +109,8 @@ void Agent::LoadProperties(
       ConfigurationObject* confObject,
       std::vector<wstring>& errorMessages)
 {
-   map<wstring, wstring>::iterator itProp = confObject->propertyList.begin();
-   map<wstring, wstring>::iterator endProp = confObject->propertyList.end();
+   map<wstring, wstring>::iterator itProp = confObject->BeginProperties();
+   map<wstring, wstring>::iterator endProp = confObject->EndProperties();
    for (; itProp != endProp; itProp++)
    {
        pair<wstring, wstring> currentProp = *itProp;

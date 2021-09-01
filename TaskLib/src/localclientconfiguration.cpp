@@ -56,8 +56,8 @@ Client* LocalClientConfiguration::CreateConfiguredClient(ConfigurationObject* co
 
 void LocalClientConfiguration::SetAllClientProperties(ConfigurationObject* object)
 {
-	map<wstring, wstring>::iterator itProp = object->propertyList.begin();
-	map<wstring, wstring>::iterator endProp = object->propertyList.end();
+   map<wstring, wstring>::iterator itProp = object->BeginProperties();
+   map<wstring, wstring>::iterator endProp = object->EndProperties();
 	for (; itProp != endProp; itProp++)
 	{
 		 pair<wstring, wstring> currentProp = *itProp;

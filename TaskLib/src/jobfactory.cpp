@@ -32,11 +32,11 @@ JobFactory::~JobFactory()
 AbstractJob* JobFactory::CreateJob(ConfigurationObject* object,
                                   std::vector<wstring>& errorMessages)
 {
-   AbstractJobConfiguration* relatedConfiguration = GetConfiguration(object->name);
+   AbstractJobConfiguration* relatedConfiguration = GetConfiguration(object->GetName());
    if (relatedConfiguration == NULL)
    {
        wstring errorMessage = L"unknown job \"";
-       errorMessage += object->name + L"\". Ignoring...";
+       errorMessage += object->GetName() + L"\". Ignoring...";
        errorMessages.push_back(wstring(L"Warning : ") + errorMessage);
        return NULL;
    }

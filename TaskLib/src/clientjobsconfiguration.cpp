@@ -119,8 +119,8 @@ void ClientJobsConfiguration::FillJobList(ConfigurationObject* jobListObj,
                                           vector<wstring> &errorMessages)
 {
    JobFactory jobFactory;
-   list<ConfigurationObject*>::iterator itJobs = jobListObj->objectList.begin();
-   list<ConfigurationObject*>::iterator endJobs = jobListObj->objectList.end();
+   list<ConfigurationObject*>::iterator itJobs = jobListObj->BeginObjects();
+   list<ConfigurationObject*>::iterator endJobs = jobListObj->EndObjects();
    for (; itJobs != endJobs; itJobs++)
    {
        AbstractJob* parsedJob = jobFactory.CreateJob(*itJobs, errorMessages);
