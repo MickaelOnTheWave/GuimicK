@@ -1,3 +1,18 @@
+27/03/2022 (1.7h)
+   Going for State machine parser. First doing some branch cleaning.
+   Creating State machine classes and organizing features around them.
+Next planned work:
+   - Finish state machine architecture. Parsing context structure needs to be
+   in separate file, and its data correctly managed since ConfigurationParser.
+
+15/11/2021 (0.3h)
+   Back checking Curl sending. Curl Lib seems OK. The problem
+   seems to be with Curl Console.
+   Both "senders" are from different modules and architectures.
+   Adding console curl to email UI seems difficult. It might be worth it...
+Next planned work:
+   - Find a way to add curl console for EmailUI
+
 01/09/2021 (0.3h)
    Put access methods in ConfigurationParser and its data
    as private. Added ParseBuffer tests.
