@@ -1,3 +1,6 @@
+08/05/2022 (0.8h)
+   Going on state machine architecture.
+
 27/03/2022 (1.7h)
    Going for State machine parser. First doing some branch cleaning.
    Creating State machine classes and organizing features around them.

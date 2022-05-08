@@ -27,7 +27,7 @@ TaskManagerConfiguration::~TaskManagerConfiguration()
 bool TaskManagerConfiguration::LoadFromFile(const wstring &fileName, vector<wstring> &errorMessages)
 {
     errorMessages.clear();
-    parser.ResetData();
+    parser.Reset();
     bool result = parser.ParseFile(fileName, errorMessages);
     if (!result)
         return false;
