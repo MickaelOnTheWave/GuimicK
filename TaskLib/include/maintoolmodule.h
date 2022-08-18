@@ -37,7 +37,7 @@ private:
 
     void SetupSingleJobOption(ClientWorkManager* workList, const CommandLineManager& commandLine);
 
-    int RunBotMode(ClientWorkManager* workList);
+    int RunBotMode(const int botMode, ClientWorkManager* workList);
 
     AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const StandaloneConfiguration& configuration,
                                        const std::vector<std::wstring>& configurationErrors);

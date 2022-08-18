@@ -40,7 +40,7 @@ TelegramRunningBot::TelegramRunningBot()
    validCommands.push_back("/shutdownnow");
 }
 
-void TelegramRunningBot::Run()
+void TelegramRunningBot::LoopRun()
 {
    TgBot::Bot bot(botToken);
    bot.getEvents().onCommand("start", [&bot](TgBot::Message::Ptr message) {

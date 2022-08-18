@@ -5,12 +5,13 @@
 #endif
 
 #include <iostream>
+#include "botfactory.h"
 #include "consolejob.h"
 #include "filereportdispatcher.h"
 #include "filetools.h"
 #include "standaloneconfiguration.h"
 #include "taskmanagerconfiguration.h"
-#include "telegramrunningbot.h"
+#include "runningbot.h"
 
 using namespace std;
 
@@ -122,9 +123,9 @@ int MainToolModule::Run(CommandLineManager &commandLine)
 
     SetupSingleJobOption(workList, commandLine);
 
-    const bool botMode = true;
-    if (botMode)
-       return RunBotMode(workList);
+    const int botMode = typedConfiguration->GetAgent()->GetBotMode();
+    if (botMode != Agent::BOTMODE_NO)
+       return RunBotMode(botMode, workList);
     else
     {
        AbstractReportCreator* reportCreator = RunWorkList(workList, *typedConfiguration, configurationErrors);
@@ -190,10 +191,11 @@ void MainToolModule::SetupSingleJobOption(ClientWorkManager* workList,
        workList->RemoveAllButJobs(singleJob);
 }
 
-int MainToolModule::RunBotMode(ClientWorkManager* workList)
+int MainToolModule::RunBotMode(const int botMode, ClientWorkManager* workList)
 {
-   TelegramRunningBot bot;
-   bot.Run();
+   RunningBot* bot = BotFactory::Create(botMode);
+   bot->LoopRun();
+   delete bot;
    return 0;
 }
 

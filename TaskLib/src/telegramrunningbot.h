@@ -4,12 +4,14 @@
 #include <string>
 #include <vector>
 
-class TelegramRunningBot
+#include "runningbot.h"
+
+class TelegramRunningBot : public RunningBot
 {
 public:
    TelegramRunningBot();
 
-   void Run();
+   void LoopRun() override;
 
 private:
    bool IsValidCommand(const std::string& message);

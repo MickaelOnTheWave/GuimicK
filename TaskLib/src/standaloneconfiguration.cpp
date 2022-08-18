@@ -354,7 +354,7 @@ void StandaloneConfiguration::CreateAgent(ConfigurationObject *confObject,
 {
     if (agent != NULL)
     {
-        errorMessages.push_back(L"Warning : redefining SelfIdentity object");
+        errorMessages.push_back(L"Warning : redefining Agent object");
         delete agent;
     }
 

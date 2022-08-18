@@ -11,6 +11,9 @@
 class Agent
 {
 public:
+   static const int BOTMODE_NO = 0;
+   static const int BOTMODE_TELEGRAM = 1;
+
     Agent();
     Agent(const Agent& other);
     Agent(ConfigurationObject *confObject, std::vector<std::wstring> &errorMessages);
@@ -34,6 +37,8 @@ public:
 
     bool IsDispatcherVerbose() const;
 
+    int GetBotMode() const;
+
 private:
     void LoadSubobjects(
         ConfigurationObject *confObject,
@@ -55,6 +60,9 @@ private:
        std::wofstream& fileStream
     );
 
+    static int ParseBotMode(const std::wstring& desc);
+    static std::wstring GetBotModeName(const int value);
+
     // TODO : change all this to a property map, like Client.
     std::wstring name;
     std::wstring reportFile;
@@ -62,6 +70,7 @@ private:
     EmailAccountData emailData;
     bool isDispatcherVerbose;
     int outputDispatcherDebugInformation;
+    int botMode;
 };
 
 #endif // AGENT_H

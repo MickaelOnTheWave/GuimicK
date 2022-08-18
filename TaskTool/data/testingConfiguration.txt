@@ -1,0 +1,42 @@
+Agent
+{
+	Name = "GuimicK Agent";
+	ReportFile = "report.html";
+	ReportFolder = "/tmp/GuimicK Report/";
+	BotMode = telegram;
+}
+
+Client
+{
+	Name = "Local Machine";
+	
+	sshuser = "mickael";
+	ip = "desktop";
+
+	showDebugInformation = "always";
+    JobList
+    {
+        RsnapshotBackup
+        {
+            joinReports = "true";
+            maxBackupCount = "10";
+            repository = "/tmp/Backups/";
+            target = "remote";
+            title = "Rsnapshot Backup Test";
+            Folder
+            {
+                dest = "testFolderLocal/";
+                source = "mickael@desktop:~/Temp/testFolder/";
+            }
+        }
+
+    }
+}
+Report
+{
+	type = "html";
+	css = "/home/mickael/report.css";
+}
+MasterEmail = "";
+ReportDispatching = "file";
+ShutdownOnFinish = false;

@@ -7,10 +7,12 @@
 
 using namespace std;
 
-Agent::Agent() : name(L""),
+Agent::Agent() :
+   name(L""),
    reportFile(L""), reportFolder(L""),
    isDispatcherVerbose(false),
-   outputDispatcherDebugInformation(DebugOutput::NEVER)
+   outputDispatcherDebugInformation(DebugOutput::NEVER),
+   botMode(BOTMODE_NO)
 {
 }
 
@@ -19,7 +21,8 @@ Agent::Agent(const Agent& other)
      reportFile(other.reportFile), reportFolder(other.reportFolder),
      emailData(other.emailData),
      isDispatcherVerbose(other.isDispatcherVerbose),
-     outputDispatcherDebugInformation(other.outputDispatcherDebugInformation)
+     outputDispatcherDebugInformation(other.outputDispatcherDebugInformation),
+     botMode(other.botMode)
 {
 }
 
@@ -37,6 +40,10 @@ void Agent::SaveToOpenedFile(wofstream& fileStream)
    ConfigurationTools::SaveValueToFile(fileStream, L"ReportFile", reportFile);
    ConfigurationTools::SaveValueToFile(fileStream, L"ReportFolder", reportFolder);
    SaveToFile(emailData, fileStream);
+   ConfigurationTools::SaveValueToFile(fileStream, L"DispatcherVerbose", isDispatcherVerbose ? L"true" : L"false");
+   ConfigurationTools::SaveValueToFile(fileStream, L"OutputDebugInformation",
+                                       DebugOutput::GetDescription(outputDispatcherDebugInformation));
+   ConfigurationTools::SaveValueToFile(fileStream, L"BotMode", GetBotModeName(botMode));
    fileStream << "}" << endl;
 }
 
@@ -95,6 +102,11 @@ bool Agent::IsDispatcherVerbose() const
    return isDispatcherVerbose;
 }
 
+int Agent::GetBotMode() const
+{
+   return botMode;
+}
+
 void Agent::LoadSubobjects(
       ConfigurationObject* confObject,
       std::vector<wstring>& errorMessages)
@@ -132,6 +144,8 @@ void Agent::LoadProperty(
      isDispatcherVerbose = (property.second == L"true");
    else if (property.first == L"OutputDebugInformation")
      outputDispatcherDebugInformation = DebugOutput::GetValue(property.second);
+   else if (property.first == L"BotMode")
+     botMode = ParseBotMode(property.second);
    else
      errorMessages.push_back(ConfigurationTools::CreateUnhandledProperty(property.first));
 }
@@ -149,4 +163,20 @@ void Agent::SaveToFile(
       ConfigurationTools::SaveValueToFile(fileStream, L"SmtpPort", emailData.GetSmtpPort());
       ConfigurationTools::SaveValueToFile(fileStream, L"UseSSL", emailData.GetUseSsl());
    }
+}
+
+int Agent::ParseBotMode(const wstring& desc)
+{
+   if (desc == L"telegram")
+      return BOTMODE_TELEGRAM;
+   else
+      return BOTMODE_NO;
+}
+
+wstring Agent::GetBotModeName(const int value)
+{
+   if (value == BOTMODE_TELEGRAM)
+      return L"telegram";
+   else
+      return L"no";
 }

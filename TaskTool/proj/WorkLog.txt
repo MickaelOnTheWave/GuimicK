@@ -1,3 +1,9 @@
+18/08/2022 (17.7)
+   Adding botmode property to agent. Trying to create test for agent
+   configuration properties : needs to change FullTestSuite bindings.
+   Didn't work, leaving it for now. Creating abstract Bot class,
+   bot factory and proper check. Configuration option working.
+
 17/08/2022 (1h)
    Checked about C++ telegram bot : found easy resource, usable lib.
    Created simple echo bot quickly, added it as a project template.
