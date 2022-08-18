@@ -1,13 +1,10 @@
 #include "botfactory.h"
 
-#include "SelfIdentity.h"
 #include "telegramrunningbot.h"
-#include "stringtools.h"
 
-
-RunningBot* BotFactory::Create(const int botMode, const std::wstring& botToken)
+RunningBot* BotFactory::Create(Agent* agent, ClientWorkManager* workList, const std::string& botToken)
 {
-   if (botMode == Agent::BOTMODE_TELEGRAM)
-      return new TelegramRunningBot(StringTools::UnicodeToUtf8(botToken));
+   if (agent->GetBotMode() == Agent::BOTMODE_TELEGRAM)
+      return new TelegramRunningBot(agent, workList, botToken);
    return NULL;
 }

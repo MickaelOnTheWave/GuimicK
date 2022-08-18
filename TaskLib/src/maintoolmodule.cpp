@@ -9,9 +9,11 @@
 #include "consolejob.h"
 #include "filereportdispatcher.h"
 #include "filetools.h"
-#include "standaloneconfiguration.h"
-#include "taskmanagerconfiguration.h"
 #include "runningbot.h"
+#include "standaloneconfiguration.h"
+#include "stringtools.h"
+#include "taskmanagerconfiguration.h"
+
 
 using namespace std;
 
@@ -193,7 +195,7 @@ void MainToolModule::SetupSingleJobOption(ClientWorkManager* workList,
 
 int MainToolModule::RunBotMode(Agent* agent, ClientWorkManager* workList)
 {
-   RunningBot* bot = BotFactory::Create(agent->GetBotMode(), agent->GetBotToken());
+   RunningBot* bot = BotFactory::Create(agent, workList, StringTools::UnicodeToUtf8(agent->GetBotToken()));
    bot->LoopRun();
    delete bot;
    return 0;

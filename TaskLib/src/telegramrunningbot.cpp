@@ -1,33 +1,28 @@
 #include "telegramrunningbot.h"
 
-#include <tgbot/tgbot.h>
-
-namespace  {
-
-}
-
-TelegramRunningBot::TelegramRunningBot(const std::string& _botToken)
-   : RunningBot(_botToken)
+TelegramRunningBot::TelegramRunningBot(Agent* _agent, ClientWorkManager* _worklist, const std::string& token)
+   : RunningBot(_agent, _worklist),
+     bot(token)
 {
 }
 
 void TelegramRunningBot::LoopRun()
 {
-   TgBot::Bot bot(botToken);
-   bot.getEvents().onCommand("start", [&bot](TgBot::Message::Ptr message) {
+   bot.getEvents().onCommand("start", [this](TgBot::Message::Ptr message) {
        bot.getApi().sendMessage(message->chat->id, "I started a maintenance run.");
    });
-   bot.getEvents().onAnyMessage([&bot, this](TgBot::Message::Ptr message)
+   bot.getEvents().onAnyMessage([this](TgBot::Message::Ptr message)
    {
       auto itCommand = validCommands.find(message->text);
       if (itCommand != validCommands.end())
       {
-         bot.getApi().sendMessage(message->chat->id, itCommand->second.description);
+         currentMessage = message;
+         itCommand->second.functor();
       }
       else
          bot.getApi().sendMessage(message->chat->id, "Unknown command : " + message->text);
-      printf("User wrote %s\n", message->text.c_str());
-       if (StringTools::startsWith(message->text, "/start")) {
+
+      if (StringTools::startsWith(message->text, "/start")) {
            return;
        }
    });
@@ -42,4 +37,16 @@ void TelegramRunningBot::LoopRun()
    } catch (TgBot::TgException& e) {
        printf("error: %s\n", e.what());
    }
+}
+
+void TelegramRunningBot::SendMessage(const std::string& message) const
+{
+   bot.getApi().sendMessage(currentMessage->chat->id, message);
+}
+
+void TelegramRunningBot::ExecuteGiveUserId()
+{
+   std::string message = std::string("Hey ") + currentMessage->from->firstName + ", your id is ";
+   message += std::to_string(currentMessage->from->id);
+   bot.getApi().sendMessage(currentMessage->chat->id, message);
 }

@@ -4,6 +4,8 @@
    Didn't work, leaving it for now. Creating abstract Bot class,
    bot factory and proper check. Configuration option working.
    Added bot token to configuration.
+   Improved command architecture to have functions. Added processing
+   on real data.
 
 17/08/2022 (1h)
    Checked about C++ telegram bot : found easy resource, usable lib.
