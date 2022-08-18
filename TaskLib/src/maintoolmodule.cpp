@@ -125,7 +125,7 @@ int MainToolModule::Run(CommandLineManager &commandLine)
 
     const int botMode = typedConfiguration->GetAgent()->GetBotMode();
     if (botMode != Agent::BOTMODE_NO)
-       return RunBotMode(botMode, workList);
+       return RunBotMode(typedConfiguration->GetAgent(), workList);
     else
     {
        AbstractReportCreator* reportCreator = RunWorkList(workList, *typedConfiguration, configurationErrors);
@@ -191,9 +191,9 @@ void MainToolModule::SetupSingleJobOption(ClientWorkManager* workList,
        workList->RemoveAllButJobs(singleJob);
 }
 
-int MainToolModule::RunBotMode(const int botMode, ClientWorkManager* workList)
+int MainToolModule::RunBotMode(Agent* agent, ClientWorkManager* workList)
 {
-   RunningBot* bot = BotFactory::Create(botMode);
+   RunningBot* bot = BotFactory::Create(agent->GetBotMode(), agent->GetBotToken());
    bot->LoopRun();
    delete bot;
    return 0;

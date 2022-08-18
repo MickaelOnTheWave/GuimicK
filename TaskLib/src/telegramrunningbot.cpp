@@ -31,8 +31,8 @@ namespace  {
 
 }
 
-TelegramRunningBot::TelegramRunningBot()
-   : botToken("5495178915:AAG68pfWRjo5KFzhY7jr8GKTHGLV2Nu6ikM")
+TelegramRunningBot::TelegramRunningBot(const std::string& _botToken)
+   : RunningBot(_botToken)
 {
    validCommands.push_back("/help");
    validCommands.push_back("/listjobs");

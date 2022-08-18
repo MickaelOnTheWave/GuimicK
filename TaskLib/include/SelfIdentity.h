@@ -39,6 +39,8 @@ public:
 
     int GetBotMode() const;
 
+    std::wstring GetBotToken() const;
+
 private:
     void LoadSubobjects(
         ConfigurationObject *confObject,
@@ -71,6 +73,7 @@ private:
     bool isDispatcherVerbose;
     int outputDispatcherDebugInformation;
     int botMode;
+    std::wstring botToken;
 };
 
 #endif // AGENT_H

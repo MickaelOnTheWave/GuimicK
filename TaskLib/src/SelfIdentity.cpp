@@ -12,7 +12,8 @@ Agent::Agent() :
    reportFile(L""), reportFolder(L""),
    isDispatcherVerbose(false),
    outputDispatcherDebugInformation(DebugOutput::NEVER),
-   botMode(BOTMODE_NO)
+   botMode(BOTMODE_NO),
+   botToken(L"")
 {
 }
 
@@ -22,7 +23,8 @@ Agent::Agent(const Agent& other)
      emailData(other.emailData),
      isDispatcherVerbose(other.isDispatcherVerbose),
      outputDispatcherDebugInformation(other.outputDispatcherDebugInformation),
-     botMode(other.botMode)
+     botMode(other.botMode),
+     botToken(other.botToken)
 {
 }
 
@@ -44,6 +46,7 @@ void Agent::SaveToOpenedFile(wofstream& fileStream)
    ConfigurationTools::SaveValueToFile(fileStream, L"OutputDebugInformation",
                                        DebugOutput::GetDescription(outputDispatcherDebugInformation));
    ConfigurationTools::SaveValueToFile(fileStream, L"BotMode", GetBotModeName(botMode));
+   ConfigurationTools::SaveValueToFile(fileStream, L"BotToken", botToken);
    fileStream << "}" << endl;
 }
 
@@ -107,6 +110,11 @@ int Agent::GetBotMode() const
    return botMode;
 }
 
+std::wstring Agent::GetBotToken() const
+{
+   return botToken;
+}
+
 void Agent::LoadSubobjects(
       ConfigurationObject* confObject,
       std::vector<wstring>& errorMessages)
@@ -146,6 +154,8 @@ void Agent::LoadProperty(
      outputDispatcherDebugInformation = DebugOutput::GetValue(property.second);
    else if (property.first == L"BotMode")
      botMode = ParseBotMode(property.second);
+   else if (property.first == L"BotToken")
+     botToken = property.second;
    else
      errorMessages.push_back(ConfigurationTools::CreateUnhandledProperty(property.first));
 }

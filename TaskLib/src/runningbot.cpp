@@ -1,11 +1,7 @@
 #include "runningbot.h"
 
-RunningBot::RunningBot()
+RunningBot::RunningBot(const std::string& _botToken)
+   : botToken(_botToken)
 {
-
 }
 
-void RunningBot::LoopRun()
-{
-
-}

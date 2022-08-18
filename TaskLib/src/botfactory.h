@@ -6,7 +6,7 @@
 class BotFactory
 {
 public:
-   static RunningBot* Create(const int botMode);
+   static RunningBot* Create(const int botMode, const std::wstring& botToken);
 };
 
 #endif // BOTFACTORY_H

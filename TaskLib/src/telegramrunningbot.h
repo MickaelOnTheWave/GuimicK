@@ -9,14 +9,13 @@
 class TelegramRunningBot : public RunningBot
 {
 public:
-   TelegramRunningBot();
+   TelegramRunningBot(const std::string& _botToken);
 
    void LoopRun() override;
 
 private:
    bool IsValidCommand(const std::string& message);
 
-   std::string botToken;
    std::vector<std::string> validCommands;
 };
 

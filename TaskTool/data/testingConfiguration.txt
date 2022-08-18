@@ -4,6 +4,7 @@ Agent
 	ReportFile = "report.html";
 	ReportFolder = "/tmp/GuimicK Report/";
 	BotMode = telegram;
+	BotToken = "5495178915:AAG68pfWRjo5KFzhY7jr8GKTHGLV2Nu6ikM";
 }
 
 Client
