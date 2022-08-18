@@ -2,7 +2,6 @@
 #define TELEGRAMRUNNINGBOT_H
 
 #include <string>
-#include <vector>
 
 #include "runningbot.h"
 
@@ -14,9 +13,6 @@ public:
    void LoopRun() override;
 
 private:
-   bool IsValidCommand(const std::string& message);
-
-   std::vector<std::string> validCommands;
 };
 
 #endif // TELEGRAMRUNNINGBOT_H

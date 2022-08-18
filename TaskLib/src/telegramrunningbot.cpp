@@ -4,40 +4,11 @@
 
 namespace  {
 
-   void ExecuteCommand(TgBot::Bot& bot, TgBot::Message::Ptr message)
-   {
-      const std::string command = message->text;
-      if (command == "/help")
-      {
-         bot.getApi().sendMessage(message->chat->id, "Here are the available commands :\n"
-                                                     "   /help\n"
-                                                     "   /listjobs");
-
-      }
-      else if (command == "/listjobs")
-      {
-         bot.getApi().sendMessage(message->chat->id, "Here are the jobs scheduled to run :");
-      }
-      else if (command == "/noshutdown")
-      {
-         bot.getApi().sendMessage(message->chat->id, "Ok, I will keep running even when I finish my jobs, waiting for your commands.");
-      }
-      else if (command == "/shutdownnow")
-      {
-         bot.getApi().sendMessage(message->chat->id, "Shutting down now...");
-         bot.getApi().sendMessage(message->chat->id, "Bye!");
-      }
-   }
-
 }
 
 TelegramRunningBot::TelegramRunningBot(const std::string& _botToken)
    : RunningBot(_botToken)
 {
-   validCommands.push_back("/help");
-   validCommands.push_back("/listjobs");
-   validCommands.push_back("/noshutdown");
-   validCommands.push_back("/shutdownnow");
 }
 
 void TelegramRunningBot::LoopRun()
@@ -46,9 +17,13 @@ void TelegramRunningBot::LoopRun()
    bot.getEvents().onCommand("start", [&bot](TgBot::Message::Ptr message) {
        bot.getApi().sendMessage(message->chat->id, "I started a maintenance run.");
    });
-   bot.getEvents().onAnyMessage([&bot, this](TgBot::Message::Ptr message) {
-      if (IsValidCommand(message->text))
-         ExecuteCommand(bot, message);
+   bot.getEvents().onAnyMessage([&bot, this](TgBot::Message::Ptr message)
+   {
+      auto itCommand = validCommands.find(message->text);
+      if (itCommand != validCommands.end())
+      {
+         bot.getApi().sendMessage(message->chat->id, itCommand->second.description);
+      }
       else
          bot.getApi().sendMessage(message->chat->id, "Unknown command : " + message->text);
       printf("User wrote %s\n", message->text.c_str());
@@ -68,14 +43,3 @@ void TelegramRunningBot::LoopRun()
        printf("error: %s\n", e.what());
    }
 }
-
-bool TelegramRunningBot::IsValidCommand(const std::string& message)
-{
-   for (auto validCommand : validCommands)
-   {
-      if (message.find(validCommand) == 0)
-         return true;
-   }
-   return false;
-}
-
