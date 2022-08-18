@@ -10,6 +10,7 @@
 #include "filetools.h"
 #include "standaloneconfiguration.h"
 #include "taskmanagerconfiguration.h"
+#include "telegramrunningbot.h"
 
 using namespace std;
 
@@ -121,15 +122,21 @@ int MainToolModule::Run(CommandLineManager &commandLine)
 
     SetupSingleJobOption(workList, commandLine);
 
-    AbstractReportCreator* reportCreator = RunWorkList(workList, *typedConfiguration, configurationErrors);
-    const bool dispatched = DispatchReport(reportCreator, *typedConfiguration, commandLine);
-    delete reportCreator;
-
-    const bool ok = RunLocalShutdown(localShutdown);
-    if (ok)
-       return (dispatched) ? TM_NO_ERROR : DISPATCH_ERROR;
+    const bool botMode = true;
+    if (botMode)
+       return RunBotMode(workList);
     else
-       return SHUTDOWN_ERROR;
+    {
+       AbstractReportCreator* reportCreator = RunWorkList(workList, *typedConfiguration, configurationErrors);
+       const bool dispatched = DispatchReport(reportCreator, *typedConfiguration, commandLine);
+       delete reportCreator;
+
+       const bool ok = RunLocalShutdown(localShutdown);
+       if (ok)
+          return (dispatched) ? TM_NO_ERROR : DISPATCH_ERROR;
+       else
+          return SHUTDOWN_ERROR;
+    }
 }
 
 bool MainToolModule::SetupCommandLine(CommandLineManager& manager)
@@ -180,7 +187,14 @@ void MainToolModule::SetupSingleJobOption(ClientWorkManager* workList,
 {
     wstring singleJob = commandLine.GetParameterValue(onlyOneJobCommand);
     if (singleJob != L"")
-        workList->RemoveAllButJobs(singleJob);
+       workList->RemoveAllButJobs(singleJob);
+}
+
+int MainToolModule::RunBotMode(ClientWorkManager* workList)
+{
+   TelegramRunningBot bot;
+   bot.Run();
+   return 0;
 }
 
 AbstractReportCreator* MainToolModule::RunWorkList(ClientWorkManager* workList,

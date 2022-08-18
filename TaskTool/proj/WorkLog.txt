@@ -1,3 +1,23 @@
+17/08/2022 (1h)
+   Checked about C++ telegram bot : found easy resource, usable lib.
+   Created simple echo bot quickly, added it as a project template.
+   Now integrating a bot in Taskmanager.
+   Integrated! The bot does nothing at the moment and always runs.
+Next planned work:
+   - Create configuration / command line option for Bot running mode
+   - Create proper architecture for command organizations
+   - Add real information about job lists
+
+14/08/2022 (1.5h)
+   Agent not working anymore. Checking Synology : waking up as expected.
+   Checking email sending : not working. Checking current implementation.
+   No easy way to add proper Google authentication. Checking alternative
+   email providers : no easy one either. It seems email account is a dead end.
+   Going for Telegram bot...
+
+05/06/2022 (1h)
+   Keep on state machine implementation
+
 08/05/2022 (0.8h)
    Going on state machine architecture.
 
