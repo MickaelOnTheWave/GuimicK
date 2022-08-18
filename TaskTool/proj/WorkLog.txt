@@ -1,4 +1,4 @@
-18/08/2022 (17.7)
+18/08/2022 (2.7h)
    Adding botmode property to agent. Trying to create test for agent
    configuration properties : needs to change FullTestSuite bindings.
    Didn't work, leaving it for now. Creating abstract Bot class,
@@ -6,6 +6,9 @@
    Added bot token to configuration.
    Improved command architecture to have functions. Added processing
    on real data.
+Next planned work:
+   - Add authorized users to configuration
+   - Implement user filtering on bot
 
 17/08/2022 (1h)
    Checked about C++ telegram bot : found easy resource, usable lib.

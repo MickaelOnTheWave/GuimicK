@@ -28,6 +28,7 @@ public:
    virtual void LoopRun() = 0;
 
 protected:
+   void ExecuteHelp();
    void ExecuteListJobs();
    void ExecuteListClients();
    void ExecuteWhoAreYou();
