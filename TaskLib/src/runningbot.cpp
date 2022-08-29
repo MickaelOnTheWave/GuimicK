@@ -10,6 +10,8 @@ RunningBot::RunningBot(Agent* _agent, ClientWorkManager* _worklist)
    validCommands["/listclients"] = CommandData("List all clients handled by me", std::bind(&RunningBot::ExecuteListClients, this));
    validCommands["/whoareyou"] = CommandData("Give you my name", std::bind(&RunningBot::ExecuteWhoAreYou, this));
    validCommands["/whatismyid"] = CommandData("Gives you your Telegram User ID", std::bind(&RunningBot::ExecuteGiveUserId, this));
+   validCommands["/info"] = CommandData("Displays debug information", std::bind(&RunningBot::ExecuteShowInfo, this));
+   validCommands["/shutdown"] = CommandData("Shuts down agent immediately", std::bind(&RunningBot::ExecuteShutdown, this));
 }
 
 RunningBot::~RunningBot()
@@ -53,6 +55,16 @@ void RunningBot::ExecuteWhoAreYou()
 {
    if (IsUserAuthorized())
       SendMessage(std::string("My name is ") + StringTools::UnicodeToUtf8(agent->GetName()));
+}
+
+void RunningBot::ExecuteShutdown()
+{
+   if (IsUserAuthorized())
+   {
+      const std::string message = "Ok, I'm shutting down immediatly.\nBye bye!";
+      SendMessage(message);
+      ShutdownBot();
+   }
 }
 
 

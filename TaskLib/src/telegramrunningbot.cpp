@@ -4,12 +4,12 @@ TelegramRunningBot::TelegramRunningBot(Agent* _agent, ClientWorkManager* _workli
    : RunningBot(_agent, _worklist),
      bot(token)
 {
+   chatId = 5483529663;
 }
 
 void TelegramRunningBot::LoopRun()
 {
-   bot.getEvents().onCommand("start", [this](TgBot::Message::Ptr message) {
-       bot.getApi().sendMessage(message->chat->id, "I started a maintenance run.");
+   bot.getEvents().onCommand("stop", [this](TgBot::Message::Ptr message) {
    });
    bot.getEvents().onAnyMessage([this](TgBot::Message::Ptr message)
    {
@@ -21,22 +21,23 @@ void TelegramRunningBot::LoopRun()
       }
       else
          bot.getApi().sendMessage(message->chat->id, "Unknown command : " + message->text);
-
-      if (StringTools::startsWith(message->text, "/start")) {
-           return;
-       }
    });
 
-   try {
-       printf("Bot username: %s\n", bot.getApi().getMe()->username.c_str());
-       TgBot::TgLongPoll longPoll(bot);
-       while (true) {
-           printf("Long poll started\n");
-           longPoll.start();
-       }
+   try
+   {
+      if (chatId > 0)
+         bot.getApi().sendMessage(chatId, "Hi! I'm starting...");
+      printf("Bot username: %s\n", bot.getApi().getMe()->username.c_str());
+      TgBot::TgLongPoll longPoll(bot);
+      while (true)
+         longPoll.start();
+
+      if (chatId > 0)
+         bot.getApi().sendMessage(chatId, "I'm leaving. Bye bye!");
+
    } catch (TgBot::TgException& e) {
        printf("error: %s\n", e.what());
-   }
+   }   
 }
 
 void TelegramRunningBot::SendMessage(const std::string& message) const
@@ -52,9 +53,39 @@ bool TelegramRunningBot::IsUserAuthorized()
    return authorized;
 }
 
+void TelegramRunningBot::ShutdownBot()
+{
+   bot.getApi().leaveChat(chatId);
+}
+
 void TelegramRunningBot::ExecuteGiveUserId()
 {
    std::string message = std::string("Hey ") + currentMessage->from->firstName + ", your id is ";
    message += std::to_string(currentMessage->from->id);
+   bot.getApi().sendMessage(currentMessage->chat->id, message);
+}
+
+void TelegramRunningBot::ExecuteShowInfo()
+{
+   std::string message = std::string("Here is some internal data about myself :\n");
+   message += std::string("\tTelegram Data about myself :\n");
+   message += std::string("\t\tUsername :") + bot.getApi().getMe()->username + "\n";
+   message += std::string("\t\tFirst name :") + bot.getApi().getMe()->firstName + "\n";
+   message += std::string("\t\tLast name :") + bot.getApi().getMe()->lastName + "\n";
+   message += std::string("\t\tid :") + std::to_string(bot.getApi().getMe()->id) + "\n";
+   message += std::string("\t\tLanguage code :") + bot.getApi().getMe()->languageCode + "\n";
+   message += std::string("\t\tAm I a bot :") + std::to_string(bot.getApi().getMe()->isBot) + "(You had a doubt? :-) )\n";
+   message += std::string("\tTelegram Data about *YOU* :\n");
+   message += std::string("\t\tUsername :") + currentMessage->from->username + "\n";
+   message += std::string("\t\tFirst name :") + currentMessage->from->firstName + "\n";
+   message += std::string("\t\tLast name :") + currentMessage->from->lastName + "\n";
+   message += std::string("\t\tid :") + std::to_string(currentMessage->from->id) + "\n";
+   message += std::string("\t\tAre you a bot? :") + std::to_string(currentMessage->from->isBot) + "\n";
+   message += std::string("\tTelegram Data about us :\n");
+   message += std::string("\t\tUsername :") + currentMessage->chat->username + "\n";
+   message += std::string("\t\tFirst name :") + currentMessage->chat->firstName + "\n";
+   message += std::string("\t\tLast name :") + currentMessage->chat->lastName + "\n";
+   message += std::string("\t\tid :") + std::to_string(currentMessage->chat->id) + "\n";
+
    bot.getApi().sendMessage(currentMessage->chat->id, message);
 }

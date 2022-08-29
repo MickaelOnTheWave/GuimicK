@@ -15,12 +15,15 @@ public:
 
 protected:
    void SendMessage(const std::string& message) const override;
-   bool IsUserAuthorized() override;
    void ExecuteGiveUserId() override;
+   void ExecuteShowInfo() override;
+   bool IsUserAuthorized() override;
+   void ShutdownBot() override;
 
 private:
    TgBot::Bot bot;
    TgBot::Message::Ptr currentMessage;
+   int64_t chatId;
 };
 
 #endif // TELEGRAMRUNNINGBOT_H

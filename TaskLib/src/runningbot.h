@@ -32,8 +32,11 @@ protected:
    void ExecuteListJobs();
    void ExecuteListClients();
    void ExecuteWhoAreYou();
+   void ExecuteShutdown();
    virtual void ExecuteGiveUserId() = 0;
+   virtual void ExecuteShowInfo() = 0;
    virtual bool IsUserAuthorized() = 0;
+   virtual void ShutdownBot() = 0;
 
    virtual void SendMessage(const std::string& message) const = 0;
 
