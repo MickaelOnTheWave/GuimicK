@@ -41,6 +41,8 @@ public:
 
     std::wstring GetBotToken() const;
 
+    std::string GetAuthorizedUserToken() const;
+
 private:
     void LoadSubobjects(
         ConfigurationObject *confObject,
@@ -74,6 +76,7 @@ private:
     int outputDispatcherDebugInformation;
     int botMode;
     std::wstring botToken;
+    std::wstring authorizedUserToken;
 };
 
 #endif // AGENT_H

@@ -15,6 +15,7 @@ public:
 
 protected:
    void SendMessage(const std::string& message) const override;
+   bool IsUserAuthorized() override;
    void ExecuteGiveUserId() override;
 
 private:

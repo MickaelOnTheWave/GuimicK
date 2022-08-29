@@ -33,6 +33,7 @@ protected:
    void ExecuteListClients();
    void ExecuteWhoAreYou();
    virtual void ExecuteGiveUserId() = 0;
+   virtual bool IsUserAuthorized() = 0;
 
    virtual void SendMessage(const std::string& message) const = 0;
 

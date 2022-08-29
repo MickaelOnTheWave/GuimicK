@@ -1,3 +1,7 @@
+29/08/2022 (19)
+   Added authorized user and updated commands to only work for
+   authorized user.
+
 18/08/2022 (2.7h)
    Adding botmode property to agent. Trying to create test for agent
    configuration properties : needs to change FullTestSuite bindings.

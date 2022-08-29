@@ -13,7 +13,8 @@ Agent::Agent() :
    isDispatcherVerbose(false),
    outputDispatcherDebugInformation(DebugOutput::NEVER),
    botMode(BOTMODE_NO),
-   botToken(L"")
+   botToken(L""),
+   authorizedUserToken(L"")
 {
 }
 
@@ -24,7 +25,8 @@ Agent::Agent(const Agent& other)
      isDispatcherVerbose(other.isDispatcherVerbose),
      outputDispatcherDebugInformation(other.outputDispatcherDebugInformation),
      botMode(other.botMode),
-     botToken(other.botToken)
+     botToken(other.botToken),
+     authorizedUserToken(other.authorizedUserToken)
 {
 }
 
@@ -47,6 +49,7 @@ void Agent::SaveToOpenedFile(wofstream& fileStream)
                                        DebugOutput::GetDescription(outputDispatcherDebugInformation));
    ConfigurationTools::SaveValueToFile(fileStream, L"BotMode", GetBotModeName(botMode));
    ConfigurationTools::SaveValueToFile(fileStream, L"BotToken", botToken);
+   ConfigurationTools::SaveValueToFile(fileStream, L"AuthorizedUserToken", authorizedUserToken);
    fileStream << "}" << endl;
 }
 
@@ -115,6 +118,11 @@ std::wstring Agent::GetBotToken() const
    return botToken;
 }
 
+std::string Agent::GetAuthorizedUserToken() const
+{
+   return StringTools::UnicodeToUtf8(authorizedUserToken);
+}
+
 void Agent::LoadSubobjects(
       ConfigurationObject* confObject,
       std::vector<wstring>& errorMessages)
@@ -156,6 +164,8 @@ void Agent::LoadProperty(
      botMode = ParseBotMode(property.second);
    else if (property.first == L"BotToken")
      botToken = property.second;
+   else if (property.first == L"AuthorizedUserToken")
+     authorizedUserToken = property.second;
    else
      errorMessages.push_back(ConfigurationTools::CreateUnhandledProperty(property.first));
 }

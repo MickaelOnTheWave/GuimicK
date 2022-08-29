@@ -18,33 +18,41 @@ RunningBot::~RunningBot()
 
 void RunningBot::ExecuteHelp()
 {
-   std::string message = "Here are the available commands :\n";
-   for (auto command : validCommands)
-      message += std::string("\t") + command.first + " :\t" + command.second.description + "\n";
+   if (IsUserAuthorized())
+   {
+      std::string message = "Here are the available commands :\n";
+      for (auto command : validCommands)
+         message += std::string("\t") + command.first + " :\t" + command.second.description + "\n";
 
-   SendMessage(message);
+      SendMessage(message);
+   }
 }
 
 void RunningBot::ExecuteListJobs()
 {
-   std::vector<AbstractJob*> jobs;
-   worklist->GetJobList(jobs);
+   if (IsUserAuthorized())
+   {
+      std::vector<AbstractJob*> jobs;
+      worklist->GetJobList(jobs);
 
-   std::string message = "Here are all jobs to run for client XXX : \n";
-   for (auto job : jobs)
-      message += std::string("\t") + StringTools::UnicodeToUtf8(job->GetName()) + "\n";
+      std::string message = "Here are all jobs to run for client XXX : \n";
+      for (auto job : jobs)
+         message += std::string("\t") + StringTools::UnicodeToUtf8(job->GetName()) + "\n";
 
-   SendMessage(message);
+      SendMessage(message);
+   }
 }
 
 void RunningBot::ExecuteListClients()
 {
-   SendMessage("Only one client handled in this version");
+   if (IsUserAuthorized())
+      SendMessage("Only one client handled in this version");
 }
 
 void RunningBot::ExecuteWhoAreYou()
 {
-   SendMessage(std::string("My name is ") + StringTools::UnicodeToUtf8(agent->GetName()));
+   if (IsUserAuthorized())
+      SendMessage(std::string("My name is ") + StringTools::UnicodeToUtf8(agent->GetName()));
 }
 
 

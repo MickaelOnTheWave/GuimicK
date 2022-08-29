@@ -44,6 +44,14 @@ void TelegramRunningBot::SendMessage(const std::string& message) const
    bot.getApi().sendMessage(currentMessage->chat->id, message);
 }
 
+bool TelegramRunningBot::IsUserAuthorized()
+{
+   const bool authorized = (std::to_string(currentMessage->from->id) == agent->GetAuthorizedUserToken());
+   if (!authorized)
+      bot.getApi().sendMessage(currentMessage->chat->id, "I don't know you. Who are you?");
+   return authorized;
+}
+
 void TelegramRunningBot::ExecuteGiveUserId()
 {
    std::string message = std::string("Hey ") + currentMessage->from->firstName + ", your id is ";
