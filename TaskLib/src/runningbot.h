@@ -4,6 +4,7 @@
 #include <functional>
 #include <map>
 #include <string>
+#include <thread>
 
 #include "SelfIdentity.h"
 #include "clientworkmanager.h"
@@ -33,6 +34,8 @@ protected:
    void ExecuteListClients();
    void ExecuteWhoAreYou();
    void ExecuteShutdown();
+   void ExecuteWorkList();
+   void ExecuteWait();
    virtual void ExecuteGiveUserId() = 0;
    virtual void ExecuteShowInfo() = 0;
    virtual bool IsUserAuthorized() = 0;
@@ -43,6 +46,10 @@ protected:
    Agent* agent;
    ClientWorkManager* worklist;
    std::map<std::string, CommandData> validCommands;
+   bool waitForUser = false;
+   bool isRunningWorklist = false;
+   std::thread *workThread = nullptr;
+   int tempCounter = 0;
 };
 
 #endif // RUNNINGBOT_H
