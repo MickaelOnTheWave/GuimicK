@@ -1,6 +1,13 @@
-29/08/2022 (19)
+29/08/2022 (2.5h)
    Added authorized user and updated commands to only work for
-   authorized user.
+   authorized user. Added Wait and Run commands.
+   Added info command for debug information. Added shutdown command.
+   Added state checks. Added threaded run for future list execution.
+Next planned work:
+   - Add list run execution
+   - Add report dispatching on Telegram
+   - Organize Telegram data correctly in configuration
+   - Store chatId properly
 
 18/08/2022 (2.7h)
    Adding botmode property to agent. Trying to create test for agent
