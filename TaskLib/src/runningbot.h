@@ -6,8 +6,7 @@
 #include <string>
 #include <thread>
 
-#include "SelfIdentity.h"
-#include "clientworkmanager.h"
+#include "WorkExecutionManager.h"
 
 class CommandData
 {
@@ -23,7 +22,7 @@ public:
 class RunningBot
 {
 public:
-   RunningBot(Agent* _agent, ClientWorkManager* _worklist);
+   RunningBot(WorkExecutionManager& _workData);
    virtual ~RunningBot();
 
    virtual void LoopRun() = 0;
@@ -46,13 +45,15 @@ protected:
 
    virtual void SendMessage(const std::string& message) const = 0;
 
-   Agent* agent;
-   ClientWorkManager* worklist;
+   WorkExecutionManager& workData;
+
    std::map<std::string, CommandData> validCommands;
    bool waitForUser = false;
+
    bool isRunningWorklist = false;
    std::thread *workThread = nullptr;
-   int tempCounter = 0;
+   int jobCount = 0;
+   int currentJobIndex = 0;
 };
 
 #endif // RUNNINGBOT_H

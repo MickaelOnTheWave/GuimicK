@@ -78,8 +78,35 @@ bool ClientWorkManager::RemoveAllButJobs(const wstring &jobName)
 
 WorkResultData *ClientWorkManager::RunWorkList()
 {
+   ClientJobResults* jobResults = new ClientJobResults();
+
+   list<AbstractJob*>::iterator it=jobList.begin();
+   list<AbstractJob*>::iterator end=jobList.end();
+   for (; it!=end; it++)
+   {
+      AbstractJob* currentJob = *it;
+      JobStatus* status;
+      if (currentJob->InitializeFromClient(client))
+         status = currentJob->Run();
+      else
+      {
+         status = new JobStatus(JobStatus::NotExecuted, L"Initialization failed");
+         status->SetDuration(0);
+      }
+
+      jobResults->push_back(make_pair(currentJob->GetName(), status));
+   }
+
+   WorkResultData* resultData = new WorkResultData();
+   resultData->AddClientData(client->GetName(), jobResults);
+    return resultData;
+}
+
+WorkResultData *ClientWorkManager::RunWorkList(int& currentJobIndex)
+{
 	ClientJobResults* jobResults = new ClientJobResults();
 
+   currentJobIndex = 0;
 	list<AbstractJob*>::iterator it=jobList.begin();
 	list<AbstractJob*>::iterator end=jobList.end();
 	for (; it!=end; it++)
@@ -95,6 +122,7 @@ WorkResultData *ClientWorkManager::RunWorkList()
       }
 
 		jobResults->push_back(make_pair(currentJob->GetName(), status));
+      ++currentJobIndex;
 	}
 
 	WorkResultData* resultData = new WorkResultData();
@@ -105,6 +133,11 @@ WorkResultData *ClientWorkManager::RunWorkList()
 void ClientWorkManager::GetJobList(vector<AbstractJob *> &_jobs)
 {
    copy(jobList.begin(), jobList.end(), back_inserter(_jobs));
+}
+
+unsigned int ClientWorkManager::GetJobCount() const
+{
+   return jobList.size();
 }
 
 void ClientWorkManager::AddJobsFromClient(const bool timedWorkList)

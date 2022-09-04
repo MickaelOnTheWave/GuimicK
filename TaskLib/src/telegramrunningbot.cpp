@@ -1,10 +1,10 @@
 #include "telegramrunningbot.h"
 
-TelegramRunningBot::TelegramRunningBot(Agent* _agent, ClientWorkManager* _worklist, const std::string& token)
-   : RunningBot(_agent, _worklist),
-     bot(_agent->GetBotData()->botToken)
+TelegramRunningBot::TelegramRunningBot(WorkExecutionManager& _workManager)
+   : RunningBot(_workManager),
+     bot(GetBotData()->botToken)
 {
-   chatId = 5483529663;
+   chatId = std::stoll(GetBotData()->authorizedUserChatId);
 }
 
 void TelegramRunningBot::LoopRun()
@@ -44,7 +44,7 @@ void TelegramRunningBot::SendMessage(const std::string& message) const
 
 bool TelegramRunningBot::IsUserAuthorized()
 {
-   const bool authorized = (std::to_string(currentMessage->from->id) == agent->GetBotData()->authorizedUserToken);
+   const bool authorized = (std::to_string(currentMessage->from->id) == GetBotData()->authorizedUserToken);
    if (!authorized)
       bot.getApi().sendMessage(currentMessage->chat->id, "I don't know you. Who are you?");
    return authorized;
@@ -53,6 +53,11 @@ bool TelegramRunningBot::IsUserAuthorized()
 void TelegramRunningBot::ShutdownBot()
 {
    bot.getApi().leaveChat(chatId);
+}
+
+TelegramBotData* TelegramRunningBot::GetBotData()
+{
+   return workData.configuration.GetAgent()->GetBotData();
 }
 
 void TelegramRunningBot::ExecuteGiveUserId()

@@ -125,11 +125,13 @@ int MainToolModule::Run(CommandLineManager &commandLine)
 
     SetupSingleJobOption(workList, commandLine);
 
+    WorkExecutionManager workManager(*typedConfiguration, configurationErrors, workList, version);
+
     if (typedConfiguration->GetAgent()->HasBot())
-       return RunBotMode(typedConfiguration->GetAgent(), workList);
+       return RunBotMode(workManager);
     else
     {
-       AbstractReportCreator* reportCreator = RunWorkList(workList, *typedConfiguration, configurationErrors);
+       AbstractReportCreator* reportCreator = workManager.Run();
        const bool dispatched = DispatchReport(reportCreator, *typedConfiguration, commandLine);
        delete reportCreator;
 
@@ -192,24 +194,12 @@ void MainToolModule::SetupSingleJobOption(ClientWorkManager* workList,
        workList->RemoveAllButJobs(singleJob);
 }
 
-int MainToolModule::RunBotMode(Agent* agent, ClientWorkManager* workList)
+int MainToolModule::RunBotMode(WorkExecutionManager& data)
 {
-   RunningBot* bot = BotFactory::Create(agent, workList);
+   RunningBot* bot = BotFactory::Create(data);
    bot->LoopRun();
    delete bot;
    return 0;
-}
-
-AbstractReportCreator* MainToolModule::RunWorkList(ClientWorkManager* workList,
-                                                   const StandaloneConfiguration& configuration,
-                                                   const vector<wstring>& configurationErrors)
-{
-    WorkResultData* workResult = workList->RunWorkList();
-    AbstractReportCreator* reportCreator = configuration.GetReportCreator();
-    reportCreator->Generate(workResult, configurationErrors, version);
-    delete workResult;
-
-    return reportCreator;
 }
 
 bool MainToolModule::DispatchReport(AbstractReportCreator* reportCreator,

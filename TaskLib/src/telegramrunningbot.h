@@ -10,7 +10,7 @@
 class TelegramRunningBot : public RunningBot
 {
 public:
-   TelegramRunningBot(Agent* _agent, ClientWorkManager* _worklist, const std::string& token);
+   TelegramRunningBot(WorkExecutionManager& _workManager);
 
    void LoopRun() override;
 
@@ -22,6 +22,8 @@ protected:
    void ShutdownBot() override;
 
 private:
+   TelegramBotData* GetBotData();
+
    TgBot::Bot bot;
    TgBot::Message::Ptr currentMessage;
    int64_t chatId;

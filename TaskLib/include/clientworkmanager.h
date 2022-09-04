@@ -36,8 +36,11 @@ public:
    bool RemoveAllButJobs(const std::wstring& jobName);
 
    WorkResultData* RunWorkList();
+   WorkResultData* RunWorkList(int& currentJobIndex);
 
    void GetJobList(std::vector<AbstractJob*> &_jobs);
+
+   unsigned int GetJobCount() const;
 
 private:
 

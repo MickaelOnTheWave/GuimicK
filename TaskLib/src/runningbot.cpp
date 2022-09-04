@@ -1,11 +1,14 @@
 #include "runningbot.h"
 
+#include "abstractreportcreator.h"
 #include "stringtools.h"
 
 #include <math.h>
 
-RunningBot::RunningBot(Agent* _agent, ClientWorkManager* _worklist)
-   : agent(_agent), worklist(_worklist)
+using namespace std;
+
+RunningBot::RunningBot(WorkExecutionManager& _workData)
+   : workData(_workData)
 {
    validCommands["/help"] = CommandData("Shows this message", std::bind(&RunningBot::ExecuteHelp, this));
    validCommands["/listjobs"] = CommandData("List all jobs of a client", std::bind(&RunningBot::ExecuteListJobs, this));
@@ -49,9 +52,9 @@ void RunningBot::ExecuteListJobs()
    if (IsUserAuthorized())
    {
       std::vector<AbstractJob*> jobs;
-      worklist->GetJobList(jobs);
+      workData.worklist->GetJobList(jobs);
 
-      std::string message = "Here are all jobs to run for client XXX : \n";
+      string message = "Here are all jobs to run for client XXX : \n";
       for (auto job : jobs)
          message += std::string("\t") + StringTools::UnicodeToUtf8(job->GetName()) + "\n";
 
@@ -68,7 +71,10 @@ void RunningBot::ExecuteListClients()
 void RunningBot::ExecuteWhoAreYou()
 {
    if (IsUserAuthorized())
-      SendMessage(std::string("My name is ") + StringTools::UnicodeToUtf8(agent->GetName()));
+   {
+      const wstring agentName = workData.configuration.GetAgent()->GetName();
+      SendMessage(std::string("My name is ") + StringTools::UnicodeToUtf8(agentName));
+   }
 }
 
 void RunningBot::ExecuteShutdown()
@@ -90,9 +96,9 @@ void RunningBot::ExecuteWorkList()
 {
    if (isRunningWorklist)
    {
-      SendMessage("The work is already being done!");
-      std::string msg = "tempCounter : ";
-      msg += std::to_string(tempCounter);
+      SendMessage("Work list currently being processed.\n");
+      std::string msg = "Processing job ";
+      msg += std::to_string(currentJobIndex) + " of " + std::to_string(jobCount);
       SendMessage(msg);
    }
    else
@@ -100,22 +106,29 @@ void RunningBot::ExecuteWorkList()
       delete workThread;
       workThread = new std::thread([this]()
       {
+         SendMessage("Starting worklist execution");
          isRunningWorklist = true;
-         tempCounter = 0;
+
+         jobCount = workData.worklist->GetJobCount();
+         currentJobIndex = 0;
+
+         AbstractReportCreator* reportCreator = workData.Run();
+
+/*         tempCounter = 0;
          const long maxI = 1000000000;
          for (long i=0; i<maxI; ++i)
          {
             long j = sqrt(i);
             tempCounter = (i * 100) / maxI;
-         }
+         }*/
          isRunningWorklist = false;
+         SendMessage("Finished worklist execution");
+         SendMessage("Execution report : ");
+         SendMessage(StringTools::UnicodeToUtf8(reportCreator->GetReportContent()));
       });
       workThread->detach();
-      SendMessage("TODO : implement execution. For this a FSM is required.");
-      /*WorkResultData* workResult = workList->RunWorkList();
-      AbstractReportCreator* reportCreator = configuration.GetReportCreator();
-      reportCreator->Generate(workResult, configurationErrors, version);
-      delete workResult;
+      /*
+
       const bool dispatched = DispatchReport(reportCreator, *typedConfiguration, commandLine);
       delete reportCreator;
 

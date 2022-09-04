@@ -7,6 +7,7 @@
 #include "commandlinemanager.h"
 #include "consolejob.h"
 #include "standaloneconfiguration.h"
+#include "WorkExecutionManager.h"
 
 class MainToolModule
 {
@@ -37,10 +38,7 @@ private:
 
     void SetupSingleJobOption(ClientWorkManager* workList, const CommandLineManager& commandLine);
 
-    int RunBotMode(Agent* agent, ClientWorkManager* workList);
-
-    AbstractReportCreator* RunWorkList(ClientWorkManager* workList, const StandaloneConfiguration& configuration,
-                                       const std::vector<std::wstring>& configurationErrors);
+    int RunBotMode(WorkExecutionManager& data);
 
     bool DispatchReport(AbstractReportCreator* reportCreator,
                         const StandaloneConfiguration& configuration,
