@@ -2,9 +2,11 @@
 
 #include "telegramrunningbot.h"
 
-RunningBot* BotFactory::Create(Agent* agent, ClientWorkManager* workList, const std::string& botToken)
+RunningBot* BotFactory::Create(Agent* agent, ClientWorkManager* workList)
 {
-   if (agent->GetBotMode() == Agent::BOTMODE_TELEGRAM)
-      return new TelegramRunningBot(agent, workList, botToken);
+   if (agent->GetBotData()->GetName() == L"TelegramBotData")
+   {
+      return new TelegramRunningBot(agent, workList, agent->GetBotData()->botToken);
+   }
    return NULL;
 }

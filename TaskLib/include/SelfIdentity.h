@@ -7,6 +7,7 @@
 
 #include "configurationobject.h"
 #include "emailaccountdata.h"
+#include "telegrambotconfiguration.h"
 
 class Agent
 {
@@ -37,11 +38,9 @@ public:
 
     bool IsDispatcherVerbose() const;
 
-    int GetBotMode() const;
+    bool HasBot() const;
 
-    std::wstring GetBotToken() const;
-
-    std::string GetAuthorizedUserToken() const;
+    TelegramBotData* GetBotData();
 
 private:
     void LoadSubobjects(
@@ -59,11 +58,6 @@ private:
         std::vector<std::wstring> &errorMessages
     );
 
-    void SaveToFile(
-       const EmailAccountData& emailData,
-       std::wofstream& fileStream
-    );
-
     static int ParseBotMode(const std::wstring& desc);
     static std::wstring GetBotModeName(const int value);
 
@@ -74,9 +68,7 @@ private:
     EmailAccountData emailData;
     bool isDispatcherVerbose;
     int outputDispatcherDebugInformation;
-    int botMode;
-    std::wstring botToken;
-    std::wstring authorizedUserToken;
+    TelegramBotData* botData;
 };
 
 #endif // AGENT_H

@@ -14,7 +14,7 @@ public:
    void Load(ConfigurationObject *confObject,
              std::vector<std::wstring> &errorMessages);
 
-   void SaveToFile(std::wofstream& fileStream);
+   static void SaveToFile(const EmailAccountData& data, std::wofstream& fileStream);
 
 private:
    void LoadProperty(const std::pair<std::wstring, std::wstring>& property,

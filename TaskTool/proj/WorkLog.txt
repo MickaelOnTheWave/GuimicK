@@ -1,3 +1,8 @@
+03/09/2022 (1.8h)
+   Reorganizing Telegram data and configuration.
+   Finished reorganizing and doing opportunity refactorings.
+   Added chat ID property, although it seems redundant with userId.
+
 29/08/2022 (2.5h)
    Added authorized user and updated commands to only work for
    authorized user. Added Wait and Run commands.

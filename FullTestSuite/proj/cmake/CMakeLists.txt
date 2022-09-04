@@ -10,10 +10,12 @@ set(taskManagerRoot "${projectRoot}/..")
 set(toolsRoot "${taskManagerRoot}/../Tools")
 
 add_subdirectory ("${taskManagerRoot}/ReportParsers/ParsersLib/proj/cmake" "./ParsersLib")
+#add_subdirectory ("${taskManagerRoot}/TaskLib/proj/cmake" "./TaskLib")
 add_subdirectory ("${toolsRoot}/ToolsLib/proj/cmake" "./ToolsLib")
 
 set(toolsTestsDir "${toolsRoot}/ToolsTest")
 file(GLOB parsersTests "${taskManagerRoot}/ReportParsers/Tests/src/tests/*")
+#file(GLOB taskLibTests "${taskManagerRoot}/TaskTestLib/src/*")
 file(GLOB toolsTests "${toolsTestsDir}/src/tests/*")
 
 set(sources ${parsersTests} ${toolsTests} "${projectRoot}/src/main.cpp")

@@ -22,6 +22,16 @@ RunningBot::~RunningBot()
 {
 }
 
+void RunningBot::OnStart()
+{
+   SendMessage("Hi! I'm starting...");
+}
+
+void RunningBot::OnFinish()
+{
+   SendMessage("I'm leaving. Bye bye!");
+}
+
 void RunningBot::ExecuteHelp()
 {
    if (IsUserAuthorized())

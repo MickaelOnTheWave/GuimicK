@@ -125,8 +125,7 @@ int MainToolModule::Run(CommandLineManager &commandLine)
 
     SetupSingleJobOption(workList, commandLine);
 
-    const int botMode = typedConfiguration->GetAgent()->GetBotMode();
-    if (botMode != Agent::BOTMODE_NO)
+    if (typedConfiguration->GetAgent()->HasBot())
        return RunBotMode(typedConfiguration->GetAgent(), workList);
     else
     {
@@ -195,7 +194,7 @@ void MainToolModule::SetupSingleJobOption(ClientWorkManager* workList,
 
 int MainToolModule::RunBotMode(Agent* agent, ClientWorkManager* workList)
 {
-   RunningBot* bot = BotFactory::Create(agent, workList, StringTools::UnicodeToUtf8(agent->GetBotToken()));
+   RunningBot* bot = BotFactory::Create(agent, workList);
    bot->LoopRun();
    delete bot;
    return 0;

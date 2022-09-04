@@ -29,15 +29,16 @@ void EmailAccountDataConfiguration::Load(ConfigurationObject* confObject,
     }
 }
 
-void EmailAccountDataConfiguration::SaveToFile(wofstream& fileStream)
+void EmailAccountDataConfiguration::SaveToFile(const EmailAccountData& data,
+                                               wofstream& fileStream)
 {
-    if (dataObject.IsValid())
+    if (data.IsValid())
     {
-       ConfigurationTools::SaveValueToFile(fileStream, L"Email", dataObject.GetAddress());
-       ConfigurationTools::SaveValueToFile(fileStream, L"Password", dataObject.GetPassword());
-       ConfigurationTools::SaveValueToFile(fileStream, L"SmtpAddress", dataObject.GetSmtpServer());
-       ConfigurationTools::SaveValueToFile(fileStream, L"SmtpPort", dataObject.GetSmtpPort());
-       ConfigurationTools::SaveValueToFile(fileStream, L"UseSSL", dataObject.GetUseSsl());
+       ConfigurationTools::SaveValueToFile(fileStream, L"Email", data.GetAddress());
+       ConfigurationTools::SaveValueToFile(fileStream, L"Password", data.GetPassword());
+       ConfigurationTools::SaveValueToFile(fileStream, L"SmtpAddress", data.GetSmtpServer());
+       ConfigurationTools::SaveValueToFile(fileStream, L"SmtpPort", data.GetSmtpPort());
+       ConfigurationTools::SaveValueToFile(fileStream, L"UseSSL", data.GetUseSsl());
     }
 }
 

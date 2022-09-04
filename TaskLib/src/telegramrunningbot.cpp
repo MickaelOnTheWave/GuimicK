@@ -2,14 +2,14 @@
 
 TelegramRunningBot::TelegramRunningBot(Agent* _agent, ClientWorkManager* _worklist, const std::string& token)
    : RunningBot(_agent, _worklist),
-     bot(token)
+     bot(_agent->GetBotData()->botToken)
 {
    chatId = 5483529663;
 }
 
 void TelegramRunningBot::LoopRun()
 {
-   bot.getEvents().onCommand("stop", [this](TgBot::Message::Ptr message) {
+   bot.getEvents().onCommand("", [this](TgBot::Message::Ptr message) {
    });
    bot.getEvents().onAnyMessage([this](TgBot::Message::Ptr message)
    {
@@ -25,16 +25,13 @@ void TelegramRunningBot::LoopRun()
 
    try
    {
-      if (chatId > 0)
-         bot.getApi().sendMessage(chatId, "Hi! I'm starting...");
-      printf("Bot username: %s\n", bot.getApi().getMe()->username.c_str());
+      OnStart();
+
       TgBot::TgLongPoll longPoll(bot);
       while (true)
          longPoll.start();
 
-      if (chatId > 0)
-         bot.getApi().sendMessage(chatId, "I'm leaving. Bye bye!");
-
+      OnFinish();
    } catch (TgBot::TgException& e) {
        printf("error: %s\n", e.what());
    }   
@@ -42,12 +39,12 @@ void TelegramRunningBot::LoopRun()
 
 void TelegramRunningBot::SendMessage(const std::string& message) const
 {
-   bot.getApi().sendMessage(currentMessage->chat->id, message);
+   bot.getApi().sendMessage(chatId, message);
 }
 
 bool TelegramRunningBot::IsUserAuthorized()
 {
-   const bool authorized = (std::to_string(currentMessage->from->id) == agent->GetAuthorizedUserToken());
+   const bool authorized = (std::to_string(currentMessage->from->id) == agent->GetBotData()->authorizedUserToken);
    if (!authorized)
       bot.getApi().sendMessage(currentMessage->chat->id, "I don't know you. Who are you?");
    return authorized;

@@ -4,6 +4,7 @@
 #include "configurationtools.h"
 #include "emailaccountdataconfiguration.h"
 #include "stringtools.h"
+#include "telegrambotconfiguration.h"
 
 using namespace std;
 
@@ -12,9 +13,7 @@ Agent::Agent() :
    reportFile(L""), reportFolder(L""),
    isDispatcherVerbose(false),
    outputDispatcherDebugInformation(DebugOutput::NEVER),
-   botMode(BOTMODE_NO),
-   botToken(L""),
-   authorizedUserToken(L"")
+   botData(NULL)
 {
 }
 
@@ -24,9 +23,7 @@ Agent::Agent(const Agent& other)
      emailData(other.emailData),
      isDispatcherVerbose(other.isDispatcherVerbose),
      outputDispatcherDebugInformation(other.outputDispatcherDebugInformation),
-     botMode(other.botMode),
-     botToken(other.botToken),
-     authorizedUserToken(other.authorizedUserToken)
+     botData(other.botData)
 {
 }
 
@@ -43,13 +40,14 @@ void Agent::SaveToOpenedFile(wofstream& fileStream)
    ConfigurationTools::SaveValueToFile(fileStream, L"Name", name);
    ConfigurationTools::SaveValueToFile(fileStream, L"ReportFile", reportFile);
    ConfigurationTools::SaveValueToFile(fileStream, L"ReportFolder", reportFolder);
-   SaveToFile(emailData, fileStream);
+
+   EmailAccountDataConfiguration::SaveToFile(emailData, fileStream);
+
    ConfigurationTools::SaveValueToFile(fileStream, L"DispatcherVerbose", isDispatcherVerbose ? L"true" : L"false");
    ConfigurationTools::SaveValueToFile(fileStream, L"OutputDebugInformation",
                                        DebugOutput::GetDescription(outputDispatcherDebugInformation));
-   ConfigurationTools::SaveValueToFile(fileStream, L"BotMode", GetBotModeName(botMode));
-   ConfigurationTools::SaveValueToFile(fileStream, L"BotToken", botToken);
-   ConfigurationTools::SaveValueToFile(fileStream, L"AuthorizedUserToken", authorizedUserToken);
+   if (botData)
+      TelegramBotConfiguration::SaveToFile(*botData, fileStream);
    fileStream << "}" << endl;
 }
 
@@ -108,19 +106,14 @@ bool Agent::IsDispatcherVerbose() const
    return isDispatcherVerbose;
 }
 
-int Agent::GetBotMode() const
+bool Agent::HasBot() const
 {
-   return botMode;
+   return botData != NULL;
 }
 
-std::wstring Agent::GetBotToken() const
+TelegramBotData* Agent::GetBotData()
 {
-   return botToken;
-}
-
-std::string Agent::GetAuthorizedUserToken() const
-{
-   return StringTools::UnicodeToUtf8(authorizedUserToken);
+   return botData;
 }
 
 void Agent::LoadSubobjects(
@@ -131,6 +124,10 @@ void Agent::LoadSubobjects(
    ConfigurationObject* emailAccountObject = confObject->GetObject(emailConf.GetName());
    if (emailAccountObject)
       emailConf.Load(emailAccountObject, errorMessages);
+
+   ConfigurationObject* telegramConfObject = confObject->GetObject(TelegramBotConfiguration::GetName());
+   if (telegramConfObject)
+      botData = TelegramBotConfiguration::Load(telegramConfObject, errorMessages);
 }
 
 void Agent::LoadProperties(
@@ -160,29 +157,8 @@ void Agent::LoadProperty(
      isDispatcherVerbose = (property.second == L"true");
    else if (property.first == L"OutputDebugInformation")
      outputDispatcherDebugInformation = DebugOutput::GetValue(property.second);
-   else if (property.first == L"BotMode")
-     botMode = ParseBotMode(property.second);
-   else if (property.first == L"BotToken")
-     botToken = property.second;
-   else if (property.first == L"AuthorizedUserToken")
-     authorizedUserToken = property.second;
    else
      errorMessages.push_back(ConfigurationTools::CreateUnhandledProperty(property.first));
-}
-
-void Agent::SaveToFile(
-   const EmailAccountData& emailData,
-   std::wofstream& fileStream
-)
-{
-   if (emailData.IsValid())
-   {
-      ConfigurationTools::SaveValueToFile(fileStream, L"Email", emailData.GetAddress());
-      ConfigurationTools::SaveValueToFile(fileStream, L"Password", emailData.GetPassword());
-      ConfigurationTools::SaveValueToFile(fileStream, L"SmtpAddress", emailData.GetSmtpServer());
-      ConfigurationTools::SaveValueToFile(fileStream, L"SmtpPort", emailData.GetSmtpPort());
-      ConfigurationTools::SaveValueToFile(fileStream, L"UseSSL", emailData.GetUseSsl());
-   }
 }
 
 int Agent::ParseBotMode(const wstring& desc)

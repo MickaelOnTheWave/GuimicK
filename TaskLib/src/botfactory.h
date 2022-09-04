@@ -8,7 +8,7 @@
 class BotFactory
 {
 public:
-   static RunningBot* Create(Agent* agent, ClientWorkManager* workList, const std::string& botToken);
+   static RunningBot* Create(Agent* agent, ClientWorkManager* workList);
 };
 
 #endif // BOTFACTORY_H

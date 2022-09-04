@@ -1,10 +1,11 @@
 #ifndef TELEGRAMRUNNINGBOT_H
 #define TELEGRAMRUNNINGBOT_H
 
+#include "runningbot.h"
+
 #include <string>
 #include <tgbot/tgbot.h>
-
-#include "runningbot.h"
+#include "TelegramBotData.h"
 
 class TelegramRunningBot : public RunningBot
 {
