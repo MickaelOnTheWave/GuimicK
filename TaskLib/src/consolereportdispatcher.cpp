@@ -32,16 +32,15 @@ bool ConsoleReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 
 void ConsoleReportDispatcher::ShowAttachments(AbstractReportCreator *reportCreator)
 {
-    vector<wstring> files;
-    vector<pair<wstring,wstring> > buffers;
-    reportCreator->GetAssociatedFiles(files, buffers);
+   ReportFileData fileData;
+   reportCreator->GetAssociatedFiles(fileData);
 
-    vector<wstring>::const_iterator itFiles = files.begin();
-    for (; itFiles != files.end(); ++itFiles)
+    vector<wstring>::const_iterator itFiles = fileData.externalFiles.begin();
+    for (; itFiles != fileData.externalFiles.end(); ++itFiles)
         wcout << "\t" << *itFiles << " (see file)" << endl;
 
-    vector<pair<wstring,wstring> >::const_iterator itBuffers = buffers.begin();
-    for (; itBuffers != buffers.end(); ++itBuffers)
+    vector<pair<wstring,wstring> >::const_iterator itBuffers = fileData.fileBuffers.begin();
+    for (; itBuffers != fileData.fileBuffers.end(); ++itBuffers)
     {
         wcout << "\t" << itBuffers->first;
         const bool ok = FileTools::WriteBufferToFile(itBuffers->first,

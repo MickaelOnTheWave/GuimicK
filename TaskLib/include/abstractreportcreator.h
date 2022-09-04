@@ -5,6 +5,18 @@
 #include <sstream>
 #include <vector>
 
+struct ReportFileData
+{
+   void clear()
+   {
+      externalFiles.clear();
+      fileBuffers.clear();
+   }
+
+   std::vector<std::wstring> externalFiles;
+   std::vector<std::pair<std::wstring,std::wstring> > fileBuffers;
+};
+
 class AbstractReportCreator
 {
 public:
@@ -25,8 +37,7 @@ public:
                                         const std::wstring& fallbackDispatcher) = 0;
 
    std::wstring GetReportContent(void) const;
-   void GetAssociatedFiles(std::vector<std::wstring>& _externalFiles,
-                         std::vector<std::pair<std::wstring,std::wstring> >& _fileBuffers);
+   void GetAssociatedFiles(ReportFileData& fileData);
    bool HasAttachments() const;
 protected:
    std::vector<std::wstring> externalFiles;

@@ -123,8 +123,11 @@ void RunningBot::ExecuteWorkList()
          }*/
          isRunningWorklist = false;
          SendMessage("Finished worklist execution");
-         SendMessage("Execution report : ");
-         SendMessage(StringTools::UnicodeToUtf8(reportCreator->GetReportContent()));
+
+         ReportFileData fileData;
+         reportCreator->GetAssociatedFiles(fileData);
+         SendExecutionReport(StringTools::UnicodeToUtf8(reportCreator->GetReportContent()),
+                             ConvertToStr(fileData.fileBuffers));
       });
       workThread->detach();
       /*
@@ -144,4 +147,16 @@ void RunningBot::ExecuteWait()
 {
    SendMessage("Ok, I won't run on my own. I will wait for your commands.");
    waitForUser = true;
+}
+
+vector<pair<string, string>> RunningBot::ConvertToStr(const vector<pair<wstring, wstring> >& fileBuffers)
+{
+   vector<pair<string, string>> convertedBuffers;
+   for (auto buffer : fileBuffers)
+   {
+      const string name = StringTools::UnicodeToUtf8(buffer.first);
+      const string content = StringTools::UnicodeToUtf8(buffer.second);
+      convertedBuffers.push_back(make_pair(name, content));
+   }
+   return convertedBuffers;
 }

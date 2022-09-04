@@ -34,13 +34,11 @@ wstring AbstractReportCreator::GetReportContent() const
     return fullReport;
 }
 
-void AbstractReportCreator::GetAssociatedFiles(vector<wstring> &_externalFiles,
-                                               vector<pair<wstring,wstring> >& _fileBuffers)
+void AbstractReportCreator::GetAssociatedFiles(ReportFileData& fileData)
 {
-    _externalFiles.clear();
-    copy(externalFiles.begin(), externalFiles.end(), back_inserter(_externalFiles));
-    _fileBuffers.clear();
-    copy(fileBuffers.begin(), fileBuffers.end(), back_inserter(_fileBuffers));
+    fileData.clear();
+    copy(externalFiles.begin(), externalFiles.end(), back_inserter(fileData.externalFiles));
+    copy(fileBuffers.begin(), fileBuffers.end(), back_inserter(fileData.fileBuffers));
 }
 
 bool AbstractReportCreator::HasAttachments() const

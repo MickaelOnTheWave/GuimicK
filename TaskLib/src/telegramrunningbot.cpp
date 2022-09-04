@@ -42,6 +42,21 @@ void TelegramRunningBot::SendMessage(const std::string& message) const
    bot.getApi().sendMessage(chatId, message);
 }
 
+void TelegramRunningBot::SendExecutionReport(const std::string& reportContent,
+                                             const std::vector<std::pair<std::string, std::string> >& files) const
+{
+   std::string message = "Execution report :\n";
+   message += reportContent + "\n";
+   bot.getApi().sendMessage(chatId, message);
+
+   bot.getApi().sendMessage(chatId, "Files : ");
+   for (auto filePair : files)
+   {
+      bot.getApi().sendMessage(chatId, filePair.first + " : ");
+      bot.getApi().sendMessage(chatId, filePair.second);
+   }
+}
+
 bool TelegramRunningBot::IsUserAuthorized()
 {
    const bool authorized = (std::to_string(currentMessage->from->id) == GetBotData()->authorizedUserToken);

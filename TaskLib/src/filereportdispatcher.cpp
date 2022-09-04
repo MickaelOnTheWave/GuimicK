@@ -67,13 +67,12 @@ void FileReportDispatcher::SetFileName(const wstring& value)
 
 bool FileReportDispatcher::WriteAttachments(AbstractReportCreator *reportCreator)
 {
-    vector<wstring> files;
-    vector<pair<wstring,wstring> > buffers;
-    reportCreator->GetAssociatedFiles(files, buffers);
+   ReportFileData fileData;
+    reportCreator->GetAssociatedFiles(fileData);
 
     bool allOk = true;
-    vector<pair<wstring,wstring> >::const_iterator itBuffers = buffers.begin();
-    for (; itBuffers!=buffers.end(); ++itBuffers)
+    vector<pair<wstring,wstring> >::const_iterator itBuffers = fileData.fileBuffers.begin();
+    for (; itBuffers!=fileData.fileBuffers.end(); ++itBuffers)
     {
         if (!FileTools::WriteBufferToFile(reportFolder+itBuffers->first, itBuffers->second))
             allOk = false;

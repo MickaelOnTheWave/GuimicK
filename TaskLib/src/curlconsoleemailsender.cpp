@@ -82,9 +82,8 @@ void CurlConsoleReportDispatcher::WriteReportContentToFile(AbstractReportCreator
 
 std::string CurlConsoleReportDispatcher::CreateEmailContent(AbstractReportCreator* reportCreator) const
 {
-   vector<wstring> externalFiles;
-   vector<pair<wstring, wstring> > fileBuffers;
-   reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
+   ReportFileData fileData;
+   reportCreator->GetAssociatedFiles(fileData);
 
    const EmailData emailData = CreateEmailData(reportCreator);
 
@@ -93,8 +92,8 @@ std::string CurlConsoleReportDispatcher::CreateEmailContent(AbstractReportCreato
       StringTools::UnicodeToUtf8(displayName),
       StringTools::UnicodeToUtf8(emailAccountData.GetAddress()),
       emailData,
-      ToUtf8(externalFiles),
-      ToUtf8(fileBuffers)
+      ToUtf8(fileData.externalFiles),
+      ToUtf8(fileData.fileBuffers)
    );
    return emailContent;
 }

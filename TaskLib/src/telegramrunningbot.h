@@ -16,6 +16,10 @@ public:
 
 protected:
    void SendMessage(const std::string& message) const override;
+   void SendExecutionReport(const std::string& reportContent,
+                            const std::vector<std::pair<std::string,std::string>>& files
+                            ) const override;
+
    void ExecuteGiveUserId() override;
    void ExecuteShowInfo() override;
    bool IsUserAuthorized() override;

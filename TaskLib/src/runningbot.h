@@ -44,6 +44,8 @@ protected:
    virtual void ShutdownBot() = 0;
 
    virtual void SendMessage(const std::string& message) const = 0;
+   virtual void SendExecutionReport(const std::string& reportContent,
+                                    const std::vector<std::pair<std::string,std::string>>& files) const = 0;
 
    WorkExecutionManager& workData;
 
@@ -54,6 +56,9 @@ protected:
    std::thread *workThread = nullptr;
    int jobCount = 0;
    int currentJobIndex = 0;
+
+private :
+   static std::vector<std::pair<std::string,std::string>> ConvertToStr(const std::vector<std::pair<std::wstring,std::wstring>>& fileBuffers);
 };
 
 #endif // RUNNINGBOT_H
