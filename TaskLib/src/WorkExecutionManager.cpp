@@ -10,20 +10,17 @@ WorkExecutionManager::WorkExecutionManager(StandaloneConfiguration& _configurati
 
 AbstractReportCreator* WorkExecutionManager::Run()
 {
-   WorkResultData* workResult = worklist->RunWorkList();
+   int dummyIndex;
    AbstractReportCreator* reportCreator = configuration.GetReportCreator();
-   reportCreator->Generate(workResult, configurationErrors, appVersion);
-   delete workResult;
-
+   Run(dummyIndex, reportCreator);
    return reportCreator;
 }
 
-AbstractReportCreator* WorkExecutionManager::Run(int& currentJobIndex)
+void WorkExecutionManager::Run(int& currentJobIndex, AbstractReportCreator* reportCreator)
 {
    WorkResultData* workResult = worklist->RunWorkList(currentJobIndex);
-   AbstractReportCreator* reportCreator = configuration.GetReportCreator();
+   if (reportCreator == nullptr)
+      reportCreator = configuration.GetReportCreator();
    reportCreator->Generate(workResult, configurationErrors, appVersion);
    delete workResult;
-
-   return reportCreator;
 }

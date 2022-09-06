@@ -1,6 +1,6 @@
 #include "runningbot.h"
 
-#include "abstractreportcreator.h"
+#include "htmlreportcreator.h"
 #include "stringtools.h"
 
 #include <math.h>
@@ -112,15 +112,9 @@ void RunningBot::ExecuteWorkList()
          jobCount = workData.worklist->GetJobCount();
          currentJobIndex = 0;
 
-         AbstractReportCreator* reportCreator = workData.Run();
+         AbstractReportCreator* reportCreator = new HtmlReportCreator();
+         workData.Run(currentJobIndex, reportCreator);
 
-/*         tempCounter = 0;
-         const long maxI = 1000000000;
-         for (long i=0; i<maxI; ++i)
-         {
-            long j = sqrt(i);
-            tempCounter = (i * 100) / maxI;
-         }*/
          isRunningWorklist = false;
          SendMessage("Finished worklist execution");
 
@@ -128,18 +122,15 @@ void RunningBot::ExecuteWorkList()
          reportCreator->GetAssociatedFiles(fileData);
          SendExecutionReport(StringTools::UnicodeToUtf8(reportCreator->GetReportContent()),
                              ConvertToStr(fileData.fileBuffers));
+
+         /*
+         const bool ok = RunLocalShutdown(localShutdown);
+         if (ok)
+            return (dispatched) ? TM_NO_ERROR : DISPATCH_ERROR;
+         else
+            return SHUTDOWN_ERROR;*/
       });
       workThread->detach();
-      /*
-
-      const bool dispatched = DispatchReport(reportCreator, *typedConfiguration, commandLine);
-      delete reportCreator;
-
-      const bool ok = RunLocalShutdown(localShutdown);
-      if (ok)
-         return (dispatched) ? TM_NO_ERROR : DISPATCH_ERROR;
-      else
-         return SHUTDOWN_ERROR;*/
    }
 }
 

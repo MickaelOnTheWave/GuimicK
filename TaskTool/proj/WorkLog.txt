@@ -1,4 +1,8 @@
-03/09/2022 (3.8h)
+05/09/2022 (0.5h)
+   Improved work run code. Removed duplications and allowed for
+   bot to specify report creator.
+
+04/09/2022 (3.8h)
    Reorganizing Telegram data and configuration.
    Finished reorganizing and doing opportunity refactorings.
    Added chat ID property, although it seems redundant with userId.
