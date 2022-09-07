@@ -1,6 +1,8 @@
 #include "runningbot.h"
 
+#include "filetools.h"
 #include "htmlreportcreator.h"
+#include "pathtools.h"
 #include "stringtools.h"
 
 #include <math.h>
@@ -110,7 +112,7 @@ void RunningBot::ExecuteWorkList()
          isRunningWorklist = true;
 
          jobCount = workData.worklist->GetJobCount();
-         currentJobIndex = 0;
+         currentJobIndex = 1;
 
          AbstractReportCreator* reportCreator = new HtmlReportCreator();
          workData.Run(currentJobIndex, reportCreator);
@@ -120,8 +122,7 @@ void RunningBot::ExecuteWorkList()
 
          ReportFileData fileData;
          reportCreator->GetAssociatedFiles(fileData);
-         SendExecutionReport(StringTools::UnicodeToUtf8(reportCreator->GetReportContent()),
-                             ConvertToStr(fileData.fileBuffers));
+         SendExecutionReport(reportCreator->GetReportContent(), fileData);
 
          /*
          const bool ok = RunLocalShutdown(localShutdown);
@@ -140,6 +141,32 @@ void RunningBot::ExecuteWait()
    waitForUser = true;
 }
 
+void RunningBot::SendExecutionReport(const wstring& reportContent, const ReportFileData& attachments)
+{
+   const wstring reportFilename = L"guimickReport.html";
+   bool ok = FileTools::WriteBufferToFile(reportFilename, reportContent);
+   if (ok)
+   {
+      for (auto bufferAttachment : attachments.fileBuffers)
+         ok |= FileTools::WriteBufferToFile(bufferAttachment.first, bufferAttachment.second);
+   }
+
+   if (!ok)
+      SendMessage("Can't send report : error writing to filesystem.");
+   else
+   {
+      PathTools::GetCurrentFullPath();
+      vector<string> filenames;
+      filenames.push_back(ToBotPath(reportFilename));
+      for (auto attachment : attachments.fileBuffers)
+         filenames.push_back(ToBotPath(attachment.first));
+      for (auto attachment : attachments.externalFiles)
+         filenames.push_back(ToBotPath(attachment));
+
+      SendExecutionReportFiles(filenames);
+   }
+}
+
 vector<pair<string, string>> RunningBot::ConvertToStr(const vector<pair<wstring, wstring> >& fileBuffers)
 {
    vector<pair<string, string>> convertedBuffers;
@@ -150,4 +177,10 @@ vector<pair<string, string>> RunningBot::ConvertToStr(const vector<pair<wstring,
       convertedBuffers.push_back(make_pair(name, content));
    }
    return convertedBuffers;
+}
+
+string RunningBot::ToBotPath(const wstring& filename)
+{
+   const std::wstring fullPath = PathTools::GetCurrentFullPath() + L"/" + filename;
+   return StringTools::UnicodeToUtf8(fullPath);
 }

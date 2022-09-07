@@ -14,28 +14,20 @@ Agent
 Client
 {
 	Name = "Local Machine";
-	
-	sshuser = "mickael";
+	showDebugInformation = "never";
 	ip = "desktop";
-
 	showDebugInformation = "always";
-    JobList
-    {
-        RsnapshotBackup
-        {
-            joinReports = "true";
-            maxBackupCount = "10";
-            repository = "/tmp/Backups/";
-            target = "remote";
-            title = "Rsnapshot Backup Test";
-            Folder
-            {
-                dest = "testFolderLocal/";
-                source = "mickael@desktop:~/Temp/testFolder/";
-            }
-        }
-
-    }
+	sshuser = "mickael";
+JobList
+{
+	Console
+	{
+		command = "ls";
+		params = "-l";
+		returnCode = "0";
+		title = "Get Local folder data";
+	}
+}
 }
 Report
 {

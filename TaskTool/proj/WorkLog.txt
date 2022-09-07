@@ -1,3 +1,20 @@
+07/09/2022 (3.7h)
+   Checking run with longer command : working as expected.
+   Going for report presentation : checking first file sending.
+   Made Telegram send files to user. However the files are not opening
+   as expected. This is another issue...
+Next planned work:
+   - Check file sending on cellphone : should be openable
+      - Check sending known openable files
+      - Check if other options need to be set
+   - Send files with proper data (thumbnail name ...)
+   - Check debug information checking : only send if configured
+   - Add local shutdown management
+      - Add autorun mechanism at start
+      - Add wait mechanism at start for wait
+      - If wait is true, shutdown at execution end
+   - Add full remote command execution
+
 05/09/2022 (0.5h)
    Improved work run code. Removed duplications and allowed for
    bot to specify report creator.

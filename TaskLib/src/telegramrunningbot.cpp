@@ -1,5 +1,9 @@
 #include "telegramrunningbot.h"
 
+#include <tgbot/net/CurlHttpClient.h>
+#include <tgbot/net/HttpReqArg.h>
+#include <tgbot/net/Url.h>
+
 TelegramRunningBot::TelegramRunningBot(WorkExecutionManager& _workManager)
    : RunningBot(_workManager),
      bot(GetBotData()->botToken)
@@ -42,18 +46,26 @@ void TelegramRunningBot::SendMessage(const std::string& message) const
    bot.getApi().sendMessage(chatId, message);
 }
 
-void TelegramRunningBot::SendExecutionReport(const std::string& reportContent,
-                                             const std::vector<std::pair<std::string, std::string> >& files) const
+void TelegramRunningBot::SendExecutionReportFiles(const std::vector<std::string>& filenames)
 {
-   std::string message = "Execution report :\n";
-   message += reportContent + "\n";
-   bot.getApi().sendMessage(chatId, message);
+   TgBot::CurlHttpClient curlClient;
 
-   bot.getApi().sendMessage(chatId, "Files : ");
-   for (auto filePair : files)
+   std::stringstream sstream;
+   sstream << "https://api.telegram.org/bot" << GetBotData()->botToken;
+   sstream << "/sendDocument?";
+   TgBot::Url url(sstream.str());
+
+
+   for (auto filename : filenames)
    {
-      bot.getApi().sendMessage(chatId, filePair.first + " : ");
-      bot.getApi().sendMessage(chatId, filePair.second);
+
+      std::vector<TgBot::HttpReqArg> args;
+      args.emplace_back("chat_id", chatId);
+      args.emplace_back("caption", filename);
+      args.emplace_back("document", "attach://file");
+      args.emplace_back("file", FileTools::read(filename), true);
+
+      curlClient.makeRequest(url, args);
    }
 }
 
