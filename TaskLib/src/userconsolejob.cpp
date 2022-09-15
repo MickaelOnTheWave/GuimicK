@@ -7,7 +7,8 @@
 using namespace std;
 
 UserConsoleJob::UserConsoleJob()
-    : ConsoleJob()
+    : ConsoleJob(),
+      currentStatus(NULL)
 {
    SetName(L"Console");
    Initialize(L"", 0);
@@ -16,7 +17,8 @@ UserConsoleJob::UserConsoleJob()
 UserConsoleJob::UserConsoleJob(const std::wstring &_commandTitle,
                                const std::wstring &_command, const std::wstring& _params,
                                int _expectedReturnCode)
-    : ConsoleJob(_command, _params, _expectedReturnCode)
+    : ConsoleJob(_command, _params, _expectedReturnCode),
+      currentStatus(NULL)
 {
    SetName(_commandTitle != L"" ? _commandTitle : L"Console");
    Initialize(_command, _expectedReturnCode);
@@ -186,7 +188,7 @@ JobStatus *UserConsoleJob::CreateSuccessStatus()
         currentStatus->SetCode(JobStatus::Ok);
 
     FinalizeStatusCreation();
-    return currentStatus;
+    return new JobStatus(*currentStatus);
 }
 
 JobStatus *UserConsoleJob::CreateErrorStatus()
@@ -197,7 +199,7 @@ JobStatus *UserConsoleJob::CreateErrorStatus()
         FillErrorStatusFromReturnCode();
 
     FinalizeStatusCreation();
-    return currentStatus;
+    return new JobStatus(*currentStatus);
 }
 
 void UserConsoleJob::RunCommandOnFile()
