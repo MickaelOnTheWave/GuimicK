@@ -48,24 +48,10 @@ void TelegramRunningBot::SendMessage(const std::string& message) const
 
 void TelegramRunningBot::SendExecutionReportFiles(const std::vector<std::string>& filenames)
 {
-   TgBot::CurlHttpClient curlClient;
-
-   std::stringstream sstream;
-   sstream << "https://api.telegram.org/bot" << GetBotData()->botToken;
-   sstream << "/sendDocument?";
-   TgBot::Url url(sstream.str());
-
-
    for (auto filename : filenames)
    {
-
-      std::vector<TgBot::HttpReqArg> args;
-      args.emplace_back("chat_id", chatId);
-      args.emplace_back("caption", filename);
-      args.emplace_back("document", "attach://file");
-      args.emplace_back("file", FileTools::read(filename), true);
-
-      curlClient.makeRequest(url, args);
+      TgBot::InputFile::Ptr file = TgBot::InputFile::fromFile(filename, "text/plain");
+      bot.getApi().sendDocument(currentMessage->chat->id, file);
    }
 }
 
