@@ -25,6 +25,7 @@ protected:
 
 private:
    TelegramBotData* GetBotData();
+   void SendFile(const std::string& filename, const std::string& mimeType);
 
    TgBot::Bot bot;
    TgBot::Message::Ptr currentMessage;

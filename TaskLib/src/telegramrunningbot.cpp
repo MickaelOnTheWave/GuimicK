@@ -48,10 +48,16 @@ void TelegramRunningBot::SendMessage(const std::string& message) const
 
 void TelegramRunningBot::SendExecutionReportFiles(const std::vector<std::string>& filenames)
 {
-   for (auto filename : filenames)
+   if (!filenames.empty())
    {
-      TgBot::InputFile::Ptr file = TgBot::InputFile::fromFile(filename, "text/plain");
-      bot.getApi().sendDocument(currentMessage->chat->id, file);
+      auto it = filenames.begin();
+      SendFile(*it, "text/html");
+      ++it;
+
+      for (; it != filenames.end(); ++it)
+      {
+         SendFile(*it, "text/plain");
+      }
    }
 }
 
@@ -71,6 +77,12 @@ void TelegramRunningBot::ShutdownBot()
 TelegramBotData* TelegramRunningBot::GetBotData()
 {
    return workData.configuration.GetAgent()->GetBotData();
+}
+
+void TelegramRunningBot::SendFile(const std::string& filename, const std::string& mimeType)
+{
+   TgBot::InputFile::Ptr file = TgBot::InputFile::fromFile(filename, mimeType);
+   bot.getApi().sendDocument(currentMessage->chat->id, file);
 }
 
 void TelegramRunningBot::ExecuteGiveUserId()
