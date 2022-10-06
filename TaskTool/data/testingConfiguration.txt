@@ -16,7 +16,6 @@ Client
 	Name = "Local Machine";
 	showDebugInformation = "never";
 	ip = "desktop";
-	showDebugInformation = "always";
 	sshuser = "mickael";
 JobList
 {

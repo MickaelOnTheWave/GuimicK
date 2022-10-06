@@ -1,3 +1,12 @@
+06/10/2022 (20.6)
+   Checking : run working. Plan for next features of ChatBot :
+   - Fix sending debug information only when configured
+   - Run automatically when no command given (or idle?)
+   - Effectively shut down app on shutdown command
+      - Maybe segregate between messages sent while offline?
+   Debug information already working as expected. Problem was in
+   configuration.
+
 16/09/2022 (0.4h)
    Used API the way it is designed. Files working as expected.
    Fixed use of mimetypes.

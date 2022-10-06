@@ -8,7 +8,11 @@
 
 class TelegramBotConfiguration
 {
-public:
+public:   
+   static const std::wstring BotTokenProperty;
+   static const std::wstring AuthorizedUserTokenProperty;
+   static const std::wstring AuthorizedUserChatIdProperty;
+
    static std::wstring GetName();
 
    static TelegramBotData* Load(ConfigurationObject* confObject,
