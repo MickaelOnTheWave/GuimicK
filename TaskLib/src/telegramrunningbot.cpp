@@ -103,7 +103,7 @@ TelegramBotData* TelegramRunningBot::GetBotData()
 void TelegramRunningBot::SendFile(const std::string& filename, const std::string& mimeType)
 {
    TgBot::InputFile::Ptr file = TgBot::InputFile::fromFile(filename, mimeType);
-   bot.getApi().sendDocument(currentMessage->chat->id, file);
+   bot.getApi().sendDocument(chatId, file);
 }
 
 void TelegramRunningBot::ExecuteGiveUserId()

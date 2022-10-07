@@ -7,6 +7,12 @@
    Debug information already working as expected. Problem was in
    configuration.
    Small refactor or bot configuration properties.
+   Added timeout execution of work list. Added implementation of
+   wait behaviour. Second try at bot shutdown with same problems
+   as before.
+   Currently there is one main problem to solve :
+      - Make bot shutdown ignore subsequent messages, especially
+      previous shutdown one.
 
 16/09/2022 (0.4h)
    Used API the way it is designed. Files working as expected.
