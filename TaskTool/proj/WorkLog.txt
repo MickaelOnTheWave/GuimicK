@@ -6,6 +6,7 @@
       - Maybe segregate between messages sent while offline?
    Debug information already working as expected. Problem was in
    configuration.
+   Small refactor or bot configuration properties.
 
 16/09/2022 (0.4h)
    Used API the way it is designed. Files working as expected.

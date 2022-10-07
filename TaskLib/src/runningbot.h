@@ -50,6 +50,7 @@ protected:
 
    std::map<std::string, CommandData> validCommands;
    bool waitForUser = false;
+   bool forceBotShutdown = false;
 
    bool isRunningWorklist = false;
    std::thread *workThread = nullptr;

@@ -29,7 +29,24 @@ RunningBot::~RunningBot()
 
 void RunningBot::OnStart()
 {
-   SendMessage("Hi! I'm starting...");
+   int waitTime = workData.configuration.GetAgent()->GetBotData()->waitTimeBeforeAutorunInS;
+   stringstream msg;
+   msg << "Hi! I'm starting.";
+   if (waitTime < 0)
+      msg << " I will wait undefinitely for your commands.";
+   else
+   {
+      msg << " I will wait for " << waitTime << " seconds for your commands.\n";
+      msg << "After that, I will automatically run the configured work list and then ";
+      msg << "shut down.\n";
+      msg << "If you give me any commands, I will execute them but I will keep with my ";
+      msg << "original plan to execute the configured work list on configured time and then ";
+      msg << "shut down.\n";
+      msg << "If you want me to wait, you can send me the /wait command. This will make me ";
+      msg << "not execute the work list automatically and wait forever for your commands.";
+   }
+
+   SendMessage(msg.str());
 }
 
 void RunningBot::OnFinish()
@@ -89,7 +106,7 @@ void RunningBot::ExecuteShutdown()
       {
          const std::string message = "Ok, I'm shutting down immediatly.\nBye bye!";
          SendMessage(message);
-         //ShutdownBot();
+         ShutdownBot();
       }
    }
 }
@@ -117,7 +134,6 @@ void RunningBot::ExecuteWorkList()
          AbstractReportCreator* reportCreator = new HtmlReportCreator();
          workData.Run(currentJobIndex, reportCreator);
 
-         isRunningWorklist = false;
          SendMessage("Finished worklist execution");
 
          ReportFileData fileData;
@@ -130,6 +146,8 @@ void RunningBot::ExecuteWorkList()
             return (dispatched) ? TM_NO_ERROR : DISPATCH_ERROR;
          else
             return SHUTDOWN_ERROR;*/
+
+         isRunningWorklist = false;
       });
       workThread->detach();
    }

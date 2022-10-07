@@ -8,6 +8,7 @@ Agent
       BotToken = "5495178915:AAG68pfWRjo5KFzhY7jr8GKTHGLV2Nu6ikM";
       AuthorizedUserToken =  "5483529663";
       AuthorizedUserChatId = "5483529663";
+      WaitTimeBeforeAutorun = 2;
    }
 }
 

@@ -1,12 +1,11 @@
 #ifndef TELEGRAMBOTDATA_H
 #define TELEGRAMBOTDATA_H
 
-#include <string>
+#include "BotData.h"
 
-class TelegramBotData
+struct TelegramBotData : public BotData
 {
-public :
-   virtual std::wstring GetName() const
+   std::wstring GetName() const override
    {
       return L"TelegramBotData";
    }

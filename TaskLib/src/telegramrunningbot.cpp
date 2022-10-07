@@ -32,8 +32,29 @@ void TelegramRunningBot::LoopRun()
       OnStart();
 
       TgBot::TgLongPoll longPoll(bot);
-      while (true)
+
+      const int waitTimeInS = GetBotData()->waitTimeBeforeAutorunInS;
+      bool timeoutWorkExecution = false;
+      bool waitForTimeoutRun = true;
+
+      time_t startTime = time(NULL);
+      while (!forceBotShutdown && (waitForUser || waitForTimeoutRun ||
+             (!waitForTimeoutRun && timeoutWorkExecution && !isRunningWorklist))
+            )
+      {
          longPoll.start();
+
+         if (!waitForUser)
+         {
+            time_t elapsedTime = time(NULL) - startTime;
+            waitForTimeoutRun = (elapsedTime < waitTimeInS);
+            if (!waitForTimeoutRun && !timeoutWorkExecution)
+            {
+               timeoutWorkExecution = true;
+               ExecuteWorkList();
+            }
+         }
+      }
 
       OnFinish();
    } catch (TgBot::TgException& e) {
@@ -71,7 +92,7 @@ bool TelegramRunningBot::IsUserAuthorized()
 
 void TelegramRunningBot::ShutdownBot()
 {
-   bot.getApi().leaveChat(chatId);
+   //forceBotShutdown = true;
 }
 
 TelegramBotData* TelegramRunningBot::GetBotData()

@@ -9,6 +9,7 @@ using namespace std;
 const wstring TelegramBotConfiguration::BotTokenProperty = L"BotToken";
 const wstring TelegramBotConfiguration::AuthorizedUserTokenProperty = L"AuthorizedUserToken";
 const wstring TelegramBotConfiguration::AuthorizedUserChatIdProperty = L"AuthorizedUserChatId";
+const wstring TelegramBotConfiguration::WaitTimeBeforeAutorunProperty = L"WaitTimeBeforeAutorun";
 
 std::wstring TelegramBotConfiguration::GetName()
 {
@@ -24,8 +25,10 @@ TelegramBotData* TelegramBotConfiguration::Load(ConfigurationObject* confObject,
    data->authorizedUserToken = StringTools::UnicodeToUtf8(confObject->GetProperty(AuthorizedUserTokenProperty));
    data->authorizedUserChatId = StringTools::UnicodeToUtf8(confObject->GetProperty(AuthorizedUserChatIdProperty));
 
+   data->waitTimeBeforeAutorunInS = confObject->GetPropertyAsInt(WaitTimeBeforeAutorunProperty);
+
    const vector<wstring> handledProperties = {BotTokenProperty, AuthorizedUserTokenProperty,
-                                              AuthorizedUserChatIdProperty};
+                                              AuthorizedUserChatIdProperty, WaitTimeBeforeAutorunProperty};
    CheckUnhandledProperties(confObject, handledProperties, errorMessages);
    return data;
 }
@@ -36,6 +39,7 @@ void TelegramBotConfiguration::SaveToFile(const TelegramBotData& data,
    ConfigurationTools::SaveValueToFile(fileStream, BotTokenProperty, StringTools::Utf8ToUnicode(data.botToken));
    ConfigurationTools::SaveValueToFile(fileStream, AuthorizedUserTokenProperty, StringTools::Utf8ToUnicode(data.authorizedUserToken));
    ConfigurationTools::SaveValueToFile(fileStream, AuthorizedUserChatIdProperty, StringTools::Utf8ToUnicode(data.authorizedUserChatId));
+   ConfigurationTools::SaveValueToFile(fileStream, WaitTimeBeforeAutorunProperty, data.waitTimeBeforeAutorunInS);
 }
 
 void TelegramBotConfiguration::CheckUnhandledProperties(ConfigurationObject* confObject,

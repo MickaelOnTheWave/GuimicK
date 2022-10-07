@@ -12,6 +12,7 @@ public:
    static const std::wstring BotTokenProperty;
    static const std::wstring AuthorizedUserTokenProperty;
    static const std::wstring AuthorizedUserChatIdProperty;
+   static const std::wstring WaitTimeBeforeAutorunProperty;
 
    static std::wstring GetName();
 
