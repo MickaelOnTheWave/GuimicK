@@ -38,6 +38,7 @@ Features implemented:
    28/04/2019 - [059] Add support for Windows "cron" entries from editor
    03/06/2019 - [006] Include Harddrive check job
    09/10/2019 - [060] Add icons/graphics to UI. Improve its usability.
+   06/10/2022 - [027] Manage email commands
 
 Features to implement:
 	[005] Include AntiVirus scan job
@@ -49,7 +50,6 @@ Features to implement:
 	[024] Remove ping executable dependency
 	[025] Use libssh instead of using command line
 	[026] Support multiple clients with multiple job lists
-   [027] Manage email commands
 	[036] Console job improvement : support a chain system.
 	[043] Create an archive differential File backup job
 	[046] Include a Windows update job

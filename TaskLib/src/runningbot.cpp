@@ -106,7 +106,7 @@ void RunningBot::ExecuteShutdown()
       {
          const std::string message = "Ok, I'm shutting down immediatly.\nBye bye!";
          SendMessage(message);
-         ShutdownBot();
+         //ShutdownBot();
       }
    }
 }

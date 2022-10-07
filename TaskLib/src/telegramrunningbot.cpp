@@ -33,46 +33,10 @@ void TelegramRunningBot::LoopRun()
 
       TgBot::TgLongPoll longPoll(bot);
 
-      const int waitTimeInS = GetBotData()->waitTimeBeforeAutorunInS;
-      bool timeoutWorkExecution = false;
-      bool waitForTimeoutRun = true;
-      bool waitForWorkFinish = false;
-
       time_t startTime = time(NULL);
-      // TODO : implement step mechanism (FSM ?)
-      // ForceBotSHutdown : instant shutdown
-      // WaitForUser : always keep running
-      // Other :
-      // - 1 waitForTimeout
-      // - 2 timeout -> startRun and waitForRunStart
-      // - 3 runStart -> waitForRunEnd
-      // - 4 runEnd -> localShutdown
-      while (!forceBotShutdown && (waitForUser || waitForTimeoutRun ||
-                                   isRunningWorklist || waitForWorkFinish ||
-                                   (timeoutWorkExecution  && !isRunningWorklist))
-            )
+      while (!forceBotShutdown && (waitForUser || WaitForSteppedRun(startTime)))
       {
          longPoll.start();
-
-         if (!waitForUser)
-         {
-            time_t elapsedTime = time(NULL) - startTime;
-            waitForTimeoutRun = (elapsedTime < waitTimeInS);
-            if (!waitForTimeoutRun && !timeoutWorkExecution)
-            {
-               timeoutWorkExecution = true;
-               ExecuteWorkList();
-               continue;
-            }
-
-            if (isRunningWorklist)
-               waitForWorkFinish = true;
-            else if (waitForWorkFinish)
-            {
-               timeoutWorkExecution = false;
-               waitForWorkFinish = false;
-            }
-         }
       }
 
       OnFinish();
@@ -123,6 +87,21 @@ void TelegramRunningBot::SendFile(const std::string& filename, const std::string
 {
    TgBot::InputFile::Ptr file = TgBot::InputFile::fromFile(filename, mimeType);
    bot.getApi().sendDocument(chatId, file);
+}
+
+bool TelegramRunningBot::WaitForSteppedRun(const time_t startTime)
+{
+   if (currentStep == TimedRunStep::WaitForTimeout)
+   {
+      time_t elapsedTime = time(NULL) - startTime;
+      if (elapsedTime >= GetBotData()->waitTimeBeforeAutorunInS)
+      {
+         ExecuteWorkList();
+         currentStep = TimedRunStep::WaitForRunStart;
+      }
+      return true;
+   }
+   return false;
 }
 
 void TelegramRunningBot::ExecuteGiveUserId()

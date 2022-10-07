@@ -27,6 +27,16 @@ private:
    TelegramBotData* GetBotData();
    void SendFile(const std::string& filename, const std::string& mimeType);
 
+   enum class TimedRunStep
+   {
+      WaitForTimeout,
+      WaitForRunStart,
+      WaitForRunFinish
+   };
+
+   TimedRunStep currentStep = TimedRunStep::WaitForTimeout;
+   bool WaitForSteppedRun(const time_t startTime);
+
    TgBot::Bot bot;
    TgBot::Message::Ptr currentMessage;
    int64_t chatId;
