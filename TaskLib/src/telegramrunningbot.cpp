@@ -36,10 +36,20 @@ void TelegramRunningBot::LoopRun()
       const int waitTimeInS = GetBotData()->waitTimeBeforeAutorunInS;
       bool timeoutWorkExecution = false;
       bool waitForTimeoutRun = true;
+      bool waitForWorkFinish = false;
 
       time_t startTime = time(NULL);
+      // TODO : implement step mechanism (FSM ?)
+      // ForceBotSHutdown : instant shutdown
+      // WaitForUser : always keep running
+      // Other :
+      // - 1 waitForTimeout
+      // - 2 timeout -> startRun and waitForRunStart
+      // - 3 runStart -> waitForRunEnd
+      // - 4 runEnd -> localShutdown
       while (!forceBotShutdown && (waitForUser || waitForTimeoutRun ||
-             (!waitForTimeoutRun && timeoutWorkExecution && !isRunningWorklist))
+                                   isRunningWorklist || waitForWorkFinish ||
+                                   (timeoutWorkExecution  && !isRunningWorklist))
             )
       {
          longPoll.start();
@@ -52,6 +62,15 @@ void TelegramRunningBot::LoopRun()
             {
                timeoutWorkExecution = true;
                ExecuteWorkList();
+               continue;
+            }
+
+            if (isRunningWorklist)
+               waitForWorkFinish = true;
+            else if (waitForWorkFinish)
+            {
+               timeoutWorkExecution = false;
+               waitForWorkFinish = false;
             }
          }
       }
@@ -92,7 +111,7 @@ bool TelegramRunningBot::IsUserAuthorized()
 
 void TelegramRunningBot::ShutdownBot()
 {
-   //forceBotShutdown = true;
+   forceBotShutdown = true;
 }
 
 TelegramBotData* TelegramRunningBot::GetBotData()

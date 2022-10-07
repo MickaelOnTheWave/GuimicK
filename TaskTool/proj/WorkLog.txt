@@ -10,7 +10,7 @@
    Added timeout execution of work list. Added implementation of
    wait behaviour. Second try at bot shutdown with same problems
    as before.
-   Currently there is one main problem to solve :
+   Currently there are two main problems to solve :
       - Make bot shutdown ignore subsequent messages, especially
       previous shutdown one.
 
