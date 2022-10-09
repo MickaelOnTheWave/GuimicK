@@ -26,6 +26,7 @@ protected:
 private:
    TelegramBotData* GetBotData();
    void SendFile(const std::string& filename, const std::string& mimeType);
+   bool IgnoreCommand(const std::string& commandName);
 
    enum class TimedRunStep
    {
@@ -37,6 +38,7 @@ private:
    TimedRunStep currentStep = TimedRunStep::WaitForTimeout;
    bool WaitForSteppedRun(const time_t startTime);
 
+   bool firstMessageReceived = false;
    TgBot::Bot bot;
    TgBot::Message::Ptr currentMessage;
    int64_t chatId;

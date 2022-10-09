@@ -9,10 +9,7 @@ TelegramRunningBot::TelegramRunningBot(WorkExecutionManager& _workManager)
      bot(GetBotData()->botToken)
 {
    chatId = std::stoll(GetBotData()->authorizedUserChatId);
-}
 
-void TelegramRunningBot::LoopRun()
-{
    bot.getEvents().onCommand("", [this](TgBot::Message::Ptr message) {
    });
    bot.getEvents().onAnyMessage([this](TgBot::Message::Ptr message)
@@ -20,13 +17,19 @@ void TelegramRunningBot::LoopRun()
       auto itCommand = validCommands.find(message->text);
       if (itCommand != validCommands.end())
       {
-         currentMessage = message;
-         itCommand->second.functor();
+         if (!IgnoreCommand(itCommand->first))
+         {
+            currentMessage = message;
+            itCommand->second.functor();
+         }
       }
       else
          bot.getApi().sendMessage(message->chat->id, "Unknown command : " + message->text);
    });
+}
 
+void TelegramRunningBot::LoopRun()
+{
    try
    {
       OnStart();
@@ -87,6 +90,20 @@ void TelegramRunningBot::SendFile(const std::string& filename, const std::string
 {
    TgBot::InputFile::Ptr file = TgBot::InputFile::fromFile(filename, mimeType);
    bot.getApi().sendDocument(chatId, file);
+}
+
+bool TelegramRunningBot::IgnoreCommand(const std::string& commandName)
+{
+   // Workaround for bug where shutdown command is not "cleared" from the list
+   // of pending messages after being executed.
+   // This causes all subsequent runs to immediately shutdown.
+   if (!firstMessageReceived)
+   {
+      firstMessageReceived = true;
+      if (commandName == "/shutdown")
+         return true;
+   }
+   return false;
 }
 
 bool TelegramRunningBot::WaitForSteppedRun(const time_t startTime)

@@ -1,3 +1,8 @@
+09/10/2022 (20.3)
+   No evident refactor of loop logic. Leaving as is. Going for shutdown
+   command bug... No alternative poll method found, implementing a
+   workaround ignoring first command when it's a shutdown.
+
 06/10/2022 (3h)
    Checking : run working. Plan for next features of ChatBot :
    - Fix sending debug information only when configured
