@@ -1,7 +1,25 @@
-09/10/2022 (20.3)
+10/10/2022 (1.4h)
+   Trying configuring gcc to create binaries for synology.
+   No way, it seems that newer gcc doesn't support ARM targets.
+   Checking recent ARM cross compilers... Strange error, possibly due
+   to libc. Checking OSes for Synology, installing Debian seems a big mess.
+   Abandoning for now :-(. Maybe cheaper to use old laptop hardware?
+   Added version command.
+Next planned work:
+   - Add automated tests
+   - Consider old hardware option
+
+09/10/2022 (1.1h)
    No evident refactor of loop logic. Leaving as is. Going for shutdown
    command bug... No alternative poll method found, implementing a
    workaround ignoring first command when it's a shutdown.
+   Creating new debian package. Fixed compilation error and
+   wrong copyright notice.
+   Synology naive build not working.
+Next planned work:
+   - Check possibilities with Synology build/reinstall
+   - Add version command from telegram bot
+   - Add some automated tests
 
 06/10/2022 (3h)
    Checking : run working. Plan for next features of ChatBot :

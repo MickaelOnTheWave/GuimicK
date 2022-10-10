@@ -38,6 +38,7 @@ protected:
    void ExecuteShutdown();
    void ExecuteWorkList();
    void ExecuteWait();
+   void ExecuteVersion();
    virtual void ExecuteGiveUserId() = 0;
    virtual void ExecuteShowInfo() = 0;
    virtual bool IsUserAuthorized() = 0;

@@ -13,13 +13,12 @@ bool CurlLibReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
     CurlLibEmailSender sender;
     sender.SetSenderData(emailAccountData);
 
-    vector<wstring> externalFiles;
-    vector<pair<wstring,wstring> > fileBuffers;
-    reportCreator->GetAssociatedFiles(externalFiles, fileBuffers);
+    ReportFileData fileData;
+    reportCreator->GetAssociatedFiles(fileData);
 
     return sender.Send(CreateEmailData(reportCreator),
-                       ToUtf8(externalFiles),
-                       ToUtf8(fileBuffers));
+                       ToUtf8(fileData.externalFiles),
+                       ToUtf8(fileData.fileBuffers));
 }
 
 EmailData CurlLibReportDispatcher::CreateEmailData(AbstractReportCreator *reportCreator) const

@@ -21,6 +21,7 @@ RunningBot::RunningBot(WorkExecutionManager& _workData)
    validCommands["/shutdown"] = CommandData("Shuts down agent immediately", std::bind(&RunningBot::ExecuteShutdown, this));
    validCommands["/run"] = CommandData("Execute work list", std::bind(&RunningBot::ExecuteWorkList, this));
    validCommands["/wait"] = CommandData("Makes bot wait for user before starting its work", std::bind(&RunningBot::ExecuteWait, this));
+   validCommands["/version"] = CommandData("Displays version information", std::bind(&RunningBot::ExecuteVersion, this));
 }
 
 RunningBot::~RunningBot()
@@ -157,6 +158,13 @@ void RunningBot::ExecuteWait()
 {
    SendMessage("Ok, I won't run on my own. I will wait for your commands.");
    waitForUser = true;
+}
+
+void RunningBot::ExecuteVersion()
+{
+   string versionStr = "GuimicK version ";
+   versionStr += StringTools::UnicodeToUtf8(workData.appVersion);
+   SendMessage(versionStr);
 }
 
 void RunningBot::SendExecutionReport(const wstring& reportContent, const ReportFileData& attachments)
