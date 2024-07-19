@@ -17,5 +17,7 @@ add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
 add_subdirectory(TaskTool)
 add_subdirectory(ConfigurationEditingTool)
+add_subdirectory(libs)
+add_subdirectory(tests)
 
 add_custom_target(Other SOURCES VERSION)
