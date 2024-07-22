@@ -5,11 +5,12 @@
 #endif
 
 #include <iostream>
+
 #include "botfactory.h"
 #include "consolejob.h"
 #include "filereportdispatcher.h"
 #include "filetools.h"
-#include "runningbot.h"
+#include "Bot/runningbot.h"
 #include "standaloneconfiguration.h"
 #include "stringtools.h"
 #include "taskmanagerconfiguration.h"
@@ -19,10 +20,10 @@ using namespace std;
 
 static const wstring DEFAULT_CONFIGURATION_FILE = L"configuration.txt";
 
-static const wstring noEmailCommand = L"noemail";
-static const wstring noShutdownCommand = L"noshutdown";
-static const wstring onlyOneJobCommand = L"onlyjob";
-static const wstring confFileCommand = L"conffile";
+static const string noEmailCommand = "noemail";
+static const string noShutdownCommand = "noshutdown";
+static const string onlyOneJobCommand = "onlyjob";
+static const string confFileCommand = "conffile";
 
 static const int TM_NO_ERROR           = 0;
 static const int CONFIGURATION_ERROR   = 1;
@@ -83,10 +84,18 @@ int MainToolModule::RunFromCommandLine(int argc, wchar_t* argv[])
    return Run(commandLine);
 }
 
-int MainToolModule::RunFromParameterMap(const std::map<wstring, wstring> &parameters)
+int MainToolModule::RunFromParameterMap(const map<wstring, wstring> &parameters)
 {
-    CommandLineManager commandLine(parameters);
-    return Run(commandLine);
+   map<string, string> convertedParams;
+   for (const auto& param : parameters)
+   {
+      const string key = StringTools::UnicodeToUtf8(param.first);
+      const string value = StringTools::UnicodeToUtf8(param.second);
+      convertedParams.insert(make_pair(key, value));
+   }
+
+   CommandLineManager commandLine(convertedParams);
+   return Run(commandLine);
 }
 
 int MainToolModule::Run(CommandLineManager &commandLine)
@@ -100,7 +109,9 @@ int MainToolModule::Run(CommandLineManager &commandLine)
     if (shouldReturn)
         return TM_NO_ERROR;
 
-    wstring configurationFile = GetConfigurationFile(commandLine.GetParameterValue(confFileCommand));
+
+    const string paramValue = commandLine.GetParameterValue(confFileCommand);
+    wstring configurationFile = GetConfigurationFile(StringTools::Utf8ToUnicode(confFileCommand));
     if (FileTools::FileExists(configurationFile) == false)
     {
         wcout << "Error : file " << configurationFile << " could not be opened." << endl;
@@ -145,16 +156,17 @@ int MainToolModule::Run(CommandLineManager &commandLine)
 
 bool MainToolModule::SetupCommandLine(CommandLineManager& manager)
 {
-    manager.AddParameter(noEmailCommand,     L"Doesn't send report via email.");
-    manager.AddParameter(noShutdownCommand,  L"Doesn't shutdown client neither server after running.");
-    manager.AddParameter(onlyOneJobCommand,  L"[JOBNAME] Only runs job JOBNAME.");
-    manager.AddParameter(confFileCommand,    L"[CONFIGURATION FILE] Specifies which configuration file to use.");
+   const string convertedVersion = StringTools::UnicodeToUtf8(version);
+   manager.AddParameter(noEmailCommand,     "Doesn't send report via email.");
+   manager.AddParameter(noShutdownCommand,  "Doesn't shutdown client neither server after running.");
+   manager.AddParameter(onlyOneJobCommand,  "[JOBNAME] Only runs job JOBNAME.");
+   manager.AddParameter(confFileCommand,    "[CONFIGURATION FILE] Specifies which configuration file to use.");
 
-    manager.EnableHelpCommand();
-    manager.EnableVersionCommand(L"GuimicK", version, L"Mickaël C. Guimarães", L"2014-2022");
+   manager.EnableHelpCommand();
+   manager.EnableVersionCommand("GuimicK", convertedVersion, "Mickaël C. Guimarães", "2014-2024");
 
-    return (manager.HandleUnknownParameters() || manager.HandleVersionCommand() ||
-            manager.HandleHelpCommand());
+   return (manager.HandleUnknownParameters() || manager.HandleVersionCommand() ||
+         manager.HandleHelpCommand());
 }
 
 wstring MainToolModule::GetConfigurationFile(const wstring& commandLineFile)
@@ -189,9 +201,12 @@ bool MainToolModule::SetupShutdownOptions(const bool isConfigShutdownEnabled,
 void MainToolModule::SetupSingleJobOption(ClientWorkManager* workList,
                                           const CommandLineManager& commandLine)
 {
-    wstring singleJob = commandLine.GetParameterValue(onlyOneJobCommand);
-    if (singleJob != L"")
-       workList->RemoveAllButJobs(singleJob);
+   const string singleJob = commandLine.GetParameterValue(onlyOneJobCommand);
+   if (singleJob != "")
+   {
+      const wstring convSingleJob = StringTools::Utf8ToUnicode(singleJob);
+      workList->RemoveAllButJobs(convSingleJob);
+   }
 }
 
 int MainToolModule::RunBotMode(WorkExecutionManager& data)
