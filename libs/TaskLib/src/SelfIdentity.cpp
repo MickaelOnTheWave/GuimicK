@@ -4,7 +4,7 @@
 #include "configurationtools.h"
 #include "emailaccountdataconfiguration.h"
 #include "stringtools.h"
-#include "telegrambotconfiguration.h"
+//#include "telegrambotconfiguration.h"
 
 using namespace std;
 

@@ -1,6 +1,6 @@
 #include "botfactory.h"
 
-#include "telegramrunningbot.h"
+#include "Bot/telegramrunningbot.h"
 
 using namespace std;
 

@@ -1,7 +1,7 @@
 #ifndef BOTFACTORY_H
 #define BOTFACTORY_H
 
-#include "runningbot.h"
+#include "Bot/runningbot.h"
 #include "WorkExecutionManager.h"
 
 class BotFactory

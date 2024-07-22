@@ -7,7 +7,7 @@
 
 #include "configurationobject.h"
 #include "emailaccountdata.h"
-#include "telegrambotconfiguration.h"
+#include "Bot/telegrambotconfiguration.h"
 
 class Agent
 {
