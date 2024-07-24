@@ -1,9 +1,0 @@
-sending incremental file list
-.d..t...... ./
->f+++++++++ wooo
->f+++++++++ yaahaaaa
->f+++++++++ yiiiii
->f+++++++++ yoohoo
-
-sent 368 bytes  received 95 bytes  926.00 bytes/sec
-total size is 63  speedup is 0.14

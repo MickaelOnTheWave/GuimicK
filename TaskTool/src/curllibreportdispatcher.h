@@ -2,6 +2,7 @@
 #define CURLLIBREPORTDISPATCHER_H
 
 #include "abstractemailreportdispatcher.h"
+#include "emaildata.h"
 
 class CurlLibReportDispatcher : public AbstractEmailReportDispatcher
 {

@@ -1,5 +1,0 @@
-files/
-files/ExtractDataFromGopro.sh
-files/encomenda cpb.pdf
-files/synology.pub
-files/TODOs (2016)

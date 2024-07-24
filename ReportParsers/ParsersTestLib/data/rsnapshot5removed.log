@@ -1,9 +1,0 @@
-Comparing rsnapshotroot/weekly.1/ to rsnapshotroot/weekly.0
-- rsnapshotroot/weekly.1/rsnapshotdest/file2
-- rsnapshotroot/weekly.1/rsnapshotdest/file4
-- rsnapshotroot/weekly.1/rsnapshotdest/file1
-- rsnapshotroot/weekly.1/rsnapshotdest/file3
-- rsnapshotroot/weekly.1/rsnapshotdest/file0
-Between rsnapshotroot/weekly.1/ and rsnapshotroot/weekly.0:
-  0 were added, taking 0 bytes;
-  5 were removed, saving 50005 bytes;

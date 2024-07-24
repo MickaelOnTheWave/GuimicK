@@ -1,3 +1,0 @@
-/bin/tar: Removendo `/' do inicio do nome dos membros
-/tmp/TaskManagerTestSuites/currentFolderToBackup/
-

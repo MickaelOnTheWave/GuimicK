@@ -1,2 +1,0 @@
-Sist.fichs      Tama  Ocup Livre Uso% Montado em
-/dev/sda2       230G  168G   50G  78% /

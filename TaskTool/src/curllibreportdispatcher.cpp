@@ -1,6 +1,6 @@
 #include "curllibreportdispatcher.h"
 
-#include "curllibemailsender.h"
+//#include "curllibemailsender.h"
 
 using namespace std;
 
@@ -10,7 +10,7 @@ CurlLibReportDispatcher::CurlLibReportDispatcher()
 
 bool CurlLibReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 {
-    CurlLibEmailSender sender;
+    /*CurlLibEmailSender sender;
     sender.SetSenderData(emailAccountData);
 
     ReportFileData fileData;
@@ -18,7 +18,8 @@ bool CurlLibReportDispatcher::Dispatch(AbstractReportCreator *reportCreator)
 
     return sender.Send(CreateEmailData(reportCreator),
                        ToUtf8(fileData.externalFiles),
-                       ToUtf8(fileData.fileBuffers));
+                       ToUtf8(fileData.fileBuffers));*/
+   return false;
 }
 
 EmailData CurlLibReportDispatcher::CreateEmailData(AbstractReportCreator *reportCreator) const
