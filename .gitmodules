@@ -4,3 +4,6 @@
 [submodule "libs/tgbot"]
 	path = libs/tgbot
 	url = git@github.com:reo7sp/tgbot-cpp.git
+[submodule "libs/QtToolsLib"]
+	path = libs/QtToolsLib
+	url = git@github.com:MickaelOnTheWave/QtToolsLib.git
