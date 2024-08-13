@@ -34,6 +34,8 @@ void JobDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
 
 QSize JobDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+   Q_UNUSED(option)
+   Q_UNUSED(index)
    return widget->size();
 }
 

@@ -1,7 +1,6 @@
 #include "curldispatcherreplacer.h"
 #include "maintoolmodule.h"
 #include "ostools.h"
-#include "stringtools.h"
 
 #ifdef _WIN32
     #include <Windows.h>

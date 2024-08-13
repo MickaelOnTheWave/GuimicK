@@ -13,7 +13,7 @@ set(CMAKE_AUTORCC ON)
 
 find_package(Qt5Widgets REQUIRED)
 
-add_definitions(-DVERSION="${VERSION}")
+add_definitions(-DVERSION="${APP_VERSION}")
 
 set (projectRoot "${CMAKE_CURRENT_SOURCE_DIR}/../..")
 set (PROG_ROOT "${projectRoot}/../..")

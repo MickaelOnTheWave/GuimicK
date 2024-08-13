@@ -13,6 +13,10 @@ JobDataModel::JobDataModel(QObject *parent)
 
 QVariant JobDataModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+   Q_UNUSED(section)
+   Q_UNUSED(orientation)
+   Q_UNUSED(role)
+
    return QVariant("Jobs");
 }
 
@@ -66,6 +70,8 @@ void JobDataModel::MoveJob(const int oldIndex, const int newIndex)
 
 bool JobDataModel::removeRows(int row, int count, const QModelIndex& parent)
 {
+   Q_UNUSED(parent)
+
    auto it = jobs.begin()+row;
    jobs.erase(it, it+count);
    return true;
