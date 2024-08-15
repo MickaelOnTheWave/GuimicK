@@ -8,6 +8,8 @@
 #include <gitporcelainreportparser.h>
 #include <rsnapshotreportparser.h>
 
+#include "stringtools.h"
+
 using namespace std;
 
 static const int OK             = 0;
@@ -15,20 +17,20 @@ static const int PARSER_ERROR   = 1;
 static const int PARSING_ERROR  = 2;
 static const int USAGE_ERROR    = 3;
 
-AbstractOutputParser* CreateParser(const std::wstring& name);
+AbstractOutputParser* CreateParser(const std::string& name);
 
 int main(int argc, char* argv[])
 {
     CommandLineManager commandLine(argc, argv);
 
-    commandLine.AddParameter(L"input", L"[REPORT_FILE]");
-    commandLine.AddParameter(L"output", L"[OUTPUT_FILE]");
-    commandLine.AddParameter(L"parser", L"[PARSER]");
-    commandLine.AddParameter(L"direct", L"Outputs raw data without \"headers\". For automated usage.");
-    commandLine.AddParameter(L"inputbuffer", L"Uses input directly from command line instead of file. "
-                             L"Must be between \"\".");
+    commandLine.AddParameter("input", "[REPORT_FILE]");
+    commandLine.AddParameter("output", "[OUTPUT_FILE]");
+    commandLine.AddParameter("parser", "[PARSER]");
+    commandLine.AddParameter("direct", "Outputs raw data without \"headers\". For automated usage.");
+    commandLine.AddParameter("inputbuffer", "Uses input directly from command line instead of file. "
+                             "Must be between \"\".");
 
-    bool isDirectUsage = commandLine.HasParameter(L"direct");
+    bool isDirectUsage = commandLine.HasParameter("direct");
 
     if (!isDirectUsage)
     {
@@ -39,13 +41,13 @@ int main(int argc, char* argv[])
             return USAGE_ERROR;
     }
 
-    const wstring inputFile(commandLine.GetParameterValue(L"input"));
-    const wstring inputBuffer(commandLine.GetParameterValue(L"inputbuffer"));
-    const wstring outputFile(commandLine.GetParameterValue(L"output"));
-    const wstring parserAlgorithm(commandLine.GetParameterValue(L"parser"));
-    const bool isInputValid = (inputFile != L"" || inputBuffer != L"");
+    const string inputFile(commandLine.GetParameterValue("input"));
+    const string inputBuffer(commandLine.GetParameterValue("inputbuffer"));
+    const string outputFile(commandLine.GetParameterValue("output"));
+    const string parserAlgorithm(commandLine.GetParameterValue("parser"));
+    const bool isInputValid = (inputFile != "" || inputBuffer != "");
 
-    if (isInputValid == false || parserAlgorithm == L"")
+    if (isInputValid == false || parserAlgorithm == "")
     {
         if (!isDirectUsage)
             commandLine.ShowUsageInformation();
@@ -56,16 +58,16 @@ int main(int argc, char* argv[])
     if (parser == NULL)
     {
         if (!isDirectUsage)
-            wcout << L"Error : Parser " << parserAlgorithm << L"is not handled." << endl;
+            cout << "Error : Parser " << parserAlgorithm << "is not handled." << endl;
         return PARSER_ERROR;
     }
 
 
     bool result = false;
-    if (inputFile != L"")
-        result = parser->ParseFile(inputFile);
+    if (inputFile != "")
+       result = parser->ParseFile(StringTools::Utf8ToUnicode(inputFile));
     else
-        result = parser->ParseBuffer(inputBuffer);
+       result = parser->ParseBuffer(StringTools::Utf8ToUnicode(inputBuffer));
 
     if (result == false)
     {
@@ -74,7 +76,7 @@ int main(int argc, char* argv[])
         return PARSING_ERROR;
     }
 
-    parser->WriteFullDescriptionToFile(outputFile);
+    parser->WriteFullDescriptionToFile(StringTools::Utf8ToUnicode(outputFile));
 
     if (!isDirectUsage)
         cout << "Mini description : ";
@@ -83,17 +85,17 @@ int main(int argc, char* argv[])
     return OK;
 }
 
-AbstractOutputParser* CreateParser(const std::wstring& name)
+AbstractOutputParser* CreateParser(const std::string& name)
 {
-    if (name == L"aptupgrade")
+    if (name == "aptupgrade")
         return new AptGetUpgradeParser();
-    else if (name == L"clamav")
+    else if (name == "clamav")
         return new ClamAvReportParser();
-    else if (name == L"rsnapshot")
+    else if (name == "rsnapshot")
         return new RSnapshotReportParser();
-    else if (name == L"git")
+    else if (name == "git")
         return new GitPorcelainReportParser();
-    else if (name == L"df")
+    else if (name == "df")
         return new DfCommandParser();
     else
         return NULL;

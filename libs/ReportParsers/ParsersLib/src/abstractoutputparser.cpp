@@ -7,10 +7,6 @@
 
 using namespace std;
 
-AbstractOutputParser::~AbstractOutputParser()
-{
-}
-
 bool AbstractOutputParser::ParseFile(const wstring &inputFile)
 {
    wstring fileContents(L"");
