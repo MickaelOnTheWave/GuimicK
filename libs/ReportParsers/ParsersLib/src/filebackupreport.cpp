@@ -3,11 +3,9 @@
 #include <algorithm>
 #include <sstream>
 
-using namespace std;
+#include "tools.h"
 
-FileBackupReport::FileBackupReport()
-{
-}
+using namespace std;
 
 FileBackupReport::FileBackupReport(const FileBackupReport& other)
    : added(other.added),
@@ -16,15 +14,18 @@ FileBackupReport::FileBackupReport(const FileBackupReport& other)
 {
 }
 
-FileBackupReport::~FileBackupReport()
-{
-}
-
 void FileBackupReport::Clear()
 {
     added.clear();
     modified.clear();
     removed.clear();
+}
+
+bool FileBackupReport::operator==(const FileBackupReport& other) const
+{
+   return (Tools::AreEqual(added, other.added) &&
+           Tools::AreEqual(removed, other.removed) &&
+           Tools::AreEqual(modified, other.modified));
 }
 
 FileBackupReport& FileBackupReport::operator=(const FileBackupReport &other)

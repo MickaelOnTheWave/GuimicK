@@ -1,0 +1,10 @@
+sending incremental file list
+.d..t...... ./
+cd+++++++++ New Folder/
+>f+++++++++ New Folder/always_coke.jpg
+>f+++++++++ New Folder/elections1.gif
+>f+++++++++ New Folder/joie_bureau.gif
+>f+++++++++ New Folder/manque_morceau.gif
+
+sent 79.33K bytes  received 103 bytes  158.87K bytes/sec
+total size is 341.98K  speedup is 4.31

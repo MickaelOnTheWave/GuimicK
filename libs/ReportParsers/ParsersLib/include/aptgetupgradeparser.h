@@ -4,6 +4,7 @@
 #include "abstractoutputparser.h"
 
 #include <vector>
+#include "tools.h"
 
 class AptGetUpgradeReport
 {
@@ -20,17 +21,13 @@ public:
    StringVec installedPackages;
    StringVec removedPackages;
    std::wstring updateFileSize;
-
-private:
-   bool AreEqual(const StringVec& list1, const StringVec& list2) const;
-
 };
 
 class AptGetUpgradeParser : public AbstractOutputParser
 {
 public:
-    AptGetUpgradeParser();
-    virtual ~AptGetUpgradeParser();
+    AptGetUpgradeParser() = default;
+    virtual ~AptGetUpgradeParser() = default;
 
     virtual bool ParseBuffer(const std::wstring& buffer);
     virtual std::wstring GetMiniDescription();
@@ -59,7 +56,7 @@ protected:
     std::wstring FindAndRemoveStringContaining(const std::wstring& tag, std::vector<std::wstring>* lineList);
 
     AptGetUpgradeReport report;
-    std::wstring fullDescription;
+    std::wstring fullDescription = L"";
 
 };
 

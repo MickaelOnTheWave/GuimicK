@@ -10,19 +10,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Catch2 REQUIRED)
 
 set(sources
-    src/abstractoutputparsertest.cpp
-    src/abstractoutputparsertest.h
-    src/aptupgradeparsertest.cpp
-    src/aptupgradeparsertest.h
-    src/chkdskparsertests.cpp
-    src/dfparsertests.cpp
+    src/abstractoutputparsertestfixture.cpp
+    src/abstractoutputparsertestfixture.h
+    src/aptupgradeparsertestfixture.cpp
+    src/aptupgradeparsertestfixture.h
+    src/dfparsertestfixture.h
     src/diskparsertestfixture.cpp
     src/diskparsertestfixture.h
-    src/filebackupparserabstracttest.cpp
-    src/filebackupparserabstracttest.h
+    src/filebackupparsertestfixture.cpp
+    src/filebackupparsertestfixture.h
+    src/aptupgradeparsertests.cpp
+    src/chkdskparsertests.cpp
+    src/dfparsertests.cpp
 )
 
 add_executable(ParsersTests ${sources})
+
 target_link_libraries(ParsersTests ParsersLib Catch2::Catch2WithMain)
 
 include(CTest)

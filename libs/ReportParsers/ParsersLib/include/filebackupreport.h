@@ -7,10 +7,11 @@
 class FileBackupReport
 {
 public:
-   FileBackupReport();
+   FileBackupReport() = default;
    FileBackupReport(const FileBackupReport& other);
-   virtual ~FileBackupReport();
+   virtual ~FileBackupReport() = default;
 
+   bool operator==(const FileBackupReport& other) const;
    FileBackupReport& operator=(const FileBackupReport& other);
 
    virtual void Clear();

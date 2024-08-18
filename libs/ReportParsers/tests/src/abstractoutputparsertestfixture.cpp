@@ -1,20 +1,20 @@
-#include "abstractoutputparsertest.h"
+#include "abstractoutputparsertestfixture.h"
 
 #include <catch2/catch.hpp>
 #include <filetools.h>
 
-AbstractOutputParserTest::AbstractOutputParserTest(const std::wstring &dataPrefix)
+AbstractOutputParserTestFixture::AbstractOutputParserTestFixture(const std::wstring &dataPrefix)
   : dataFolder(dataPrefix),
   parserToTest(nullptr)
 {
 }
 
-AbstractOutputParserTest::~AbstractOutputParserTest()
+AbstractOutputParserTestFixture::~AbstractOutputParserTestFixture()
 {
    delete parserToTest;
 }
 
-void AbstractOutputParserTest::TestParseFile_InexistentFile()
+void AbstractOutputParserTestFixture::TestParseInexistentFile()
 {
    const bool result = parserToTest->ParseFile(dataFolder + L"nonexistentfile");
    REQUIRE(result == false);

@@ -2,3 +2,4 @@ bin/
 TaskTestLib/data/errors/
 CMakeLists.txt.user*
 *.pro.user*
+build/

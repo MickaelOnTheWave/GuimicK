@@ -18,7 +18,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "dfparserfixture.h"
+#include "dfparsertestfixture.h"
 
 using namespace std;
 
@@ -38,12 +38,12 @@ namespace
    }
 }
 
-TEST_CASE_METHOD(DfParserFixture, "doesnt_crash_when_parsing_invalid_buffer")
+TEST_CASE_METHOD(DfParserTestFixture, "doesnt_crash_when_parsing_invalid_buffer")
 {
    TestNoCrashOnInvalidBuffer();
 }
 
-TEST_CASE_METHOD(DfParserFixture, "creates_one_drive_report")
+TEST_CASE_METHOD(DfParserTestFixture, "creates_one_drive_report")
 {
    const wstring buffer = L"Sist.fichs      Tama  Ocup Livre Uso% Montado em \n"
                           L"/dev/sda2       230G  168G   50G  78% /";
@@ -56,7 +56,7 @@ TEST_CASE_METHOD(DfParserFixture, "creates_one_drive_report")
    TestParseOk(buffer, expectedOutput);
 }
 
-TEST_CASE_METHOD(DfParserFixture, "creates_multiple_drive_report")
+TEST_CASE_METHOD(DfParserTestFixture, "creates_multiple_drive_report")
 {
    const wstring buffer = L"Sist.fichs      Tama  Ocup Livre Uso% Montado em\n"
                           L"udev             12G  4.0K   12G   1% /dev\n"
@@ -89,7 +89,7 @@ TEST_CASE_METHOD(DfParserFixture, "creates_multiple_drive_report")
    TestParseOk(buffer, expectedOutput);
 }
 
-TEST_CASE_METHOD(DfParserFixture, "reports_one_drive_not_found_error")
+TEST_CASE_METHOD(DfParserTestFixture, "reports_one_drive_not_found_error")
 {
    const wstring buffer = L"Filesystem                Size      Used Available Use% Mounted on\n"
                           L"df: /dev/sda2: can't find mount point";

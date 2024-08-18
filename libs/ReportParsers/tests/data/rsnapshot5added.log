@@ -1,0 +1,9 @@
+Comparing rsnapshotroot/weekly.1/ to rsnapshotroot/weekly.0
++ rsnapshotroot/weekly.0/rsnapshotdest/file3
++ rsnapshotroot/weekly.0/rsnapshotdest/file4
++ rsnapshotroot/weekly.0/rsnapshotdest/file0
++ rsnapshotroot/weekly.0/rsnapshotdest/file2
++ rsnapshotroot/weekly.0/rsnapshotdest/file1
+Between rsnapshotroot/weekly.1/ and rsnapshotroot/weekly.0:
+  5 were added, taking 5005 bytes;
+  0 were removed, saving 0 bytes;
