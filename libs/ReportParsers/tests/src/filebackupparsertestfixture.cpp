@@ -5,11 +5,6 @@
 
 using namespace std;
 
-FileBackupParserTestFixture::FileBackupParserTestFixture(const wstring& dataPrefix)
-    : AbstractOutputParserTestFixture(dataPrefix)
-{
-}
-
 void FileBackupParserTestFixture::TestParseOk(const std::wstring &file, const FileBackupReport &expectedData)
 {
    const bool returnValue = parserToTest->ParseFile(dataFolder + file);

@@ -9,10 +9,6 @@ GitPlumbingReportParser::GitPlumbingReportParser()
 {
 }
 
-GitPlumbingReportParser::~GitPlumbingReportParser()
-{
-}
-
 bool GitPlumbingReportParser::ParseBuffer(const wstring &buffer)
 {
     reportData->Clear();

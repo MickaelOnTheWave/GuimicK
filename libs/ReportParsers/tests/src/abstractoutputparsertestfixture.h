@@ -7,8 +7,10 @@
 class AbstractOutputParserTestFixture
 {
 public:
-   AbstractOutputParserTestFixture(const std::wstring& dataPrefix);
+   AbstractOutputParserTestFixture() = default;
    virtual ~AbstractOutputParserTestFixture();
+
+   void SetParser(AbstractOutputParser* parser);
 
    void TestParseInexistentFile();
    //void test_ParseFile_Ok();
@@ -16,7 +18,7 @@ public:
 
 protected:
    std::wstring dataFolder;
-   AbstractOutputParser* parserToTest;
+   AbstractOutputParser* parserToTest = nullptr;
 };
 
 #endif // ABSTRACTOUTPUTPARSERTESTFIXTURE_H

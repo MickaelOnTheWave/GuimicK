@@ -6,7 +6,7 @@
 using namespace std;
 
 AptUpgradeParserTestFixture::AptUpgradeParserTestFixture()
-  : AbstractOutputParserTestFixture(L"")
+  : AbstractOutputParserTestFixture()
 {
    parserToTest = new AptGetUpgradeParser();
 }

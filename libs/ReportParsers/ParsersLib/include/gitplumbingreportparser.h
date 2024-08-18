@@ -9,7 +9,7 @@ class GitPlumbingReportParser : public AbstractFileBackupParser
 {
 public:
     GitPlumbingReportParser();
-    virtual ~GitPlumbingReportParser();
+    virtual ~GitPlumbingReportParser() = default;
 
     virtual bool ParseBuffer(const std::wstring& buffer);
 

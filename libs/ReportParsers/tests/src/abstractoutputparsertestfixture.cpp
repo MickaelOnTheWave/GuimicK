@@ -3,15 +3,14 @@
 #include <catch2/catch.hpp>
 #include <filetools.h>
 
-AbstractOutputParserTestFixture::AbstractOutputParserTestFixture(const std::wstring &dataPrefix)
-  : dataFolder(dataPrefix),
-  parserToTest(nullptr)
-{
-}
-
 AbstractOutputParserTestFixture::~AbstractOutputParserTestFixture()
 {
    delete parserToTest;
+}
+
+void AbstractOutputParserTestFixture::SetParser(AbstractOutputParser *parser)
+{
+   parserToTest = parser;
 }
 
 void AbstractOutputParserTestFixture::TestParseInexistentFile()
