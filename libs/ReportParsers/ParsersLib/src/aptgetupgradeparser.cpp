@@ -1,5 +1,6 @@
 #include "aptgetupgradeparser.h"
 
+#include <algorithm>
 #include <sstream>
 
 #include "stringtools.h"
@@ -7,6 +8,16 @@
 using namespace std;
 
 const wstring space = L" ";
+
+bool AptGetUpgradeReport::operator==(const AptGetUpgradeReport &other) const
+{
+   return  (AreEqual(installedPackages, other.installedPackages) &&
+            AreEqual(keptPackages, other.keptPackages) &&
+            AreEqual(obsoletePackages, other.obsoletePackages) &&
+            AreEqual(removedPackages, other.removedPackages) &&
+            AreEqual(upgradedPackages, other.upgradedPackages) &&
+            updateFileSize == other.updateFileSize);
+}
 
 void AptGetUpgradeReport::Clear()
 {
@@ -32,6 +43,20 @@ vector<wstring> *AptGetUpgradeReport::GetListPointerFromDescription(const wstrin
         return &installedPackages;
     else
         return NULL;
+}
+
+bool AptGetUpgradeReport::AreEqual(const StringVec &list1, const StringVec &list2) const
+{
+   if (list1.size() != list2.size())
+      return false;
+
+   for (const auto& str1 : list1)
+   {
+      auto it = std::find(list2.begin(), list2.end(), str1);
+      if (it == list2.end())
+         return false;
+   }
+   return true;
 }
 
 

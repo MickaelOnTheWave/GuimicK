@@ -3,21 +3,27 @@
 
 #include "abstractoutputparser.h"
 
-#include <fstream>
 #include <vector>
 
 class AptGetUpgradeReport
 {
 public:
-    void Clear();
-    std::vector<std::wstring> *GetListPointerFromDescription(const std::wstring &line);
+   bool operator==(const AptGetUpgradeReport& other) const;
+   void Clear();
 
-    std::vector<std::wstring> obsoletePackages;
-    std::vector<std::wstring> keptPackages;
-    std::vector<std::wstring> upgradedPackages;
-    std::vector<std::wstring> installedPackages;
-    std::vector<std::wstring> removedPackages;
-    std::wstring updateFileSize;
+   using StringVec = std::vector<std::wstring>;
+   StringVec *GetListPointerFromDescription(const std::wstring &line);
+
+   StringVec obsoletePackages;
+   StringVec keptPackages;
+   StringVec upgradedPackages;
+   StringVec installedPackages;
+   StringVec removedPackages;
+   std::wstring updateFileSize;
+
+private:
+   bool AreEqual(const StringVec& list1, const StringVec& list2) const;
+
 };
 
 class AptGetUpgradeParser : public AbstractOutputParser
