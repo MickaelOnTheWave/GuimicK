@@ -19,11 +19,13 @@ set(sources
     src/diskparsertestfixture.h
     src/filebackupparsertestfixture.cpp
     src/filebackupparsertestfixture.h
-    src/parserstestsuites.h
     src/aptupgradeparsertests.cpp
     src/chkdskparsertests.cpp
     src/dfparsertests.cpp
     src/gittests.cpp
+    src/rsnapshottests.cpp
+    src/rsynctests.cpp
+    src/tartests.cpp
 )
 
 add_executable(ParsersTests ${sources})

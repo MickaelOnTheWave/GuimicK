@@ -90,7 +90,7 @@ TEST_CASE_METHOD(FileBackupParserTestFixture, "Git Plumbing - Parse OK")
    const wstring dataFolder = L"GitPlumbing/";
 
    TestData testData = CreatePlumbingTestData();
-   for (const auto currentTest : testData)
+   for (const auto& currentTest : testData)
       TestParseOk(dataFolder + currentTest.first, currentTest.second);
 }
 
