@@ -1,4 +1,4 @@
-#include "telegrambotconfiguration.h"
+#include "Bot/telegrambotconfiguration.h"
 
 #include <algorithm>
 #include "configurationtools.h"

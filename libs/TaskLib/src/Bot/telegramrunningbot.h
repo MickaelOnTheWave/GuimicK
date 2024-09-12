@@ -4,7 +4,7 @@
 #include "runningbot.h"
 
 #include <string>
-//#include <tgbot/tgbot.h>
+#include <tgbot/tgbot.h>
 #include "Bot/TelegramBotData.h"
 
 class TelegramRunningBot : public RunningBot
@@ -39,8 +39,8 @@ private:
    bool WaitForSteppedRun(const time_t startTime);
 
    bool firstMessageReceived = false;
-   //TgBot::Bot bot;
-   //TgBot::Message::Ptr currentMessage;
+   TgBot::Bot bot;
+   TgBot::Message::Ptr currentMessage;
    int64_t chatId;
 };
 

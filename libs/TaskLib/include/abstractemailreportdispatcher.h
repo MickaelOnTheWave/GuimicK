@@ -4,7 +4,6 @@
 #include <string>
 
 #include "AbstractReportDispatcher.h"
-#include "emaildata.h"
 
 class ServerConfiguration;
 
@@ -12,7 +11,7 @@ class AbstractEmailReportDispatcher : public AbstractReportDispatcher
 {
 public:
     AbstractEmailReportDispatcher();
-    virtual ~AbstractEmailReportDispatcher();
+    virtual ~AbstractEmailReportDispatcher() = default;
 
     virtual std::wstring GetName(void) const;
     virtual std::wstring GetLastError(void) const;

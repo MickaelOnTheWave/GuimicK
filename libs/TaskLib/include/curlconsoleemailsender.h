@@ -2,6 +2,7 @@
 #define CURLCONSOLEEMAILSENDER_H
 
 #include "abstractemailreportdispatcher.h"
+#include "emaildata.h"
 #include <string>
 #include <vector>
 

@@ -14,12 +14,14 @@ if (CURL_FOUND)
    add_definitions(-DHAVE_CURL)
 endif()
 
-file(GLOB includes "include/*")
-file(GLOB sources "src/*")
+file(GLOB_RECURSE includes "include/*")
+file(GLOB_RECURSE sources "src/*")
 
 add_library(TaskLib ${sources})
 
 target_include_directories(TaskLib PUBLIC "include/")
-target_link_libraries (TaskLib ParsersLib BasicToolsLib)
+target_link_libraries (TaskLib ParsersLib BasicToolsLib TgBot)
 
-target_link_libraries(TaskLib /usr/local/lib/libTgBot.a ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES})
+target_link_libraries(TaskLib ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES})
+
+add_subdirectory(tests)

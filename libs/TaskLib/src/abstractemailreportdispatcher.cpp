@@ -16,10 +16,6 @@ AbstractEmailReportDispatcher::AbstractEmailReportDispatcher()
 {
 }
 
-AbstractEmailReportDispatcher::~AbstractEmailReportDispatcher()
-{
-}
-
 wstring AbstractEmailReportDispatcher::GetName() const
 {
    return L"Email";

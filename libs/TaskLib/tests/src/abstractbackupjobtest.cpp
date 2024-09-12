@@ -11,8 +11,42 @@ using namespace std;
 AbstractBackupJobTest::AbstractBackupJobTest(
       const wstring& dataPrefix,
       const wstring& errorPrefix
-   )
+   ) :
+  dataFolderPrefix(dataPrefix)
 {
+}
+
+void AbstractBackupJobTest::TestBackupAndRestore()
+{
+   auto testFunction = [this](const wstring& sourceBefore, const wstring& sourceNow, const bool remote)
+   {
+      const wstring restoreFolder = L"restore/";
+
+      AbstractBackupJob* job = CreateNewJob();
+      RunBackup(job, sourceNow);
+      RunRestore(job, restoreFolder);
+      const bool same = FileTestUtils::CheckFoldersHaveSameContent(
+          QString::fromStdWString(sourceNow),
+          QString::fromStdWString(restoreFolder)
+          );
+      REQUIRE(same == true);
+      delete job;
+   };
+   TestOnDataset(testFunction);
+}
+
+void AbstractBackupJobTest::TestOnDataset(TestFunction testFunction)
+{
+   const QStringList testCases = FileTestUtils::GetFolderList(QString::fromStdWString(dataFolderPrefix));
+   for (const auto& testCase : testCases)
+   {
+      currentTestCaseFolder = dataFolderPrefix + testCase.toStdWString() + L"/";
+
+      const wstring beforeFolder = currentTestCaseFolder + L"sourceBefore";
+      const wstring nowFolder = currentTestCaseFolder + L"sourceNow";
+
+      testFunction(beforeFolder, nowFolder, true);
+   }
 }
 
 void AbstractBackupJobTest::init()
@@ -24,52 +58,6 @@ void AbstractBackupJobTest::cleanup()
 {
     wstring unusedOutput;
     Tools::RunExternalCommandToBuffer(L"rm -Rf *", unusedOutput, true);
-}
-
-void AbstractBackupJobTest::testBackupAndRestore_data()
-{
-   LoadExternalDataSamples(false);
-
-   testBackupAndRestore();
-}
-
-void AbstractBackupJobTest::testBackupAndRestore(const wstring& testName, const wstring& testFolder)
-{
-   QFETCH(QString, sourceNow);
-   currentTestCaseName = StringTools::Utf8ToUnicode(QTest::currentDataTag());
-   currentTestCaseFolder = GetDataFolder() + currentTestCaseName + L"/";
-
-   const wstring sourceFolder = currentTestCaseFolder + sourceNow.toStdWString();
-   const wstring restoreFolder = L"restore/";
-
-   AbstractBackupJob* job = CreateNewJob();
-   RunBackup(job, sourceFolder);
-   RunRestore(job, restoreFolder);
-   FileTestUtils::CheckFoldersHaveSameContent(
-            QString::fromStdWString(sourceFolder),
-            QString::fromStdWString(restoreFolder));
-   delete job;
-}
-
-void AbstractBackupJobTest::LoadExternalDataSamples(const bool isRemote)
-{
-    QTest::addColumn<QString>("sourceBefore");
-    QTest::addColumn<QString>("sourceNow");
-    QTest::addColumn<QString>("description");
-    QTest::addColumn<QString>("report");
-    QTest::addColumn<bool>("remote");
-
-    QStringList testCases = FileTestUtils::GetFolderList(QString::fromStdWString(GetDataFolder()));
-    for (auto it=testCases.begin(); it!=testCases.end(); ++it)
-    {
-        string stdString = it->toStdString();
-        QTest::newRow(stdString.c_str())
-                                << "sourceBefore"
-                                << "sourceNow"
-                                << "miniDescription.txt"
-                                << "fullReport.txt"
-                                << isRemote;
-    }
 }
 
 void AbstractBackupJobTest::RunBackup(AbstractBackupJob* job, const wstring& folder)
