@@ -1,0 +1,8 @@
+1 files added
+	/repository/file.txt
+
+0 files modified
+
+0 files removed
+
+107.00 bytes added, 0.00 bytes removed, and overall 107.00 bytes taken

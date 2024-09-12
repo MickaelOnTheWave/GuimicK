@@ -1,0 +1,16 @@
+10 files added
+	Keep it Simple.jpg
+	TODOs
+	vlcsnap-2016-11-10-21h12m21s240.png
+	SubFolder/
+	SubFolder/GitFsJob_multiplerepositories_joined_report.html
+	SubFolder/GitFsJob_multiplerepositories_separated_attachment1.txt
+	SubFolder/GitFsJob_multiplerepositories_separated_report.html
+	SubFolder/GitFsJob_remote_report.html
+	SubFolder/RsnapshotNewConf_attachment1.txt
+	SubFolder/RsnapshotNewConf_report.html
+
+0 files modified
+
+0 files removed
+

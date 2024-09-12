@@ -1,0 +1,10 @@
+1 files added
+	/tag/Keep it Simple.jpg
+
+1 files modified
+	/tag/TODOs
+
+1 files removed
+	/tag/CD Surf 1.m3u
+
+29.88 Kb added, 1.46 Kb removed, and overall 28.42 Kb taken

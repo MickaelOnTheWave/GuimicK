@@ -1,0 +1,19 @@
+13 files added
+	Destination1/CD Surf 1.m3u
+	Destination1/TODOs
+	Destination1/vlcsnap-2016-11-10-21h12m21s240.png
+	Destination2/Keep it Simple.jpg
+	Destination2/TODOs
+	Destination2/vlcsnap-2016-11-10-21h12m21s240.png
+	Destination2/SubFolder/
+	Destination2/SubFolder/GitFsJob_multiplerepositories_joined_report.html
+	Destination2/SubFolder/GitFsJob_multiplerepositories_separated_attachment1.txt
+	Destination2/SubFolder/GitFsJob_multiplerepositories_separated_report.html
+	Destination2/SubFolder/GitFsJob_remote_report.html
+	Destination2/SubFolder/RsnapshotNewConf_attachment1.txt
+	Destination2/SubFolder/RsnapshotNewConf_report.html
+
+0 files modified
+
+0 files removed
+

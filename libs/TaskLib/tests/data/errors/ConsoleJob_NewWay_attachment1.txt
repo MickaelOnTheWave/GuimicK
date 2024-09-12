@@ -1,0 +1,8 @@
+CopyNotesFromCellphone.sh
+ExtractDataFromGopro.sh
+image00003.pgm
+image00004.pgm
+image00009.pgm
+image00010.pgm
+TODOs
+TODOs (2016)

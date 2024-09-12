@@ -1,0 +1,3 @@
+Setting timeout : 2
+maxRetries : 3
+timeout : 2

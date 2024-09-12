@@ -1,0 +1,10 @@
+4 files added
+	/tmp/TaskManagerTestSuites/repository//weekly.0/repository/6232100495809.sav
+	/tmp/TaskManagerTestSuites/repository//weekly.0/repository/ex1_description.txt
+	/tmp/TaskManagerTestSuites/repository//weekly.0/repository/GamerProfile.xml
+	/tmp/TaskManagerTestSuites/repository//weekly.0/repository/HomepageEsperancajpg
+
+0 files modified
+
+0 files removed
+

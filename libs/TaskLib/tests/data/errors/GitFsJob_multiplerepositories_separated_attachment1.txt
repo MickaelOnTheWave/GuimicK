@@ -1,0 +1,21 @@
+--- Destination1/ ---
+3 files added
+	CD Surf 1.m3u
+	TODOs
+	vlcsnap-2016-11-10-21h12m21s240.png
+
+0 files modified
+
+0 files removed
+
+--- Destination2/ ---
+3 files added
+	Keep it Simple.jpg
+	TODOs
+	vlcsnap-2016-11-10-21h12m21s240.png
+
+0 files modified
+
+0 files removed
+
+------------------
