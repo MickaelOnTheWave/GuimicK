@@ -41,7 +41,7 @@ SshConsoleJob::~SshConsoleJob()
     delete remoteJob;
 }
 
-wstring SshConsoleJob::GetName()
+wstring SshConsoleJob::GetName() const
 {
     return remoteJob->GetName();
 }

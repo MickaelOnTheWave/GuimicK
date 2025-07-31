@@ -13,8 +13,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
-
 add_subdirectory(TaskTool)
 add_subdirectory(ConfigurationEditingTool)
 add_subdirectory(libs)

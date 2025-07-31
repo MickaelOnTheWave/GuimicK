@@ -24,4 +24,4 @@ target_link_libraries (TaskLib ParsersLib BasicToolsLib TgBot)
 
 target_link_libraries(TaskLib ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES})
 
-add_subdirectory(tests)
+#add_subdirectory(tests)

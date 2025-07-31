@@ -16,17 +16,17 @@ public:
     SshConsoleJob(const SshConsoleJob& other);
     virtual ~SshConsoleJob();
 
-    virtual std::wstring GetName();
+    std::wstring GetName() const override;
 
     virtual AbstractJob* Clone();
 
     void SetTarget(const std::wstring& _user, const std::wstring& _host);
 
-    virtual bool InitializeFromClient(Client *client);
+    bool InitializeFromClient(Client *client) override;
 
-    virtual bool IsInitialized(void);
+    bool IsInitialized(void) override;
 
-    virtual JobStatus* Run();
+    JobStatus* Run() override;
 
     virtual void SetTitle(const std::wstring& value);
 
@@ -42,12 +42,12 @@ public:
     virtual int GetCommandReturnCode() const;
     virtual void SetCommandReturnCode(const int value);
 
-    virtual std::wstring GetCommandOutput() const;
-    virtual void SetCommandOutput(const std::wstring& value);
+    virtual std::wstring GetCommandOutput() const override;
+    virtual void SetCommandOutput(const std::wstring& value) override;
 
     virtual bool IsCommandAvailable() const;
 
-    virtual bool IsRunOk() const;
+    virtual bool IsRunOk() const override;
 
     void GetUserAttachments(std::vector<std::wstring>& attachments);
     void AddUserAttachment(const std::wstring& name);
