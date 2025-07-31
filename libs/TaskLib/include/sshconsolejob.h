@@ -18,7 +18,7 @@ public:
 
     std::wstring GetName() const override;
 
-    virtual AbstractJob* Clone();
+    AbstractJob* Clone() override;
 
     void SetTarget(const std::wstring& _user, const std::wstring& _host);
 
@@ -30,20 +30,20 @@ public:
 
     virtual void SetTitle(const std::wstring& value);
 
-    virtual int GetExpectedReturnCode() const;
-    virtual void SetExpectedReturnCode(const int value);
+    int GetExpectedReturnCode() const override;
+    void SetExpectedReturnCode(const int value) override;
 
-    virtual std::wstring GetCommand() const;
-    virtual void SetCommand(const std::wstring& command);
+    std::wstring GetCommand() const override;
+    void SetCommand(const std::wstring& command) override;
 
-    virtual std::wstring GetCommandParameters() const;
-    virtual void SetCommandParameters(const std::wstring& parameters);
+    std::wstring GetCommandParameters() const override;
+    void SetCommandParameters(const std::wstring& parameters) override;
 
-    virtual int GetCommandReturnCode() const;
-    virtual void SetCommandReturnCode(const int value);
+    int GetCommandReturnCode() const override;
+    void SetCommandReturnCode(const int value) override;
 
-    virtual std::wstring GetCommandOutput() const override;
-    virtual void SetCommandOutput(const std::wstring& value) override;
+    std::wstring GetCommandOutput() const override;
+    void SetCommandOutput(const std::wstring& value) override;
 
     virtual bool IsCommandAvailable() const;
 
