@@ -3,7 +3,6 @@
 #include "filetools.h"
 #include "pathtools.h"
 #include "parserstestsuites.h"
-#include "qtprogresscountertest.h"
 #include "tasktestsuites.h"
 #include "toolstestsuites.h"
 
@@ -62,7 +61,6 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new TarIncrementalBackupJobTest();
     //QObject* testSuite = new TarIncrementalBackupJobConfigurationTest();
     //QObject* testSuite = new AbstractOutputParserTest(parsersDir);
-    //QObject* testSuite = new QtProgressCounterTest();
 
     QTest::qExec(testSuite, argc, argv);
 
