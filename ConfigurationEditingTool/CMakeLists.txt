@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
+set(CMAKE_POLICY_DEFAULT_CMP0072 NEW)
 
 project(ConfigurationEditiongTool LANGUAGES CXX)
 
@@ -11,7 +12,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5Widgets REQUIRED)
+find_package(Qt6Widgets REQUIRED)
 
 add_definitions(-DVERSION="${APP_VERSION}")
 
@@ -51,7 +52,7 @@ target_include_directories(ConfigurationEditingTool PRIVATE ${rootDir})
 target_include_directories(ConfigurationEditingTool PRIVATE ${scheduleDir})
 target_include_directories(ConfigurationEditingTool PRIVATE ${toolRunDir})
 
-target_link_libraries (ConfigurationEditingTool TaskLib BasicToolsLib QtToolsLib Qt5::Widgets)
+target_link_libraries (ConfigurationEditingTool TaskLib BasicToolsLib QtToolsLib Qt6::Widgets)
 
 set(toolsLibPath "${TOOLS_ROOT}/ToolsLib/lib")
 
