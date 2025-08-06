@@ -1,6 +1,12 @@
-[submodule "libs/BasicToolsLib"]
-	path = libs/BasicToolsLib
-	url = git@github.com:MickaelOnTheWave/BasicToolsLib.git
 [submodule "libs/tgbot"]
 	path = libs/tgbot
 	url = git@github.com:reo7sp/tgbot-cpp.git
+[submodule "libs/QtToolsLib"]
+	path = libs/QtToolsLib
+	url = git@github.com:MickaelOnTheWave/QtToolsLib.git
+[submodule "libs/BasicToolsLib"]
+	path = libs/BasicToolsLib
+	url = git@github.com:MickaelOnTheWave/BasicToolsLib.git
+[submodule "libs/NetworkToolsLib"]
+	path = libs/NetworkToolsLib
+	url = git@github.com:MickaelOnTheWave/NetworkToolsLib.git
