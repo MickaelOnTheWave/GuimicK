@@ -4,7 +4,6 @@
 
 #include "abstractbackupjob.h"
 #include "abstractbackupjobconfiguration.h"
-#include "qttools.h"
 
 using namespace std;
 

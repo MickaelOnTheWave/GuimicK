@@ -20,7 +20,7 @@ file(GLOB_RECURSE sources "src/*")
 add_library(TaskLib ${sources})
 
 target_include_directories(TaskLib PUBLIC "include/")
-target_link_libraries (TaskLib ParsersLib BasicToolsLib TgBot)
+target_link_libraries (TaskLib ParsersLib BasicToolsLib NetworkToolsLib TgBot)
 
 target_link_libraries(TaskLib ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES})
 
