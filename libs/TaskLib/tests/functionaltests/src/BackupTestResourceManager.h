@@ -25,6 +25,8 @@ private:
    std::vector<std::string> GetShuffledSourceFiles() const;
    std::vector<std::string> GetExistingFiles(const std::string& folder) const;
 
+   std::string CreateRandomFilename() const;
+   size_t SelectRandomFilesize() const;
    void ModifyFile(const std::string& filename);
 
    std::string backupSource;

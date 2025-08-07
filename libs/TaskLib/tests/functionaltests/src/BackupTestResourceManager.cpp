@@ -24,9 +24,9 @@ void BackupTestResourceManager::Initialize(AbstractBackupJob* job)
 
 void BackupTestResourceManager::Clean()
 {
-   CleanRepository();
-   CleanSource();
-   CleanDestination();
+   const bool keepRootFolder = false;
+   FileTools::RemoveFolder(backupSource, keepRootFolder);
+   FileTools::RemoveFolder(backupDestination, keepRootFolder);
 }
 
 void BackupTestResourceManager::CheckResourcesConsistency() const
@@ -95,6 +95,24 @@ vector<string> BackupTestResourceManager::GetExistingFiles(const string& folder)
 {
    vector<string> existingFiles;
    return existingFiles;
+}
+
+string BackupTestResourceManager::CreateRandomFilename() const
+{
+   string filename("RandomFile-");
+   for (int i=0; i<5; ++i)
+   {
+      std::uniform_int_distribution<int> dist(97, 122);
+      filename += static_cast<char>(dist(randomGenerator));
+   }
+   filename += ".txt";
+   return filename;
+}
+
+size_t BackupTestResourceManager::SelectRandomFilesize() const
+{
+   std::uniform_int_distribution<int> dist(10, 100);
+   return dist(randomGenerator);
 }
 
 void BackupTestResourceManager::ModifyFile(const std::string &filename)
