@@ -19,6 +19,8 @@ public:
    JobStatus(const JobStatus& other);
    virtual ~JobStatus();
 
+   bool operator==(const JobStatus& other) const;
+
    void Reset();
 
    int GetCode() const;

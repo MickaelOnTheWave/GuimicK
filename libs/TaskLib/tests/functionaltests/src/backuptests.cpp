@@ -18,87 +18,11 @@
 
 #include <catch2/catch.hpp>
 
-#include "abstractbackupjob.h"
+#include "BackupTestsFixture.h"
+
 #include "rsnapshotsmartbackupjob.h"
 #include "rsynccopyfsbackupjob.h"
 #include "tarbackupjob.h"
-
-/*******************/
-
-class BackupTestResourceManager
-{
-public:
-   BackupTestResourceManager(const int same, const int added, const int removed, const int modified)
-   {
-   }
-
-   void Initialize()
-   {
-      PopulateSource();
-      PopulateDestination();
-   }
-
-   void Clean()
-   {
-      CleanRepository();
-      CleanSource();
-      CleanDestination();
-   }
-
-   void CheckResourcesConsistency()
-   {
-
-   }
-
-private:
-
-};
-
-class BackupTestsFixture
-{
-public:
-
-   void RunBackupTests(AbstractBackupJob* backupJob)
-    {
-      {
-         BackupTestResourceManager resourceManager(2, 5, 0, 0);
-         RunBackupTest("Added 5 files", backupJob, resourceManager);
-      }
-
-      {
-         BackupTestResourceManager resourceManager(2, 0, 5, 0);
-         RunBackupTest("Removed 5 files", backupJob, resourceManager);
-      }
-
-      {
-         BackupTestResourceManager resourceManager(2, 0, 0, 5);
-         RunBackupTest("Modified 5 files", backupJob, resourceManager);
-      }
-    }
-
-private:
-    void RunBackupTest(const std::string& sectionTitle, AbstractBackupJob* backupJob, BackupTestResourceManager& testResourceManager)
-    {
-       SECTION(sectionTitle)
-       {
-          testResourceManager.Initialize();
-
-          backupJob->SetRepository(L"repository");
-          backupJob->AddFolder(L"backupSource", L"backupDestination");
-
-          JobStatus* status = backupJob->Run();
-
-          REQUIRE(*status == expectedStatus);
-          testResourceManager.CheckResourcesConsistency();
-
-          delete status;
-          delete backupJob;
-
-          testResourceManager.Clean();
-       }
-    }
-};
-
 
 /*******************/
 

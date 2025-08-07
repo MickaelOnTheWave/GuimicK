@@ -39,12 +39,19 @@ JobStatus::~JobStatus()
     filebuffers.clear();
 }
 
+bool JobStatus::operator==(const JobStatus &other) const
+{
+   return (code == other.code && elapsedTime == other.elapsedTime &&
+           description == other.description && externalFilenames == other.externalFilenames &&
+           filebuffers == other.filebuffers);
+}
+
 void JobStatus::Reset()
 {
 	code = NotExecuted;
 	description = L"";
-    externalFilenames.clear();
-    filebuffers.clear();
+   externalFilenames.clear();
+   filebuffers.clear();
 }
 
 void JobStatus::SetCode(int _code)

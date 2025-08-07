@@ -29,8 +29,6 @@ int main(int argc, char* argv[])
     //QObject* testSuite = new GitJobTest();
     //QObject* testSuite = new UserConsoleJobTest();
     //QObject* testSuite = new SshConsoleJobTest();
-    //QObject* testSuite = new ConfigurationParserTest(toolsLibDir);
-    //QObject* testSuite = new FileToolsTest(toolsLibDir);
     //QObject* testSuite = new ClientWorkManagerTest();
     //QObject* testSuite = new ServerConfigurationTest(taskLibDir);
     //QObject* testSuite = new GitFsBackupJobTest(taskLibDir, errorDir);
