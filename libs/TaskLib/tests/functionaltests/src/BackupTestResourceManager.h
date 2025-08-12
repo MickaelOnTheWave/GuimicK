@@ -31,7 +31,7 @@ private:
 
    std::string backupSource;
    std::string backupDestination;
-   std::mt19937 randomGenerator;
+   mutable std::mt19937 randomGenerator;
 };
 
 #endif // BACKUPTESTRESOURCEMANAGER_H

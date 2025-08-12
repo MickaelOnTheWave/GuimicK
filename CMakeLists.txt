@@ -26,4 +26,4 @@ endif(WIN32)
 
 
 set (NonDevFiles VERSION)
-source_group("Non Dev Files" FILES ${NonDevFiles})
+add_custom_target(NonDevFiles SOURCES ${NonDevFiles})
