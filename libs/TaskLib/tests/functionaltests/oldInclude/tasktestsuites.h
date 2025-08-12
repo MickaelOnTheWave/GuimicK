@@ -1,0 +1,32 @@
+#ifndef TASKTESTSUITES_H
+#define TASKTESTSUITES_H
+
+#include "clamavjobconfigurationtest.h"
+#include "clientworkmanagertest.h"
+#include "consolejobtest.h"
+#include "copyfsbackupjobconfigurationstests.h"
+#include "diskspacecheckjobconfigurationtest.h"
+#include "gitbackupjobconfigurationtest.h"
+#include "gitfsbackupjobconfigurationtest.h"
+#include "gitfsbackupjobtest.h"
+#include "gitjobtest.h"
+#include "rawcopyfsbackupjobtest.h"
+#include "remotejobsrunnerconfigurationtest.h"
+#include "rsnapshotbackupjobconfigurationtest.h"
+#include "rsnapshoterroranalyzertest.h"
+#include "rsnapshotjobtest.h"
+#include "rsynccopyfsbackupjobtest.h"
+#include "serverconfigurationtest.h"
+#include "shutdownjobconfigurationtest.h"
+#include "sshconsolejobconfigurationtest.h"
+#include "sshconsolejobtest.h"
+#include "tarincrementalbackupjobtest.h"
+#include "tarincrementalbackupjobconfigurationtest.h"
+#include "taskfeaturetest.h"
+#include "userconsolejobconfigurationtest.h"
+#include "userconsolejobtest.h"
+#include "wakejobconfigurationtest.h"
+#include "wakejobtest.h"
+#include "zipandcopyfsbackupjobtest.h"
+
+#endif // TASKTESTSUITES_H
