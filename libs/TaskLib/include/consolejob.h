@@ -23,32 +23,32 @@ public:
    ConsoleJob(const ConsoleJob& other);
    virtual ~ConsoleJob();
 
-   virtual AbstractJob* Clone();
+   AbstractJob* Clone() override;
 
-   virtual bool IsInitialized(void);
+   bool IsInitialized(void) override;
 
-   virtual JobStatus* Run();
+   JobStatus* Run() override;
 
    static void Run(const std::wstring& command, const std::wstring& params);
 
    void RunWithoutStatus();
 
-   virtual int GetExpectedReturnCode() const;
-   virtual void SetExpectedReturnCode(const int value);
+   int GetExpectedReturnCode() const override;
+   void SetExpectedReturnCode(const int value) override;
 
-   virtual std::wstring GetCommand() const;
-   virtual void SetCommand(const std::wstring& command);
+   std::wstring GetCommand() const override;
+   void SetCommand(const std::wstring& command) override;
 
-   virtual void SetCommandParameters(const std::wstring& parameters);
-   std::wstring GetCommandParameters() const;
+   void SetCommandParameters(const std::wstring& parameters) override;
+   std::wstring GetCommandParameters() const override;
 
-   virtual int GetCommandReturnCode() const;
-   virtual void SetCommandReturnCode(const int value);
+   int GetCommandReturnCode() const override;
+   void SetCommandReturnCode(const int value) override;
 
-   virtual std::wstring GetCommandOutput() const;
-   virtual void SetCommandOutput(const std::wstring& value);
+   std::wstring GetCommandOutput() const override;
+   void SetCommandOutput(const std::wstring& value) override;
 
-   virtual bool IsRunOk() const;
+   bool IsRunOk() const override;
 
    virtual bool IsCommandAvailable() const;
 

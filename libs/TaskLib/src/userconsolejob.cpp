@@ -221,7 +221,7 @@ void UserConsoleJob::RunCommandOnBuffer()
         currentStatus->AddFileBuffer(GetAttachmentName(), commandOutput);
 }
 
-bool UserConsoleJob::IsRunOk()
+bool UserConsoleJob::IsRunOk() const
 {
     if (successConditionOnStandardOutput)
         return commandOutput == expectedOutput;

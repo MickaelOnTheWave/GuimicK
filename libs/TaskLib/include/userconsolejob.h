@@ -15,12 +15,12 @@ public:
     UserConsoleJob(const UserConsoleJob& other);
     virtual ~UserConsoleJob();
 
-    virtual AbstractJob* Clone();
+    AbstractJob* Clone() override;
 
     virtual void Initialize(const std::wstring& _command,
                             int _expectedReturnCode = 0);
 
-    virtual JobStatus* Run();
+    JobStatus* Run() override;
 
     std::wstring GetMiniDescriptionParserCommand() const;
     void SetMiniDescriptionParserCommand(const std::wstring& parser);
@@ -34,7 +34,9 @@ public:
     bool IsParsingUsingBuffer() const;
     void SetParsingUsingBuffer(const bool value);
 
-    virtual void SetExpectedReturnCode(const int value);
+    void SetExpectedReturnCode(const int value) override;
+
+    bool IsRunOk() const override;
 
     std::wstring GetExpectedOutput() const;
     void SetExpectedOutput(const std::wstring& value);
@@ -45,13 +47,12 @@ public:
     void EmptyUserAttachments();
 
 protected:
-    virtual bool RunCommand();
-    virtual JobStatus* CreateSuccessStatus();
-    virtual JobStatus* CreateErrorStatus();
+    bool RunCommand() override;
+    JobStatus* CreateSuccessStatus() override;
+    JobStatus* CreateErrorStatus() override;
 
     void RunCommandOnFile();
     void RunCommandOnBuffer();
-    bool IsRunOk();
 
     void FillStatusFromParsing();
     void FillErrorStatusFromOutput();
