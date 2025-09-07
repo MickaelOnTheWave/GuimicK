@@ -13,7 +13,7 @@ A tutorial is available on how to download/install it on Windows :
 https://mickaelcguimaraes.wixsite.com/guimick/services
 
 ## Dependencies
-- [CMake](https://cmake.org/download/) (≥ 3.10 recommended)
+- [CMake](https://cmake.org/download/) (≥ 3.22)
 - [Qt](https://www.qt.io/download) (≥ 6, Qt Widgets module required)
 - A C++17-compatible compiler (e.g., GCC ≥ 9, MSVC ≥ 2019, Clang ≥ 10)
 
