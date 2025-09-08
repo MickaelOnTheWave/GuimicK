@@ -42,7 +42,7 @@ GuimicK uses Cmake and depends on QT. Make sure you have them installed.
 
 3. Ready to be used!
 
-In your build directory, you will find three folders with executables :
+In your build directory, you will find two folders with executables :
 
 - `ConfigurationEditingTool` — GUI tool to define and test tasks
 
@@ -57,23 +57,20 @@ In your build directory, you will find three folders with executables :
   This is the tool that runs in the background and executes the tasks you configured. You can run it manually, and this is
   the tool you will need to configure in your scheduler to run your tasks periodically.
   
-- `TaskToolLauncher` — Windows-only helper for admin privileges
-
-  It is used internally on Windows to handle administrator priviledges when necessary. You should not need to use it yourself.
 
 ## Limitations
 
-### Maintenance
+### ⚠️ Maintenance
 This software is old and has not been maintained for some years. It has only recently been uploaded to GitHub and migrated to Cmake.
 It as been untested for a while and some features might be broken.
 
-### Feedback to user
+### ⚠️ Feedback to user
 It was originally developed around the idea of sending an email to the user with a report of all tasks. Although the code still works, today
 most email providers (at least gmail, which I used at the time) don't allow anymore external SMTP access. As such, the email reporting feature is now
 unusable for most users.
 A Telegram bot has been added later, but I didn't finish the development of it. It has some basic features but full production runs were not tested.
 
-### Automated tests
+### 🚧 Automated tests
 There were several automated tests developed around QTest. I migrated some of them to Catch2 and moved to test/ folders, however all of the main tests
 on external backup services haven't been migrated yet. Their code is still present in oldSrc/ and oldInclude/ for a future migration.
 
