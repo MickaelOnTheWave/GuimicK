@@ -1,0 +1,73 @@
+Agent
+{
+	Name = "GuimicK Bot";
+	EmailAccount
+	{
+	    Email = "guimick.bot@email.com";
+	    Password = "botemailpassword";
+	    SmtpAddress = "smtp.email.com";
+	    SmtpPort = 587;
+	    UseSSL = true;
+	}
+	DefaultBinPaths("/bin", "/sbin", "/opt/bin", "/opt/sbin");
+}
+
+Client
+{
+	Name = "Desktop computer";
+	mac = "00:11:22:33:44:55";
+	ip = "192.168.1.1";
+	broadcast = "192.168.1.255";
+	sshuser = "user";
+	JobList
+	{
+		Wake();
+		GitFsBackup
+		{
+			target = "remote";
+			Folder
+			{
+				source = "/home/user/Documents";
+				dest = "/volume/backups/important/documents/";
+			}
+		}		
+		GitBackup
+		{
+			Repository
+			{
+				source = "~/Prog/MyRepository1";
+				dest = "/volume/backups/repositories/myrepository1";
+			}
+			Repository
+			{
+				source = "~/Prog/MyRepository2";
+				dest = "/volume/backups/repositories/myrepository2";
+			}
+			Repository
+			{
+				source = "~/Prog/MyRepository3";
+				dest = "/volume/backups/repositories/myrepository3";
+			}
+		}
+		SshConsole
+		{
+			title = "Package list update";
+			command = "sudo";
+			params = "apt-get update";
+			returnCode = 0;
+		}
+		DiskSpaceCheck("/dev/sda1");
+		Shutdown();
+	}
+}
+
+Report
+{
+	type = "html";
+	css = "report.css";
+}
+
+MasterEmail = "user@email.com";
+ReportDispatching = "email";
+SendReportByEmail = true;
+ShutdownOnFinish = true;

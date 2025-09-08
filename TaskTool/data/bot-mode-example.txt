@@ -5,9 +5,9 @@ Agent
 	ReportFolder = "/tmp/GuimicK Report/";
    TelegramBot
    {
-      BotToken = "5495178915:AAG68pfWRjo5KFzhY7jr8GKTHGLV2Nu6ikM";
-      AuthorizedUserToken =  "5483529663";
-      AuthorizedUserChatId = "5483529663";
+      BotToken = "123456:BotTokenHere";
+      AuthorizedUserToken =  "12345";
+      AuthorizedUserChatId = "12345";
       WaitTimeBeforeAutorun = 2;
    }
 }
@@ -17,7 +17,7 @@ Client
 	Name = "Local Machine";
 	showDebugInformation = "never";
 	ip = "desktop";
-	sshuser = "mickael";
+	sshuser = "user";
 JobList
 {
 	Console

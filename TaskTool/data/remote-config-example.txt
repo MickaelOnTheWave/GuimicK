@@ -1,13 +1,13 @@
 Agent
 {
-	Name = "Cristiana Araujo";
+	Name = "GuimicK Bot";
 	EmailAccount
 	{
-		Email = "cristiana.araujo.ai@gmail.com";
-		Password = "y3r8V5k8M75Nn5";
-		SmtpAddress = "smtp.gmail.com";
-		SmtpPort = 587;
-		UseSSL = true;
+	    Email = "guimick.bot@email.com";
+	    Password = "botemailpassword";
+	    SmtpAddress = "smtp.email.com";
+	    SmtpPort = 587;
+	    UseSSL = true;
 	}
 	DefaultBinPaths("/bin", "/sbin", "/opt/bin", "/opt/sbin");
 	OutputDebugInformation = "onanyerror";
@@ -16,10 +16,10 @@ Agent
 Client
 {
 	Name = "Desktop computer";
-	mac = "54:a0:50:7b:bf:e9";
-	ip = "192.168.100.100";
-	broadcast = "192.168.100.255";
-	sshuser = "mickael";
+	mac = "00:11:22:33:44:55";
+	ip = "192.168.1.1";
+	broadcast = "192.168.1.255";
+	sshuser = "user";
 	showDebugInformation = "onfatalerror";
 	JobList
 	{
@@ -35,6 +35,6 @@ Report
 }
 
 Type="Server";
-MasterEmail = "mickael.dacruz@gmail.com";
+MasterEmail = "user@email.com";
 ReportDispatching = "email";
 ShutdownOnFinish = true;
