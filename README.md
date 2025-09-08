@@ -1,16 +1,64 @@
 # GuimicK
 
 A set of tools to schedule and run recurrent tasks on your computer, even on your absence.
-The usages that motivated it were :
-- Running backups periodically and automatically
-- Running system updates
-- Running antivirus scans
-- Having a report sent to the user detailing what happened to each task after each run
+Originally designed to automate backups, GuimicK has been extended to support system maintenance, remote management, and more.
 
-## Usage
 
-A tutorial is available on how to download/install it on Windows : 
-https://mickaelcguimaraes.wixsite.com/guimick/services
+## ✨ Features
+
+- Schedule and run recurring tasks automatically
+- Generate execution reports (stored locally or sent to the user)
+- Control both local and remote machines
+- Graphical interface for configuration
+- Cross-platform: Linux and Windows
+
+### Supported Task Types
+
+- File backups (raw copy, rsync, zip/tar, and more)
+- Git repository backups
+- Disk checks
+- Custom command-line commands
+- Remote commands via SSH
+- Wake-on-LAN for remote machines
+- Automatic shutdown (local or remote)
+
+
+### Configuration Modes
+
+A configuration file defines which tasks run and where:
+
+- **Standalone** — runs tasks locally on the same machine  
+- **Server** — runs tasks on a remote client machine  
+- **Client** — exposes this machine to be controlled by a remote server
+
+When creating a new configuration in the GUI tool, you will be prompted to choose one of these modes.
+
+## ⚙️ Tools
+
+GuimicK provides two executables:
+
+- **`TaskTool`** — background runner  
+  Executes tasks as defined in a configuration file.  
+  Can be run manually, or added to your scheduler (Windows Task Scheduler / Linux `cron`).  
+
+- **`ConfigurationEditingTool`** — graphical configuration editor  
+  Provides an intuitive way to define tasks, test them, and generate configuration files.  
+  (You may also edit configuration files manually if preferred.)
+
+
+## 🖥️ Platform Notes
+
+### 🪟 Windows
+- Only **Standalone** mode tested  
+- Tutorial available: [Installation guide](https://mickaelcguimaraes.wixsite.com/guimick/services)
+
+### 🐧 Linux
+- All modes tested (Standalone, Server, Client)  
+- No direct GUI integration with `cron` — add entries manually  
+- After building, executables are located in:
+  - `TaskTool/` → command-line runner
+  - `ConfigurationEditingTool/` → GUI editor
+
 
 ## Dependencies
 - [CMake](https://cmake.org/download/) (≥ 3.22)
@@ -19,15 +67,13 @@ https://mickaelcguimaraes.wixsite.com/guimick/services
 
 ## How to build it
 
-1. Open a terminal and run:
+1. Clone the repository with submodules::
 
 ```bash
 git clone --recursive https://github.com/MickaelOnTheWave/GuimicK.git
 ```
 
-GuimicK uses several submodules. You need the --recursive option to clone them too.
-
-2. Generate the build files and compile it :
+2. Configure and build :
 
 ```bash
 cd GuimicK
@@ -37,53 +83,19 @@ cmake ../
 cmake --build .
 ```
 
-This will compile all the tools necessary to run GuimicK.
-GuimicK uses Cmake and depends on QT. Make sure you have them installed.
+3. Run from the build directory:
 
-3. Ready to be used!
+- `ConfigurationEditingTool` — GUI configuration editor
 
-In your build directory, you will find two folders with executables :
-
-- `ConfigurationEditingTool` — GUI tool to define and test tasks
-
-  This is the tool you will use to define the tasks you want to run, configure them and schedule them.
-  You can also run them to test the output.
-  It is a Graphical Interface and it will create the configuration that will be used by the background tool.
-  This is an easy and intuitive way to create the configuration file that defines your tasks, but you can also
-  write the configuration file yourself in a text editor if you prefer.
-
-- `TaskTool` — background runner (add to scheduler/cron)
-
-  This is the tool that runs in the background and executes the tasks you configured. You can run it manually, and this is
-  the tool you will need to configure in your scheduler to run your tasks periodically.
+- `TaskTool` — background runner
   
 
-## Limitations
+## ⚠️ Limitations
 
-### ⚠️ Maintenance
-This software is old and has not been maintained for some years. It has only recently been uploaded to GitHub and migrated to Cmake.
-It as been untested for a while and some features might be broken.
+- `Maintenance`- The project was dormant for several years; some features may be broken.
+- `Feedback to user`- Email reporting is mostly unusable due to modern SMTP restrictions. A Telegram bot was partially implemented but not fully tested.
+- `Automated tests`- Unit tests exist (Catch2, some migrated from QTest), but external backup service tests are still in oldSrc/ and oldInclude/.
 
-### ⚠️ Feedback to user
-It was originally developed around the idea of sending an email to the user with a report of all tasks. Although the code still works, today
-most email providers (at least gmail, which I used at the time) don't allow anymore external SMTP access. As such, the email reporting feature is now
-unusable for most users.
-A Telegram bot has been added later, but I didn't finish the development of it. It has some basic features but full production runs were not tested.
-
-### 🚧 Automated tests
-There were several automated tests developed around QTest. I migrated some of them to Catch2 and moved to test/ folders, however all of the main tests
-on external backup services haven't been migrated yet. Their code is still present in oldSrc/ and oldInclude/ for a future migration.
-
-## Platforms
-
-It was first designed to run on Linux, and then generalized for Windows. Mac is untested.
-It runs on both platforms, although not all features are available everywhere :
-
-Tested on Windows only :
-- Setting scheduled runs directly from the configuration tool
-
-Tested on Linux only :
-- Waking remote machines and taking control of them
-- Shutting down automatically
-
-
+## 🤝 Contributing
+GuimicK was designed to make it easy to add new task types.  
+If you’d like to extend it, feel free to fork the repository and submit a pull request!
