@@ -88,7 +88,17 @@ cmake --build .
 - `ConfigurationEditingTool` — GUI configuration editor
 
 - `TaskTool` — background runner
-  
+
+## 📄 Examples
+
+Sample configuration files are available in the [`TaskTool/data/`](TaskTool/data/) folder.  
+They demonstrate how to set up common use cases, such as:
+
+- Local file backups
+- Git repository backups
+- Waking up a remote machine and taking control via SSH
+
+You can use these as a starting point and adapt them to your own needs.
 
 ## ⚠️ Limitations
 
